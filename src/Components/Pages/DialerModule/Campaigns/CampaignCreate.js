@@ -1,11 +1,164 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop } from '../../../GlobalFunction/globalFunction';
+import { backToTop, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import PaginationComponent from '../../../CommonComponents/PaginationComponent';
+import { useForm } from 'react-hook-form';
+import { numberValidator, requiredValidator } from '../../../validations/validation';
+import ErrorMessage from '../../../CommonComponents/ErrorMessage';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import CircularLoader from '../../../Loader/CircularLoader';
 
 function CampaignCreate() {
     const navigate = useNavigate();
-    const [stepSelector, setStepSelector] = useState(2);
+    const account = useSelector((state) => state.account);
+    const [stepSelector, setStepSelector] = useState(1);
+    const [did, setDid] = useState([]);
+    const [agents, setAgents] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1)
+    const [agentPerPage, setAgentPerPage] = useState(10)
+    const [agentSearch, setAgentSearch] = useState('')
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [completedStep, setCompletedStep] = useState(0);
+    const [campaignId, setCampaignId] = useState('')
+    const [selectedAgent, setSelectedAgent] = useState([])
+    const [newFile,setNewFile]=useState(null)
+
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        watch,
+    } = useForm();
+
+    // Getting did and agents for dialer and set its value
+    useEffect(() => {
+        async function getDidData() {
+            const getDid = await generalGetFunction("did/all")
+            if (getDid?.status) {
+                setDid(getDid.data.filter((item) => item.usages === "dialer"))
+            }
+        }
+        async function getAgentData() {
+            const getAgents = await generalGetFunction(`agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`)
+            if (getAgents?.status) {
+                setAgents(getAgents.data)
+            }
+        }
+        if (agentPerPage === 10 && agentSearch === "") {
+            getDidData()
+        }
+        getAgentData()
+    }, [agentPerPage, agentSearch])
+
+    // Step one form submit
+    const handleFormSubmitStepOne = handleSubmit(async (data) => {
+        if (selectedItems.length === 0) {
+            toast.error("Please select at least one did");
+            return
+        }
+        setLoading(true);
+        const payload = { ...data, business_numbers: selectedItems, account_id: account.account_id, status: "Active" };
+        const apiData = await generalPostFunction("/campaign/store", payload);
+        if (apiData?.status) {
+            setCompletedStep(1)
+            setStepSelector(2)
+            setLoading(false);
+            toast.success(apiData.message);
+            setCampaignId(apiData.data.id)
+        } else {
+            setLoading(false);
+        }
+    });
+
+    // Step two form submit
+    const handleFormSubmitStepTwo = handleSubmit(async (data) => {
+        if (campaignId === "") {
+            toast.error("Please create campaign first");
+            return
+        }
+        setLoading(true);
+        const payload = { ...data, campaign_id: campaignId };
+        const apiData = await generalPostFunction("/dialer-setting/store", payload);
+        if (apiData?.status) {
+            setCompletedStep(2)
+            setStepSelector(3)
+            setLoading(false);
+            toast.success(apiData.message);
+        } else {
+            setLoading(false);
+        }
+    })
+
+    // Step three form submit for adding agents
+    async function handleFormSubmitStepThree() {
+        if (selectedAgent.length === 0) {
+            toast.error("Please select at least one agent");
+            return
+        }
+        setLoading(true);
+        const payload = { campaign_id: campaignId, user_id: selectedAgent, status: "active" };
+        const apiData = await generalPostFunction("/campaign-agent/store", payload);
+        if (apiData?.status) {
+            setCompletedStep(3)
+            setStepSelector(4)
+            setLoading(false);
+            toast.success(apiData.message);
+        } else {
+            setLoading(false);
+        }
+    }
+
+
+    async function handleFormSubmitStepFour() {
+        if (newFile) {
+            const maxSizeInKB = 2048;
+            const fileSizeInKB = newFile.size / 1024;
+            console.log("This is file size", fileSizeInKB);
+            if (fileSizeInKB > maxSizeInKB) {
+                toast.error("Please choose a file less than 2048 kilobytes.");
+            } else {
+                setLoading(true);
+                const parsedData = new FormData();
+                parsedData.append("csv_file", newFile);
+                parsedData.append("campaign_id", campaignId);
+                const apiData = await fileUploadFunction("/campaign-lead/store", parsedData);
+                if (apiData.status) {
+                    setLoading(false);
+                    setCompletedStep(4)
+                    setNewFile();
+                    toast.success(apiData.message);
+                } else {
+                    setLoading(false);
+                }
+            }
+        } else {
+            toast.error("Please choose a file");
+        }
+    }
+    // Logic to select and unselect did
+    const toggleSelect = (index) => {
+        setSelectedItems((prevSelected) =>
+            prevSelected.includes(index)
+                ? prevSelected.filter((item) => item !== index) // Remove if already selected
+                : [...prevSelected, index] // Add if not selected
+        );
+    };
+
+
+    // Logic to select and unselect agents
+    const toggleSelectAgents = (index) => {
+        setSelectedAgent((prevSelected) =>
+            prevSelected.includes(index)
+                ? prevSelected.filter((item) => item !== index) // Remove if already selected
+                : [...prevSelected, index] // Add if not selected
+        );
+    };
+
+
+    console.log(selectedItems, watch());
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -22,7 +175,7 @@ function CampaignCreate() {
                                                 <p>Create a new campaign</p>
                                             </div>
                                             <div className="buttonGroup">
-                                                <div className='d-flex align-items-center'>
+                                                {/* <div className='d-flex align-items-center'>
                                                     <div className="formLabel py-0 me-2">
                                                         <label for="selectFormRow">Enabled</label>
                                                     </div>
@@ -31,11 +184,13 @@ function CampaignCreate() {
                                                             <input
                                                                 type="checkbox"
                                                                 id="showAllCheck"
+                                                                {...register("status", {
+                                                                })}
                                                             />
                                                             <span className="slider round" />
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray"
@@ -52,8 +207,19 @@ function CampaignCreate() {
                                                 <button
                                                     type="button"
                                                     className="panelButton"
+                                                    onClick={() => {
+                                                        if (completedStep === 0) {
+                                                            handleFormSubmitStepOne();
+                                                        } else if (completedStep === 1) {
+                                                            handleFormSubmitStepTwo();
+                                                        } else if (completedStep === 2) {
+                                                            handleFormSubmitStepThree();
+                                                        }else if(completedStep === 3){
+                                                            handleFormSubmitStepFour();
+                                                        }
+                                                    }}
                                                 >
-                                                    <span className="text">Save</span>
+                                                    <span className="text" >Save</span>
                                                     <span className="icon">
                                                         <i className="fa-solid fa-floppy-disk"></i>
                                                     </span>
@@ -68,7 +234,7 @@ function CampaignCreate() {
                                                 <div className='someTempDialerDesign'>
                                                     <ul>
                                                         <li className={stepSelector === 1 && 'active'} onClick={() => setStepSelector(1)}>
-                                                            <div className='numberHolder completed'>
+                                                            <div className={completedStep > 0 ? 'numberHolder completed' : "numberHolder"}>
                                                                 1
                                                             </div>
                                                             <div className='textHolder'>
@@ -84,7 +250,7 @@ function CampaignCreate() {
                                                             </div>
                                                         </li>
                                                         <li className={stepSelector === 2 && 'active'} onClick={() => setStepSelector(2)}>
-                                                            <div className='numberHolder'>
+                                                            <div className={completedStep > 1 ? 'numberHolder completed' : "numberHolder"}>
                                                                 2
                                                             </div>
                                                             <div className='textHolder'>
@@ -92,7 +258,7 @@ function CampaignCreate() {
                                                             </div>
                                                         </li>
                                                         <li className={stepSelector === 3 && 'active'} onClick={() => setStepSelector(3)}>
-                                                            <div className='numberHolder'>
+                                                            <div className={completedStep > 2 ? 'numberHolder completed' : "numberHolder"}>
                                                                 3
                                                             </div>
                                                             <div className='textHolder'>
@@ -100,7 +266,7 @@ function CampaignCreate() {
                                                             </div>
                                                         </li>
                                                         <li className={stepSelector === 4 && 'active'} onClick={() => setStepSelector(4)}>
-                                                            <div className='numberHolder'>
+                                                            <div className={completedStep > 3 ? 'numberHolder completed' : "numberHolder"}>
                                                                 4
                                                             </div>
                                                             <div className='textHolder'>
@@ -122,7 +288,29 @@ function CampaignCreate() {
                                                             <div className='col-6'>
                                                                 <input
                                                                     type="text"
-                                                                    className="formItem" />
+                                                                    className="formItem"
+                                                                    {...register("title", {
+                                                                        ...requiredValidator,
+                                                                    })}
+                                                                />
+                                                                {errors.title && (
+                                                                    <ErrorMessage text={errors.title.message} />
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div className="formRow">
+                                                            <div className='formLabel'>
+                                                                <label>
+                                                                    Campaign Type
+                                                                </label>
+                                                            </div>
+                                                            <div className='col-6'>
+                                                                <select defaultValue={"Inbound"} className="formItem" {...register("campaign_type", {
+                                                                    ...requiredValidator,
+                                                                })}>
+                                                                    <option value="Inbound">Inbound</option>
+                                                                    <option value="Outbound">Outbound</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div className="formRow align-items-start">
@@ -136,7 +324,13 @@ function CampaignCreate() {
                                                                     type="text"
                                                                     className="formItem h-auto"
                                                                     rows={3}
+                                                                    {...register("description", {
+                                                                        ...requiredValidator,
+                                                                    })}
                                                                 />
+                                                                {errors.description && (
+                                                                    <ErrorMessage text={errors.description.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                     </form>
@@ -164,80 +358,37 @@ function CampaignCreate() {
                                                                 <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
                                                             </div>
                                                         </div>
-                                                        <ul className="invoiceList">
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton"
+                                                        <ul className="invoiceList list-unstyled">
+                                                            {did.map((item, index) => (
+                                                                <li
+                                                                    key={index}
+                                                                    className="d-flex align-items-center mb-2 p-2 "
                                                                     style={{ cursor: "pointer" }}
+                                                                    onClick={() => toggleSelect(item.did)}
                                                                 >
-                                                                    <i className="fa-solid fa-check" />{" "}
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton edit"
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <i className="fa-solid fa-plus" />{" "}
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton edit"
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <i className="fa-solid fa-plus" />{" "}
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton edit"
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <i className="fa-solid fa-plus" />{" "}
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton edit"
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <i className="fa-solid fa-plus" />{" "}
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div className="col-xxl-7 col-xl-6">
-                                                                    <p>18882610479</p>
-                                                                    <span>Usage - PBX</span>
-                                                                </div>
-                                                                <div
-                                                                    className="tableButton edit"
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <i className="fa-solid fa-plus" />{" "}
-                                                                </div>
-                                                            </li>
+                                                                    {/* Blank field that toggles a tick */}
+                                                                    <div
+                                                                        className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedItems.includes(index) ? "selected" : ""
+                                                                            }`}
+                                                                        style={{
+                                                                            width: "20px",
+                                                                            height: "20px",
+                                                                            border: "1px solid #ccc",
+                                                                            borderRadius: "3px",
+                                                                        }}
+                                                                    >
+                                                                        {selectedItems.includes(item.did) && (
+                                                                            <i className="fa-solid fa-check text-success"></i>
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="col-xxl-7 col-xl-6">
+                                                                        <p className="mb-0">{item.did}</p>
+                                                                    </div>
+                                                                </li>
+                                                            ))}
                                                         </ul>
+
+
                                                     </div>
                                                 </div>
                                             </>}
@@ -251,10 +402,14 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <select className='formItem'>
-                                                                    <option>Preview</option>
-                                                                    <option>Progressive</option>
-                                                                    <option>Predictive</option>
+                                                                <select defaultValue={"preview"} className='formItem'
+                                                                    {...register("type", {
+                                                                        ...requiredValidator,
+                                                                    })}
+                                                                >
+                                                                    <option value="preview">Preview</option>
+                                                                    <option value="progressive">Progressive</option>
+                                                                    <option value="predictive">Predictive</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -266,7 +421,14 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <input type='number' className='formItem' />
+                                                                <input type='number' className='formItem'
+                                                                    {...register("preview_time", {
+                                                                        ...requiredValidator,
+                                                                        ...numberValidator,
+                                                                    })} />
+                                                                {errors.preview_time && (
+                                                                    <ErrorMessage text={errors.preview_time.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                         <div className="formRow col-xl-3">
@@ -276,7 +438,14 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <input type='number' className='formItem' />
+                                                                <input type='number' className='formItem'
+                                                                    {...register("wrapup_time", {
+                                                                        ...requiredValidator,
+                                                                        ...numberValidator,
+                                                                    })} />
+                                                                {errors.wrapup_time && (
+                                                                    <ErrorMessage text={errors.wrapup_time.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                         <div className="formRow col-xl-3">
@@ -286,7 +455,13 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <input type='number' className='formItem' />
+                                                                <input type='number' className='formItem'  {...register("max_ring_time", {
+                                                                    ...requiredValidator,
+                                                                    ...numberValidator,
+                                                                })} />
+                                                                {errors.max_ring_time && (
+                                                                    <ErrorMessage text={errors.max_ring_time.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                         <div className="formRow col-xl-3">
@@ -296,7 +471,14 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <input type='number' className='formItem' />
+                                                                <input type='number' className='formItem'
+                                                                    {...register("default_retry_period", {
+                                                                        ...requiredValidator,
+                                                                        ...numberValidator,
+                                                                    })} />
+                                                                {errors.default_retry_period && (
+                                                                    <ErrorMessage text={errors.default_retry_period.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                         <div className="formRow col-xl-3">
@@ -306,7 +488,13 @@ function CampaignCreate() {
                                                                 </label>
                                                             </div>
                                                             <div className='col-6'>
-                                                                <input type='number' className='formItem' />
+                                                                <input type='number' className='formItem'  {...register("max_attempts_per_record", {
+                                                                    ...requiredValidator,
+                                                                    ...numberValidator,
+                                                                })} />
+                                                                {errors.max_attempts_per_record && (
+                                                                    <ErrorMessage text={errors.max_attempts_per_record.message} />
+                                                                )}
                                                             </div>
                                                         </div>
                                                     </form>
@@ -405,14 +593,14 @@ function CampaignCreate() {
                                                                     <div className="col-xl-12">
                                                                         <div className="header d-flex align-items-center justify-content-between">
                                                                             <div className="col-5 fw-bold" style={{ fontFamily: 'Noto Sans' }}>Agent Disposition</div>
-                                                                            <div className="col-5 text-end">
+                                                                            {/* <div className="col-5 text-end">
                                                                                 <button className="panelButton m-0 ms-auto">
                                                                                     <span className="text">Add</span>
                                                                                     <span className="icon">
                                                                                         <i className="fa-solid fa-plus" />
                                                                                     </span>
                                                                                 </button>
-                                                                            </div>
+                                                                            </div> */}
                                                                         </div>
                                                                         <div className="col-xl-12 pt-3">
                                                                             <div className='d-flex align-items-center'>
@@ -422,7 +610,10 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                id="showAllCheck"
+                                                                                                {...register("interested")}
+                                                                                            />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -439,7 +630,9 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("not_interested")}
+                                                                                                id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -456,7 +649,9 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("demo_booked")}
+                                                                                                id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -473,7 +668,9 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("deal_closed")}
+                                                                                                id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -490,7 +687,9 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("requires_followup")}
+                                                                                                id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -507,7 +706,8 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("incorrect_number")} id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -524,7 +724,8 @@ function CampaignCreate() {
                                                                                     </div>
                                                                                     <div>
                                                                                         <label className="switch">
-                                                                                            <input type="checkbox" id="showAllCheck" />
+                                                                                            <input type="checkbox"
+                                                                                                {...register("left_voicemail")} id="showAllCheck" />
                                                                                             <span className="slider round" />
                                                                                         </label>
                                                                                     </div>
@@ -559,97 +760,87 @@ function CampaignCreate() {
                                                             </div>
 
                                                         </div>
-                                                        <div className='col-12 my-2'>
+                                                        {/* <div className='col-12 my-2'>
                                                             <div class="searchBox position-relative">
                                                                 <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
                                                             </div>
+                                                        </div> */}
+                                                        <div className="tableHeader">
+                                                            <div className="showEntries">
+                                                                <label>Show</label>
+                                                                <select className="formItem" value={agentPerPage} onChange={(e) => setAgentPerPage(e.target.value)}>
+                                                                    <option value={10}>10</option>
+                                                                    <option value={20}>20</option>
+                                                                    <option value={30}>30</option>
+                                                                </select>
+                                                                <label>entries</label>
+                                                            </div>
+                                                            <div className="searchBox position-relative">
+                                                                <label>Search:</label>
+                                                                <input
+                                                                    type="search"
+                                                                    name="Search"
+                                                                    className="formItem"
+                                                                    value={agentSearch}
+                                                                    onChange={(e) => setAgentSearch(e.target.value)}
+                                                                />
+                                                            </div>
                                                         </div>
                                                         <div className='mainContentApp m-0 bg-transparent mt-3'>
-                                                            <div className="callListItem">
-                                                                <div className="row justify-content-between">
-                                                                    <div className="col-xl-7 col-xxl-6 d-flex ps-0">
-                                                                        <div className="profileHolder">
-                                                                            <i className="fa-light fa-user fs-5" />
+                                                            {
+                                                                agents?.data?.map((item, index) => {
+                                                                    return (
+                                                                        <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
+                                                                            <div className="row justify-content-between">
+                                                                                <div className="col-xl-7 col-xxl-6 d-flex ps-0">
+                                                                                    <div className="profileHolder">
+                                                                                        <i className="fa-light fa-user fs-5" />
+                                                                                    </div>
+                                                                                    <div className="my-auto ms-2 ms-xl-3 text-start">
+                                                                                        <h4>{item.name}</h4>
+                                                                                        <h5 className="mt-2">{item.extension.extension}</h5>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="col-10 col-xl-4 col-xxl-5">
+                                                                                    <div className="contactTags">
+                                                                                        <span data-id={2}>Agent</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index) ? "selected" : ""
+                                                                                        }`}
+                                                                                    style={{
+                                                                                        width: "20px",
+                                                                                        height: "20px",
+                                                                                        border: "1px solid #ccc",
+                                                                                        borderRadius: "3px",
+                                                                                    }}
+                                                                                >
+                                                                                    {selectedAgent.includes(item.id) && (
+                                                                                        <i className="fa-solid fa-check text-success"></i>
+                                                                                    )}
+                                                                                </div>
+                                                                                {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                                                                                    <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
+                                                                                </div> */}
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="my-auto ms-2 ms-xl-3 text-start">
-                                                                            <h4>agent name</h4>
-                                                                            <h5 className="mt-2">1000</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-10 col-xl-4 col-xxl-5">
-                                                                        <div className="contactTags">
-                                                                            <span data-id={2}>Agent</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                        <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="callListItem">
-                                                                <div className="row justify-content-between">
-                                                                    <div className="col-xl-7 col-xxl-6 d-flex ps-0">
-                                                                        <div className="profileHolder">
-                                                                            <i className="fa-light fa-user fs-5" />
-                                                                        </div>
-                                                                        <div className="my-auto ms-2 ms-xl-3 text-start">
-                                                                            <h4>agent name</h4>
-                                                                            <h5 className="mt-2">1000</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-10 col-xl-4 col-xxl-5">
-                                                                        <div className="contactTags">
-                                                                            <span data-id={2}>Agent</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                        <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="callListItem">
-                                                                <div className="row justify-content-between">
-                                                                    <div className="col-xl-7 col-xxl-6 d-flex ps-0">
-                                                                        <div className="profileHolder">
-                                                                            <i className="fa-light fa-user fs-5" />
-                                                                        </div>
-                                                                        <div className="my-auto ms-2 ms-xl-3 text-start">
-                                                                            <h4>agent name</h4>
-                                                                            <h5 className="mt-2">1000</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-10 col-xl-4 col-xxl-5">
-                                                                        <div className="contactTags">
-                                                                            <span data-id={2}>Agent</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                        <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="callListItem">
-                                                                <div className="row justify-content-between">
-                                                                    <div className="col-xl-7 col-xxl-6 d-flex ps-0">
-                                                                        <div className="profileHolder">
-                                                                            <i className="fa-light fa-user fs-5" />
-                                                                        </div>
-                                                                        <div className="my-auto ms-2 ms-xl-3 text-start">
-                                                                            <h4>agent name</h4>
-                                                                            <h5 className="mt-2">1000</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-10 col-xl-4 col-xxl-5">
-                                                                        <div className="contactTags">
-                                                                            <span data-id={0}>Manager</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                        <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                                    )
+
+                                                                })
+                                                            }
+
                                                         </div>
+
+                                                    </div>
+                                                    <div className="tableHeader mb-3">
+                                                        <PaginationComponent
+                                                            pageNumber={(e) => setPageNumber(e)}
+                                                            totalPage={agents.last_page}
+                                                            from={(pageNumber - 1) * agents.per_page + 1}
+                                                            to={agents.to}
+                                                            total={agents.total}
+                                                        />
                                                     </div>
                                                 </div>
                                             </>}
@@ -670,7 +861,19 @@ function CampaignCreate() {
                                                                                 type="file"
                                                                                 className="form-control-file d-none"
                                                                                 id="fileInput"
-                                                                                accept="audio/mp3"
+                                                                                accept=""
+                                                                                onChange={(e) => {
+                                                                                    const file = e.target.files[0];
+                                                                                    if (file) {
+                                                                                        // Check if the file type is MP3
+                                                                                       
+                                                                                        const fileName = file.name.replace(/ /g, "-");
+                                                                                            const newFile = new File([file], fileName, {
+                                                                                                type: file.type,
+                                                                                            });
+                                                                                            setNewFile(newFile);
+                                                                                    }
+                                                                                }}
                                                                             />
                                                                             <label htmlFor="fileInput" className="d-block">
                                                                                 <div className="test-user text-center">
@@ -700,6 +903,7 @@ function CampaignCreate() {
                     </div>
                 </div>
             </section>
+            {loading && <CircularLoader />}
         </main>
     )
 }

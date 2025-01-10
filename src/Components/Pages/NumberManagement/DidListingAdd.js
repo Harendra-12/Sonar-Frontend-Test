@@ -45,21 +45,19 @@ const DidListingAdd = () => {
     }
     getData();
   }, []);
-  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data, did_vendor_id: Number(data.did_vendor_id) };
-    console.log("Form data:", payload);
 
     const apiData = await generalPostFunction("/did/store", payload);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
-      if (data.usages == "pbx") {
+      if (data.usages === "pbx") {
         dispatch({
           type: "SET_NEWADDDID",
           newAddDid: apiData.data,
-        });
+        });                        
         navigate("/did-listing");
       } else {
         navigate(-1);
