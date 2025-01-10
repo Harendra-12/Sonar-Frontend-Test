@@ -51,7 +51,7 @@ const AgentSearch = ({
       });
 
       if (selectedUser.length > 0) {
-        getDropdownValue(selectedUser[0].value);
+        getDropdownValue([...selectedUser[0].value,"singleChat"]);
         setSelectedOption(selectedUser[0].value[0]);
         setExtensionFromCdrMessage();
       }
@@ -139,7 +139,7 @@ const AgentSearch = ({
           placeholder="Select agent to start chat"
           id="selectFormRow"
           onChange={(selectedOption) => {
-            getDropdownValue(selectedOption.value);
+            getDropdownValue([...selectedOption.value,"singleChat"]);
             setSelectedOption(selectedOption.value[0]);
           }}
           options={allOptions}

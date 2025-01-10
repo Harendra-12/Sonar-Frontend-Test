@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
@@ -18,6 +19,7 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Socket from "../../GlobalFunction/Socket";
 
 function Messages({
   setSelectedModule,
@@ -27,6 +29,7 @@ function Messages({
   setExtensionFromCdrMessage,
 }) {
   const dispatch = useDispatch();
+  const { sendMessage } = Socket();
   const navigate = useNavigate();
   const { sessionManager, connectStatus } = useSIPProvider();
   const loginUser = useSelector((state) => state.loginUser);
@@ -54,11 +57,11 @@ function Messages({
   const [upDateTag, setUpDateTag] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
+  const [newGroupLoader, setNewGroupLoader] = useState(false);
   const [contactRefresh, setContactRefresh] = useState(0);
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
-  const [refreshstate, setRefreshState] = useState(false);
   const [groupChatPopUp, setGroupChatPopUp] = useState(false);
   const [manageGroupChat, setManageGroupChat] = useState(false);
   const [groups, setGroups] = useState([]);
@@ -76,13 +79,8 @@ function Messages({
 
   const {
     register,
-    setError: setErr,
-    clearErrors,
     formState: { errors },
     handleSubmit,
-    reset,
-    setValue,
-    watch,
   } = useForm();
 
   useEffect(() => {
@@ -124,7 +122,7 @@ function Messages({
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         if (!extensionFromCdrMessage) {
-          setRecipient([apiData.data[0].extension, apiData.data[0].id]);
+          setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat"]);
         }
         setLoading(false);
       }
@@ -229,7 +227,7 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendMessage = () => {
+  const sendSingleMessage = () => {
     if (messageInput.trim() === "") return;
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
@@ -284,8 +282,6 @@ function Messages({
             });
           }
           setMessageInput("");
-
-          console.log("Message sent to:", targetURI);
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -712,7 +708,7 @@ function Messages({
           (group) => group.id == recipient[1]
         );
         if (isGroupSelected) {
-          setRecipient([isGroupSelected.group_name, isGroupSelected.id]);
+          setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat"]);
           setGroupNameEdit(isGroupSelected.group_name);
           getGroupDataById(isGroupSelected.id);
           setSelectedgroupUsers(isGroupSelected.groupusers);
@@ -828,22 +824,21 @@ function Messages({
   };
 
   const handleCreateGroup = handleSubmit(async (data) => {
+    setNewGroupLoader(true);
     const parsedData = {
       group_name: data.group_name,
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
-    setLoading(true);
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
       setGroupRefresh(groupRefresh + 1);
-
       toast.success("Group created successfully");
       setAddMember(false);
       setGroupChatPopUp(false);
       setGroupSelecedAgents([]);
-      setLoading(false);
+      setNewGroupLoader(false);
     } else {
-      setLoading(false);
+      setNewGroupLoader(false);
     }
   });
 
@@ -854,7 +849,7 @@ function Messages({
       //   return { user_id: agent.id, status: agent.status };
       // }),
     };
-    setLoading(true);
+    setNewGroupLoader(true);
     const apiData = await generalPutFunction(
       `/groups/update/${recipient[1]}`,
       parsedData
@@ -863,9 +858,9 @@ function Messages({
       setGroupRefresh(groupRefresh + 1);
       toast.success("Group updated successfully");
       setSaveEditToggleGroupNameChange(false);
-      setLoading(false);
+      setNewGroupLoader(false);
     } else {
-      setLoading(false);
+      setNewGroupLoader(false);
     }
   };
 
@@ -882,7 +877,7 @@ function Messages({
       group_id: recipient[1],
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
-    setLoading(true);
+    setNewGroupLoader(true);
     const apiData = await generalPostFunction("/group-users/store", payLoad);
     if (apiData.status) {
       console.log(apiData);
@@ -890,16 +885,16 @@ function Messages({
       setGroupChatPopUp(false);
       setAddMember(false);
       setGroupSelecedAgents([]);
-      setLoading(false);
+      setNewGroupLoader(false);
       // setSelectedgroupUsers((prevUsers) => [...prevUsers, ...apiData.data]);
     } else {
-      setLoading(false);
+      setNewGroupLoader(false);
       console.log(apiData);
     }
   };
   // console.log(groupSelecedAgents);
   const handleremoveUserFromGroup = async (id) => {
-    setLoading(true);
+    setNewGroupLoader(true);
     const apiData = await generalDeleteFunction(
       `/group-users/destroy/${id}`
       // payload
@@ -910,14 +905,22 @@ function Messages({
       setSelectedgroupUsers(
         selectedgroupUsers.filter((item) => item.id !== id)
       );
-      setLoading(false);
-      // setGroupRefresh(groupRefresh + 1);
+      setNewGroupLoader(false);
     } else {
-      setLoading(false);
+      setNewGroupLoader(false);
       console.log(apiData);
     }
   };
 
+  function sendGroupMessage() {
+    sendMessage({
+      "action": "broadcastGroupMessage",
+      "user_id": account.id,
+      "sharedMessage": messageInput.trim(),
+      "group_id": recipient[1],
+
+    })
+  }
   return (
     <>
       <main
@@ -1187,7 +1190,7 @@ function Messages({
                               >
                                 <div
                                   onClick={() => {
-                                    setRecipient([item?.extension, item.id]);
+                                    setRecipient([item?.extension, item.id], "singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
                                         [item?.extension]: _,
@@ -1328,6 +1331,7 @@ function Messages({
                                     setRecipient([
                                       item?.extension.extension,
                                       item.id,
+                                      "singleChat"
                                     ])
                                   }
                                   className="row justify-content-between"
@@ -1663,7 +1667,7 @@ function Messages({
                                 className="contactListItem"
                                 data-bell={""}
                                 onClick={() => {
-                                  setRecipient([item.group_name, item.id]);
+                                  setRecipient([item.group_name, item.id, "groupChat"]);
                                   setGroupNameEdit(item.group_name);
                                   getGroupDataById(item.id);
                                   setSelectedgroupUsers(item.groupusers);
@@ -2037,7 +2041,11 @@ function Messages({
                                   }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
-                                      sendMessage();
+                                      if (recipient[2] === "groupChat") {
+                                        sendGroupMessage();
+                                      } else {
+                                        sendSingleMessage();
+                                      }
                                     }
                                   }}
                                 />
@@ -2091,7 +2099,13 @@ function Messages({
                                 <button
                                   effect="ripple"
                                   className="clearColorButton dark"
-                                  onClick={() => sendMessage()}
+                                  onClick={() => {
+                                    if (recipient[2] === "groupChat") {
+                                      sendGroupMessage()
+                                    } else {
+                                      sendSingleMessage()
+                                    }
+                                  }}
                                 >
                                   Send Now{" "}
                                   <i className="fa-solid fa-paper-plane-top" />
@@ -2401,7 +2415,7 @@ function Messages({
           </div>
         </section>
 
-        {loading ? (
+        {newGroupLoader ? (
           <div colSpan={99}>
             <CircularLoader />
           </div>

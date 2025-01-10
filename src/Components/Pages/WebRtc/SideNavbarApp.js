@@ -34,8 +34,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       <style>
         {`#sidenNav{
         display:none;
-      } .circularLoader{
-        display:none;
       }`}
       </style>
       <div id="sidenNavApp">
