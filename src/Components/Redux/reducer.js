@@ -306,10 +306,7 @@ const counterReducer = (state = initialState, action) => {
         RoomID: action.RoomID,
       };
       case "SET_GROUPMESSAGE":
-      return {
-        ...state,
-        groupMessage:action.groupMessage,
-      };
+      return {...state,groupMessage:action.groupMessage};
     default:
       return state;
   }

@@ -922,6 +922,7 @@ function Messages({
       "user_id": account.id,
       "sharedMessage": messageInput.trim(),
       "group_id": recipient[1],
+      "group_name": recipient[0]
 
     })
     const time = formatDateTime(new Date());
@@ -934,6 +935,15 @@ function Messages({
     }));
     setMessageInput("");
   }
+
+  // Recieve group message
+  useEffect(()=>{
+    const time = formatDateTime(new Date());
+    setAllMessage((prevState) => ({
+      ...prevState,
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), {from: groupMessage.user_id, body:groupMessage.sharedMessage, time }],
+    }));
+  },[groupMessage])
   return (
     <>
       <main
@@ -1282,7 +1292,44 @@ function Messages({
                           id="collapse3"
                           style={{ borderBottom: "1px solid #ddd" }}
                         >
-                          <div className="contactListItem" data-bell={""}>
+                          {
+                            groups.map((item, index) => {
+                              return (
+                                <div
+                                  className="contactListItem"
+                                  data-bell={""}
+                                  onClick={() => {
+                                    setRecipient([item.group_name, item.id, "groupChat"]);
+                                    setGroupNameEdit(item.group_name);
+                                    getGroupDataById(item.id);
+                                    setSelectedgroupUsers(item.groupusers);
+                                  }}
+                                >
+                                  <div className="row justify-content-between">
+                                    <div className="col-xl-12 d-flex">
+                                      <div
+                                        className="profileHolder"
+                                        id={"profileOfflineNav"}
+                                      >
+                                        <i className="fa-light fa-users fs-5"></i>
+                                      </div>
+                                      <div className="my-auto ms-2 ms-xl-3">
+                                        <h4>{item.group_name}</h4>
+                                        <h5>Alright</h5>
+                                        <div className="contactTags">
+                                          <span data-id="3">Priority</span>
+                                        </div>
+                                      </div>
+                                      <div className="col text-end">
+                                        <p className="timeAgo">5min ago</p>
+                                      </div>
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              );
+                            })
+                          }
+                          {/* <div className="contactListItem" data-bell={""}>
                             <div className="row justify-content-between">
                               <div className="col-xl-12 d-flex">
                                 <div
@@ -1303,7 +1350,7 @@ function Messages({
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
