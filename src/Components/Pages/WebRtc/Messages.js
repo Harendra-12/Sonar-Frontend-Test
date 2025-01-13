@@ -1639,7 +1639,6 @@ function Messages({
                                     className="panelButton gray ms-0"
                                     onClick={() => {
                                       setGroupChatPopUp(false);
-                                      setAddMember(false);
                                     }}
                                   >
                                     <span className="text">Close</span>
@@ -2121,12 +2120,12 @@ function Messages({
                   </div>
                   {manageGroupChat && (
                     <div
-                      className="col-xl-3"
+                      className="col-xxl-3 col-xl-4"
                       style={{ borderLeft: "1px solid var(--border-color)" }}
                     >
                       <div className="messageOverlay">
                         <div class="contactHeader" style={{ height: "71px" }}>
-                          <div>
+                          <div className="col">
                             <h4>
                               <input
                                 value={groupNameEdit}
@@ -2134,7 +2133,7 @@ function Messages({
                                 onChange={(e) =>
                                   setGroupNameEdit(e.target.value)
                                 }
-                                className="border-0 bg-transparent"
+                                className="border-0 bg-transparent w-100"
                                 style={{ fontSize: "18px", fontWeight: 500 }}
                               />
                             </h4>
@@ -2357,55 +2356,75 @@ function Messages({
                             </div>
                           </div>
                         ) :
-                          allAgents
-                            .filter((item) => {
-                              return selectedgroupUsers.some(
-                                (agent) => agent.user_id === item.id
-                              );
-                            })
-                            .map((item) => {
-                              const matchingAgent = selectedgroupUsers.find(
-                                (agent) => agent.user_id === item.id
-                              );
-                              return {
-                                ...item, // Include all existing properties of the agent
-                                agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
-                              };
-                            })
+                          (
+                            <div style={{ height: 'calc(100vh - 254px)', overflow: 'hidden scroll' }}>
+                              {
+                                allAgents
+                                  .filter((item) => {
+                                    return selectedgroupUsers.some(
+                                      (agent) => agent.user_id === item.id
+                                    );
+                                  })
+                                  .map((item) => {
+                                    const matchingAgent = selectedgroupUsers.find(
+                                      (agent) => agent.user_id === item.id
+                                    );
+                                    return {
+                                      ...item, // Include all existing properties of the agent
+                                      agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                                    };
+                                  })
 
-                            .map((item, index) => {
-                              return (
-                                <div
-                                  data-bell=""
-                                  className="contactListItem bg-transparent"
-                                  style={{ minHeight: "auto" }}
-                                >
-                                  <div className="row justify-content-between">
-                                    <div className="col-xl-12 d-flex">
-                                      <div className="profileHolder">
-                                        <i className="fa-light fa-user fs-5" />
+                                  .map((item, index) => {
+                                    return (
+                                      <div
+                                        data-bell=""
+                                        className="contactListItem bg-transparent"
+                                        style={{ minHeight: "auto" }}
+                                      >
+                                        <div className="row justify-content-between">
+                                          <div className="col-xl-12 d-flex">
+                                            <div className="profileHolder">
+                                              <i className="fa-light fa-user fs-5" />
+                                            </div>
+                                            <div className="my-auto ms-2 ms-xl-3">
+                                              <h4>{item.name}</h4>
+                                            </div>
+                                            <div className="col text-end my-auto">
+                                              <button
+                                                class="clearButton2"
+                                                effect="ripple"
+                                                onClick={() =>
+                                                  handleremoveUserFromGroup(
+                                                    item.agentId
+                                                  )
+                                                }
+                                              >
+                                                <i class="fa-regular fa-xmark"></i>
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
-                                      <div className="my-auto ms-2 ms-xl-3">
-                                        <h4>{item.name}</h4>
-                                      </div>
-                                      <div className="col text-end my-auto">
-                                        <button
-                                          class="clearButton2"
-                                          effect="ripple"
-                                          onClick={() =>
-                                            handleremoveUserFromGroup(
-                                              item.agentId
-                                            )
-                                          }
-                                        >
-                                          <i class="fa-regular fa-xmark"></i>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
+                                    );
+                                  })
+                              }
+                            </div>
+                          )
+                        }
+                        <div className="mb-auto">
+                          <button
+                            className="panelButton gray ms-0"
+                            onClick={() => {
+                              setManageGroupChat(false);
+                            }}
+                          >
+                            <span className="text">Close</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-caret-left" />
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
