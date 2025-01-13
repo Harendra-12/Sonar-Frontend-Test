@@ -24,7 +24,8 @@ function CampaignCreate() {
     const [completedStep, setCompletedStep] = useState(0);
     const [campaignId, setCampaignId] = useState('')
     const [selectedAgent, setSelectedAgent] = useState([])
-    const [newFile,setNewFile]=useState(null)
+    const [newFile, setNewFile] = useState(null)
+    const [fileName, setFileName] = useState("");
 
     const {
         register,
@@ -53,7 +54,7 @@ function CampaignCreate() {
         getAgentData()
     }, [agentPerPage, agentSearch])
 
-    // Step one form submit
+    // Step one form submit to create campaign
     const handleFormSubmitStepOne = handleSubmit(async (data) => {
         if (selectedItems.length === 0) {
             toast.error("Please select at least one did");
@@ -73,7 +74,7 @@ function CampaignCreate() {
         }
     });
 
-    // Step two form submit
+    // Step two form submit to add dialer settings
     const handleFormSubmitStepTwo = handleSubmit(async (data) => {
         if (campaignId === "") {
             toast.error("Please create campaign first");
@@ -111,7 +112,7 @@ function CampaignCreate() {
         }
     }
 
-
+    // Step four form submit for adding leads
     async function handleFormSubmitStepFour() {
         if (newFile) {
             const maxSizeInKB = 2048;
@@ -126,6 +127,7 @@ function CampaignCreate() {
                 parsedData.append("campaign_id", campaignId);
                 const apiData = await fileUploadFunction("/campaign-lead/store", parsedData);
                 if (apiData.status) {
+                    navigate(-1)
                     setLoading(false);
                     setCompletedStep(4)
                     setNewFile();
@@ -138,6 +140,7 @@ function CampaignCreate() {
             toast.error("Please choose a file");
         }
     }
+
     // Logic to select and unselect did
     const toggleSelect = (index) => {
         setSelectedItems((prevSelected) =>
@@ -146,7 +149,6 @@ function CampaignCreate() {
                 : [...prevSelected, index] // Add if not selected
         );
     };
-
 
     // Logic to select and unselect agents
     const toggleSelectAgents = (index) => {
@@ -157,7 +159,15 @@ function CampaignCreate() {
         );
     };
 
-
+    // Function to get selected file name
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const sanitizedFileName = file.name.replace(/ /g, "-");
+            setFileName(sanitizedFileName); // Set the file name in state
+            // Additional logic for the newFile can go here
+        }
+    };
     console.log(selectedItems, watch());
     return (
         <main className="mainContent">
@@ -214,7 +224,7 @@ function CampaignCreate() {
                                                             handleFormSubmitStepTwo();
                                                         } else if (completedStep === 2) {
                                                             handleFormSubmitStepThree();
-                                                        }else if(completedStep === 3){
+                                                        } else if (completedStep === 3) {
                                                             handleFormSubmitStepFour();
                                                         }
                                                     }}
@@ -249,7 +259,7 @@ function CampaignCreate() {
                                                                 </div> */}
                                                             </div>
                                                         </li>
-                                                        <li className={stepSelector === 2 && 'active'} onClick={() => setStepSelector(2)}>
+                                                        <li className={stepSelector === 2 && 'active'} onClick={() => { if (completedStep > 0) { setStepSelector(2) } }}>
                                                             <div className={completedStep > 1 ? 'numberHolder completed' : "numberHolder"}>
                                                                 2
                                                             </div>
@@ -257,7 +267,7 @@ function CampaignCreate() {
                                                                 <h3>Dialer Settings</h3>
                                                             </div>
                                                         </li>
-                                                        <li className={stepSelector === 3 && 'active'} onClick={() => setStepSelector(3)}>
+                                                        <li className={stepSelector === 3 && 'active'} onClick={() => { if (completedStep > 1) { setStepSelector(3) } }}>
                                                             <div className={completedStep > 2 ? 'numberHolder completed' : "numberHolder"}>
                                                                 3
                                                             </div>
@@ -265,7 +275,7 @@ function CampaignCreate() {
                                                                 <h3>Agent List</h3>
                                                             </div>
                                                         </li>
-                                                        <li className={stepSelector === 4 && 'active'} onClick={() => setStepSelector(4)}>
+                                                        <li className={stepSelector === 4 && 'active'} onClick={() => { if (completedStep > 2) { setStepSelector(4) } }}>
                                                             <div className={completedStep > 3 ? 'numberHolder completed' : "numberHolder"}>
                                                                 4
                                                             </div>
@@ -861,17 +871,18 @@ function CampaignCreate() {
                                                                                 type="file"
                                                                                 className="form-control-file d-none"
                                                                                 id="fileInput"
-                                                                                accept=""
+                                                                                accept=".csv"
                                                                                 onChange={(e) => {
                                                                                     const file = e.target.files[0];
                                                                                     if (file) {
                                                                                         // Check if the file type is MP3
-                                                                                       
+
                                                                                         const fileName = file.name.replace(/ /g, "-");
-                                                                                            const newFile = new File([file], fileName, {
-                                                                                                type: file.type,
-                                                                                            });
-                                                                                            setNewFile(newFile);
+                                                                                        const newFile = new File([file], fileName, {
+                                                                                            type: file.type,
+                                                                                        });
+                                                                                        setNewFile(newFile);
+                                                                                        handleFileChange(e);
                                                                                     }
                                                                                 }}
                                                                             />
@@ -887,6 +898,11 @@ function CampaignCreate() {
                                                                                     <span>Supports formats : MP3, Max Size: 2MB</span>
                                                                                 </div>
                                                                             </label>
+                                                                            {fileName && (
+                                                                                <p className="mt-3 text-center">
+                                                                                    Selected File: <strong>{fileName}</strong>
+                                                                                </p>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
