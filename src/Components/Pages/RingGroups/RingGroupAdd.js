@@ -1043,16 +1043,16 @@ const RingGroupAdd = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1409,15 +1409,15 @@ const RingGroupAdd = () => {
                   </form>
                 </div>
                 <div className="col-12">
-                  <div class="heading bg-transparent border-bottom-0">
-                    <div class="content">
+                  <div className="heading bg-transparent border-bottom-0">
+                    <div className="content">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
-                    <div class="buttonGroup">
+                    <div className="buttonGroup">
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != destination.length ? (
+                          selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             class="panelButton"
@@ -1468,11 +1468,11 @@ const RingGroupAdd = () => {
                           return (
                             <div className="col-12 d-flex justify-content-start mb-2">
                               <div
-                                className="formLabel pe-2"
+                                className="formLabel pe-2 d-flex justify-content-between"
                                 style={
                                   index === 0
-                                    ? { marginTop: 32, width: 30 }
-                                    : { width: 30 }
+                                    ? { marginTop: 32, width: 50 }
+                                    : { width: 50 }
                                 }
                               >
                                 <div>
@@ -1570,14 +1570,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                              destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                  item1.extension.extension &&
+                                                item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -1590,15 +1590,13 @@ const RingGroupAdd = () => {
                                             >
                                               {item.alias
                                                 ? `${truncateString(
-                                                    item?.alias
-                                                  )} - ${
-                                                    item.extension?.extension
-                                                  }`
+                                                  item?.alias
+                                                )} - ${item.extension?.extension
+                                                }`
                                                 : `${truncateString(
-                                                    item?.name
-                                                  )} - ${
-                                                    item.extension?.extension
-                                                  }`}
+                                                  item?.name
+                                                )} - ${item.extension?.extension
+                                                }`}
                                               {/* {item.name}(
                                             {item.extension?.extension}) */}
                                             </option>
@@ -1706,9 +1704,8 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${
-                                    index === 0 ? "t" : "y"
-                                  }-auto`}
+                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                    }-auto`}
                                 >
                                   <button
                                     type="button"
@@ -2000,8 +1997,8 @@ const RingGroupAdd = () => {
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
-            <div className="mt-3 row g-2">
-              <div className="col-2 pe-2">
+            <div className="mt-3 d-flex">
+              <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Delay</label>
                 </div>
@@ -2033,7 +2030,7 @@ const RingGroupAdd = () => {
                   })()}
                 </select>
               </div>
-              <div className="col-2 pe-2">
+              <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>
                 </div>
@@ -2066,7 +2063,7 @@ const RingGroupAdd = () => {
                 </select>
               </div>
 
-              <div className="col-2 pe-2">
+              <div className="col-4 pe-0">
                 <div className="formLabel">
                   <label htmlFor="">Status</label>
                 </div>
