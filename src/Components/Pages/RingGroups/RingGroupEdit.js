@@ -946,9 +946,8 @@ const RingGroupEdit = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "5" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "5" : "12"
+                              }`}
                           >
                             <select
                               className="formItem"
@@ -1067,16 +1066,16 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                          // {...register("call_timeout", {
-                          //   ...requiredValidator,
-                          //   ...noSpecialCharactersValidator,
-                          //   ...minValidator(
-                          //     destination.reduce(
-                          //       (max, obj) => Math.max(max, obj.delay),
-                          //       0
-                          //     )
-                          //   ),
-                          // })}
+                        // {...register("call_timeout", {
+                        //   ...requiredValidator,
+                        //   ...noSpecialCharactersValidator,
+                        //   ...minValidator(
+                        //     destination.reduce(
+                        //       (max, obj) => Math.max(max, obj.delay),
+                        //       0
+                        //     )
+                        //   ),
+                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
@@ -1410,55 +1409,63 @@ const RingGroupEdit = () => {
               </div> */}
                   </form>
                 </div>
-                <div className="col-12" style={{ padding: "20px 23px" }}>
-                  {selectedAgentToEdit.length > 0 &&
-                  selectedAgentToEdit.length != destination.length ? (
-                    <button
-                      type="button"
-                      class="panelButton"
-                      onClick={() => {
-                        setBulkEditPopup(true);
-                      }}
-                    >
-                      <span class="text">Edit</span>
-                      <span class="icon">
-                        <i class="fa-solid fa-plus"></i>
-                      </span>
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      class="panelButton"
-                      onClick={() => {
-                        setSelectedAgentToEdit(destination);
-                        setBulkEditPopup(true);
-                      }}
-                    >
-                      <span class="text">Edit All</span>
-                      <span class="icon">
-                        <i class="fa-solid fa-plus"></i>
-                      </span>
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setBulkAddPopUp(true)}
-                    className="panelButton ms-auto  "
-                  >
-                    <span className="text">Add</span>
-                    <span className="icon">
-                      <i class="fa-solid fa-plus"></i>
-                    </span>
-                  </button>
-                  <form className="row">
+                <div className="col-12">
+                  <div className="heading bg-transparent border-bottom-0">
+                    <div class="content">
+                      <h4>List of Agents</h4>
+                      <p>You can see the list of agents in this ring group.</p>
+                    </div>
+                    <div className="d-flex">
+                      {selectedAgentToEdit.length > 0 &&
+                        selectedAgentToEdit.length != destination.length ? (
+                        <button
+                          type="button"
+                          class="panelButton ms-auto"
+                          onClick={() => {
+                            setBulkEditPopup(true);
+                          }}
+                        >
+                          <span class="text">Edit</span>
+                          <span class="icon">
+                            <i class="fa-solid fa-pen"></i>
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          class="panelButton ms-auto"
+                          onClick={() => {
+                            setSelectedAgentToEdit(destination);
+                            setBulkEditPopup(true);
+                          }}
+                        >
+                          <span class="text">Edit All</span>
+                          <span class="icon">
+                            <i class="fa-solid fa-pen"></i>
+                          </span>
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setBulkAddPopUp(true)}
+                        className="panelButton"
+                      >
+                        <span className="text">Add</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-plus"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                  <form className="row" style={{ padding: "0px 23px 20px" }}>
                     <div className="formRow col-xl-12">
                       {destination.map((item, index) => {
                         return (
                           <div className="col-12 d-flex justify-content-start mb-2">
                             <div
-                              className="formLabel pe-2"
+                              className="formLabel pe-2 d-flex justify-content-between"
                               style={
                                 index === 0
-                                  ? { marginTop: 32, width: 30 }
+                                  ? { marginTop: 32, width: 50 }
                                   : { width: 30 }
                               }
                             >
@@ -1565,14 +1572,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1.extension.extension &&
+                                              item1.extension.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1585,15 +1592,13 @@ const RingGroupEdit = () => {
                                           >
                                             {item.alias
                                               ? `${truncateString(
-                                                  item?.alias
-                                                )} - ${
-                                                  item.extension?.extension
-                                                }`
+                                                item?.alias
+                                              )} - ${item.extension?.extension
+                                              }`
                                               : `${truncateString(
-                                                  item?.name
-                                                )} - ${
-                                                  item.extension?.extension
-                                                }`}
+                                                item?.name
+                                              )} - ${item.extension?.extension
+                                              }`}
                                           </option>
                                         );
                                       })}
@@ -1719,9 +1724,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"
@@ -1973,8 +1977,8 @@ const RingGroupEdit = () => {
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
-            <div className="mt-3 row g-2">
-              <div className="col-2 pe-2">
+            <div className="mt-3 d-flex">
+              <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Delay</label>
                 </div>
@@ -2006,7 +2010,7 @@ const RingGroupEdit = () => {
                   })()}
                 </select>
               </div>
-              <div className="col-2 pe-2">
+              <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>
                 </div>
@@ -2039,7 +2043,7 @@ const RingGroupEdit = () => {
                 </select>
               </div>
 
-              <div className="col-2 pe-2">
+              <div className="col-4 pe-0">
                 <div className="formLabel">
                   <label htmlFor="">Status</label>
                 </div>

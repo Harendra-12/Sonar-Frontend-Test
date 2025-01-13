@@ -19,6 +19,7 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 const UsersEdit = ({ page }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -871,8 +872,8 @@ const UsersEdit = ({ page }) => {
           </div>
         </section>
         {loading ? (
-          <div colSpan={99}>
-            <CircularLoader />
+          <div>
+            <SkeletonFormLoader />
           </div>
         ) : (
           ""
