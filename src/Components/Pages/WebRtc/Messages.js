@@ -36,6 +36,7 @@ function Messages({
   const globalSession = useSelector((state) => state.sessions);
   const messageListRef = useRef(null);
   const sipProvider = useSIPProvider();
+  const groupMessage = useSelector((state) => state.groupMessage);
   const sessions = useSelector((state) => state.sessions);
   const [recipient, setRecipient] = useState([]);
   const account = useSelector((state) => state.account);
@@ -79,6 +80,7 @@ function Messages({
 
 
   console.log("Allmessages", allMessage);
+  console.log("groupMessages",groupMessage);
   const {
     register,
     formState: { errors },

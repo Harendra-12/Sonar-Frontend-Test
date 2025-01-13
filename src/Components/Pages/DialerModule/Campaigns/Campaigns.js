@@ -24,6 +24,10 @@ function Campaigns() {
         }
         getCampaignData();
     },[]);
+
+    async function startCampaign(id){
+        generalGetFunction(`campaign/start/${id}`)
+    }
     return (
         <>
             <main className='mainContent'>
@@ -211,12 +215,12 @@ function Campaigns() {
                                                              <td><span className='ellipsis'>Customerlist.xls</span></td>
                                                              <td>
                                                                  <div class="dropdown">
-                                                                     <a class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                     <div class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                          <i className="fa-solid fa-ellipsis-vertical" />
-                                                                     </a>
+                                                                     </div>
                                                                      <ul class="dropdown-menu actionBtnDropdowns">
-                                                                         <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</a></li>
-                                                                         <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Pause</a></li>
+                                                                         <li className='dropdown-item'><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</div></li>
+                                                                         <li className='dropdown-item' onClick={()=>startCampaign(item.id)}><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Start</div></li>
                                                                      </ul>
                                                                  </div>
                                                              </td>
