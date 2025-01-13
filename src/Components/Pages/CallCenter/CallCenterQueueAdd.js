@@ -1346,7 +1346,7 @@ function CallCenterQueueAdd() {
                         >
                           <span class="text">Edit</span>
                           <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       ) : (
@@ -1360,7 +1360,7 @@ function CallCenterQueueAdd() {
                         >
                           <span class="text">Edit All</span>
                           <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       )}

@@ -1461,7 +1461,7 @@ function CallCenterQueueEdit() {
                     </div>
                     <div class="buttonGroup">
                       {selectedAgentToEdit.length > 0 &&
-                      selectedAgentToEdit.length != agent.length ? (
+                        selectedAgentToEdit.length != agent.length ? (
                         <button
                           type="button"
                           class="panelButton"
@@ -1471,7 +1471,7 @@ function CallCenterQueueEdit() {
                         >
                           <span class="text">Edit</span>
                           <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       ) : (
@@ -1485,7 +1485,7 @@ function CallCenterQueueEdit() {
                         >
                           <span class="text">Edit All</span>
                           <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       )}
@@ -1519,8 +1519,8 @@ function CallCenterQueueEdit() {
                                 style={{ borderBottom: "1px solid #8f8f8f47" }}
                               >
                                 <div
-                                  className="formLabel pe-2 m-0"
-                                  style={{ width: "30px" }}
+                                  className="formLabel pe-2 m-0 d-flex justify-content-between"
+                                  style={{ width: "40px" }}
                                 >
                                   <div>
                                     <input
@@ -1536,16 +1536,14 @@ function CallCenterQueueEdit() {
                                   <label>{index + 1}.</label>
                                 </div>
                                 <div
-                                  className={`row col-${
-                                    advance.includes(item.id)
-                                      ? "11"
-                                      : "xxl-5 col-xl-6"
-                                  }`}
+                                  className={`row col-${advance.includes(item.id)
+                                    ? "11"
+                                    : "xxl-5 col-xl-6"
+                                    }`}
                                 >
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                      } ps-0 pe-2`}
                                   >
                                     <div className="formLabel">
                                       {index === 0 ? (
@@ -1578,11 +1576,11 @@ function CallCenterQueueEdit() {
                                               // Keep the current agent for this index and exclude already selected ones in other indexes
                                               return (
                                                 userItem.id ==
-                                                  agent[index]?.name || // Keep the current agent for this index
+                                                agent[index]?.name || // Keep the current agent for this index
                                                 !agent.some(
                                                   (agentItem, agentIndex) =>
                                                     agentItem.name ==
-                                                      userItem.id &&
+                                                    userItem.id &&
                                                     agentIndex != index
                                                 ) // Exclude agents selected in other rows
                                               );
@@ -1594,17 +1592,15 @@ function CallCenterQueueEdit() {
                                               >
                                                 {userItem.alias
                                                   ? `${truncateString(
-                                                      userItem?.alias
-                                                    )} - ${
-                                                      userItem.extension
-                                                        ?.extension
-                                                    }`
+                                                    userItem?.alias
+                                                  )} - ${userItem.extension
+                                                    ?.extension
+                                                  }`
                                                   : `${truncateString(
-                                                      userItem?.name
-                                                    )} - ${
-                                                      userItem.extension
-                                                        ?.extension
-                                                    }`}
+                                                    userItem?.name
+                                                  )} - ${userItem.extension
+                                                    ?.extension
+                                                  }`}
                                                 {/* {userItem.username} (
                                               {userItem.extension?.extension}) */}
                                               </option>
@@ -1620,9 +1616,8 @@ function CallCenterQueueEdit() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                      } ps-0 pe-2`}
                                   >
                                     <div className="formLabel">
                                       {index === 0 ? (
@@ -1645,9 +1640,8 @@ function CallCenterQueueEdit() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                   >
                                     <div className="formLabel">
                                       {index === 0 ? (
@@ -1679,9 +1673,8 @@ function CallCenterQueueEdit() {
                                     </select>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                   >
                                     <div className="formLabel">
                                       {index === 0 ? (
@@ -1972,16 +1965,14 @@ function CallCenterQueueEdit() {
                                     >
                                       <button
                                         type="button"
-                                        className={`tableButton edit my-auto ${
-                                          agent.length < 2 ? "me-2" : ""
-                                        }`}
+                                        className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
+                                          }`}
                                       >
                                         <i
-                                          className={`fa-solid fa-${
-                                            advance.includes(item.id)
-                                              ? "gear"
-                                              : "gears"
-                                          }`}
+                                          className={`fa-solid fa-${advance.includes(item.id)
+                                            ? "gear"
+                                            : "gears"
+                                            }`}
                                         ></i>
                                       </button>
                                     </div>
@@ -1992,7 +1983,7 @@ function CallCenterQueueEdit() {
                                   ) : (
                                     <div
                                       onClick={() => deleteDestination(item.id)}
-                                      className="col-auto px-0 mt-auto mx-2"
+                                      className="col-auto px-0 mt-auto ms-2"
                                     >
                                       <button
                                         type="button"
@@ -2206,258 +2197,260 @@ function CallCenterQueueEdit() {
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
-            <div className="mt-3 row g-2">
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Level</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="level"
-                  value={settingsForBulkEdit.tier_level}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      tier_level: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                >
-                  <option value={0}>0</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
-                  <option value={9}>9</option>
-                </select>
-              </div>
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
-                    Tier Position
-                  </label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="position"
-                  value={settingsForBulkEdit.tier_position}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      tier_position: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                >
-                  <option value={0}>0</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
-                  <option value={9}>9</option>
-                </select>
-              </div>
-
-              <div className="col-3 ">
-                <div className="formLabel">
-                  <label htmlFor="">Call Timeout</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="call_timeout"
-                    value={settingsForBulkEdit.call_timeout}
+            <div className="col-12 mt-3">
+              <div className="row">
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="">Tier Level</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="level"
+                    value={settingsForBulkEdit.tier_level}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        call_timeout: e.target.value,
+                        tier_level: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Call Timeout"
-                  />
+                    id="selectFormRow"
+                  >
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                  </select>
                 </div>
-              </div>
-
-              <div className="col-3 ">
-                <div className="formLabel">
-                  <label htmlFor="">Reject Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="reject_delay_time"
-                    value={settingsForBulkEdit.reject_delay}
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
+                      Tier Position
+                    </label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="position"
+                    value={settingsForBulkEdit.tier_position}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        reject_delay: e.target.value,
+                        tier_position: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Reject Delay"
-                  />
+                    id="selectFormRow"
+                  >
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Max No Answer</label>
+                <div className="col-4 ">
+                  <div className="formLabel">
+                    <label htmlFor="">Call Timeout</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="call_timeout"
+                      value={settingsForBulkEdit.call_timeout}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          call_timeout: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Call Timeout"
+                    />
+                  </div>
                 </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="max_no_answer"
-                    value={settingsForBulkEdit.max_no_answer}
+
+                <div className="col-4 ">
+                  <div className="formLabel">
+                    <label htmlFor="">Reject Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="reject_delay_time"
+                      value={settingsForBulkEdit.reject_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          reject_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Reject Delay"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="">Busy Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="busy_delay_time"
+                      value={settingsForBulkEdit.busy_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          busy_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Busy Delay"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="">Wrap Up Time</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="wrap_up_time"
+                      value={settingsForBulkEdit.wrap_up_time}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          wrap_up_time: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Wrap Up Time"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">Max No Answer</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="max_no_answer"
+                      value={settingsForBulkEdit.max_no_answer}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          max_no_answer: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Max No Answer"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">No Answer Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="no_answer_delay_time"
+                      value={settingsForBulkEdit.no_answer_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          no_answer_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="No Answer Delay"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-5">
+                  <div className="formLabel">
+                    <label htmlFor="">Reserve Agents</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="reserve_agents"
+                    value={settingsForBulkEdit.reserve_agents}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        max_no_answer: e.target.value,
+                        reserve_agents: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Max No Answer"
-                  />
+                    id="selectFormRow"
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Busy Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="busy_delay_time"
-                    value={settingsForBulkEdit.busy_delay}
+                <div className="col-7">
+                  <div className="formLabel">
+                    <label htmlFor="">Truncate agents on load</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="truncate-agents-on-load"
+                    value={settingsForBulkEdit.truncate_agents_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        busy_delay: e.target.value,
+                        truncate_agents_on_load: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Busy Delay"
-                  />
+                    id="selectFormRow"
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">No Answer Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="no_answer_delay_time"
-                    value={settingsForBulkEdit.no_answer_delay}
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">Truncate tiers on load</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="truncate-tiers-on-load"
+                    value={settingsForBulkEdit.truncate_tiers_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        no_answer_delay: e.target.value,
+                        truncate_tiers_on_load: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="No Answer Delay"
-                  />
+                    id="selectFormRow"
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
-              </div>
-
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Wrap Up Time</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="wrap_up_time"
-                    value={settingsForBulkEdit.wrap_up_time}
-                    onChange={(e) =>
-                      setSettingsForBulkEdit({
-                        ...settingsForBulkEdit,
-                        wrap_up_time: e.target.value,
-                      })
-                    }
-                    className="formItem"
-                    placeholder="Wrap Up Time"
-                  />
-                </div>
-              </div>
-
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Reserve Agents</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="reserve_agents"
-                  value={settingsForBulkEdit.reserve_agents}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      reserve_agents: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
-              </div>
-
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Truncate agents on load</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="truncate-agents-on-load"
-                  value={settingsForBulkEdit.truncate_agents_on_load}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      truncate_agents_on_load: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
-              </div>
-
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Truncate tiers on load</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="truncate-tiers-on-load"
-                  value={settingsForBulkEdit.truncate_tiers_on_load}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      truncate_tiers_on_load: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
               </div>
             </div>
             <div className="col-xl-12 mt-2">
