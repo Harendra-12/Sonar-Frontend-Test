@@ -53,15 +53,15 @@ function CallCenterQueueAdd() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: "",
-    tier_position: "",
+    tier_level: 0,
+    tier_position: 0,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
     busy_delay: "",
     no_answer_delay: "",
     wrap_up_time: "",
-    reserve_agents: "",
+    reserve_agents: 0,
     truncate_agents_on_load: "",
     truncate_tiers_on_load: "",
   });
@@ -1335,35 +1335,36 @@ function CallCenterQueueAdd() {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
-                      {selectedAgentToEdit.length > 0 &&
+                      {agent.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
                         selectedAgentToEdit.length != agent.length ? (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setSelectedAgentToEdit(agent);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit All</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      )}
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setSelectedAgentToEdit(agent);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit All</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ))}
                       <button
                         type="button"
                         class="panelButton"
@@ -2095,17 +2096,79 @@ function CallCenterQueueAdd() {
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
-            <div className="mt-3 col-12">
-              <div className="row">
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Tier Level</label>
-                  </div>
+            <div className="mt-3 row g-2">
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Level</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="level"
+                  value={settingsForBulkEdit.tier_level}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      tier_level: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>0</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                </select>
+              </div>
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
+                    Tier Position
+                  </label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="position"
+                  value={settingsForBulkEdit.tier_position}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      tier_position: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>0</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                </select>
+              </div>
+
+              <div className="col-3 ">
+                <div className="formLabel">
+                  <label htmlFor="">Call Timeout</label>
+                </div>
+                <div className="position-relative">
                   <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="level"
-                    value={settingsForBulkEdit.tier_level}
+                    type="number"
+                    name="call_timeout"
+                    value={settingsForBulkEdit.call_timeout}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
@@ -2349,6 +2412,96 @@ function CallCenterQueueAdd() {
                     <option value={1}>True</option>
                   </select>
                 </div>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Wrap Up Time</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="wrap_up_time"
+                    value={settingsForBulkEdit.wrap_up_time}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        wrap_up_time: e.target.value,
+                      })
+                    }
+                    className="formItem"
+                    placeholder="Wrap Up Time"
+                  />
+                </div>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Reserve Agents</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="reserve_agents"
+                  value={settingsForBulkEdit.reserve_agents}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      reserve_agents: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate agents on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-agents-on-load"
+                  value={settingsForBulkEdit.truncate_agents_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_agents_on_load: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate tiers on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-tiers-on-load"
+                  value={settingsForBulkEdit.truncate_tiers_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_tiers_on_load: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
               </div>
             </div>
             <div className="col-xl-12 mt-2">

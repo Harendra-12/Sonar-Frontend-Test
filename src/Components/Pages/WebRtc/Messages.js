@@ -77,6 +77,8 @@ function Messages({
   const [addMember, setAddMember] = useState(false);
   const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
 
+
+  console.log("Allmessages", allMessage);
   const {
     register,
     formState: { errors },
@@ -920,6 +922,15 @@ function Messages({
       "group_id": recipient[1],
 
     })
+    const time = formatDateTime(new Date());
+    setAllMessage((prevState) => ({
+      ...prevState,
+      [recipient[0]]: [
+        ...(prevState[recipient[0]] || []),
+        { from: extension, body: messageInput, time },
+      ],
+    }));
+    setMessageInput("");
   }
   return (
     <>

@@ -56,17 +56,17 @@ function CallCenterQueueEdit() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: "",
-    tier_position: "",
+    tier_level: 0,
+    tier_position: 0,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
     busy_delay: "",
     no_answer_delay: "",
     wrap_up_time: "",
-    reserve_agents: "",
-    truncate_agents_on_load: "",
-    truncate_tiers_on_load: "",
+    reserve_agents: 0,
+    truncate_agents_on_load: 0,
+    truncate_tiers_on_load: 0,
   });
   // Define the initial state of the form
   const [agent, setAgent] = useState([
@@ -2451,6 +2451,95 @@ function CallCenterQueueEdit() {
                     <option value={1}>True</option>
                   </select>
                 </div>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Wrap Up Time</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="wrap_up_time"
+                    value={settingsForBulkEdit.wrap_up_time}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        wrap_up_time: e.target.value,
+                      })
+                    }
+                    className="formItem"
+                    placeholder="Wrap Up Time"
+                  />
+                </div>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Reserve Agents</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="reserve_agents"
+                  value={settingsForBulkEdit.reserve_agents}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      reserve_agents: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate agents on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-agents-on-load"
+                  value={settingsForBulkEdit.truncate_agents_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_agents_on_load: e.target.value,
+                    })
+                  }
+                  defaultValue={0}
+                  id="selectFormRow"
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate tiers on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-tiers-on-load"
+                  value={settingsForBulkEdit.truncate_tiers_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_tiers_on_load: e.target.value,
+                    })
+                  }
+                  defaultValue={0}
+                  id="selectFormRow"
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
               </div>
             </div>
             <div className="col-xl-12 mt-2">

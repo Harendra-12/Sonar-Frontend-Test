@@ -64,6 +64,7 @@ var newAddedDid = null;
 var conferenceScreenShareStatus = null;
 var conferenceMessage = [];
 var RoomID = "";
+var groupMessage = [];
 
 const initialState = {
   account,
@@ -131,6 +132,7 @@ const initialState = {
   conferenceScreenShareStatus,
   conferenceMessage,
   RoomID,
+  groupMessage,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -302,6 +304,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         RoomID: action.RoomID,
+      };
+      case "SET_GROUPMESSAGE":
+      return {
+        ...state,
+        groupMessage:action.groupMessage,
       };
     default:
       return state;
