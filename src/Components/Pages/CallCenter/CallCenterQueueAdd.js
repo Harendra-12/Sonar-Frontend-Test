@@ -53,15 +53,15 @@ function CallCenterQueueAdd() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: "",
-    tier_position: "",
+    tier_level: 0,
+    tier_position: 0,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
     busy_delay: "",
     no_answer_delay: "",
     wrap_up_time: "",
-    reserve_agents: "",
+    reserve_agents: 0,
     truncate_agents_on_load: "",
     truncate_tiers_on_load: "",
   });
@@ -1335,35 +1335,36 @@ function CallCenterQueueAdd() {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
-                      {selectedAgentToEdit.length > 0 &&
-                      selectedAgentToEdit.length != agent.length ? (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setSelectedAgentToEdit(agent);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit All</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </button>
-                      )}
+                      {agent.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
+                        selectedAgentToEdit.length != agent.length ? (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setSelectedAgentToEdit(agent);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit All</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ))}
                       <button
                         type="button"
                         class="panelButton"
@@ -2120,6 +2121,7 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option value={0}>0</option>
                   <option value={1}>1</option>
@@ -2151,6 +2153,7 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option value={0}>0</option>
                   <option value={1}>1</option>
@@ -2307,6 +2310,7 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option value={0}>False</option>
                   <option value={1}>True</option>
@@ -2329,6 +2333,7 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option value={0}>False</option>
                   <option value={1}>True</option>
@@ -2351,6 +2356,7 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option value={0}>False</option>
                   <option value={1}>True</option>

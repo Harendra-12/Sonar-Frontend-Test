@@ -56,17 +56,17 @@ function CallCenterQueueEdit() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: "",
-    tier_position: "",
+    tier_level: 0,
+    tier_position: 0,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
     busy_delay: "",
     no_answer_delay: "",
     wrap_up_time: "",
-    reserve_agents: "",
-    truncate_agents_on_load: "",
-    truncate_tiers_on_load: "",
+    reserve_agents: 0,
+    truncate_agents_on_load: 0,
+    truncate_tiers_on_load: 0,
   });
   // Define the initial state of the form
   const [agent, setAgent] = useState([
@@ -2431,6 +2431,7 @@ function CallCenterQueueEdit() {
                       truncate_agents_on_load: e.target.value,
                     })
                   }
+                  defaultValue={0}
                   id="selectFormRow"
                 >
                   <option value={0}>False</option>
@@ -2453,6 +2454,7 @@ function CallCenterQueueEdit() {
                       truncate_tiers_on_load: e.target.value,
                     })
                   }
+                  defaultValue={0}
                   id="selectFormRow"
                 >
                   <option value={0}>False</option>
