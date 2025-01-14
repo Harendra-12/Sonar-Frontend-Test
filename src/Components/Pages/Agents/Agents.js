@@ -9,13 +9,14 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import CircularLoader from "../../Loader/CircularLoader";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
   const [agents, setAgents] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([0]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -31,7 +32,7 @@ function Agents({ type }) {
   console.log(logonUser);
   useEffect(() => {
     const getData = async () => {
-      setLoading(false);
+      setLoading(true);
       const apiData = await generalGetFunction(
         `/agents?usages=${type}&row_per_page=${entriesPerPage}`
       );
@@ -52,116 +53,120 @@ function Agents({ type }) {
         <div className="container-fluid">
           <div className="row">
             <Header title="Agents" />
+            {loading ? (
+              <div colSpan={99}>
+                <SkeletonFormLoader />
+              </div>
+            ) : (
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Agent List</h4>
+                          <p>List of all agents</p>
+                        </div>
+                        <div className="buttonGroup">
+                          <button
+                            onClick={() => {
+                              navigate(-1);
+                              backToTop();
+                            }}
+                            effect="ripple"
+                            className="panelButton gray"
+                          >
+                            <span className="text">Back</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-caret-left"></i>
+                            </span>
+                          </button>
 
-            <div className="overviewTableWrapper">
-              <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
-                  <div className="col-12">
-                    <div className="heading">
-                      <div className="content">
-                        <h4>Agent List</h4>
-                        <p>List of all agents</p>
-                      </div>
-                      <div className="buttonGroup">
-                        <button
-                          onClick={() => {
-                            navigate(-1);
-                            backToTop();
-                          }}
-                          effect="ripple"
-                          className="panelButton gray"
-                        >
-                          <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            navigate("/agents-add");
-                            backToTop();
-                          }}
-                          className="panelButton"
-                        >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </button>
+                          <button
+                            onClick={() => {
+                              navigate("/agents-add");
+                              backToTop();
+                            }}
+                            className="panelButton"
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
-                  >
-                    <div className="tableHeader">
-                      <div className="showEntries">
-                        <label>Show</label>
-                        <select
-                          value={entriesPerPage}
-                          onChange={(e) => setEntriesPerPage(e.target.value)}
-                          className="formItem"
-                        >
-                          <option value={10}>10</option>
-                          <option value={20}>20</option>
-                          <option value={30}>30</option>
-                        </select>
-                        <label>entries</label>
+                    <div
+                      className="col-12"
+                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    >
+                      <div className="tableHeader">
+                        <div className="showEntries">
+                          <label>Show</label>
+                          <select
+                            value={entriesPerPage}
+                            onChange={(e) => setEntriesPerPage(e.target.value)}
+                            className="formItem"
+                          >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={30}>30</option>
+                          </select>
+                          <label>entries</label>
+                        </div>
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="search"
+                            name="Search"
+                            className="formItem"
+                          />
+                        </div>
                       </div>
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="search"
-                          name="Search"
-                          className="formItem"
-                        />
-                      </div>
-                    </div>
-                    <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Extension</th>
-                            <th>Account ID</th>
-                            {/* <th>Role</th> */}
-                            {/* <th>Domain</th> */}
-                            <th>Online</th>
-                            <th>Edit</th>
-                            {/* <th>Status</th> */}
-                          </tr>
-                        </thead>
-                        <tbody className="">
-                          {agents?.data?.map((item, index) => {
-                            return (
-                              <tr>
-                                <td>{item.name}</td>
-                                <td>{item.extension.extension}</td>
-                                <td>{item.account_id}</td>
-                                <td>
-                                  <span
-                                    className={
-                                      onlineUsers.includes(item.id)
-                                        ? "extensionStatus online"
-                                        : "extensionStatus"
-                                    }
-                                  ></span>
-                                </td>
-                                <td>
-                                  <button
-                                    className="tableButton edit"
-                                    onClick={() => {
-                                      navigate(`/agents-edit?id=${item.id}`, {
-                                        state: item,
-                                      });
-                                    }}
-                                  >
-                                    <i className="fa-solid fa-pencil"></i>
-                                  </button>
-                                </td>
-                                {/* <td>
+                      <div className="tableContainer">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Extension</th>
+                              <th>Account ID</th>
+                              {/* <th>Role</th> */}
+                              {/* <th>Domain</th> */}
+                              <th>Online</th>
+                              <th>Edit</th>
+                              {/* <th>Status</th> */}
+                            </tr>
+                          </thead>
+                          <tbody className="">
+                            {agents?.data?.map((item, index) => {
+                              return (
+                                <tr>
+                                  <td>{item.name}</td>
+                                  <td>{item.extension.extension}</td>
+                                  <td>{item.account_id}</td>
+                                  <td>
+                                    <span
+                                      className={
+                                        onlineUsers.includes(item.id)
+                                          ? "extensionStatus online"
+                                          : "extensionStatus"
+                                      }
+                                    ></span>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="tableButton edit"
+                                      onClick={() => {
+                                        navigate(`/agents-edit?id=${item.id}`, {
+                                          state: item,
+                                        });
+                                      }}
+                                    >
+                                      <i className="fa-solid fa-pencil"></i>
+                                    </button>
+                                  </td>
+                                  {/* <td>
                                   <div className="my-auto position-relative mx-1">
                                     <label className="switch">
                                       <input
@@ -173,35 +178,36 @@ function Agents({ type }) {
                                     </label>
                                   </div>
                                 </td> */}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="tableHeader mb-3">
-                      <PaginationComponent
-                        pageNumber={(e) => setPageNumber(e)}
-                        totalPage={agents.last_page}
-                        from={(pageNumber - 1) * agents.per_page + 1}
-                        to={agents.to}
-                        total={agents.total}
-                      />
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                      <div className="tableHeader mb-3">
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={agents.last_page}
+                          from={(pageNumber - 1) * agents.per_page + 1}
+                          to={agents.to}
+                          total={agents.total}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
-      {loading ? (
+      {/* {loading ? (
         <div colSpan={99}>
           <CircularLoader />
         </div>
       ) : (
         ""
-      )}
+      )} */}
       {/* {popUp ? (
                 <div className="popup">
                     <div className="container h-100">

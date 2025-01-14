@@ -62,8 +62,8 @@ function CallCenterQueueAdd() {
     no_answer_delay: "",
     wrap_up_time: "",
     reserve_agents: 0,
-    truncate_agents_on_load: "",
-    truncate_tiers_on_load: "",
+    truncate_agents_on_load: 0,
+    truncate_tiers_on_load: 0,
   });
   const {
     register,
@@ -2199,228 +2199,91 @@ function CallCenterQueueAdd() {
                     <option value={9}>9</option>
                   </select>
                 </div>
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
-                      Tier Position
-                    </label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="position"
-                    value={settingsForBulkEdit.tier_position}
+              </div>
+              <div className="col-3 ">
+                <div className="formLabel">
+                  <label htmlFor="">Reject Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="reject_delay_time"
+                    value={settingsForBulkEdit.reject_delay}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        tier_position: e.target.value,
+                        reject_delay: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>0</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                    <option value={7}>7</option>
-                    <option value={8}>8</option>
-                    <option value={9}>9</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Reject Delay"
+                    defaultValue={0}
+                  />
                 </div>
+              </div>
 
-                <div className="col-4 ">
-                  <div className="formLabel">
-                    <label htmlFor="">Call Timeout</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="call_timeout"
-                      value={settingsForBulkEdit.call_timeout}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          call_timeout: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Call Timeout"
-                    />
-                  </div>
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Busy Delay</label>
                 </div>
-
-                <div className="col-4 ">
-                  <div className="formLabel">
-                    <label htmlFor="">Reject Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="reject_delay_time"
-                      value={settingsForBulkEdit.reject_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          reject_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Reject Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Busy Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="busy_delay_time"
-                      value={settingsForBulkEdit.busy_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          busy_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Busy Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Wrap Up Time</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="wrap_up_time"
-                      value={settingsForBulkEdit.wrap_up_time}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          wrap_up_time: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Wrap Up Time"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">Max No Answer</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="max_no_answer"
-                      value={settingsForBulkEdit.max_no_answer}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          max_no_answer: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Max No Answer"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">No Answer Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="no_answer_delay_time"
-                      value={settingsForBulkEdit.no_answer_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          no_answer_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="No Answer Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-5">
-                  <div className="formLabel">
-                    <label htmlFor="">Reserve Agents</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="reserve_agents"
-                    value={settingsForBulkEdit.reserve_agents}
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="busy_delay_time"
+                    value={settingsForBulkEdit.busy_delay}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        reserve_agents: e.target.value,
+                        busy_delay: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Busy Delay"
+                    defaultValue={0}
+                  />
                 </div>
-
-                <div className="col-7">
-                  <div className="formLabel">
-                    <label htmlFor="">Truncate agents on load</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="truncate-agents-on-load"
-                    value={settingsForBulkEdit.truncate_agents_on_load}
+              </div>
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Max No Answer</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="max_no_answer"
+                    value={settingsForBulkEdit.max_no_answer}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        truncate_agents_on_load: e.target.value,
+                        max_no_answer: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Max No Answer"
+                    defaultValue={0}
+                  />
                 </div>
+              </div>
 
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">Truncate tiers on load</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="truncate-tiers-on-load"
-                    value={settingsForBulkEdit.truncate_tiers_on_load}
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">No Answer Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="no_answer_delay_time"
+                    value={settingsForBulkEdit.no_answer_delay}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        truncate_tiers_on_load: e.target.value,
+                        no_answer_delay: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+                    className="formItem"
+                    placeholder="No Answer Delay"
+                    defaultValue={0}
+                  />
                 </div>
               </div>
 
@@ -2441,6 +2304,7 @@ function CallCenterQueueAdd() {
                     }
                     className="formItem"
                     placeholder="Wrap Up Time"
+                    defaultValue={0}
                   />
                 </div>
               </div>
