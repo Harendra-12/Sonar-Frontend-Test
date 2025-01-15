@@ -229,9 +229,9 @@ function CampaignCreate() {
                                                         }
                                                     }}
                                                 >
-                                                    <span className="text" >Save</span>
+                                                    <span className="text" >{completedStep === 3 ? 'Save' : 'Next'}</span>
                                                     <span className="icon">
-                                                        <i className="fa-solid fa-floppy-disk"></i>
+                                                        <i className={`fa-solid fa-${completedStep === 3 ? 'floppy-disk' : 'caret-right'}`}></i>
                                                     </span>
                                                 </button>
                                             </div>
