@@ -80,7 +80,7 @@ function Messages({
 
 
   console.log("Allmessages", allMessage);
-  console.log("groupMessages",groupMessage);
+  console.log("groupMessages", groupMessage);
   const {
     register,
     formState: { errors },
@@ -922,28 +922,33 @@ function Messages({
       "user_id": account.id,
       "sharedMessage": messageInput.trim(),
       "group_id": recipient[1],
-      "group_name": recipient[0]
-
+      "group_name": recipient[0],
+      "user_name": account.name,
+      "user_extension": account.extension.extension
     })
     const time = formatDateTime(new Date());
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[0]]: [
         ...(prevState[recipient[0]] || []),
-        { from: extension, body: messageInput, time },
+        { from: account.name, body: messageInput, time },
       ],
     }));
     setMessageInput("");
   }
 
   // Recieve group message
-  useEffect(()=>{
+  useEffect(() => {
     const time = formatDateTime(new Date());
-    setAllMessage((prevState) => ({
-      ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), {from: groupMessage.user_id, body:groupMessage.sharedMessage, time }],
-    }));
-  },[groupMessage])
+      setAllMessage((prevState) => ({
+        ...prevState,
+        [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), { from: groupMessage.user_name, body: groupMessage.sharedMessage, time }],
+      }));
+  }, [groupMessage])
+
+  const example = []
+  const newExample = []
+  console.log(example===newExample)
   return (
     <>
       <main
@@ -1958,7 +1963,7 @@ function Messages({
                                     </div>
                                   )}
                                   {/* Message content */}
-                                  {item.from === extension ? (
+                                  {item.from === (recipient[2] === "groupChat"?account.name: extension) ? (
                                     <div className="messageItem sender">
                                       <div className="second">
                                         <h6>

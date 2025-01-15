@@ -313,6 +313,8 @@ function CallCenterQueueEdit() {
       toast.error("Please add at least one agent");
       return;
     }
+
+    setLoading(true);
     const { recording_enabled } = data;
 
     const payload = {
@@ -796,7 +798,7 @@ function CallCenterQueueEdit() {
                           aria-controls="nav-queue"
                           aria-selected="false"
                         >
-                          Queue Rules
+                          Queue Announcement
                         </button>
                         <button
                           class="nav-link"
@@ -1320,6 +1322,33 @@ function CallCenterQueueEdit() {
                                 })}
                                 onKeyDown={restrictToAllowedChars}
                               />
+                              {errors.queue_description && (
+                                <ErrorMessage text={errors.queue_description} />
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Queue Announcement</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Make Queue Announcement enable and disable.
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <select
+                                type="text"
+                                name="queue_description"
+                                defaultValue="0"
+                                className="formItem"
+                                {...register("queue_announcement", {
+                                  ...noSpecialCharactersValidator,
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              >
+                              <option value="1">Enable</option>
+                              <option value="0">Disable</option>
+                              </select>
                               {errors.queue_description && (
                                 <ErrorMessage text={errors.queue_description} />
                               )}
