@@ -663,7 +663,7 @@
 .contactHeader .dropdown-menu {
     padding: 5px 0;
     background-color: var(--ele-color);
-
+    height: auto;
 }
 
 .contactHeader .dropdown-menu .dropdown-item {
