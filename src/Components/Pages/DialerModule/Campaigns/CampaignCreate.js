@@ -372,7 +372,7 @@ function CampaignCreate() {
                                                             {did.map((item, index) => (
                                                                 <li
                                                                     key={index}
-                                                                    className="d-flex align-items-center mb-2 p-2 "
+                                                                    className="d-flex align-items-center justify-content-start mb-2 p-2 "
                                                                     style={{ cursor: "pointer" }}
                                                                     onClick={() => toggleSelect(item.did)}
                                                                 >
@@ -762,20 +762,13 @@ function CampaignCreate() {
                                                                 <h5>Available Agents</h5>
                                                                 <p>Select from the available list of agents</p>
                                                             </div>
-                                                            <div className="col-2" style={{ cursor: "pointer" }}>
-                                                                <i
-                                                                    className="fa-solid fa-user"
-                                                                    style={{ boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px" }}
-                                                                />
-                                                            </div>
-
                                                         </div>
                                                         {/* <div className='col-12 my-2'>
                                                             <div class="searchBox position-relative">
                                                                 <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
                                                             </div>
                                                         </div> */}
-                                                        <div className="tableHeader">
+                                                        <div className="tableHeader mt-2">
                                                             <div className="showEntries">
                                                                 <label>Show</label>
                                                                 <select className="formItem" value={agentPerPage} onChange={(e) => setAgentPerPage(e.target.value)}>
@@ -821,7 +814,7 @@ function CampaignCreate() {
                                                                                         }`}
                                                                                     style={{
                                                                                         width: "20px",
-                                                                                        height: "20px",
+                                                                                        height: "26px",
                                                                                         border: "1px solid #ccc",
                                                                                         borderRadius: "3px",
                                                                                     }}
@@ -841,16 +834,15 @@ function CampaignCreate() {
                                                             }
 
                                                         </div>
-
-                                                    </div>
-                                                    <div className="tableHeader mb-3">
-                                                        <PaginationComponent
-                                                            pageNumber={(e) => setPageNumber(e)}
-                                                            totalPage={agents.last_page}
-                                                            from={(pageNumber - 1) * agents.per_page + 1}
-                                                            to={agents.to}
-                                                            total={agents.total}
-                                                        />
+                                                        <div className="tableHeader my-3 text-start">
+                                                            <PaginationComponent
+                                                                pageNumber={(e) => setPageNumber(e)}
+                                                                totalPage={agents.last_page}
+                                                                from={(pageNumber - 1) * agents.per_page + 1}
+                                                                to={agents.to}
+                                                                total={agents.total}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </>}
