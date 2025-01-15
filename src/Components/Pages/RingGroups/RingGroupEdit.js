@@ -1466,7 +1466,7 @@ const RingGroupEdit = () => {
                               style={
                                 index === 0
                                   ? { marginTop: 32, width: 50 }
-                                  : { width: 30 }
+                                  : { width: 50 }
                               }
                             >
                               <div>

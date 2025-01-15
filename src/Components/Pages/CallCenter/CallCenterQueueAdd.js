@@ -553,7 +553,7 @@ function CallCenterQueueAdd() {
         <div className="col-xl-12">
           {loading ? (
             <div colSpan={99}>
-              <CircularLoader />
+              <SkeletonFormLoader />
             </div>
           ) : (
             <div className="overviewTableWrapper">
@@ -1365,7 +1365,7 @@ function CallCenterQueueAdd() {
                     <div class="buttonGroup">
                       {agent.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != agent.length ? (
+                          selectedAgentToEdit.length != agent.length ? (
                           <button
                             type="button"
                             class="panelButton"
@@ -1438,27 +1438,21 @@ function CallCenterQueueAdd() {
                                   <label>{index + 1}.</label>
                                 </div>
                                 <div
-                                  className={`row col-${
-                                    advance.includes(item.id)
-                                      ? "11"
-                                      : "xxl-5 col-xl-6"
-                                  }`}
+                                  className={`row col-${advance.includes(item.id)
+                                    ? "11"
+                                    : "xxl-5 col-xl-6"
+                                    }`}
                                 >
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                      } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">
-                                          Agent Name{" "}
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">
+                                        Agent Name{" "}
+                                        <span className="text-danger">*</span>
+                                      </label>
+                                    </div>}
                                     <div className="position-relative">
                                       <select
                                         disabled
@@ -1479,11 +1473,11 @@ function CallCenterQueueAdd() {
                                             .filter((userItem) => {
                                               return (
                                                 userItem.id ==
-                                                  agent[index]?.name ||
+                                                agent[index]?.name ||
                                                 !agent.some(
                                                   (agentItem, agentIndex) =>
                                                     agentItem.name ==
-                                                      userItem.id &&
+                                                    userItem.id &&
                                                     agentIndex != index
                                                 )
                                               );
@@ -1497,17 +1491,15 @@ function CallCenterQueueAdd() {
                                                 {userItem.extension?.extension} */}
                                                 {userItem.alias
                                                   ? `${truncateString(
-                                                      userItem?.alias
-                                                    )} - ${
-                                                      userItem.extension
-                                                        ?.extension
-                                                    }`
+                                                    userItem?.alias
+                                                  )} - ${userItem.extension
+                                                    ?.extension
+                                                  }`
                                                   : `${truncateString(
-                                                      userItem?.name
-                                                    )} - ${
-                                                      userItem.extension
-                                                        ?.extension
-                                                    }`}
+                                                    userItem?.name
+                                                  )} - ${userItem.extension
+                                                    ?.extension
+                                                  }`}
                                               </option>
                                             ))}
                                         <option
@@ -1521,17 +1513,12 @@ function CallCenterQueueAdd() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "2" : "4"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                      } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">Password</label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">Password</label>
+                                    </div>}
                                     <div className="position-relative">
                                       <input
                                         type="text"
@@ -1546,17 +1533,12 @@ function CallCenterQueueAdd() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">Tier Level</label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">Tier Level</label>
+                                    </div>}
                                     <select
                                       className="formItem me-0"
                                       style={{ width: "100%" }}
@@ -1580,22 +1562,17 @@ function CallCenterQueueAdd() {
                                     </select>
                                   </div>
                                   <div
-                                    className={`col-${
-                                      advance.includes(item.id) ? "1" : "2"
-                                    } ps-0 pe-2`}
+                                    className={`col-${advance.includes(item.id) ? "1" : "2"
+                                      } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label
-                                          htmlFor=""
-                                          style={{ whiteSpace: "nowrap" }}
-                                        >
-                                          Tier Position
-                                        </label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label
+                                        htmlFor=""
+                                        style={{ whiteSpace: "nowrap" }}
+                                      >
+                                        Tier Position
+                                      </label>
+                                    </div>}
                                     <select
                                       className="formItem me-0"
                                       style={{ width: "100%" }}
@@ -1622,15 +1599,11 @@ function CallCenterQueueAdd() {
                                   {advance.includes(item.id) && (
                                     <>
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Call Timeout
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Call Timeout
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -1645,15 +1618,11 @@ function CallCenterQueueAdd() {
                                         </div>
                                       </div>
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Reject Delay
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Reject Delay
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -1669,15 +1638,11 @@ function CallCenterQueueAdd() {
                                       </div>
 
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Max No Answer
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Max No Answer
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -1851,16 +1816,14 @@ function CallCenterQueueAdd() {
                                     >
                                       <button
                                         type="button"
-                                        className={`tableButton edit my-auto ${
-                                          agent.length < 2 ? "me-2" : ""
-                                        }`}
+                                        className={`tableButton edit my-auto ${agent.length < 2 ? "me-2" : ""
+                                          }`}
                                       >
                                         <i
-                                          className={`fa-solid fa-${
-                                            advance.includes(item.id)
-                                              ? "gear"
-                                              : "gears"
-                                          }`}
+                                          className={`fa-solid fa-${advance.includes(item.id)
+                                            ? "gear"
+                                            : "gears"
+                                            }`}
                                         ></i>
                                       </button>
                                     </div>
@@ -2197,36 +2160,7 @@ function CallCenterQueueAdd() {
                 </select>
               </div>
 
-              <div className="col-3 ">
-                <div className="formLabel">
-                  <label htmlFor="">Call Timeout</label>
-                </div>
-                <div className="position-relative">
-                  <select
-                    type="number"
-                    name="call_timeout"
-                    value={settingsForBulkEdit.call_timeout}
-                    onChange={(e) =>
-                      setSettingsForBulkEdit({
-                        ...settingsForBulkEdit,
-                        tier_level: e.target.value,
-                      })
-                    }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>0</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                    <option value={7}>7</option>
-                    <option value={8}>8</option>
-                    <option value={9}>9</option>
-                  </select>
-                </div>
-              </div>
+
               <div className="col-3 ">
                 <div className="formLabel">
                   <label htmlFor="">Reject Delay</label>
@@ -2270,7 +2204,38 @@ function CallCenterQueueAdd() {
                   />
                 </div>
               </div>
-              <div className="col-3">
+              <div className="col-4 ">
+                <div className="formLabel">
+                  <label htmlFor="">Call Timeout</label>
+                </div>
+                <div className="position-relative">
+                  <select
+                    className="formItem me-0"
+                    type="number"
+                    name="call_timeout"
+                    value={settingsForBulkEdit.call_timeout}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        tier_level: e.target.value,
+                      })
+                    }
+                    id="selectFormRow"
+                  >
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-4">
                 <div className="formLabel">
                   <label htmlFor="">Max No Answer</label>
                 </div>
@@ -2292,29 +2257,7 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
 
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">No Answer Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="no_answer_delay_time"
-                    value={settingsForBulkEdit.no_answer_delay}
-                    onChange={(e) =>
-                      setSettingsForBulkEdit({
-                        ...settingsForBulkEdit,
-                        no_answer_delay: e.target.value,
-                      })
-                    }
-                    className="formItem"
-                    placeholder="No Answer Delay"
-                    defaultValue={0}
-                  />
-                </div>
-              </div>
-
-              <div className="col-3">
+              <div className="col-4">
                 <div className="formLabel">
                   <label htmlFor="">Wrap Up Time</label>
                 </div>
@@ -2336,7 +2279,29 @@ function CallCenterQueueAdd() {
                 </div>
               </div>
 
-              <div className="col-3">
+              <div className="col-6">
+                <div className="formLabel">
+                  <label htmlFor="">No Answer Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="no_answer_delay_time"
+                    value={settingsForBulkEdit.no_answer_delay}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        no_answer_delay: e.target.value,
+                      })
+                    }
+                    className="formItem"
+                    placeholder="No Answer Delay"
+                    defaultValue={0}
+                  />
+                </div>
+              </div>
+
+              <div className="col-6">
                 <div className="formLabel">
                   <label htmlFor="">Reserve Agents</label>
                 </div>
@@ -2359,7 +2324,7 @@ function CallCenterQueueAdd() {
                 </select>
               </div>
 
-              <div className="col-3">
+              <div className="col-6">
                 <div className="formLabel">
                   <label htmlFor="">Truncate agents on load</label>
                 </div>
@@ -2382,7 +2347,7 @@ function CallCenterQueueAdd() {
                 </select>
               </div>
 
-              <div className="col-3">
+              <div className="col-6">
                 <div className="formLabel">
                   <label htmlFor="">Truncate tiers on load</label>
                 </div>
