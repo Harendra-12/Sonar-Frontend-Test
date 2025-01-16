@@ -557,7 +557,8 @@
     /* position: absolute;
     top: 0;
     left: 0; */
-    width: 100%;
+    /* width: 100%; */
+    flex: 1 0 0%;
     height: 100%;
     border: none;
     background: transparent;
@@ -662,7 +663,7 @@
 .contactHeader .dropdown-menu {
     padding: 5px 0;
     background-color: var(--ele-color);
-
+    height: auto;
 }
 
 .contactHeader .dropdown-menu .dropdown-item {
