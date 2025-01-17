@@ -81,17 +81,17 @@ function ClickToCallSetup() {
                                                                     <div class="tab-pane fade show active" id="nav-gen" role="tabpanel" aria-labelledby="nav-gen-tab" tabindex="0">
 
                                                                         <form>
-                                                                            <div className="formRow col-xl-12">
+                                                                            <div className="formRow col-xxl-8 col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Company Logo</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
                                                                                         Please enter your company name and logo.
                                                                                     </label>
                                                                                 </div>
-                                                                            
+
                                                                                 <div className="col-6">
-                                                                                   
-                                                                                       
+
+
                                                                                     <input
                                                                                         type="file"
                                                                                         name="did_id_view"
@@ -103,7 +103,7 @@ function ClickToCallSetup() {
                                                     )} */}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className='formRow col-xl-12'>
+                                                                            <div className='formRow col-xxl-8 col-xl-12'>
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">Color Scheme</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -266,7 +266,7 @@ function ClickToCallSetup() {
                                                                                     <input className='formItem' value={`#`} />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className='formRow col-xl-12'>
+                                                                            <div className='formRow col-xxl-8 col-xl-12'>
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">Company Name</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -277,7 +277,7 @@ function ClickToCallSetup() {
                                                                                     <input className='formItem' />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className='formRow col-xl-12'>
+                                                                            <div className='formRow col-xxl-8 col-xl-12'>
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">Company Description</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -292,7 +292,7 @@ function ClickToCallSetup() {
                                                                     </div>
                                                                     <div class="tab-pane fade" id="nav-options" role="tabpanel" aria-labelledby="nav-options-tab" tabindex="0">
                                                                         <form>
-                                                                            <div className="formRow col-xl-12">
+                                                                            <div className="formRow col-xxl-8 col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Usage</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -318,7 +318,7 @@ function ClickToCallSetup() {
                                                     )} */}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xl-12">
+                                                                            <div className="formRow col-xxl-8 col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Action</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -329,7 +329,7 @@ function ClickToCallSetup() {
                                                                                     <input className='formItem' />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xl-12 pt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
+                                                                            <div className="formRow col-xxl-8 col-xl-12 pt-3" style={{ borderTop: '1px solid var(--border-color)' }}>
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Copy embeded code</label>
                                                                                     <label htmlFor="data" className="formItemDesc">
@@ -355,8 +355,7 @@ function ClickToCallSetup() {
                                                             </div>
                                                             <div className='col-4'>
                                                                 <div className="clickToCall clickToCall-preview">
-
-                                                                    <div className="clickToCallModule">
+                                                                    <div className="clickToCallModule ms-auto mb-3">
                                                                         <div className="clickToCallHeader">
                                                                             <div className="wrapper">
                                                                                 <button>
@@ -393,6 +392,7 @@ function ClickToCallSetup() {
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="clickToCallButton"><button><i class="fa-solid fa-chevron-down"></i></button></div>
                                                                 </div>
 
                                                             </div>
