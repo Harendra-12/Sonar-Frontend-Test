@@ -30,7 +30,8 @@ function ClickToCall() {
                     <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
                 </button>
             </div>
-            {widgetExpanded ? <div className="clickToCallModule">
+            {widgetExpanded ? 
+            <div className="clickToCallModule">
                 <div className="clickToCallHeader">
                     <div className="wrapper">
                         <button onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
