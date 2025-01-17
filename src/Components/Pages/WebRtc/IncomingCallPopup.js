@@ -231,14 +231,14 @@ function IncomingCallPopup({
 
   // Handle auto answer for intercept, barge and merge calls
   useEffect(() => {
-    if(session.incomingInviteRequest){
-      if(session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"]==="auto_answered"){
+    if (session.incomingInviteRequest) {
+      if (session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"] === "auto_answered") {
         handleAnswerCall("audio")
       }
     }
-  },[session])
+  }, [session])
   console.log("Sessionasasasa", session);
-  
+
 
   return (
     <>
@@ -307,6 +307,21 @@ function IncomingCallPopup({
         //   marginBottom: topPosition,
         // }}
         >
+          <div className="campaignInfoWrapper">
+            <div className="campaignContent">
+              <h5>Outbound Campaign</h5>
+              <h4>Campaign Name Hello Hello</h4>
+              <p>Aliqua ipsum ipsum ea et irure laboris deserunt sint nostrud officia id aliquip fugiat elit. Cupidatat deserunt veniam quis nulla ea sint reprehenderit eiusmod non consequat id qui ex.</p>
+            </div>
+            <div className="leadContent">
+              <label>Name</label>
+              <p>John Doe</p>
+              <label>Number</label>
+              <p>+1 999 999 9999</p>
+              <label>Address</label>
+              <p>John Doe</p>
+            </div>
+          </div>
           <div className="user">
             <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
               <div>
@@ -314,7 +329,7 @@ function IncomingCallPopup({
                 <h4>{callerExtension}</h4>
               </div>
               <div>
-                <button className="clearButton2" onClick={()=>setMuteAudio(!muteAudio)}><i class={muteAudio?"fa-regular fa-volume-xmark":"fa-regular fa-volume"}></i></button>
+                <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i class={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>
               </div>
             </div>
             <div className="controls px-2">

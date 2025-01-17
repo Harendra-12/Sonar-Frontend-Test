@@ -264,3 +264,40 @@
 .react-draggable {
     z-index: 999;
 }
+
+/* campaignInfoWrapper */
+
+.campaignInfoWrapper {
+    border: 1px solid #ffffff40;
+    padding: 5px;
+    color: #ffffff86;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.campaignInfoWrapper .campaignContent h5 {
+    font-size: 12px !important;
+    margin-bottom: 5px;
+    color: #ffffff86;
+}
+
+.campaignInfoWrapper .campaignContent h4 {
+    font-size: 16px !important;
+    /* margin-bottom: 5px; */
+    color: #fff;
+}
+
+.campaignInfoWrapper .campaignContent p {
+    font-size: 12px !important;
+    margin-bottom: 5px;
+}
+
+.campaignInfoWrapper .leadContent label {
+    font-size: 12px !important;
+}
+
+.campaignInfoWrapper .leadContent p {
+    font-size: 14px !important;
+    color: #fff;
+    margin-bottom: 5px;
+}
