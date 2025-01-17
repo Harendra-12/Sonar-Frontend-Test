@@ -188,7 +188,7 @@ function App() {
   //     });
   //   }
   // }, []);
-
+  window.dynamicId = 10;
   return (
     <>
       <Router>

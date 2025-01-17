@@ -489,7 +489,7 @@ const CallCenterListItem = ({
       (breakTime) => breakTime.end_time === null && breakTime.start_time
     );
 
-    if (ongoingBreak) {
+    if (ongoingBreak && item.status === "On Break") {
       const latestStartTime = new Date(ongoingBreak.start_time);
       // Set the timer to start from the ongoing break start time
       const elapsed = Math.floor((new Date() - latestStartTime) / 1000);

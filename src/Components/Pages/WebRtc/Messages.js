@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +19,6 @@ import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
-import { requiredValidator } from "../../validations/validation";
-import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Socket from "../../GlobalFunction/Socket";
 
 function Messages({
@@ -50,6 +50,7 @@ function Messages({
   const [isFreeSwitchMessage, setIsFreeSwitchMessage] = useState(true);
   const [agents, setAgents] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
+  const [selectedChat, setSelectedChat] = useState("singleChat");
   const [onlineUser, setOnlineUser] = useState([]);
   const [unreadMessage, setUnreadMessage] = useState([]);
   const [allTags, setAllTags] = useState([]);
@@ -70,6 +71,7 @@ function Messages({
   const [searchQuery, setSearchQuery] = useState("");
   const [allAgents, setAllAgents] = useState([]);
   const [agent, setAgent] = useState([]);
+  const [groupname, setGroupName] = useState("")
   const [selectAll, setSelectAll] = useState(false);
   const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
   const [groupNameEdit, setGroupNameEdit] = useState("");
@@ -77,14 +79,17 @@ function Messages({
     useState(false);
   const [addMember, setAddMember] = useState(false);
   const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
+  const [groupLeavePopUp, setGroupLeavePopUp] = useState(false)
+  const [groupLeaveId, setGroupLeaveId] = useState("")
+
 
 
   console.log("Allmessages", allMessage);
   console.log("groupMessages", groupMessage);
+  console.log("selectedGroupUsers", selectedgroupUsers);
+  console.log("groupLeaveId", groupLeaveId)
   const {
-    register,
     formState: { errors },
-    handleSubmit,
   } = useForm();
 
   useEffect(() => {
@@ -127,6 +132,7 @@ function Messages({
         setContact(apiData.data);
         if (!extensionFromCdrMessage) {
           setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat"]);
+          setSelectedChat("singleChat");
         }
         setLoading(false);
       }
@@ -188,7 +194,7 @@ function Messages({
   useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
-        `message/all?receiver_id=${recipient[1]}&page=${pageNumb}`
+        recipient[2] === "singleChat" ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}` : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
       );
 
       apiData.data.data.map((item) => {
@@ -196,9 +202,10 @@ function Messages({
           ...prevState,
           [recipient[0]]: [
             {
-              from: item.user_id === recipient[1] ? recipient[0] : extension,
+              from: recipient[2] === "singleChat" ? (item.user_id === recipient[1] ? recipient[0] : extension) : item.user_name,
               body: item?.message_text,
               time: item.created_at,
+              user_id: item.user_id
             },
             ...(prevState[recipient[0]] || []),
           ],
@@ -299,65 +306,65 @@ function Messages({
     }
   };
 
-  const sendFileMessage = async (file) => {
-    if (isSIPReady) {
-      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
-      const userAgent = sipProvider?.sessionManager?.userAgent;
+  // const sendFileMessage = async (file) => {
+  //   if (isSIPReady) {
+  //     const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
+  //     const userAgent = sipProvider?.sessionManager?.userAgent;
 
-      const target = UserAgent.makeURI(targetURI);
+  //     const target = UserAgent.makeURI(targetURI);
 
-      const convertImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsDataURL(file); // This converts to Base64
-        });
-      };
+  //     const convertImageToBase64 = (file) => {
+  //       return new Promise((resolve, reject) => {
+  //         const reader = new FileReader();
+  //         reader.onloadend = () => resolve(reader.result);
+  //         reader.onerror = (error) => reject(error);
+  //         reader.readAsDataURL(file); // This converts to Base64
+  //       });
+  //     };
 
-      if (target && file) {
-        try {
-          // Convert file to Base64 string
-          const fileContent = await convertImageToBase64(file); // Await here!
+  //     if (target && file) {
+  //       try {
+  //         // Convert file to Base64 string
+  //         const fileContent = await convertImageToBase64(file); // Await here!
 
-          // Create a message with the Base64 content
-          const messager = new Messager(
-            userAgent,
-            target,
-            fileContent,
-            file.type
-          ); // Use correct content type
+  //         // Create a message with the Base64 content
+  //         const messager = new Messager(
+  //           userAgent,
+  //           target,
+  //           fileContent,
+  //           file.type
+  //         ); // Use correct content type
 
-          // Send the message with proper MIME type and extra headers
-          messager.message({
-            extraHeaders: [
-              `Content-Type: ${file.type}`, // e.g., image/png
-              `Content-Disposition: attachment; filename="${file.name}"`,
-            ],
-          });
+  //         // Send the message with proper MIME type and extra headers
+  //         messager.message({
+  //           extraHeaders: [
+  //             `Content-Type: ${file.type}`, // e.g., image/png
+  //             `Content-Disposition: attachment; filename="${file.name}"`,
+  //           ],
+  //         });
 
-          // Add a record to the message history (optional)
-          const time = new Date().toLocaleString();
-          setAllMessage((prevState) => ({
-            ...prevState,
-            [recipient[0]]: [
-              ...(prevState[recipient[0]] || []),
-              { from: extension, body: messageInput, time },
-            ],
-          }));
-          setActiveTab("all");
+  //         // Add a record to the message history (optional)
+  //         const time = new Date().toLocaleString();
+  //         setAllMessage((prevState) => ({
+  //           ...prevState,
+  //           [recipient[0]]: [
+  //             ...(prevState[recipient[0]] || []),
+  //             { from: extension, body: messageInput, time },
+  //           ],
+  //         }));
+  //         setActiveTab("all");
 
-          console.log("File sent to:", targetURI);
-        } catch (error) {
-          console.error("Error sending file:", error);
-        }
-      } else {
-        console.error("Invalid recipient address or file.");
-      }
-    } else {
-      console.error("UserAgent or session not ready.");
-    }
-  };
+  //         console.log("File sent to:", targetURI);
+  //       } catch (error) {
+  //         console.error("Error sending file:", error);
+  //       }
+  //     } else {
+  //       console.error("Invalid recipient address or file.");
+  //     }
+  //   } else {
+  //     console.error("UserAgent or session not ready.");
+  //   }
+  // };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -423,7 +430,7 @@ function Messages({
         );
         if (contentType && contentType.startsWith("image/")) {
           // If it's an image, create a URL for the Base64 image to render it in <img>
-          const imageUrl = `${body}`;
+          // const imageUrl = `${body}`;
 
           // Update the state to include the image
           setAllMessage((prevState) => ({
@@ -497,6 +504,10 @@ function Messages({
       if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
         setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
+        setGroupSelecedAgents((prevSelected) => {
+          return [...apiData.data.filter((item) => item.email === account.email)];
+        }
+        )
       }
     }
     getData();
@@ -713,8 +724,9 @@ function Messages({
         );
         if (isGroupSelected) {
           setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat"]);
+          setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
-          getGroupDataById(isGroupSelected.id);
+          // getGroupDataById(isGroupSelected.id);
           setSelectedgroupUsers(isGroupSelected.groupusers);
         }
         setLoading(false);
@@ -806,6 +818,7 @@ function Messages({
     });
   };
 
+  console.log(allAgents, "groupSelecedAgents", groupSelecedAgents);
   const handleSelectAll = () => {
     const newSelectAllState = !selectAll; // Toggle Select All state
     setSelectAll(newSelectAllState);
@@ -827,10 +840,14 @@ function Messages({
     }
   };
 
-  const handleCreateGroup = handleSubmit(async (data) => {
+  async function handleCreateGroup() {
+    if (groupname === "") {
+      toast.error("Group name is required");
+      return
+    }
     setNewGroupLoader(true);
     const parsedData = {
-      group_name: data.group_name,
+      group_name: groupname,
       user_id: groupSelecedAgents.map((agent) => agent.id),
     };
     const apiData = await generalPostFunction("/groups/store", parsedData);
@@ -839,12 +856,12 @@ function Messages({
       toast.success("Group created successfully");
       setAddMember(false);
       setGroupChatPopUp(false);
-      setGroupSelecedAgents([]);
+      // setGroupSelecedAgents([]);
       setNewGroupLoader(false);
     } else {
       setNewGroupLoader(false);
     }
-  });
+  };
 
   const handleEditGroupName = async () => {
     const parsedData = {
@@ -868,12 +885,12 @@ function Messages({
     }
   };
 
-  const getGroupDataById = async (id) => {
-    const apiData = generalGetFunction(`/groups/show/${id}`);
-    if (apiData.status) {
-      console.log(apiData);
-    }
-  };
+  // const getGroupDataById = async (id) => {
+  //   const apiData = generalGetFunction(`/groups/show/${id}`);
+  //   if (apiData.status) {
+  //     console.log(apiData);
+  //   }
+  // };
 
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
@@ -940,15 +957,15 @@ function Messages({
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
-      setAllMessage((prevState) => ({
-        ...prevState,
-        [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), { from: groupMessage.user_name, body: groupMessage.sharedMessage, time }],
-      }));
+    setAllMessage((prevState) => ({
+      ...prevState,
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), { from: groupMessage.user_name, body: groupMessage.sharedMessage, time }],
+    }));
   }, [groupMessage])
 
   const example = []
   const newExample = []
-  console.log(example===newExample)
+  console.log(example === newExample)
   return (
     <>
       <main
@@ -1071,14 +1088,14 @@ function Messages({
                     </span>
                   </h5>
                 </div>
-                <div className="col-auto" style={{ padding: "0 10px" }}>
+                {/* <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
                     onClick={() => setGroupChatPopUp(true)}
                   >
                     <i class="fa-light fa-pen-to-square"></i> New Chat
                   </button>
-                </div>
+                </div> */}
                 <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
                   <AgentSearch
                     getDropdownValue={setRecipient}
@@ -1219,6 +1236,7 @@ function Messages({
                                 <div
                                   onClick={() => {
                                     setRecipient([item?.extension, item.id], "singleChat");
+                                    setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
                                         [item?.extension]: _,
@@ -1301,12 +1319,13 @@ function Messages({
                             groups.map((item, index) => {
                               return (
                                 <div
-                                  className="contactListItem"
+                                  className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                   data-bell={""}
                                   onClick={() => {
                                     setRecipient([item.group_name, item.id, "groupChat"]);
+                                    setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
-                                    getGroupDataById(item.id);
+                                    // getGroupDataById(item.id);
                                     setSelectedgroupUsers(item.groupusers);
                                   }}
                                 >
@@ -1320,14 +1339,14 @@ function Messages({
                                       </div>
                                       <div className="my-auto ms-2 ms-xl-3">
                                         <h4>{item.group_name}</h4>
-                                        <h5>Alright</h5>
+                                        {/* <h5>Alright</h5>
                                         <div className="contactTags">
                                           <span data-id="3">Priority</span>
-                                        </div>
+                                        </div> */}
                                       </div>
-                                      <div className="col text-end">
+                                      {/* <div className="col text-end">
                                         <p className="timeAgo">5min ago</p>
-                                      </div>
+                                      </div> */}
                                     </div>{" "}
                                   </div>
                                 </div>
@@ -1392,12 +1411,14 @@ function Messages({
                                 }
                               >
                                 <div
-                                  onClick={() =>
+                                  onClick={() => {
                                     setRecipient([
                                       item?.extension.extension,
                                       item.id,
                                       "singleChat"
                                     ])
+                                    setSelectedChat("singleChat");
+                                  }
                                   }
                                   className="row justify-content-between"
                                 >
@@ -1603,15 +1624,13 @@ function Messages({
                                   </div>
                                   <div className="col-xl-6 col-12">
                                     <input
-                                      {...register("group_name", {
-                                        ...requiredValidator,
-                                      })}
+                                      value={groupname}
+                                      onChange={(e) => {
+                                        setGroupName(e.target.value);
+                                      }}
                                       type="text"
                                       className="formItem"
                                     />
-                                    {errors.group_name && (
-                                      <ErrorMessage text={errors.group_name} />
-                                    )}
                                   </div>
                                 </div>
                                 {/* </div> */}
@@ -1673,10 +1692,10 @@ function Messages({
                                           })
                                           .filter(
                                             (user) =>
-                                              !agent.some((agent) => user.id == agent.name)
+                                              !agent.some((agent) => user.id == agent.name) && (user.email !== account.email)
                                           ) // Exclude agents already in `agent`
                                           .map((item, index) => (
-                                            <tr key={""}>
+                                            <tr key={index}>
                                               <td>{index + 1}.</td>
                                               <td>{item.name}</td>
                                               <td>{item?.extension?.extension}</td>
@@ -1728,12 +1747,13 @@ function Messages({
                           groups.map((item, index) => {
                             return (
                               <div
-                                className="contactListItem"
+                                className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                 data-bell={""}
                                 onClick={() => {
                                   setRecipient([item.group_name, item.id, "groupChat"]);
+                                  setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
-                                  getGroupDataById(item.id);
+                                  // getGroupDataById(item.id);
                                   setSelectedgroupUsers(item.groupusers);
                                 }}
                               >
@@ -1747,14 +1767,14 @@ function Messages({
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item.group_name}</h4>
-                                      <h5>Alright</h5>
+                                      {/* <h5>Alright</h5>
                                       <div className="contactTags">
                                         <span data-id="3">Priority</span>
-                                      </div>
+                                      </div> */}
                                     </div>
-                                    <div className="col text-end">
+                                    {/* <div className="col text-end">
                                       <p className="timeAgo">5min ago</p>
-                                    </div>
+                                    </div> */}
                                   </div>{" "}
                                 </div>
                               </div>
@@ -1779,11 +1799,13 @@ function Messages({
                         <div className="contactHeader">
                           <div>
                             <h4 className="">
-                              {
+                              {/* {
                                 contact?.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
-                              }{" "}-{" "}{recipient[0]}
+                              }{" "}-
+                              {" "} */}
+                              {recipient[0]}
                             </h4>
                             {/* <h4>{recipient[0]}</h4> */}
                             <div className="contactTags">
@@ -1805,35 +1827,36 @@ function Messages({
                                   );
                                 })}
                               {/* <span data-id="1">Work</span> */}
-
-                              <div class="dropdown">
-                                <span
-                                  className="add"
-                                  type="button"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                                >
-                                  <i class="fa-solid fa-circle-plus me-1"></i>{" "}
-                                  Add tag
-                                </span>
-                                <ul class="dropdown-menu">
-                                  {allTags.map((item) => {
-                                    return (
-                                      <li
-                                        className="dropdown-item"
-                                        onClick={() =>
-                                          handleAssignTask(
-                                            item.id,
-                                            recipient[0]
-                                          )
-                                        }
-                                      >
-                                        {item.name}
-                                      </li>
-                                    );
-                                  })}
-                                </ul>
-                              </div>
+                              {selectedChat === "groupChat" ? "" :
+                                <div class="dropdown">
+                                  <span
+                                    className="add"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    <i class="fa-solid fa-circle-plus me-1"></i>{" "}
+                                    Add tag
+                                  </span>
+                                  <ul class="dropdown-menu">
+                                    {allTags.map((item) => {
+                                      return (
+                                        <li
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            handleAssignTask(
+                                              item.id,
+                                              recipient[0]
+                                            )
+                                          }
+                                        >
+                                          {item.name}
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                              }
                             </div>
                             {/* <span className="status online">Online</span> */}
                           </div>
@@ -1850,13 +1873,15 @@ function Messages({
                             </option>
                           </select>
                         </div> */}
-                            <button
-                              onClick={() => onSubmit("audio", recipient[0])}
-                              className="clearButton2 xl"
-                              effect="ripple"
-                            >
-                              <i className="fa-regular fa-phone" />
-                            </button>
+                            {selectedChat === "groupChat" ? "" :
+                              <button
+                                onClick={() => onSubmit("audio", recipient[0])}
+                                className="clearButton2 xl"
+                                effect="ripple"
+                              >
+                                <i className="fa-regular fa-phone" />
+                              </button>
+                            }
                             {isVideoOn ? (
                               <button
                                 onClick={() => onSubmit("video", recipient[0])}
@@ -1879,43 +1904,58 @@ function Messages({
                               </button>
                               <ul class="dropdown-menu">
                                 <li>
-                                  <a
+                                  <div
                                     class="dropdown-item"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
                                     Mark as unread
-                                  </a>
+                                  </div>
                                 </li>
                                 <li>
-                                  <a
+                                  <div
                                     class="dropdown-item"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
                                     Archive this chat
-                                  </a>
+                                  </div>
                                 </li>
-                                {activeTab === "group" && groupNameEdit && (
+                                {selectedChat === "groupChat" && (
                                   <li>
-                                    <a
+                                    <div
                                       class="dropdown-item"
                                       href="#"
                                       onClick={() => setManageGroupChat(true)}
                                     >
                                       Manage Group Chat
-                                    </a>
+                                    </div>
+                                  </li>
+                                )}
+
+                                {selectedChat === "groupChat" && (
+                                  <li>
+                                    <div
+                                      class="dropdown-item"
+                                      href="#"
+                                      onClick={() => {
+                                        setGroupLeaveId(selectedgroupUsers.filter((item) => item.user_id === account.id)[0].id);
+                                        setGroupLeavePopUp(true);
+                                      }}
+                                    >
+                                      Leave this group
+                                    </div>
                                   </li>
                                 )}
 
                                 <li>
-                                  <a
+                                  <div
                                     class="dropdown-item text-danger"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
                                     Close this chat
-                                  </a>
+                                  </div>
                                 </li>
                               </ul>
                             </div>
@@ -1926,87 +1966,91 @@ function Messages({
                       )}
                       <div className="messageContent">
                         <div className="messageList" ref={messageListRef}>
-                          {allMessage?.[recipient[0]]?.map(
-                            (item, index, arr) => {
-                              const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                              const todayDate = new Date()
-                                .toISOString()
-                                ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                              const isNewDate =
-                                index === 0 ||
-                                messageDate !==
-                                arr[index - 1].time?.split(" ")[0];
 
-                              return (
-                                <React.Fragment key={index}>
-                                  {isNewDate && (
-                                    <div
-                                      className="dateHeader"
-                                      ref={(el) =>
-                                        (dateHeaderRefs.current[index] = el)
-                                      }
-                                    >
-                                      <p>
-                                        {messageDate === todayDate
-                                          ? "Today"
-                                          : messageDate}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {!isAnyDateHeaderVisible && isNewDate && (
-                                    <div className="dateHeader sticky">
-                                      <p>
-                                        {messageDate === todayDate
-                                          ? "Today"
-                                          : messageDate}
-                                      </p>
-                                    </div>
-                                  )}
-                                  {/* Message content */}
-                                  {item.from === (recipient[2] === "groupChat"?account.name: extension) ? (
-                                    <div className="messageItem sender">
-                                      <div className="second">
-                                        <h6>
-                                          {item.from},
-                                          <span>
-                                            {item.time
-                                              ?.split(" ")[1]
-                                              ?.split(":")
-                                              .slice(0, 2)
-                                              .join(":")}
-                                          </span>
-                                        </h6>
-                                        <div className="messageDetails">
-                                          <p>{item.body}</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div className="messageItem receiver">
-                                      <div className="second">
-                                        <h6>
-                                          {item.from},
-                                          <span>
-                                            {item.time
-                                              ?.split(" ")[1]
-                                              ?.split(":")
-                                              .slice(0, 2)
-                                              .join(":")}
-                                          </span>
-                                        </h6>
-                                        <div className="messageDetails">
-                                          <p>{item.body}</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  )}
-                                </React.Fragment>
-                              );
-                            }
-                          )}
 
                           {recipient[0] ? (
-                            ""
+                            <>
+                              {allMessage?.[recipient[0]]?.map(
+                                (item, index, arr) => {
+                                  const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
+                                  const todayDate = new Date()
+                                    .toISOString()
+                                    ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                  const isNewDate =
+                                    index === 0 ||
+                                    messageDate !==
+                                    arr[index - 1].time?.split(" ")[0];
+
+                                  return (
+
+                                    <React.Fragment key={index}>
+                                      {isNewDate && (
+                                        <div
+                                          className="dateHeader"
+                                          ref={(el) =>
+                                            (dateHeaderRefs.current[index] = el)
+                                          }
+                                        >
+                                          <p>
+                                            {messageDate === todayDate
+                                              ? "Today"
+                                              : messageDate}
+                                          </p>
+                                        </div>
+                                      )}
+                                      {!isAnyDateHeaderVisible && isNewDate && (
+                                        <div className="dateHeader sticky">
+                                          <p>
+                                            {messageDate === todayDate
+                                              ? "Today"
+                                              : messageDate}
+                                          </p>
+                                        </div>
+                                      )}
+                                      {/* Message content */}
+                                      {item.from === (recipient[2] === "groupChat" ? account.name : extension) ? (
+                                        <div className="messageItem sender">
+                                          <div className="second">
+                                            <h6>
+                                              {item.from},
+                                              <span>
+                                                {item.time
+                                                  ?.split(" ")[1]
+                                                  ?.split(":")
+                                                  .slice(0, 2)
+                                                  .join(":")}
+                                              </span>
+                                            </h6>
+                                            <div className="messageDetails">
+                                              <p>{item.body}</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div className="messageItem receiver">
+                                          <div className="second">
+                                            <h6>
+                                              {item.from},
+                                              <span>
+                                                {item.time
+                                                  ?.split(" ")[1]
+                                                  ?.split(":")
+                                                  .slice(0, 2)
+                                                  .join(":")}
+                                              </span>
+                                            </h6>
+                                            <div className="messageDetails">
+                                              <p>{item.body}</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </React.Fragment>
+                                  );
+                                }
+                              )}
+
+                            </>
                           ) : (
                             <div className="startAJob">
                               <div class="text-center mt-3">
@@ -2455,7 +2499,7 @@ function Messages({
                                             <div className="my-auto ms-2 ms-xl-3">
                                               <h4>{item.name}</h4>
                                             </div>
-                                            <div className="col text-end my-auto">
+                                            {item.email !== account.email ? <div className="col text-end my-auto">
                                               <button
                                                 class="clearButton2"
                                                 effect="ripple"
@@ -2467,7 +2511,8 @@ function Messages({
                                               >
                                                 <i class="fa-regular fa-xmark"></i>
                                               </button>
-                                            </div>
+                                            </div> : ""}
+
                                           </div>
                                         </div>
                                       </div>
@@ -2497,6 +2542,61 @@ function Messages({
               </div>
             </div>
           </div>
+          {groupLeavePopUp ? (
+            <div className="popup">
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+                  <div className="row content col-xl-4">
+                    <div className="col-2 px-0">
+                      <div className="iconWrapper">
+                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                      </div>
+                    </div>
+                    <div className="col-10 ps-0">
+                      <h4>Warning!</h4>
+                      <p>
+                        Are you sure you want to leave from this group?
+                      </p>
+                      <div className="mt-2 d-flex justify-content-between">
+
+                        <button
+                          disabled={loading}
+                          className="panelButton m-0"
+                          onClick={() => {
+                            handleremoveUserFromGroup(groupLeaveId)
+                            setGroupLeavePopUp(false);
+                            setRecipient([])
+                            setGroupRefresh(groupRefresh + 1)
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+
+
+                        <button
+                          className="panelButton gray m-0 float-end"
+                          onClick={() => {
+                            setGroupLeavePopUp(false);
+                            setGroupLeaveId("")
+                          }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </section>
 
         {newGroupLoader ? (
