@@ -69,9 +69,10 @@ function GlobalCalls() {
         localStorage.setItem("cardList", JSON.stringify(apiData.data));
       }
     }
-   
+    if (cardListRefresh > 0) {
       getData();
- }, [account?.account_id, cardListRefresh]);
+    }
+  }, [account?.account_id, cardListRefresh]);
 
   // Getting all billing address details
   useEffect(() => {
@@ -88,7 +89,9 @@ function GlobalCalls() {
         localStorage.setItem("billingList", JSON.stringify(apiData.data));
       }
     }
-    getData();
+    if (billingListRefresh > 0) {
+      getData();
+    }
   }, [billingListRefresh]);
 
   // Getting account details

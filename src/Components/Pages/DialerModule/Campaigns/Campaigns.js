@@ -4,6 +4,7 @@ import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 import { useNavigate } from 'react-router-dom'
 import { generalGetFunction } from '../../../GlobalFunction/globalFunction'
+import { toast } from 'react-toastify'
 
 function Campaigns() {
     const navigate = useNavigate();
@@ -24,6 +25,22 @@ function Campaigns() {
         }
         getCampaignData();
     },[]);
+
+    async function startCampaign(id){
+        generalGetFunction(`/campaign/start/${id}`).then((res)=>{
+            toast.success(res.message)
+        }).catch((err)=>{
+            toast.error(err.response.data.message)
+        })
+    }
+
+    async function stopCampaign(id){
+        generalGetFunction(`/campaign/stop/${id}`).then((res)=>{
+            toast.success(res.message)
+        }).catch((err)=>{
+            toast.error(err.response.data.message)
+        })
+    }
     return (
         <>
             <main className='mainContent'>
@@ -211,12 +228,12 @@ function Campaigns() {
                                                              <td><span className='ellipsis'>Customerlist.xls</span></td>
                                                              <td>
                                                                  <div class="dropdown">
-                                                                     <a class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                     <div class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                          <i className="fa-solid fa-ellipsis-vertical" />
-                                                                     </a>
+                                                                     </div>
                                                                      <ul class="dropdown-menu actionBtnDropdowns">
-                                                                         <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Edit</a></li>
-                                                                         <li className='dropdown-item'><a class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Pause</a></li>
+                                                                         <li className='dropdown-item' onClick={()=>stopCampaign(item.id)}><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Stop</div></li>
+                                                                         <li className='dropdown-item' onClick={()=>startCampaign(item.id)}><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Start</div></li>
                                                                      </ul>
                                                                  </div>
                                                              </td>

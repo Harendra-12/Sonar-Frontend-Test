@@ -107,7 +107,7 @@ function BillingCardSave({ closePopup }) {
         exp_month: Number(cardDetails.expiryDate.split("/")[0]),
         exp_year: Number(
           String(year).slice(0, 2) +
-          String(cardDetails.expiryDate.split("/")[1])
+            String(cardDetails.expiryDate.split("/")[1])
         ),
         cvc: cardDetails.cvv,
         name: cardDetails.cardName,
@@ -175,8 +175,9 @@ function BillingCardSave({ closePopup }) {
                     </label>
                     <input
                       placeholder="Card Holder's Name"
-                      className={`formItem ${errorCard.cardName ? "error-border" : ""
-                        }`}
+                      className={`formItem ${
+                        errorCard.cardName ? "error-border" : ""
+                      }`}
                       name="cardName"
                       id="traveller_name_on_card"
                       type="text"
@@ -214,8 +215,9 @@ function BillingCardSave({ closePopup }) {
                       <input
                         placeholder="Card Number"
                         maxLength={16}
-                        className={`formItem ${errorCard.cardNumber ? "error-border" : ""
-                          }`}
+                        className={`formItem ${
+                          errorCard.cardNumber ? "error-border" : ""
+                        }`}
                         name="cardNumber"
                         id="traveller_card_number"
                         type="text"
@@ -250,8 +252,9 @@ function BillingCardSave({ closePopup }) {
                         </label>
                         <input
                           placeholder="YEAR"
-                          className={`formItem payment_exp_date ${errorCard.expiryDate ? "error-border" : ""
-                            }`}
+                          className={`formItem payment_exp_date ${
+                            errorCard.expiryDate ? "error-border" : ""
+                          }`}
                           name="traveller_card_cvv"
                           type="number"
                           {...getExpiryDateProps({
@@ -284,8 +287,9 @@ function BillingCardSave({ closePopup }) {
                     <div className="position-relative">
                       <input
                         placeholder="cvv"
-                        className={`formItem payment_exp_date ${errorCard.cvv ? "error-border" : ""
-                          }`}
+                        className={`formItem payment_exp_date ${
+                          errorCard.cvv ? "error-border" : ""
+                        }`}
                         name="cvv"
                         type="number"
                         onChange={(e) => {

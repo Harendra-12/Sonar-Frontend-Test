@@ -187,6 +187,12 @@ const Socket = () => {
                 conferenceScreenShareStatus: result,
               });
               break;
+            case "broadcastGroupMessage":
+              dispatch({
+                type:"SET_GROUPMESSAGE",
+                groupMessage:result
+              })
+              break;
             case "conferenceMessage":
               if (
                 result["room_id"] == RoomID) {

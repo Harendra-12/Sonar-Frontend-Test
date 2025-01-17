@@ -745,7 +745,9 @@ export const DummySipRegisteration = ({
                             <ConferenceMessages 
                             sendMessage={sendMessage} 
                             conferenceId={locationState.state.room_id} 
-                            userName={currentUser?.name} />
+                            userName={currentUser?.name}
+                            setToggleMessages={setToggleMessages}
+                             />
                           </div>
                         )}
                         <div

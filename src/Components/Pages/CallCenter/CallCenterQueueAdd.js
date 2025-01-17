@@ -53,17 +53,17 @@ function CallCenterQueueAdd() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: "",
-    tier_position: "",
+    tier_level: 0,
+    tier_position: 0,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
     busy_delay: "",
     no_answer_delay: "",
     wrap_up_time: "",
-    reserve_agents: "",
-    truncate_agents_on_load: "",
-    truncate_tiers_on_load: "",
+    reserve_agents: 0,
+    truncate_agents_on_load: 0,
+    truncate_tiers_on_load: 0,
   });
   const {
     register,
@@ -255,7 +255,8 @@ function CallCenterQueueAdd() {
 
   // Handle form submit and validation errors
   const handleFormSubmit = handleSubmit(async (data) => {
-    setLoading(true);
+   
+
     if (!validateAgents()) {
       setErr("agent", {
         type: "manual",
@@ -268,6 +269,7 @@ function CallCenterQueueAdd() {
       toast.error("Please add at least one agent");
       return;
     }
+    setLoading(true);
 
     const { recording_enabled } = data;
 
@@ -549,7 +551,7 @@ function CallCenterQueueAdd() {
           <Header title="Call Center Queue" />
         </div>
         <div className="col-xl-12">
-          {loading && loadings ? (
+          {loading ? (
             <div colSpan={99}>
               <SkeletonFormLoader />
             </div>
@@ -673,7 +675,7 @@ function CallCenterQueueAdd() {
                           aria-controls="nav-queue"
                           aria-selected="false"
                         >
-                          Queue Rules
+                          Queue Announcement
                         </button>
                         <button
                           class="nav-link"
@@ -1201,6 +1203,32 @@ function CallCenterQueueAdd() {
                               )}
                             </div>
                           </div>
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Queue Announcement</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Make Queue Announcement enable and disable.
+                              </label>
+                            </div>
+                            <div className="col-xl-6 col-12">
+                              <select
+                                type="text"
+                                name="queue_description"
+                                defaultValue="0"
+                                className="formItem"
+                                {...register("queue_announcement", {
+                                  ...noSpecialCharactersValidator,
+                                })}
+                                onKeyDown={restrictToAllowedChars}
+                              >
+                              <option value="1">Enable</option>
+                              <option value="0">Disable</option>
+                              </select>
+                              {errors.queue_description && (
+                                <ErrorMessage text={errors.queue_description} />
+                              )}
+                            </div>
+                          </div>
                         </form>
                       </div>
                       <div
@@ -1335,35 +1363,36 @@ function CallCenterQueueAdd() {
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
                     <div class="buttonGroup">
-                      {selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != agent.length ? (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            setSelectedAgentToEdit(agent);
-                            setBulkEditPopup(true);
-                          }}
-                        >
-                          <span class="text">Edit All</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
-                          </span>
-                        </button>
-                      )}
+                      {agent.length > 0 &&
+                        (selectedAgentToEdit.length > 0 &&
+                          selectedAgentToEdit.length != agent.length ? (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setSelectedAgentToEdit(agent);
+                              setBulkEditPopup(true);
+                            }}
+                          >
+                            <span class="text">Edit All</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        ))}
                       <button
                         type="button"
                         class="panelButton"
@@ -1418,16 +1447,12 @@ function CallCenterQueueAdd() {
                                     className={`col-${advance.includes(item.id) ? "2" : "4"
                                       } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">
-                                          Agent Name{" "}
-                                          <span className="text-danger">*</span>
-                                        </label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">
+                                        Agent Name{" "}
+                                        <span className="text-danger">*</span>
+                                      </label>
+                                    </div>}
                                     <div className="position-relative">
                                       <select
                                         disabled
@@ -1491,13 +1516,9 @@ function CallCenterQueueAdd() {
                                     className={`col-${advance.includes(item.id) ? "2" : "4"
                                       } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">Password</label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">Password</label>
+                                    </div>}
                                     <div className="position-relative">
                                       <input
                                         type="text"
@@ -1515,13 +1536,9 @@ function CallCenterQueueAdd() {
                                     className={`col-${advance.includes(item.id) ? "1" : "2"
                                       } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label htmlFor="">Tier Level</label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label htmlFor="">Tier Level</label>
+                                    </div>}
                                     <select
                                       className="formItem me-0"
                                       style={{ width: "100%" }}
@@ -1548,18 +1565,14 @@ function CallCenterQueueAdd() {
                                     className={`col-${advance.includes(item.id) ? "1" : "2"
                                       } ps-0 pe-2`}
                                   >
-                                    <div className="formLabel">
-                                      {index === 0 ? (
-                                        <label
-                                          htmlFor=""
-                                          style={{ whiteSpace: "nowrap" }}
-                                        >
-                                          Tier Position
-                                        </label>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
+                                    {index === 0 && <div className="formLabel">
+                                      <label
+                                        htmlFor=""
+                                        style={{ whiteSpace: "nowrap" }}
+                                      >
+                                        Tier Position
+                                      </label>
+                                    </div>}
                                     <select
                                       className="formItem me-0"
                                       style={{ width: "100%" }}
@@ -1586,15 +1599,11 @@ function CallCenterQueueAdd() {
                                   {advance.includes(item.id) && (
                                     <>
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Call Timeout
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Call Timeout
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -1609,15 +1618,11 @@ function CallCenterQueueAdd() {
                                         </div>
                                       </div>
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Reject Delay
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Reject Delay
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -1633,15 +1638,11 @@ function CallCenterQueueAdd() {
                                       </div>
 
                                       <div className="col-2 ps-0 pe-2">
-                                        <div className="formLabel">
-                                          {index === 0 ? (
-                                            <label htmlFor="">
-                                              Max No Answer
-                                            </label>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </div>
+                                        {index === 0 && <div className="formLabel">
+                                          <label htmlFor="">
+                                            Max No Answer
+                                          </label>
+                                        </div>}
                                         <div className="position-relative">
                                           <input
                                             type="number"
@@ -2095,17 +2096,124 @@ function CallCenterQueueAdd() {
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
-            <div className="mt-3 col-12">
-              <div className="row">
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Tier Level</label>
-                  </div>
+            <div className="mt-3 row g-2">
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Tier Level</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="level"
+                  value={settingsForBulkEdit.tier_level}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      tier_level: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>0</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                </select>
+              </div>
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
+                    Tier Position
+                  </label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="position"
+                  value={settingsForBulkEdit.tier_position}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      tier_position: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>0</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                </select>
+              </div>
+
+
+              <div className="col-3 ">
+                <div className="formLabel">
+                  <label htmlFor="">Reject Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="reject_delay_time"
+                    value={settingsForBulkEdit.reject_delay}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        reject_delay: e.target.value,
+                      })
+                    }
+                    className="formItem"
+                    placeholder="Reject Delay"
+                    defaultValue={0}
+                  />
+                </div>
+              </div>
+
+              <div className="col-3">
+                <div className="formLabel">
+                  <label htmlFor="">Busy Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="busy_delay_time"
+                    value={settingsForBulkEdit.busy_delay}
+                    onChange={(e) =>
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        busy_delay: e.target.value,
+                      })
+                    }
+                    className="formItem"
+                    placeholder="Busy Delay"
+                    defaultValue={0}
+                  />
+                </div>
+              </div>
+              <div className="col-4 ">
+                <div className="formLabel">
+                  <label htmlFor="">Call Timeout</label>
+                </div>
+                <div className="position-relative">
                   <select
                     className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="level"
-                    value={settingsForBulkEdit.tier_level}
+                    type="number"
+                    name="call_timeout"
+                    value={settingsForBulkEdit.call_timeout}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
@@ -2126,229 +2234,140 @@ function CallCenterQueueAdd() {
                     <option value={9}>9</option>
                   </select>
                 </div>
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
-                      Tier Position
-                    </label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="position"
-                    value={settingsForBulkEdit.tier_position}
+              </div>
+              <div className="col-4">
+                <div className="formLabel">
+                  <label htmlFor="">Max No Answer</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="max_no_answer"
+                    value={settingsForBulkEdit.max_no_answer}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        tier_position: e.target.value,
+                        max_no_answer: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>0</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                    <option value={7}>7</option>
-                    <option value={8}>8</option>
-                    <option value={9}>9</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Max No Answer"
+                    defaultValue={0}
+                  />
                 </div>
+              </div>
 
-                <div className="col-4 ">
-                  <div className="formLabel">
-                    <label htmlFor="">Call Timeout</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="call_timeout"
-                      value={settingsForBulkEdit.call_timeout}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          call_timeout: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Call Timeout"
-                    />
-                  </div>
+              <div className="col-4">
+                <div className="formLabel">
+                  <label htmlFor="">Wrap Up Time</label>
                 </div>
-
-                <div className="col-4 ">
-                  <div className="formLabel">
-                    <label htmlFor="">Reject Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="reject_delay_time"
-                      value={settingsForBulkEdit.reject_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          reject_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Reject Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Busy Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="busy_delay_time"
-                      value={settingsForBulkEdit.busy_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          busy_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Busy Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-4">
-                  <div className="formLabel">
-                    <label htmlFor="">Wrap Up Time</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="wrap_up_time"
-                      value={settingsForBulkEdit.wrap_up_time}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          wrap_up_time: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Wrap Up Time"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">Max No Answer</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="max_no_answer"
-                      value={settingsForBulkEdit.max_no_answer}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          max_no_answer: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="Max No Answer"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">No Answer Delay</label>
-                  </div>
-                  <div className="position-relative">
-                    <input
-                      type="number"
-                      name="no_answer_delay_time"
-                      value={settingsForBulkEdit.no_answer_delay}
-                      onChange={(e) =>
-                        setSettingsForBulkEdit({
-                          ...settingsForBulkEdit,
-                          no_answer_delay: e.target.value,
-                        })
-                      }
-                      className="formItem"
-                      placeholder="No Answer Delay"
-                    />
-                  </div>
-                </div>
-
-                <div className="col-5">
-                  <div className="formLabel">
-                    <label htmlFor="">Reserve Agents</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="reserve_agents"
-                    value={settingsForBulkEdit.reserve_agents}
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="wrap_up_time"
+                    value={settingsForBulkEdit.wrap_up_time}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        reserve_agents: e.target.value,
+                        wrap_up_time: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Wrap Up Time"
+                    defaultValue={0}
+                  />
                 </div>
+              </div>
 
-                <div className="col-7">
-                  <div className="formLabel">
-                    <label htmlFor="">Truncate agents on load</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="truncate-agents-on-load"
-                    value={settingsForBulkEdit.truncate_agents_on_load}
+              <div className="col-6">
+                <div className="formLabel">
+                  <label htmlFor="">No Answer Delay</label>
+                </div>
+                <div className="position-relative">
+                  <input
+                    type="number"
+                    name="no_answer_delay_time"
+                    value={settingsForBulkEdit.no_answer_delay}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        truncate_agents_on_load: e.target.value,
+                        no_answer_delay: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+                    className="formItem"
+                    placeholder="No Answer Delay"
+                    defaultValue={0}
+                  />
                 </div>
+              </div>
 
-                <div className="col-6">
-                  <div className="formLabel">
-                    <label htmlFor="">Truncate tiers on load</label>
-                  </div>
-                  <select
-                    className="formItem me-0"
-                    style={{ width: "100%" }}
-                    name="truncate-tiers-on-load"
-                    value={settingsForBulkEdit.truncate_tiers_on_load}
-                    onChange={(e) =>
-                      setSettingsForBulkEdit({
-                        ...settingsForBulkEdit,
-                        truncate_tiers_on_load: e.target.value,
-                      })
-                    }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>False</option>
-                    <option value={1}>True</option>
-                  </select>
+              <div className="col-6">
+                <div className="formLabel">
+                  <label htmlFor="">Reserve Agents</label>
                 </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="reserve_agents"
+                  value={settingsForBulkEdit.reserve_agents}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      reserve_agents: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-6">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate agents on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-agents-on-load"
+                  value={settingsForBulkEdit.truncate_agents_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_agents_on_load: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
+              </div>
+
+              <div className="col-6">
+                <div className="formLabel">
+                  <label htmlFor="">Truncate tiers on load</label>
+                </div>
+                <select
+                  className="formItem me-0"
+                  style={{ width: "100%" }}
+                  name="truncate-tiers-on-load"
+                  value={settingsForBulkEdit.truncate_tiers_on_load}
+                  onChange={(e) =>
+                    setSettingsForBulkEdit({
+                      ...settingsForBulkEdit,
+                      truncate_tiers_on_load: e.target.value,
+                    })
+                  }
+                  id="selectFormRow"
+                  defaultValue={0}
+                >
+                  <option value={0}>False</option>
+                  <option value={1}>True</option>
+                </select>
               </div>
             </div>
             <div className="col-xl-12 mt-2">

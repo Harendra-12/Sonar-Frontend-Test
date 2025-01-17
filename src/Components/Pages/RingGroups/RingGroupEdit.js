@@ -64,9 +64,9 @@ const RingGroupEdit = () => {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    delay: "",
-    timeOut: "",
-    status: "",
+    delay: 0,
+    timeOut: "0",
+    status: "active",
   });
   const {
     register,
@@ -1466,7 +1466,7 @@ const RingGroupEdit = () => {
                               style={
                                 index === 0
                                   ? { marginTop: 32, width: 50 }
-                                  : { width: 30 }
+                                  : { width: 50 }
                               }
                             >
                               <div>
@@ -1995,6 +1995,7 @@ const RingGroupEdit = () => {
                       delay: e.target.value,
                     });
                   }}
+                  defaultValue={0}
                 >
                   <option>Delay</option>
                   {(() => {
@@ -2027,6 +2028,7 @@ const RingGroupEdit = () => {
                     });
                   }}
                   id="selectFormRow"
+                  defaultValue={0}
                 >
                   <option>Timeout</option>
                   {(() => {
@@ -2060,6 +2062,7 @@ const RingGroupEdit = () => {
                   }}
                   id="selectFormRow"
                   name="status"
+                  defaultValue={"active"}
                 >
                   <option className="status" value="active">
                     True
