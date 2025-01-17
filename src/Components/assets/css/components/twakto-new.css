@@ -75,17 +75,10 @@
     padding-bottom: 16px !important;
 }
 
-
-.wizard-form {
-    /* overflow: auto; */
-    padding-top: 54px;
-}
-
-
 .tawk-wizard-chat-form {
     /* max-width: 800px !important; */
     margin-top: 0 !important;
-    padding: 0 42px !important;
+    padding: 0 42px 30px !important;
 }
 
 .tawk-text-bold-4 {
@@ -187,7 +180,6 @@
     box-sizing: border-box;
     margin: 0;
     -webkit-appearance: none;
-    font-family: Lato;
     font-size: 13px;
     line-height: 1.618;
     padding: 0 !important;
