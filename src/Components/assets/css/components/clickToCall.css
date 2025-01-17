@@ -9,6 +9,20 @@
     z-index: 9999;
 }
 
+.clickToCall-preview {
+    --prim-color: #f42633;
+    --text-color: #fff;
+
+
+    position: static;
+    right: 10px;
+    
+    z-index: 9999;
+}
+
+
+
+
 .clickToCall .clickToCallButton button {
     width: 60px;
     height: 60px;
@@ -35,6 +49,17 @@
     color: var(--text-color);
 }
 
+.clickToCall-preview .clickToCallModule {
+    margin-top: 15px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2);
+    width: 350px;
+    /* height: calc(100% - 60px); */
+    border: none;
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background-color: var(--text-color);
+}
 .clickToCall .clickToCallModule {
     margin-top: 15px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2);
