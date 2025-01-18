@@ -110,8 +110,7 @@ function CallCenterQueue() {
       return;
     }
 
-    navigate("/cal-center-queue-add");
-    backToTop();
+    
   };
 
   async function handleDelete(id) {
@@ -375,7 +374,7 @@ function CallCenterQueue() {
                                           <td
                                             onClick={() =>
                                               navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
+                                                `/cal-center-queue-edit?id =${item.id}`
                                               )
                                             }
                                           >

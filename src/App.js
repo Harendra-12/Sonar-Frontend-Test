@@ -6,6 +6,7 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
+import './index.css'
 import ProtectedRoute from "./Components/CommonComponents/ProtectedRoute";
 import Navbar from "./Components/CommonComponents/Navbar";
 import Login from "./Components/CommonComponents/Login";
@@ -140,6 +141,7 @@ import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
 import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
 import VoiceMailReport from "./Components/Pages/Voice/VoiceMailReport";
 import CampaignCreate from "./Components/Pages/DialerModule/Campaigns/CampaignCreate";
+import CampaignEdit from "./Components/Pages/DialerModule/Campaigns/CampaignEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -198,6 +200,7 @@ function App() {
         <Navbar />
 
         <Routes>
+          <Route path="/campaign-edit" element={<CampaignEdit/>}/>
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
