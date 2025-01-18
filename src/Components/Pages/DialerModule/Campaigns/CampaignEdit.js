@@ -40,7 +40,8 @@ function CampaignCreate() {
   const [filteredDids, setFilteredDids] = useState([]);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
-
+  const [popUp, setPopUp] = useState(false);
+  const [leadsEditState, setLeadsEditState] = useState();
   const [editState, seteditState] = useState();
   const [editSteps, seteditSteps] = useState({
     firstStep: false,
@@ -48,6 +49,7 @@ function CampaignCreate() {
     thirdStep: false,
     fourthStep: false,
   });
+  const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
 
   const [campaignRefresh, setcampaignRefresh] = useState(0);
 
@@ -62,15 +64,16 @@ function CampaignCreate() {
   } = useForm();
 
   const handleDeleteAgent = async (id) => {
+    setLoading(true);
     const delteAgent = await generalDeleteFunction(
       `/campaign-agent/destroy/${id}`
     );
 
     if (delteAgent.status) {
-      console.log(delteAgent);
       setcampaignRefresh((prev) => prev + 1);
+      setLoading(false);
     } else {
-      console.log(delteAgent);
+      setLoading(false);
     }
   };
 
@@ -108,10 +111,8 @@ function CampaignCreate() {
     async function getDidData() {
       const getDid = await generalGetFunction(`/campaign/show/${value}`);
 
-      console.log("getDid", getDid);
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
-        console.log("agents", agents);
 
         seteditSteps({
           firstStep: true,
@@ -131,67 +132,60 @@ function CampaignCreate() {
   };
 
   const findAgents = () => {
-    const agent = editState.agents;
-    setSelectedAgent(agent.map((item) => item.user_id));
-    // console.log("Agent1",agent)
-
-    // const filterAgent = agent.filter((item)=>item.user_id)
-    // console.log("filterAgent",filterAgent)
-    // console.log(agentData)
-  };
-
-  const FindselectedAgent = () => {
-    const agentsArr = agents.data;
-    const EditStateAgent = editState.agents;
-
-    
-    console.log("Agents",agentsArr,"EditStateAgent",editState.agents)
-    const matchId = agentsArr
-    ?.filter((item) =>
-      EditStateAgent.some((agent) => agent.user_id === item.id) // Filtering logic
-    )
-    .map((item) => {
-      // Find the matching user_id from EditStateAgent
-      const matchedAgent = EditStateAgent.find((agent) => agent.user_id === item.id);
-      return {
-        ...item,             // Include all fields from agentsArr
-        Campaign_user_id: matchedAgent ? matchedAgent.id : null // Add user_id from EditStateAgent
-      };
-    });
-    setmatchIdAgent(matchId);
-    const unmatchId = agentsArr
-    ?.filter((item) =>
-      !EditStateAgent.some((agent) => agent.user_id === item.id)
-    )
-    .map((item) => {
-      const matchedAgent = EditStateAgent.find((agent) => agent.user_id === item.id);
-      return {
-        ...item, 
-        Campaign_user_id: matchedAgent ? matchedAgent.id : null // add user_id if found, or null if not
-      };
-    });
-    setunmatchIdAgent(unmatchId);
-    console.log("matchId", matchId);
-    console.log("unmatchId", unmatchId);
+    const agent = editState?.agents;
+    setSelectedAgent(agent?.map((item) => item.user_id));
   };
 
   useEffect(() => {
-    // console.log("EditState",editState.dialer)
+    if (editState && editState.agents.length == 0) {
+      setunmatchIdAgent(agents.data);
+      setmatchIdAgent([]);
+    } else if (editState && editState.agents.length != 0) {
+      const agentsArr = agents?.data;
+      const EditStateAgent = editState?.agents;
+      const matchId = agentsArr
+        ?.filter(
+          (item) => EditStateAgent.some((agent) => agent.user_id === item.id) // Filtering logic
+        )
+        .map((item) => {
+          // Find the matching user_id from EditStateAgent
+          const matchedAgent = EditStateAgent.find(
+            (agent) => agent.user_id === item.id
+          );
+          return {
+            ...item, // Include all fields from agentsArr
+            Campaign_user_id: matchedAgent ? matchedAgent.id : null, // Add user_id from EditStateAgent
+          };
+        });
+      setmatchIdAgent(matchId);
+      const unmatchId = agentsArr
+        ?.filter(
+          (item) => !EditStateAgent.some((agent) => agent.user_id === item.id)
+        )
+        .map((item) => {
+          const matchedAgent = EditStateAgent.find(
+            (agent) => agent.user_id === item.id
+          );
+          return {
+            ...item,
+            Campaign_user_id: matchedAgent ? matchedAgent.id : null, // add user_id if found, or null if not
+          };
+        });
+      setunmatchIdAgent(unmatchId);
+    }
+  }, [agents, editState]);
 
+  useEffect(() => {
     if (stepSelector === 1 && editState?.title) {
-      // console.log("watch",watch())
       const result = {
         title: editState.title,
         campaign_type: editState.campaign_type,
         description: editState.description,
       };
-      console.log("result", result);
+
       reset(result);
       findBusinessNum();
-    }
-
-    console.log("EditState", editState, agents);
-    if (stepSelector === 2 && editState?.dialer) {
+    } else if (stepSelector === 2 && editState?.dialer) {
       const result = {
         preview_time: editState.dialer.preview_time,
         wrapup_time: editState.dialer.wrapup_time,
@@ -206,10 +200,8 @@ function CampaignCreate() {
         left_voicemail: editState.dialer.left_voicemail,
       };
       reset(result);
-    }
-    if (stepSelector === 3) {
+    } else if (stepSelector === 3) {
       findAgents();
-      FindselectedAgent();
     }
   }, [stepSelector, editState]);
 
@@ -268,13 +260,14 @@ function CampaignCreate() {
     getDidData();
   }, []);
 
+  console.log(editState);
+
   useEffect(() => {
     const timer = setTimeout(async () => {
       const getAgentData = async () => {
         const getAgents = await generalGetFunction(
           `agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`
         );
-        console.log("Priyanshu", agentSearch);
 
         if (getAgents?.status) {
           setAgents(getAgents.data);
@@ -325,12 +318,12 @@ function CampaignCreate() {
     //   return;
     // }
     if (editState.dialer == null) {
-      setLoading(true);
       const payload = { ...data, campaign_id: campaignId };
       const apiData = await generalPostFunction(
         "/dialer-setting/store",
         payload
       );
+
       if (apiData?.status) {
         setCompletedStep(2);
         setStepSelector(3);
@@ -341,6 +334,7 @@ function CampaignCreate() {
       }
     } else {
       const payload = { ...data, campaign_id: campaignId };
+      setLoading(true);
       const apiData = await generalPutFunction(
         `/dialer-setting/update/${editState.dialer.id}`,
         payload
@@ -365,7 +359,7 @@ function CampaignCreate() {
     }
     setLoading(true);
     const payload = {
-      campaign_id: campaignId,
+      campaign_id: value,
       user_id: selectedAgent,
       status: "active",
     };
@@ -375,6 +369,7 @@ function CampaignCreate() {
       setStepSelector(4);
       setLoading(false);
       toast.success(apiData.message);
+      setcampaignRefresh((prev) => prev + 1);
     } else {
       setLoading(false);
     }
@@ -385,14 +380,14 @@ function CampaignCreate() {
     if (newFile) {
       const maxSizeInKB = 2048;
       const fileSizeInKB = newFile.size / 1024;
-      console.log("This is file size", fileSizeInKB);
+
       if (fileSizeInKB > maxSizeInKB) {
         toast.error("Please choose a file less than 2048 kilobytes.");
       } else {
         setLoading(true);
         const parsedData = new FormData();
         parsedData.append("csv_file", newFile);
-        parsedData.append("campaign_id", campaignId);
+        parsedData.append("campaign_id", value);
         const apiData = await fileUploadFunction(
           "/campaign-lead/store",
           parsedData
@@ -431,7 +426,7 @@ function CampaignCreate() {
           : [...prevSelected, index] // Add if not selected
     );
   };
-console.log("selectedAgents", selectedAgent)
+
   // Function to get selected file name
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -441,7 +436,23 @@ console.log("selectedAgents", selectedAgent)
       // Additional logic for the newFile can go here
     }
   };
-  // console.log(selectedItems, watch());
+
+  const handleUpdateLeads = async () => {
+    const payload = { ...leadsEditState };
+    setLoading(true);
+    const apiData = await generalPutFunction(
+      `/campaign-lead/update/${leadsEditState.id}`,
+      payload
+    );
+    if (apiData?.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+      setcampaignRefresh((prev) => prev + 1);
+      setPopUp(false);
+    } else {
+      setLoading(false);
+    }
+  };
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -454,8 +465,8 @@ console.log("selectedAgents", selectedAgent)
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Campaign Create</h4>
-                        <p>Create a new campaign</p>
+                        <h4>Campaign Edit</h4>
+                        <p>Edit existing campaign</p>
                       </div>
                       <div className="buttonGroup">
                         {/* <div className='d-flex align-items-center'>
@@ -497,7 +508,7 @@ console.log("selectedAgents", selectedAgent)
                               handleFormSubmitStepTwo();
                             } else if (stepSelector === 3) {
                               handleFormSubmitStepThree();
-                            } else if (completedStep === 3) {
+                            } else if (stepSelector === 4) {
                               handleFormSubmitStepFour();
                             }
                           }}
@@ -1391,9 +1402,6 @@ console.log("selectedAgents", selectedAgent)
                                 </div>
                               </div>
                               <div className="mainContentApp m-0 bg-transparent mt-3">
-                                {/* {console.log("EditState", editState)} */}
-                                {/* {agents?.data?.map((item, index) => { */}
-
                                 <div className="flex-agent">
                                   <div>
                                     {unmatchIdAgent?.map((item, index) => {
@@ -1450,7 +1458,6 @@ console.log("selectedAgents", selectedAgent)
                                     })}
                                   </div>
                                   <div>
-                                  {console.log("matchIdAgent",matchIdAgent)}
                                     {matchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1480,7 +1487,9 @@ console.log("selectedAgents", selectedAgent)
 
                                             <button
                                               onClick={() =>
-                                                handleDeleteAgent(item.Campaign_user_id)
+                                                handleDeleteAgent(
+                                                  item.Campaign_user_id
+                                                )
                                               }
                                             >
                                               Delete
@@ -1537,69 +1546,125 @@ console.log("selectedAgents", selectedAgent)
                             <div className="popup music position-static bg-transparent w-auto h-auto">
                               <div className="container h-100">
                                 <div className="row h-100 justify-content-center align-items-center">
-                                  <div
-                                    className="card px-0 col-xl-5 shadow-none"
-                                    style={{
-                                      border: "1px solid var(--border-color)",
-                                    }}
+                                  <button
+                                    onClick={() =>
+                                      setAddNewCsvToggle(!addNewCsvToggle)
+                                    }
                                   >
-                                    <div className="header">
-                                      <h5 className="card-title fs14 border-bootm fw700">
-                                        Upload Documents
-                                      </h5>
-                                    </div>
-                                    <div className="card-body">
-                                      <div className="popup-border text-center p-2">
-                                        <input
-                                          type="file"
-                                          className="form-control-file d-none"
-                                          id="fileInput"
-                                          accept=".csv"
-                                          onChange={(e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                              // Check if the file type is MP3
-
-                                              const fileName =
-                                                file.name.replace(/ /g, "-");
-                                              const newFile = new File(
-                                                [file],
-                                                fileName,
-                                                {
-                                                  type: file.type,
-                                                }
-                                              );
-                                              setNewFile(newFile);
-                                              handleFileChange(e);
-                                            }
-                                          }}
-                                        />
-                                        <label
-                                          htmlFor="fileInput"
-                                          className="d-block"
-                                        >
-                                          <div className="test-user text-center">
-                                            <i
-                                              className="fa-solid fa-cloud-arrow-up"
-                                              style={{ fontSize: 30 }}
-                                            />
-                                            <p className="mb-0 mt-2 text-center">
-                                              Drag and Drop or{" "}
-                                              <span>Click on upload</span>
-                                            </p>
-                                            <span>
-                                              Supports formats : MP3, Max Size:
-                                              2MB
-                                            </span>
-                                          </div>
-                                        </label>
-                                        {fileName && (
-                                          <p className="mt-3 text-center">
-                                            Selected File:{" "}
-                                            <strong>{fileName}</strong>
-                                          </p>
-                                        )}
+                                    Add New CSV
+                                  </button>
+                                  {addNewCsvToggle && (
+                                    <div
+                                      className="card px-0 col-xl-5 shadow-none"
+                                      style={{
+                                        border: "1px solid var(--border-color)",
+                                      }}
+                                    >
+                                      <div className="header">
+                                        <h5 className="card-title fs14 border-bootm fw700">
+                                          Upload Documents
+                                        </h5>
                                       </div>
+                                      <div className="card-body">
+                                        <div className="popup-border text-center p-2">
+                                          <input
+                                            type="file"
+                                            className="form-control-file d-none"
+                                            id="fileInput"
+                                            accept=".csv"
+                                            onChange={(e) => {
+                                              const file = e.target.files[0];
+                                              if (file) {
+                                                // Check if the file type is MP3
+
+                                                const fileName =
+                                                  file.name.replace(/ /g, "-");
+                                                const newFile = new File(
+                                                  [file],
+                                                  fileName,
+                                                  {
+                                                    type: file.type,
+                                                  }
+                                                );
+                                                setNewFile(newFile);
+                                                handleFileChange(e);
+                                              }
+                                            }}
+                                          />
+                                          <label
+                                            htmlFor="fileInput"
+                                            className="d-block"
+                                          >
+                                            <div className="test-user text-center">
+                                              <i
+                                                className="fa-solid fa-cloud-arrow-up"
+                                                style={{ fontSize: 30 }}
+                                              />
+                                              <p className="mb-0 mt-2 text-center">
+                                                Drag and Drop or{" "}
+                                                <span>Click on upload</span>
+                                              </p>
+                                              <span>
+                                                Supports formats : MP3, Max
+                                                Size: 2MB
+                                              </span>
+                                            </div>
+                                          </label>
+                                          {fileName && (
+                                            <p className="mt-3 text-center">
+                                              Selected File:{" "}
+                                              <strong>{fileName}</strong>
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  <div>
+                                    <div className="tableContainer">
+                                      <table>
+                                        <thead>
+                                          <tr>
+                                            <th>Name</th>
+                                            <th>Number</th>
+                                            <th>Country Code</th>
+                                            <th>Address</th>
+                                            <th>Edit</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className="">
+                                          {console.log(editState)}
+                                          {editState?.leads?.map(
+                                            (item, index) => {
+                                              return (
+                                                <tr>
+                                                  <td>
+                                                    {item.first_name}{" "}
+                                                    {item.last_name}
+                                                  </td>
+                                                  <td>{item.phone_number}</td>
+                                                  <td>{item.phone_code}</td>
+                                                  <td>
+                                                    {item.address1}{" "}
+                                                    {item.address2}{" "}
+                                                    {item.address3}
+                                                  </td>
+                                                  <button
+                                                    className="tableButton edit"
+                                                    onClick={() => {
+                                                      setLeadsEditState(item);
+                                                      setPopUp(true);
+                                                    }}
+                                                  >
+                                                    <i className="fa-solid fa-pencil"></i>
+                                                  </button>
+                                                </tr>
+                                              );
+                                            }
+                                          )}
+                                        </tbody>
+                                      </table>
                                     </div>
                                   </div>
                                 </div>
@@ -1615,6 +1680,238 @@ console.log("selectedAgents", selectedAgent)
             </div>
           </div>
         </div>
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Leads Edit</h4>
+                    {console.log(leadsEditState)}
+                    <div className="col-12" style={{ padding: "25px 23px" }}>
+                      <form className="row mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>First Name</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.first_name}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  first_name: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Last Name</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.last_name}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  last_name: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Phone Number</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              className="formItem"
+                              value={leadsEditState.phone_number}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  phone_number: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Address 1</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.address1}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  address1: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Address 2</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.address2}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  address2: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>City</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.city}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  city: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>State</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.state}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  state: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Country code</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="text"
+                              className="formItem"
+                              value={leadsEditState.phone_code}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  phone_code: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Zip Code</label>
+                          </div>
+                          <div className="col-6">
+                            <input
+                              type="number"
+                              className="formItem"
+                              value={leadsEditState.postal_code}
+                              onChange={(e) => {
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  postal_code: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-3">
+                          <div className="formLabel">
+                            <label>Gender</label>
+                          </div>
+                          <div className="col-6">
+                            <select
+                              name=""
+                              id=""
+                              className="formItem "
+                              value={leadsEditState.gender}
+                              onChange={(e) =>
+                                setLeadsEditState({
+                                  ...leadsEditState,
+                                  gender: e.target.value,
+                                })
+                              }
+                            >
+                              <option value="M">Male</option>
+                              <option value="F">Female</option>
+                              <option value="O">Other</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => handleUpdateLeads()}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      // onClick={() => setPopUp(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </section>
       {loading && <CircularLoader />}
     </main>
