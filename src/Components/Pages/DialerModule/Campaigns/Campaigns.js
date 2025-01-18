@@ -106,16 +106,16 @@ function Campaigns() {
                                                              <td>
                                                                  <div className="d-flex align-items-center justify-content-start ">
                                                                      <div className="phone-call">
-                                                                         <i className="fa-solid fa-phone" />
+                                                                         <i className="fa-solid fa-pause" />
                                                                      </div>
                                                                      <div>
-                                                                         <span className="ms-1">Running</span>
+                                                                         <span className="ms-1">Paused</span>
                                                                      </div>
                                                                  </div>
                                                              </td>
                                                              <td><b>{item.title}</b></td>
-                                                             <td>Broadcast</td>
-                                                             <td>1800123465</td>
+                                                             <td>{item?.dialer?.type}</td>
+                                                             <td>{item.business_numbers?JSON.parse(item.business_numbers).length:0}</td>
                                                              <td>Gateway</td>
                                                              <td className="">
                                                                  <div
@@ -217,11 +217,17 @@ function Campaigns() {
                                                              <td>
                                                                  <div>
                                                                      <div className="avatar-container">
+                                                                        {item.agents?.slice(0,4).map((agent,index)=>{
+                                                                            return(
+                                                                                <Tippy key={index} content={agent.user_id}><i class="fa-light fa-user"></i></Tippy>
+                                                                            )
+                                                                        })}
+                                                                        
+                                                                         {/* <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
                                                                          <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <span>+2</span>
+                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy> */}
+                                                                         {item.agents?.length > 4 &&  <span>+2</span>}
+                                                                        
                                                                      </div>
                                                                  </div>
                                                              </td>
@@ -232,8 +238,8 @@ function Campaigns() {
                                                                          <i className="fa-solid fa-ellipsis-vertical" />
                                                                      </div>
                                                                      <ul class="dropdown-menu actionBtnDropdowns">
-                                                                         <li className='dropdown-item' onClick={()=>stopCampaign(item.id)}><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-pen-to-square me-2"></i> Stop</div></li>
-                                                                         <li className='dropdown-item' onClick={()=>startCampaign(item.id)}><div class="clearButton text-align-start" href="#"><i class="fa-regular fa-circle-pause me-2"></i> Start</div></li>
+                                                                         <li className='dropdown-item' onClick={()=>stopCampaign(item.id)}><a class="clearButton text-align-start"><i class="fa-regular fa-circle-pause me-2"></i> Stop</a></li>
+                                                                         <li className='dropdown-item' onClick={()=>startCampaign(item.id)}><a class="clearButton text-align-start"><i class="fa-regular fa-circle-play me-2"></i> Start</a></li>
                                                                      </ul>
                                                                  </div>
                                                              </td>

@@ -60,9 +60,13 @@ const Extensions = () => {
       extension: user.extension.extension, // Access the nested extension value
     }));
   useEffect(() => {
+    setLoading(true);
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
-      setLoading(false);
+      if (pageNumber === 1 && itemsPerPage === 10) {
+        setLoading(false);
+      }
+      // setLoading(false);
       async function getData() {
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
@@ -74,6 +78,7 @@ const Extensions = () => {
               type: "SET_EXTENSIONBYACCOUNT",
               extensionByAccount: apiData.data,
             });
+            setLoading(false);
           }
         } else {
           setLoading(false);
@@ -102,6 +107,7 @@ const Extensions = () => {
               type: "SET_EXTENSIONBYACCOUNT",
               extensionByAccount: apiData.data,
             });
+            setLoading(false);
           } else {
             if (apiData.response.status === 403) {
               setNoPermissionToRead(true);
@@ -238,70 +244,69 @@ const Extensions = () => {
                               {loading ? (
                                 <SkeletonTableLoader col={9} row={15} />
                               ) : (
-                                ""
-                              )}
-                              {extension &&
-                                extension?.data?.map((item, index) => {
-                                  const foundUser = userWithExtension.find(
-                                    (value) =>
-                                      value.extension === item.extension
-                                  );
+                                <>
+                                  {extension &&
+                                    extension?.data?.map((item, index) => {
+                                      const foundUser = userWithExtension.find(
+                                        (value) =>
+                                          value.extension === item.extension
+                                      );
 
-                                  return (
-                                    <tr key={index}>
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        {item.extension}{" "}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        {foundUser ? `${foundUser.name}` : ""}
-                                      </td>
-                                      {/* <td
+                                      return (
+                                        <tr key={index}>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            {item.extension}{" "}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            {foundUser ? `${foundUser.name}` : ""}
+                                          </td>
+                                          {/* <td
                               onClick={() =>
                                 navigate(`/extensions-edit?id=${item.id}`)
                               }
                             >
                               {item?.domain?.domain_name}
                             </td> */}
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        {item.effectiveCallerIdName}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        {item.outbundCallerIdName}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        {item.usage}
-                                      </td>
-                                      {/* <td
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            {item.effectiveCallerIdName}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            {item.outbundCallerIdName}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            {item.usage}
+                                          </td>
+                                          {/* <td
                                         onClick={() =>
                                           navigate(
                                             `/extensions-edit?id=${item.id}`
@@ -310,36 +315,36 @@ const Extensions = () => {
                                       >
                                         {item.callScreen}
                                       </td> */}
-                                      {/* <td>1001</td> */}
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                        className="ellipsis"
-                                        id="detailBox"
-                                      >
-                                        {item.description}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(
-                                            `/extensions-edit?id=${item.id}`
-                                          )
-                                        }
-                                      >
-                                        <span
-                                          className={
-                                            onlineExtension.includes(
-                                              item.extension
-                                            )
-                                              ? "extensionStatus online mx-auto"
-                                              : "extensionStatus mx-auto"
-                                          }
-                                        ></span>
-                                      </td>
-                                      {/* <td style={{ cursor: "default" }}>
+                                          {/* <td>1001</td> */}
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                            className="ellipsis"
+                                            id="detailBox"
+                                          >
+                                            {item.description}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
+                                            <span
+                                              className={
+                                                onlineExtension.includes(
+                                                  item.extension
+                                                )
+                                                  ? "extensionStatus online mx-auto"
+                                                  : "extensionStatus mx-auto"
+                                              }
+                                            ></span>
+                                          </td>
+                                          {/* <td style={{ cursor: "default" }}>
                                     <button
                                       class="tableButton mx-auto"
                                       onClick={() =>
@@ -354,61 +359,64 @@ const Extensions = () => {
                                       <i className="fa-duotone fa-gear"></i>
                                     </button>
                                   </td> */}
-                                      <td style={{ cursor: "default" }}>
-                                        {" "}
-                                        <button
-                                          className="tableButton edit mx-auto"
-                                          onClick={() =>
-                                            navigate(
-                                              `/extensions-edit?id=${item.id}`
-                                            )
-                                          }
-                                        >
-                                          <i class="fa-solid fa-pencil"></i>
-                                        </button>
-                                      </td>
+                                          <td style={{ cursor: "default" }}>
+                                            {" "}
+                                            <button
+                                              className="tableButton edit mx-auto"
+                                              onClick={() =>
+                                                navigate(
+                                                  `/extensions-edit?id=${item.id}`
+                                                )
+                                              }
+                                            >
+                                              <i class="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
 
-                                      <td style={{ cursor: "default" }}>
-                                        {item.provisionings ? (
-                                          <button
-                                            className="tableButton edit mx-auto"
-                                            onClick={() =>
-                                              navigate(
-                                                `/device-provisioning-edit`,
-                                                {
-                                                  state: {
-                                                    provisionings:
-                                                      item.provisionings,
-                                                    extension_id: item.id,
-                                                  },
+                                          <td style={{ cursor: "default" }}>
+                                            {item.provisionings ? (
+                                              <button
+                                                className="tableButton edit mx-auto"
+                                                onClick={() =>
+                                                  navigate(
+                                                    `/device-provisioning-edit`,
+                                                    {
+                                                      state: {
+                                                        provisionings:
+                                                          item.provisionings,
+                                                        extension_id: item.id,
+                                                      },
+                                                    }
+                                                  )
                                                 }
-                                              )
-                                            }
-                                          >
-                                            <i class="fa-solid fa-phone-office"></i>
-                                          </button>
-                                        ) : (
-                                          <button
-                                            className="tableButton mx-auto"
-                                            onClick={() =>
-                                              navigate(
-                                                "/device-provisioning-new",
-                                                {
-                                                  state: {
-                                                    extension: item.extension,
-                                                    id: item.id,
-                                                  },
+                                              >
+                                                <i class="fa-solid fa-phone-office"></i>
+                                              </button>
+                                            ) : (
+                                              <button
+                                                className="tableButton mx-auto"
+                                                onClick={() =>
+                                                  navigate(
+                                                    "/device-provisioning-new",
+                                                    {
+                                                      state: {
+                                                        extension: item.extension,
+                                                        id: item.id,
+                                                      },
+                                                    }
+                                                  )
                                                 }
-                                              )
-                                            }
-                                          >
-                                            <i class="fa-solid fa-plus"></i>
-                                          </button>
-                                        )}
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
+                                              >
+                                                <i class="fa-solid fa-plus"></i>
+                                              </button>
+                                            )}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                </>
+                              )}
+
                             </>
                           )}
 

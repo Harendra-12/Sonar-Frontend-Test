@@ -176,7 +176,7 @@ const Socket = () => {
               }
               break;
             case "activeCalls":
-              dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item)=>item.application_state!=="conference") });
+              dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference") });
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
@@ -189,8 +189,8 @@ const Socket = () => {
               break;
             case "broadcastGroupMessage":
               dispatch({
-                type:"SET_GROUPMESSAGE",
-                groupMessage:result
+                type: "SET_GROUPMESSAGE",
+                groupMessage: result
               })
               break;
             case "conferenceMessage":
@@ -199,10 +199,17 @@ const Socket = () => {
                 // Store conference message as an object with previous data
                 dispatch({
                   type: "SET_CONFERENCEMESSAGE",
-                  conferenceMessage:result
+                  conferenceMessage: result
                 })
               }
               break;
+            case "PreviewDialer":
+              dispatch({
+                type: "SET_PREVIEWDIALER",
+                previewDialer: result,
+              });
+              break;
+
             default:
               console.log("Unhandled WebSocket message key:", key);
           }

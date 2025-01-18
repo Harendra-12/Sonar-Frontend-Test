@@ -73,7 +73,8 @@
 }
 
 .clickToCall .clickToCallModule .clickToCallHeader {
-    background-image: -webkit-linear-gradient(90deg, rgb(244, 38, 51) 0%, rgba(244, 38, 51, 0.9) 100%) !important;
+    /* background: -webkit-linear-gradient(90deg, var(--prim-color) 0%, rgba(var(--prim-color), 0.9) 100%) !important; */
+    background: var(--prim-color);
     height: 120px;
     display: flex;
     align-items: center;

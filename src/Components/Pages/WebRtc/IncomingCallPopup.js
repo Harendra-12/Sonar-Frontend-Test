@@ -13,6 +13,7 @@ function IncomingCallPopup({
   isMicOn,
   isVideoOn,
 }) {
+const previewDialer = useSelector((state) => state.previewDialer);
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -24,6 +25,9 @@ function IncomingCallPopup({
   const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
+
+  console.log("previewDialer", previewDialer);
+  
   useEffect(() => {
     const audio = new Audio(ringtone);
     audio.loop = true;
@@ -307,7 +311,8 @@ function IncomingCallPopup({
         //   marginBottom: topPosition,
         // }}
         >
-          <div className="campaignInfoWrapper">
+          {/* Preview dialer */}
+          {/* <div className="campaignInfoWrapper">
             <div className="campaignContent">
               <h5>Outbound Campaign</h5>
               <h4>Campaign Name Hello Hello</h4>
@@ -321,7 +326,7 @@ function IncomingCallPopup({
               <label>Address</label>
               <p>John Doe</p>
             </div>
-          </div>
+          </div> */}
           <div className="user">
             <div className="userInfo text-start my-0 px-2 d-flex justify-content-between">
               <div>
