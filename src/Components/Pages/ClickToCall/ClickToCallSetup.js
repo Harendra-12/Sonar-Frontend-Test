@@ -574,7 +574,7 @@ function ClickToCallSetup() {
                                                                 </div>
                                                             </div>
                                                             <div className="col-4">
-                                                                <div className="clickToCall clickToCall-preview">
+                                                                <div className="clickToCall clickToCall-preview" style={{ '--prim-color': `#fff` }}>
                                                                     <div className="clickToCallModule mb-3">
                                                                         <div className="clickToCallHeader">
                                                                             <div className="wrapper">
