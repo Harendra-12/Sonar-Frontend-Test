@@ -1,26 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+// import Particles, { initParticlesEngine } from "@tsparticles/react";
+// import { loadSlim } from "@tsparticles/slim";
 import {
   backToTop,
   generalGetFunction,
   login,
 } from "../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 function Login() {
   // Init Particle js and use it
-  const [init, setInit] = useState(false);
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
-  }, []);
+  // const [init, setInit] = useState(false);
+  // useEffect(() => {
+  //   initParticlesEngine(async (engine) => {
+  //     await loadSlim(engine);
+  //   }).then(() => {
+  //     setInit(true);
+  //   });
+  // }, []);
 
   return (
     <>
@@ -65,7 +65,7 @@ function Login() {
                     <div className="content">
                       <h3>The simplest way to manage your workforce</h3>
                       <p>Enter your credentials to access your control</p>
-                      <img src={require("../assets/images/logindash.png")} />
+                      <img src={require("../assets/images/logindash.png")} alt="logo"/>
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
@@ -74,7 +74,7 @@ function Login() {
             </div>
           </div>
           <div className="loginWave">
-            <img src={require("../assets/images/wave.png")} />
+            <img src={require("../assets/images/wave.png")} alt="background"/>
           </div>
         </main>
       </div>

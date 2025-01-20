@@ -386,9 +386,9 @@
     background-color: var(--ele-color);
     border-radius: 15px;
     overflow: hidden;
-    position: absolute;
+    /* position: absolute; */
     z-index: 9;
-    width: 400px;
+    /* width: 400px; */
     top: 15px;
     left: 15px;
 }
@@ -490,7 +490,7 @@
 }
 
 .participantMemberList {
-    width: 300px;
+    width: 260px;
     padding: 15px;
     background: rgba(20, 20, 20, 1);
     position: relative;
@@ -688,7 +688,8 @@
     height: calc(100% - 105px);
     border-radius: 15px;
     overflow: hidden;
-    width: max-content;
+    /* width: max-content; */
+    width: 100%;
     margin: 0 auto;
 }
 

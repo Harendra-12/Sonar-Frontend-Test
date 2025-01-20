@@ -492,10 +492,26 @@
   align-items: center;
   justify-content: center;
   transition: 0.3s ease-in-out;
+  position: relative;
 }
 
 .appPanelButtonCallerRect:hover {
   background-color: #000 !important;
+}
+
+.appPanelButtonCallerRect.notif::after{
+  content: '';
+  position: absolute;
+  top: 3px;
+  right:3px;
+  background-color: #e40002;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
 }
 
 .appPanelButtonColor2 {

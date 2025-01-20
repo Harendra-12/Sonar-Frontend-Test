@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
@@ -9,10 +11,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ContentLoader from "../../Loader/ContentLoader";
-import { act } from "react";
 import ConferenceVideo from "./ConferenceVideo";
-import { use } from "react";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
 import ConferenceMessages from "./ConferenceMessages";
 
@@ -24,7 +23,7 @@ export const DummySipRegisteration = ({
 }) => {
   const navigate = useNavigate();
   const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
-  const { connectStatus, registerStatus } = useSIPProvider();
+  const { connectStatus } = useSIPProvider();
   const [sipRegisterErrror, setSipRegisterError] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const conferenceScreenShareStatus = useSelector(
@@ -45,7 +44,16 @@ export const DummySipRegisteration = ({
   const dispatch = useDispatch();
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
+  const [newMessage, setNewMessage] = useState(false);
   const conferenceMessage = useSelector((state) => state.conferenceMessage);
+  useEffect(() => {
+    if (toggleMessages) {
+      setNewMessage(false);
+    } else {
+      setNewMessage(true);
+    }
+
+  }, [conferenceMessage]);
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data)); // Send JSON data
@@ -663,18 +671,18 @@ export const DummySipRegisteration = ({
   //   callAction("hup");
   // });
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
+  // async function logOut() {
+  //   const apiData = await generalGetFunction("/logout");
+  //   localStorage.clear();
+  //   if (apiData?.data) {
+  //     localStorage.clear();
+  //     dispatch({
+  //       action: "SET_ACCOUNT",
+  //       account: null,
+  //     });
+  //     navigate("/");
+  //   }
+  // }
 
   // adding logic to update currengt user memeber id to localstorage on page reload
   useEffect(() => {
@@ -741,7 +749,7 @@ export const DummySipRegisteration = ({
                     >
                       <div className="row">
                         {toggleMessages && (
-                          <div className="col-lg-3 col-xl-3 col-12">
+                          <div className="col-xl-4 col-xxl-3 col-12 my-auto">
                             <ConferenceMessages 
                             sendMessage={sendMessage} 
                             conferenceId={locationState.state.room_id} 
@@ -751,7 +759,7 @@ export const DummySipRegisteration = ({
                           </div>
                         )}
                         <div
-                          className={"col-xl-12 col-12 px-0"}
+                          className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
                         >
                           <div
                             className="videoBody py-0"
@@ -920,10 +928,12 @@ export const DummySipRegisteration = ({
                                     className={
                                       toggleMessages
                                         ? "appPanelButtonCallerRect active"
-                                        : "appPanelButtonCallerRect"
+                                        : newMessage ? "appPanelButtonCallerRect notif" : "appPanelButtonCallerRect"
                                     }
-                                    onClick={() =>
-                                      setToggleMessages(!toggleMessages)
+                                    onClick={() => {
+                                      setToggleMessages(!toggleMessages);
+                                      setNewMessage(false);
+                                    }
                                     }
                                   >
                                     <i class="fa-light fa-messages"></i>
@@ -1109,9 +1119,9 @@ export const DummySipRegisteration = ({
                                       data-popper-placement="top-end"
                                     >
                                       <li>
-                                        <a className="dropdown-item">
+                                        <div className="dropdown-item">
                                           Stop everyone's video
-                                        </a>
+                                        </div>
                                       </li>
                                       <li className="d-block">
                                         <p
@@ -1135,9 +1145,9 @@ export const DummySipRegisteration = ({
                                         </ul>
                                       </li>
                                       <li>
-                                        <a className="dropdown-item text-danger">
+                                        <div className="dropdown-item text-danger">
                                           Kick User
-                                        </a>
+                                        </div>
                                       </li>
                                     </ul>
                                   </div>

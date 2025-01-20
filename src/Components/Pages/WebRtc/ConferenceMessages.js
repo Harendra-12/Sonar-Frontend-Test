@@ -33,7 +33,7 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
                 <div className="messageList">
 
                     {conferenceMessage?.map((item) => (
-                        <div className="messageItem sender">
+                        <div className={item.user === userName ? "messageItem sender" : "messageItem receiver"}>
                             <div className="second">
                                 <h6>
                                     {item.user}

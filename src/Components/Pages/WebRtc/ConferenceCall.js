@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSIPProvider } from "react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
@@ -28,13 +30,25 @@ export const ConferenceCall = ({
 }) => {
   const { sendMessage } = Socket();
   const navigate = useNavigate();
-  const { sessions: sipSessions, connectAndRegister } = useSIPProvider();
+  const { sessions: sipSessions } = useSIPProvider();
   const { connectStatus, registerStatus } = useSIPProvider();
-  const [sipRegisterErrror, setSipRegisterError] = useState(false);
+  const [sipRegisterErrror] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const conferenceScreenShareStatus = useSelector(
     (state) => state.conferenceScreenShareStatus
   );
+  const [newMessage, setNewMessage] = useState(false);
+  const conferenceMessage = useSelector((state) => state.conferenceMessage);
+  useEffect(() => {
+    if (conferenceMessage.length > 0) {
+      if (toggleMessages) {
+        setNewMessage(false);
+      } else {
+        setNewMessage(true);
+      }
+    }
+
+  }, [conferenceMessage]);
   const conferenceRawData = useSelector((state) => state.conference);
   const [conferenceData, setConferenceData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,14 +85,13 @@ export const ConferenceCall = ({
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
     }
-  }, [conferenceRawData]);
+  }, [conferenceRawData ]);
   useEffect(() => {
     if (activePage === "conference") {
       setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1);
     }
   }, [activePage]);
 
-  const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -679,12 +692,12 @@ export const ConferenceCall = ({
                     <div className="videoCallWrapper">
                       <div className="row">
                         {toggleMessages && (
-                          <div className="col-lg-3 col-xl-3 col-12">
-                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} setToggleMessages={setToggleMessages}/>
+                          <div className="col-xl-4 col-xxl-3 col-12 my-auto">
+                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} setToggleMessages={setToggleMessages} />
                           </div>
                         )}
                         <div
-                          className={"col-xl-12 col-12 px-0"}
+                          className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
                         >
                           <div className="videoBody py-0">
                             {notification && (
@@ -830,10 +843,12 @@ export const ConferenceCall = ({
                                     className={
                                       toggleMessages
                                         ? "appPanelButtonCallerRect active"
-                                        : "appPanelButtonCallerRect"
+                                        : newMessage ? "appPanelButtonCallerRect notif" : "appPanelButtonCallerRect"
                                     }
-                                    onClick={() =>
-                                      setToggleMessages(!toggleMessages)
+                                    onClick={() => {
+                                      setToggleMessages(!toggleMessages);
+                                      setNewMessage(false);
+                                    }
                                     }
                                   >
                                     <i class="fa-light fa-messages"></i>
@@ -1014,9 +1029,9 @@ export const ConferenceCall = ({
                                       data-popper-placement="top-end"
                                     >
                                       <li>
-                                        <a className="dropdown-item">
+                                        <div className="dropdown-item">
                                           Stop everyone's video
-                                        </a>
+                                        </div>
                                       </li>
                                       <li className="d-block">
                                         <p
@@ -1040,9 +1055,9 @@ export const ConferenceCall = ({
                                         </ul>
                                       </li>
                                       <li>
-                                        <a className="dropdown-item text-danger">
+                                        <div className="dropdown-item text-danger">
                                           Kick User
-                                        </a>
+                                        </div>
                                       </li>
                                     </ul>
                                   </div>
