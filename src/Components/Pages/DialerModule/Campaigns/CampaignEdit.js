@@ -742,7 +742,7 @@ function CampaignCreate() {
                                 {filteredDids.map((item, index) => (
                                   <li
                                     key={index}
-                                    className="d-flex align-items-center mb-2 p-2 "
+                                    className="d-flex justify-content-start align-items-center mb-2 p-2 "
                                     style={{ cursor: "pointer" }}
                                     onClick={() => toggleSelect(item.did)}
                                   >
@@ -1403,8 +1403,8 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               <div className="mainContentApp m-0 bg-transparent mt-3">
-                                <div className="flex-agent">
-                                  <div>
+                                <div className="row">
+                                  <div className="col-6" style={{borderRight: '1px solid var(--border-color)'}}>
                                     {unmatchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1458,7 +1458,7 @@ function CampaignCreate() {
                                       );
                                     })}
                                   </div>
-                                  <div>
+                                  <div className="col-6">
                                     {matchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1480,21 +1480,24 @@ function CampaignCreate() {
                                                 </h5>
                                               </div>
                                             </div>
-                                            <div className="col-10 col-xl-4 col-xxl-5">
+                                            <div className="col">
                                               <div className="contactTags">
                                                 <span data-id={2}>Agent</span>
                                               </div>
                                             </div>
 
-                                            <button
-                                              onClick={() =>
-                                                handleDeleteAgent(
-                                                  item.Campaign_user_id
-                                                )
-                                              }
-                                            >
-                                              Delete
-                                            </button>
+                                            <div className="w-auto">
+                                              <button
+                                              className="clearButton2 text-danger"
+                                                onClick={() =>
+                                                  handleDeleteAgent(
+                                                    item.Campaign_user_id
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa-solid fa-xmark"></i>
+                                              </button>
+                                            </div>
                                             {/* <div
                                           className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${
                                             selectedAgent.includes(index)
@@ -1522,16 +1525,17 @@ function CampaignCreate() {
                                   </div>
                                 </div>
                               </div>
+                              <div className="tableHeader text-start my-3">
+                                <PaginationComponent
+                                  pageNumber={(e) => setPageNumber(e)}
+                                  totalPage={agents.last_page}
+                                  from={(pageNumber - 1) * agents.per_page + 1}
+                                  to={agents.to}
+                                  total={agents.total}
+                                />
+                              </div>
                             </div>
-                            <div className="tableHeader mb-3">
-                              <PaginationComponent
-                                pageNumber={(e) => setPageNumber(e)}
-                                totalPage={agents.last_page}
-                                from={(pageNumber - 1) * agents.per_page + 1}
-                                to={agents.to}
-                                total={agents.total}
-                              />
-                            </div>
+                            
                           </div>
                         </>
                       )}
@@ -1541,19 +1545,19 @@ function CampaignCreate() {
                             className="col-xl-9"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
-                              padding: "0 30px",
+                              // padding: "0 30px",
                             }}
                           >
-                            <div className="popup music position-static bg-transparent w-auto h-auto">
+                            <div className="w-auto h-auto">
                               <div className="container h-100">
                                 <div className="row h-100 justify-content-center align-items-center">
-                                  <button
+                                  {/* <button
                                     onClick={() =>
                                       setAddNewCsvToggle(!addNewCsvToggle)
                                     }
                                   >
                                     Add New CSV
-                                  </button>
+                                  </button> */}
                                   {addNewCsvToggle && (
                                     <div
                                       className="card px-0 col-xl-5 shadow-none"
@@ -1623,7 +1627,7 @@ function CampaignCreate() {
                                   )}
 
                                   <div>
-                                    <div className="tableContainer">
+                                    <div className="tableContainer mt-0">
                                       <table>
                                         <thead>
                                           <tr>
@@ -1651,15 +1655,17 @@ function CampaignCreate() {
                                                     {item.address2}{" "}
                                                     {item.address3}
                                                   </td>
-                                                  <button
-                                                    className="tableButton edit"
-                                                    onClick={() => {
-                                                      setLeadsEditState(item);
-                                                      setPopUp(true);
-                                                    }}
-                                                  >
-                                                    <i className="fa-solid fa-pencil"></i>
-                                                  </button>
+                                                  <td>
+                                                    <button
+                                                      className="tableButton edit"
+                                                      onClick={() => {
+                                                        setLeadsEditState(item);
+                                                        setPopUp(true);
+                                                      }}
+                                                    >
+                                                      <i className="fa-solid fa-pencil"></i>
+                                                    </button>
+                                                  </td>
                                                 </tr>
                                               );
                                             }
@@ -1671,6 +1677,14 @@ function CampaignCreate() {
                                 </div>
                               </div>
                             </div>
+                          </div>
+                          <div className="col">
+                            <button
+                              className="panelButton static m-0"
+                              onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
+                            >
+                              <span className="text">Add CSV</span>
+                            </button>
                           </div>
                         </>
                       )}
@@ -1688,15 +1702,15 @@ function CampaignCreate() {
                 <div className="row content col-xl-4">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                      <i className="fa-duotone fa-circle-exclamation"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
                     <h4>Leads Edit</h4>
                     {console.log(leadsEditState)}
-                    <div className="col-12" style={{ padding: "25px 23px" }}>
+                    <div className="col-12" style={{ padding: "10px 0px" }}>
                       <form className="row mb-0">
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>First Name</label>
                           </div>
@@ -1715,7 +1729,7 @@ function CampaignCreate() {
                           </div>
                         </div>
 
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Last Name</label>
                           </div>
@@ -1733,7 +1747,7 @@ function CampaignCreate() {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Phone Number</label>
                           </div>
@@ -1752,7 +1766,7 @@ function CampaignCreate() {
                           </div>
                         </div>
 
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Address 1</label>
                           </div>
@@ -1770,7 +1784,7 @@ function CampaignCreate() {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Address 2</label>
                           </div>
@@ -1788,7 +1802,7 @@ function CampaignCreate() {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>City</label>
                           </div>
@@ -1806,7 +1820,7 @@ function CampaignCreate() {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>State</label>
                           </div>
@@ -1825,7 +1839,7 @@ function CampaignCreate() {
                           </div>
                         </div>
 
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Country code</label>
                           </div>
@@ -1844,7 +1858,7 @@ function CampaignCreate() {
                           </div>
                         </div>
 
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Zip Code</label>
                           </div>
@@ -1862,7 +1876,7 @@ function CampaignCreate() {
                             />
                           </div>
                         </div>
-                        <div className="formRow col-xl-3">
+                        <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label>Gender</label>
                           </div>
@@ -1887,24 +1901,26 @@ function CampaignCreate() {
                         </div>
                       </form>
                     </div>
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => handleUpdateLeads()}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      // onClick={() => setPopUp(false)}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => handleUpdateLeads()}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        // onClick={() => setPopUp(false)}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
