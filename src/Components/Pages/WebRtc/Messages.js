@@ -18,8 +18,9 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Socket from "../../GlobalFunction/Socket";
+import EmojiPicker from "emoji-picker-react";
 
 function Messages({
   setSelectedModule,
@@ -81,7 +82,14 @@ function Messages({
   const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
   const [groupLeavePopUp, setGroupLeavePopUp] = useState(false)
   const [groupLeaveId, setGroupLeaveId] = useState("")
+  const [emojiOpen, setEmojiOpen] = useState(false);
+  const handleEmojiClick = (emojiData) => {
 
+    // setMessageInput(messageInput + emojiData.emoji);
+    setMessageInput((prevMessage) => {
+      return prevMessage + emojiData.emoji
+    })
+  };
 
 
   console.log("Allmessages", allMessage);
@@ -2069,7 +2077,14 @@ function Messages({
                           )}
                         </div>
                         {recipient[0] ? (
+
                           <div className="messageInput">
+                            {emojiOpen &&
+                              <div style={{ position: "absolute", bottom: 180, width: 'auto', height: 'auto' }}>
+                                <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen} />
+                                <button className='clearButton2 xl' style={{ position: 'absolute', bottom: 15, right: 10, zIndex: 9 }} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>
+                              </div>
+                            }
                             <div className="col-12">
                               <nav>
                                 <div
@@ -2198,7 +2213,7 @@ function Messages({
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => setEmojiOpen(!emojiOpen)}
                                 >
                                   <i class="fa-regular fa-face-smile"></i>
                                 </button>

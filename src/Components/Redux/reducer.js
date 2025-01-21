@@ -65,7 +65,7 @@ var conferenceScreenShareStatus = null;
 var conferenceMessage = [];
 var RoomID = "";
 var groupMessage = [];
-var previewDialer = null;
+var previewDialer = [];
 
 const initialState = {
   account,
@@ -310,7 +310,9 @@ const counterReducer = (state = initialState, action) => {
       case "SET_GROUPMESSAGE":
       return {...state,groupMessage:action.groupMessage};
       case "SET_PREVIEWDIALER":
-      return {...state,previewDialer:action.previewDialer};
+      return {...state,
+        previewDialer:[...state.previewDialer,action.previewDialer]
+      };
     default:
       return state;
   }

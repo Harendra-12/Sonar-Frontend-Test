@@ -1,14 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import EmptyPrompt from "../../Loader/EmptyPrompt";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import CircularLoader from "../../Loader/CircularLoader";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 function Agents({ type }) {

@@ -1,11 +1,18 @@
+import EmojiPicker from 'emoji-picker-react';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
 function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMessages }) {
     const [messageInput, setMessageInput] = useState("");
     const conferenceMessage = useSelector((state) => state.conferenceMessage);
-    console.log("conferenceMessage", conferenceMessage);
-
+    const [emojiOpen, setEmojiOpen] = useState(false);
+    const handleEmojiClick = (emojiData) => {
+        
+        // setMessageInput(messageInput + emojiData.emoji);
+        setMessageInput((prevMessage)=>{
+            return prevMessage + emojiData.emoji
+        })
+    };
     // Logic to send message
     function sendConferenceMessage() {
         if (messageInput.trim() === "") return;
@@ -47,6 +54,10 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
 
 
                 </div>
+                <div style={{position: "absolute", bottom: 180, left: 22, width: 'auto', height: 'auto'}}>
+                    <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen}/>
+                    <button className='clearButton2 xl' style={{position: 'absolute', bottom: 15, right: 10, zIndex: 9}} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>
+                </div>
                 <div className="messageInput">
                     <textarea
                         type="text"
@@ -65,7 +76,7 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
                             <button className="clearButton2">
                                 <i className="fa-solid fa-paperclip" />
                             </button>
-                            <button className="clearButton2">
+                            <button className="clearButton2" onClick={() => setEmojiOpen(!emojiOpen)}>
                                 <i className="fa-regular fa-face-smile" />
                             </button>
                         </div>

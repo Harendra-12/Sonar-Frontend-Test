@@ -1,16 +1,11 @@
 import React from "react";
-import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import Header from "../../CommonComponents/Header";
-import { backToTop } from "../../GlobalFunction/globalFunction";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import UsersEdit from "../Users/UsersEdit";
 import ExtensionsEdit from "../Extensions/ExtensionsEdit";
 
 function AgentsEdits() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
   const locationState = location.state;
   console.log(locationState);
   return (
