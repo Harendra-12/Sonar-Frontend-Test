@@ -113,7 +113,8 @@ function CampaignCreate() {
 
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
-
+        console.log("this is leads", leads);
+        
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
