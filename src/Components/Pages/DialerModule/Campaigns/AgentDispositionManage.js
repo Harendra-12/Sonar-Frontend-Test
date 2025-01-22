@@ -2,17 +2,12 @@ import React from "react";
 import Header from "../../../CommonComponents/Header";
 
 import { backToTop, } from "../../../GlobalFunction/globalFunction";
-import PaginationComponent from "../../../CommonComponents/PaginationComponent";
-
-import {
-    numberValidator, requiredValidator
-} from "../../../validations/validation";
-import ErrorMessage from "../../../CommonComponents/ErrorMessage";
-import CircularLoader from "../../../Loader/CircularLoader";
-import { Navigate } from "react-router-dom";
+import Tippy from "@tippyjs/react";
+import { useNavigate } from "react-router-dom";
 
 
 function AgentDispositionManage() {
+    const navigate = useNavigate()
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -29,27 +24,11 @@ function AgentDispositionManage() {
                                                 <p>Edit existing Agent Disposition</p>
                                             </div>
                                             <div className="buttonGroup">
-                                                {/* <div className='d-flex align-items-center'>
-                                                  <div className="formLabel py-0 me-2">
-                                                      <label for="selectFormRow">Enabled</label>
-                                                  </div>
-                                                  <div className="my-auto position-relative mx-1">
-                                                      <label className="switch">
-                                                          <input
-                                                              type="checkbox"
-                                                              id="showAllCheck"
-                                                              {...register("status", {
-                                                              })}
-                                                          />
-                                                          <span className="slider round" />
-                                                      </label>
-                                                  </div>
-                                              </div> */}
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray"
                                                     onClick={() => {
-                                                        Navigate(-1);
+                                                        navigate(-1);
                                                         backToTop();
                                                     }}
                                                 >
@@ -73,220 +52,227 @@ function AgentDispositionManage() {
                                     </div>
 
                                     <div className="col-12" style={{ padding: "25px 23px" }}>
-                                        <div className="row">
-                                            {/* <div className="col-xl-2">
-                      <div className="someTempDialerDesign">
-                      
-                      </div>
-                    </div> */}
-                                            <div className="col-xl-5  inputcheckbox ">
+                                        <div className="row justify-content-between">
+                                            <div className="col-xl-6 inputcheckbox" style={{ borderRight: '1px solid var(--border-color)' }}>
                                                 <div className="header d-flex align-items-center justify-content-between">
                                                     <div
-                                                        className="col-5 fw-bold"
+                                                        className="col fw-bold"
                                                         style={{ fontFamily: "Noto Sans" }}
                                                     >
-                                                        Agent Disposition
+                                                        Available Agent Disposition Methods
                                                     </div>
-                                                    {/* <div className="col-5 text-end">
-                                                                                <button className="panelButton m-0 ms-auto">
-                                                                                    <span className="text">Add</span>
-                                                                                    <span className="icon">
-                                                                                        <i className="fa-solid fa-plus" />
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div> */}
-                                                </div>
-                                                <div className="col-xl-12 pt-3 ">
-                                                    <div className="d-flex justify-content-center align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Interested</label>
-                                                            </div>
-
-                                                        </div>
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
+                                                    <div className="col-auto">
+                                                        <button type="button" className="panelButton">
+                                                            <span className="text">Add</span>
+                                                            <span className="icon">
+                                                                <i className="fa-solid fa-plus"></i>
+                                                            </span>
                                                         </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Not Interested</label>
+                                                <div className="col-xl-12">
+                                                    <div className="col-xl-12 pt-3 ">
+                                                        <div className="d-flex justify-content-center align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Interested</label>
+                                                                </div>
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
-
                                                     </div>
-                                                </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Demo Booked</label>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Not Interested</label>
+                                                                </div>
+
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
-
                                                     </div>
-                                                </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Deal Closed</label>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Demo Booked</label>
+                                                                </div>
+
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
-
                                                     </div>
-                                                </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Requires Follow-up</label>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Deal Closed</label>
+                                                                </div>
+
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Incorrect Number</label>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Requires Follow-up</label>
+                                                                </div>
+
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
-
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
-                                                        </div>
-                                                       </div>
-
                                                     </div>
-                                                </div>
-                                                <div className="col-xl-12 pt-3">
-                                                    <div className="d-flex align-items-center">
-                                                        <div className="savedCardWrapper col">
-                                                            <div>
-                                                                <label>Left Voicemail</label>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Incorrect Number</label>
+                                                                </div>
+
                                                             </div>
-
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                       <div className="d-flex align-items-center ">
-                                                       <input className="m-2" type="checkbox" id="" checked=""/>
-                                                      
+                                                    </div>
+                                                    <div className="col-xl-12 pt-3">
+                                                        <div className="d-flex align-items-center">
+                                                            <div className="savedCardWrapper col">
+                                                                <div>
+                                                                    <label>Left Voicemail</label>
+                                                                </div>
 
-                                                        <button
-                                                            className="tableButton edit m-2" >
-                                                            <i class="fa-solid fa-pencil "></i>
-                                                        </button>
-
-                                                        <button
-                                                            className="tableButton delete m-2">
-                                                            <i className="fa-solid fa-trash " />
-                                                        </button>
+                                                            </div>
+                                                            <div className="d-flex align-items-center ">
+                                                                <Tippy content='Edit this disposition'>
+                                                                    <button
+                                                                        className="tableButton edit m-2" >
+                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                    </button>
+                                                                </Tippy>
+                                                                <Tippy content='Delete this disposition'>
+                                                                    <button
+                                                                        className="tableButton delete m-2">
+                                                                        <i className="fa-solid fa-trash" />
+                                                                    </button>
+                                                                </Tippy>
+                                                            </div>
                                                         </div>
-                                                       </div>
-
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div className="col-xl-6">
+                                                <div className="header d-flex align-items-center justify-content-between">
+                                                    <div
+                                                        className="col-12 fw-bold"
+                                                        style={{ fontFamily: "Noto Sans" }}
+                                                    >
+                                                        Manage Agent Disposition
+                                                    </div>
+                                                </div>
+                                                <div className="col-xl-12 pt-3 ">
+                                                    <form className="">
+                                                        <div className="formRow col-xl-12">
+                                                            <div className="formLabel">
+                                                                <label htmlFor="">Disposition Name</label>
+                                                                <label htmlFor="data" className="formItemDesc">
+                                                                    Enter the name for the disposition method.
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-xl-6 col-12">
+                                                                <input className="formItem" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="formRow col-xl-12">
+                                                            <button type="button" className="panelButton ms-auto">
+                                                                <span className="text">Save</span>
+                                                                <span className="icon">
+                                                                    <i className="fa-solid fa-floppy-disk"></i>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
