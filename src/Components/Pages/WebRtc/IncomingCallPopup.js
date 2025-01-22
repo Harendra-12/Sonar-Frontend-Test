@@ -85,9 +85,7 @@ function IncomingCallPopup({
     };
   }, [lastIncomingCall]);
 
-  const callerExtension = session.incomingInviteRequest
-    ? session?.incomingInviteRequest?.message?.from?._displayName
-    : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
+  const callerExtension = session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
 
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
@@ -241,7 +239,7 @@ function IncomingCallPopup({
       }
     }
   }, [session])
-  console.log("Sessionasasasa", session);
+  console.log("Sessionasasasa", session, session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2));
 
 
   return (
@@ -314,22 +312,22 @@ function IncomingCallPopup({
           {/* Preview dialer */}
           {previewDialer.map((item) => {
             if (item.phone_number === session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2)) {
-              <div className="campaignInfoWrapper">
-                <div className="campaignContent">
-                  <h5>Outbound Campaign</h5>
-                  <h4>Campaign Name Hello Hello</h4>
-                  <p>Aliqua ipsum ipsum ea et irure laboris deserunt sint nostrud officia id aliquip fugiat elit. Cupidatat deserunt veniam quis nulla ea sint reprehenderit eiusmod non consequat id qui ex.</p>
+              return (
+                <div className="campaignInfoWrapper">
+                  <div className="campaignContent">
+                    <h5>{item.phone_number}</h5>
+                    <h4>{item.title}</h4>
+                    <p>{item.description}</p>
+                  </div>
+                  <div className="leadContent">
+                    <label>{item.first_name+" "+item.last_name}</label>
+                    <p>{item.address1}</p>
+                    <label>{item.city}</label>
+                    <p>{item.state}</p>
+                  </div>
                 </div>
-                <div className="leadContent">
-                  <label>Name</label>
-                  <p>John Doe</p>
-                  <label>Number</label>
-                  <p>+1 999 999 9999</p>
-                  <label>Address</label>
-                  <p>John Doe</p>
-                </div>
-              </div>
-            }
+              ) 
+          }
           })}
 
           <div className="user">

@@ -1062,7 +1062,7 @@ function Navbar() {
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
                   </li>
-                  <li className="dashboard ">
+                  {/* <li className="dashboard ">
                     <NavLink
                       to="/click-to-call"
                       onClick={backToTop}
@@ -1073,7 +1073,7 @@ function Navbar() {
                       </div>
                       <div className="itemTitle">Click To Call preview</div>
                     </NavLink>
-                  </li>
+                  </li> */}
 
                   {/* <li className="dashboard">
                     <Link>
