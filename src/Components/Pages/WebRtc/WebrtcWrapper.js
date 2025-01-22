@@ -21,6 +21,7 @@ import ConferenceConfig from "./ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import AgentFeedback from "./AgentFeedback";
 
 const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
@@ -205,6 +206,7 @@ const WebrtcWrapper = () => {
           }
       `}
       </style>
+      <AgentFeedback />
       <SIPProvider options={options}>
         <SideNavbarApp
           setactivePage={setactivePage}
@@ -335,7 +337,7 @@ const WebrtcWrapper = () => {
                   setHangupRefresh={setHangupRefresh}
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
-                  // globalSession={sessions}
+                // globalSession={sessions}
                 />
               </div>
             </Rnd>
@@ -456,7 +458,7 @@ const WebrtcWrapper = () => {
               </div>
             </section>
             {sessions.find((session) => session.mode === "video") &&
-            callProgressId ? (
+              callProgressId ? (
               <VideoCall
                 setHangupRefresh={setHangupRefresh}
                 hangupRefresh={hangupRefresh}
