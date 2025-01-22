@@ -1050,10 +1050,9 @@ function Navbar() {
                       <div className="itemTitle">Call Blocking</div>
                     </NavLink>
                   </li> */}
-
-                  <li className="dashboard ">
+                   <li className="dashboard ">
                     <NavLink
-                      to="/click-to-call"
+                      to="/click-to-call-listing"
                       onClick={backToTop}
                       type="button"
                     >
@@ -1063,6 +1062,19 @@ function Navbar() {
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
                   </li>
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/click-to-call"
+                      onClick={backToTop}
+                      type="button"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-bullseye-pointer"></i>
+                      </div>
+                      <div className="itemTitle">Click To Call preview</div>
+                    </NavLink>
+                  </li>
+
                   {/* <li className="dashboard">
                     <Link>
                       <DarkModeToggle marginLeft={"3"} />

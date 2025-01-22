@@ -188,6 +188,21 @@ export async function fileUploadFunction(endpoint, data) {
     });
 }
 
+// File upload put function
+export async function fileUploadPutFunction(endpoint, data) {
+  return axiosInstance
+    .put(endpoint, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response.data;
+    });
+}
 // Back to top function
 export const backToTop = () => {
   window.scrollTo(0, 0);

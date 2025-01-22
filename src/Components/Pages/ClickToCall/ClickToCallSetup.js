@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, fileUploadFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
 import ActionList from "../../CommonComponents/ActionList";
 import { toast } from "react-toastify";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function ClickToCallSetup() {
   const navigate = useNavigate();
@@ -14,11 +16,14 @@ function ClickToCallSetup() {
   const [callFormVisible, setCallFormVisible] = useState(false)
   const [name, setName] = useState("")
   const [number, setNumber] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [newFile, setNewFile] = useState(null);
 
   // Handle selected image to display it to the user
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      // Read the file for display purposes
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result); // Set the base64 data of the image
@@ -42,6 +47,52 @@ function ClickToCallSetup() {
     setValue("action", value[0]);
   };
 
+  // Handle form submit
+  async function handleWidgetSubmit(data) {
+    console.log(watch());
+    if (!newFile) {
+      toast.error("Please upload logo")
+      return
+    }
+    if (watch().name === "") {
+      toast.error("Please enter a name")
+      return
+    }
+    if (watch().description === "") {
+      toast.error("Please enter a description")
+      return
+    }
+    if (!watch().action) {
+      toast.error("Please select an action")
+      return
+    }
+    if (watch().usages === "") {
+      toast.error("Please select an usage")
+      return
+    }
+    // if(watch().embed_code === "" || !watch().embed_code){
+    //   toast.error("Please enter embed code")
+    //   return
+    // }
+    setLoading(true);
+    const parsedData = new FormData();
+    parsedData.append("logo", newFile);
+    parsedData.append("company_name", watch().name);
+    parsedData.append("description", watch().description);
+    parsedData.append("action", watch().action);
+    parsedData.append("usages", watch().usages);
+    parsedData.append("primary_color",watch().color);
+      console.log("-------------",newFile);
+    // parsedData.append("embed_code", watch().embed_code);
+    const apiData = await fileUploadFunction("/click-to-call/store", parsedData);
+    if (apiData?.status) {
+      toast.success(apiData.message);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }
+
   // Submit Click to call api for testing 
   async function handleSubmits() {
     if (number === "") {
@@ -58,6 +109,7 @@ function ClickToCallSetup() {
       }
     }
   }
+
   return (
     <>
       <main className="mainContent">
@@ -84,7 +136,7 @@ function ClickToCallSetup() {
                               <i className="fa-solid fa-caret-left" />
                             </span>
                           </button>
-                          <button type="button" className="panelButton">
+                          <button type="button" className="panelButton" onClick={handleWidgetSubmit}>
                             <span className="text">Save</span>
                             <span className="icon">
                               <i className="fa-solid fa-floppy-disk" />
@@ -158,7 +210,19 @@ function ClickToCallSetup() {
                                             name="did_id_view"
                                             className="formItem"
                                             accept="image/*"
-                                            onChange={handleImageChange}
+                                            onChange={(e) => {
+                                              const file = e.target.files[0];
+                                              if (file) {
+                                                // Check if the file type is MP3
+    
+                                                const fileName = file.name.replace(/ /g, "-");
+                                                const newFile = new File([file], fileName, {
+                                                  type: file.type,
+                                                });
+                                                setNewFile(newFile);
+                                                handleImageChange(e)
+                                              }
+                                            }}
                                           />
 
                                           {/* {errors.did_id && (
@@ -488,6 +552,9 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-6">
                                           <input className="formItem" defaultValue={"AnglePBX"}  {...register("name")} />
+                                          {errors.did_id && (
+                                            <ErrorMessage text={errors.name} />
+                                          )}
                                         </div>
                                       </div>
                                       <div className="formRow col-xxl-8 col-xl-12">
@@ -504,6 +571,9 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-6">
                                           <input className="formItem" defaultValue={"Business Phone System | Cloud Contact Center | Cloud PBX"}  {...register("description")} />
+                                          {errors.did_id && (
+                                            <ErrorMessage text={errors.description} />
+                                          )}
                                         </div>
                                       </div>
                                     </form>
@@ -596,9 +666,9 @@ function ClickToCallSetup() {
                                             <option value={"pstn"}>PSTN</option>
                                           </select>
 
-                                          {/* {errors.did_id && (
-                                                        <ErrorMessage text={errors.did_id.message} />
-                                                    )} */}
+                                          {errors.did_id && (
+                                            <ErrorMessage text={errors.usages} />
+                                          )}
                                         </div>
                                       </div>
                                       <div className="formRow col-xxl-8 col-xl-12">
@@ -635,11 +705,17 @@ function ClickToCallSetup() {
                                                   : "Action"
                                               }
                                               className="formItem"
+                                              onChange={(e) => {
+                                                setValue(
+                                                    "action",
+                                                    e.target.value
+                                                );
+                                            }}
                                             />
                                           )}
                                         </div>
                                       </div>
-                                      <div
+                                      {/* <div
                                         className="formRow col-xxl-8 col-xl-12 pt-3"
                                         style={{
                                           borderTop:
@@ -664,14 +740,13 @@ function ClickToCallSetup() {
                                             type="text"
                                             name="did_id_view"
                                             className="formItem h-auto"
-                                            rows={3}
+                                            {...register(
+                                              "embed_code",
+                                              requiredValidator
+                                            )}
                                           />
-
-                                          {/* {errors.did_id && (
-                                                        <ErrorMessage text={errors.did_id.message} />
-                                                    )} */}
                                         </div>
-                                      </div>
+                                      </div> */}
                                     </form>
                                   </div>
                                 </div>
@@ -778,7 +853,7 @@ function ClickToCallSetup() {
                               <i class="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          <button type="button" effect="ripple" className="panelButton">
+                          <button type="button" effect="ripple" className="panelButton" onClick={handleWidgetSubmit}>
                             <span className="text">Save</span>
                             <span className="icon">
                               <i class="fa-solid fa-floppy-disk"></i>
@@ -943,6 +1018,7 @@ function ClickToCallSetup() {
             </div>
           )}
         </section>
+        {loading && <CircularLoader />}
       </main>
     </>
   );

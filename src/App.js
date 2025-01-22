@@ -142,6 +142,8 @@ import AgentsDialer from "./Components/Pages/Agents/AgentsDialer";
 import VoiceMailReport from "./Components/Pages/Voice/VoiceMailReport";
 import CampaignCreate from "./Components/Pages/DialerModule/Campaigns/CampaignCreate";
 import CampaignEdit from "./Components/Pages/DialerModule/Campaigns/CampaignEdit";
+import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListing";
+import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -200,14 +202,17 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/campaign-edit" element={<CampaignEdit/>}/>
+          <Route path="/click-to-call" element={<ClickToCall />} />
+
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
-          <Route path="/meeting-room" element={<Meeting />} />
-          <Route path="/meeting-add" element={<MeetingAdd />} />
+
 
           <Route element={<ProtectedRoute />} />
+          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          <Route path="/meeting-room" element={<Meeting />} />
+          <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
           <Route
@@ -666,7 +671,9 @@ function App() {
           <Route path="/call-blocking" element={<CallBlocking />} />
           <Route path="/call-blocking-add" element={<CallBlockingAdd />} />
           {/* Spam Filter end */}
-          <Route path="click-to-call" element={<ClickToCall />} />
+
+          <Route path="click-to-call-edit" element={<ClickToCallEdit />} />
+          <Route path="click-to-call-listing" element={<ClickToCallListing />} />
           <Route path="click-to-call-add" element={<ClickToCallSetup />} />
 
           {/* Dialer Modules */}
