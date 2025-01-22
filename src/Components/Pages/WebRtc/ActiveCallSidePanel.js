@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
-import connectMusic from "../../assets/music/ring-tone.mp3";
 import { SessionState } from "sip.js";
 import { toast } from "react-toastify";
 
@@ -14,21 +13,23 @@ function ActiveCallSidePanel({
   hangupRefresh,
   setSelectedModule,
   isMicOn,
-  setactivePage,
   globalSession,
 }) {
   const dispatch = useDispatch();
   // const globalSession = useSelector((state) => state.sessions);
-  console.log("This is global session", globalSession);
+
 
   const callProgressId = useSelector((state) => state.callProgressId);
+  const previewDialer = useSelector((state) => state.previewDialer);
+
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
   const audioRef = useRef(null);
+  console.log("This is global session", globalSession, previewDialer, session._id);
   const [playMusic, setPlayMusic] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
-  
+
   // useEffect(() => {
   //   const audioElement = audioRef.current;
   //   if (playMusic && audioElement) {
@@ -135,6 +136,30 @@ function ActiveCallSidePanel({
         callProgress: false,
       });
     }
+    // Checking if terminated call is from dialer or not
+    globalSession.filter((item) => {
+      if (item.id === session._id) {
+        previewDialer.map((item2) => {
+          if ((item2.phone_number === item.destination.slice(2)) && (item.state === "Established")) {
+            dispatch({
+              type: "SET_AGENT_DEPOSITION",
+              agentDeposition: true
+            })
+            dispatch({
+              type: "SET_DEPOSIT_OPTIONS",
+              desposiTionOptions: item2
+            })
+            dispatch({
+              type: "REMOVE_PREVIEWDIALER",
+              phone_number: item2.phone_number
+            })
+          }
+        })
+        // if(item.destination){
+
+        // }
+      }
+    })
   }
 
   function handleActiveCall(id, dest) {
@@ -156,9 +181,9 @@ function ActiveCallSidePanel({
     });
   }
 
-  const callerExtension = session.incomingInviteRequest
-    ? session?.incomingInviteRequest?.message?.from?._displayName
-    : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
+  // const callerExtension = session.incomingInviteRequest
+  //   ? session?.incomingInviteRequest?.message?.from?._displayName
+  //   : session?.outgoingInviteRequest?.message?.to?.uri?.normal?.user;
 
   const handleAnswerCall = async (e, mode) => {
     e.stopPropagation();

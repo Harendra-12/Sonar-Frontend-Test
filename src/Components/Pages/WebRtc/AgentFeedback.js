@@ -1,6 +1,9 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 function AgentFeedback() {
+    const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
+    const dispatch = useDispatch()
     return (
         <>
             <div className="addNewContactPopup">
@@ -9,7 +12,7 @@ function AgentFeedback() {
                         <i class="fa-light fa-comments"></i>
                         <h5>Agent Feedback!</h5>
                         <p>
-                            Your call with the specified lead has ended, provide your valuable feedback in the form below.
+                            {`Your call with ${desposiTionOptions.first_name} with number ${desposiTionOptions.phone_number} has ended, provide your valuable feedback in the form below.`}
                         </p>
                         <div className="border-bottom col-12" />
                     </div>
@@ -85,13 +88,18 @@ function AgentFeedback() {
                     </div>
                     <div className="col-xl-12 mt-2">
                         <div className="d-flex justify-content-between">
-                            <button className="panelButton gray ms-0">
+                            <button className="panelButton gray ms-0" onClick={()=>{
+                                dispatch({
+                                    type:"SET_AGENT_DEPOSITION",
+                                    agentDeposition:false,
+                                })
+                            }}>
                                 <span className="text">Close</span>
                                 <span className="icon">
                                     <i class="fa-light fa-xmark"></i>
                                 </span>
                             </button>
-                            <button className="panelButton">
+                            <button className="panelButton" >
                                 <span className="text">Done</span>
                                 <span className="icon">
                                     <i className="fa-solid fa-check" />

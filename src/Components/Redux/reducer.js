@@ -66,6 +66,8 @@ var conferenceMessage = [];
 var RoomID = "";
 var groupMessage = [];
 var previewDialer = [];
+var agentDeposition = false
+var desposiTionOptions = []
 
 const initialState = {
   account,
@@ -135,6 +137,8 @@ const initialState = {
   RoomID,
   groupMessage,
   previewDialer,
+  agentDeposition,
+  desposiTionOptions,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -312,6 +316,23 @@ const counterReducer = (state = initialState, action) => {
       case "SET_PREVIEWDIALER":
       return {...state,
         previewDialer:[...state.previewDialer,action.previewDialer]
+      };
+      case "REMOVE_PREVIEWDIALER":
+      return {
+        ...state,
+        previewDialer: state.previewDialer.filter(
+          (item) => item.phone_number !== action.phone_number
+        ),
+      };
+      case "SET_AGENT_DEPOSITION":
+      return {
+        ...state,
+        agentDeposition: action.agentDeposition,
+      };
+      case "SET_DEPOSIT_OPTIONS":
+      return {
+        ...state,
+        desposiTionOptions: action.desposiTionOptions,
       };
     default:
       return state;

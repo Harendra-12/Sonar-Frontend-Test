@@ -43,7 +43,6 @@ const WebrtcWrapper = () => {
   const [isMicOn, setIsMicOn] = useState(false); // State to track mic status
   const [isVideoOn, setIsVideoOn] = useState(false); // State to track video status
   const [reconnecting, setReconnecting] = useState(0);
-  const callProgress = useSelector((state) => state.callProgress);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const [allContactLoading, setAllContactLoading] = useState(false);
   console.log(sipSessions);
@@ -55,6 +54,7 @@ const WebrtcWrapper = () => {
   const memberId = useSelector((state) => state.memberId);
   const dummySession = useSelector((state) => state.dummySession);
   const [pin, setPin] = useState("");
+  const agentDeposition = useSelector((state) => state.agentDeposition);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -206,7 +206,7 @@ const WebrtcWrapper = () => {
           }
       `}
       </style>
-      <AgentFeedback />
+      {agentDeposition && <AgentFeedback />}
       <SIPProvider options={options}>
         <SideNavbarApp
           setactivePage={setactivePage}
