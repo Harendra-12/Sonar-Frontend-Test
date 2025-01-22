@@ -6,7 +6,7 @@ function AgentFeedback() {
             <div className="addNewContactPopup">
                 <div className="row">
                     <div className="col-12 heading mb-0">
-                        <i className="fa-light fa-user-plus" />
+                        <i class="fa-light fa-comments"></i>
                         <h5>Agent Feedback!</h5>
                         <p>
                             Your call with the specified lead has ended, provide your valuable feedback in the form below.
