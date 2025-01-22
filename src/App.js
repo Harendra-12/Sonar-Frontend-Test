@@ -144,6 +144,7 @@ import CampaignCreate from "./Components/Pages/DialerModule/Campaigns/CampaignCr
 import CampaignEdit from "./Components/Pages/DialerModule/Campaigns/CampaignEdit";
 import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListing";
 import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
+import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -215,6 +216,8 @@ function App() {
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
+          <Route path="/agent-disposition-manage" element={<AgentDispositionManage />} />
+
           <Route
             path="/my-profile"
             element={

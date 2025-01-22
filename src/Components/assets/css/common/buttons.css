@@ -37,6 +37,13 @@
   border-color: transparent;
 }
 
+
+.inputcheckbox input {
+
+  height: 18px;
+  width: 18px;
+}
+
 .xl {
   width: 40px;
   height: 40px;
