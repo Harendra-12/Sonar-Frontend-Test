@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
@@ -9,7 +11,6 @@ function IncomingCallPopup({
   sessionId,
   lastIncomingCall,
   setSelectedModule,
-  setactivePage,
   isMicOn,
   isVideoOn,
 }) {
@@ -22,7 +23,6 @@ function IncomingCallPopup({
   const globalSession = useSelector((state) => state.sessions) || {};
   const [blindTransferNumber, setBlindTransferNumber] = useState("");
   const [attendShow, setAttendShow] = useState(false);
-  const [audio] = useState(new Audio(ringtone)); // Initialize the Audio object
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
 
@@ -86,6 +86,7 @@ function IncomingCallPopup({
   }, [lastIncomingCall]);
 
   const callerExtension = session.incomingInviteRequest?.message?.from?.uri?.normal?.user;
+  const displayName = session.incomingInviteRequest?.message?.from?._displayName;
 
   const handleAnswerCall = async (mode) => {
     // e.preventDefault();
@@ -237,6 +238,18 @@ function IncomingCallPopup({
       if (session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"] === "auto_answered") {
         handleAnswerCall("audio")
       }
+    }
+    // Handle incoming call notification and answer the call
+    if (Notification.permission === 'granted') {
+      const notification = new Notification('Incoming Call', {
+        body: `Incoming Call from: ${displayName} ${callerExtension}`,
+        icon: '/compLogo.png', // Optional: Add an icon
+      });
+      notification.onclick = function (event) {
+        handleAnswerCall("audio")
+        window.focus();
+        return;
+    }
     }
   }, [session])
   console.log("Sessionasasasa", session, session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2));
