@@ -103,7 +103,7 @@ function CampaignCreate() {
       setCompletedStep(3);
       setStepSelector(4);
     } else {
-      setCompletedStep(3);
+      setCompletedStep(4);
     }
   }, [editSteps]);
 
@@ -119,8 +119,11 @@ function CampaignCreate() {
           firstStep: true,
           secondStep: dialer != null,
           thirdStep: agents.length !== 0,
-          fourthStep: leads.length !== 0,
+          fourthStep: leads.length > 0,
         });
+        if(leads.length > 0){
+          setCompletedStep(4);
+        }
       }
       seteditState(getDid.data);
     }
@@ -1913,7 +1916,7 @@ function CampaignCreate() {
                       </button>
                       <button
                         className="panelButton gray m-0 float-end"
-                        // onClick={() => setPopUp(false)}
+                        onClick={() => setPopUp(false)}
                       >
                         <span className="text">Cancel</span>
                         <span className="icon">
