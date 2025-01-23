@@ -20,3 +20,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: var(--ui-accent);
 }
+
+
+/* General scrollbar styling for Firefox */
+* {
+  scrollbar-color: #a2c7ff #f1f1f1; /* thumb color, track color */
+  scrollbar-width: thin; /* Options: auto, thin, none */
+}
