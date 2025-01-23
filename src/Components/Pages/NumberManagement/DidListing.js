@@ -262,7 +262,7 @@ function DidListing({ page }) {
                                               >
                                                 <i class="fa-solid fa-plus"></i>
                                               </button> */}
-                                       <div className="text-center"> 
+                                       <div className="mt-1"> 
                                         <button
                                           className="tableButton align-items-center justify-content-center"
                                           onClick={() => {
