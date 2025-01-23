@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, fileUploadFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { fileUploadFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
@@ -12,12 +12,13 @@ import CircularLoader from "../../Loader/CircularLoader";
 function ClickToCallSetup() {
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [widgetExpanded, setWidgetExpanded] = useState(false)
   const [callFormVisible, setCallFormVisible] = useState(false)
   const [name, setName] = useState("")
   const [number, setNumber] = useState("")
   const [loading, setLoading] = useState(false)
   const [newFile, setNewFile] = useState(null);
+  const [popUp, setPopUp] = useState(false);
+  const [embededCode, setEmbededCode] = useState("")
 
   // Handle selected image to display it to the user
   const handleImageChange = (event) => {
@@ -34,11 +35,7 @@ function ClickToCallSetup() {
 
   const {
     register,
-    setError: setErr,
-    clearErrors,
     formState: { errors },
-    handleSubmit,
-    reset,
     setValue,
     watch,
   } = useForm();
@@ -48,8 +45,7 @@ function ClickToCallSetup() {
   };
 
   // Handle form submit
-  async function handleWidgetSubmit(data) {
-    console.log(watch());
+  async function handleWidgetSubmit() {
     if (!newFile) {
       toast.error("Please upload logo")
       return
@@ -70,10 +66,6 @@ function ClickToCallSetup() {
       toast.error("Please select an usage")
       return
     }
-    // if(watch().embed_code === "" || !watch().embed_code){
-    //   toast.error("Please enter embed code")
-    //   return
-    // }
     setLoading(true);
     const parsedData = new FormData();
     parsedData.append("logo", newFile);
@@ -81,13 +73,15 @@ function ClickToCallSetup() {
     parsedData.append("description", watch().description);
     parsedData.append("action", watch().action);
     parsedData.append("usages", watch().usages);
-    parsedData.append("primary_color",watch().color);
-      console.log("-------------",newFile);
+    parsedData.append("primary_color", watch().color);
+    console.log("-------------", newFile);
     // parsedData.append("embed_code", watch().embed_code);
     const apiData = await fileUploadFunction("/click-to-call/store", parsedData);
     if (apiData?.status) {
       toast.success(apiData.message);
       setLoading(false);
+      setPopUp(true);
+      setEmbededCode(apiData.data.embedded_code)
     } else {
       setLoading(false);
     }
@@ -168,7 +162,7 @@ function ClickToCallSetup() {
                                 >
                                   General{" "}
                                 </button>
-                                <button type="button"
+                                {/* <button type="button"
                                   className="nav-link"
                                   id="nav-options-tab"
                                   data-bs-toggle="tab"
@@ -178,7 +172,7 @@ function ClickToCallSetup() {
                                   aria-selected="false"
                                 >
                                   Options
-                                </button>
+                                </button> */}
                               </div>
                             </nav>
                             <div className="row">
@@ -214,7 +208,7 @@ function ClickToCallSetup() {
                                               const file = e.target.files[0];
                                               if (file) {
                                                 // Check if the file type is MP3
-    
+
                                                 const fileName = file.name.replace(/ /g, "-");
                                                 const newFile = new File([file], fileName, {
                                                   type: file.type,
@@ -224,10 +218,6 @@ function ClickToCallSetup() {
                                               }
                                             }}
                                           />
-
-                                          {/* {errors.did_id && (
-                                                        <ErrorMessage text={errors.did_id.message} />
-                                                    )} */}
                                         </div>
                                       </div>
                                       <div className="formRow col-xxl-8 col-xl-12">
@@ -551,7 +541,7 @@ function ClickToCallSetup() {
                                           </label>
                                         </div>
                                         <div className="col-6">
-                                          <input className="formItem" defaultValue={"AnglePBX"}  {...register("name")} />
+                                          <input className="formItem" defaultValue="AnglePBX"  {...register("name")} />
                                           {errors.did_id && (
                                             <ErrorMessage text={errors.name} />
                                           )}
@@ -576,16 +566,6 @@ function ClickToCallSetup() {
                                           )}
                                         </div>
                                       </div>
-                                    </form>
-                                  </div>
-                                  <div
-                                    class="tab-pane fade"
-                                    id="nav-options"
-                                    role="tabpanel"
-                                    aria-labelledby="nav-options-tab"
-                                    tabindex="0"
-                                  >
-                                    <form>
                                       <div className="formRow col-xxl-8 col-xl-12">
                                         <div className="formLabel">
                                           <label htmlFor="">Usage</label>
@@ -597,50 +577,6 @@ function ClickToCallSetup() {
                                           </label>
                                         </div>
                                         <div className="col-6">
-                                          {/* <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">
-                              Usage <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Set how the Destination will be used.
-                            </label>
-                          </div>
-                          <div className="col-3 pe-2 ms-auto">
-                            <select
-                              className="formItem"
-                              name="forward"
-                              id="selectFormRow"
-                              // onChange={(e) => setForwardEnable(e.target.value)}
-                              {...register("usages")}
-                              onChange={(e) => {
-                                // Trigger react-hook-form's built-in handling
-                                register("usages").onChange(e);
-
-                                // Clear the "action" field when "usages" changes
-                                setValue("action", "");
-                              }}
-                            >
-                              <option value="extension">Extension</option>
-                              <option value="call center">Call Center</option>
-                              <option value="ring group">Ring Group</option>
-                              <option value="ivr">IVR</option>
-                            </select>
-                          </div>
-                          <div className="col-3">
-                            <ActionList
-                              category={watch().usages}
-                              title={null}
-                              label={null}
-                              getDropdownValue={actionListValue}
-                              value={watch().action}
-                              {...register("action", requiredValidator)}
-                            />
-                            {errors.action && (
-                              <ErrorMessage text={errors.action.message} />
-                            )}
-                          </div>
-                        </div> */}
                                           <select
                                             type="text"
                                             name="did_id_view"
@@ -707,58 +643,21 @@ function ClickToCallSetup() {
                                               className="formItem"
                                               onChange={(e) => {
                                                 setValue(
-                                                    "action",
-                                                    e.target.value
+                                                  "action",
+                                                  e.target.value
                                                 );
-                                            }}
+                                              }}
                                             />
                                           )}
                                         </div>
                                       </div>
-                                      {/* <div
-                                        className="formRow col-xxl-8 col-xl-12 pt-3"
-                                        style={{
-                                          borderTop:
-                                            "1px solid var(--border-color)",
-                                        }}
-                                      >
-                                        <div className="formLabel">
-                                          <label htmlFor="">
-                                            Copy embeded code
-                                          </label>
-                                          <label
-                                            htmlFor="data"
-                                            className="formItemDesc"
-                                          >
-                                            Copy this code and drop it in your
-                                            website (above closing body tag) to
-                                            install click to call widget.
-                                          </label>
-                                        </div>
-                                        <div className="col-6">
-                                          <textarea
-                                            type="text"
-                                            name="did_id_view"
-                                            className="formItem h-auto"
-                                            {...register(
-                                              "embed_code",
-                                              requiredValidator
-                                            )}
-                                          />
-                                        </div>
-                                      </div> */}
                                     </form>
                                   </div>
                                 </div>
                               </div>
                               <div className="col-4">
                                 <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
-                                  {/* <div className="clickToCallButton">
-                                    <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
-                                      <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
-                                    </button>
-                                  </div> */}
-                                  {widgetExpanded || true ?
+                                  {true ?
                                     <div className="clickToCallModule">
                                       <div className="clickToCallHeader">
                                         <div className="wrapper">
@@ -829,6 +728,41 @@ function ClickToCallSetup() {
             </div>
           </div>
         </section>
+        {popUp &&
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      Copy this code and paste it on the site to make it work.
+                    </p>
+                    <textarea className="formItem" id="copyCode" value={embededCode} readOnly></textarea>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => navigate(-1)}
+                      >
+                        <span className="text">
+                          Confirm
+                        </span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
         {loading && <CircularLoader />}
       </main>
     </>

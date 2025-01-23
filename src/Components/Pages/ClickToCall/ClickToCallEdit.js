@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, fileUploadFunction, fileUploadPutFunction, generalGetFunction, generalPostFunction, generalPutFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, fileUploadFunction, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { requiredValidator } from "../../validations/validation";
@@ -24,11 +25,7 @@ function ClickToCallEdit() {
     const [embadedCode, setEmbededCode] = useState("")
     const {
         register,
-        setError: setErr,
-        clearErrors,
         formState: { errors },
-        handleSubmit,
-        reset,
         setValue,
         watch,
     } = useForm();
@@ -114,13 +111,6 @@ function ClickToCallEdit() {
         parsedData.append("usages", watch().usages);
         parsedData.append("primary_color", watch().color);
         parsedData.append("id", value)
-        const parsedData2 = {
-            "company_name": watch().name,
-            "description": watch().description,
-            "action": watch().action,
-            "usages": watch().usages,
-            "primary_color": watch().color
-        }
         console.log("-------------", newFile);
         // parsedData.append("embed_code", watch().embed_code);
         const apiData = await fileUploadFunction(`/click-to-call/update`, parsedData);
@@ -171,9 +161,9 @@ function ClickToCallEdit() {
                                                 </div>
                                                 <div className="buttonGroup">
                                                     <button type="button" effect="ripple" className="panelButton gray" onClick={() => {
-                                                            navigate(-1);
-                                                            backToTop();
-                                                        }}>
+                                                        navigate(-1);
+                                                        backToTop();
+                                                    }}>
                                                         <span className="text">Back</span>
                                                         <span className="icon">
                                                             <i className="fa-solid fa-caret-left" />
@@ -210,17 +200,6 @@ function ClickToCallEdit() {
                                                                     aria-selected="true"
                                                                 >
                                                                     General{" "}
-                                                                </button>
-                                                                <button type="button"
-                                                                    className="nav-link"
-                                                                    id="nav-options-tab"
-                                                                    data-bs-toggle="tab"
-                                                                    data-bs-target="#nav-options"
-                                                                    role="tab"
-                                                                    aria-controls="nav-options"
-                                                                    aria-selected="false"
-                                                                >
-                                                                    Options
                                                                 </button>
                                                             </div>
                                                         </nav>
@@ -614,16 +593,6 @@ function ClickToCallEdit() {
                                                                                     )}
                                                                                 </div>
                                                                             </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div
-                                                                        class="tab-pane fade"
-                                                                        id="nav-options"
-                                                                        role="tabpanel"
-                                                                        aria-labelledby="nav-options-tab"
-                                                                        tabindex="0"
-                                                                    >
-                                                                        <form>
                                                                             <div className="formRow col-xxl-8 col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Usage</label>
@@ -635,50 +604,6 @@ function ClickToCallEdit() {
                                                                                     </label>
                                                                                 </div>
                                                                                 <div className="col-6">
-                                                                                    {/* <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="">
-                              Usage <span className="text-danger">*</span>
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Set how the Destination will be used.
-                            </label>
-                          </div>
-                          <div className="col-3 pe-2 ms-auto">
-                            <select
-                              className="formItem"
-                              name="forward"
-                              id="selectFormRow"
-                              // onChange={(e) => setForwardEnable(e.target.value)}
-                              {...register("usages")}
-                              onChange={(e) => {
-                                // Trigger react-hook-form's built-in handling
-                                register("usages").onChange(e);
-
-                                // Clear the "action" field when "usages" changes
-                                setValue("action", "");
-                              }}
-                            >
-                              <option value="extension">Extension</option>
-                              <option value="call center">Call Center</option>
-                              <option value="ring group">Ring Group</option>
-                              <option value="ivr">IVR</option>
-                            </select>
-                          </div>
-                          <div className="col-3">
-                            <ActionList
-                              category={watch().usages}
-                              title={null}
-                              label={null}
-                              getDropdownValue={actionListValue}
-                              value={watch().action}
-                              {...register("action", requiredValidator)}
-                            />
-                            {errors.action && (
-                              <ErrorMessage text={errors.action.message} />
-                            )}
-                          </div>
-                        </div> */}
                                                                                     <select
                                                                                         type="text"
                                                                                         name="did_id_view"
@@ -743,7 +668,7 @@ function ClickToCallEdit() {
                                                                                                     : "Action"
                                                                                             }
                                                                                             className="formItem"
-                                                                                            value = {watch().action}
+                                                                                            value={watch().action}
                                                                                             onChange={(e) => {
                                                                                                 setValue(
                                                                                                     "action",

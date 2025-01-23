@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
@@ -49,6 +50,18 @@ function CardAndBilling() {
     setRechargePopUp(value);
   };
 
+  useEffect(() => {
+    if (billingListRefresh === 0 && cardListRefresh === 0) {
+      dispatch({
+        type: "SET_BILLINGLISTREFRESH",
+        billingListRefresh: billingListRefresh + 1,
+      });
+      dispatch({
+        type: "SET_CARDLISTREFRESH",
+        cardListRefresh: cardListRefresh + 1,
+      });
+    }
+  }, [])
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
