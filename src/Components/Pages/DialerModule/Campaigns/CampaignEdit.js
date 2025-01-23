@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -141,10 +142,10 @@ function CampaignCreate() {
   };
 
   useEffect(() => {
-    if (editState && editState.agents.length == 0) {
+    if (editState && editState.agents.length === 0) {
       setunmatchIdAgent(agents.data);
       setmatchIdAgent([]);
-    } else if (editState && editState.agents.length != 0) {
+    } else if (editState && editState.agents.length !== 0) {
       const agentsArr = agents?.data;
       const EditStateAgent = editState?.agents;
       const matchId = agentsArr

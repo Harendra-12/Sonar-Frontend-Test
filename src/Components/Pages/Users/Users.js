@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -8,13 +9,11 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 import { toast } from "react-toastify";
-import { set } from "react-hook-form";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const Users = () => {
   const dispatch = useDispatch();

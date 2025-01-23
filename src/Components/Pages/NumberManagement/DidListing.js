@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useNavigate, Link } from "react-router-dom";
@@ -8,7 +9,6 @@ import {
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
@@ -292,9 +292,9 @@ function DidListing({ page }) {
                                       </> : ""}
                                       <td className="text-center">
                                         <div class="dropdown">
-                                          <a class={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <div class={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="fa-solid fa-ellipsis-vertical" />
-                                          </a>
+                                          </div>
                                           <ul class="dropdown-menu actionBtnDropdowns">
                                             {page === "pbx" ?
                                               <>
@@ -306,27 +306,27 @@ function DidListing({ page }) {
                                                         : "Not Configured! Click to configure"
                                                     }
                                                   >
-                                                    <a class="clearButton text-align-start"
+                                                    <div class="clearButton text-align-start"
                                                       onClick={() =>
                                                         navigate(`/did-config`, {
                                                           state: item,
                                                         })
                                                       }>
                                                       <i class={`fa-regular fa-${item.configuration !== null ? "gear" : "triangle-exclamation"} me-2`}></i> {item.configuration !== null ? "Update" : "Configure"}
-                                                    </a>
+                                                    </div>
                                                   </Tippy>
                                                 </li>
                                                 {item.configuration !== null && (
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Reset configuration of this DID">
-                                                      <a class="clearButton text-align-start"
+                                                      <div class="clearButton text-align-start"
                                                         onClick={() =>
                                                           handleClick(
                                                             item.configuration.id
                                                           )
                                                         }
                                                       ><i class="fa-regular fa-arrows-rotate me-2"></i> Reset
-                                                      </a>
+                                                      </div>
                                                     </Tippy>
                                                   </li>
                                                 )}
@@ -335,11 +335,11 @@ function DidListing({ page }) {
                                                 <>
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Select the usage of this DID">
-                                                      <a class="clearButton text-align-start"
-                                                        onClick={() => { setUsagesPopup(true); setId(item.id) }
+                                                      <div class="clearButton text-align-start"
+                                                        onClick={() => { setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
                                                         }
                                                       ><i class="fa-regular fa-gear me-2"></i> Set Usage
-                                                      </a>
+                                                      </div>
                                                     </Tippy>
                                                   </li>
                                                 </> : ""}
@@ -347,19 +347,16 @@ function DidListing({ page }) {
                                               <Tippy
                                                 content={"Delete the DID"}
                                               >
-                                                <a class="clearButton text-align-start"
+                                                <div class="clearButton text-align-start"
                                                   onClick={() => { setDeletePopup(true); setDeleteId(item.id) }
                                                   }>
                                                   <i class={`fa-regular fa-trash me-2`}></i> Delete
-                                                </a>
+                                                </div>
                                               </Tippy>
                                             </li>
                                           </ul>
                                         </div>
                                       </td>
-                                      {/* <td style={{ cursor: "default" }} onClick={() => { setDeletePopup(true); setDeleteId(item.id) }}>
-                                        DELETE
-                                      </td> */}
                                     </tr>
                                   );
                                 })}

@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+/* eslint-disable array-callback-return */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
@@ -79,7 +82,7 @@ function ActiveCallSidePanel({
       //Hold previous call
       if (
         prevSession &&
-        session?._state == "Established" &&
+        session?._state === "Established" &&
         prevSession.mode !== "video"
       ) {
         setTimeout(() => {

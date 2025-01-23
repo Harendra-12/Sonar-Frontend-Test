@@ -4,7 +4,6 @@ import {
   Routes,
   Navigate,
   useNavigate,
-  Link,
 } from "react-router-dom";
 import './index.css'
 import ProtectedRoute from "./Components/CommonComponents/ProtectedRoute";
@@ -94,18 +93,14 @@ import WebrtcWrapper from "./Components/Pages/WebRtc/WebrtcWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import Messages from "./Components/Pages/WebRtc/Messages";
 import DidListingAdd from "./Components/Pages/NumberManagement/DidListingAdd";
-import MailSettingsAdd from "./Components/Pages/MailSettings/MailSettingsAdd";
-import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import MailSettingsEdit from "./Components/Pages/MailSettings/MailSettingsEdit";
 import IvrAdd from "./Components/Pages/IVR/IvrAdd";
 import IvrListing from "./Components/Pages/IVR/IvrListing";
 import IvrEdit from "./Components/Pages/IVR/IvrEdit";
 import IvrOptions from "./Components/Pages/IVR/IvrOptions";
-import VideoCall from "./Components/Pages/WebRtc/VideoCall";
 import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceProvisioningAdd";
 import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
 import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
-import ConferenceCall from "./Components/Pages/WebRtc/ConferenceCall";
 import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
 import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
@@ -121,13 +116,11 @@ import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
 import DialerDashboard from "./Components/Pages/DialerModule/DialerDashboard";
-import Agents from "./Components/Pages/Agents/Agents";
 import AgentsEdits from "./Components/Pages/Agents/AgentsEdits";
 import AgentsAdd from "./Components/Pages/Agents/AgentsAdd";
 import AgentReport from "./Components/Pages/Agents/AgentReport";
 import MeetingReports from "./Components/Pages/Agents/MeetingReports";
 import CallRecording from "./Components/Pages/Setting/CallRecording";
-import Fax from "./Components/Pages/Setting/FaxSettings";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
 import AddOns from "./Components/Pages/Stores/AddOns";
 import Meeting from "./Components/Pages/Meeting/Meeting";
@@ -219,11 +212,7 @@ function App() {
           <Route path="/agent-disposition-manage" element={<AgentDispositionManage />} />
 
           <Route
-            path="/my-profile"
-            element={
-              permission?.includes(8) ? (
-                <Profile />
-              ) : (
+            path="/my-profile" element={ permission?.includes(8) ? ( <Profile />) : (
                 <Navigate to="/dashboard" replace />
               )
             }
@@ -236,21 +225,14 @@ function App() {
 
           {/* Ring Groups Path Start */}
           <Route
-            path="/ring-groups"
-            element={
-              permission?.includes(344) || permission?.includes(346) ? (
-                <RingGroups />
-              ) : (
+            path="/ring-groups" element={permission?.includes(344) || permission?.includes(346) ? (<RingGroups />) : (
                 <Navigate to="/dashboard" replace />
               )
             }
           />
           <Route
             path="/ring-groups-add"
-            element={
-              permission?.includes(346) ? (
-                <RingGroupAdd />
-              ) : (
+            element={permission?.includes(346) ? (<RingGroupAdd />) : (
                 <Navigate to="/dashboard" replace />
               )
             }
@@ -584,31 +566,8 @@ function App() {
           />
           {/* Billing Pages End */}
 
-          {/* Variable Page Start */}
           <Route path="/variable" element={<Variable />}></Route>
-          {/* Variable Page End  */}
-
-          {/* Mail Settings Page Start */}
-          {/* <Route
-            path="/mail-settings"
-            element={
-              permission?.includes(248) || permission?.includes(250) ? (
-                <MailSettings />
-              ) : (
-                <Navigate to="/dashboard" replace />
-              )
-            }
-          /> */}
-          {/* <Route
-            path="/mail-settings-add"
-            element={
-              permission?.includes(250) ? (
-                <MailSettingsAdd />
-              ) : (
-                <Navigate to="/dashboard" replace />
-              )
-            }
-          /> */}
+          
           <Route
             path="/mail-settings-edit"
             element={

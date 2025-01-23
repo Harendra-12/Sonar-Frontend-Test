@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import IncomingCallPopup from "./IncomingCallPopup";
 import { useSIPProvider } from "react-sipjs";
-import { useDispatch, useSelector } from "react-redux";
 
 const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn}) => {
   const { sessions: sipSessions } = useSIPProvider();
@@ -9,7 +8,7 @@ const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn}) 
   const incomingSessionsArray = Object.keys(sipSessions).filter(
     (sessionId) =>
       sipSessions[sessionId].state === "Initial" &&
-      sipSessions[sessionId].logger.category == "sip.Invitation"
+      sipSessions[sessionId].logger.category === "sip.Invitation"
   );
 
   return (
