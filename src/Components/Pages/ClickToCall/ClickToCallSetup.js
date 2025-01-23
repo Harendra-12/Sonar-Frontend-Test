@@ -735,11 +735,11 @@ function ClickToCallSetup() {
                 <div className="row content col-xl-4">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    <i class="fa-regular fa-circle-check"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
+                    <h4>Success</h4>
                     <p>
                       Copy this code and paste it on the site to make it work.
                     </p>
