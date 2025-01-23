@@ -110,7 +110,8 @@ function CallCenterQueue() {
       return;
     }
 
-    
+    navigate("/cal-center-queue-add");
+    backToTop();
   };
 
   async function handleDelete(id) {

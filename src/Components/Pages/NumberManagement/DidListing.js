@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
@@ -27,7 +27,9 @@ function DidListing({ page }) {
   const [refreshDid, setRefreshDid] = useState(0)
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteId, setDeleteId] = useState('');
-  const [bulkAddPopUps, setBulkAddPopUps] = useState(false);
+  const [addNew, setAddNew] = useState(false);
+  console.log(didAll);
+
 
   useEffect(() => {
     if (didAll) {
@@ -138,14 +140,18 @@ function DidListing({ page }) {
   }, [newAddDid, did]);
 
   async function handleUsagesEdit(id) {
+    setLoading(true)
+    setAddNew(false)
     const parsedData = {
-      usages: usages
+      usages: page === "pbx" ? "pbx" : page === "dialer" ? "dialer" : usages
     }
     const apiData = await generalPutFunction(`/did/update/${id}`, parsedData)
     if (apiData.status) {
+      setLoading(false)
       toast.success(apiData.message)
       setRefreshDid(refreshDid + 1)
     } else {
+      setLoading(false)
       toast.error(apiData.message)
     }
   }
@@ -193,136 +199,86 @@ function DidListing({ page }) {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
-                          type="button"
-                          class="panelButton"
-                          onClick={() => {
-                            // if (user.length !== agent.length)
-                            setBulkAddPopUps(true);
-                            // else toast.warn("All agent selected");
-                          }}
-                        >
-                          <span class="text">Add</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </button>
+                        {!(page === "number") &&
+                          <button
+                            type="button"
+                            class="panelButton"
+                            onClick={() => {
+                              setAddNew(true);
+                            }}
+                          >
+                            <span class="text">Add</span>
+                            <span class="icon">
+                              <i class="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        }
                       </div>
                     </div>
                   </div>
 
-                  {bulkAddPopUps ? (
+                  {addNew ? (
                     <div className="addNewContactPopup">
                       <div className="row">
                         <div className="col-12 heading border-0 bg-transparent mb-0">
                           <i className="fa-light fa-user-plus" />
-                          <h5>Add new DID And select</h5>
-                          {/* <p>
-                Add people to yourqueue effortlessly, keeping your connections
-                organized and efficient
-              </p> */}
-                          {/* <div className="border-bottom col-12" /> */}
-                        </div>
-                        <div className="col-xl-12">
-                          <div className="col-12 d-flex justify-content-between align-items-center">
-                            <input
-                              type="text"
-                              className="formItem"
-                              placeholder="Search"
-                              name="name"
-
-
-                            />
-                            <button
-                              className="tableButton ms-2"
-                              onClick={() => navigate("/users-add")}
-                            >
-                              <i className="fa-solid fa-user-plus"></i>
-                            </button>
-                          </div>
+                          <h5>Add new DID </h5>
                         </div>
                         <div className="col-xl-12 mt-3">
-                          <div
+                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
+                            <div
                             className="tableContainer mt-0"
                             style={{ maxHeight: "calc(100vh - 400px)" }}
                           >
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>S.No</th>
-                                  <th>Name</th>
-                                  <th>Extension</th>
-                                  <th>
-                                    <input
-                                      type="checkbox"
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>S.No</th>
+                                    <th>Number</th>
+                                    <th>
+                                      Add
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
+                                    return (
+                                      <tr>
+                                        <td> {index + 1}</td>
+                                        <td>{item.did}</td>
+                                        <button
+                                          className="panelButton me-0"
+                                          onClick={() => {
+                                            handleUsagesEdit(item.id)
+                                          }}
+                                        >
+                                          <span className="text">Add</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-check" />
+                                          </span>
+                                        </button>
+                                      </tr>
+                                    )
+                                  })}
 
-                                    />
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td> 1</td>
-                                  <td>XZY</td>
-                                  <td>1000</td>
-                                  <td><input type="checkbox" /></td>
-                                  {/* <td colSpan="4" className="text-center text-muted">
-                                    No data available
-                                  </td> */}
-                                </tr>
-                              </tbody>
-                              {/* <tbody>
-                                {usages
-                                  .sort((a, b) => {
-                                    const aMatches =
-                                      a.name
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase()) ||
-                                      (a?.extension?.extension || "")
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase());
-                                    const bMatches =
-                                      b.name
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase()) ||
-                                      (b?.extension?.extension || "")
-                                        .toLowerCase()
-                                        .includes(searchQuery.toLowerCase());
-                                    return ;
-                                  })
-                                  .filter(
-                                    (user) => !agent.some((agent) => user.id == agent.name)
-                                  ) // Exclude agents already in `agent`
-                                  .map((item, index) => (
-                                    <tr key={item.id || index}>
-                                      <td>{index + 1}.</td>
-                                      <td>{item.name}</td>
-                                      <td>{item?.extension?.extension}</td>
-                                      <td>
-                                        <input
-                                          type="checkbox"
-                                        // Call handler on change
-                                          
-                                        />
-                                      </td>
-                                    </tr>
-                                  ))}
-                              </tbody> */}
-                            </table>
-                          </div>
+
+                                </tbody>
+                              </table>
+                              </div>
+                            }
                         </div>
                         <div className="col-xl-12 mt-2">
                           <div className="d-flex justify-content-between">
                             <button
                               className="panelButton gray ms-0"
-
+                              onClick={() => setAddNew(false)}
                             >
                               <span className="text">Close</span>
                               <span className="icon">
                                 <i className="fa-solid fa-caret-left" />
                               </span>
                             </button>
-                            <button
+                            {/* <button
                               className="panelButton me-0"
 
                             >
@@ -330,7 +286,7 @@ function DidListing({ page }) {
                               <span className="icon">
                                 <i className="fa-solid fa-check" />
                               </span>
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>
