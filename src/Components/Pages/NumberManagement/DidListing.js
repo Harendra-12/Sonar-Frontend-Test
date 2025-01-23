@@ -28,9 +28,8 @@ function DidListing({ page }) {
   const [deletePopup, setDeletePopup] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [addNew, setAddNew] = useState(false);
-  console.log(didAll);
-
-
+  const [confirmPopup, setConfirmPopup] = useState(false);
+  const [previousUsages,setPreviousUsages] = useState('')
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
@@ -148,6 +147,8 @@ function DidListing({ page }) {
     const apiData = await generalPutFunction(`/did/update/${id}`, parsedData)
     if (apiData.status) {
       setLoading(false)
+      setUsages("")
+      setPreviousUsages("")
       toast.success(apiData.message)
       setRefreshDid(refreshDid + 1)
     } else {
@@ -155,6 +156,8 @@ function DidListing({ page }) {
       toast.error(apiData.message)
     }
   }
+
+  console.log("Usagesssss",previousUsages,usages)
 
   async function handleDelete(id) {
     setLoading(true)
@@ -423,7 +426,7 @@ function DidListing({ page }) {
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Select the usage of this DID">
                                                       <div class="clearButton text-align-start"
-                                                        onClick={() => { setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
+                                                        onClick={() => {setPreviousUsages(item.usages); setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
                                                         }
                                                       ><i class="fa-regular fa-gear me-2"></i> Set Usage
                                                       </div>
@@ -483,8 +486,16 @@ function DidListing({ page }) {
                     <button
                       className="panelButton m-0"
                       onClick={() => {
-                        handleUsagesEdit(id);
-                        setUsagesPopup(false);
+                        if(previousUsages === usages){
+                          setUsagesPopup(false);
+                        }else if(previousUsages==="" || !previousUsages){
+                          handleUsagesEdit(id);
+                          setUsagesPopup(false);
+                        }else{
+                          setConfirmPopup(true);
+                          setUsagesPopup(false);
+                        }
+                       
                       }}
                     >
                       <span className="text">Lets Go!</span>
@@ -548,6 +559,58 @@ function DidListing({ page }) {
                       onClick={() => {
                         setDeletePopup(false);
                         setDeleteId("");
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+        {confirmPopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-circle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Confirmation!</h4>
+                  <p>
+                    {`Are you sure!
+                    You want to change usages from "${previousUsages}" to "${usages===""?"None":usages}"`}
+                  </p>
+
+                  <div className="d-flex justify-content-between mt-3">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => {
+                        handleUsagesEdit(id);
+                        setConfirmPopup(false);
+                      }}
+                    >
+                      <span className="text">Let's Go!</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setConfirmPopup(false);
+                        setUsages("");
+                        setPreviousUsages("")
                       }}
                     >
                       <span className="text">Cancel</span>
