@@ -2716,30 +2716,20 @@ function CallCenterQueueEdit() {
                   <label htmlFor="">Call Timeout</label>
                 </div>
                 <div className="position-relative">
-                  <select
-                    className="formItem me-0"
+                <input
                     type="number"
                     name="call_timeout"
                     value={settingsForBulkEdit.call_timeout}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        tier_level: e.target.value,
+                        call_timeout: e.target.value,
                       })
                     }
-                    id="selectFormRow"
-                  >
-                    <option value={0}>0</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                    <option value={7}>7</option>
-                    <option value={8}>8</option>
-                    <option value={9}>9</option>
-                  </select>
+                    className="formItem"
+                    placeholder="Max No Answer"
+                    defaultValue={0}
+                  />
                 </div>
               </div>
               <div className="col-4">
