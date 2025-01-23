@@ -811,6 +811,9 @@ function CampaignCreate() {
                                     <option value="predictive">
                                       Predictive
                                     </option>
+                                    <option value="agentless">
+                                      Agentless
+                                    </option>
                                   </select>
                                 </div>
                               </div>

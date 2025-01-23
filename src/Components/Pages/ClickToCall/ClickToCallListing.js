@@ -148,7 +148,7 @@ const ClickToCallListing = () => {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={3} row={15} />
+                            <SkeletonTableLoader col={4} row={15} />
                           ) : (
                             <>
                               {callBlock &&

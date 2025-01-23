@@ -420,6 +420,7 @@ function CampaignCreate() {
                                   <option value="preview">Preview</option>
                                   <option value="progressive">Progressive</option>
                                   <option value="predictive">Predictive</option>
+                                  <option value="agentless">Agentless</option>
                                 </select>
                               </div>
                             </div>
