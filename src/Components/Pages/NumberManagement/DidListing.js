@@ -236,7 +236,7 @@ function DidListing({ page }) {
                                     <th>S.No</th>
                                     <th>Number</th>
                                     <th>
-                                      Add
+                                      Add DID
                                     </th>
                                   </tr>
                                 </thead>
@@ -246,17 +246,33 @@ function DidListing({ page }) {
                                       <tr>
                                         <td> {index + 1}</td>
                                         <td>{item.did}</td>
+                                        {/* <button
+                                                className="tableButton mx-auto"
+                                                onClick={() =>
+                                                  navigate(
+                                                    "/device-provisioning-new",
+                                                    {
+                                                      state: {
+                                                        extension: item.extension,
+                                                        id: item.id,
+                                                      },
+                                                    }
+                                                  )
+                                                }
+                                              >
+                                                <i class="fa-solid fa-plus"></i>
+                                              </button> */}
+                                       <div className="text-center"> 
                                         <button
-                                          className="panelButton me-0"
+                                          className="tableButton align-items-center justify-content-center"
                                           onClick={() => {
                                             handleUsagesEdit(item.id)
                                           }}
                                         >
-                                          <span className="text">Add</span>
-                                          <span className="icon">
-                                            <i className="fa-solid fa-check" />
-                                          </span>
+                                         
+                                          <i class="fa-solid fa-plus"></i>
                                         </button>
+                                        </div>
                                       </tr>
                                     )
                                   })}
