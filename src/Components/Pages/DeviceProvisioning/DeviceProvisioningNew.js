@@ -112,7 +112,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
-                                                    <div class="tab-pane fade show active" id="nav-gen" role="tabpanel" aria-labelledby="nav-gen-tab" tabindex="0">
+                                                    <div class="tab-pane fade show active" id="nav-desk" role="tabpanel" aria-labelledby="nav-desk-tab" tabindex="0">
                                                         <div className="row col-12 mx-auto mb-0">
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
@@ -168,9 +168,93 @@ function DeviceProvisioningNew() {
                                                                             </div>
                                                                             <div className='col-5'>
                                                                                 <div class="addButtonGroup ms-auto">
-                                                                                    <button onClick={() => setIsDeviceChosen(false)}><i class="fa-light fa-minus"></i></button>
+                                                                                    <button onClick={() => setIsDeviceChosen(null)}><i class="fa-light fa-minus"></i></button>
                                                                                     <div className='number'>0</div>
-                                                                                    <button onClick={() => setIsDeviceChosen(true)}><i class="fa-light fa-plus"></i></button>
+                                                                                    <button onClick={() => setIsDeviceChosen("hard")}><i class="fa-light fa-plus"></i></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* <div className='row'>
+                                                                    <div className='col-7'>
+                                                                        <div className="content">
+                                                                            <p className='mb-0'>Additional Purchase</p>
+                                                                            <p className='mb-0' style={{}}>$256</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='col-5'>
+                                                                        <div class="add-btnss">
+                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
+                                                                            <div class="count-number" id="item-count">0</div>
+                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> */}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="nav-soft" role="tabpanel" aria-labelledby="nav-soft-tab" tabindex="0">
+                                                        <div className="row col-12 mx-auto mb-0">
+                                                            <div className="formRow col-xl-6 deviceProvision">
+                                                                <div className="col-4">
+                                                                    <img src={require('../../assets/images/eyebeam.png')}></img>
+                                                                </div>
+                                                                <div className="formLabel ">
+                                                                    <label htmlFor=""><h5>EyeBeam</h5></label>
+                                                                    <br />
+                                                                    <label><p>Brand: EyeBeam</p></label>
+                                                                    <br />
+                                                                    <label>
+                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className="formRow col-xl-6 deviceProvision">
+                                                                <div className="col-4">
+                                                                    <img src={require('../../assets/images/webrtc.png')}></img>
+                                                                </div>
+                                                                <div className="formLabel ">
+                                                                    <label htmlFor=""><h5>WebRTC</h5></label>
+                                                                    <br />
+                                                                    <label><p>Brand: UcaaS</p></label>
+                                                                    <br />
+                                                                    <label>
+                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div className='col-xl-12'>
+                                                                <div className='deviceProvisionDetails' data-id="1">
+                                                                    <div className='title'>
+                                                                        EyeBeam
+                                                                    </div>
+                                                                    <div className='content'>
+                                                                        <p>Esse dolore in consequat laborum ea aliquip occaecat esse. Enim in tempor ut irure aute. Duis labore nisi pariatur laboris est.</p>
+                                                                        <ul>
+                                                                            <li>Nisi sit sint minim culpa labore magna occaecat adipisicing excepteur non. Esse consectetur proident ex adipisicing sit Lorem veniam esse ea consectetur.</li>
+                                                                            <li>Esse cillum fugiat eiusmod tempor do incididunt commodo magna aute ut irure.</li>
+                                                                            <li>Magna amet aliquip anim consequat id sunt reprehenderit.</li>
+                                                                            <li>Amet velit ullamco sit magna cillum nostrud labore irure sit. Pariatur sunt eiusmod reprehenderit ex tempor adipisicing ullamco culpa minim reprehenderit dolor.</li>
+                                                                            <li>Deserunt anim officia aliquip enim aliqua.</li>
+                                                                            <li>Et labore voluptate dolore enim eu aliquip occaecat amet est esse laborum deserunt incididunt eiusmod.</li>
+                                                                        </ul>
+                                                                        <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i class="ms-2 fa-solid fa-download"></i></div>
+                                                                    </div>
+                                                                    <div className='content' style={{ borderTop: '1px solid var(--border-color)' }}>
+                                                                        <div className='row align-items-center'>
+                                                                            <div className='col-7'>
+                                                                                <div className="content">
+                                                                                    <h5 className='mb-1'>Select from your Account</h5>
+                                                                                    <p className='mb-0'>Available in your account: 0</p>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div className='col-5'>
+                                                                                <div class="addButtonGroup ms-auto">
+                                                                                    <button onClick={() => setIsDeviceChosen(null)}><i class="fa-light fa-minus"></i></button>
+                                                                                    <div className='number'>0</div>
+                                                                                    <button onClick={() => setIsDeviceChosen("soft")}><i class="fa-light fa-plus"></i></button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -198,7 +282,7 @@ function DeviceProvisioningNew() {
                                             </div>
                                         </div>
 
-                                        {isDeviceChosen && <div className='col-xl-6'>
+                                        {isDeviceChosen === "hard" ? <div className='col-xl-6'>
                                             <form>
                                                 <div className="formRow">
                                                     <div className="formLabel">
@@ -304,7 +388,139 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
                                             </form>
-                                        </div>}
+                                        </div> : isDeviceChosen === "soft" ?
+                                            <div className='col-xl-6'>
+                                                <form>
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">User</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Please enter user
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input
+                                                                disabled
+                                                                type="text"
+                                                                name="address"
+                                                                className="formItem"
+                                                            />
+                                                            {/* {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )} */}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Extension</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Select an Extension
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <select
+                                                                className="formItem"
+                                                                name="transport "
+                                                                id="selectFormRow"
+                                                            >
+                                                                <option disabled value="">
+                                                                    Chose an Extension
+                                                                </option>
+                                                                <option selected value="1000">
+                                                                    1000
+                                                                </option>
+                                                                <option value="1001">1001</option>
+                                                                <option value="1002">1002</option>
+                                                                <option value="1003">1003</option>
+                                                            </select>
+                                                            {/* {errors.transport && (
+                                                            <ErrorMessage text={errors.transport.message} />
+                                                        )} */}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Password</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Enter password
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input
+                                                                type="text"
+                                                                name="address"
+                                                                className="formItem"
+                                                                minLength="3"
+                                                                maxLength="4"
+                                                                placeholder="5070"
+                                                            />
+                                                            {/* {errors.port && <ErrorMessage text={errors.port.message} />} */}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Domain</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Enter your domain ip
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input
+                                                                type="text"
+                                                                name="serial_number"
+                                                                className="formItem"
+                                                                placeholder="124abc"
+                                                            />
+                                                            {/* {errors.serial_number && (
+                                                                <ErrorMessage text={errors.serial_number.message} />
+                                                            )} */}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">SIP Server</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Enter your sip server
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input
+                                                                type="text"
+                                                                name="serial_number"
+                                                                className="formItem"
+                                                                placeholder="124abc"
+                                                            />
+                                                            {/* {errors.serial_number && (
+                                                                <ErrorMessage text={errors.serial_number.message} />
+                                                            )} */}
+                                                        </div>
+                                                    </div>
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">SIP Proxy</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Enter your sip proxy
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input
+                                                                type="text"
+                                                                name="serial_number"
+                                                                className="formItem"
+                                                                placeholder="124abc"
+                                                            />
+                                                            {/* {errors.serial_number && (
+                                                                <ErrorMessage text={errors.serial_number.message} />
+                                                            )} */}
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            : ""}
                                     </div>
                                 </div>
                             </div>
