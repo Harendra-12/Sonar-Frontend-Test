@@ -51,9 +51,9 @@ function CampaignCreate() {
     fourthStep: false,
   });
   const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
-
+  const [allDisposition, setAllDisposition] = useState([]);
+  const [selectedDesposition, setSelectedDisposition] = useState([]);
   const [campaignRefresh, setcampaignRefresh] = useState(0);
-
   const [matchIdAgent, setmatchIdAgent] = useState([]);
   const [unmatchIdAgent, setunmatchIdAgent] = useState([]);
 
@@ -77,6 +77,17 @@ function CampaignCreate() {
       setLoading(false);
     }
   };
+
+  // Getting disposition data
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/disposition/all`)
+      if (apiData?.status) {
+        setAllDisposition(apiData.data)
+      }
+    }
+    getData()
+  }, [])
 
   useEffect(() => {
     if (
@@ -115,14 +126,14 @@ function CampaignCreate() {
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
         console.log("this is leads", leads);
-        
+        setSelectedDisposition(getDid.data.disposition.map((item) => (item.id)));
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
           thirdStep: agents.length !== 0,
           fourthStep: leads.length > 0,
         });
-        if(leads.length > 0){
+        if (leads.length > 0) {
           setCompletedStep(4);
         }
       }
@@ -210,32 +221,6 @@ function CampaignCreate() {
     }
   }, [stepSelector, editState]);
 
-  // Getting did and agents for dialer and set its value
-  // useEffect(() => {
-  //     async function getDidData() {
-  //         setLoading(true)
-  //         const getDid = await generalGetFunction("did/all")
-  //         if (getDid?.status) {
-  //             setDid(getDid.data.filter((item) => item.usages === "dialer"))
-  //         }
-  //     }
-  //     async function getAgentData() {
-  //         const getAgents = await generalGetFunction(`agents?usages=dialer&row_per_page=${agentPerPage}&search=${agentSearch}`)
-  //         if (getAgents?.status) {
-  //             // console.log(getAgents)
-  //             setAgents(getAgents.data)
-  //             setLoading(false)
-  //         }else{
-  //             setLoading(false)
-  //         }
-  //     }
-  //     if (agentPerPage === 10 && agentSearch === "") {
-  //         getDidData()
-  //     }
-  //     getAgentData()
-
-  // }, [agentPerPage, agentSearch])
-
   useEffect(() => {
     if (availableDidSearch !== "") {
       const FilteredDids = did.filter((item) => {
@@ -318,12 +303,12 @@ function CampaignCreate() {
 
   // Step two form submit to add dialer settings
   const handleFormSubmitStepTwo = handleSubmit(async (data) => {
-    // if (campaignId === "") {
-    //   toast.error("Please create campaign first");
-    //   return;
-    // }
+    if (selectedDesposition.length === 0) {
+      toast.error("Please select at least one disposition");
+      return
+    }
     if (editState.dialer == null) {
-      const payload = { ...data, campaign_id: campaignId };
+      const payload = { ...data, campaign_id: campaignId, dispositions: selectedDesposition };
       const apiData = await generalPostFunction(
         "/dialer-setting/store",
         payload
@@ -458,6 +443,15 @@ function CampaignCreate() {
       setLoading(false);
     }
   };
+
+  // Handel selcetd desposition change
+  function handleDispositionChange(id) {
+    // If id is present then remove it if not add it
+    setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
+  }
+
+  console.log("111111",selectedDesposition);
+  
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -752,11 +746,10 @@ function CampaignCreate() {
                                   >
                                     {/* Blank field that toggles a tick */}
                                     <div
-                                      className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${
-                                        selectedItems.includes(index)
+                                      className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedItems.includes(index)
                                           ? "selected"
                                           : ""
-                                      }`}
+                                        }`}
                                       style={{
                                         width: "20px",
                                         height: "20px",
@@ -1111,16 +1104,34 @@ function CampaignCreate() {
                                         >
                                           Agent Disposition
                                         </div>
-                                        {/* <div className="col-5 text-end">
-                                                                                <button className="panelButton m-0 ms-auto">
-                                                                                    <span className="text">Add</span>
-                                                                                    <span className="icon">
-                                                                                        <i className="fa-solid fa-plus" />
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div> */}
                                       </div>
-                                      <div className="col-xl-12 pt-3">
+                                      {allDisposition.map((item, index) => {
+                                        return (
+                                          <div className="col-xl-12 pt-3">
+                                            <div className='d-flex align-items-center'>
+                                              <div className="savedCardWrapper col">
+                                                <div>
+                                                  <label>{item.name}</label>
+                                                </div>
+                                                <div>
+                                                  <label className="switch">
+                                                    <input 
+                                                      type="checkbox"
+                                                      checked={selectedDesposition.includes(item.id)}
+                                                      id="showAllCheck"
+                                                      onChange={() => handleDispositionChange(item.id)}
+                                                    />
+                                                    <span className="slider round" />
+                                                  </label>
+                                                </div>
+                                              </div>
+                                              <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
+                                              <div className="contactTags"><span data-id="1">Final</span></div>
+                                            </div>
+                                          </div>
+                                        )
+                                      })}
+                                      {/* <div className="col-xl-12 pt-3">
                                         <div className="d-flex align-items-center">
                                           <div className="savedCardWrapper col">
                                             <div>
@@ -1330,7 +1341,7 @@ function CampaignCreate() {
                                             <span data-id="1">Final</span>
                                           </div>
                                         </div>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                 </div>
@@ -1411,7 +1422,7 @@ function CampaignCreate() {
                               </div>
                               <div className="mainContentApp m-0 bg-transparent mt-3">
                                 <div className="row">
-                                  <div className="col-6" style={{borderRight: '1px solid var(--border-color)'}}>
+                                  <div className="col-6" style={{ borderRight: '1px solid var(--border-color)' }}>
                                     {unmatchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1439,11 +1450,10 @@ function CampaignCreate() {
                                               </div>
                                             </div>
                                             <div
-                                              className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${
-                                                selectedAgent.includes(index)
+                                              className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
                                                   ? "selected"
                                                   : ""
-                                              }`}
+                                                }`}
                                               style={{
                                                 width: "20px",
                                                 height: "20px",
@@ -1454,8 +1464,8 @@ function CampaignCreate() {
                                               {selectedAgent.includes(
                                                 item.id
                                               ) && (
-                                                <i className="fa-solid fa-check text-success"></i>
-                                              )}
+                                                  <i className="fa-solid fa-check text-success"></i>
+                                                )}
                                             </div>
                                             {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
                                                                                     <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
@@ -1495,7 +1505,7 @@ function CampaignCreate() {
 
                                             <div className="w-auto">
                                               <button
-                                              className="clearButton2 text-danger"
+                                                className="clearButton2 text-danger"
                                                 onClick={() =>
                                                   handleDeleteAgent(
                                                     item.Campaign_user_id
@@ -1542,7 +1552,7 @@ function CampaignCreate() {
                                 />
                               </div>
                             </div>
-                            
+
                           </div>
                         </>
                       )}

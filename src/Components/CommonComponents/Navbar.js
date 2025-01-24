@@ -651,6 +651,7 @@ function Navbar() {
                           "/lead-edit",
                           "/campaigns",
                           "/call-desposition",
+                          "/agent-disposition-manage"
                         ])
                           ? "true"
                           : "false"
@@ -671,6 +672,7 @@ function Navbar() {
                         "/lead-edit",
                         "/campaigns",
                         "/call-desposition",
+                        "/agent-disposition-manage",
                       ])
                         ? "show"
                         : ""
@@ -697,6 +699,25 @@ function Navbar() {
                                   <i className="fa-regular fa-phone-office" />
                                 </div> */}
                               <div className="itemTitle">Dashboard</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/agent-disposition-manage"
+                              onClick={() => backToTop()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/agent-disposition-manage"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              {/* <div className="iconHolder">
+                                  <i className="fa-regular fa-phone-office" />
+                                </div> */}
+                              <div className="itemTitle">Desposition</div>
                             </NavLink>
                           </li>
 

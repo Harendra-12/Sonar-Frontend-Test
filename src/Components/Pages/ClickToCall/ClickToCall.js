@@ -4,7 +4,6 @@ import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/gl
 import { useLocation } from 'react-router-dom'
 
 function ClickToCall() {
-    const [widgetExpanded, setWidgetExpanded] = useState(false)
     const [callFormVisible, setCallFormVisible] = useState(false)
     const [name, setName] = useState("")
     const [number, setNumber] = useState("")

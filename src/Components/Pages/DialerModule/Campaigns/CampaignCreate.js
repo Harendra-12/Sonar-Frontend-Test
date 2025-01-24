@@ -26,6 +26,8 @@ function CampaignCreate() {
   const [selectedAgent, setSelectedAgent] = useState([])
   const [newFile, setNewFile] = useState(null)
   const [fileName, setFileName] = useState("");
+  const [allDisposition, setAllDisposition] = useState([]);
+  const [selectedDesposition, setSelectedDisposition] = useState([]);
 
   const {
     register,
@@ -34,6 +36,16 @@ function CampaignCreate() {
     watch,
   } = useForm();
 
+  // Getting disposition data
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/disposition/all`)
+      if (apiData?.status) {
+        setAllDisposition(apiData.data)
+      }
+    }
+    getData()
+  }, [])
   // Getting did and agents for dialer and set its value
   useEffect(() => {
     async function getDidData() {
@@ -80,8 +92,12 @@ function CampaignCreate() {
       toast.error("Please create campaign first");
       return
     }
+    if (selectedDesposition.length === 0) {
+      toast.error("Please select at least one disposition");
+      return
+    }
     setLoading(true);
-    const payload = { ...data, campaign_id: campaignId };
+    const payload = { ...data, campaign_id: campaignId, dispositions: selectedDesposition };
     const apiData = await generalPostFunction("/dialer-setting/store", payload);
     if (apiData?.status) {
       setCompletedStep(2)
@@ -168,7 +184,13 @@ function CampaignCreate() {
       // Additional logic for the newFile can go here
     }
   };
-  console.log(selectedItems, watch());
+
+  // Handel selcetd desposition change
+  function handleDispositionChange(id) {
+    // If id is present then remove it if not add it
+    setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
+  }
+  console.log("SelectedDesposition", selectedDesposition);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -604,16 +626,32 @@ function CampaignCreate() {
                                   <div className="col-xl-12">
                                     <div className="header d-flex align-items-center justify-content-between">
                                       <div className="col-5 fw-bold" style={{ fontFamily: 'Noto Sans' }}>Agent Disposition</div>
-                                      {/* <div className="col-5 text-end">
-                                                                                <button className="panelButton m-0 ms-auto">
-                                                                                    <span className="text">Add</span>
-                                                                                    <span className="icon">
-                                                                                        <i className="fa-solid fa-plus" />
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div> */}
                                     </div>
-                                    <div className="col-xl-12 pt-3">
+                                    {allDisposition.map((item, index) => {
+                                      return (
+                                        <div className="col-xl-12 pt-3">
+                                          <div className='d-flex align-items-center'>
+                                            <div className="savedCardWrapper col">
+                                              <div>
+                                                <label>{item.name}</label>
+                                              </div>
+                                              <div>
+                                                <label className="switch">
+                                                  <input type="checkbox"
+                                                    id="showAllCheck"
+                                                    onChange={() => handleDispositionChange(item.id)}
+                                                  />
+                                                  <span className="slider round" />
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
+                                            <div className="contactTags"><span data-id="1">Final</span></div>
+                                          </div>
+                                        </div>
+                                      )
+                                    })}
+                                    {/* <div className="col-xl-12 pt-3">
                                       <div className='d-flex align-items-center'>
                                         <div className="savedCardWrapper col">
                                           <div>
@@ -744,7 +782,7 @@ function CampaignCreate() {
                                         <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                         <div className="contactTags"><span data-id="1">Final</span></div>
                                       </div>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
                               </div>

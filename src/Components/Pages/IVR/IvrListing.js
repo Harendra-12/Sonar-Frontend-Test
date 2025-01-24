@@ -1,18 +1,16 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import { set } from "react-hook-form";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const IvrListing = () => {
@@ -63,9 +61,7 @@ const IvrListing = () => {
       setIvr(newArray);
       setLoading(false);
       toast.success(apiData.message);
-
       setDeleteId("");
-
       // after succesfully deleting data need to recall the global function to update the global state
       dispatch({
         type: "SET_IVRREFRESH",

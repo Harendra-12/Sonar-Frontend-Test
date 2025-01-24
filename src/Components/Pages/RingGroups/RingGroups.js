@@ -1,14 +1,14 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
   const navigate = useNavigate();
+  const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [popUp, setPopUp] = useState(false);
@@ -103,7 +104,10 @@ const RingGroups = () => {
       setRingGroup({ ...ringGroup, data: newArray });
       setLoading(false);
       toast.success(apiData.message);
-
+      dispatch({
+        type: "SET_RINGGROUPREFRESH",
+        ringGroupRefresh: ringGroupRefresh + 1,
+      });
       setDeleteId("");
     } else {
       setLoading(false);
