@@ -50,8 +50,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <i class="fa-light fa-user"></i>
-                  {connectStatus === "CONNECTED" ? "" : <div className="offlineCircle"></div>}
-                  {connectStatus === "CONNECTED" ? "" : <div className="offlineCircle"></div>}
+                  {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
                   <h5>{account.username}</h5>
