@@ -44,6 +44,8 @@ const Dashboard = () => {
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
   console.log(permissions);
+  console.log("Allcalls", allCall?.inbound?.total);
+  
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -479,247 +481,6 @@ const Dashboard = () => {
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
-                {/* <div className="tab-pane fade show active" id="nav-sys" role="tabpanel"
-                  aria-labelledby="nav-sys-tab" tabIndex="0">
-                  <div className="row">
-                    <div className="col-xl-12">
-                      <div className="row">
-                        <div className="col-xl-3">
-                          <div className="itemWrapper c">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>Current Time</h5>
-                                  <p>
-                                    {new Date().getDate()}{" "}
-                                    {new Date().toLocaleString("default", {
-                                      month: "long",
-                                    })}
-                                    , {new Date().getFullYear()}
-                                  </p>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-clock"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>{new Date().toLocaleTimeString("en-US", {
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                    hour12: true,
-                                  })}</h5>
-                                  <p>
-                                    Timezone - {Intl.DateTimeFormat().resolvedOptions().timeZone}
-                                  </p>
-                                </div>
-                                <div className="col-2">
-                                  <Clock value={currentTime} size={50} secondHandWidth={1} renderMinuteMarks={false} hourMarksWidth={1} hourMarksLength={15} hourHandWidth={2} minuteHandWidth={1} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-3">
-                          <div className="itemWrapper b">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-10">
-                                  <h5>Network Info</h5>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-wifi"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5 className="text-success">Online</h5>
-                                  <p>Hostname - www.hostname.com</p>
-                                  <p>IP Address  - 0.0.0.0</p>
-                                </div>
-                                <div className="col-2">
-                                  <img
-                                    alt="dashboard"
-                                    src={require("../../assets/images/icons/local-area-network.png")}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-3">
-                          <div className="itemWrapper a">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-10">
-                                  <h5>Traffic</h5>
-                                  <p>0.0.0.0</p>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-chart-line"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>pbx.domain.com</h5>
-                                  <p>Send - 90 Kbps</p>
-                                  <p>Receive  - 1.5 Mbps</p>
-                                </div>
-                                <div className="col-2">
-                                  <img
-                                    alt="dashboard"
-                                    src={require("../../assets/images/icons/web-traffic.png")}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-3">
-                          <div className="itemWrapper d">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-detween">
-                                <div className="col-10">
-                                  <h5>SIP Devices</h5>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-phone-office"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>0</h5>
-                                  <p>0 Registered / 0 Unregistered</p>
-                                </div>
-                                <div className="col-2">
-                                  <img
-                                    alt="dashboard"
-                                    src={require("../../assets/images/icons/call.png")}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xl-12 mt-4">
-                      <div className="row">
-                        <div className="col-xl-4 chartWrapper">
-                          <div className="wrapper itemWrapper b">
-                            <div class="heading">
-                              <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="col-10">
-                                  <h5>System Usage</h5>
-                                  <p>19 October, 2024</p>
-                                </div>
-                                <div class="col-2">
-                                  <i class="fa-solid fa-gauge-simple-high"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="d-flex flex-wrap justify-content-between align-items-center">
-                              <div className="col-9">
-                                <GraphChart
-                                  chartType="multiple"
-                                  labels={["CPU Usage", "Memory Usage"]}
-                                  fields={["0s", "10s", "20s", "30s", "40s", "50s", "60s"]}
-                                  percentage={[
-                                    [10, 12, 14, 16, 24, 14, 16],  // CPU Usage
-                                    [8, 15, 20, 18, 25, 10, 12]    // Memory Usage
-                                  ]}
-                                  colors={["#f18f01", "#36A2EB"]}
-                                />
-                              </div>
-                              <div className="col-3 text-end">
-                                <p className="mb-2  text-secondary">CPU Usage</p>
-                                <h3 className="mb-3  text-secondary">14.89%</h3>
-                                <p className="mb-2  text-secondary">Memory Usage</p>
-                                <h3 className="mb-0 text-secondary">28.51%</h3>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-4 ">
-                          <div className="itemWrapper a">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>Hardware Info</h5>
-                                  <p>
-                                    {new Date().getDate()}{" "}
-                                    {new Date().toLocaleString("default", {
-                                      month: "long",
-                                    })}
-                                    , {new Date().getFullYear()}
-                                  </p>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-microchip"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-12">
-                                  <ul>
-                                    <li>Virtualization <span className="float-end">Microsoft</span></li>
-                                    <li>CPU Model <span className="float-end">Intel Xeon Processor (Cascadelake)</span></li>
-                                    <li>CPU Cores <span className="float-end">1</span></li>
-                                    <li>RAM <span className="float-end">2GB / 2GB</span></li>
-                                    <li>Disk Usage <span className="float-end">20.8 GB Used / 29.1 GB Used</span></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-4 ">
-                          <div className="itemWrapper d">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-10">
-                                  <h5>System Info</h5>
-                                  <p>
-                                    {new Date().getDate()}{" "}
-                                    {new Date().toLocaleString("default", {
-                                      month: "long",
-                                    })}
-                                    , {new Date().getFullYear()}
-                                  </p>
-                                </div>
-                                <div className="col-2">
-                                  <i class="fa-solid fa-desktop"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                <div className="col-12">
-                                  <ul>
-                                    <li>Distro <span className="float-end">Debian GNU, Linux 11</span></li>
-                                    <li>Kernel <span className="float-end">5.10.0-21-amd64</span></li>
-                                    <li>Asterisk <span className="float-end">18.16.0</span></li>
-                                    <li>VitalPBX <span className="float-end">4.0.2-1</span></li>
-                                    <li>PHP Version <span className="float-end">8.1.11</span></li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
                 <div
                   className="tab-pane fade show active"
                   id="nav-customer"
@@ -1120,14 +881,14 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{allCall?.totalCalls ? allCall?.totalCalls : <i
+                              <h5>{allCall?.totalCalls !== undefined ? allCall?.totalCalls : <i
                                 class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                               ></i>}</h5>
                               <p>
-                                {allCall?.inbound?.total ? allCall?.inbound?.total : <i
+                                {allCall?.inbound?.total !== undefined ? allCall.inbound.total : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>} Inbound /{" "}
-                                {allCall?.outbound?.total ? allCall?.outbound?.total : <i
+                                {allCall?.outbound?.total !== undefined ? allCall.outbound.total : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>} Outbound
                               </p>
@@ -1167,14 +928,14 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{(allCall?.inbound?.duration + allCall?.outbound?.duration) ? (allCall?.inbound?.duration + allCall?.outbound?.duration) : <i
+                              <h5>{!isNaN(allCall?.inbound?.duration + allCall?.outbound?.duration) ? (allCall?.inbound?.duration + allCall?.outbound?.duration) : <i
                                 class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                               ></i>}</h5>
                               <p>
-                                {allCall?.inbound?.duration ? allCall?.inbound?.duration : <i
+                                {allCall?.inbound?.duration !== undefined ? allCall?.inbound?.duration : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>} Inbound /{" "}
-                                {allCall?.outbound?.duration ? allCall?.outbound?.duration : <i
+                                {allCall?.outbound?.duration !== undefined ? allCall?.outbound?.duration : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>}{" "}
                                 Outbound
@@ -1218,14 +979,14 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{allCall?.missed ? allCall?.missed : <i
+                              <h5>{allCall?.missed !== undefined ? allCall?.missed : <i
                                 class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                               ></i>}</h5>
                               <p>
-                                {allCall?.inbound?.missed ? allCall?.inbound?.missed : <i
+                                {allCall?.inbound?.missed !== undefined ? allCall?.inbound?.missed : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>} inbound
-                                Missed/ {allCall?.outbound?.missed ? allCall?.outbound?.missed : <i
+                                Missed/ {allCall?.outbound?.missed !== undefined ? allCall?.outbound?.missed : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>} outbound
                                 Missed

@@ -66,7 +66,7 @@ function AllCallsDetails() {
                             <div className="col-xl-6 col-xxl-6 mt-2">
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Calls</div>
-                                <div className="data-number">{callDetails?.totalCalls ? callDetails?.totalCalls : <i
+                                <div className="data-number">{callDetails?.totalCalls !== undefined ? callDetails?.totalCalls : <i
                                   class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                 ></i>}</div>
                                 <div className="label2">
@@ -80,7 +80,7 @@ function AllCallsDetails() {
                                 <div className="heading">Total Calls Completed</div>
                                 <div className="data-number">
                                   {
-                                    callDetails?.success ? callDetails?.success : <i
+                                    callDetails?.success!== undefined ? callDetails?.success : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }
@@ -104,7 +104,7 @@ function AllCallsDetails() {
                                 {/* <div className="data-number">{callDetails?.missed}</div> */}
                                 <div className="data-number">
                                   {
-                                    callDetails?.missed ? callDetails?.missed : <i
+                                    callDetails?.missed !== undefined ? callDetails?.missed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }
@@ -190,7 +190,7 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Inbound Calls</div>
                                 <div className="data-number">
-                                  {callDetails?.inbound?.total ? callDetails?.inbound?.total : <i
+                                  {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
                                     class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                   ></i>}
                                 </div>
@@ -207,7 +207,7 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    callDetails?.inbound?.completed ? callDetails?.inbound?.completed : <i
+                                    callDetails?.inbound?.completed !== undefined ? callDetails?.inbound?.completed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }
@@ -232,7 +232,7 @@ function AllCallsDetails() {
                                 <div className="heading">Missed Inbound Calls</div>
                                 <div className="data-number">
                                   {
-                                    callDetails?.inbound?.missed ? callDetails?.inbound?.missed : <i
+                                    callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }
@@ -323,7 +323,7 @@ function AllCallsDetails() {
                               <div className="itemWrapperb a">
                                 <div className="heading">Total Outbound Calls</div>
                                 <div className="data-number">
-                                  {callDetails?.outbound?.total ? callDetails?.outbound?.total : <i
+                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
                                     class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                   ></i>}
                                 </div>
@@ -340,7 +340,7 @@ function AllCallsDetails() {
                                 </div>
                                 <div className="data-number">
                                   {
-                                    callDetails?.outbound?.completed ? callDetails?.outbound?.completed : <i
+                                    callDetails?.outbound?.completed !== undefined ? callDetails?.outbound?.completed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }
@@ -363,7 +363,7 @@ function AllCallsDetails() {
                                 <div className="heading">Missed Outbound Calls</div>
                                 <div className="data-number">
                                   {
-                                    callDetails?.outbound?.missed ? callDetails?.outbound?.missed : <i
+                                    callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                                     ></i>
                                   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
@@ -79,14 +80,14 @@ function Call({
           filterBy === "date"
             ? `date=${startDate}`
             : `date_range=${startDate},${endDate}`;
-        const url = `${basePath}?page_number=${currentPage}&${dateParam}&search=${searchQuery}`;
+        const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
         const apiData = await generalGetFunction(url);
 
         if (apiData.status) {
           console.log(apiData);
-          setAllApiData(apiData.data.data.reverse());
-          const result = apiData.data.data.reverse();
-          setRawData(apiData.data.data);
+          setAllApiData(apiData.data.data?.reverse());
+          const result = apiData.data.data?.reverse() || [];
+          setRawData(apiData.data);
           setData([...data, ...result]);
           setLoading(false);
           setIsLoading(false);
@@ -103,7 +104,9 @@ function Call({
   const handleScroll = () => {
     const div = callListRef.current;
     if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-      if (!isLoading && currentPage !== rawData?.last_page) {
+
+      console.log(rawData.current_page, rawData?.last_page, rawData);
+      if (!isLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
     }

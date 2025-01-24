@@ -1,14 +1,14 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -19,6 +19,7 @@ function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [popUp, setPopUp] = useState(false);
   const [callCenter, setCallCenter] = useState();
   const [error, setError] = useState("");
@@ -35,30 +36,6 @@ function CallCenterQueue() {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  // const getCallCenterDashboardData = async () => {
-  //   setLoading(true);
-  //   const apidata = await generalGetFunction(
-  //     `/call-center-queues/dashboard?page=${pageNumber}&${searchType}=${searchValue}`
-  //   );
-  //   if (apidata?.status) {
-  //     setLoading(false);
-  //     setCallCenter(apidata.data);
-  //   } else {
-  //     setLoading(false);
-  //     if (apidata.response.status === 403) {
-  //       setNoPermissionToRead(true);
-  //     }
-  //   }
-  // };
-
-  // // Debounding method for 1 sec to load data based on search value
-  // useEffect(() => {
-  //   if(searchValue.trim().length === 0) return
-  //   const timer = setTimeout(() => {
-  //     getCallCenterDashboardData();
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // },[searchValue]);
   useEffect(() => {
     const getCallCenterDashboardData = async () => {
       setLoading(true);
@@ -126,6 +103,10 @@ function CallCenterQueue() {
       const updatedCallCenter = callCenter.data.filter(
         (item) => item.id !== id
       );
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
       setCallCenter({ ...callCenter, data: updatedCallCenter });
       toast.success(apiData.message);
       setDeleteId("");
@@ -145,7 +126,6 @@ function CallCenterQueue() {
         agents: selectedCallCenter?.agents
           .map((item) => {
             // Call checkPrevDestination with the current item
-
             if (item.id.length > 0) {
               // Return the object with or without 'id' based on hasId
               return {

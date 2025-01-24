@@ -29,7 +29,7 @@ function DidListing({ page }) {
   const [deleteId, setDeleteId] = useState('');
   const [addNew, setAddNew] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
-  const [previousUsages,setPreviousUsages] = useState('')
+  const [previousUsages, setPreviousUsages] = useState('')
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
@@ -157,7 +157,7 @@ function DidListing({ page }) {
     }
   }
 
-  console.log("Usagesssss",previousUsages,usages)
+  console.log("Usagesssss", previousUsages, usages)
 
   async function handleDelete(id) {
     setLoading(true)
@@ -202,20 +202,22 @@ function DidListing({ page }) {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {!(page === "number") &&
-                          <button
-                            type="button"
-                            class="panelButton"
-                            onClick={() => {
+                        <button
+                          type="button"
+                          class="panelButton"
+                          onClick={() => {
+                            if (page === "number") {
+                              navigate("/did-add")
+                            } else {
                               setAddNew(true);
-                            }}
-                          >
-                            <span class="text">Add</span>
-                            <span class="icon">
-                              <i class="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
-                        }
+                            }
+                          }}
+                        >
+                          <span class="text">Add</span>
+                          <span class="icon">
+                            <i class="fa-solid fa-plus"></i>
+                          </span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -228,11 +230,11 @@ function DidListing({ page }) {
                           <h5>Add new DID </h5>
                         </div>
                         <div className="col-xl-12 mt-3">
-                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
+                          {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
                             <div
-                            className="tableContainer mt-0"
-                            style={{ maxHeight: "calc(100vh - 400px)" }}
-                          >
+                              className="tableContainer mt-0"
+                              style={{ maxHeight: "calc(100vh - 400px)" }}
+                            >
                               <table>
                                 <thead>
                                   <tr>
@@ -265,16 +267,16 @@ function DidListing({ page }) {
                                               >
                                                 <i class="fa-solid fa-plus"></i>
                                               </button> */}
-                                       <div className="mt-1"> 
-                                        <button
-                                          className="tableButton align-items-center justify-content-center"
-                                          onClick={() => {
-                                            handleUsagesEdit(item.id)
-                                          }}
-                                        >
-                                         
-                                          <i class="fa-solid fa-plus"></i>
-                                        </button>
+                                        <div className="mt-1">
+                                          <button
+                                            className="tableButton align-items-center justify-content-center"
+                                            onClick={() => {
+                                              handleUsagesEdit(item.id)
+                                            }}
+                                          >
+
+                                            <i class="fa-solid fa-plus"></i>
+                                          </button>
                                         </div>
                                       </tr>
                                     )
@@ -283,8 +285,8 @@ function DidListing({ page }) {
 
                                 </tbody>
                               </table>
-                              </div>
-                            }
+                            </div>
+                          }
                         </div>
                         <div className="col-xl-12 mt-2">
                           <div className="d-flex justify-content-between">
@@ -442,7 +444,7 @@ function DidListing({ page }) {
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Select the usage of this DID">
                                                       <div class="clearButton text-align-start"
-                                                        onClick={() => {setPreviousUsages(item.usages); setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
+                                                        onClick={() => { setPreviousUsages(item.usages); setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
                                                         }
                                                       ><i class="fa-regular fa-gear me-2"></i> Set Usage
                                                       </div>
@@ -502,16 +504,16 @@ function DidListing({ page }) {
                     <button
                       className="panelButton m-0"
                       onClick={() => {
-                        if(previousUsages === usages){
+                        if (previousUsages === usages) {
                           setUsagesPopup(false);
-                        }else if(previousUsages==="" || !previousUsages){
+                        } else if (previousUsages === "" || !previousUsages) {
                           handleUsagesEdit(id);
                           setUsagesPopup(false);
-                        }else{
+                        } else {
                           setConfirmPopup(true);
                           setUsagesPopup(false);
                         }
-                       
+
                       }}
                     >
                       <span className="text">Lets Go!</span>
@@ -591,7 +593,7 @@ function DidListing({ page }) {
       ) : (
         ""
       )}
-        {confirmPopup ? (
+      {confirmPopup ? (
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
@@ -605,7 +607,7 @@ function DidListing({ page }) {
                   <h4>Confirmation!</h4>
                   <p>
                     {`Are you sure!
-                    You want to change usages from "${previousUsages}" to "${usages===""?"None":usages}"`}
+                    You want to change usages from "${previousUsages}" to "${usages === "" ? "None" : usages}"`}
                   </p>
 
                   <div className="d-flex justify-content-between mt-3">
