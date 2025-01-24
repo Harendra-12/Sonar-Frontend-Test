@@ -224,58 +224,6 @@ function DeviceProvisioningNew() {
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            <div className='col-xl-12'>
-                                                                <div className='deviceProvisionDetails' data-id="1">
-                                                                    <div className='title'>
-                                                                        EyeBeam
-                                                                    </div>
-                                                                    <div className='content'>
-                                                                        <p>Esse dolore in consequat laborum ea aliquip occaecat esse. Enim in tempor ut irure aute. Duis labore nisi pariatur laboris est.</p>
-                                                                        <ul>
-                                                                            <li>Nisi sit sint minim culpa labore magna occaecat adipisicing excepteur non. Esse consectetur proident ex adipisicing sit Lorem veniam esse ea consectetur.</li>
-                                                                            <li>Esse cillum fugiat eiusmod tempor do incididunt commodo magna aute ut irure.</li>
-                                                                            <li>Magna amet aliquip anim consequat id sunt reprehenderit.</li>
-                                                                            <li>Amet velit ullamco sit magna cillum nostrud labore irure sit. Pariatur sunt eiusmod reprehenderit ex tempor adipisicing ullamco culpa minim reprehenderit dolor.</li>
-                                                                            <li>Deserunt anim officia aliquip enim aliqua.</li>
-                                                                            <li>Et labore voluptate dolore enim eu aliquip occaecat amet est esse laborum deserunt incididunt eiusmod.</li>
-                                                                        </ul>
-                                                                        <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i class="ms-2 fa-solid fa-download"></i></div>
-                                                                    </div>
-                                                                    <div className='content' style={{ borderTop: '1px solid var(--border-color)' }}>
-                                                                        <div className='row align-items-center'>
-                                                                            <div className='col-7'>
-                                                                                <div className="content">
-                                                                                    <h5 className='mb-1'>Select from your Account</h5>
-                                                                                    <p className='mb-0'>Available in your account: 0</p>
-                                                                                </div>
-
-                                                                            </div>
-                                                                            <div className='col-5'>
-                                                                                <div class="addButtonGroup ms-auto">
-                                                                                    <button onClick={() => setIsDeviceChosen(null)}><i class="fa-light fa-minus"></i></button>
-                                                                                    <div className='number'>0</div>
-                                                                                    <button onClick={() => setIsDeviceChosen("soft")}><i class="fa-light fa-plus"></i></button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        {/* <div className='row'>
-                                                                    <div className='col-7'>
-                                                                        <div className="content">
-                                                                            <p className='mb-0'>Additional Purchase</p>
-                                                                            <p className='mb-0' style={{}}>$256</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='col-5'>
-                                                                        <div class="add-btnss">
-                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
-                                                                            <div class="count-number" id="item-count">0</div>
-                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> */}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

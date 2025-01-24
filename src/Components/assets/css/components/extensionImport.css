@@ -365,6 +365,15 @@ form.tangoNavs .nav-tabs {
 /* form.row {
     justify-content: space-between;
 } */
+.deviceProvision {
+    border-radius: 10px;
+}
+
+.deviceProvision.active {
+    border: 1px solid green;
+    box-shadow: #00ff1554 0px 3px 8px;
+}
+
 .deviceProvision.formRow {
     justify-content: start;
 }
@@ -445,4 +454,8 @@ form.tangoNavs .nav-tabs {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: #fff;
     width: max-content;
+}
+
+.actionBtnDropdowns li>* {
+    color: #fff;
 }

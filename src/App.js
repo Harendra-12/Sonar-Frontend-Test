@@ -138,6 +138,7 @@ import CampaignEdit from "./Components/Pages/DialerModule/Campaigns/CampaignEdit
 import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListing";
 import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
+import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/AvailableDeviceList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -212,9 +213,9 @@ function App() {
           <Route path="/agent-disposition-manage" element={<AgentDispositionManage />} />
 
           <Route
-            path="/my-profile" element={ permission?.includes(8) ? ( <Profile />) : (
-                <Navigate to="/dashboard" replace />
-              )
+            path="/my-profile" element={permission?.includes(8) ? (<Profile />) : (
+              <Navigate to="/dashboard" replace />
+            )
             }
           />
           <Route path="/master" element={<Master />} />
@@ -226,15 +227,15 @@ function App() {
           {/* Ring Groups Path Start */}
           <Route
             path="/ring-groups" element={permission?.includes(344) || permission?.includes(346) ? (<RingGroups />) : (
-                <Navigate to="/dashboard" replace />
-              )
+              <Navigate to="/dashboard" replace />
+            )
             }
           />
           <Route
             path="/ring-groups-add"
             element={permission?.includes(346) ? (<RingGroupAdd />) : (
-                <Navigate to="/dashboard" replace />
-              )
+              <Navigate to="/dashboard" replace />
+            )
             }
           />
           <Route
@@ -567,7 +568,7 @@ function App() {
           {/* Billing Pages End */}
 
           <Route path="/variable" element={<Variable />}></Route>
-          
+
           <Route
             path="/mail-settings-edit"
             element={
@@ -628,6 +629,7 @@ function App() {
             path="/device-provisioning-new"
             element={<DeviceProvisioningNew />}
           />
+          <Route path="/all-devices" element={<AvailableDeviceList />} />
           {/* Device Profisioning End  */}
           {/* Spam Filter start */}
           <Route path="/call-blocking" element={<CallBlocking />} />
