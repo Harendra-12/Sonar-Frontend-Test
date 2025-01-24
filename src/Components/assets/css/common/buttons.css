@@ -506,11 +506,11 @@
   background-color: #000 !important;
 }
 
-.appPanelButtonCallerRect.notif::after{
+.appPanelButtonCallerRect.notif::after {
   content: '';
   position: absolute;
   top: 3px;
-  right:3px;
+  right: 3px;
   background-color: #e40002;
   border-radius: 50%;
   width: 10px;
@@ -774,6 +774,18 @@
   0% {
     transform: scale(0);
     background-color: #1ac444;
+  }
+
+  100% {
+    transform: scale(2);
+    background-color: rgba(245, 0, 182, 0);
+  }
+}
+
+@keyframes scalingRED {
+  0% {
+    transform: scale(0);
+    background-color: #ff0000;
   }
 
   100% {

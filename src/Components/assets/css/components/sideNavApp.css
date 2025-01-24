@@ -52,6 +52,7 @@
     color: #fff;
     box-shadow: rgba(0, 0, 0, 0.20) 0px 1px 5px;
 }
+
 #sidenNavApp .sidenavItems ul li .navItem:hover {
     /* background: #ffffff29; */
     background: #ffffff50;
@@ -147,3 +148,13 @@
 }
 
 /* -------- SideNav MainMenu Styles ------- */
+
+#profileOfflineNav .offlineCircle {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    position: absolute;
+    z-index: -1;
+    animation: scalingRED 2s cubic-bezier(0.12, 0.7, 0.74, 0.71) infinite;
+}

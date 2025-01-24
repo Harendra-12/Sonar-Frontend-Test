@@ -50,6 +50,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <i class="fa-light fa-user"></i>
+                  {connectStatus === "CONNECTED" ? "" : <div className="offlineCircle"></div>}
+                  {connectStatus === "CONNECTED" ? "" : <div className="offlineCircle"></div>}
                 </div>
                 <div className="userTitle">
                   <h5>{account.username}</h5>
@@ -185,22 +187,22 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Settings</div>
               </div>
             </li> */}
-            {account.user_role?.roles?.name!=="Agent"?
-            <li>
-              <div
-                // to="/call-dashboard"
-                onClick={() => setactivePage("call-dashboard")}
-                className={
-                  activePage === "call-dashboard" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-light fa-sliders" />
+            {account.user_role?.roles?.name !== "Agent" ?
+              <li>
+                <div
+                  // to="/call-dashboard"
+                  onClick={() => setactivePage("call-dashboard")}
+                  className={
+                    activePage === "call-dashboard" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-sliders" />
+                  </div>
+                  <div className="itemTitle">Call Dashboard</div>
                 </div>
-                <div className="itemTitle">Call Dashboard</div>
-              </div>
-            </li>
-            :""}
+              </li>
+              : ""}
             <li style={{ cursor: "pointer" }}>
               <div
                 // to="/call-center"
