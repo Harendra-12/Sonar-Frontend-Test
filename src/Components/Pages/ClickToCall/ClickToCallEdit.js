@@ -619,10 +619,10 @@ function ClickToCallEdit() {
                                                                                         <option value="extension">
                                                                                             Extension
                                                                                         </option>
-                                                                                        <option value="call center">
+                                                                                        <option value="callcenter">
                                                                                             Call Center
                                                                                         </option>
-                                                                                        <option value="ring group">
+                                                                                        <option value="ringgroup">
                                                                                             Ring Group
                                                                                         </option>
                                                                                         <option value="ivr">IVR</option>
@@ -648,7 +648,7 @@ function ClickToCallEdit() {
                                                                                     {watch().usages !== "pstn" &&
                                                                                         watch().usages !== "" ? (
                                                                                         <ActionList
-                                                                                            category={watch().usages}
+                                                                                            category={watch().usages==="ringgroup"?"ring group":watch().usages==="callcenter"?"call center":watch().usages}
                                                                                             title={null}
                                                                                             label={null}
                                                                                             getDropdownValue={actionListValue}
