@@ -33,7 +33,6 @@ function CampaignCreate() {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm();
 
   // Getting disposition data

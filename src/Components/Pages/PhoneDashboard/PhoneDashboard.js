@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import AllCallsDetails from "./AllCallsDetails";
 import CallQueueDetails from "./CallQueueDetails";
@@ -6,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
-import GlobalCalls from "../../GlobalFunction/GlobalCalls";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 
@@ -19,7 +20,6 @@ function PhoneDashboard() {
   const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);
-  const loginUser = useSelector((state) => state.loginUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const activeCall = useSelector((state) => state.activeCall);
   const dispatch = useDispatch();
@@ -293,6 +293,7 @@ function PhoneDashboard() {
                         <div className="col-2">
                           <img
                             src={require("../../assets/images/icons/diagram.png")}
+                            alt="diagram"
                           />
                         </div>
                       </div>
@@ -337,6 +338,7 @@ function PhoneDashboard() {
                         <div className="col-2">
                           <img
                             src={require("../../assets/images/icons/diagram.png")}
+                            alt="diagram"
                           />
                         </div>
                       </div>
@@ -378,6 +380,7 @@ function PhoneDashboard() {
                         <div className="col-2">
                           <img
                             src={require("../../assets/images/icons/diagram.png")}
+                            alt="diagram"
                           />
                         </div>
                       </div>
