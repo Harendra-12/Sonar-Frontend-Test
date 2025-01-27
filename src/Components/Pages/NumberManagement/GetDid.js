@@ -297,9 +297,8 @@ function GetDid() {
                         <div className="col-12">
                           <select
                             name="searchType"
-                            className={`formItem ${
-                              errors.searchType ? "error" : ""
-                            }`}
+                            className={`formItem ${errors.searchType ? "error" : ""
+                              }`}
                             {...register("searchType", {
                               ...requiredValidator,
                             })}
@@ -325,9 +324,8 @@ function GetDid() {
                           <input
                             type="number"
                             name="quantity"
-                            className={`formItem ${
-                              errors.quantity ? "error" : ""
-                            }`}
+                            className={`formItem ${errors.quantity ? "error" : ""
+                              }`}
                             {...register("quantity", {
                               ...requiredValidator,
                               ...lengthValidator(1, 10),
@@ -641,18 +639,20 @@ function GetDid() {
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton m-0 float-end"
                       onClick={() => handlePayment()}
                     >
-                      Confirm
+                      <span class="text">Confirm</span>
+                      <span class="icon"><i className="fa-solid fa-check" /></span>
                     </button>
                     <button
-                      className="panelButtonWhite m-0 float-end"
+                      className="panelButton gray m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
                       }}
                     >
-                      Cancel
+                      <span class="text">Cancel</span>
+                      <span class="icon"><i className="fa-solid fa-xmark" /></span>
                     </button>
                   </div>
                 </div>
