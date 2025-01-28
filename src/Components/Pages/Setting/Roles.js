@@ -1,27 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import {
   backToTop,
   generalDeleteFunction,
-  generalGetFunction,
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-
 import Header from "../../CommonComponents/Header";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 
 function Roles() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  // const rolesAndPermissionRefresh = useSelector(
-  //   (state) => state.rolesAndPermissionRefresh
-  // );
   const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const roles = useSelector((state) => state.roles);
@@ -40,17 +34,15 @@ function Roles() {
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
+  const [parentChecked, setParentChecked] = useState({});
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
+  // Getting roles and permission data from redux by trigger its api calling by changing its refresh value
   useEffect(() => {
     if (roles.length === 0) {
       setLoading(true);
     }
-    // dispatch({
-    //   type: "SET_ROLES_PERMISSIONREFRESH",
-    //   rolesAndPermissionRefresh: rolesAndPermissionRefresh + 1,
-    // });
     dispatch({
       type: "SET_ROLES_REFRESH",
       rolesRefresh: rolesRefresh + 1,
@@ -71,6 +63,7 @@ function Roles() {
     }
   }, []);
 
+  // Handle roles select and set default permission
   useEffect(() => {
     if (roles.length > 0) {
       setLoading(false);
@@ -165,15 +158,6 @@ function Roles() {
     }
   }
 
-  // Handel permission check box click
-  // const handleCheckboxChange = (id) => {
-  //   if (selectedPermission.includes(id)) {
-  //     setSelectedPermission(selectedPermission.filter((item) => item !== id));
-  //   } else {
-  //     setSelectedPermission([...selectedPermission, id]);
-  //   }
-  // };
-
   // Handle permission save click
   async function handlePermissionSave() {
     setLoading(true);
@@ -219,9 +203,6 @@ function Roles() {
     defaultPermission,
     account.permissions
   );
-
-  // const [selectedPermission, setSelectedPermission] = useState([]);
-  const [parentChecked, setParentChecked] = useState({});
 
   // Initialize parentChecked state
   useEffect(() => {
@@ -591,18 +572,6 @@ function Roles() {
                                                 <label>{item}</label>
                                               </button>
                                             </h2>
-                                            {/* <div className="header d-flex align-items-center">
-                              <div className="col-5">
-                                <input
-                                  type="checkbox"
-                                  checked={parentChecked[item]}
-                                  onChange={() =>
-                                    handleParentCheckboxChange(item)
-                                  }
-                                />
-                                <label className="ms-2">{item}</label>
-                              </div>
-                            </div> */}
                                             <div
                                               id={`collapseRole${key}`}
                                               class="accordion-collapse collapse"
@@ -669,18 +638,6 @@ function Roles() {
                                               <label>{item}</label>
                                             </button>
                                           </h2>
-                                          {/* <div className="header d-flex align-items-center">
-                              <div className="col-5">
-                                <input
-                                  type="checkbox"
-                                  checked={parentChecked[item]}
-                                  onChange={() =>
-                                    handleParentCheckboxChange(item)
-                                  }
-                                />
-                                <label className="ms-2">{item}</label>
-                              </div>
-                            </div> */}
                                           <div
                                             id={`collapseRole${key}`}
                                             class="accordion-collapse collapse"
@@ -804,18 +761,6 @@ function Roles() {
         ) : (
           ""
         )}
-        {/* <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        /> */}
       </main>
     </>
   );

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
@@ -125,9 +125,6 @@ function GetDid() {
   const dispatch = useDispatch();
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
-  const [searchType, setSearchType] = useState("tollfree");
-  const [quantity, setQuantity] = useState("");
-  const [npa, setNpa] = useState("");
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);

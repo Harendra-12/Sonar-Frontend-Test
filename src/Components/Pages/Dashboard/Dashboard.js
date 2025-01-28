@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
@@ -22,7 +23,6 @@ const Dashboard = () => {
   const userList = useSelector((state) => state.allUser?.data?.length) || 0;
   const ringGroup = useSelector((state) => state.ringGroup || []);
   const allCall = useSelector((state) => state.allCall || {});
-  const activeCall = useSelector((state) => state.activeCall || []);
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
   const registerUser = useSelector((state) => state.registerUser || []);
@@ -53,52 +53,7 @@ const Dashboard = () => {
     };
   }, []);
 
-  const [ringGroupCardData, setringGroupCardData] = useState({
-    total: {
-      count: 0,
-      inbound: 0,
-      outbound: 0,
-    },
-    active: {
-      count: 0,
-      inbound: 0,
-      outbound: 0,
-    },
-    totalCalls: {
-      count: 0,
-      waiting_one: 0, //change accordingly
-      waiting_two: 0, //change accordingly
-    },
-    missed: {
-      count: 0,
-      missed_one: 0,
-      missed_two: 0,
-    },
-  });
-
-  const [callCenterQueue, setCallCenterQueue] = useState({
-    total: {
-      count: 0,
-      active: 0,
-      inactive: 0,
-    },
-    totalAgents: {
-      count: 0,
-      inQueue: 0,
-      notInQueue: 0,
-    },
-    totalCalls: {
-      count: 0,
-      inbound: 0,
-      outbound: 0,
-    },
-    missedCalls: {
-      count: 0,
-      overflow: 0,
-      abandoned: 0,
-    },
-  });
-
+  // Initializing call card data
   const [callCardData, setCallCardData] = useState({
     handled: {
       count: 0,
@@ -122,12 +77,14 @@ const Dashboard = () => {
     },
   });
 
+  // Function to get extension array
   const getExtensionsArr = (type) => {
     if (type == "ring") return new Set(ringGroup.map((ring) => ring.extension));
     else if (type == "call")
       return new Set(callCenter.map((call) => call.extension));
   };
 
+  // Function to get combined call data
   const combinedCallData = useMemo(() => {
     if (!allCall || !Array.isArray(allCall.calls)) return null;
 
@@ -236,110 +193,14 @@ const Dashboard = () => {
     };
   }, [allCall, callCenter]);
 
-  const activeCallData = useMemo(() => {
-    if (!ringGroup || !activeCall || !Array.isArray(activeCall)) return null;
-
-    const ringGroupExtensions = getExtensionsArr("ring");
-    const calls = [...activeCall];
-
-    let totalCount = 0;
-    let inboundCount = 0;
-    let outboundCount = 0;
-
-    for (const call of calls) {
-      if (ringGroupExtensions.has(call.dest)) {
-        totalCount++;
-        if (call.direction === "inbound") {
-          inboundCount++;
-        } else if (call.direction === "outbound") {
-          outboundCount++;
-        }
-      }
-    }
-
-    return {
-      totalCount,
-      inboundCount,
-      outboundCount,
-    };
-  }, [activeCall, ringGroup]);
-
-  const ringGroupData = useMemo(() => {
-    if (!ringGroup || !allCall || !Array.isArray(allCall.calls)) return null;
-
-    const ringGroupExtensions = getExtensionsArr("ring");
-    const calls = [...allCall.calls];
-
-    let totalCount = 0;
-    let inboundCount = 0;
-    let outboundCount = 0;
-    let missedCount = 0;
-
-    for (const call of calls) {
-      if (ringGroupExtensions.has(call.variable_sip_from_user)) {
-        totalCount++;
-        if (call["Call-Direction"] === "inbound") {
-          inboundCount++;
-        } else if (call["Call-Direction"] === "outbound") {
-          outboundCount++;
-        }
-
-        if (call["Hangup-Cause"] === "ORIGINATOR_CANCEL") {
-          missedCount++;
-        }
-      }
-    }
-
-    return {
-      total: {
-        count: ringGroup.length || 0,
-        inbound: inboundCount,
-        outbound: outboundCount,
-      },
-      missed: {
-        count: missedCount,
-        missed_one: 0, // Customize as needed
-        missed_two: 0, // Customize as needed
-      },
-      totalCalls: {
-        count: totalCount,
-        waiting_one: 0, //change accordingly
-        waiting_two: 0, //change accordingly
-      },
-    };
-  }, [ringGroup, allCall]);
-
+// Setting call card data
   useEffect(() => {
     if (combinedCallData) {
       setCallCardData(combinedCallData.callCardData);
-      setCallCenterQueue(combinedCallData.callCenterQueue);
     }
   }, [combinedCallData]);
 
-  useEffect(() => {
-    if (ringGroupData) {
-      setringGroupCardData((prevData) => ({
-        ...prevData,
-        total: ringGroupData.total,
-        missed: ringGroupData.missed,
-        totalCalls: ringGroupData.totalCalls,
-      }));
-    }
-  }, [ringGroupData]);
-
-  useEffect(() => {
-    if (activeCallData) {
-      setringGroupCardData((prevData) => ({
-        ...prevData,
-        active: {
-          count: activeCallData.totalCount,
-          inbound: activeCallData.inboundCount,
-          outbound: activeCallData.outboundCount,
-        },
-      }));
-    }
-  }, [activeCallData]);
-
+// Setting call card data
   useEffect(() => {
     if (extension.length == 0) {
       dispatch({
@@ -371,6 +232,7 @@ const Dashboard = () => {
     }
   }, []);
 
+  // Function to download invoice
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
@@ -394,6 +256,7 @@ const Dashboard = () => {
     }
   };
 
+  // Function to handle missed call click
   const handleMissedCallClick = () => {
     dispatch({
       type: "SET_SELECTEDCDRFILTER",
@@ -426,18 +289,6 @@ const Dashboard = () => {
             <div className="col-12 mt-3 tangoNavs">
               <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                  {/* <button
-                    className="nav-link active"
-                    id="nav-sys-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-sys"
-                    type="button"
-                    role="tab"
-                    aria-controls="nav-sys"
-                    aria-selected="true"
-                  >
-                    System
-                  </button> */}
                   <button
                     className="nav-link active"
                     id="nav-customer-tab"
@@ -897,7 +748,6 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
@@ -945,7 +795,6 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/extensions'" effect="ripple"><i className="fa-duotone fa-phone-office"></i> View All Extensions</button> */}
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
@@ -996,7 +845,6 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
@@ -1033,9 +881,6 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        {/* <div className="label">0 Internal Call</div>
-                        <div className="label">0 External Calls</div> */}
-                        {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/devices'" effect="ripple"><i className="fa-duotone fa-mobile-retro"></i> View All Devices</button> */}
                       </div>
                     </div>
                     <div className="col-12 mt-xl-4 chartWrapper">
@@ -1071,23 +916,6 @@ const Dashboard = () => {
                               colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                             />
                           </div>
-                          {/* <div className='circularProgressWrapper'>
-                                        <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
-                                            <circle className="bg"
-                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
-                                            ></circle>
-                                            <circle className="fg"
-                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
-                                                stroke-dasharray="361.25 361.25"
-                                            ></circle>
-                                        </svg>
-                                        <div className='circularProgressContent'>
-                                            <div className="data-number">
-                                                <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
-                                            </div>
-                                            <p>Total Users Created</p>
-                                        </div>
-                                    </div> */}
                         </div>
                         <div className="col-xl-6 mb-3 mb-xl-0">
                           <div className="wrapper">
