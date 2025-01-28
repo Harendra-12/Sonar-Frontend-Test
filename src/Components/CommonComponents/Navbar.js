@@ -434,7 +434,6 @@ function Navbar() {
                       id="collapseOne"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
-                        "/voice-music",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                         "/did-listing-pbx",
@@ -575,26 +574,7 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          <li className="tabItem ">
-                            <NavLink
-                              to="/meeting-room"
-                              onClick={backToTop}
-                              type="button"
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/meeting-room", "/meeting-add"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
-                              <div className="itemTitle">Meeting Rooms</div>
-                            </NavLink>
-                          </li>
+
 
                           <li className="tabItem ">
                             <NavLink
@@ -615,15 +595,6 @@ function Navbar() {
                                 <i class="fa-regular fa-user-music"></i>
                               </div> */}
                               <div className="itemTitle">Voice Mail</div>
-                            </NavLink>
-                          </li>
-
-                          <li className="tabItem ">
-                            <NavLink to="/voice-music">
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-user-music"></i>
-                              </div> */}
-                              <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
                           {/* <li className="tabItem " >
@@ -1049,6 +1020,31 @@ function Navbar() {
                     </li>
                   ) : null}
 
+
+                  <li className="dashboard ">
+                    <NavLink
+                      to="/meeting-room"
+                      onClick={backToTop}
+                      type="button"
+                      className={({ isActive }) =>
+                        isActive ||
+                          ["/meeting-room", "/meeting-add"].some((path) =>
+                            window.location.pathname.includes(path)
+                          )
+                          ? "nav-link active"
+                          : "nav-link"
+                      }
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-microphone-stand"></i>
+                      </div>
+                      <div className="itemTitle">
+                        Meeting Rooms
+                      </div>
+                    </NavLink>
+                  </li>
+
+
                   {/* <li className="dashboard ">
                     <NavLink
                       to="/device-provisioning"
@@ -1071,7 +1067,7 @@ function Navbar() {
                       <div className="itemTitle">Call Blocking</div>
                     </NavLink>
                   </li> */}
-                   <li className="dashboard ">
+                  <li className="dashboard ">
                     <NavLink
                       to="/click-to-call-listing"
                       onClick={backToTop}
@@ -1526,6 +1522,7 @@ function Navbar() {
                         "/mail-settings",
                         "/fax-settings",
                         "/call-recording",
+                        "/voice-music"
                       ])
                         ? "show"
                         : ""
@@ -1553,6 +1550,14 @@ function Navbar() {
                                 </div> */}
                               <div className="itemTitle">General</div>
                             </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink to="/voice-music">
+                              {/* <div className="iconHolder">
+                                <i class="fa-regular fa-user-music"></i>
+                              </div> */}
+                              <div className="itemTitle">Voice Music</div>
+                            </NavLink>
                           </li>
                           <li className="tabItem">
                             <NavLink

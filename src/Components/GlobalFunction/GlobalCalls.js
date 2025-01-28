@@ -3,12 +3,10 @@
 // This file is used to store the global calls, and It will refresh the data in global state
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "./globalFunction";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
-  const navigate = useNavigate();
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const accountDetailsRefresh = useSelector(

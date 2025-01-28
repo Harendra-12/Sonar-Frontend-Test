@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -26,9 +25,10 @@ const Dashboard = () => {
   const activeCall = useSelector((state) => state.activeCall || []);
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
-  const permissions = useSelector((state) => state.permissions || []);
   const registerUser = useSelector((state) => state.registerUser || []);
   const [onlineExtension, setOnlineExtension] = useState([0]);
+
+  // Getting register user data from socket and setting online extension
   useEffect(() => {
     if (registerUser.length > 0) {
       setOnlineExtension(
@@ -43,10 +43,6 @@ const Dashboard = () => {
     }
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
-  console.log(permissions);
-  console.log("Allcalls", allCall?.inbound?.total);
-  
-
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
