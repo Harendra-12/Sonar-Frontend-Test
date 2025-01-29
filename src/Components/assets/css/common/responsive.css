@@ -272,4 +272,18 @@
         height: calc(100vh - 68px);
     }
 
+    .someTempDialerDesign ul li .numberHolder {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+    }
+
+    .someTempDialerDesign ul li .textHolder h3 {
+        font-size: 16px;
+    }
+
+    .someTempDialerDesign ul li:not(:last-child)::after {
+        top: 35px;
+        left: 15px;
+    }
 }
