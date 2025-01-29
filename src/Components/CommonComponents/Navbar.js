@@ -16,9 +16,9 @@ function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const userType = account?.usertype; // "Company"
-  const permissions = useSelector((state) => state.permissions || []);
-  console.log(permissions);
+  const userType = account?.usertype; 
+
+  // Handle log out function by removing token
   async function logOut() {
     const apiData = await generalGetFunction("/logout");
     localStorage.clear();
@@ -32,8 +32,8 @@ function Navbar() {
     }
   }
 
+  // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
-
   const isChildActive = (childPaths) => {
     return childPaths.some((path) => location.pathname === path);
   };
@@ -163,20 +163,6 @@ function Navbar() {
                               </NavLink>
                             </li>
                           )}
-
-                          {/* <li className="tabItem" >
-                            <NavLink
-                              to="/customer-details"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Details</div>
-                            </NavLink>
-                          </li> */}
-
                           {account?.permissions?.includes(440) ||
                             account?.permissions?.includes(442) ? (
                             <li className="tabItem ">
@@ -193,9 +179,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-users-gear"></i>
-                                </div> */}
                                 <div className="itemTitle">Users</div>
                               </NavLink>
                             </li>
@@ -220,9 +203,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Extensions</div>
                               </NavLink>
                             </li>
@@ -236,9 +216,6 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-arrow-up-big-small"></i>
-                                </div> */}
                                 <div className="itemTitle">
                                   Roles and Permisson
                                 </div>
@@ -253,9 +230,6 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-cube"></i>
-                                </div> */}
                                 <div className="itemTitle">Manage Services</div>
                               </NavLink>
                             </li>
@@ -270,25 +244,12 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-swap-arrows" />
-                                </div> */}
                                 <div className="itemTitle">Master</div>
                               </NavLink>
                             </li>
                           ) : (
                             ""
                           )}
-
-                          {/* <li className="tabItem">
-                            <NavLink
-                              to="/change-password"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="itemTitle">Change Password</div>
-                            </NavLink>
-                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -338,9 +299,6 @@ function Navbar() {
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              {/* <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div> */}
                               <div className="itemTitle">Get DID</div>
                             </NavLink>
                           </li>
@@ -363,9 +321,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-hashtag-lock"></i>
-                                </div> */}
                                 <div className="itemTitle">Port number</div>
                               </NavLink>
                             </li>
@@ -377,9 +332,6 @@ function Navbar() {
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              {/* <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div> */}
                               <div className="itemTitle">
                                 Number Configuration
                               </div>
@@ -465,17 +417,11 @@ function Navbar() {
                         <ul className="tabMenu">
                           <li className="tabItem ">
                             <NavLink to="/phone-dashboard">
-                              {/* <div className="iconHolder">
-                                <i className="fa-regular fa-regular fa-list-dropdown"></i>
-                              </div> */}
                               <div className="itemTitle">Call Dashboard</div>
                             </NavLink>
                           </li>
                           <li className="tabItem ">
                             <NavLink to="/active-calls" onClick={backToTop}>
-                              {/* <div className="iconHolder">
-                                <i className="fa-regular fa-regular fa-list-dropdown"></i>
-                              </div> */}
                               <div className="itemTitle">Active Calls</div>
                             </NavLink>
                           </li>
@@ -492,9 +438,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-hashtag"></i>
-                              </div> */}
                               <div className="itemTitle">
                                 Number Configuration
                               </div>
@@ -513,9 +456,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Agents</div>
                             </NavLink>
                           </li>
@@ -539,9 +479,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-screen-users"></i>
-                                </div> */}
                                 <div className="itemTitle">Ring Group</div>
                               </NavLink>
                             </li>
@@ -566,9 +503,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-users-rectangle"></i>
-                                </div> */}
                                 <div className="itemTitle">Call Center</div>
                               </NavLink>
                             </li>
@@ -582,29 +516,15 @@ function Navbar() {
                               onClick={backToTop}
                               type="button"
                             >
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-block-brick-fire"></i>
-                              </div> */}
                               <div className="itemTitle">Call Blocking</div>
                             </NavLink>
                           </li>
 
                           <li className="tabItem ">
                             <NavLink to="/voicemail-report">
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-user-music"></i>
-                              </div> */}
                               <div className="itemTitle">Voice Mail</div>
                             </NavLink>
                           </li>
-                          {/* <li className="tabItem " >
-                            <NavLink to="/active-calls">
-                              <div className="iconHolder">
-                                <i class="fa-regular fa-phone-volume"></i>
-                              </div>
-                              <div className="itemTitle">Active Calls</div>
-                            </NavLink>
-                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -666,9 +586,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Dashboard</div>
                             </NavLink>
                           </li>
@@ -685,9 +602,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Desposition</div>
                             </NavLink>
                           </li>
@@ -706,9 +620,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Campaign</div>
                             </NavLink>
                           </li>
@@ -726,9 +637,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Leads</div>
                             </NavLink>
                           </li>
@@ -736,7 +644,6 @@ function Navbar() {
                           <li className="tabItem ">
                             <NavLink
                               to="/agents-dialer"
-                              // onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
                                   ["/agents", "/agents-edit", "/agents-add"].some(
@@ -747,9 +654,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Agents</div>
                             </NavLink>
                           </li>
@@ -767,9 +671,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Call Desposition</div>
                             </NavLink>
                           </li>
@@ -777,7 +678,6 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
-
                   <li className="">
                     <button
                       data-bs-toggle="collapse"
@@ -802,7 +702,6 @@ function Navbar() {
                         <ul className="tabMenu">
                           <li className="tabItem ">
                             <Link
-                              // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
@@ -814,16 +713,12 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Dashboard</div>
                             </Link>
                           </li>
 
                           <li className="tabItem ">
                             <Link
-                              // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
@@ -835,9 +730,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">
                                 Number Configuration
                               </div>
@@ -846,7 +738,6 @@ function Navbar() {
 
                           <li className="tabItem ">
                             <Link
-                              // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
@@ -858,16 +749,12 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Campaign</div>
                             </Link>
                           </li>
 
                           <li className="tabItem ">
                             <Link
-                              // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
@@ -879,16 +766,12 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Buyers</div>
                             </Link>
                           </li>
 
                           <li className="tabItem ">
                             <Link
-                              // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
                               className={({ isActive }) =>
                                 isActive ||
@@ -900,9 +783,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Source</div>
                             </Link>
                           </li>
@@ -910,90 +790,6 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
-
-                  {/* <li className="">
-                    <button
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse2"
-                      aria-expanded="false"
-                      aria-controls="collapse2"
-                      
-                    >
-                      <div className="itemTitle">Dialplan</div>
-                    </button>
-                    <div
-                      id="collapse2"
-                      className="accordion-collapse collapse"
-                      data-bs-parent="#sidenNav"
-                    >
-                      <div className="menuWrapper">
-                        <ul className="tabMenu">
-                          <li className="tabItem" >
-                            <NavLink to="/destination" className="nav-link">
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Destinations</div>
-                            </NavLink>
-                          </li>
-
-                          <li className="tabItem" >
-                            <NavLink to="/destinations" className="nav-link">
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Routes</div>
-                            </NavLink>
-                          </li>
-                          
-                        </ul>
-                      </div>
-                    </div>
-                  </li> */}
-                  {/* <li className="tabItem" >
-                        <Link
-                          href=""
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-sharp fa-regular fa-group-arrows-rotate" />
-                          </div>
-                          <div className="itemTitle">Dialplan Manager</div>
-                        </Link>
-                      </li> */}
-                  {/* <li className="tabItem" >
-                        <Link
-                          href=""
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-sharp fa-regular fa-phone-volume" />
-                          </div>
-                          <div className="itemTitle">Inbound Routes</div>
-                        </Link>
-                      </li> */}
-                  {/* <li className="tabItem" >
-                        <Link
-                          href=""
-                          className="nav-link"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-regular fa-phone-arrow-up-right" />
-                          </div>
-                          <div className="itemTitle">Outbound Routes</div>
-                        </Link>
-                      </li> */}
-
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/variable"
-                      onClick={backToTop}
-                      type="button"
-                      
-                    >
-                      <div className="itemTitle">Variable</div>
-                    </NavLink>
-                  </li> */}
                   {account?.permissions?.includes(230) ||
                     account?.permissions?.includes(232) ? (
                     <li className="dashboard ">
@@ -1043,30 +839,6 @@ function Navbar() {
                       </div>
                     </NavLink>
                   </li>
-
-
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/device-provisioning"
-                      onClick={backToTop}
-                      type="button"
-                      
-                    >
-                      <div className="itemTitle">Device Provisioning</div>
-                    </NavLink>
-                  </li> */}
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/call-blocking"
-                      onClick={backToTop}
-                      type="button"
-                    >
-                      <div className="iconHolder">
-                        <i class="fa-regular fa-block-brick-fire"></i>
-                      </div>
-                      <div className="itemTitle">Call Blocking</div>
-                    </NavLink>
-                  </li> */}
                   <li className="dashboard ">
                     <NavLink
                       to="/click-to-call-listing"
@@ -1079,43 +851,6 @@ function Navbar() {
                       <div className="itemTitle">Click To Call</div>
                     </NavLink>
                   </li>
-                  {/* <li className="dashboard ">
-                    <NavLink
-                      to="/click-to-call"
-                      onClick={backToTop}
-                      type="button"
-                    >
-                      <div className="iconHolder">
-                        <i class="fa-regular fa-bullseye-pointer"></i>
-                      </div>
-                      <div className="itemTitle">Click To Call preview</div>
-                    </NavLink>
-                  </li> */}
-
-                  {/* <li className="dashboard">
-                    <Link>
-                      <DarkModeToggle marginLeft={"3"} />
-                    </Link>
-                  </li> */}
-
-                  {/* {account?.extension || isCustomerAdmin ? (
-                    <li className="dashboard ">
-                      <Link
-                        href="/webrtc"
-                        target="_blank"
-                        // onClick={backToTop}
-                        type="button"
-                      >
-                        <div className="iconHolder">
-                          <i class="fa-regular fa-headset"></i>
-                        </div>
-                        <div className="itemTitle">Phone</div>
-                      </Link>
-                    </li>
-                  ) : (
-                    ""
-                  )} */}
-
                   {account?.permissions?.includes(86) ? (
                     <li className="">
                       <button
@@ -1153,18 +888,6 @@ function Navbar() {
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
-                            {/* <li className="tabItem" >
-                            <NavLink
-                              to="/call"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Call</div>
-                            </NavLink>
-                          </li> */}
                             {account?.permissions?.includes(86) ? (
                               <li className="tabItem">
                                 <NavLink
@@ -1172,16 +895,12 @@ function Navbar() {
                                   onClick={backToTop}
                                   className="nav-link"
                                 >
-                                  {/* <div className="iconHolder">
-                                    <i class="fa-regular fa-chart-bar"></i>
-                                  </div> */}
                                   <div className="itemTitle">CDR / CQR</div>
                                 </NavLink>
                               </li>
                             ) : null}
                             <li className="tabItem ">
                               <Link
-                                // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
                                   isActive ||
@@ -1193,9 +912,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">
                                   Real-Time Analytics
                                 </div>
@@ -1215,9 +931,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Call Analytics</div>
                               </Link>
                             </li>
@@ -1234,9 +947,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Agent Report</div>
                               </NavLink>
                             </li>
@@ -1253,9 +963,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Call Queues</div>
                               </NavLink>
                             </li>
@@ -1272,9 +979,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Ring Groups</div>
                               </NavLink>
                             </li>
@@ -1292,9 +996,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">
                                   Dialer Analytics
                                 </div>
@@ -1314,9 +1015,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Call Tracking</div>
                               </Link>
                             </li>
@@ -1333,9 +1031,6 @@ function Navbar() {
                                     : "nav-link"
                                 }
                               >
-                                {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                                 <div className="itemTitle">Meeting Reports</div>
                               </NavLink>
                             </li>
@@ -1388,38 +1083,10 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-money-check-dollar-pen"></i>
-                                </div> */}
                                 <div className="itemTitle">Payment Info</div>
                               </NavLink>
                             </li>
                           ) : null}
-
-                          {/* <li className="tabItem" >
-                            <NavLink
-                              to="/invoice-list"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Invoice Details</div>
-                            </NavLink>
-                          </li> */}
-                          {/* <li className="tabItem" >
-                            <NavLink
-                              to="/expense-list"
-                              onClick={backToTop}
-                              className="nav-link"
-                            >
-                              <div className="iconHolder">
-                                <i className="fa-regular fa-swap-arrows" />
-                              </div>
-                              <div className="itemTitle">Expenses</div>
-                            </NavLink>
-                          </li> */}
                           {account?.permissions?.includes(80) ||
                             account?.permissions?.includes(82) ? (
                             <li className="tabItem">
@@ -1428,9 +1095,6 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-credit-card"></i>
-                                </div> */}
                                 <div className="itemTitle">Card</div>
                               </NavLink>
                             </li>
@@ -1444,9 +1108,6 @@ function Navbar() {
                                 onClick={backToTop}
                                 className="nav-link"
                               >
-                                {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-wallet"></i>
-                                </div> */}
                                 <div className="itemTitle">Wallet</div>
                               </NavLink>
                             </li>
@@ -1466,9 +1127,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Rate Card</div>
                             </Link>
                           </li>
@@ -1485,9 +1143,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Reports</div>
                             </NavLink>
                           </li>
@@ -1545,17 +1200,11 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">General</div>
                             </Link>
                           </li>
                           <li className="tabItem ">
                             <NavLink to="/voice-music">
-                              {/* <div className="iconHolder">
-                                <i class="fa-regular fa-user-music"></i>
-                              </div> */}
                               <div className="itemTitle">Voice Music</div>
                             </NavLink>
                           </li>
@@ -1572,9 +1221,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Fax</div>
                             </NavLink>
                           </li>
@@ -1614,9 +1260,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Call Recording</div>
                             </NavLink>
                           </li>
@@ -1664,9 +1307,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Extensions</div>
                             </NavLink>
                           </li>
@@ -1683,9 +1323,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Plugins</div>
                             </Link>
                           </li>
@@ -1722,9 +1359,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Add-Ons</div>
                             </NavLink>
                           </li>
@@ -1732,7 +1366,6 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
-
                   <li className="">
                     <button
                       data-bs-toggle="collapse"
@@ -1772,9 +1405,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Knowledge Base</div>
                             </NavLink>
                           </li>
@@ -1792,9 +1422,6 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              {/* <div className="iconHolder">
-                                  <i className="fa-regular fa-phone-office" />
-                                </div> */}
                               <div className="itemTitle">Submit a Ticket</div>
                             </Link>
                           </li>

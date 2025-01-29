@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-// import Particles, { initParticlesEngine } from "@tsparticles/react";
-// import { loadSlim } from "@tsparticles/slim";
 import {
   backToTop,
   generalGetFunction,
@@ -12,15 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  // Init Particle js and use it
-  // const [init, setInit] = useState(false);
-  // useEffect(() => {
-  //   initParticlesEngine(async (engine) => {
-  //     await loadSlim(engine);
-  //   }).then(() => {
-  //     setInit(true);
-  //   });
-  // }, []);
 
   return (
     <>
@@ -78,18 +67,6 @@ function Login() {
           </div>
         </main>
       </div>
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </>
   );
 }

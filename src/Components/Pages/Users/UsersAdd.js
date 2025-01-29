@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,7 +8,6 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
 
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
@@ -19,12 +20,11 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
+import { toast } from "react-toastify";
 const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const domain = useSelector((state) => state.domain);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -40,8 +40,8 @@ const UsersAdd = () => {
   const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
-  // const { id: domainId = "" } = domain;
-  // const [popUp, setPopUp] = useState(true);
+  const account = useSelector((state) => state.account);
+  const [parentChecked, setParentChecked] = useState({});
 
   const {
     register,
@@ -52,27 +52,15 @@ const UsersAdd = () => {
     reset,
   } = useForm();
 
-  const account = useSelector((state) => state.account);
+  // getting permssion timezone and roles so that we can validate if no role then we can't create user
   useEffect(() => {
     if (account === null) {
       navigate("/");
     } else {
       async function getDomain() {
-        // const domain = await generalGetFunction(
-        //   `/domain/search?account=${account.account_id}`
-        // );
         const permissionData = await generalGetFunction("/permission");
         const timeZ = await generalGetFunction(`/timezones`);
         const apiRole = await generalGetFunction(`/role/all`);
-        // if (domain.status) {
-        //   setDomains(
-        //     domain.data.map((item) => {
-        //       return [item.id, item.domain_name];
-        //     })
-        //   );
-        // } else {
-        //   navigate("/");
-        // }
         if (timeZ?.status) {
           setTimeZone(
             timeZ.data.map((item) => {
@@ -95,6 +83,7 @@ const UsersAdd = () => {
     }
   }, []);
 
+  // Getting user and extension so that we can filter out which extension is not assign
   useEffect(() => {
     if (allUserRefresh > 0) {
       setUser(allUser.data);
@@ -114,19 +103,7 @@ const UsersAdd = () => {
     }
   }, [allUser, extensionAll]);
 
-  // filter only those extension that are not assign with any user
-  console.log(extension, user);
-  // useEffect(() => {
-  //   if (extension && user) {
-  //     setFilterExtensions(
-  //       extension.filter((item) => {
-  //         return !user.some((userItem) => {
-  //           return userItem.extension_id == item.id;
-  //         });
-  //       })
-  //     );
-  //   }
-  // }, [extension, user]);
+  //Filtering out which extension is not assign
   useEffect(() => {
     if (extension && user) {
       setFilterExtensions(
@@ -160,7 +137,7 @@ const UsersAdd = () => {
     }
   }
 
-  // Listning for user typing
+  // Listning for user typing debouncing
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       checkUserName();
@@ -170,8 +147,8 @@ const UsersAdd = () => {
     };
   }, [watch().username]);
 
+  // Creating user
   const handleFormSubmit = handleSubmit(async (data) => {
-    // setLoading(true);
     if (data.cPassword !== data.password) {
       setError("cPassword", {
         type: "manual",
@@ -239,21 +216,10 @@ const UsersAdd = () => {
     }
     return result;
   };
-
-  // Handel permission check box click
-  // const handleCheckboxChange = (id) => {
-  //   if (selectedPermission.includes(id)) {
-  //     setSelectedPermission(selectedPermission.filter((item) => item !== id));
-  //   } else {
-  //     setSelectedPermission([...selectedPermission, id]);
-  //   }
-  // };
   const filteredPermission = filterPermissionById(
     defaultPermission,
     account.permissions
   );
-
-  const [parentChecked, setParentChecked] = useState({});
 
   // Initialize parentChecked state
   useEffect(() => {
@@ -301,7 +267,7 @@ const UsersAdd = () => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-  console.log(filterExtensions);
+
   return (
     <>
       <style>
@@ -315,36 +281,6 @@ const UsersAdd = () => {
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Users" />
-            {/* <div id="subPageHeader">
-              <div className="col-xl-9 my-auto">
-                <p className="mb-0">
-                  Edit user information and group membership.
-                </p>
-              </div>
-              <div className="col-xl-3 ps-2">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton gray"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                  </button>
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={handleFormSubmit}
-                  >
-                    <span className="text">Save</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                  </button>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
@@ -573,47 +509,6 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-                        {/* <div className="formRow col-xl-12">
-                                        <div className="formLabel">
-                                            <label htmlFor="selectFormRow">Language</label>
-                                            {userState.languageMissing?<label className='status missing'>Select Language</label>:""}
-                                        </div>
-                                        <div className="col-12">
-                                            <select className="formItem" name="" value={userState.language} onChange={(e) => {
-                                                setUserState(prevState => ({
-                                                    ...prevState,
-                                                    language: e.target.value
-                                                }))
-                                            }}>
-                                                <option>Select Language</option>
-                                                <option >Afrikaans</option>
-                                                <option >Albanian</option>
-                                                <option >Arabic</option>
-                                                <option >Armenian</option>
-                                                <option >Basque</option>
-                                                <option >English</option>
-                                                <option >Estonian</option>
-                                                <option >Fiji</option>
-                                                <option >Finnish</option>
-                                                <option >French</option>
-                                                <option >Georgian</option>
-                                                <option >German</option>
-                                                <option >Greek</option>
-                                                <option >Punjabi</option>
-                                                <option >Quechua</option>
-                                                <option >Ukrainian</option>
-                                                <option >Urdu</option>
-                                                <option >Uzbek</option>
-                                                <option >Vietnamese</option>
-                                                <option >Welsh</option>
-                                                <option >Xhosa</option>
-                                            </select>
-                                            <br />
-                                            <label htmlFor="data" className="formItemDesc">
-                                                Select the language.
-                                            </label>
-                                        </div>
-                                    </div> */}
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">
@@ -674,61 +569,6 @@ const UsersAdd = () => {
                             )}
                           </div>
                         </div>
-
-                        {/* <div className="formRow col-xl-12">
-                                        <div className="formLabel">
-                                            <label htmlFor="">Organization</label>
-                                            {userState.organizationMissing?<label className='status missing'>Invalid Organization</label>:""}
-                                        </div>
-                                        <div className="col-6">
-                                            <input
-                                                type="text"
-                                                name="extension"
-                                                value={userState.organization}
-                                                className="formItem"
-                                                onChange={(e) => {
-                                                    setUserState(prevState => ({
-                                                        ...prevState,
-                                                        organization: e.target.value
-                                                    }))
-                                                }}
-                                                required="required"
-                                            />
-                                        </div>
-                                    </div> */}
-                        {/* <div className="formRow col-xl-12">
-                    <div className="formLabel">
-                      <label htmlFor="selectFormRow">Groups</label>
-                      {userState.groupMissing ? (
-                        <label className="status missing">Select Group</label>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="col-6">
-                      <select
-                        className="formItem"
-                        name=""
-                        value={userState.groups}
-                        onChange={(e) => {
-                          setUserState((prevState) => ({
-                            ...prevState,
-                            groups: e.target.value,
-                          }));
-                        }}
-                      >
-                        <option>Choose Group</option>
-                        {group &&
-                          group.map((item) => {
-                            return <option value={item[0]}>{item[1]}</option>;
-                          })}
-                      </select>
-                      <br />
-                      <label htmlFor="data" className="formItemDesc">
-                        Set the user's presence.
-                      </label>
-                    </div>
-                  </div> */}
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">
@@ -834,37 +674,6 @@ const UsersAdd = () => {
                             </select>
                           </div>
                         </div>
-                        {/* <div className="formRow col-xl-12">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Domain</label>
-                  </div>
-                  <div className="col-12">
-                    <select
-                      className="formItem"
-                      name=""
-                      defaultValue=""
-                      {...register("domain_id", { ...requiredValidator })}
-                    >
-                      <option disabled value="">
-                        Choose Domain
-                      </option>
-                      {domains &&
-                        domains.map((item, key) => {
-                          return (
-                            <option value={item[0]} key={key}>
-                              {item[1]}
-                            </option>
-                          );
-                        })}
-                    </select>
-                    {errors.domain_id && (
-                      <ErrorMessage text={errors.domain_id.message} />
-                    )}
-                    <label htmlFor="data" className="formItemDesc">
-                      Select the Domain.
-                    </label>
-                  </div>
-                </div> */}
                       </form>
                     </div>
 
@@ -914,18 +723,6 @@ const UsersAdd = () => {
                                         <label>{item}</label>
                                       </button>
                                     </h2>
-                                    {/* <div className="header d-flex align-items-center">
-                                      <div className="col-5">
-                                        <input
-                                          type="checkbox"
-                                          checked={parentChecked[item]}
-                                          onChange={() =>
-                                            handleParentCheckboxChange(item)
-                                          }
-                                        />
-                                        <label class="ms-2">{item}</label>
-                                      </div>
-                                    </div> */}
                                     <div
                                       id={`collapseRole${key}`}
                                       class="accordion-collapse collapse"
@@ -963,47 +760,6 @@ const UsersAdd = () => {
                                 )
                               )}
                           </div>
-                          {/* {filteredPermission &&
-                              Object.keys(filteredPermission).map((item, key) => (
-                                <div className="permissionListWrapper" key={key}>
-                                  <div className="header d-flex align-items-center">
-                                    <div className="col-5">
-                                      <input
-                                        type="checkbox"
-                                        checked={parentChecked[item]}
-                                        onChange={() =>
-                                          handleParentCheckboxChange(item)
-                                        }
-                                      />
-                                      <label className="ms-2">{item}</label>
-                                    </div>
-                                  </div>
-                                  <div className="row px-2 pt-1 border-bottom">
-                                    {filteredPermission[item].map(
-                                      (innerItem, key) => (
-                                        <div
-                                          className="col-xl-2 col-md-4 col-6"
-                                          key={key}
-                                        >
-                                          <input
-                                            type="checkbox"
-                                            id={`permission-${innerItem.id}`}
-                                            checked={selectedPermission.includes(
-                                              innerItem.id
-                                            )}
-                                            onChange={() =>
-                                              handleCheckboxChange(innerItem.id)
-                                            }
-                                          />
-                                          <label className="formLabel ms-2 text-capitalize">
-                                            {innerItem.action}
-                                          </label>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-                              ))} */}
                         </div>
                       </div>
                     )}
@@ -1012,46 +768,6 @@ const UsersAdd = () => {
               </div>
             </div>
           </div>
-          {/* {popUp ? (
-            <div className="popup">
-              <div className="container h-100">
-                <div className="row h-100 justify-content-center align-items-center">
-                  <div className="row content col-xl-4">
-                    <div className="col-2 px-0">
-                      <div className="iconWrapper">
-                        <i className="fa-duotone fa-triangle-exclamation"></i>
-                      </div>
-                    </div>
-                    <div className="col-10 ps-0">
-                      <h4>Warning!</h4>
-                      <p>
-                        No Extension is currently asigned! Please add an
-                        extension first!
-                      </p>
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          // setForce(true);
-                          setPopUp(false);
-                          navigate("/extensions-add");
-                        }}
-                      >
-                        Lets Go!
-                      </button>
-                      <button
-                        className="panelButtonWhite m-0 float-end"
-                        onClick={() => setPopUp(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            ""
-          )} */}
         </section>
         {loading ? (
           <div colSpan={99}>
@@ -1060,18 +776,6 @@ const UsersAdd = () => {
         ) : (
           ""
         )}
-        {/* <ToastContainer
-          position="bottom-right"
-          autoClose={false}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        /> */}
       </main>
     </>
   );

@@ -1,17 +1,17 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
-import ContentLoader from "../../Loader/ContentLoader";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 const Extensions = () => {
@@ -42,8 +42,8 @@ const Extensions = () => {
     } else {
       setOnlineExtension([0]);
     }
-    // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
+
   useEffect(() => {
     if (userList.length == 0) {
       dispatch({
@@ -59,6 +59,7 @@ const Extensions = () => {
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
     }));
+    
   useEffect(() => {
     setLoading(true);
     if (extensionByAccount.data) {

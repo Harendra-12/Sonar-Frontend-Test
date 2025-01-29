@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -6,9 +8,8 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import {
   emailValidator,
@@ -26,15 +27,12 @@ const UsersEdit = ({ page }) => {
   const dispatch = useDispatch();
   const locationState = location.state;
   const showHeader = location.pathname == "/users-edit";
-  // const [domains, setDomains] = useState("");
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
   const [defaultPermission, setDefaultPermission] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
-  const queryParams = new URLSearchParams(useLocation().search);
-  const value = queryParams.get("id");
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
   const [filterExtensions, setFilterExtensions] = useState();
@@ -43,9 +41,13 @@ const UsersEdit = ({ page }) => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const [password, setPassword] = useState("");
   const [popUp, setPopUp] = useState(false);
+  const [parentChecked, setParentChecked] = useState({});
+  const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const account = useSelector((state) => state.account);
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState.user_role == "Company"
   );
+
   const {
     register,
     watch,
@@ -54,31 +56,16 @@ const UsersEdit = ({ page }) => {
     reset,
     setValue,
   } = useForm();
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const account = useSelector((state) => state.account);
-  // const domain = useSelector((state) => state.domain);
-  // const { id: domainId = "" } = domain;
+
+  // If login then Getting dataa of permission timezone and role and setting fordata using reset function of useForm hook on initial load of page else navigate to login page
   useEffect(() => {
     if (account === null) {
       navigate("/");
     } else {
       async function getDomain() {
-        // const domain = await generalGetFunction(
-        //   `/domain/search?account=${account.account_id}`
-        // );
         const permissionData = await generalGetFunction("/permission");
         const timeZ = await generalGetFunction(`/timezone/all`);
         const apiRole = await generalGetFunction(`/role/all`);
-
-        // if (domain.status) {
-        //   setDomains(
-        //     domain.data.map((item) => {
-        //       return [item.id, item.domain_name];
-        //     })
-        //   );
-        // } else {
-        //   navigate("/");
-        // }
         if (timeZ?.status) {
           setTimeZone(
             timeZ.data.map((item) => {
@@ -115,8 +102,6 @@ const UsersEdit = ({ page }) => {
               usertype,
             } = data;
             let role_id = "";
-            // const { role_id = "" } = user_role;
-
             if (user_role) {
               role_id = user_role.role_id;
             } else {
@@ -133,7 +118,6 @@ const UsersEdit = ({ page }) => {
               firstName = separateName[0];
               lastName = separateName[1];
             }
-
             const newData = {
               ...data,
               ...{
@@ -167,6 +151,7 @@ const UsersEdit = ({ page }) => {
     }
   }, [account, navigate]);
 
+  // Getting user and extension data to check which extension is not assigned
   useEffect(() => {
     if (allUserRefresh > 0) {
       setUser(allUser.data);
@@ -186,19 +171,7 @@ const UsersEdit = ({ page }) => {
     }
   }, [allUser, extensionAll]);
 
-  // filter only those extension that are not assign with any user
-  // useEffect(() => {
-  //   if (extension && user) {
-  //     setFilterExtensions(
-  //       extension.filter((item) => {
-  //         return !user.some((userItem) => {
-  //           return userItem.extension_id === item.id;
-  //         });
-  //       })
-  //     );
-  //   }
-  // }, [extension, user]);
-
+  // Filtering unused extension
   useEffect(() => {
     if (extension && user && locationState) {
       setFilterExtensions(
@@ -214,6 +187,7 @@ const UsersEdit = ({ page }) => {
     }
   }, [extension, user, locationState]);
 
+  // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
       toast.error("Password must be at least 5 characters");
@@ -269,12 +243,9 @@ const UsersEdit = ({ page }) => {
       navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
-      // const errorMessage = Object.keys(addUser.errors);
-      // toast.error(addUser.errors[errorMessage[0]][0]);
-      // console.log("error message:", errorMessage[0][0]);
     }
   });
-  console.log(watch(), selectedRole, selectedPermission);
+
   // Filter out permissions base on the availabe id's inside user section
   const filterPermissionById = (data, idArray) => {
     const result = {};
@@ -290,21 +261,11 @@ const UsersEdit = ({ page }) => {
     }
     return result;
   };
-  console.log(watch());
-  // Handel permission check box click
-  // const handleCheckboxChange = (id) => {
-  //   if (selectedPermission.includes(id)) {
-  //     setSelectedPermission(selectedPermission.filter((item) => item !== id));
-  //   } else {
-  //     setSelectedPermission([...selectedPermission, id]);
-  //   }
-  // };
+
   const filteredPermission = filterPermissionById(
     defaultPermission,
     account.permissions
   );
-
-  const [parentChecked, setParentChecked] = useState({});
 
   // Initialize parentChecked state
   useEffect(() => {
@@ -352,7 +313,6 @@ const UsersEdit = ({ page }) => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
-  // console.log(errors);
   return (
     <>
       <style>
@@ -369,36 +329,6 @@ const UsersEdit = ({ page }) => {
           {showHeader && (
             <div className="container-fluid px-0">
               <Header title="Users" />
-              {/* <div id="subPageHeader">
-              <div className="col-6 my-1">
-                <p className="mb-0">
-                  Edit user information and group membership.
-                </p>
-              </div>
-              <div className="col-6 ps-2">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                  </button>
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={handleFormSubmit}
-                  >
-                    <span className="text">Save</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                  </button>
-                </div>
-              </div>
-            </div> */}
             </div>
           )}
 
@@ -726,15 +656,8 @@ const UsersEdit = ({ page }) => {
                                         e.preventDefault();
                                         setPopUp(true);
                                       }}
-                                    // onClick={(e) => {
-                                    //   e.preventDefault();
-                                    //   setValue("extension_id", null);
-                                    // }}
                                     >
                                       <span className="text">Edit</span>
-                                      {/* <span className="icon">
-                                      <i class="fas fa-edit"></i>
-                                    </span> */}
                                     </button>
                                   </div>
                                 )}
@@ -811,18 +734,6 @@ const UsersEdit = ({ page }) => {
                                             <label>{item}</label>
                                           </button>
                                         </h2>
-                                        {/* <div className="header d-flex align-items-center">
-                                      <div className="col-5">
-                                        <input
-                                          type="checkbox"
-                                          checked={parentChecked[item]}
-                                          onChange={() =>
-                                            handleParentCheckboxChange(item)
-                                          }
-                                        />
-                                        <label class="ms-2">{item}</label>
-                                      </div>
-                                    </div> */}
                                         <div
                                           id={`collapseRole${key}`}
                                           class="accordion-collapse collapse"
@@ -942,46 +853,11 @@ const UsersEdit = ({ page }) => {
                                 <option value="both">Both</option>
                               </select>
                             </div>
-                            {/* {watch().extension_id && (
-                              <div className="col-4">
-                                <button
-                                  effect="ripple"
-                                  className="panelButton delete ms-auto"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setValue("extension_id", null);
-                                  }}
-                                >
-                                  <span className="text">Remove</span>
-                                  <span className="icon">
-                                    <i class="fas fa-xmark"></i>
-                                  </span>
-                                </button>
-                              </div>
-                            )} */}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="d-flex justify-content-between">
-                      {/* <button
-                        disabled={loading}
-                        className="panelButton m-0"
-                        // onClick={() => {
-                        //   // setForce(true);
-                        //   if (selectedUser?.id) {
-                        //     handleUpdateStatusUser(selectedUser?.id);
-                        //   } else {
-                        //     setPopUp(false);
-                        //     navigate("/roles");
-                        //   }
-                        // }}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-check"></i>
-                        </span>
-                      </button> */}
                       <button
                         type="button"
                         effect="ripple"
