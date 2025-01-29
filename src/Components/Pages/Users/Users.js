@@ -19,9 +19,6 @@ const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const roles = useSelector((state) => state.roles);
-  // const rolesAndPermissionRefresh = useSelector(
-  //   (state) => state.rolesAndPermissionRefresh
-  // );
   const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const navigate = useNavigate();
   const [user, setUser] = useState();
@@ -37,8 +34,9 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
-  // const [popUpDelete, setPopUpDelete] = useState(false);
   const [deleteId, setDeleteId] = useState();
+
+  // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUSer(
@@ -49,6 +47,7 @@ const Users = () => {
     }
   }, [logonUser]);
 
+  // Getting roles data to show which role is assigned to a user
   useEffect(() => {
     dispatch({
       type: "SET_ROLES_REFRESH",
@@ -56,6 +55,7 @@ const Users = () => {
     });
   }, []);
 
+  // Getting users data with pagination row per page and search filter
   useEffect(() => {
     setLoading(true);
     async function getApi() {
@@ -91,6 +91,7 @@ const Users = () => {
     }
   }, [account, navigate, pageNumber, refreshState, itemsPerPage, userInput]);
 
+  // Checking if role is created and the current user have permsiion to create user
   const handleAddUserValidation = (e) => {
     e.preventDefault();
 
@@ -112,6 +113,7 @@ const Users = () => {
     backToTop();
   };
 
+  // Updating user status enable or disable
   const handleUpdateStatusUser = async (id) => {
     setLoading(true);
 
@@ -152,6 +154,7 @@ const Users = () => {
     }
   };
 
+  // Deleting userand updating the global state
   const handleDelete = async (deleteId) => {
     setPopUp(false);
     const apiData = await generalDeleteFunction(`/user/${deleteId}`);
