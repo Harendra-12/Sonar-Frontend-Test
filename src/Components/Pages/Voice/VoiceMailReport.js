@@ -130,7 +130,8 @@ function VoiceMailReport() {
                           </tr>
                         </thead>
                         <tbody>
-                          {voiceMail?.data.map((item, index) => {
+                          {
+                          voiceMail?.data.map((item, index) => {
                             return (
                               <>
                                 <tr className="cdrTableRow">
@@ -219,7 +220,7 @@ function VoiceMailReport() {
               </div>
             </div>
           </div>
-          {loading && <CircularLoader />}
+          {/* {loading && <CircularLoader />} */}
         </section>
       </main>
     </>

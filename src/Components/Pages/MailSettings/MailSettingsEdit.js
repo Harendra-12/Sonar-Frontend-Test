@@ -223,7 +223,7 @@ const MailSettingsEdit = ({
                           <option value="ews">
                             EWS (Exchange Web Services)
                           </option>
-                          <option value="mailgun">Mailgun</option>
+                          <option value="mailgun">Malign</option>
                           <option value="sendgrid">SendGrid</option>
                           <option value="ses">Amazon SES</option>
                           <option value="postmark">Postmark</option>

@@ -288,7 +288,7 @@ const DidConfig = () => {
                         <div className="content">
                           <h4>Destination Config</h4>
                           <p>
-                            Inbound destinations are the DID/DDI, DNIS or Alias
+                            Inbound destinations are the DID/DDI, DINS or Alias
                             for inbound calls.
                           </p>
                         </div>

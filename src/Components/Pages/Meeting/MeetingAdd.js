@@ -178,7 +178,7 @@ function MeetingAdd() {
                                         >
                                             <option value="public">Public</option>
                                             <option value="private">Private</option>
-                                            <option value="webiner">webiner</option>
+                                            <option value="webiner">webinar</option>
                                         </select>
                                     </div>
                                 </div>

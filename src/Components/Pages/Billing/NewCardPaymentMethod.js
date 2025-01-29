@@ -455,7 +455,7 @@ function NewCardPaymentMethod({
       }
         `}
       </style>
-      <div className="col-xl-8">
+      <div className="col-xl-8 ">
         <div className="cardDetailsWrapper">
           <div className="row">
             <div

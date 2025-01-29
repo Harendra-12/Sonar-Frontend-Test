@@ -889,7 +889,7 @@ function CampaignCreate() {
                           <div className="popup music position-static bg-transparent w-auto h-auto">
                             <div className="container h-100">
                               <div className="row h-100 justify-content-center align-items-center">
-                                <div className="card px-0 col-xl-5 shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                                <div className="card px-0 col-xl-5  shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                                   <div className="header">
                                     <h5 className="card-title fs14 border-bootm fw700">
                                       Upload Documents

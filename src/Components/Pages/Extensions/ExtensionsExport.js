@@ -92,7 +92,7 @@ const ExtensionsExport = () => {
                                         </div>
                                         <div className="col-12">
                                             <label htmlFor="data" className="listItemDesc">
-                                                accountcode
+                                                account code
                                             </label>
                                         </div>
                                     </div>
@@ -192,7 +192,7 @@ const ExtensionsExport = () => {
                                         </div>
                                         <div className="col-12">
                                             <label htmlFor="data" className="listItemDesc">
-                                                directory_exten_visible
+                                                directory_extern_visible
                                             </label>
                                         </div>
                                     </div>

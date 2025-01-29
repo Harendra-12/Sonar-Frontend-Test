@@ -51,13 +51,13 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
     if (selectedCardId === null || selectedCardId === undefined) {
       toast.error("Please select a card");
     } else if (selectedBillId === null || selectedBillId === undefined) {
-      toast.error("Please selcet a billing address");
+      toast.error("Please select a billing address");
     } else if (cvv === "") {
       toast.error("Please enter CVV");
     } else if (cvv.length < 3 || cvv.length > 4) {
       toast.error("Please enter correct cvv");
     } else if (rechargeType !== "buyDid" && amount === "") {
-      toast.error("Please enter amout");
+      toast.error("Please enter amount");
     } else {
       setLoading(true);
       if (rechargeType === "buyDid") {

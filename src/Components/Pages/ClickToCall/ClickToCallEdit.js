@@ -155,7 +155,7 @@ function ClickToCallEdit() {
                                                 <div className="content">
                                                     <h4> Widget Configuration</h4>
                                                     <p>
-                                                        Setup your widget by choosing apropriate
+                                                        Setup your widget by choosing appropriate
                                                         configurations.
                                                     </p>
                                                 </div>

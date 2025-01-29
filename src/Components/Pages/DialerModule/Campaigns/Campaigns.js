@@ -252,7 +252,7 @@ function Campaigns() {
                                         </div>
                                       </div>
                                     </td>
-                                    <td><span className='ellipsis'>Customerlist.xls</span></td>
+                                    <td><span className='ellipsis'>CustomerList.xls</span></td>
                                     <td>
                                       <div class="dropdown">
                                         <div class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

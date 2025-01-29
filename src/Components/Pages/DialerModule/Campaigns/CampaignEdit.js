@@ -1577,7 +1577,7 @@ function CampaignCreate() {
                                   </button> */}
                                   {addNewCsvToggle && (
                                     <div
-                                      className="card px-0 col-xl-5 shadow-none"
+                                      className="card px-0 col-xl-5  shadow-none"
                                       style={{
                                         border: "1px solid var(--border-color)",
                                       }}

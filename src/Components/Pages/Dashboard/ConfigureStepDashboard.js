@@ -350,7 +350,7 @@ function ConfigureStepDashboard({ account2 }) {
           )}
           {purchaseComplete ? (
             <div className="contentFinal">
-              <p>Your did configured succesfully </p>
+              <p>Your did configured successfully </p>
               <p>
                 Further configuration is under process, you will notified
                 whenever it is done!{" "}
