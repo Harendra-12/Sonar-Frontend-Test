@@ -54,7 +54,7 @@ const ExtensionsImport = () => {
                                             />
                                             <br />
                                             <label htmlFor="data" className="formItemDesc">
-                                                Copy and paste the comma delimitted data into the text area
+                                                Copy and paste the comma delimited data into the text area
                                                 to begin the import.
                                             </label>
                                         </div>

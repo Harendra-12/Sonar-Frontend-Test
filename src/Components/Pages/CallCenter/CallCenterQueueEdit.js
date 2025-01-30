@@ -1958,7 +1958,7 @@ function CallCenterQueueEdit() {
                                     </>
                                   )}
                                 </div>
-                                <div className="row col mt-xxl-0 mt-xl-2">
+                                <div className="row col mt-xxl-0 mt-md-2 mt-xl-2">
                                   {
                                     <div
                                       onClick={() => handleAdvance(item.id)}

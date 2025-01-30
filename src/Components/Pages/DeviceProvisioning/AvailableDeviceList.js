@@ -150,7 +150,7 @@ function AvailableDeviceList() {
                                                     <div className="formLabel">
                                                         <label className="text-dark">Device Name</label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                            Please enter a name for this devicer
+                                                            Please enter a name for this devices
                                                         </label>
                                                     </div>
                                                     <div className="col-6">
@@ -168,7 +168,7 @@ function AvailableDeviceList() {
                                                     <div className="formLabel">
                                                         <label className="text-dark">Select UUID Type</label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                            Please enter a name for this devicer
+                                                            Please enter a name for this devices
                                                         </label>
                                                     </div>
                                                     <div className="col-6">

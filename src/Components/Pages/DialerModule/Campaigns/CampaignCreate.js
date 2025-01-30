@@ -261,7 +261,7 @@ function CampaignCreate() {
 
                   <div className="col-12" style={{ padding: '25px 23px' }}>
                     <div className="row">
-                      <div className="col-xl-2">
+                      <div className="col-xl-2 col-3">
                         <div className='someTempDialerDesign'>
                           <ul>
                             <li className={stepSelector === 1 && 'active'} onClick={() => setStepSelector(1)}>
@@ -308,7 +308,7 @@ function CampaignCreate() {
                         </div>
                       </div>
                       {stepSelector === 1 && <>
-                        <div className="col-xl-7" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className="col-xl-7 col-6" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <form className="row mb-0">
                             <div className="formRow">
                               <div className='formLabel'>
@@ -366,7 +366,7 @@ function CampaignCreate() {
                             </div>
                           </form>
                         </div>
-                        <div className="col-xl-3" style={{ borderLeft: '1px solid var(--border-color)' }}>
+                        <div className="col-xl-3 col-3" style={{ borderLeft: '1px solid var(--border-color)' }}>
                           <div
                             className="itemWrapper a py-0"
                             style={{ backgroundColor: "transparent", boxShadow: 'none' }}
@@ -424,9 +424,9 @@ function CampaignCreate() {
                         </div>
                       </>}
                       {stepSelector === 2 && <>
-                        <div className='col-xl-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <form className="row mb-0">
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label className='fw-bold' style={{ fontSize: 'initial' }}>
                                   Dialer Type
@@ -446,7 +446,7 @@ function CampaignCreate() {
                               </div>
                             </div>
                             <div></div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
                                   Preview Time
@@ -463,7 +463,7 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
                                   Wrap Up Time
@@ -480,7 +480,7 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
                                   Max Ring Time
@@ -496,7 +496,7 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
                                   Default Retry Period
@@ -513,7 +513,7 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
                                   Max Attempt Per Record
@@ -531,7 +531,7 @@ function CampaignCreate() {
                             </div>
                           </form>
                           <div className='row mt-2 gx-xxl-5'>
-                            <div className='col-6'>
+                            <div className='col-xl-6'>
                               <div className="profileView p-0">
                                 <div
                                   className="profileDetailsHolder position-relative px-0"
@@ -616,7 +616,7 @@ function CampaignCreate() {
                                 </div>
                               </div>
                             </div>
-                            <div className='col-6'>
+                            <div className='col-xl-6'>
                               <div className="profileView p-0">
                                 <div
                                   className="profileDetailsHolder position-relative px-0"
@@ -790,7 +790,7 @@ function CampaignCreate() {
                         </div>
                       </>}
                       {stepSelector === 3 && <>
-                        <div className='col-xl-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <div
                             className="itemWrapper a py-0"
                             style={{ backgroundColor: "transparent", boxShadow: 'none' }}
@@ -833,7 +833,7 @@ function CampaignCreate() {
                                   return (
                                     <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
                                       <div className="row justify-content-between">
-                                        <div className="col-xl-7 col-xxl-6 d-flex ps-0">
+                                        <div className="col-xl-7 col-xxl-6 col-7 d-flex ps-0">
                                           <div className="profileHolder">
                                             <i className="fa-light fa-user fs-5" />
                                           </div>
@@ -842,7 +842,7 @@ function CampaignCreate() {
                                             <h5 className="mt-2">{item.extension.extension}</h5>
                                           </div>
                                         </div>
-                                        <div className="col-10 col-xl-4 col-xxl-5">
+                                        <div className="col-xl-4 col-xxl-5 col-4">
                                           <div className="contactTags">
                                             <span data-id={2}>Agent</span>
                                           </div>
@@ -885,11 +885,11 @@ function CampaignCreate() {
                         </div>
                       </>}
                       {stepSelector === 4 && <>
-                        <div className='col-xl-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <div className="popup music position-static bg-transparent w-auto h-auto">
                             <div className="container h-100">
                               <div className="row h-100 justify-content-center align-items-center">
-                                <div className="card px-0 col-xl-5 shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                                <div className="card px-0 col-xl-5  shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                                   <div className="header">
                                     <h5 className="card-title fs14 border-bootm fw700">
                                       Upload Documents

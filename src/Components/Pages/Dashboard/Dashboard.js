@@ -972,7 +972,7 @@ const Dashboard = () => {
                                 /{" "}
                                 {accountDetails?.package?.subscription_type ===
                                   "annually"
-                                  ? "Anually"
+                                  ? "Annually"
                                   : "Monthly"}
                               </p>
                               <p>

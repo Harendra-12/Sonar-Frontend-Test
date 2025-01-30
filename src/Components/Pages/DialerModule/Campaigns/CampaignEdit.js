@@ -450,8 +450,8 @@ function CampaignCreate() {
     setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
   }
 
-  console.log("111111",selectedDesposition);
-  
+  console.log("111111", selectedDesposition);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -523,7 +523,7 @@ function CampaignCreate() {
 
                   <div className="col-12" style={{ padding: "25px 23px" }}>
                     <div className="row">
-                      <div className="col-xl-2">
+                      <div className="col-xl-2 col-3">
                         <div className="someTempDialerDesign">
                           <ul>
                             <li
@@ -620,7 +620,7 @@ function CampaignCreate() {
                       {stepSelector === 1 && (
                         <>
                           <div
-                            className="col-xl-7"
+                            className="col-xl-7 col-6"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
                               padding: "0 30px",
@@ -684,7 +684,7 @@ function CampaignCreate() {
                             </form>
                           </div>
                           <div
-                            className="col-xl-3"
+                            className="col-xl-3 col-3"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
                             }}
@@ -747,8 +747,8 @@ function CampaignCreate() {
                                     {/* Blank field that toggles a tick */}
                                     <div
                                       className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedItems.includes(index)
-                                          ? "selected"
-                                          : ""
+                                        ? "selected"
+                                        : ""
                                         }`}
                                       style={{
                                         width: "20px",
@@ -774,14 +774,14 @@ function CampaignCreate() {
                       {stepSelector === 2 && (
                         <>
                           <div
-                            className="col-xl-9"
+                            className="col-xl-9 col-9"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
                               padding: "0 30px",
                             }}
                           >
                             <form className="row mb-0">
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label
                                     className="fw-bold"
@@ -812,7 +812,7 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               <div></div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label>Preview Time</label>
                                 </div>
@@ -832,7 +832,7 @@ function CampaignCreate() {
                                   )}
                                 </div>
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label>Wrap Up Time</label>
                                 </div>
@@ -852,7 +852,7 @@ function CampaignCreate() {
                                   )}
                                 </div>
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label>Max Ring Time</label>
                                 </div>
@@ -872,7 +872,7 @@ function CampaignCreate() {
                                   )}
                                 </div>
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label>Default Retry Period</label>
                                 </div>
@@ -892,7 +892,7 @@ function CampaignCreate() {
                                   )}
                                 </div>
                               </div>
-                              <div className="formRow col-xl-3">
+                              <div className="formRow col-xl-6">
                                 <div className="formLabel">
                                   <label>Max Attempt Per Record</label>
                                 </div>
@@ -916,7 +916,7 @@ function CampaignCreate() {
                               </div>
                             </form>
                             <div className="row mt-2 gx-xxl-5">
-                              <div className="col-6">
+                              <div className="col-xl-6">
                                 <div className="profileView p-0">
                                   <div
                                     className="profileDetailsHolder position-relative px-0"
@@ -1087,7 +1087,7 @@ function CampaignCreate() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-6">
+                              <div className="col-xl-6">
                                 <div className="profileView p-0">
                                   <div
                                     className="profileDetailsHolder position-relative px-0"
@@ -1115,7 +1115,7 @@ function CampaignCreate() {
                                                 </div>
                                                 <div>
                                                   <label className="switch">
-                                                    <input 
+                                                    <input
                                                       type="checkbox"
                                                       checked={selectedDesposition.includes(item.id)}
                                                       id="showAllCheck"
@@ -1353,7 +1353,7 @@ function CampaignCreate() {
                       {stepSelector === 3 && (
                         <>
                           <div
-                            className="col-xl-9"
+                            className="col-xl-9 col-9"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
                               padding: "0 30px",
@@ -1422,7 +1422,7 @@ function CampaignCreate() {
                               </div>
                               <div className="mainContentApp m-0 bg-transparent mt-3">
                                 <div className="row">
-                                  <div className="col-6" style={{ borderRight: '1px solid var(--border-color)' }}>
+                                  <div className="col-xl-6" style={{ borderRight: '1px solid var(--border-color)' }}>
                                     {unmatchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1433,7 +1433,7 @@ function CampaignCreate() {
                                           }
                                         >
                                           <div className="row justify-content-between">
-                                            <div className="col-xl-7 col-xxl-6 d-flex ps-0">
+                                            <div className="col-xl-7 col-xxl-6 col-7 d-flex ps-0">
                                               <div className="profileHolder">
                                                 <i className="fa-light fa-user fs-5" />
                                               </div>
@@ -1444,15 +1444,15 @@ function CampaignCreate() {
                                                 </h5>
                                               </div>
                                             </div>
-                                            <div className="col-10 col-xl-4 col-xxl-5">
+                                            <div className="col-4 col-xl-4 col-xxl-5">
                                               <div className="contactTags">
                                                 <span data-id={2}>Agent</span>
                                               </div>
                                             </div>
                                             <div
                                               className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
-                                                  ? "selected"
-                                                  : ""
+                                                ? "selected"
+                                                : ""
                                                 }`}
                                               style={{
                                                 width: "20px",
@@ -1475,7 +1475,7 @@ function CampaignCreate() {
                                       );
                                     })}
                                   </div>
-                                  <div className="col-6">
+                                  <div className="col-xl-6">
                                     {matchIdAgent?.map((item, index) => {
                                       return (
                                         <div
@@ -1486,7 +1486,7 @@ function CampaignCreate() {
                                           }
                                         >
                                           <div className="row justify-content-between">
-                                            <div className="col-xl-7 col-xxl-6 d-flex ps-0">
+                                            <div className="col-7 col-xl-7 col-xxl-6 d-flex ps-0">
                                               <div className="profileHolder">
                                                 <i className="fa-light fa-user fs-5" />
                                               </div>
@@ -1559,7 +1559,7 @@ function CampaignCreate() {
                       {stepSelector === 4 && (
                         <>
                           <div
-                            className="col-xl-9"
+                            className="col-xl-9 col-9"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
                               // padding: "0 30px",
@@ -1568,6 +1568,22 @@ function CampaignCreate() {
                             <div className="w-auto h-auto">
                               <div className="container h-100">
                                 <div className="row h-100 justify-content-center align-items-center">
+
+                                  <div class="heading bg-transparent border-bottom-0 pt-0">
+                                    <div class="content">
+                                      <h4>List of Leads</h4>
+                                      <p>You can see the list of leads assigned to this campaign.</p>
+                                    </div>
+                                    <div class="buttonGroup">
+                                      <button
+                                        className="panelButton static m-0 px-2"
+                                        onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
+                                      >
+                                        <span className="text">Add CSV</span>
+                                      </button>
+                                    </div>
+                                  </div>
+
                                   {/* <button
                                     onClick={() =>
                                       setAddNewCsvToggle(!addNewCsvToggle)
@@ -1576,68 +1592,79 @@ function CampaignCreate() {
                                     Add New CSV
                                   </button> */}
                                   {addNewCsvToggle && (
-                                    <div
-                                      className="card px-0 col-xl-5 shadow-none"
-                                      style={{
-                                        border: "1px solid var(--border-color)",
-                                      }}
-                                    >
-                                      <div className="header">
-                                        <h5 className="card-title fs14 border-bootm fw700">
-                                          Upload Documents
-                                        </h5>
-                                      </div>
-                                      <div className="card-body">
-                                        <div className="popup-border text-center p-2">
-                                          <input
-                                            type="file"
-                                            className="form-control-file d-none"
-                                            id="fileInput"
-                                            accept=".csv"
-                                            onChange={(e) => {
-                                              const file = e.target.files[0];
-                                              if (file) {
-                                                // Check if the file type is MP3
-
-                                                const fileName =
-                                                  file.name.replace(/ /g, "-");
-                                                const newFile = new File(
-                                                  [file],
-                                                  fileName,
-                                                  {
-                                                    type: file.type,
-                                                  }
-                                                );
-                                                setNewFile(newFile);
-                                                handleFileChange(e);
-                                              }
+                                    <div className="popup music">
+                                      <div className="container h-100">
+                                        <div className="row h-100 justify-content-center align-items-center">
+                                          <div
+                                            className="card px-0 col-5 shadow-none"
+                                            style={{
+                                              border: "1px solid var(--border-color)",
                                             }}
-                                          />
-                                          <label
-                                            htmlFor="fileInput"
-                                            className="d-block"
                                           >
-                                            <div className="test-user text-center">
-                                              <i
-                                                className="fa-solid fa-cloud-arrow-up"
-                                                style={{ fontSize: 30 }}
-                                              />
-                                              <p className="mb-0 mt-2 text-center">
-                                                Drag and Drop or{" "}
-                                                <span>Click on upload</span>
-                                              </p>
-                                              <span>
-                                                Supports formats : MP3, Max
-                                                Size: 2MB
-                                              </span>
+                                            <div className="header bg-transparent">
+                                              <div className="d-flex justify-content-between">
+                                                <h5 className="card-title fs14 border-bootm fw700">
+                                                  Upload Documents
+                                                </h5>
+                                                <button className="clearButton2 xl" onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}>
+                                                  <i className="fa-solid fa-xmark"></i>
+                                                </button>
+                                              </div>
                                             </div>
-                                          </label>
-                                          {fileName && (
-                                            <p className="mt-3 text-center">
-                                              Selected File:{" "}
-                                              <strong>{fileName}</strong>
-                                            </p>
-                                          )}
+                                            <div className="card-body">
+                                              <div className="popup-border text-center p-2">
+                                                <input
+                                                  type="file"
+                                                  className="form-control-file d-none"
+                                                  id="fileInput"
+                                                  accept=".csv"
+                                                  onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                      // Check if the file type is MP3
+
+                                                      const fileName =
+                                                        file.name.replace(/ /g, "-");
+                                                      const newFile = new File(
+                                                        [file],
+                                                        fileName,
+                                                        {
+                                                          type: file.type,
+                                                        }
+                                                      );
+                                                      setNewFile(newFile);
+                                                      handleFileChange(e);
+                                                    }
+                                                  }}
+                                                />
+                                                <label
+                                                  htmlFor="fileInput"
+                                                  className="d-block"
+                                                >
+                                                  <div className="test-user text-center">
+                                                    <i
+                                                      className="fa-solid fa-cloud-arrow-up"
+                                                      style={{ fontSize: 30 }}
+                                                    />
+                                                    <p className="mb-0 mt-2 text-center">
+                                                      Drag and Drop or{" "}
+                                                      <span>Click on upload</span>
+                                                    </p>
+                                                    <span>
+                                                      Supports formats : MP3, Max
+                                                      Size: 2MB
+                                                    </span>
+                                                  </div>
+                                                </label>
+                                                {fileName && (
+                                                  <p className="mt-3 text-center">
+                                                    Selected File:{" "}
+                                                    <strong>{fileName}</strong>
+                                                  </p>
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -1694,14 +1721,6 @@ function CampaignCreate() {
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="col">
-                            <button
-                              className="panelButton static m-0"
-                              onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
-                            >
-                              <span className="text">Add CSV</span>
-                            </button>
                           </div>
                         </>
                       )}

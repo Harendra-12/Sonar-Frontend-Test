@@ -119,7 +119,7 @@ function ClickToCallSetup() {
                         <div className="content">
                           <h4> Widget Configuration</h4>
                           <p>
-                            Setup your widget by choosing apropriate
+                            Setup your widget by choosing appropriate
                             configurations.
                           </p>
                         </div>
@@ -176,7 +176,7 @@ function ClickToCallSetup() {
                               </div>
                             </nav>
                             <div className="row">
-                              <div className="col-8">
+                              <div className=" col-xxl-8 col-xl-7 col-lg-7 col-sm-12">
                                 <div class="tab-content" id="nav-tabContent">
                                   <div
                                     class="tab-pane fade show active"
@@ -186,7 +186,7 @@ function ClickToCallSetup() {
                                     tabindex="0"
                                   >
                                     <form>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10  ">
                                         <div className="formLabel">
                                           <label htmlFor="">Company Logo</label>
                                           <label
@@ -220,7 +220,7 @@ function ClickToCallSetup() {
                                           />
                                         </div>
                                       </div>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10 ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Color Scheme
@@ -528,7 +528,7 @@ function ClickToCallSetup() {
                                           />
                                         </div>
                                       </div>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10 ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Company Name
@@ -547,7 +547,7 @@ function ClickToCallSetup() {
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10 ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Company Description
@@ -566,7 +566,7 @@ function ClickToCallSetup() {
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10 ">
                                         <div className="formLabel">
                                           <label htmlFor="">Usage</label>
                                           <label
@@ -607,7 +607,7 @@ function ClickToCallSetup() {
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xxl-8 col-xl-12">
+                                      <div className="formRow col-xxl-4 col-xl-10 ">
                                         <div className="formLabel">
                                           <label htmlFor="">Action</label>
                                           <label
@@ -655,7 +655,7 @@ function ClickToCallSetup() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-4">
+                              <div className="col-xxl-4 col-xl-5 col-lg-5 col-sm-12">
                                 <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
                                   {true ?
                                     <div className="clickToCallModule">
