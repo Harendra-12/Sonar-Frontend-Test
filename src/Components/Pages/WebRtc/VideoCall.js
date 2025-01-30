@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 import { toast } from "react-toastify";
-import { SessionState } from "sip.js";
+// import { SessionState } from "sip.js";
 
 function VideoCall({
   setHangupRefresh,
@@ -24,15 +25,12 @@ function VideoCall({
   const minimize = useSelector((state) => state.minimize || false); // Safeguard
   const remoteVideoRef = useRef(null);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
-  const screenShareRef = useRef(null);
 
   // Safeguard for sessionCallData properties
   const {
-    isHeld = false,
-    isMuted = false,
     hangup = () => {},
-    hold = () => {},
-    unhold = () => {},
+    // hold = () => {},
+    // unhold = () => {},
   } = sessionCallData;
 
   useEffect(() => {
@@ -44,31 +42,31 @@ function VideoCall({
   }, [callProgressId]);
 
   const includeVideo = true;
-  const canHold = session && session._state === SessionState.Established;
+  // const canHold = session && session._state === SessionState.Established;
 
-  const holdCall = (type) => {
-    if (canHold) {
-      if (type === "hold") {
-        hold();
-        dispatch({
-          type: "SET_SESSIONS",
-          sessions: globalSession.map((item) =>
-            item.id === session.id ? { ...item, state: "OnHold" } : item
-          ),
-        });
-      } else if (type === "unhold") {
-        unhold();
-        dispatch({
-          type: "SET_SESSIONS",
-          sessions: globalSession.map((item) =>
-            item.id === session.id ? { ...item, state: "Established" } : item
-          ),
-        });
-      }
-    } else {
-      toast.warn("Call has not been established");
-    }
-  };
+  // const holdCall = (type) => {
+  //   if (canHold) {
+  //     if (type === "hold") {
+  //       hold();
+  //       dispatch({
+  //         type: "SET_SESSIONS",
+  //         sessions: globalSession.map((item) =>
+  //           item.id === session.id ? { ...item, state: "OnHold" } : item
+  //         ),
+  //       });
+  //     } else if (type === "unhold") {
+  //       unhold();
+  //       dispatch({
+  //         type: "SET_SESSIONS",
+  //         sessions: globalSession.map((item) =>
+  //           item.id === session.id ? { ...item, state: "Established" } : item
+  //         ),
+  //       });
+  //     }
+  //   } else {
+  //     toast.warn("Call has not been established");
+  //   }
+  // };
 
   const getLocalStream = async () => {
     try {
