@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
-const CallCenter = () => {
+const CallCenter = ({initial}) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
@@ -85,7 +85,7 @@ const CallCenter = () => {
       </style>
       {/* <SideNavbarApp /> */}
       <main
-        className="mainContentApp"
+        className={initial?"":"mainContentApp"}
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
@@ -95,7 +95,7 @@ const CallCenter = () => {
       >
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12 px-0">
+            <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
@@ -166,10 +166,11 @@ const CallCenter = () => {
                 </div>
               </div>
             </div>
+            <>
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
-                  <div className="col-12">
+                  <div className={!initial ? "col-12" : "col-12 d-none"}>
                     <div className="heading">
                       <div className="content">
                         <h4>
@@ -226,6 +227,7 @@ const CallCenter = () => {
                 </div>
               </div>
             </div>
+            </>
           </div>
         </div>
       </main>

@@ -59,6 +59,7 @@ const WebrtcWrapper = () => {
   const dummySession = useSelector((state) => state.dummySession);
   const [pin, setPin] = useState("");
   const agentDeposition = useSelector((state) => state.agentDeposition);
+  const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -494,6 +495,43 @@ const WebrtcWrapper = () => {
           ""
         )}
       </SIPProvider>
+      {initailCallCenterPopup &&
+        <div className="popup">
+          <div className="d-flex justify-content-center align-items-center h-100">
+            <div className="overviewTableWrapper col-xl-6">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content bg-transparent shadow-none p-0 d-flex justify-content-between align-items-center w-100">
+                        <div>
+                          <h4>
+                            Please Login!
+                          </h4>
+                          <p>Please Login to your Designated Call Center</p>
+                        </div>
+                        <button
+                          class="clearButton2 xl"
+                          onClick={() => setInitailCallCenterPopup(false)}
+                        >
+                          <i
+                            class={"fa-regular fa-xmark"}
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-100">
+                    <CallCenter initial={true} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      }
+
     </>
   );
 };
