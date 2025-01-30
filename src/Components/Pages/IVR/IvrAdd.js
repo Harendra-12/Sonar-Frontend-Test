@@ -488,7 +488,7 @@ function IvrAdd() {
                       <div className="formLabel">
                         <label htmlFor="">Timeout</label>
                         <label htmlFor="mail_port" className="formItemDesc">
-                          Enter the number of miliseconds to wait after playing
+                          Enter the number of milliseconds to wait after playing
                           the greeting or the confirm macro.
                         </label>
                       </div>

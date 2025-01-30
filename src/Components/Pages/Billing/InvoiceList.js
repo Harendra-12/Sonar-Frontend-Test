@@ -88,7 +88,7 @@ function InvoiceList() {
                                                 Package Purchase
                                             </td>
                                             <td>
-                                                <label className="tableLabel success">Succes</label>
+                                                <label className="tableLabel success">Success</label>
                                             </td>
                                             <td>
                                                 <i className="fa-duotone fa-download text-success"></i>

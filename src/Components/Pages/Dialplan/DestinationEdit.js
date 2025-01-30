@@ -290,7 +290,7 @@ function DestinationEdit() {
               <div className="col-xl-9 my-auto">
                 {/* <h4 className="my-auto">Destination Add</h4> */}
                 <p className="pt-2 mt-1 mb-0">
-                  Inbound destinations are the DID/DDI, DNIS or Alias for
+                  Inbound destinations are the DID/DDI, DINS or Alias for
                   inbound calls.
                 </p>
               </div>
