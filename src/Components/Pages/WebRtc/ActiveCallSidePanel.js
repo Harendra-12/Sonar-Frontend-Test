@@ -19,12 +19,8 @@ function ActiveCallSidePanel({
   globalSession,
 }) {
   const dispatch = useDispatch();
-  // const globalSession = useSelector((state) => state.sessions);
-
-
   const callProgressId = useSelector((state) => state.callProgressId);
   const previewDialer = useSelector((state) => state.previewDialer);
-
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
   const audioRef = useRef(null);

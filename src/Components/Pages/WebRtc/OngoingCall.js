@@ -1,26 +1,25 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall, useSIPProvider } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import {
   SessionState,
   UserAgent,
-  Session,
   Inviter,
-  InviterOptions,
-  UserAgentOptions,
 } from "sip.js";
 import { toast } from "react-toastify";
-import { Dialog, UserAgentCore } from "sip.js/lib/core";
-import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import Tippy from "@tippyjs/react";
 
 function OngoingCall({
   setHangupRefresh,
   hangupRefresh,
   setSelectedModule,
-  setactivePage,
-  // globalSession,
 }) {
+  const {
+    sessions
+  } = useSIPProvider();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -36,8 +35,8 @@ function OngoingCall({
     (state) => state.callProgressDestination
   );
   const [showTranferableList, setShowTranferableList] = useState(false);
+  const [showActiveSessions, setShowActiveSessions] = useState(false);
   const {
-    isHeld,
     isMuted,
     hangup,
     hold,
@@ -47,18 +46,21 @@ function OngoingCall({
     unmute,
     timer,
   } = useSessionCall(callProgressId);
-  console.log(session);
+  const canHold = session && session._state === SessionState.Established;
+  const canMute = session && session._state === SessionState.Established;
   const currentSession = globalSession.find(
     (session) => session.id === callProgressId
   );
-  // Handle dialpad press and send DTMF
   const isOnHeld = currentSession?.state === "OnHold";
+
+  // Listen for parking a call
   useEffect(() => {
     if (parkingNumber != "") {
       handleDigitPress(parkingNumber);
     }
   }, [parkingNumber]);
 
+  // Handle dialpad press and send DTMF
   const handleDigitPress = (digit) => {
     if (session) {
       const dtmfSender = session.sessionDescriptionHandler.peerConnection
@@ -73,8 +75,8 @@ function OngoingCall({
       console.error("No active session found");
     }
   };
-  const canHold = session && session._state === SessionState.Established;
-  const canMute = session && session._state === SessionState.Established;
+
+  // Logic to toggle hold and unhold
   const holdCall = (type) => {
     if (canHold) {
       if (type === "hold") {
@@ -99,6 +101,7 @@ function OngoingCall({
     }
   };
 
+  // Logic to toggle mute and unmute
   const muteCall = (type) => {
     if (canMute) {
       if (type === "mute") {
@@ -123,6 +126,7 @@ function OngoingCall({
     }
   };
 
+  // Handle attended transfer means we will transfer only to the number which is currently active with the call
   const handleAttendedTransfer = async (e) => {
     e.preventDefault();
     const destNumber = e.target.value;
@@ -178,80 +182,8 @@ function OngoingCall({
       toast.error("Invalid destination number");
     }
   };
-  console.log("sessionssssssssss", globalSession);
 
-  console.log(destNumber);
-  // const handleAttendedBlindTransfer = async (e) => {
-  //   e.preventDefault();
-  //   // console.log(e.target.value);
-  //   const destNumber = attendedTransferNumber;
-  //   if (destNumber.length > 3) {
-  //     const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
-
-  //     if (session.state !== "Established") {
-  //       toast.warn("Cannot transfer call: session is not established");
-  //       return;
-  //     }
-
-  //     try {
-  //       // Step 1: Place the current call on hold
-  //       const dialog = session.dialog;
-  //       await session.invite({
-  //         requestDelegate: {
-  //           onAccept: () => {
-  //             console.log("Current call held successfully.");
-  //           },
-  //           onReject: () => {
-  //             toast.error("Failed to hold the call.");
-  //             throw new Error("Failed to hold the call.");
-  //           },
-  //         },
-  //       });
-
-  //       // Step 2: Initiate a new call to the transfer target
-  //       const targetSession = session.invite(transferTo, {
-  //         extraHeaders: [
-  //           `Referred-By: sip:${extension}@${account.domain.domain_name}`,
-  //         ],
-  //         requestDelegate: {
-  //           onAccept: () => {
-  //             console.log("Target party answered the call.");
-  //           },
-  //           onReject: () => {
-  //             toast.error("Failed to connect to the target.");
-  //             throw new Error("Failed to connect to the target.");
-  //           },
-  //         },
-  //       });
-
-  //       // Step 3: Wait for the target party to answer, then bridge the calls
-  //       targetSession.delegate = {
-  //         onInvite: () => {
-  //           console.log("Bridging the calls...");
-  //           try {
-  //             dialog.refer(targetSession.dialog, {
-  //               extraHeaders: [
-  //                 `Referred-By: sip:${extension}@${account.domain.domain_name}`,
-  //               ],
-  //             });
-
-  //             console.log("Attended transfer initiated.");
-  //             toast.success("Call successfully transferred.");
-  //           } catch (error) {
-  //             toast.error("Failed to bridge the calls.");
-  //             console.error("Error during attended transfer:", error);
-  //           }
-  //         },
-  //       };
-  //     } catch (error) {
-  //       console.error("Error during attended transfer:", error);
-  //       toast.error("Error during attended transfer.");
-  //     }
-  //   } else {
-  //     toast.error("Invalid destination number");
-  //   }
-  // };
-
+  // Handle blind trasfer means we will transfer call to any number without user interaction
   const handleAttendedBlindTransfer = async (e) => {
     e.preventDefault();
     if (attendedTransferNumber.length > 3) {
@@ -301,6 +233,136 @@ function OngoingCall({
       toast.error("Invalid destination number");
     }
   };
+
+  // Function to merge two sessions
+  const handleMergeCall = async (id) => {
+    console.log("handleMergeCall2 Started", callProgressId, id);
+    const sessionA = sessions[callProgressId]; 
+    const sessionB = sessions[id]; 
+
+    // Unhold the previous session which was by default goes on hold if we change the line 
+    var sessionDescriptionHandlerOptions = sessionB.sessionDescriptionHandlerOptionsReInvite;
+    sessionDescriptionHandlerOptions.hold = false;
+    sessionB.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+    // Setting option to retreive the audio track from the previous session
+    var options = {
+      requestDelegate: {
+        onAccept: function () {
+          if (sessionB && sessionB.sessionDescriptionHandler && sessionB.sessionDescriptionHandler.peerConnection) {
+            var pc = sessionB.sessionDescriptionHandler.peerConnection;
+            // Restore all the inbound streams
+            pc.getReceivers().forEach(function (RTCRtpReceiver) {
+              if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
+            });
+            // Restorte all the outbound streams
+            pc.getSenders().forEach(function (RTCRtpSender) {
+              // Unmute Audio
+              if (RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
+                if (RTCRtpSender.track.IsMixedTrack == true) {
+                  if (sessionB.data.AudioSourceTrack && sessionB.data.AudioSourceTrack.kind == "audio") {
+                    console.log("Unmuting Mixed Audio Track : " + sessionB.data.AudioSourceTrack.label);
+                    sessionB.data.AudioSourceTrack.enabled = true;
+                  }
+                }
+                console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
+                RTCRtpSender.track.enabled = true;
+              }
+              else if (RTCRtpSender.track && RTCRtpSender.track.kind == "video") {
+                RTCRtpSender.track.enabled = true;
+              }
+            });
+          }
+          sessionB.isOnHold = false;
+        },
+        onReject: function () {
+          sessionB.isOnHold = true;
+        }
+      }
+    };
+
+    // Send re-INVITE to resume the call
+    sessionB.invite(options)
+      .then(() =>  dispatch({
+        // If unhold then manage its status globally
+        type: "SET_SESSIONS",
+        sessions: globalSession.map((item) =>
+          item.id === id ? { ...item, state: "Established" } : item
+        ),
+      }))
+      .catch((error) => console.error("Error sending unhold request:", error));
+    if (!sessionA || !sessionB) {
+      console.error("Sessions are not found");
+      return;
+    }
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let remoteStreamA = new MediaStream();
+    let remoteStreamB = new MediaStream();
+
+    // Sending the mixed audio stream for the call to merge
+    function sendMixedStreamToSession(session, mixedStream) {
+      if (!mixedStream || mixedStream.getAudioTracks().length === 0) {
+        console.error("No valid mixed stream to send.");
+        return;
+      }
+      const mixedAudioTrack = mixedStream.getAudioTracks()[0];
+      session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
+        if (sender.track && sender.track.kind === "audio") {
+          console.log(`Replacing audio track in Session ${session.id}`);
+          sender.replaceTrack(mixedAudioTrack);
+        }
+      });
+      setShowActiveSessions(false);
+    }
+
+    // Createing mixed audio stream for the call
+    function mixAudioStreams(myAudioStream, excludeRemoteStream) {
+      if (!myAudioStream) {
+        console.error("Missing local audio stream.");
+        return;
+      }
+      console.log("Mixing audio streams (excluding own voice)...");
+      // Create sources for the streams
+      const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
+      const sourceRemote = audioContext.createMediaStreamSource(excludeRemoteStream);
+      // Create a destination for mixed audio
+      const destination = audioContext.createMediaStreamDestination();
+      // Connect only the required sources (EXCLUDE remote user’s own audio)
+      sourceMyAudio.connect(destination); // Add my voice
+      sourceRemote.connect(destination);  // Add the remote participant's voice
+      console.log("Mixed stream created:", destination.stream);
+      return destination.stream;
+    }
+
+    try {
+      console.log("Requesting user audio...");
+      const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Checking existing audio tracks...");
+      sessionA.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
+        if (receiver.track.kind === "audio") {
+          remoteStreamA.addTrack(receiver.track);
+        }
+      });
+      sessionB.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
+        if (receiver.track.kind === "audio") {
+          remoteStreamB.addTrack(receiver.track);
+        }
+      });
+      if (remoteStreamA.getTracks().length > 0 && remoteStreamB.getTracks().length > 0) {
+        // Send mixed audio to Session A (excluding A's own voice)
+        const mixedStreamA = mixAudioStreams(myAudioStream, remoteStreamB);
+        sendMixedStreamToSession(sessionA, mixedStreamA);
+        // Send mixed audio to Session B (excluding B's own voice)
+        const mixedStreamB = mixAudioStreams(myAudioStream, remoteStreamA);
+        sendMixedStreamToSession(sessionB, mixedStreamB);
+      } else {
+        console.log("Waiting for remote audio tracks...");
+      }
+    } catch (err) {
+      console.error("Error accessing media devices:", err);
+    }
+
+  };
+
   return (
     <>
       <div className="audioCall position-relative">
@@ -344,7 +406,6 @@ function OngoingCall({
                 <select
                   defaultValue={""}
                   className="formItem"
-                  // onChange={(e) => setParkingNumber(e.target.value)}
                   onChange={(e) => handleAttendedTransfer(e)}
                 >
                   <option className="" disabled value={""}>
@@ -356,6 +417,30 @@ function OngoingCall({
                     return (
                       !isCurrent && (
                         <option className="" value={item.destination}>
+                          {item.destination}
+                        </option>
+                      )
+                    );
+                  })}
+                </select>
+              </div>
+            )}
+            {showActiveSessions && (
+              <div className="parkList">
+                <select
+                  defaultValue={""}
+                  className="formItem"
+                  onChange={(e) => handleMergeCall(e.target.value)}
+                >
+                  <option className="" disabled value={""}>
+                    Select to Merge call
+                  </option>
+
+                  {globalSession.map((item, index) => {
+                    const isCurrent = item.id === session.id;
+                    return (
+                      !isCurrent && (
+                        <option key={index} className="" value={item.id}>
                           {item.destination}
                         </option>
                       )
@@ -401,91 +486,124 @@ function OngoingCall({
                 </select>
               </div>
             )}
-            <button
-              onClick={
-                isMuted ? () => muteCall("unmute") : () => muteCall("mute")
-              }
-              className={
-                isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
-              }
-              effect="ripple"
-            >
-              <i
-                className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
-              />
-            </button>
-            <button
-              onClick={() => {
-                setHideDialpad(!hideDialpad);
-              }}
-              className={
-                hideDialpad
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-              }
-              effect="ripple"
-            >
-              <i className="fa-solid fa-grid" />
-            </button>
+            <Tippy content="Mute Microphone">
+              <button
+                onClick={
+                  isMuted ? () => muteCall("unmute") : () => muteCall("mute")
+                }
+                className={
+                  isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                }
+                effect="ripple"
+              >
+                <i
+                  className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
+                />
+              </button>
+            </Tippy>
+            <Tippy content="Merge Call">
+              <button
+              onClick={() => {setShowActiveSessions(!showActiveSessions);setAttendShow(false);setShowTranferableList(false);setShowParkList(false);}}
+              className={` ${showActiveSessions
+                ? "appPanelButtonCaller active"
+                : "appPanelButtonCaller"
+                } `}
+                effect="ripple"
+              >
+                <i class="fa-solid fa-merge"></i>
+              </button>
+            </Tippy>
+            <Tippy content="Toggle Dialpad">
+              <button
+                onClick={() => {
+                  setHideDialpad(!hideDialpad);
+                }}
+                className={
+                  hideDialpad
+                    ? "appPanelButtonCaller active"
+                    : "appPanelButtonCaller"
+                }
+                effect="ripple"
+              >
+                <i className="fa-solid fa-grid" />
+              </button>
+            </Tippy>
 
-            <button
-              className="appPanelButtonCaller"
-              effect="ripple"
-              onClick={() => setShowTranferableList(!showTranferableList)}
-              // onClick={() => featureUnderdevelopment()}
-            >
-              {/* <i className="fa-solid fa-user-plus" /> */}
-              <i class="fa fa-exchange" aria-hidden="true"></i>
-            </button>
-            <button
-              className={
-                attendShow
+            <Tippy content="Attendant Transfer">
+              <button
+                className={` ${showTranferableList
                   ? "appPanelButtonCaller active"
                   : "appPanelButtonCaller"
-              }
-              effect="ripple"
-              onClick={() => {
-                setAttendShow(!attendShow);
-              }}
-            >
-              <i className="fa-solid fa-phone-arrow-up-right" />
-            </button>
-            <button
-              className={` ${
-                showParkList
+                  } `}
+                effect="ripple"
+                onClick={() => {setShowTranferableList(!showTranferableList);setAttendShow(false);setShowActiveSessions(false);setShowParkList(false);}}
+              >
+                {/* <i className="fa-solid fa-user-plus" /> */}
+                <i class="fa fa-exchange" aria-hidden="true"></i>
+              </button>
+            </Tippy>
+
+            <Tippy content="Blind Transfer">
+              <button
+                className={` ${attendShow
                   ? "appPanelButtonCaller active"
                   : "appPanelButtonCaller"
-              } `}
-              effect="ripple"
-              onClick={() => setShowParkList(!showParkList)}
-            >
-              P
-            </button>
-            <button
-              // onClick={isHeld ? unhold : hold}
-              onClick={
-                isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
-              }
-              className={
-                isOnHeld
+                  } `}
+                effect="ripple"
+                onClick={() => {
+                  setAttendShow(!attendShow);
+                  setShowTranferableList(false);
+                  setShowActiveSessions(false);
+                  setShowParkList(false);
+                }}
+              >
+                <i className="fa-solid fa-phone-arrow-up-right" />
+              </button>
+            </Tippy>
+
+            <Tippy content="Park Call">
+              <button
+                className={` ${showParkList
                   ? "appPanelButtonCaller active"
                   : "appPanelButtonCaller"
-              }
-              effect="ripple"
-            >
-              <i className="fa-solid fa-pause" />
-            </button>
-            <button
-              onClick={() => {
-                hangup();
-                setHangupRefresh(hangupRefresh + 1);
-                setSelectedModule("callDetails");
-              }}
-              className="appPanelButtonCaller bg-danger"
-              effect="ripple"
-            >
-              <i className="fa-solid fa-phone-hangup text-white" />
-            </button>
+                  } `}
+                effect="ripple"
+                onClick={() => {setShowParkList(!showParkList);setAttendShow(false);setShowActiveSessions(false);setShowTranferableList(false);}}
+              >
+                P
+              </button>
+            </Tippy>
+
+            <Tippy content="Hold Call">
+              <button
+                // onClick={isHeld ? unhold : hold}
+                onClick={
+                  isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                }
+                className={
+                  isOnHeld
+                    ? "appPanelButtonCaller active"
+                    : "appPanelButtonCaller"
+                }
+                effect="ripple"
+              >
+                <i className="fa-solid fa-pause" />
+              </button>
+            </Tippy>
+
+            <Tippy content="Hang Up">
+              <button
+                onClick={() => {
+                  hangup();
+                  setHangupRefresh(hangupRefresh + 1);
+                  setSelectedModule("callDetails");
+                }}
+                className="appPanelButtonCaller bg-danger"
+                effect="ripple"
+              >
+                <i className="fa-solid fa-phone-hangup text-white" />
+              </button>
+            </Tippy>
           </div>
         </div>
         {hideDialpad ? (
@@ -517,8 +635,8 @@ function OngoingCall({
                       className="dialerInput"
                       disabled={true}
                       value={destNumber}
-                      // onChange={(e) => setDestNumber(e.target.value)}
-                      // onChange={handleInputChange}
+                    // onChange={(e) => setDestNumber(e.target.value)}
+                    // onChange={handleInputChange}
                     />
                   </div>
 
@@ -835,7 +953,7 @@ function OngoingCall({
                         className="callButton bg-primary"
                         effect="ripple"
                         onClick={handleAttendedBlindTransfer}
-                        // onClick={() => setShowTranferableList(true)}
+                      // onClick={() => setShowTranferableList(true)}
                       >
                         <i className="fa-solid fa-phone-arrow-up-right" />
                       </button>
