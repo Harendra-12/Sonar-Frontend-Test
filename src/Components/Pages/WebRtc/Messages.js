@@ -1058,14 +1058,14 @@ function Messages({
                               Logout
                             </div>
                           </li>
-                          <li onClick={() => navigate("/my-profile")}>
+                          {/* <li onClick={() => navigate("/my-profile")}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
                             </div>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>
