@@ -48,6 +48,8 @@ const ExtensionsEdit = ({ page }) => {
     followMeTimeOut: 20,
     followMePrompt: "Prompt",
   });
+
+  // React Hook Form for handling form in efficient way
   const {
     register,
     watch,
@@ -64,6 +66,7 @@ const ExtensionsEdit = ({ page }) => {
   });
 
 
+  // Getting extension data and manage its state locally 
   useEffect(() => {
     setLoading(true);
     if (account === null) {
@@ -188,6 +191,7 @@ const ExtensionsEdit = ({ page }) => {
     }
   }, [account, navigate, value]);
 
+  // Getting all music data whose type is hold
   useEffect(() => {
     if (musicRefresh > 0) {
       if (account === null) {
@@ -208,19 +212,24 @@ const ExtensionsEdit = ({ page }) => {
     }
   }, [musicRefresh]);
 
+  // Manualy handle state of onbusyto if on busy then where to route call
   const actionListValue = (value) => {
     setValue("onbusyTo", value[0]);
     clearErrors("onbusyTo", null);
   };
-  console.log(errors);
+
+  // Manualy handle state of noanswerto if no answer then where to route call
   const actionListValue1 = (value) => {
     setValue("noanswerTo", value[0]);
     clearErrors("noanswerTo", null);
   };
+  // Manualy handle state of notregisterto if not registered then where to route call
   const actionListValue2 = (value) => {
     setValue("notregisteredTo", value[0]);
     clearErrors("notregisteredTo", null);
   };
+
+  // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
   const handleFormSubmit = handleSubmit(async (data, title) => {
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
@@ -425,14 +434,14 @@ const ExtensionsEdit = ({ page }) => {
     }
   });
   const forwardStatus = watch("forward", "disabled");
- 
-  console.log(watch());
 
+  // If no moh found then we manually add new one
   const handleAddMusic = () => {
     setValue("moh", "");
     setShowMusic(true);
   };
 
+  // Manually manage forward to state
   const forwardToValue = (value) => {
     setValue("forward_to", value[0]);
   };

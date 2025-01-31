@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
@@ -31,17 +33,12 @@ const RingGroupEdit = () => {
   const account = useSelector((state) => state.account);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const [extensions, setExtensions] = useState();
-  const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
   const queryParams = new URLSearchParams(useLocation().search);
   const value = queryParams.get("id");
   const [successMessage, setSuccessMessage] = useState("");
   const [toastAfterSaveCounter, settoastAfterSaveCounter] = useState(0);
   const [prevDestinations, setprevDestinations] = useState([]);
-  const [destinationList, setDestinationList] = useState(false);
-  const [destinationId, setDestinationId] = useState();
-  const [filterExtension, setFilterExtension] = useState();
-  const [allUser, setAllUser] = useState();
   const [getAllDataRefresh, setGetAllDataRefresh] = useState(0);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const allUserArr = useSelector((state) => state.allUser);
@@ -57,10 +54,8 @@ const RingGroupEdit = () => {
     useState(false);
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [selectAll, setSelectAll] = useState(false);
-
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
@@ -68,6 +63,7 @@ const RingGroupEdit = () => {
     timeOut: "0",
     status: "active",
   });
+   // Using useForm hook to manage data and validation we are setting some default value in it as well
   const {
     register,
     watch,
@@ -88,12 +84,10 @@ const RingGroupEdit = () => {
   // Handle destination
   const [destination, setDestination] = useState([
     {
-      // id: 1,
       id: Math.floor(Math.random() * 10000),
       destination: "",
       delay: 0,
       timeOut: "30",
-      // prompt: "",
       status: "active",
     },
   ]);
@@ -104,9 +98,9 @@ const RingGroupEdit = () => {
       setSuccessMessage(""); // Clear success message after showing it
     }
   }, [toastAfterSaveCounter]);
+
+  // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
-    // async function getData() {
-    // const userData = await generalGetFunction("/user/all");
     if (allUserRefresh > 0) {
       if (allUserArr.data.length === 0) {
         toast.error("Please create user first");
@@ -126,29 +120,18 @@ const RingGroupEdit = () => {
         allUserRefresh: allUserRefresh + 1,
       });
     }
-    // }
-    // getData();
   }, [allUserArr]);
+
+  // Checking validation for the extension if extension not present then show message please create extension first and getting data of selcetdc ring group
   useEffect(() => {
     if (account && account.id) {
       setLoading(true);
       async function getData() {
         const ringData = await generalGetFunction(`/ringgroup/${value}`);
-        // const apiData = await generalGetFunction(
-        //   `/extension/search?account=${account.account_id}`
-        // );
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-        // const ringBack = await generalGetFunction("/sound/all?type=ringback");
-
-        // if (apiData.status) {
-        //   setExtensions(apiData.data);
-        // } else {
-        //   navigate("/");
-        // }
         if (apidataUser?.status) {
-          setUsers(apidataUser.data);
         } else {
           navigate("/");
         }
@@ -211,6 +194,7 @@ const RingGroupEdit = () => {
     }
   }, [account, navigate, value, getAllDataRefresh]);
 
+   // Get all ringbacks music for dropdown
   useEffect(() => {
     const getRingBackData = async () => {
       setLoading(true);
@@ -230,14 +214,13 @@ const RingGroupEdit = () => {
     getRingBackData();
   }, [musicRefresh, getAllDataRefresh]);
 
-  // Get all users with valid extension
+ // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
     if (allUserRefresh > 0) {
       const filterUser = allUserArr.data.filter(
         (item) => item.extension_id !== null
       );
       if (filterUser.length > 0) {
-        setAllUser(filterUser);
       } else {
         toast.error("No user found with assign extension");
       }
@@ -258,35 +241,23 @@ const RingGroupEdit = () => {
     }
   }, [allUserArr, extensions]);
 
-  // useEffect(() => {
-  //   if (extensionRefresh > 1) {
-  //     setExtension(extensionArr);
-  //   } else {
-  //     dispatch({
-  //       type: "SET_EXTENSIONREFRESH",
-  //       extensionRefresh: extensionRefresh + 1,
-  //     });
-  //   }
-  // }, [extensionArr]);
+  // Function to handle click outside to close popup
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+    };
 
-  // const extensionOptions = extension.map((item) => ({
-  //   value: item.extension,
-  //   label: item.extension,
-  // }));
+    document.addEventListener("click", handleClickOutside);
 
-  // const handleExtensionChange = (selectedOption) => {
-  //   setGroup((prevState) => ({
-  //     ...prevState,
-  //     extension: selectedOption ? selectedOption.value : "",
-  //   }));
-  // };
-
-  const handleExtensionChange = (selectedOption) => {
-    setValue("extension", selectedOption.value);
-  };
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+  // Function to handle changes in dropdown for timeout destination
   const actionListValue = (value) => {
     setValue("timeout_destination", value[0]);
   };
+
+  // In bulk add option search funcnality to rearrage the data 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -300,15 +271,6 @@ const RingGroupEdit = () => {
       console.log("Invalid characters detected");
       return;
     }
-
-    if (extensions && name === "destination") {
-      setDestinationList(true);
-      setFilterExtension(
-        extensions.filter((item) => item.extension.includes(value))
-      );
-    }
-
-    setDestinationId(index);
     const newDestination = [...destination];
     newDestination[index][name] = value;
     setDestination(newDestination);
@@ -335,10 +297,8 @@ const RingGroupEdit = () => {
       });
     }
   };
-  if (destination.length === 0) {
-    addNewDestination();
-  }
 
+  // Validating agent for listing
   const validateAgents = () => {
     const allFieldsFilled = destination.every(
       (item) => item.destination.trim() !== ""
@@ -346,19 +306,14 @@ const RingGroupEdit = () => {
     );
     return allFieldsFilled;
   };
+
+    // Checlking unique agents for listing
   const validateUniqueAgents = () => {
     const agentValues = destination.map((item) => item.destination);
     const uniqueValues = [...new Set(agentValues)];
     return agentValues.length === uniqueValues.length;
   };
 
-  // Handle list click
-  const handlelistClick = (index, value) => {
-    const newDestination = [...destination];
-    newDestination[index]["destination"] = value;
-    setDestination(newDestination);
-  };
-  console.log(watch());
   // Function to add a new destination field
   const addNewDestination = () => {
     setDestination([
@@ -375,6 +330,9 @@ const RingGroupEdit = () => {
     ]);
   };
 
+  if (destination.length === 0) {
+    addNewDestination();
+  }
   // Function to delete a destination
 
   //check that to remove student from ui or to call api
@@ -385,6 +343,8 @@ const RingGroupEdit = () => {
     if (result.length > 0) return true;
     return false;
   };
+
+    // Function to delete a destination
   async function deleteDestination(id) {
     if (checkPrevDestination(id)) {
       setLoading(true);
@@ -408,6 +368,7 @@ const RingGroupEdit = () => {
     }
   }
 
+    // Function to validate destination 
   const destinationValidation = () => {
     const allFilled = destination.every(
       (item) => item.destination.trim() !== ""
@@ -416,6 +377,7 @@ const RingGroupEdit = () => {
     return allFilled;
   };
 
+  // Function to create a new ring group by validating form
   const handleFormSubmit = handleSubmit(async (data) => {
     if (!destinationValidation()) {
       setError("destinations", {
@@ -477,31 +439,17 @@ const RingGroupEdit = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
-      // const errorMessage = Object.keys(apiData.errors);
-      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   });
 
-  const divRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (divRef.current && !divRef.current.contains(event.target)) {
-        setDestinationList(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
+  // Open popup for upload new music
   const handleAddMusic = () => {
     setValue("ring_back", "");
     setShowMusic(true);
   };
+
+    // Validating the string
   function truncateString(str) {
     if (str.length > 8) {
       return str.substring(0, 8) + "...";
@@ -509,6 +457,7 @@ const RingGroupEdit = () => {
     return str; // Return the string as is if it's 8 characters or less
   }
 
+   // Handle chek box for bulk edit 
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (prevSelected.some((agent) => agent.name === item.name)) {
@@ -520,6 +469,8 @@ const RingGroupEdit = () => {
       }
     });
   };
+
+   // Filter data based on search those wo match will comes first
   const filteredUsers = user?.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -527,12 +478,16 @@ const RingGroupEdit = () => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase())
   );
+
+    // The user which is not assign 
   const availableUsers = filteredUsers?.filter(
     (user) =>
       !destination.some(
         (agent) => user.extension.extension == agent.destination
       )
   );
+
+    // Logic to upload bulk destination
   const handleBulkDestinationUpload = (selectedDestinations) => {
     if (destination.length === 1 && destination[0].destination === "") {
       const newDestinations = selectedDestinations.map(
@@ -572,6 +527,8 @@ const RingGroupEdit = () => {
     setBulkUploadSelectedAgents([]);
     setSelectAll(false);
   };
+
+    // Select all for bulk edit
   const handleSelectAll = () => {
     const newSelectAllState = !selectAll; // Toggle Select All state
     setSelectAll(newSelectAllState);
@@ -601,6 +558,7 @@ const RingGroupEdit = () => {
     }
   };
 
+  // Logic to share data among all selected agents
   const handleApplyEditSettings = (data) => {
     const updatedAgents = selectedAgentToEdit.map((item) => {
       return {
@@ -623,6 +581,8 @@ const RingGroupEdit = () => {
     setDestination(mergedAgents);
     setBulkEditPopup(false);
   };
+
+  // Only selected user will be edited not all users
   const handleSelectUserToEdit = (item) => {
     setSelectedAgentToEdit((prevSelected) => {
       if (prevSelected.some((agent) => agent.id == item.id)) {
@@ -637,55 +597,6 @@ const RingGroupEdit = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Groups" />
-          {/* <div id="subPageHeader">
-            <div className="col-xl-9">
-              <p className="mb-0">
-                A ring group is a set of destinations that can be called with a
-                ring strategy.
-              </p>
-            </div>
-            <div className="col-xl-3 ps-2">
-              <div className="d-flex align-items-center justify-content-end">
-                <div className="d-flex align-items-center">
-                  <div className="formLabel py-0 me-2">
-                    <label htmlFor="selectFormRow">Enabled</label>
-                  </div>
-                  <div className="my-auto position-relative mx-1">
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={watch().status}
-                        {...register("status")}
-                        id="showAllCheck"
-                      />
-                      <span className="slider round" />
-                    </label>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    navigate(-1);
-                    backToTop();
-                  }}
-                  type="button"
-                  effect="ripple"
-                  className="panelButton gray"
-                >
-                  <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                </button>
-                <button
-                  type="button"
-                  effect="ripple"
-                  className="panelButton"
-                  onClick={handleFormSubmit}
-                >
-                  <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                </button>
-              </div>
-            </div>
-          </div> */}
         </div>
         <>
           {loading ? (
@@ -808,67 +719,6 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Extension</label>
-                </div>
-                <div className="col-12">
-                  <Controller
-                    name="extension"
-                    control={control}
-                    defaultValue=""
-                    rules={{ ...requiredValidator, ...numberValidator }}
-                    render={({ field: { onChange, value, ...field } }) => {
-                      const options = allUser
-                        ? allUser.map((item) => ({
-                            value: item.extension.extension,
-                            label: `${item.name} (${item.extension.extension})`,
-                          }))
-                        : [];
-                      const selectedOption =
-                        options.find((option) => option.value === value) ||
-                        null;
-                      return (
-                        <Select
-                          {...field}
-                          value={selectedOption}
-                          onChange={(selectedOption) => {
-                            onChange(selectedOption.value);
-                            handleExtensionChange(selectedOption);
-                          }}
-                          options={options}
-                          styles={customStyles}
-                        />
-                      );
-                    }}
-                  />
-                  {errors.extension && (
-                    <ErrorMessage text={errors.extension.message} />
-                  )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the extension number.
-                  </label>
-                </div>
-              </div> */}
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Follow Me</label>
-                </div>
-                <div className="col-12">
-                  <select
-                    className="formItem"
-                    {...register("followme")}
-                    id="selectFormRow"
-                  >
-                    <option value={true}>True</option>
-                    <option value={false}>False</option>
-                  </select>
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Choose to follow a ring group destination's follow me.
-                  </label>
-                </div>
-              </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Strategy</label>
@@ -890,52 +740,6 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Timeout Destination</label>
-                </div>
-                <div className="col-12">
-                  <select
-                    className="formItem"
-                    {...register("timeout_destination", {
-                      ...requiredValidator,
-                    })}
-                    id="selectFormRow"
-                  >
-                    <option value=""></option>
-                    {extensions &&
-                      extensions.map((item) => {
-                        return (
-                          <option value={item.extension}>
-                            {item.extension}
-                          </option>
-                        );
-                      })}
-                  </select>{" "}
-                  {errors.timeout_destination && (
-                    <ErrorMessage text={errors.timeout_destination.message} />
-                  )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the timeout destination for this ring group.
-                  </label>
-                </div>
-              </div> */}
-                    {/* <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Timeout Destination</label>
-                        <label htmlFor="data" className="formItemDesc">
-                          Select the timeout destination for this ring group.
-                        </label>
-                      </div>
-                      <div className="col-6">
-                        <ActionList
-                          title={null}
-                          label={null}
-                          getDropdownValue={actionListValue}
-                          value={watch().timeout_destination}
-                        />
-                      </div>
-                    </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label>Timeout Destination</label>
@@ -951,32 +755,8 @@ const RingGroupEdit = () => {
                           >
                             <select
                               className="formItem"
-                              // onChange={(e) => {
-                              //   if (e.target.value == "Extension") {
-                              //     setTimeoutDestPstnToggle(false);
-                              //     setShowTimeoutDestinationToggle(true);
-                              //     if (watch().call_timeout == "") {
-                              //       setValue("call_timeout", `${60}`);
-                              //     }
-                              //     setValue("timeout_destination", "");
-                              //   } else if (e.target.value == "PSTN") {
-                              //     setTimeoutDestPstnToggle(true);
-                              //     setShowTimeoutDestinationToggle(true);
-                              //     if (watch().call_timeout == "") {
-                              //       setValue("call_timeout", `${60}`);
-                              //     }
-                              //     setValue("timeout_destination", "");
-                              //   } else if (e.target.value == "Disabled") {
-                              //     setTimeoutDestPstnToggle(true);
-                              //     setShowTimeoutDestinationToggle(false);
-                              //     setValue("timeout_destination", "");
-                              //   }
-                              // }}
-                              // {...register("destination_type")}
                               {...register("destination_type", {
                                 onChange: (e) => {
-                                  const value = e.target.value;
-
                                   // Custom logic
                                   if (e.target.value == "Extension") {
                                     setTimeoutDestPstnToggle(false);
@@ -1066,44 +846,12 @@ const RingGroupEdit = () => {
                               )),
                           })}
                           onKeyDown={restrictToNumbers}
-                        // {...register("call_timeout", {
-                        //   ...requiredValidator,
-                        //   ...noSpecialCharactersValidator,
-                        //   ...minValidator(
-                        //     destination.reduce(
-                        //       (max, obj) => Math.max(max, obj.delay),
-                        //       0
-                        //     )
-                        //   ),
-                        // })}
                         />
                         {errors.call_timeout && (
                           <ErrorMessage text={errors.call_timeout.message} />
                         )}
                       </div>
                     </div>
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="">Distinctive Ring</label>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("distinctive_ring", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                  {errors.distinctive_ring && (
-                    <ErrorMessage text={errors.distinctive_ring.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Select a sound for a distinctive ring.
-                  </label>
-                </div>
-              </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Ring Back</label>
@@ -1125,9 +873,6 @@ const RingGroupEdit = () => {
                           }}
                         >
                           <option value="null">None</option>
-                          {/* <option>us-ring</option>
-                    <option value="uk-ring">uk-ring</option>
-                    <option value="eu-ring">eu-ring</option> */}
                           {ringBack &&
                             ringBack.map((ring) => {
                               return (
@@ -1146,156 +891,6 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">User List</label>
-                </div>
-                <div className="col-12">
-                  <select
-                    className="formItem"
-                    {...register("user")}
-                    id="selectFormRow"
-                  >
-                    <option>Select User</option>
-                    {users &&
-                      users.map((item) => {
-                        return (
-                          <option value={item.username}>{item.username}</option>
-                        );
-                      })}
-                  </select>
-                  {errors.user && <ErrorMessage text={errors.user.message} />}
-                  <label htmlFor="data" className="formItemDesc">
-                    Define users assigned to this ring group.
-                  </label>
-                </div>
-              </div> */}
-
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Missed Call</label>
-                </div>
-                <div className="row">
-                  <div className="col-4 pe-1">
-                    <select
-                      className="formItem"
-                      style={{ width: "100%" }}
-                      name=""
-                      id="selectFormRow"
-                      {...register("missed_call")}
-                    >
-                      <option value="">Disabled</option>
-                      <option value="email">Email</option>
-                    </select>
-                  </div>
-                  <div className="col-8 ps-1">
-                    {watch().missed_call === "email" && (
-                      <div>
-                        <input
-                          className="col-12 formItem"
-                          {...register("email", {
-                            ...requiredValidator,
-                            ...emailValidator,
-                          })}
-                        />
-                        {errors.email && (
-                          <ErrorMessage text={errors.email.message} />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <label htmlFor="data" className="formItemDesc">
-                    Select the notification type, and enter the appropriate
-                    destination.
-                  </label>
-                </div>
-              </div> */}
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Ring Group Forward</label>
-                </div>
-                <div className="col-12">
-                  <select
-                    className="formItem col-xl-3"
-                    {...register("ring_group_forward", {
-                      ...requiredValidator,
-                    })}
-                    id="selectFormRow"
-                    style={{ width: "85px" }}
-                  >
-                    <option value="true">Enabled</option>
-                    <option value="false">Disabled</option>
-                  </select>
-                  {watch().ring_group_forward == "true" && (
-                    <div className="d-flex flex-column">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("ring_group_forward_destination", {
-                          ...requiredValidator,
-                          ...numberValidator,
-                          ...noSpecialCharactersValidator,
-                        })}
-                        placeholder="Number"
-                        style={{ width: "60%" }}
-                      />
-                      {errors.ring_group_forward_destination && (
-                        <ErrorMessage
-                          text={errors.ring_group_forward_destination.message}
-                        />
-                      )}
-                    </div>
-                  )}
-                  <label htmlFor="data" className="formItemDesc">
-                    Forward a called Ring Group to an alternate destination.
-                  </label>
-                </div>
-              </div> */}
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Forward Toll Allow</label>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("toll_allow", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                  {errors.toll_allow && (
-                    <ErrorMessage text={errors.toll_allow.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Ring group forwarding toll allow.
-                  </label>
-                </div>
-              </div> */}
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Context</label>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("context", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                  {errors.context && (
-                    <ErrorMessage text={errors.context.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the context.
-                  </label>
-                </div>
-              </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Description</label>
@@ -1318,29 +913,6 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-
-                    {/* <div className="formRow col-xl-3">
-                <div className="formLabel">
-                  <label htmlFor="selectFormRow">Greeting</label>
-                </div>
-                <div className="col-12">
-                  <input
-                    type="text"
-                    name="extension"
-                    className="formItem"
-                    {...register("greeting", {
-                      ...noSpecialCharactersValidator,
-                    })}
-                  />
-                  {errors.greeting && (
-                    <ErrorMessage text={errors.greeting.message} />
-                  )}
-                  <br />
-                  <label htmlFor="data" className="formItemDesc">
-                    Enter the Greeting.
-                  </label>
-                </div>
-              </div> */}
                     <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Recording</label>
@@ -1384,29 +956,6 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-                    {/* <div className="formRow  col-xl-3">
-                <div className="d-flex flex-wrap align-items-center">
-                  <div className="formLabel">
-                    <label htmlFor="selectFormRow">Enabled</label>
-                  </div>
-                  <div className="col-12">
-                    <div className="my-auto position-relative mx-1">
-                      <label className="switch">
-                        <input
-                          type="checkbox"
-                          checked={watch().status}
-                          {...register("status")}
-                          id="showAllCheck"
-                        />
-                        <span className="slider round" />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <label htmlFor="data" className="formItemDesc">
-                  Set the status of this ring group.
-                </label>
-              </div> */}
                   </form>
                 </div>
                 <div className="col-12">
@@ -1492,50 +1041,6 @@ const RingGroupEdit = () => {
                               ) : (
                                 ""
                               )}
-                              {/* <div className="position-relative">
-                          <input
-                            type="text"
-                            name="destination"
-                            className="formItem"
-                            value={item.destination}
-                            onChange={(e) => handleDestinationChange(index, e)}
-                            placeholder="Destination"
-                          />
-                          {destinationList && destinationId === index ? (
-                            <div
-                              ref={divRef}
-                              className="formCustomAutoComplete"
-                            >
-                              <ul>
-                                {filterExtension &&
-                                  filterExtension.map((item) => {
-                                    return (
-                                      <li
-                                        value={item.extension}
-                                        onClick={(e) => {
-                                          handlelistClick(
-                                            index,
-                                            item.extension
-                                          );
-                                          setDestinationList(false);
-                                        }}
-                                      >
-                                        {item.extension}
-                                      </li>
-                                    );
-                                  })}
-                                <Link
-                                  to="/users-add"
-                                  className="text-center border bg-info-subtle fs-6 fw-bold text-info"
-                                >
-                                  Add User
-                                </Link>
-                              </ul>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div> */}
                               <div className="position-relative">
                                 <select
                                   type="text"
@@ -1556,17 +1061,6 @@ const RingGroupEdit = () => {
                                   <option value={""} disabled>
                                     Choose agent
                                   </option>
-                                  {/* {user &&
-                              user.map((item) => {
-                                return (
-                                  <option
-                                    value={item.extension?.extension}
-                                    key={item.id}
-                                  >
-                                    {item.username}({item.extension?.extension})
-                                  </option>
-                                );
-                              })} */}
                                   {user &&
                                     user
                                       .filter((item1) => {
@@ -1676,26 +1170,6 @@ const RingGroupEdit = () => {
                                 })()}
                               </select>
                             </div>
-                            {/* <div className="col-2 pe-2">
-                        {index === 0 ? (
-                          <div className="formLabel">
-                            <label htmlFor="">Prompt</label>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <select
-                          className="formItem me-0"
-                          style={{ width: "100%" }}
-                          value={item.prompt}
-                          onChange={(e) => handleDestinationChange(index, e)}
-                          id="selectFormRow"
-                          name="prompt"
-                        >
-                          <option className="status">Prompt</option>
-                          <option value="confirm">Confirm</option>
-                        </select>
-                      </div> */}
                             <div className="col-2 pe-2">
                               {index === 0 ? (
                                 <div className="formLabel">
@@ -1736,23 +1210,6 @@ const RingGroupEdit = () => {
                                 </button>
                               </div>
                             )}
-                            {/* {index === 0 ? (
-                              <div className="mt-auto">
-                                <button
-                                  onClick={() => addNewDestination()}
-                                  className="panelButton mb-auto"
-                                  effect="ripple"
-                                  type="button"
-                                >
-                                  <span className="text">Add</span>
-                                  <span className="icon">
-                                    <i class="fa-solid fa-plus"></i>
-                                  </span>
-                                </button>
-                              </div>
-                            ) : (
-                              ""
-                            )} */}
                           </div>
                         );
                       })}
@@ -1787,11 +1244,6 @@ const RingGroupEdit = () => {
             <div className="col-12 heading mb-0">
               <i className="fa-light fa-user-plus" />
               <h5>Add People to the selected Ring Group</h5>
-              {/* <p>
-                Add people to yourqueue effortlessly, keeping your connections
-                organized and efficient
-              </p> */}
-              {/* <div className="border-bottom col-12" /> */}
             </div>
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center">
@@ -1832,51 +1284,6 @@ const RingGroupEdit = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {user
-                    .filter(
-                      (user) =>
-                        // Filter logic: checks name or extension against search query
-                        user.name
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase()) ||
-                        (user?.extension?.extension || "")
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                    )
-
-                    .filter(
-                      (user) =>
-                        !destination.some(
-                          (agent) =>
-                            user.extension.extension == agent.destination
-                        )
-                    )
-                    .map((item, index) => {
-                      return (
-                        <div key={index}>
-                          <div className="row g-2">
-                            <div className="col-2">
-                              <span>{index + 1}</span>
-                            </div>
-                            <div className="col-5">
-                              <span>{item.name}</span>
-                            </div>
-                            <div className="col-2">
-                              <span>{item.extension.extension}</span>
-                            </div>
-                            <div className="col-3">
-                              <input
-                                type="checkbox"
-                                onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                checked={bulkUploadSelectedAgents.some(
-                                  (agent) => agent.name === item.name
-                                )} // Keep checkbox state in sync
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })} */}
                     {user
                       .sort((a, b) => {
                         const aMatches =
@@ -1893,7 +1300,6 @@ const RingGroupEdit = () => {
                           (b?.extension?.extension || "")
                             .toLowerCase()
                             .includes(searchQuery.toLowerCase());
-                        // Sort: matching items come first
                         return bMatches - aMatches;
                       })
                       .filter(
@@ -2099,7 +1505,6 @@ const RingGroupEdit = () => {
                 </button>
                 <button
                   className="panelButton me-0"
-                  // onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
                   onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
                 >
                   <span className="text">Done</span>
