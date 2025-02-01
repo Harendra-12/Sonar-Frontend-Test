@@ -11,9 +11,7 @@ import {
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
 import { useSelector, useDispatch } from "react-redux";
-import MusicPlayer from "../../CommonComponents/MusicPlayer";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function Music() {
@@ -34,6 +32,8 @@ function Music() {
   const [selectedMusicToEdit, setSelectedMusicToEdit] = useState();
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
+
+  // Get all previous music data
   useEffect(() => {
     if (musicAll?.length !== 0) {
       setLoading(false);
@@ -67,7 +67,7 @@ function Music() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
-  //   Handle delete function
+  //   Handle delete function to delete music
   const handleDelete = async (id) => {
     setDeletePopup(false);
     setLoading(true);
@@ -87,7 +87,7 @@ function Music() {
     }
   };
 
-  //   Handle new music function
+  //   Handle new music function to add new music
   async function handleNewMusic() {
     if (newMusic) {
       const maxSizeInKB = 2048;
@@ -139,7 +139,7 @@ function Music() {
       setLoading(false);
     }
   }
-  console.log("This is transition details", music);
+
   return (
     <main className="mainContent">
       <section id="phonePage">

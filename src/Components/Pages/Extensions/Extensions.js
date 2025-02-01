@@ -30,6 +30,7 @@ const Extensions = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
 
+  // Geeting online extensions from socket and updating the state
   useEffect(() => {
     if (registerUser.length > 0) {
       setOnlineExtension(
@@ -44,6 +45,7 @@ const Extensions = () => {
     }
   }, [registerUser]);
 
+  // Trigger user api to get latest users
   useEffect(() => {
     if (userList.length == 0) {
       dispatch({
@@ -53,13 +55,15 @@ const Extensions = () => {
     }
   }, []);
 
+  // Filtering users with extensions
   const userWithExtension = userList
     .filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
     .map((user) => ({
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
     }));
-    
+   
+  // Getting list of all users by various filters like page number, items per page and search keys
   useEffect(() => {
     setLoading(true);
     if (extensionByAccount.data) {

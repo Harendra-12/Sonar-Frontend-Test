@@ -301,6 +301,7 @@ function GetDid() {
                             })}
                           >
                             <option value="tollfree">Toll free</option>
+                            <option value="domestic">Domestic</option>
                           </select>
                           {errors.searchType && (
                             <ErrorMessage text={errors.searchType.message} />

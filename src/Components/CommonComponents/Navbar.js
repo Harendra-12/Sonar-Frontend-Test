@@ -16,7 +16,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const userType = account?.usertype; 
+  const userType = account?.usertype;
 
   // Handle log out function by removing token
   async function logOut() {
@@ -141,6 +141,8 @@ function Navbar() {
                         "/extensions",
                         "/extensions-edit",
                         "/extensions-add",
+                        "/device-provisioning-add",
+                        "/device-provisioning-edit",
                       ])
                         ? "show"
                         : ""
@@ -350,9 +352,6 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/phone-dashboard",
-                          "/voice-music",
-                          "/device-provisioning-add",
-                          "/device-provisioning-edit",
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
@@ -367,8 +366,6 @@ function Navbar() {
                           "/agents",
                           "/agents-add",
                           "/agents-edit",
-                          "/meeting-room",
-                          "/meeting-add",
                           "/active-calls",
                           "/voicemail-report"
                         ])
@@ -403,8 +400,6 @@ function Navbar() {
                         "/agents-add",
                         "/agents-edit",
                         "/call-dashboard",
-                        "/meeting-room",
-                        "/meeting-add",
                         "/active-calls",
                         "/voicemail-report"
                       ])
@@ -861,6 +856,8 @@ function Navbar() {
                             "/cdr-report",
                             "/agent-reports",
                             "/meeting-reports",
+                            "/call-center-report",
+                            "/ring-group-report",
                           ])
                             ? "true"
                             : "false"
@@ -1049,6 +1046,7 @@ function Navbar() {
                           "/card-details",
                           "/card-transaction-list",
                           "/wallet-transaction-list",
+                          "/billing-report"
                         ])
                           ? "true"
                           : "false"
@@ -1160,6 +1158,7 @@ function Navbar() {
                           "/mail-settings",
                           "/fax-settings",
                           "/call-recording",
+                          "/voice-music"
                         ])
                           ? "true"
                           : "false"

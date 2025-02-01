@@ -27,6 +27,7 @@ const Dashboard = () => {
   const extension = useSelector((state) => state.extension || []);
   const registerUser = useSelector((state) => state.registerUser || []);
   const [onlineExtension, setOnlineExtension] = useState([0]);
+  const isCustomerAdmin = account?.email == accountDetails?.email;
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {
@@ -568,73 +569,73 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4 mb-3 mb-xl-0">
-                          <div className="itemWrapper a">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-9">
-                                  <h5>Subscription Details</h5>
-                                  <p>Click the icon to view it</p>
-                                </div>
-                                <div
-                                  className="col-3"
-                                  onClick={() => navigate("/card-details")}
-                                >
-                                  <i class="fa-duotone fa-money-check-dollar-pen"></i>
-                                </div>
+                     { isCustomerAdmin?<div className="col-xl-4 mb-3 mb-xl-0">
+                        <div className="itemWrapper a">
+                          <div className="heading">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h5>Subscription Details</h5>
+                                <p>Click the icon to view it</p>
+                              </div>
+                              <div
+                                className="col-3"
+                                onClick={() => navigate("/card-details")}
+                              >
+                                <i class="fa-duotone fa-money-check-dollar-pen"></i>
                               </div>
                             </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-12">
-                                  <ul>
-                                    <li>
-                                      Subscription Status{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]
-                                            ?.status
-                                        }
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Subscription Start{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]?.start_date?.split(
-                                            " "
-                                          )[0]
-                                        }
-                                        ,{" "}
-                                        {
-                                          accountDetails?.subscription[0]?.start_date?.split(
-                                            " "
-                                          )[1]
-                                        }
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Subscription End{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]?.end_date?.split(
-                                            " "
-                                          )[0]
-                                        }
-                                        ,{" "}
-                                        {
-                                          accountDetails?.subscription[0]?.end_date?.split(
-                                            " "
-                                          )[1]
-                                        }
-                                      </span>
-                                    </li>
-                                  </ul>
-                                </div>
+                          </div>
+                          <div className="data-number2">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-12">
+                                <ul>
+                                  <li>
+                                    Subscription Status{" "}
+                                    <span className="float-end">
+                                      {
+                                        accountDetails?.subscription[0]
+                                          ?.status
+                                      }
+                                    </span>
+                                  </li>
+                                  <li>
+                                    Subscription Start{" "}
+                                    <span className="float-end">
+                                      {
+                                        accountDetails?.subscription[0]?.start_date?.split(
+                                          " "
+                                        )[0]
+                                      }
+                                      ,{" "}
+                                      {
+                                        accountDetails?.subscription[0]?.start_date?.split(
+                                          " "
+                                        )[1]
+                                      }
+                                    </span>
+                                  </li>
+                                  <li>
+                                    Subscription End{" "}
+                                    <span className="float-end">
+                                      {
+                                        accountDetails?.subscription[0]?.end_date?.split(
+                                          " "
+                                        )[0]
+                                      }
+                                      ,{" "}
+                                      {
+                                        accountDetails?.subscription[0]?.end_date?.split(
+                                          " "
+                                        )[1]
+                                      }
+                                    </span>
+                                  </li>
+                                </ul>
                               </div>
                             </div>
                           </div>
                         </div>
+                      </div>:<></>}
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">

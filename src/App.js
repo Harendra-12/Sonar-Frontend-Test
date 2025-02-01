@@ -19,11 +19,6 @@ import UsersImport from "./Components/Pages/Users/UsersImport";
 import Extensions from "./Components/Pages/Extensions/Extensions";
 import ExtensionsAdd from "./Components/Pages/Extensions/ExtensionsAdd";
 import ExtensionsEdit from "./Components/Pages/Extensions/ExtensionsEdit";
-import ExtensionsExport from "./Components/Pages/Extensions/ExtensionsExport";
-import ExtensionsImport from "./Components/Pages/Extensions/ExtensionsImport";
-import ExtensionsSettings from "./Components/Pages/Extensions/ExtensionsSettings";
-import ExtensionSettingsEdit from "./Components/Pages/Extensions/ExtensionSettingsEdit";
-import ExtensionSummary from "./Components/Pages/Extensions/ExtensionSummary";
 import Dashboard from "./Components/Pages/Dashboard/Dashboard";
 import Profile from "./Components/Pages/Profile/Profile";
 import Master from "./Components/Pages/Setting/Master";
@@ -79,9 +74,7 @@ import PhoneDashboard from "./Components/Pages/PhoneDashboard/PhoneDashboard";
 import DidListing from "./Components/Pages/NumberManagement/DidListing";
 import Music from "./Components/Pages/Voice/Music";
 import { ToastContainer } from "react-toastify";
-// import RingGroupSettings from "./Components/CommonComponents/RingGroupSettings";
 import CallCenterSettings from "./Components/Pages/CallCenter/CallCenterSettings";
-import RingGroupSettings from "./Components/Pages/RingGroups/RingGroupSettings";
 import DidConfig from "./Components/Pages/NumberManagement/DidConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Variable from "./Components/Pages/Variable/Variable";
@@ -248,7 +241,6 @@ function App() {
               )
             }
           />
-          <Route path="/ring-groups-settings" element={<RingGroupSettings />} />
           {/* Ring Groups Path End */}
 
           {/* Users Path Start */}
@@ -315,14 +307,6 @@ function App() {
                 <Navigate to="/dashboard" replace />
               )
             }
-          />
-          <Route path="/extensions-export" element={<ExtensionsExport />} />
-          <Route path="/extensions-import" element={<ExtensionsImport />} />
-          <Route path="/extension-summary" element={<ExtensionSummary />} />
-          <Route path="/extension-settings" element={<ExtensionsSettings />} />
-          <Route
-            path="/extension-settings-edit"
-            element={<ExtensionSettingsEdit />}
           />
           <Route path="/call-settings" element={<CallSettings />} />
           {/* Extensions Path End */}

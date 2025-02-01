@@ -1,5 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
@@ -8,12 +9,10 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import { useNavigate } from "react-router-dom";
-import Header from "../../CommonComponents/Header";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
-const CallCenter = () => {
+const CallCenter = ({initial}) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
@@ -23,7 +22,6 @@ const CallCenter = () => {
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [callCenterData, setCallCenterData] = useState(null);
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
 
   const Id = account?.id || "";
@@ -40,8 +38,6 @@ const CallCenter = () => {
     const getData = async () => {
       const apiData = await generalGetFunction("/call-center-agent/all");
       if (apiData?.status) {
-        setCallCenterData(apiData.data);
-
         setCallCenterDetailData(apiData.data);
       } else {
         console.log(apiData);
@@ -85,7 +81,7 @@ const CallCenter = () => {
       </style>
       {/* <SideNavbarApp /> */}
       <main
-        className="mainContentApp"
+        className={initial?"":"mainContentApp"}
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
@@ -95,7 +91,7 @@ const CallCenter = () => {
       >
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12 px-0">
+            <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
@@ -152,24 +148,25 @@ const CallCenter = () => {
                             Logout
                           </div>
                         </li>
-                        <li onClick={() => navigate("/my-profile")}>
+                        {/* <li onClick={() => navigate("/my-profile")}>
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}
                           >
                             Profile
                           </div>
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <>
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
-                  <div className="col-12">
+                  <div className={!initial ? "col-12" : "col-12 d-none"}>
                     <div className="heading">
                       <div className="content">
                         <h4>
@@ -226,6 +223,7 @@ const CallCenter = () => {
                 </div>
               </div>
             </div>
+            </>
           </div>
         </div>
       </main>
@@ -255,201 +253,6 @@ const CallCenter = () => {
 };
 
 export default CallCenter;
-
-// const CallCenterListItem = ({
-//   item,
-//   index,
-//   Id,
-//   setRefreshCenter,
-//   callCenterDetailData,
-// }) => {
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const [isOnBreak, setIsOnBreak] = useState(false);
-//   const [loading, setLoading] = useState(false);
-//   const [timer, setTimer] = useState(0); // Store in seconds (Unix format)
-//   const [isActive, setIsActive] = useState(false);
-//   const [seconds, setSeconds] = useState(0);
-//   const [totalTime, setTotalTime] = useState(0);
-//   // const [totalTime, settotalTime] = useState(second)
-//   const [elapsedTime, setElapsedTime] = useState(0);
-//   const [totalBreakTime, setTotalBreakTime] = useState(0);
-//   useEffect(() => {
-//     const filteredData = callCenterDetailData.filter((data) => {
-//       return item.queue_name == data.queue_name;
-//     });
-//     console.log(filteredData);
-//     const totalBreakTimeInMs = filteredData.reduce((total, breakTime) => {
-//       if (breakTime.end_time) {
-//         const startTime = new Date(breakTime.start_time);
-//         const endTime = new Date(breakTime.end_time);
-//         return total + (endTime - startTime);
-//       }
-//       return total;
-//     }, 0);
-//     setTotalTime(totalBreakTimeInMs / 1000);
-//     const ongoingBreak = filteredData.find(
-//       (breakTime) => breakTime.end_time === null && breakTime.start_time
-//     );
-
-//     if (ongoingBreak) {
-//       const latestStartTime = new Date(ongoingBreak.start_time);
-//       console.log(ongoingBreak);
-//       // Set up an interval to update the current break time in real-time
-//       // const interval = setInterval(() => {
-//       //   const currentTime = new Date();
-//       //   const elapsedTimeInMs = currentTime - latestStartTime; // Time since the break started
-//       //   // setCurrentBreakTime(elapsedTimeInMs / 1000); // Convert to seconds
-//       //   console.log(elapsedTimeInMs / 1000);
-//       // }, 1000);
-
-//       // // Clear the interval when the component unmounts or updates
-//       // return () => clearInterval(interval);
-//     }
-//   }, [callCenterDetailData, item]);
-
-//   // const refId =
-//   //   item.agents.filter((item) => Number(item.agent_name) === Id)[0]?.id || "";
-//   const { id: refId = "", status = "" } =
-//     item.agents.find((agent) => Number(agent.agent_name) === Id) || {};
-//   console.log(item, callCenterDetailData);
-//   useEffect(() => {
-//     if (status === "Logged Out") {
-//       setIsLoggedIn(false);
-//     } else if (status === "Available") {
-//       setIsLoggedIn(true);
-//     } else if (status == "On Break") {
-//       setIsOnBreak(true);
-//       setIsLoggedIn(true);
-//     }
-//   }, [status]);
-
-//   async function handleLoginLogout(CallerId, action, callCenterName) {
-//     const parsedData = {
-//       status: action,
-//     };
-
-//     const apiData = await generalPutFunction(
-//       `call-center-agent/update/${CallerId}`,
-//       parsedData
-//     );
-
-//     if (apiData.status) {
-//       setLoading(false);
-//       if (action === "Logged Out") {
-//         toast.success(`Logged out for ${callCenterName}`);
-//         setIsOnBreak(false);
-//         setIsLoggedIn(false);
-//       } else if (action === "Available") {
-//         setIsLoggedIn(true);
-//         setIsOnBreak(false);
-//         stopTimer();
-//         toast.success(`Available for ${callCenterName}`);
-//       } else if (action === "On Break") {
-//         setIsOnBreak(true);
-//         startTimer();
-//         toast.success(`Break Started for ${callCenterName}`);
-//       }
-//       setRefreshCenter((prev) => prev + 1);
-//     } else {
-//       setLoading(false);
-//       // toast.error(apiData.message);
-//     }
-//   }
-
-//   useEffect(() => {
-//     let interval = null;
-
-//     if (isActive) {
-//       interval = setInterval(() => {
-//         setSeconds((prevSeconds) => prevSeconds + 1);
-//       }, 1000);
-//     } else if (!isActive && seconds !== 0) {
-//       clearInterval(interval);
-//     }
-
-//     return () => clearInterval(interval);
-//   }, [isActive, seconds]);
-
-//   useEffect(() => {
-//     setTimer(seconds);
-//   }, [seconds]);
-
-//   const startTimer = () => {
-//     setIsActive(true);
-//   };
-
-//   const stopTimer = () => {
-//     setIsActive(false);
-//     resetTimer();
-//     setTotalTime((prevTotal) => prevTotal + seconds);
-//   };
-
-//   const resetTimer = () => {
-//     setIsActive(false);
-//     setSeconds(0);
-//     setTimer(0);
-//   };
-
-//   const formatTime = (totalSeconds) => {
-//     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-//     const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
-//       2,
-//       "0"
-//     );
-//     const secs = String(totalSeconds % 60).padStart(2, "0");
-//     return `${hours}:${minutes}:${secs}`;
-//   };
-
-//   return (
-//     <>
-//       {loading ? <CircularLoader /> : ""}
-//       <tr>
-//         <td className="">
-//           <span className="">{index + 1}</span>
-//         </td>
-//         <td>{item?.queue_name}</td>
-//         <td>{item?.extension}</td>
-//         <td className="">
-//           {isLoggedIn ? (
-//             <div className="d-flex gap-2">
-//               <label
-//                 className={`tableLabel  ${isOnBreak ? "pending" : "success"}`}
-//                 onClick={() => {
-//                   if (!isOnBreak)
-//                     handleLoginLogout(refId, "On Break", item?.queue_name);
-//                   else if (isOnBreak)
-//                     handleLoginLogout(refId, "Available", item?.queue_name);
-//                 }}
-//               >
-//                 {isOnBreak ? "Resume" : "Break"}
-//               </label>
-//               <label
-//                 className="tableLabel fail"
-//                 onClick={() =>
-//                   handleLoginLogout(refId, "Logged Out", item?.queue_name)
-//                 }
-//               >
-//                 Logout
-//               </label>
-//             </div>
-//           ) : (
-//             <label
-//               className="tableLabel success"
-//               onClick={() =>
-//                 handleLoginLogout(refId, "Available", item?.queue_name)
-//               }
-//             >
-//               Login
-//             </label>
-//           )}
-//         </td>
-//         <td>{formatTime(timer)}</td>
-//         <td>{formatTime(totalTime)}</td>
-//       </tr>
-//     </>
-//   );
-// };
-
 const CallCenterListItem = ({
   item,
   index,
@@ -535,7 +338,6 @@ const CallCenterListItem = ({
   // Start the timer when the agent goes on break
   const startTimer = () => {
     setIsActive(true);
-    const startTime = new Date();
     // setTimer(0);
     // setSeconds(0); // Reset the timer when the break starts
   };

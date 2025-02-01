@@ -191,17 +191,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-        allApiData.filter((item) => {
-          if (!isCustomerAdmin) {
-            return (
-              (item["Caller-Callee-ID-Number"] === extension &&
-                item["Caller-Caller-ID-Number"] === clickedExtension) ||
-              (item["Caller-Caller-ID-Number"] === extension &&
-                item["Caller-Callee-ID-Number"] === clickedExtension)
-            );
-          }
-          return true;
-        })
+      allApiData.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
+            (item["Caller-Callee-ID-Number"] === extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
+          );
+        }
+        return true;
+      })
     );
   }, [data, clickStatus]);
   console.log(clickedExtension);
@@ -210,8 +210,7 @@ function Call({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -245,8 +244,8 @@ function Call({
     const displayName = matchingContact
       ? matchingContact.name
       : item["Caller-Callee-ID-Number"] === extension
-      ? item["Caller-Caller-ID-Number"]
-      : item["Caller-Callee-ID-Number"];
+        ? item["Caller-Caller-ID-Number"]
+        : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -260,27 +259,26 @@ function Call({
         key={item.id}
         onClick={() => handleCallItemClick(item)}
         onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${
-          item["Caller-Callee-ID-Number"] === extension &&
-          item["variable_billsec"] > 0 &&
-          !isCustomerAdmin
+        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+            item["variable_billsec"] > 0 &&
+            !isCustomerAdmin
             ? "incoming"
             : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-            ? "outgoing"
-            : item["Caller-Callee-ID-Number"] === extension &&
-              item["variable_billsec"] === 0 &&
-              !isCustomerAdmin
-            ? "missed"
-            : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-            ? "voicemail"
-            : ""
-        } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+              ? "outgoing"
+              : item["Caller-Callee-ID-Number"] === extension &&
+                item["variable_billsec"] === 0 &&
+                !isCustomerAdmin
+                ? "missed"
+                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+                  ? "voicemail"
+                  : ""
+          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
       >
         <div className="row justify-content-between">
           <div className="col-xl-12 d-flex">
             <div
               className="profileHolder"
-              // id={"profileOfflineNav"}
+            // id={"profileOfflineNav"}
             >
               <i className="fa-light fa-user fs-5"></i>
             </div>
@@ -293,8 +291,8 @@ function Call({
                   {displayName
                     ? displayName
                     : item.caller_user
-                    ? item.caller_user.username
-                    : "USER XYZ"}
+                      ? item.caller_user.username
+                      : "USER XYZ"}
                 </h4>
                 <h5 style={{ paddingLeft: 20 }}>
                   {item["Caller-Callee-ID-Number"] === extension
@@ -494,13 +492,13 @@ function Call({
             mode === "audio"
               ? true
               : {
-                  mandatory: {
-                    minWidth: 1280,
-                    minHeight: 720,
-                    minFrameRate: 30,
-                  },
-                  optional: [{ facingMode: "user" }],
+                mandatory: {
+                  minWidth: 1280,
+                  minHeight: 720,
+                  minFrameRate: 30,
                 },
+                optional: [{ facingMode: "user" }],
+              },
         },
       }
     );
@@ -691,14 +689,14 @@ function Call({
                               Logout
                             </div>
                           </li>
-                          <li onClick={() => navigate("/my-profile")}>
+                          {/* <li onClick={() => navigate("/my-profile")}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
                             </div>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

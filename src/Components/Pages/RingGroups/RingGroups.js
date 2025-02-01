@@ -36,6 +36,7 @@ const RingGroups = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
+  // Getting ringgroup data and also update user refresh to trigger user listing api call
   useEffect(() => {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
@@ -72,6 +73,7 @@ const RingGroups = () => {
     }
   }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
+  // Handle validation for naviagte to ring group add page if no user is create then redirect to user page to create user
   const handleRingGroupAddValidation = (e) => {
     e.preventDefault();
 
@@ -95,6 +97,7 @@ const RingGroups = () => {
     backToTop();
   };
 
+  // Handle logic to delete ring group and then update the new ring group list
   async function handleDelete(id) {
     setPopUp(false);
     setLoading(true);
@@ -116,6 +119,7 @@ const RingGroups = () => {
     }
   }
 
+  // Handle logic to update ring group status like enable or disable a ring group
   const handleUpdateStatusRingGroup = async (id) => {
     setLoading(true);
 
@@ -409,15 +413,6 @@ const RingGroups = () => {
                                             </button>
                                           </td>
                                           <div className="utilPopup">
-                                            {/* <button
-                                          onClick={() =>
-                                            navigate(
-                                              `/ring-groups-settings?id=${item.id}`
-                                            )
-                                          }
-                                        >
-                                          <i className="fa-light fa-gear" />
-                                        </button> */}
                                           </div>
                                         </tr>
                                       );

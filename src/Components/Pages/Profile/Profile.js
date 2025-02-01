@@ -449,7 +449,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="row">
+             {isCustomerAdmin&& <div className="row">
                 <div className="col-md-12">
                   <div className="profileView mt-2">
                     <div className="profileDetailsHolder p-0">
@@ -524,7 +524,7 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>}
             </div>
 
             <div className="col-xl-3">
