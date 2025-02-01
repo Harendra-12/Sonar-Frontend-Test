@@ -232,7 +232,7 @@ function ClickToCallSetup() {
                                             Choose your color scheme
                                           </label>
                                         </div>
-                                        <div className="col-4 ms-auto pe-2">
+                                        <div className="col-4 ">
                                           <div className="d-flex align-items-center justify-content-start">
                                             <div className="tawk-colors-active">
                                               <div className="tawk-colors">
@@ -520,9 +520,9 @@ function ClickToCallSetup() {
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="col-2">
+                                        <div className="col-2  ">
                                           <input
-                                            className="formItem"
+                                            className="formItem ms-5"
                                             defaultValue={"#f42633"}
                                             {...register("color")}
                                           />
