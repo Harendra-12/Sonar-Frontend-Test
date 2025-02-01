@@ -31,6 +31,7 @@ function Roles() {
   const [deleteIndex, setDeleteIndex] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedRoleId, setSelectedRoleId] = useState();
+  const [selectedIsDefault, setSelectedIsDefault] = useState(null);
   const [selectedRole, setSelectedRole] = useState();
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
@@ -55,6 +56,7 @@ function Roles() {
       setLoading(false);
       setSelectedRoleId(roles[0]?.id);
       setSelectedRole(roles[0]?.name);
+      setSelectedIsDefault(roles[0]?.is_default);
       setSelectedPermission(
         roles[0]?.permissions?.map((item) => {
           return item.permission_id;
@@ -68,6 +70,7 @@ function Roles() {
     if (roles.length > 0) {
       setLoading(false);
       setSelectedRoleId(roles[0]?.id);
+      setSelectedIsDefault(roles[0]?.is_default);
       setSelectedRole(roles[0]?.name);
       setSelectedPermission(
         roles[0]?.permissions?.map((item) => {
@@ -279,7 +282,9 @@ function Roles() {
             </div>
           </div>
           <div className="col-xl-12">
-            {loading ? <SkeletonFormLoader /> : (
+            {loading ? (
+              <SkeletonFormLoader />
+            ) : (
               <div className="overviewTableWrapper">
                 <div className="overviewTableChild">
                   <div className="d-flex flex-wrap">
@@ -412,35 +417,59 @@ function Roles() {
                                       ></input>
                                     </div>
                                     <div className="col-auto d-flex justify-content-end">
-                                      <button
-                                        className={
-                                          editIndex === index
-                                            ? "tableButton edit"
-                                            : "tableButton"
-                                        }
-                                      >
-                                        {editIndex === index ? (
-                                          <Tippy content="Save Updated Role title">
+                                      {item.is_default === 0 ? (
+                                        <div className="d-flex justify-content-end">
+                                          <button
+                                            className={
+                                              editIndex === index
+                                                ? "tableButton edit"
+                                                : "tableButton"
+                                            }
+                                          >
+                                            {editIndex === index ? (
+                                              <Tippy content="Save Updated Role title">
+                                                <i
+                                                  className="fa-solid fa-check"
+                                                  onClick={() => {
+                                                    setPopup(true);
+                                                    setEditClick(true);
+                                                    setAddRole(false);
+                                                  }}
+                                                ></i>
+                                              </Tippy>
+                                            ) : (
+                                              <Tippy content="Edit Role title">
+                                                <i
+                                                  className="fa-solid fa-pen-to-square"
+                                                  onClick={() => {
+                                                    setTimeout(() => {
+                                                      inputRefs.current[
+                                                        index
+                                                      ]?.focus(); // Focus on the specific input
+                                                    }, 0);
+                                                    setEditIndex(index);
+                                                    setSelectedRoleId(item.id);
+                                                    setSelectedRole(item.name);
+                                                    setSelectedPermission(
+                                                      item.permissions?.map(
+                                                        (item) => {
+                                                          return item.permission_id;
+                                                        }
+                                                      )
+                                                    );
+                                                  }}
+                                                ></i>
+                                              </Tippy>
+                                            )}
+                                          </button>
+                                          <button className="tableButton delete mx-2">
                                             <i
-                                              className="fa-solid fa-check"
+                                              className="fa-solid fa-trash"
                                               onClick={() => {
                                                 setPopup(true);
-                                                setEditClick(true);
+                                                setDeleteIndex(index);
+                                                setEditClick(false);
                                                 setAddRole(false);
-                                              }}
-                                            ></i>
-                                          </Tippy>
-                                        ) : (
-                                          <Tippy content="Edit Role title">
-                                            <i
-                                              className="fa-solid fa-pen-to-square"
-                                              onClick={() => {
-                                                setTimeout(() => {
-                                                  inputRefs.current[
-                                                    index
-                                                  ]?.focus(); // Focus on the specific input
-                                                }, 0);
-                                                setEditIndex(index);
                                                 setSelectedRoleId(item.id);
                                                 setSelectedRole(item.name);
                                                 setSelectedPermission(
@@ -452,33 +481,20 @@ function Roles() {
                                                 );
                                               }}
                                             ></i>
-                                          </Tippy>
-                                        )}
-                                      </button>
-                                      <button className="tableButton delete mx-2">
-                                        <i
-                                          className="fa-solid fa-trash"
-                                          onClick={() => {
-                                            setPopup(true);
-                                            setDeleteIndex(index);
-                                            setEditClick(false);
-                                            setAddRole(false);
-                                            setSelectedRoleId(item.id);
-                                            setSelectedRole(item.name);
-                                            setSelectedPermission(
-                                              item.permissions?.map((item) => {
-                                                return item.permission_id;
-                                              })
-                                            );
-                                          }}
-                                        ></i>
-                                      </button>
+                                          </button>
+                                        </div>
+                                      ) : (
+                                        <></>
+                                      )}
                                       <button className="tableButton">
                                         <i
                                           class="fa-solid fa-sliders"
                                           onClick={() => {
                                             setSelectedRoleId(item.id);
                                             setSelectedRole(item.name);
+                                            setSelectedIsDefault(
+                                              () => item?.is_default
+                                            );
                                             setSelectedPermission(
                                               item.permissions?.map((item) => {
                                                 return item.permission_id;
@@ -520,17 +536,24 @@ function Roles() {
                                       {selectedRole}
                                     </span>
                                   </div>
-                                  <div className="col-auto text-end">
-                                    <button
-                                      className="panelButton ms-auto"
-                                      onClick={handlePermissionSave}
-                                    >
-                                      <span className="text">Confirm</span>
-                                      <span className="icon">
-                                        <i class="fa-solid fa-check"></i>
-                                      </span>
-                                    </button>
-                                  </div>
+                                  {selectedIsDefault === 1 ? (
+                                    <></>
+                                  ) : (
+                                    <>
+                                      {" "}
+                                      <div className="col-auto text-end">
+                                        <button
+                                          className="panelButton ms-auto"
+                                          onClick={handlePermissionSave}
+                                        >
+                                          <span className="text">Confirm</span>
+                                          <span className="icon">
+                                            <i class="fa-solid fa-check"></i>
+                                          </span>
+                                        </button>
+                                      </div>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                               {selectedRole === "Agent" ? (
@@ -614,7 +637,10 @@ function Roles() {
                                   {filteredPermission &&
                                     Object.keys(filteredPermission).map(
                                       (item, key) => (
-                                        <div className="accordion-item" key={key}>
+                                        <div
+                                          className="accordion-item"
+                                          key={key}
+                                        >
                                           <h2
                                             class="accordion-header"
                                             id={`collapseHeading${key}`}
@@ -631,7 +657,9 @@ function Roles() {
                                                 type="checkbox"
                                                 checked={parentChecked[item]}
                                                 onChange={() =>
-                                                  handleParentCheckboxChange(item)
+                                                  handleParentCheckboxChange(
+                                                    item
+                                                  )
                                                 }
                                               />
 
@@ -684,7 +712,6 @@ function Roles() {
                 </div>
               </div>
             )}
-
           </div>
         </section>
         {popup ? (
