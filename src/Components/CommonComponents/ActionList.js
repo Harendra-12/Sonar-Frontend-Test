@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { generalGetFunction } from "../GlobalFunction/globalFunction";
+import zIndex from "@mui/material/styles/zIndex";
 
 const ActionList = ({
   category,
@@ -237,6 +238,7 @@ const ActionList = ({
           isSearchable
           styles={customStyles}
           value={selectedOption}
+          menuPortalTarget={document.body}
         />
         {label ? (
           <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>

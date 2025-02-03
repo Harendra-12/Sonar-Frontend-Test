@@ -8,7 +8,7 @@ import {
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { useForm } from "react-hook-form";
@@ -1331,10 +1331,7 @@ const ExtensionsEdit = ({ page }) => {
                         >
                           <div
                             className="col-12"
-                            style={{
-                              padding: "25px 23px",
-                              borderBottom: "1px solid #ddd",
-                            }}
+                            style={{ padding: "25px 23px" }}
                           >
                             <form className="row">
                               <div className="formRow col-xl-3">
@@ -1738,8 +1735,8 @@ const ExtensionsEdit = ({ page }) => {
                                 </div>
                                 <div
                                   className={`col-${forwardStatus != "disabled"
-                                      ? "3 pe-2 ms-auto"
-                                      : "6"
+                                    ? "3 pe-2 ms-auto"
+                                    : "6"
                                     }`}
                                 >
                                   {forwardStatus != "disabled" && (
@@ -1854,7 +1851,7 @@ const ExtensionsEdit = ({ page }) => {
                         // eslint-disable-next-line array-callback-return
                         users.map((item) => {
                           // eslint-disable-next-line eqeqeq
-                          if (item.id =="") {
+                          if (item.id == "") {
                             return item.username;
                           }
                         })}
