@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import { Link } from 'react-router-dom'
 
 function KnowledgeBase() {
     return (

@@ -1,12 +1,10 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import {
   generalGetFunction,
-  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import CircularLoader from "../../Loader/CircularLoader";
-import { ConferenceCall } from "./ConferenceCall";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -77,54 +75,54 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
     getData();
   }, [conferenceRefresh]);
 
-  async function handleSubmit() {
-    if (conferenceName === null || conferenceName === "") {
-      toast.error("Please enter conference name");
-    } else if (
-      conferenceType === "private" &&
-      (participantPin < 100000 || participantPin > 999999)
-    ) {
-      toast.error("Please enter 6 digit participant pin");
-    } else if (members === null || members === "") {
-      toast.error("Please enter number of members");
-    } else if (
-      conferenceType === "private" &&
-      (moderatorPin < 100000 || moderatorPin > 999999)
-    ) {
-      toast.error("Please enter 6 digit moderator pin");
-    } else if (
-      conferenceType === "private" &&
-      (retryCount < 1 || retryCount > 5)
-    ) {
-      toast.error("Please enter  retry count between 1 to 5");
-    } else if (moh === "") {
-      toast.error("Please select moh");
-    } else {
-      setLoading(true);
-      const parsedData = {
-        conf_name: conferenceName,
-        conf_max_members: members,
-        pin_retries: retryCount,
-        moderator_pin: String(moderatorPin),
-        nopin: conferenceType !== "private" ? "0" : "1",
-        conf_type: conferenceType,
-        moh_sound: moh,
-        participate_pin: String(participantPin),
-      };
-      const apiData = await generalPostFunction(
-        "/conference/store",
-        parsedData
-      );
-      if (apiData.status) {
-        setLoading(false);
-        toast.success(apiData.message);
-        setConferenceRefresh(conferenceRefresh + 1);
-        setselectedTab("nav-all-tab");
-      } else {
-        setLoading(false);
-      }
-    }
-  }
+  // async function handleSubmit() {
+  //   if (conferenceName === null || conferenceName === "") {
+  //     toast.error("Please enter conference name");
+  //   } else if (
+  //     conferenceType === "private" &&
+  //     (participantPin < 100000 || participantPin > 999999)
+  //   ) {
+  //     toast.error("Please enter 6 digit participant pin");
+  //   } else if (members === null || members === "") {
+  //     toast.error("Please enter number of members");
+  //   } else if (
+  //     conferenceType === "private" &&
+  //     (moderatorPin < 100000 || moderatorPin > 999999)
+  //   ) {
+  //     toast.error("Please enter 6 digit moderator pin");
+  //   } else if (
+  //     conferenceType === "private" &&
+  //     (retryCount < 1 || retryCount > 5)
+  //   ) {
+  //     toast.error("Please enter  retry count between 1 to 5");
+  //   } else if (moh === "") {
+  //     toast.error("Please select moh");
+  //   } else {
+  //     setLoading(true);
+  //     const parsedData = {
+  //       conf_name: conferenceName,
+  //       conf_max_members: members,
+  //       pin_retries: retryCount,
+  //       moderator_pin: String(moderatorPin),
+  //       nopin: conferenceType !== "private" ? "0" : "1",
+  //       conf_type: conferenceType,
+  //       moh_sound: moh,
+  //       participate_pin: String(participantPin),
+  //     };
+  //     const apiData = await generalPostFunction(
+  //       "/conference/store",
+  //       parsedData
+  //     );
+  //     if (apiData.status) {
+  //       setLoading(false);
+  //       toast.success(apiData.message);
+  //       setConferenceRefresh(conferenceRefresh + 1);
+  //       setselectedTab("nav-all-tab");
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   }
+  // }
 
   const validateAndSetConferenceId = (url) => {
     try {

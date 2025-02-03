@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useSIPProvider } from "react-sipjs";
 // import { SessionState } from "sip.js";

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable eqeqeq */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -18,7 +19,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { set, useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 

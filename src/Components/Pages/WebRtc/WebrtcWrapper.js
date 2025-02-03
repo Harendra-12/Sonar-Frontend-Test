@@ -108,10 +108,15 @@ const WebrtcWrapper = () => {
       connectWebSocket();
     }, [options.webSocketServer]);
   };
+  let globalUserAgent = null; // Global reference
   const options = {
     domain: account.domain.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
     maxSimultaneousSessions: 1,
+    onConnect: (ua) => {
+      console.log("SIP Registered!", ua);
+      globalUserAgent = ua; // Store the registered UserAgent
+    },
     // webSocketServer: "ws://192.168.2.225:5066",
   };
   console.log(port, ip);

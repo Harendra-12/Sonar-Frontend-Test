@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
   featureUnderdevelopment,
   generalDeleteFunction,

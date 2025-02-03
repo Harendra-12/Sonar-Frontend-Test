@@ -1,8 +1,8 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSessionCall } from "react-sipjs";
 import { toast } from "react-toastify";
-import { sendData } from "../../GlobalFunction/Socket";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
 function ConferenceVideo({
@@ -17,11 +17,7 @@ function ConferenceVideo({
   sendMessage,
 }) {
   const prevConferenceScreenShareStatus = useRef(null); // Ref to keep track of previous status
-  const account = useSelector((state) => state.account);
-  const extension = account?.extension?.extension || "";
   const remoteVideoRef = useRef(null);
-  const memeber_id = useSelector((state) => state.memberId);
-  const dummySession = useSelector((state) => state.dummySession);
   const conferenceScreenShareStatus = useSelector(
     (state) => state.conferenceScreenShareStatus
   );

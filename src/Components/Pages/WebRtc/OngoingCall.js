@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSIPProvider, useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import {
   SessionState,
@@ -236,134 +236,6 @@ function OngoingCall({
   };
 
   // Function to merge two sessions
-  const handleMergeCall2 = async (id) => {
-    console.log("handleMergeCall2 Started", callProgressId, id);
-    const sessionA = sessions[callProgressId];
-    const sessionB = sessions[id];
-
-    // Unhold the previous session which was by default goes on hold if we change the line 
-    var sessionDescriptionHandlerOptions = sessionB.sessionDescriptionHandlerOptionsReInvite;
-    sessionDescriptionHandlerOptions.hold = false;
-    sessionB.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-    // Setting option to retreive the audio track from the previous session
-    var options = {
-      requestDelegate: {
-        onAccept: function () {
-          if (sessionB && sessionB.sessionDescriptionHandler && sessionB.sessionDescriptionHandler.peerConnection) {
-            var pc = sessionB.sessionDescriptionHandler.peerConnection;
-            // Restore all the inbound streams
-            pc.getReceivers().forEach(function (RTCRtpReceiver) {
-              if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
-            });
-            // Restorte all the outbound streams
-            pc.getSenders().forEach(function (RTCRtpSender) {
-              // Unmute Audio
-              if (RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
-                if (RTCRtpSender.track.IsMixedTrack == true) {
-                  if (sessionB.data.AudioSourceTrack && sessionB.data.AudioSourceTrack.kind == "audio") {
-                    console.log("Unmuting Mixed Audio Track : " + sessionB.data.AudioSourceTrack.label);
-                    sessionB.data.AudioSourceTrack.enabled = true;
-                  }
-                }
-                console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
-                RTCRtpSender.track.enabled = true;
-              }
-              else if (RTCRtpSender.track && RTCRtpSender.track.kind == "video") {
-                RTCRtpSender.track.enabled = true;
-              }
-            });
-          }
-          sessionB.isOnHold = false;
-        },
-        onReject: function () {
-          sessionB.isOnHold = true;
-        }
-      }
-    };
-
-    // Send re-INVITE to resume the call
-    sessionB.invite(options)
-      .then(() => dispatch({
-        // If unhold then manage its status globally
-        type: "SET_SESSIONS",
-        sessions: globalSession.map((item) =>
-          item.id === id ? { ...item, state: "Established" } : item
-        ),
-      }))
-      .catch((error) => console.error("Error sending unhold request:", error));
-    if (!sessionA || !sessionB) {
-      console.error("Sessions are not found");
-      return;
-    }
-    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    let remoteStreamA = new MediaStream();
-    let remoteStreamB = new MediaStream();
-
-    // Sending the mixed audio stream for the call to merge
-    function sendMixedStreamToSession(session, mixedStream) {
-      if (!mixedStream || mixedStream.getAudioTracks().length === 0) {
-        console.error("No valid mixed stream to send.");
-        return;
-      }
-      const mixedAudioTrack = mixedStream.getAudioTracks()[0];
-      session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
-        if (sender.track && sender.track.kind === "audio") {
-          console.log(`Replacing audio track in Session ${session.id}`);
-          sender.replaceTrack(mixedAudioTrack);
-        }
-      });
-      setShowActiveSessions(false);
-    }
-
-    // Createing mixed audio stream for the call
-    function mixAudioStreams(myAudioStream, excludeRemoteStream) {
-      if (!myAudioStream) {
-        console.error("Missing local audio stream.");
-        return;
-      }
-      console.log("Mixing audio streams (excluding own voice)...");
-      // Create sources for the streams
-      const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
-      const sourceRemote = audioContext.createMediaStreamSource(excludeRemoteStream);
-      // Create a destination for mixed audio
-      const destination = audioContext.createMediaStreamDestination();
-      // Connect only the required sources (EXCLUDE remote user’s own audio)
-      sourceMyAudio.connect(destination); // Add my voice
-      sourceRemote.connect(destination);  // Add the remote participant's voice
-      console.log("Mixed stream created:", destination.stream);
-      return destination.stream;
-    }
-
-    try {
-      console.log("Requesting user audio...");
-      const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      console.log("Checking existing audio tracks...");
-      sessionA.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
-        if (receiver.track.kind === "audio") {
-          remoteStreamA.addTrack(receiver.track);
-        }
-      });
-      sessionB.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
-        if (receiver.track.kind === "audio") {
-          remoteStreamB.addTrack(receiver.track);
-        }
-      });
-      if (remoteStreamA.getTracks().length > 0 && remoteStreamB.getTracks().length > 0) {
-        // Send mixed audio to Session A (excluding A's own voice)
-        const mixedStreamA = mixAudioStreams(myAudioStream, remoteStreamB);
-        sendMixedStreamToSession(sessionA, mixedStreamA);
-        // Send mixed audio to Session B (excluding B's own voice)
-        const mixedStreamB = mixAudioStreams(myAudioStream, remoteStreamA);
-        sendMixedStreamToSession(sessionB, mixedStreamB);
-      } else {
-        console.log("Waiting for remote audio tracks...");
-      }
-    } catch (err) {
-      console.error("Error accessing media devices:", err);
-    }
-
-  };
-
   const handleMergeCall = async (sessionIds) => {
     console.log("handleMergeCall Started for sessions:", sessionIds);
 

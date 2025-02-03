@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import {  generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
-import CircularLoader from '../../Loader/CircularLoader';
-import ContentLoader from '../../Loader/ContentLoader';
 import { toast } from 'react-toastify';
 import ConferenceLoader from '../../Loader/ConferenceLoader';
 
@@ -178,7 +176,7 @@ function ConferenceJoin() {
                         </div>
                     </div>
                     <div className="loginWave">
-                        <img src={require('../../assets/images/wave.png')} />
+                        <img src={require('../../assets/images/wave.png')} alt=""/>
                     </div>
                 </main>
             }

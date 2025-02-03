@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
-  generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
