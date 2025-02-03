@@ -111,6 +111,7 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account.domain.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
+    maxSimultaneousSessions: 1,
     // webSocketServer: "ws://192.168.2.225:5066",
   };
   console.log(port, ip);

@@ -800,3 +800,35 @@
     bottom: 10px;
     left: 0;
 }
+
+.mergeCallList {
+    border: 1px solid var(--border-color);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.mergeCallList ul{
+    max-height: 170px;
+    overflow-y: auto;
+}
+.mergeCallList ul li{
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+.mergeCallList button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: none;
+    background-color: var(--ui-accent);
+    color: #fff;
+    font-size: 14px;
+    transition: 0.3s ease-in-out;
+}
+
+.mergeCallList button:hover{
+    background-color: #383838;
+}
