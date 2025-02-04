@@ -773,7 +773,7 @@ const DidConfig = () => {
                           <div className="col-6">
                             <div className="row">
                               <div
-                                className={`col-${watch().spam_filter_type === "3" ? "4 pe-1 ms-auto" : "12 pe-1 ms-auto"}`}>
+                                className={`col-${watch().spam_filter_type === "3" ? "4 pe-1 ms-auto" : "12"}`}>
                                 {watch().spam_filter_type != "1" && (
                                   <div class="formLabel">
                                     <label>Type</label>
