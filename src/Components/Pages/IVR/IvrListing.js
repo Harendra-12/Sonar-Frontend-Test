@@ -320,7 +320,7 @@ const IvrListing = () => {
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
+              <div className="row content col-xl-4 col-md-5">
                 <div className="col-2 px-0">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>
@@ -341,29 +341,33 @@ const IvrListing = () => {
                         </span>
                       </button>
                     ) : (
+                      
                       <button
-                        className="panelButton m-0"
+                        className="panelButton gray m-0 float-end"
                         onClick={() => {
                           setPopUp(false);
                         }}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-check"></i>
-                        </span>
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
                       </button>
                     )}
-
-                    <button
-                      className="panelButtonWhite m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                        setDeleteId("");
-                        // setDeleteToggle(false);
-                      }}
-                    >
-                      Cancel
-                    </button>
+  <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                          setDeleteId("");
+                          // setDeleteToggle(false);
+                        }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
+                      </button>
+                   
                   </div>
                 </div>
               </div>

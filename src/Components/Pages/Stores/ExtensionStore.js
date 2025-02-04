@@ -47,8 +47,9 @@ function ExtensionStore() {
                 </div>
               </div>
               <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
-                <div className="allpackages">
+                <div className="allpackages0 row">
                   {/* 10 Extensions Package */}
+                  <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                   <div className="package">
                     <div className="badge0 ribbon">
                       <span>Popular</span></div>
@@ -98,7 +99,11 @@ function ExtensionStore() {
                       {/* <div className="try-add-btn2">Buy Now</div> */}
                     </div>
                   </div>
+                  </div>
+                
                   {/* 20 Extensions Package */}
+
+                  <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                   <div className="package">
                     <h2>20 Extensions</h2>
                     <p>Great for growing teams</p>
@@ -138,6 +143,8 @@ function ExtensionStore() {
                       {/* <div className="try-add-btn2">Buy Now</div> */}
                     </div>
                   </div>
+                  </div>
+                  <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                   {/* 30 Extensions Package */}
                   <div className="package">
                     <h2>30 Extensions</h2>
@@ -179,6 +186,8 @@ function ExtensionStore() {
                       {/* <div className="try-add-btn2">Buy Now</div> */}
                     </div>
                   </div>
+                  </div>
+                  <div className='col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12'>
                   {/* Custom Package */}
                   <div className="package">
                     <h2>Custom</h2>
@@ -220,6 +229,8 @@ function ExtensionStore() {
                       {/* <div className="try-add-btn2">Buy Now</div> */}
                     </div>
                   </div>
+                  </div>
+                
                 </div>
               </div>
             </div>

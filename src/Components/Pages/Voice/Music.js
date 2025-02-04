@@ -405,7 +405,7 @@ function Music() {
             <div className="popup music">
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
-                  <div className="card px-0 col-xl-4 col-md-6+">
+                  <div className="card px-0 col-xl-4 col-md-6">
                     <div className="header">
                       <h5 className="card-title fs14 border-bootm fw700">
                         Upload Documents
