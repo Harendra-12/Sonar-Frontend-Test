@@ -18,6 +18,10 @@ const ActionList = ({
   const [ringGroup, setRingGroup] = useState([]);
   const [extension, setExtension] = useState([]);
   const [callCenter, setCallCenter] = useState([]);
+  console.log("callCenter", callCenter);
+  console.log("ringGroup", ringGroup);
+  
+  
   const [ivr, setIvr] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
