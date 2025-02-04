@@ -106,7 +106,7 @@ const ActionList = ({
     {
       label: "IVR",
       options: ivr?.map((item) => ({
-        value: ["ivr_"+String(item.id), "ivr"],
+        value: ["ivr_" + String(item.id), "ivr"],
         label: item.ivr_name,
       })),
     },
@@ -238,7 +238,6 @@ const ActionList = ({
           isSearchable
           styles={customStyles}
           value={selectedOption}
-          menuPortalTarget={document.body}
         />
         {label ? (
           <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
