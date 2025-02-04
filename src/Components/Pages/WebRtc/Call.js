@@ -98,7 +98,7 @@ function Call({
       }
     }
     fetchData();
-  }, [currentPage, startDate, endDate, searchQuery, clickStatus, filterBy]);
+  }, [currentPage, startDate, endDate, searchQuery, clickStatus, filterBy,refreshCalls]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {

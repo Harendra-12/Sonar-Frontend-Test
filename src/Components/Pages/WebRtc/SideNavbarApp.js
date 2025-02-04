@@ -6,6 +6,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
   const { connectStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
+  const accountDetails = useSelector((state) => state.accountDetails);
+  const isCustomerAdmin = account?.email == accountDetails?.email;
   return (
     <section>
       <style>
@@ -117,19 +119,21 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Call Center</div>
               </div>
             </li>
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("conference")}
-                className={
-                  activePage === "conference" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-sharp fa-light fa-people-group" />
+            {isCustomerAdmin &&
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("conference")}
+                  className={
+                    activePage === "conference" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-sharp fa-light fa-people-group" />
+                  </div>
+                  <div className="itemTitle">Conference</div>
                 </div>
-                <div className="itemTitle">Conference</div>
-              </div>
-            </li>
+              </li>
+            }
           </ul>
         </div>
       </div>

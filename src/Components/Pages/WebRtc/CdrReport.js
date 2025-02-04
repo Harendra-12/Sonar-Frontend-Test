@@ -710,6 +710,7 @@ function CdrReport({ page }) {
                           <th>Tag</th>
                           <th>Via/Route</th>
                           <th>Extension</th>
+                          <th>User name</th>
                           <th>Date</th>
                           <th>Time</th>
                           <th>Recording</th>
@@ -718,8 +719,8 @@ function CdrReport({ page }) {
                             ""
                           ) : (
                             <>
-                              <th>Hangup Cause</th>
-                              <th>hangup Status</th>
+                              <th>Hangup Status</th>
+                              <th>hangup Cause</th>
                             </>
                           )}
                           <th>Charge</th>
@@ -728,7 +729,7 @@ function CdrReport({ page }) {
                       </thead>
                       <tbody>
                         {loading ? (
-                          <SkeletonTableLoader col={page === "billing" ? 12 : 16} row={12} />
+                          <SkeletonTableLoader col={page === "billing" ? 12 : 17} row={12} />
                         ) : (
                           <>
                             {cdr?.data &&
@@ -813,14 +814,19 @@ function CdrReport({ page }) {
                                         {item["application_state"] ===
                                           "intercept" ||
                                           item["application_state"] ===
-                                          "eavesdrop"
+                                          "eavesdrop" ||
+                                          item["application_state"] ===
+                                          "whisper"
                                           ? item["other_leg_destination_number"]
-                                          : item["variable_sip_to_user"]}{" "}
+                                          : item["Caller-Callee-ID-Number"]}{" "}
                                         {item["application_state_name"] &&
                                           `(${item["application_state_name"]})`}
                                       </td>
                                       <td>
                                         {item["application_state_to_ext"]}
+                                      </td>
+                                      <td>
+                                        {item["e_name"]}
                                       </td>
                                       <td>
                                         {

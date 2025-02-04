@@ -68,6 +68,7 @@ var groupMessage = [];
 var previewDialer = [];
 var agentDeposition = false
 var desposiTionOptions = []
+var callCenterPopUp = localStorage.getItem("callCenterPopUp")
 
 const initialState = {
   account,
@@ -139,6 +140,7 @@ const initialState = {
   previewDialer,
   agentDeposition,
   desposiTionOptions,
+  callCenterPopUp,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -301,38 +303,44 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         conferenceScreenShareStatus: action.conferenceScreenShareStatus,
       };
-      case "SET_CONFERENCEMESSAGE":
+    case "SET_CONFERENCEMESSAGE":
       return {
         ...state,
-        conferenceMessage:[...state.conferenceMessage, action.conferenceMessage] ,
+        conferenceMessage: [...state.conferenceMessage, action.conferenceMessage],
       };
-      case "SET_ROOMID":
+    case "SET_ROOMID":
       return {
         ...state,
         RoomID: action.RoomID,
       };
-      case "SET_GROUPMESSAGE":
-      return {...state,groupMessage:action.groupMessage};
-      case "SET_PREVIEWDIALER":
-      return {...state,
-        previewDialer:[...state.previewDialer,action.previewDialer]
+    case "SET_GROUPMESSAGE":
+      return { ...state, groupMessage: action.groupMessage };
+    case "SET_PREVIEWDIALER":
+      return {
+        ...state,
+        previewDialer: [...state.previewDialer, action.previewDialer]
       };
-      case "REMOVE_PREVIEWDIALER":
+    case "REMOVE_PREVIEWDIALER":
       return {
         ...state,
         previewDialer: state.previewDialer.filter(
           (item) => item.phone_number !== action.phone_number
         ),
       };
-      case "SET_AGENT_DEPOSITION":
+    case "SET_AGENT_DEPOSITION":
       return {
         ...state,
         agentDeposition: action.agentDeposition,
       };
-      case "SET_DEPOSIT_OPTIONS":
+    case "SET_DEPOSIT_OPTIONS":
       return {
         ...state,
         desposiTionOptions: action.desposiTionOptions,
+      };
+    case "SET_CALL_CENTER_POPUP":
+      return {
+        ...state,
+        callCenterPopUp: action.callCenterPopUp,
       };
     default:
       return state;

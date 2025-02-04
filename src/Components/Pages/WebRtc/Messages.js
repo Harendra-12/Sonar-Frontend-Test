@@ -19,7 +19,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import {  useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 
@@ -1593,13 +1593,15 @@ function Messages({
                         <div className="chatHeading" data-bell={""}>
                           <h5>
                             Group Chats{" "}
-                            <Tippy content="Click to create a new group!">
-                              <i
-                                onClick={() => setGroupChatPopUp(true)}
-                                class="fa-regular fa-circle-plus fs-5"
-                                style={{ cursor: "pointer", fontSize: 18 }}
-                              ></i>
-                            </Tippy>
+                            {account.user_role?.roles?.name !== "Agent" &&
+                              <Tippy content="Click to create a new group!">
+                                <i
+                                  onClick={() => setGroupChatPopUp(true)}
+                                  class="fa-regular fa-circle-plus fs-5"
+                                  style={{ cursor: "pointer", fontSize: 18 }}
+                                ></i>
+                              </Tippy>
+                            }
                           </h5>
                         </div>
                         {groupChatPopUp ? (

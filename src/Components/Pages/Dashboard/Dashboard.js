@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -194,14 +194,14 @@ const Dashboard = () => {
     };
   }, [allCall, callCenter]);
 
-// Setting call card data
+  // Setting call card data
   useEffect(() => {
     if (combinedCallData) {
       setCallCardData(combinedCallData.callCardData);
     }
   }, [combinedCallData]);
 
-// Setting call card data
+  // Setting call card data
   useEffect(() => {
     if (extension.length == 0) {
       dispatch({
@@ -302,30 +302,34 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  <button
-                    className="nav-link"
-                    id="nav-home-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-calls"
-                    type="button"
-                    role="tab"
-                    aria-controls="nav-calls"
-                    aria-selected="true"
-                  >
-                    Calls
-                  </button>
-                  <button
-                    className="nav-link"
-                    id="nav-contact-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#nav-billing"
-                    type="button"
-                    role="tab"
-                    aria-controls="nav-billing"
-                    aria-selected="false"
-                  >
-                    Billing
-                  </button>
+                  {account?.permissions?.includes(86) &&
+                    <button
+                      className="nav-link"
+                      id="nav-home-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#nav-calls"
+                      type="button"
+                      role="tab"
+                      aria-controls="nav-calls"
+                      aria-selected="true"
+                    >
+                      Calls
+                    </button>
+                  }
+                  {account?.permissions?.includes(470) &&
+                    <button
+                      className="nav-link"
+                      id="nav-contact-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#nav-billing"
+                      type="button"
+                      role="tab"
+                      aria-controls="nav-billing"
+                      aria-selected="false"
+                    >
+                      Billing
+                    </button>
+                  }
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
@@ -569,131 +573,133 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                     { isCustomerAdmin?<div className="col-xl-4 mb-3 mb-xl-0">
-                        <div className="itemWrapper a">
-                          <div className="heading">
-                            <div className="d-flex flex-wrap justify-content-between">
-                              <div className="col-9">
-                                <h5>Subscription Details</h5>
-                                <p>Click the icon to view it</p>
-                              </div>
-                              <div
-                                className="col-3"
-                                onClick={() => navigate("/card-details")}
-                              >
-                                <i class="fa-duotone fa-money-check-dollar-pen"></i>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="data-number2">
-                            <div className="d-flex flex-wrap justify-content-between">
-                              <div className="col-12">
-                                <ul>
-                                  <li>
-                                    Subscription Status{" "}
-                                    <span className="float-end">
-                                      {
-                                        accountDetails?.subscription[0]
-                                          ?.status
-                                      }
-                                    </span>
-                                  </li>
-                                  <li>
-                                    Subscription Start{" "}
-                                    <span className="float-end">
-                                      {
-                                        accountDetails?.subscription[0]?.start_date?.split(
-                                          " "
-                                        )[0]
-                                      }
-                                      ,{" "}
-                                      {
-                                        accountDetails?.subscription[0]?.start_date?.split(
-                                          " "
-                                        )[1]
-                                      }
-                                    </span>
-                                  </li>
-                                  <li>
-                                    Subscription End{" "}
-                                    <span className="float-end">
-                                      {
-                                        accountDetails?.subscription[0]?.end_date?.split(
-                                          " "
-                                        )[0]
-                                      }
-                                      ,{" "}
-                                      {
-                                        accountDetails?.subscription[0]?.end_date?.split(
-                                          " "
-                                        )[1]
-                                      }
-                                    </span>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>:<></>}
-                        <div className="col-xl-4 mb-3 mb-xl-0">
+                        {isCustomerAdmin ? <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-9">
-                                  <h5>Extensions</h5>
-                                  <p>
-                                    Total: {accountDetails?.extensions?.length}{" "}
-                                    Registered
-                                  </p>
+                                  <h5>Subscription Details</h5>
+                                  <p>Click the icon to view it</p>
                                 </div>
                                 <div
                                   className="col-3"
-                                  onClick={() => navigate("/extensions")}
+                                  onClick={() => navigate("/card-details")}
                                 >
-                                  <i class="fa-duotone fa-phone-office"></i>
+                                  <i class="fa-duotone fa-money-check-dollar-pen"></i>
                                 </div>
                               </div>
                             </div>
                             <div className="data-number2">
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
-                                  <ul
-                                    style={{
-                                      overflowY: "scroll",
-                                      height: "200px",
-                                      paddingRight: 10,
-                                    }}
-                                  >
-                                    {accountDetails?.extensions?.map(
-                                      (item, index) => (
-                                        <li
-                                          key={index}
-                                          onClick={() =>
-                                            navigate(
-                                              `/extensions-edit?id=${item?.id}`
-                                            )
-                                          }
-                                        >
-                                          {item?.extension}
-                                          <span
-                                            className={
-                                              onlineExtension?.includes(
-                                                item?.extension
-                                              )
-                                                ? "float-end extensionStatus online"
-                                                : "float-end extensionStatus"
-                                            }
-                                          ></span>
-                                        </li>
-                                      )
-                                    )}
+                                  <ul>
+                                    <li>
+                                      Subscription Status{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]
+                                            ?.status
+                                        }
+                                      </span>
+                                    </li>
+                                    <li>
+                                      Subscription Start{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]?.start_date?.split(
+                                            " "
+                                          )[0]
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.subscription[0]?.start_date?.split(
+                                            " "
+                                          )[1]
+                                        }
+                                      </span>
+                                    </li>
+                                    <li>
+                                      Subscription End{" "}
+                                      <span className="float-end">
+                                        {
+                                          accountDetails?.subscription[0]?.end_date?.split(
+                                            " "
+                                          )[0]
+                                        }
+                                        ,{" "}
+                                        {
+                                          accountDetails?.subscription[0]?.end_date?.split(
+                                            " "
+                                          )[1]
+                                        }
+                                      </span>
+                                    </li>
                                   </ul>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> : <></>}
+                        {account?.permissions?.includes(176) &&
+                          <div className="col-xl-4 mb-3 mb-xl-0">
+                            <div className="itemWrapper a">
+                              <div className="heading">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-9">
+                                    <h5>Extensions</h5>
+                                    <p>
+                                      Total: {accountDetails?.extensions?.length}{" "}
+                                      Registered
+                                    </p>
+                                  </div>
+                                  <div
+                                    className="col-3"
+                                    onClick={() => navigate("/extensions")}
+                                  >
+                                    <i class="fa-duotone fa-phone-office"></i>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="data-number2">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-12">
+                                    <ul
+                                      style={{
+                                        overflowY: "scroll",
+                                        height: "200px",
+                                        paddingRight: 10,
+                                      }}
+                                    >
+                                      {accountDetails?.extensions?.map(
+                                        (item, index) => (
+                                          <li
+                                            key={index}
+                                            onClick={() =>
+                                              navigate(
+                                                `/extensions-edit?id=${item?.id}`
+                                              )
+                                            }
+                                          >
+                                            {item?.extension}
+                                            <span
+                                              className={
+                                                onlineExtension?.includes(
+                                                  item?.extension
+                                                )
+                                                  ? "float-end extensionStatus online"
+                                                  : "float-end extensionStatus"
+                                              }
+                                            ></span>
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        }
                       </div>
                     </div>
                   </div>
