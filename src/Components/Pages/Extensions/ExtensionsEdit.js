@@ -252,18 +252,18 @@ const ExtensionsEdit = ({ page }) => {
       });
       // return;
     }
-    if (data.followme == 1 && !callSetting.followMeDestination) {
-      setCallSetting((prevState) => ({
-        ...prevState,
-        followMeDestinationError: true,
-      }));
-      return;
-    }
+    // if (data.followme == 1 && !callSetting.followMeDestination) {
+    //   setCallSetting((prevState) => ({
+    //     ...prevState,
+    //     followMeDestinationError: true,
+    //   }));
+    //   return;
+    // }
     if (
       (data.onbusy == 1 && !data.onbusyTo) ||
       (data.noanswer == "Forward" && !data.noanswerTo) ||
       (data.notregistered == 1 && !data.notregisteredTo) ||
-      (data.followme == 1 && !callSetting.followMeDestination)
+      (data.followme == 1 && !data.destination_forward_to)
     ) {
       return;
     }
@@ -282,6 +282,8 @@ const ExtensionsEdit = ({ page }) => {
           emergencyCallerIdNumber: data.emergencyCallerIdNumber,
           directoryFullname: data.directoryFullname,
           directoryExtensionVisible: data.directoryExtensionVisible,
+          destinationType: data.destinationType,
+          destination: data.destination_forward_to,
           maxRegistration: data.maxRegistration,
           limitMax: data.limitMax,
           limitDestinations: data.limitDestinations,
@@ -353,6 +355,8 @@ const ExtensionsEdit = ({ page }) => {
           emergencyCallerIdNumber: data.emergencyCallerIdNumber,
           directoryFullname: data.directoryFullname,
           directoryExtensionVisible: data.directoryExtensionVisible,
+          destinationType: data.destinationType,
+          destination: data.destination_forward_to,
           maxRegistration: data.maxRegistration,
           limitMax: data.limitMax,
           forward: data.forward,
@@ -412,8 +416,6 @@ const ExtensionsEdit = ({ page }) => {
             : { user: data.user }),
         };
       }
-
-      console.log("parsedData", parsedData);
       const apiData = await generalPutFunction(
         `/extension/${value}`,
         parsedData
@@ -444,6 +446,9 @@ const ExtensionsEdit = ({ page }) => {
   // Manually manage forward to state
   const forwardToValue = (value) => {
     setValue("forward_to", value[0]);
+  };
+  const forwardToValueDestination = (value) => {
+    setValue("destination_forward_to", value[0]);
   };
   return (
     <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
@@ -1544,74 +1549,96 @@ const ExtensionsEdit = ({ page }) => {
                                   <div className="formRow col-xl-12 px-0 border-0">
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label htmlFor="">Destinations</label>
-                                        {callSetting.followMeDestinationError ? (
-                                          <ErrorMessage
-                                            text={"Field missing"}
-                                          />
-                                        ) : (
-                                          ""
-                                        )}
+                                        <label htmlFor="">
+                                          Destinations Type
+                                        </label>
                                       </div>
                                       <div className="position-relative">
-                                        <input
-                                          type="text"
-                                          name="destination"
+                                        <select
                                           className="formItem"
-                                          value={
-                                            callSetting.followMeDestination
-                                          }
-                                          onChange={(e) => {
-                                            setCallSetting((prevState) => ({
-                                              ...prevState,
-                                              followMeDestination:
-                                                e.target.value,
-                                            }));
-                                            if (e.target.value != "") {
-                                              setCallSetting((prevState) => ({
-                                                ...prevState,
-                                                followMeDestinationError: false,
-                                              }));
-                                            }
-                                          }}
-                                          placeholder="Destination"
-                                        />
+                                          name="destinationType"
+                                          id="destinationType"
+                                          {...register("destinationType")}
+                                          defaultValue="extension"
+                                        >
+                                          <option value="pstn">PSTN</option>
+                                          <option value="extension">
+                                            Extension
+                                          </option>
+                                          <option value="call center">
+                                            Call Center
+                                          </option>
+                                          <option value="ring group">
+                                            Ring Group
+                                          </option>
+                                          <option value="ivr">IVR</option>
+                                        </select>
                                       </div>
                                     </div>
-                                    <div className="col-3 pe-2">
+                                    <div className="col-3">
                                       <div className="formLabel">
-                                        <label htmlFor="">Delay</label>
+                                        <label htmlFor="">Destination</label>
                                       </div>
 
-                                      <select
-                                        className="formItem me-0"
-                                        style={{ width: "100%" }}
-                                        name="delay"
-                                        id="selectFormRow"
-                                        value={callSetting.followMeDelay}
-                                        onChange={(e) => {
-                                          setCallSetting((prevState) => ({
-                                            ...prevState,
-                                            followMeDelay: parseInt(
-                                              e.target.value
-                                            ),
-                                          }));
-                                        }}
-                                      >
-                                        {(() => {
-                                          const numbers = [];
-                                          for (let i = 0; i <= 100; i++) {
-                                            if (i % 5 === 0) {
-                                              numbers.push(
-                                                <span key={i}>{i}</span>
-                                              );
+                                      {watch("destinationType") !== "pstn" && (
+                                        <div className="w-full">
+                                          <ActionList
+                                            category={watch().destinationType}
+                                            title={null}
+                                            label={null}
+                                            getDropdownValue={
+                                              forwardToValueDestination
                                             }
-                                          }
-                                          return numbers.map((item) => {
-                                            return <option>{item}</option>;
-                                          });
-                                        })()}
-                                      </select>
+                                            value={
+                                              watch().destination_forward_to
+                                            }
+                                            {...register(
+                                              "destination_forward_to",
+                                              requiredValidator
+                                            )}
+                                          />
+                                          {errors.destination_forward_to && (
+                                            <ErrorMessage
+                                              text={errors.destinationType}
+                                            />
+                                          )}
+                                        </div>
+                                      )}
+                                      {watch("destinationType") === "pstn" && (
+                                        <div className="w-full">
+                                          <input
+                                            type="number"
+                                            name="destination_forward_to"
+                                            className="formItem"
+                                            {...register(
+                                              "destination_forward_to",
+                                              {
+                                                required: "PSTN is required",
+                                                pattern: {
+                                                  value: /^[0-9]*$/,
+                                                  message:
+                                                    "Only digits are allowed",
+                                                },
+                                                minLength: {
+                                                  value: 10,
+                                                  message:
+                                                    "Must be at least 10 digits",
+                                                },
+
+                                                ...noSpecialCharactersValidator,
+                                              }
+                                            )}
+                                          />
+                                          {errors.destination_forward_to && (
+                                            <ErrorMessage
+                                              text={
+                                                errors.destination_forward_to
+                                                  .message
+                                              }
+                                            />
+                                          )}
+                                        </div>
+                                      )}
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
@@ -1804,10 +1831,10 @@ const ExtensionsEdit = ({ page }) => {
                                           value: /^[0-9]*$/,
                                           message: "Only digits are allowed",
                                         },
-                                        // minLength: {
-                                        //   value: 10,
-                                        //   message: "Must be at least 10 digits",
-                                        // },
+                                        minLength: {
+                                          value: 10,
+                                          message: "Must be at least 10 digits",
+                                        },
 
                                         ...noSpecialCharactersValidator,
                                       })}

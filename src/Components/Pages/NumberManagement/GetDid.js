@@ -331,6 +331,10 @@ function GetDid() {
                             })}
                             onKeyDown={restrictToNumbers}
                           />
+                        
+                          {errors.quantity && (
+                            <ErrorMessage text={errors.quantity.message} />
+                          )}
 
                           <label htmlFor="data" className="formItemDesc">
                             Input the quantity
@@ -374,6 +378,9 @@ function GetDid() {
                               ...noSpecialCharactersValidator,
                             })}
                           />
+                          {errors.npa && (
+                            <ErrorMessage text={errors.npa.message} />
+                          )}
 
                           <label htmlFor="data" className="formItemDesc">
                             Input the NPA for the DID
