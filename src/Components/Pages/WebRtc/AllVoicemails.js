@@ -1,10 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
   featureUnderdevelopment,
   generalGetFunction,
-  globalErrorHandler,
 } from "../../GlobalFunction/globalFunction";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ContentLoader from "../../Loader/ContentLoader";
@@ -538,8 +538,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
+                                alt="Add to Contact"
                               >
                                 Add to Contact
                               </a>
@@ -547,7 +548,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
                                 Video Call
@@ -556,7 +557,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
                                 Delete Contact

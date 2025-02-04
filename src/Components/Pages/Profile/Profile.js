@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
 import {
   backToTop,
   featureUnderdevelopment,
-  generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -13,7 +14,6 @@ import { toast } from "react-toastify";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
@@ -23,7 +23,6 @@ const Profile = () => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
-  // const [profileExtensionData, setProfileExtensionData] = useState(null);
   const [selectedExtension, setSelectedExtension] = useState("");
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
@@ -412,6 +411,7 @@ const Profile = () => {
 
                             <p className="imgwidth d-flex ms-2 me-2">
                               <img
+                              alt=""
                                 src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
                               ></img>
                               &nbsp;&nbsp;
@@ -426,6 +426,7 @@ const Profile = () => {
                             <div>
                               <p className="imgwidth d-flex  ms-2 me-2">
                                 <img
+                                alt=""
                                   src={`https://flagsapi.com/GB/flat/16.png`}
                                 ></img>
                                 &nbsp;&nbsp;

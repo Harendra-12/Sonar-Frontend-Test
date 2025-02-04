@@ -294,11 +294,11 @@ export const DummySipRegisteration = ({
               // Store conference message as an object with previous data
               dispatch({
                 type: "SET_CONFERENCEMESSAGE",
-                conferenceMessage:JSON.parse(JSON.parse(event.data))["result"]
+                conferenceMessage: JSON.parse(JSON.parse(event.data))["result"]
               })
             }
-            console.log("Conference Message", JSON.parse(JSON.parse(event.data))["result"]["room_id"],locationState.state.room_id);
-            
+            console.log("Conference Message", JSON.parse(JSON.parse(event.data))["result"]["room_id"], locationState.state.room_id);
+
           }
         } else {
         }
@@ -750,12 +750,12 @@ export const DummySipRegisteration = ({
                       <div className="row">
                         {toggleMessages && (
                           <div className="col-xl-4 col-xxl-3 col-12 my-auto">
-                            <ConferenceMessages 
-                            sendMessage={sendMessage} 
-                            conferenceId={locationState.state.room_id} 
-                            userName={currentUser?.name}
-                            setToggleMessages={setToggleMessages}
-                             />
+                            <ConferenceMessages
+                              sendMessage={sendMessage}
+                              conferenceId={locationState.state.room_id}
+                              userName={currentUser?.name}
+                              setToggleMessages={setToggleMessages}
+                            />
                           </div>
                         )}
                         <div
@@ -980,6 +980,9 @@ export const DummySipRegisteration = ({
                                       }`}
                                   ></i>
                                 </button>
+                                <div className="noScrollbar" style={{ height: '100vh', overflowY: 'auto', paddingLeft: '10px' }}>
+
+                                </div>
                                 {confList.map((item, index) => {
                                   return (
                                     <ConferenceUserTab
@@ -1035,7 +1038,7 @@ export const DummySipRegisteration = ({
                                     }}
                                   />
                                 </div>
-                                <ul>
+                                <ul className="noScrollbar">
                                   {confList.map((item, index) => {
                                     return (
                                       <li>

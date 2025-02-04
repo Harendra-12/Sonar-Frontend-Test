@@ -240,7 +240,7 @@ function IncomingCallPopup({
       }
     }
     // Handle incoming call notification and answer the call
-    if (Notification.permission === 'granted') {
+    if (document.hidden && Notification.permission === 'granted') {
       const notification = new Notification('Incoming Call', {
         body: `Incoming Call from: ${displayName} ${callerExtension}`,
         icon: '/compLogo.png', // Optional: Add an icon

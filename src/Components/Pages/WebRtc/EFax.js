@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EFaxFile from "./EFaxFile";
@@ -7,8 +9,6 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import Select from "react-select";
-import { useForm } from "react-hook-form";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -689,7 +689,7 @@ function EFax() {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
                                 Add to Contact
@@ -698,7 +698,7 @@ function EFax() {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
                                 Video Call
@@ -707,7 +707,7 @@ function EFax() {
                             <li>
                               <a
                                 class="dropdown-item"
-                                href="#"
+                                href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
                                 Delete Contact

@@ -431,8 +431,8 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`col-${forwardStatus != "disabled"
-                                ? "3 pe-2 ms-auto"
-                                : "6"
+                              ? "3 pe-2 ms-auto"
+                              : "6"
                               }`}
                           >
                             {forwardStatus != "disabled" && (
@@ -579,7 +579,6 @@ const DidConfig = () => {
                               name="forward_to"
                               className="formItem"
                               {...register("tag", {
-                                ...requiredValidator,
                               })}
                             />
                             {errors?.tag && (
@@ -681,9 +680,9 @@ const DidConfig = () => {
                           </div>
                           <div
                             className={`col-${watch().sticky_agent_enable == "true" ||
-                                watch().sticky_agent_enable == 1
-                                ? "2 pe-2 ms-auto"
-                                : "6"
+                              watch().sticky_agent_enable == 1
+                              ? "2 pe-2 ms-auto"
+                              : "6"
                               }`}
                           >
                             {watch().sticky_agent_enable === "true" ||
@@ -773,12 +772,7 @@ const DidConfig = () => {
                           <div className="col-6">
                             <div className="row">
                               <div
-                                className={`col-${watch().spam_filter_type == "1" ||
-                                    watch().spam_filter_type == "2"
-                                    ? "12"
-                                    : "4"
-                                  } pe-1 ms-auto`}
-                              >
+                                className={`col-${watch().spam_filter_type === "3" ? "4 pe-1 ms-auto" : "12"}`}>
                                 {watch().spam_filter_type != "1" && (
                                   <div class="formLabel">
                                     <label>Type</label>

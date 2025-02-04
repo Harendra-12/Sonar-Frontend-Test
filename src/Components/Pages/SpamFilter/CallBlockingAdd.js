@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
@@ -10,10 +11,7 @@ import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Skeleton } from "@mui/material";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
-import Select from "react-select";
-import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { requiredValidator } from "../../validations/validation";
@@ -276,7 +274,7 @@ function CallBlockingAdd() {
                     )} */}
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
-              <div className="d-flex flex-wrap">
+              <div className="d-flex flex-wrap" style={{ position: 'sticky', top: '0', zIndex: '9' }}>
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
@@ -511,7 +509,7 @@ function CallBlockingAdd() {
                         className="formItem"
                         // value={number}
                         {...register("number", { ...requiredValidator })}
-                        // onChange={(e) => setNumber(e.target.value)}
+                      // onChange={(e) => setNumber(e.target.value)}
                       />
                       {errors.number && (
                         <ErrorMessage text={errors.number.message} />
@@ -603,7 +601,7 @@ function CallBlockingAdd() {
                           setPageNumber(1);
                         }}
                         value={callDirection}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                      // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                       >
                         <option value={""}>All Calls</option>
                         <option value={"inbound"}>Inbound Calls</option>
@@ -658,7 +656,7 @@ function CallBlockingAdd() {
                               <td className="d-flex align-items-center gap-2">
                                 <input
                                   type="checkbox"
-                                  //   onClick={() => {}}
+                                //   onClick={() => {}}
                                 ></input>
                                 {item["Call-Direction"]}
                               </td>

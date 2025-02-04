@@ -249,9 +249,9 @@
         padding: 15px;
     }
 
-    .overviewTableChild .formScroller {
+    /* .overviewTableChild .formScroller {
         max-height: calc(100vh - 150px);
-    }
+    } */
 
     .overviewTableWrapper .tableContainer {
         height: calc(100vh - 320px)

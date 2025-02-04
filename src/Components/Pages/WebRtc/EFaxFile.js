@@ -1,8 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
-import Loader from "../../Loader/Loader";
-import CircularLoader from "../../Loader/CircularLoader";
 
 const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
   const [uploadPopup, setUploadPopup] = useState(false);

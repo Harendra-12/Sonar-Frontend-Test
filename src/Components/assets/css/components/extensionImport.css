@@ -348,10 +348,10 @@ form.tangoNavs .nav-tabs {
     font-weight: 500;
 }
 
-.overviewTableChild .formScroller {
+/* .overviewTableChild .formScroller {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
-}
+} */
 
 .formRow.col-xl-3 {
     width: 45%;

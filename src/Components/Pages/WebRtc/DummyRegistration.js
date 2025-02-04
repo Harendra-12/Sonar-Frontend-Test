@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { SIPProvider } from "react-sipjs";
 import { DummySipRegisteration } from "./DummySipRegisteration";

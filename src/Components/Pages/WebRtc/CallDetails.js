@@ -1,9 +1,9 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
 import { toast } from "react-toastify";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
-import { set } from "react-hook-form";
 
 function CallDetails({
   clickedCall,
@@ -208,7 +208,7 @@ function CallDetails({
                 <li>
                   <a
                     class="dropdown-item"
-                    href="#"
+                    href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
                     Add to Contact
@@ -217,7 +217,7 @@ function CallDetails({
                 <li>
                   <a
                     class="dropdown-item"
-                    href="#"
+                    href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
                     Video Call
@@ -226,7 +226,7 @@ function CallDetails({
                 <li>
                   <a
                     class="dropdown-item"
-                    href="#"
+                    href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
                     Delete Contact

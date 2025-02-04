@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
@@ -6,7 +8,6 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import CircularLoader from "../../Loader/CircularLoader";
 
 function VoiceMailReport() {
   const navigate = useNavigate();

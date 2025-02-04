@@ -154,7 +154,6 @@ export async function generalDeleteFunction(endpoint) {
         const errorMessage = Object.keys(err.response.data.errors);
         toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
-        const errorMessage = Object.keys(err.response.data.error);
         toast.error(err.response.data.error);
       } else {
         toast.error(

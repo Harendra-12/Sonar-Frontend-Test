@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall, useSIPProvider } from "react-sipjs";
+import { useSIPProvider, useSessionCall } from "react-sipjs";
 import { CallTimer } from "./CallTimer";
 import {
   SessionState,
@@ -30,6 +30,7 @@ function OngoingCall({
   const [destNumber, setDestNumber] = useState("");
   const [attendedTransferNumber, setattendedTransferNumber] = useState("");
   const [showParkList, setShowParkList] = useState(false);
+  const [selectedSessions, setSelectedSessions] = useState([]);
   const [parkingNumber, setParkingNumber] = useState("");
   const callProgressDestination = useSelector(
     (state) => state.callProgressDestination
@@ -235,132 +236,125 @@ function OngoingCall({
   };
 
   // Function to merge two sessions
-  const handleMergeCall = async (id) => {
-    console.log("handleMergeCall2 Started", callProgressId, id);
-    const sessionA = sessions[callProgressId]; 
-    const sessionB = sessions[id]; 
+  const handleMergeCall = async (sessionIds) => {
+    console.log("handleMergeCall Started for sessions:", sessionIds);
 
-    // Unhold the previous session which was by default goes on hold if we change the line 
-    var sessionDescriptionHandlerOptions = sessionB.sessionDescriptionHandlerOptionsReInvite;
-    sessionDescriptionHandlerOptions.hold = false;
-    sessionB.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-    // Setting option to retreive the audio track from the previous session
-    var options = {
-      requestDelegate: {
-        onAccept: function () {
-          if (sessionB && sessionB.sessionDescriptionHandler && sessionB.sessionDescriptionHandler.peerConnection) {
-            var pc = sessionB.sessionDescriptionHandler.peerConnection;
-            // Restore all the inbound streams
-            pc.getReceivers().forEach(function (RTCRtpReceiver) {
-              if (RTCRtpReceiver.track) RTCRtpReceiver.track.enabled = true;
-            });
-            // Restorte all the outbound streams
-            pc.getSenders().forEach(function (RTCRtpSender) {
-              // Unmute Audio
-              if (RTCRtpSender.track && RTCRtpSender.track.kind == "audio") {
-                if (RTCRtpSender.track.IsMixedTrack == true) {
-                  if (sessionB.data.AudioSourceTrack && sessionB.data.AudioSourceTrack.kind == "audio") {
-                    console.log("Unmuting Mixed Audio Track : " + sessionB.data.AudioSourceTrack.label);
-                    sessionB.data.AudioSourceTrack.enabled = true;
-                  }
-                }
-                console.log("Unmuting Audio Track : " + RTCRtpSender.track.label);
-                RTCRtpSender.track.enabled = true;
-              }
-              else if (RTCRtpSender.track && RTCRtpSender.track.kind == "video") {
-                RTCRtpSender.track.enabled = true;
-              }
-            });
-          }
-          sessionB.isOnHold = false;
-        },
-        onReject: function () {
-          sessionB.isOnHold = true;
-        }
-      }
-    };
-
-    // Send re-INVITE to resume the call
-    sessionB.invite(options)
-      .then(() =>  dispatch({
-        // If unhold then manage its status globally
-        type: "SET_SESSIONS",
-        sessions: globalSession.map((item) =>
-          item.id === id ? { ...item, state: "Established" } : item
-        ),
-      }))
-      .catch((error) => console.error("Error sending unhold request:", error));
-    if (!sessionA || !sessionB) {
-      console.error("Sessions are not found");
+    const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
+    if (activeSessions.length < 2) {
+      console.error("At least two sessions are required to merge.");
       return;
     }
+
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    let remoteStreamA = new MediaStream();
-    let remoteStreamB = new MediaStream();
+    let remoteStreams = new Map();
 
-    // Sending the mixed audio stream for the call to merge
-    function sendMixedStreamToSession(session, mixedStream) {
-      if (!mixedStream || mixedStream.getAudioTracks().length === 0) {
-        console.error("No valid mixed stream to send.");
-        return;
-      }
-      const mixedAudioTrack = mixedStream.getAudioTracks()[0];
-      session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
-        if (sender.track && sender.track.kind === "audio") {
-          console.log(`Replacing audio track in Session ${session.id}`);
-          sender.replaceTrack(mixedAudioTrack);
+    // Unhold each session before merging
+    await Promise.all(activeSessions.map(async (session) => {
+      // if (!session || !session.isOnHold) return;
+
+      console.log(`Unholding session ${session.id}...`);
+
+      let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
+      sessionDescriptionHandlerOptions.hold = false;
+      session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+
+      let options = {
+        requestDelegate: {
+          onAccept: function () {
+            if (session && session.sessionDescriptionHandler && session.sessionDescriptionHandler.peerConnection) {
+              let pc = session.sessionDescriptionHandler.peerConnection;
+
+              // Restore inbound streams
+              pc.getReceivers().forEach(receiver => {
+                if (receiver.track) receiver.track.enabled = true;
+              });
+
+              // Restore outbound streams
+              pc.getSenders().forEach(sender => {
+                if (sender.track) {
+                  console.log(`Unmuting ${sender.track.kind} track: ${sender.track.label}`);
+                  sender.track.enabled = true;
+                }
+              });
+            }
+            session.isOnHold = false;
+          },
+          onReject: function () {
+            session.isOnHold = true;
+          }
         }
-      });
-      setShowActiveSessions(false);
-    }
+      };
 
-    // Createing mixed audio stream for the call
-    function mixAudioStreams(myAudioStream, excludeRemoteStream) {
-      if (!myAudioStream) {
-        console.error("Missing local audio stream.");
-        return;
+      try {
+        await session.invite(options);
+      } catch (error) {
+        console.error(`Error unholding session ${session.id}:`, error);
       }
-      console.log("Mixing audio streams (excluding own voice)...");
-      // Create sources for the streams
-      const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
-      const sourceRemote = audioContext.createMediaStreamSource(excludeRemoteStream);
-      // Create a destination for mixed audio
-      const destination = audioContext.createMediaStreamDestination();
-      // Connect only the required sources (EXCLUDE remote user’s own audio)
-      sourceMyAudio.connect(destination); // Add my voice
-      sourceRemote.connect(destination);  // Add the remote participant's voice
-      console.log("Mixed stream created:", destination.stream);
-      return destination.stream;
-    }
+    }));
 
     try {
       console.log("Requesting user audio...");
       const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      console.log("Checking existing audio tracks...");
-      sessionA.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
-        if (receiver.track.kind === "audio") {
-          remoteStreamA.addTrack(receiver.track);
-        }
-      });
-      sessionB.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
-        if (receiver.track.kind === "audio") {
-          remoteStreamB.addTrack(receiver.track);
-        }
-      });
-      if (remoteStreamA.getTracks().length > 0 && remoteStreamB.getTracks().length > 0) {
-        // Send mixed audio to Session A (excluding A's own voice)
-        const mixedStreamA = mixAudioStreams(myAudioStream, remoteStreamB);
-        sendMixedStreamToSession(sessionA, mixedStreamA);
-        // Send mixed audio to Session B (excluding B's own voice)
-        const mixedStreamB = mixAudioStreams(myAudioStream, remoteStreamA);
-        sendMixedStreamToSession(sessionB, mixedStreamB);
-      } else {
-        console.log("Waiting for remote audio tracks...");
-      }
-    } catch (err) {
-      console.error("Error accessing media devices:", err);
-    }
 
+      // Retrieve remote audio streams for each session
+      activeSessions.forEach((session) => {
+        let remoteStream = new MediaStream();
+        session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
+          if (receiver.track && receiver.track.kind === "audio") {
+            remoteStream.addTrack(receiver.track);
+          }
+        });
+        remoteStreams.set(session.id, remoteStream);
+      });
+
+      // Function to mix audio streams dynamically, excluding a session's own remote stream
+      function mixAudioStreams(myAudioStream, excludeStream) {
+        if (!myAudioStream) {
+          console.error("Missing local audio stream.");
+          return;
+        }
+
+        const destination = audioContext.createMediaStreamDestination();
+        const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
+        sourceMyAudio.connect(destination); // Add local microphone audio
+
+        remoteStreams.forEach((stream, sessionId) => {
+          if (stream !== excludeStream) { // Exclude the session’s own remote stream
+            const sourceRemote = audioContext.createMediaStreamSource(stream);
+            sourceRemote.connect(destination);
+          }
+        });
+
+        console.log("Mixed stream created:", destination.stream);
+        return destination.stream;
+      }
+
+      // Send the mixed audio stream to each session
+      function sendMixedStreamToSession(session, mixedStream) {
+        if (!mixedStream || mixedStream.getAudioTracks().length === 0) {
+          console.error("No valid mixed stream to send.");
+          return;
+        }
+        const mixedAudioTrack = mixedStream.getAudioTracks()[0];
+
+        session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
+          if (sender.track && sender.track.kind === "audio") {
+            console.log(`Replacing audio track in Session ${session.id}`);
+            sender.replaceTrack(mixedAudioTrack);
+          }
+        });
+      }
+
+      // Mix and send the correct streams to each session
+      activeSessions.forEach((session) => {
+        const mixedStream = mixAudioStreams(myAudioStream, remoteStreams.get(session.id));
+        sendMixedStreamToSession(session, mixedStream);
+      });
+
+      console.log("All selected sessions have been merged.");
+    } catch (err) {
+      console.error("Error during call merging:", err);
+    }
   };
 
   return (
@@ -427,7 +421,29 @@ function OngoingCall({
             )}
             {showActiveSessions && (
               <div className="parkList">
-                <select
+                <button className="formItem d-flex justify-content-between align-items-center" onClick={() => setShowActiveSessions(!showActiveSessions)}>
+                  Select to Merge call <i class="fa-solid fa-xmark text-danger"></i>
+                </button>
+                <div className="mergeCallList">
+                  <ul>
+                    {globalSession.map((item, index) => {
+                      const isCurrent = item.id === session.id;
+                      return (
+                        !isCurrent && <li key={index} >{item.destination} <input type="checkbox" value={item.id}
+                          onChange={(e) => {
+                            const { checked, value } = e.target;
+                            setSelectedSessions((prev) =>
+                              checked ? [...prev, value] : prev.filter((id) => id !== value)
+                            );
+                          }} /></li>
+                      )
+                    })}
+                  </ul>
+                  <button onClick={() => handleMergeCall([...selectedSessions, session.id])} ><i class="fa-solid fa-merge me-2"></i> Merge</button>
+                </div>
+
+
+                {/* <select
                   defaultValue={""}
                   className="formItem"
                   onChange={(e) => handleMergeCall(e.target.value)}
@@ -446,7 +462,7 @@ function OngoingCall({
                       )
                     );
                   })}
-                </select>
+                </select> */}
               </div>
             )}
             {showParkList && (
@@ -503,11 +519,11 @@ function OngoingCall({
             </Tippy>
             <Tippy content="Merge Call">
               <button
-              onClick={() => {setShowActiveSessions(!showActiveSessions);setAttendShow(false);setShowTranferableList(false);setShowParkList(false);}}
-              className={` ${showActiveSessions
-                ? "appPanelButtonCaller active"
-                : "appPanelButtonCaller"
-                } `}
+                onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false);setSelectedSessions([]) }}
+                className={` ${showActiveSessions
+                  ? "appPanelButtonCaller active"
+                  : "appPanelButtonCaller"
+                  } `}
                 effect="ripple"
               >
                 <i class="fa-solid fa-merge"></i>
@@ -536,7 +552,7 @@ function OngoingCall({
                   : "appPanelButtonCaller"
                   } `}
                 effect="ripple"
-                onClick={() => {setShowTranferableList(!showTranferableList);setAttendShow(false);setShowActiveSessions(false);setShowParkList(false);}}
+                onClick={() => { setShowTranferableList(!showTranferableList); setAttendShow(false); setShowActiveSessions(false); setShowParkList(false); }}
               >
                 {/* <i className="fa-solid fa-user-plus" /> */}
                 <i class="fa fa-exchange" aria-hidden="true"></i>
@@ -568,7 +584,7 @@ function OngoingCall({
                   : "appPanelButtonCaller"
                   } `}
                 effect="ripple"
-                onClick={() => {setShowParkList(!showParkList);setAttendShow(false);setShowActiveSessions(false);setShowTranferableList(false);}}
+                onClick={() => { setShowParkList(!showParkList); setAttendShow(false); setShowActiveSessions(false); setShowTranferableList(false); }}
               >
                 P
               </button>

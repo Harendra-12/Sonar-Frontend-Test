@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SideNavbarApp from "./SideNavbarApp";
 import { useDispatch, useSelector } from "react-redux";
-import ActiveCallSidePanel from "./ActiveCallSidePanel";
 import {
   featureUnderdevelopment,
   generalDeleteFunction,
@@ -832,7 +830,7 @@ function AllContact({
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4 col-md-5">
+              <div className="row content col-4">
                 <div className="col-2 px-0">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>

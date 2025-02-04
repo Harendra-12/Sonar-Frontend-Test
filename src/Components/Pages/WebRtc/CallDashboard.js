@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import { featureUnderdevelopment, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {  generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Header from "../../CommonComponents/Header";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function CallDashboard() {

@@ -22,6 +22,7 @@ function Roles() {
   const permissions = useSelector((state) => state.permissions);
   const [role, setRole] = useState();
   const [popup, setPopup] = useState(false);
+  const [submitPopup, setSubmitPopup] = useState(false);
   const [editClick, setEditClick] = useState(false);
   const [saveClick, setSaveClick] = useState(false);
   const [updateRole, setUpdateRole] = useState();
@@ -36,6 +37,10 @@ function Roles() {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [defaultPermission, setDefaultPermission] = useState();
   const [parentChecked, setParentChecked] = useState({});
+  //  add new role state
+  const [addNewRolePermissions, setAddNewRolePermissions] = useState(null);
+  const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
+  const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
@@ -62,6 +67,8 @@ function Roles() {
           return item.permission_id;
         })
       );
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -89,12 +96,19 @@ function Roles() {
       if (newRole === "") {
         toast.error("Please enter new role");
       } else {
-        setLoading(true);
+        // setLoading(true);
         const parsedData = {
           name: newRole,
           // created_by:account.account_id
         };
         const apiData = await generalPostFunction("/role/store", parsedData);
+        const initialParentChecked = {};
+        Object.keys(filteredPermission).forEach((item) => {
+          initialParentChecked[item] = filteredPermission[item].every(
+            (innerItem) => addNewRolePermissions.includes(innerItem.id)
+          );
+        });
+        setAddNewRoleParentChecked(initialParentChecked);
         if (apiData?.status) {
           setLoading(false);
           // setRefresh(refresh + 1);
@@ -103,7 +117,7 @@ function Roles() {
             rolesRefresh: rolesRefresh + 1,
           });
           toast.success(apiData.message);
-          setPopup(false);
+          setSubmitPopup(true);
           setSaveClick(false);
           setNewRole("");
           setAddRole(false);
@@ -162,27 +176,48 @@ function Roles() {
   }
 
   // Handle permission save click
-  async function handlePermissionSave() {
+  async function handlePermissionSave(isNewRole) {
     setLoading(true);
-    const parsedData = {
-      role_id: selectedRoleId,
-      permissions: selectedPermission,
-    };
-    const apiData = await generalPostFunction(
-      "/assign-permission-role",
-      parsedData
-    );
-    if (apiData?.status) {
+    if (isNewRole) {
+      setSubmitPopup(false);
+    }
+
+    const parsedData = isNewRole
+      ? {
+          role_id: addSelectedRoleId,
+          permissions: addNewRolePermissions,
+        }
+      : {
+          role_id: selectedRoleId,
+          permissions: selectedPermission,
+        };
+    try {
+      const apiData = await generalPostFunction(
+        "/assign-permission-role",
+        parsedData
+      );
+
+      if (apiData?.status) {
+        toast.success(apiData.message);
+        if (isNewRole) {
+          setAddNewRoleParentChecked({});
+          setAddNewRolePermissions([]);
+        } else {
+          dispatch({
+            type: "SET_ROLES_REFRESH",
+            rolesRefresh: rolesRefresh + 1,
+          });
+        }
+      } else {
+        // const errorMessage = Object.keys(apiData.errors);
+        // toast.error(apiData.errors[errorMessage[0]][0]);
+      }
+    } catch (error) {
+      // Handle any potential errors here
+      console.error("An error occurred while saving permissions:", error);
+      // toast.error("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
-      toast.success(apiData.message);
-      dispatch({
-        type: "SET_ROLES_REFRESH",
-        rolesRefresh: rolesRefresh + 1,
-      });
-    } else {
-      setLoading(false);
-      // const errorMessage = Object.keys(apiData.errors);
-      // toast.error(apiData.errors[errorMessage[0]][0]);
     }
   }
 
@@ -206,7 +241,6 @@ function Roles() {
     defaultPermission,
     account.permissions
   );
-
   // Initialize parentChecked state
   useEffect(() => {
     const initialParentChecked = {};
@@ -235,6 +269,20 @@ function Roles() {
     });
     setParentChecked(updatedParentChecked);
   };
+  const handleSubmitCheckboxChange = (id) => {
+    const newSelectedPermission = addNewRolePermissions.includes(id)
+      ? addNewRolePermissions.filter((item) => item !== id)
+      : [...addNewRolePermissions, id];
+    setAddNewRolePermissions(newSelectedPermission);
+    // Update parent checkbox state
+    const updatedParentChecked = {};
+    Object.keys(filteredPermission).forEach((item) => {
+      updatedParentChecked[item] = filteredPermission[item].every((innerItem) =>
+        newSelectedPermission.includes(innerItem.id)
+      );
+    });
+    setAddNewRoleParentChecked(updatedParentChecked);
+  };
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -262,6 +310,23 @@ function Roles() {
 
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
+  };
+  const handleSubmitParentCheckboxChange = (item) => {
+    const newParentChecked = !addNewRoleParentChecked[item];
+    const newSelectedPermission = [...addNewRolePermissions];
+    filteredPermission[item].forEach((innerItem) => {
+      const index = newSelectedPermission.indexOf(innerItem.id);
+      if (newParentChecked) {
+        if (index === -1) newSelectedPermission.push(innerItem.id);
+      } else {
+        if (index > -1) newSelectedPermission.splice(index, 1);
+      }
+    });
+    setAddNewRolePermissions(newSelectedPermission);
+    setAddNewRoleParentChecked({
+      ...addNewRoleParentChecked,
+      [item]: newParentChecked,
+    });
   };
   return (
     <>
@@ -314,6 +379,7 @@ function Roles() {
                               onClick={() => {
                                 setAddRole(true);
                                 setEditClick(false);
+                                setAddSelectedRoleId("");
                               }}
                               type="button"
                               effect="ripple"
@@ -451,7 +517,7 @@ function Roles() {
                                                     setSelectedRoleId(item.id);
                                                     setSelectedRole(item.name);
                                                     setSelectedPermission(
-                                                      item.permissions?.map(
+                                                      item?.permissions?.map(
                                                         (item) => {
                                                           return item.permission_id;
                                                         }
@@ -496,7 +562,7 @@ function Roles() {
                                               () => item?.is_default
                                             );
                                             setSelectedPermission(
-                                              item.permissions?.map((item) => {
+                                              item?.permissions?.map((item) => {
                                                 return item.permission_id;
                                               })
                                             );
@@ -544,7 +610,9 @@ function Roles() {
                                       <div className="col-auto text-end">
                                         <button
                                           className="panelButton ms-auto"
-                                          onClick={handlePermissionSave}
+                                          onClick={() =>
+                                            handlePermissionSave(false)
+                                          }
                                         >
                                           <span className="text">Confirm</span>
                                           <span className="icon">
@@ -714,11 +782,12 @@ function Roles() {
             )}
           </div>
         </section>
+        {/*  Add new role */}
         {popup ? (
           <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4 col-md-5">
+            <div className="row">
+              <div className="">
+                <div className="row content col-xl-4">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-circle-exclamation"></i>
@@ -727,10 +796,47 @@ function Roles() {
                   <div className="col-10 ps-0">
                     <h4>Warning!</h4>
                     {saveClick ? (
-                      <p>
-                        Are you sure you want to add this Role:{" "}
-                        <b style={{ color: "var(--ui-accent)" }}>{newRole}</b>?
-                      </p>
+                      <div>
+                        <span>
+                          From which role you want to add to this role?
+                        </span>
+                        <div className="">
+                          <select
+                            className="col-8 formInput"
+                            value={addSelectedRoleId || ""}
+                            name=""
+                            onChange={(e) => {
+                              const roleName = roles.find(
+                                (item) => item.id == e.target.value
+                              );
+                              const selectedFilteredPermission =
+                                roleName?.permissions?.map((item) => {
+                                  return item.permission_id;
+                                });
+                              setAddNewRolePermissions(
+                                selectedFilteredPermission
+                              );
+                              setAddSelectedRoleId(e.target.value);
+                            }}
+                          >
+                            <option value="" disabled>
+                              Please Select Role
+                            </option>
+                            {roles.map((item, key) => {
+                              return (
+                                <option value={item.id} key={key}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                        <p>
+                          Are you sure you want to add this Role:{" "}
+                          <b style={{ color: "var(--ui-accent)" }}>{newRole}</b>
+                          ?
+                        </p>
+                      </div>
                     ) : editClick ? (
                       <p>
                         Are you sure you want to change{" "}
@@ -772,6 +878,192 @@ function Roles() {
                           setSaveClick(false);
                           setEditClick(false);
                           setEditIndex("");
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {/* set permissions of new role */}
+        {submitPopup ? (
+          <div className="popup">
+            <div className="container mx-auto mt-0 h-100 ">
+              <div className=" d-flex justify-content-center align-items-center">
+                <div className="flex content col-xl-5 col-md-6">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-circle-exclamation"></i>
+                    </div>
+                  </div>
+                  <p>Add the permission you want?</p>
+                  <div>
+                    <div class="accordion permissionListWrapper ">
+                      {selectedRole === "Agent" ? (
+                        <div className="d-flex flex-column">
+                          <span>
+                            This will apper only for agents (Agents will only
+                            access webrtc)
+                          </span>
+                          <div class="accordion permissionListWrapper ">
+                            {filteredPermission &&
+                              Object.keys(filteredPermission).map(
+                                (item, key) => (
+                                  <div className="accordion-item" key={key}>
+                                    <h2
+                                      class="accordion-header"
+                                      id={`collapseHeading${key}`}
+                                    >
+                                      <button
+                                        class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target={`#collapseRole${key}`}
+                                        aria-expanded="true"
+                                        aria-controls={`collapse${key}`}
+                                      >
+                                        <input
+                                          type="checkbox"
+                                          checked={
+                                            addNewRoleParentChecked[item]
+                                          }
+                                          onChange={() =>
+                                            handleSubmitParentCheckboxChange(
+                                              item
+                                            )
+                                          }
+                                        />
+
+                                        <label>{item}</label>
+                                      </button>
+                                    </h2>
+                                    <div
+                                      id={`collapseRole${key}`}
+                                      class="accordion-collapse collapse"
+                                      aria-labelledby={`collapseHeading${key}`}
+                                    >
+                                      <div class="accordion-body">
+                                        {filteredPermission[item].map(
+                                          (innerItem, key) => (
+                                            <div
+                                              className="col-xxl col-auto col-md-4 col-6"
+                                              key={key}
+                                            >
+                                              <input
+                                                type="checkbox"
+                                                id={`permission-${innerItem.id}`}
+                                                checked={addNewRolePermissions?.includes(
+                                                  innerItem.id
+                                                )}
+                                                onChange={() =>
+                                                  handleSubmitCheckboxChange(
+                                                    innerItem.id
+                                                  )
+                                                }
+                                              />
+                                              <label className="formLabel ms-2 text-capitalize">
+                                                {innerItem.action}
+                                              </label>
+                                            </div>
+                                          )
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div class="accordion permissionListWrapper h-auto">
+                          {filteredPermission &&
+                            Object.keys(filteredPermission).map((item, key) => (
+                              <div className="accordion-item" key={key}>
+                                <h2
+                                  class="accordion-header"
+                                  id={`collapseHeading${key}`}
+                                >
+                                  <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target={`#collapseRole${key}`}
+                                    aria-expanded="true"
+                                    aria-controls={`collapse${key}`}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={addNewRoleParentChecked[item]}
+                                      onChange={() =>
+                                        handleSubmitParentCheckboxChange(item)
+                                      }
+                                    />
+
+                                    <label>{item}</label>
+                                  </button>
+                                </h2>
+                                <div
+                                  id={`collapseRole${key}`}
+                                  class="accordion-collapse collapse"
+                                  aria-labelledby={`collapseHeading${key}`}
+                                >
+                                  <div class="accordion-body">
+                                    {filteredPermission[item].map(
+                                      (innerItem, key) => (
+                                        <div
+                                          className="col-xxl col-auto col-md-4 col-6"
+                                          key={key}
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            id={`permission-${innerItem.id}`}
+                                            checked={addNewRolePermissions.includes(
+                                              innerItem.id
+                                            )}
+                                            onChange={() =>
+                                              handleSubmitCheckboxChange(
+                                                innerItem.id
+                                              )
+                                            }
+                                          />
+                                          <label className="formLabel ms-2 text-capitalize">
+                                            {innerItem.action}
+                                          </label>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          handlePermissionSave(true);
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setSubmitPopup(false);
                         }}
                       >
                         <span className="text">Cancel</span>

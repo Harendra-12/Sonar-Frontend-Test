@@ -250,7 +250,6 @@ const ActionListMulti = ({
           isSearchable
           styles={customStyles}
           value={selectedOptions}
-          menuPortalTarget={document.body}
         />
         {label && (
           <label htmlFor="data" className="formItemDesc" style={{ margin: 0 }}>
