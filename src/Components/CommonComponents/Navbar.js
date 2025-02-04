@@ -510,6 +510,17 @@ function Navbar() {
                               to="/call-blocking"
                               onClick={backToTop}
                               type="button"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  [
+                                    "/call-blocking",
+                                    "/call-blocking-add",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                             >
                               <div className="itemTitle">Call Blocking</div>
                             </NavLink>
