@@ -85,7 +85,7 @@ export const ConferenceCall = ({
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
     }
-  }, [conferenceRawData ]);
+  }, [conferenceRawData]);
   useEffect(() => {
     if (activePage === "conference") {
       setNumberOfTimeUserVisit(numberOfTimeUserVisit + 1);
@@ -895,20 +895,21 @@ export const ConferenceCall = ({
                                       }`}
                                   ></i>
                                 </button>
-
-                                {confList.map((item, index) => {
-                                  return (
-                                    <ConferenceUserTab
-                                      item={item}
-                                      key={index}
-                                      index={index}
-                                      handleSelectConferenceUser={
-                                        handleSelectConferenceUser
-                                      }
-                                      getInitials={getInitials}
-                                    />
-                                  );
-                                })}
+                                <div className="noScrollbar" style={{ height: 'calc(100vh - 70px)', overflowY: 'auto', paddingLeft: '10px' }}>
+                                  {confList.map((item, index) => {
+                                    return (
+                                      <ConferenceUserTab
+                                        item={item}
+                                        key={index}
+                                        index={index}
+                                        handleSelectConferenceUser={
+                                          handleSelectConferenceUser
+                                        }
+                                        getInitials={getInitials}
+                                      />
+                                    );
+                                  })}
+                                </div>
                               </div>
                             </div>
                             {participantList && (
@@ -948,7 +949,7 @@ export const ConferenceCall = ({
                                     }}
                                   />
                                 </div>
-                                <ul>
+                                <ul className="noScrollbar">
                                   {confList.map((item, index) => {
                                     return (
                                       <li>
