@@ -26,14 +26,17 @@ import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
+import { useNavigate } from "react-router-dom";
 
 const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
+  const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
   const { sessions: sipSessions } = useSIPProvider();
   const dispatch = useDispatch();
+  const callCenterPopUp = useSelector((state) => state.callCenterPopUp);
   const sessions = useSelector((state) => state.sessions);
   const callProgressId = useSelector((state) => state.callProgressId);
   const videoCall = useSelector((state) => state.videoCall);
@@ -49,7 +52,7 @@ const WebrtcWrapper = () => {
   const [reconnecting, setReconnecting] = useState(0);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const [allContactLoading, setAllContactLoading] = useState(false);
-  console.log(sipSessions);
+  console.log("This is active sessions", sessions);
   const [closeVideoCall, setCloseVideoCall] = useState(false);
   const [allContact, setAllContact] = useState([]);
   const [extensionFromCdrMessage, setExtensionFromCdrMessage] = useState();
@@ -152,9 +155,13 @@ const WebrtcWrapper = () => {
         setIsVideoOn(false);
       });
   };
+
   useEffect(() => {
     checkMicrophoneStatus(); // Check mic status when component mounts
     checkVideoStatus();
+    if (!account?.extension?.extension) {
+      navigate("/")
+    }
   }, []);
   useEffect(() => {
     if (
@@ -501,7 +508,7 @@ const WebrtcWrapper = () => {
           ""
         )}
       </SIPProvider>
-      {initailCallCenterPopup &&
+      {initailCallCenterPopup && callCenterPopUp !== account?.extension?.extension &&
         <div className="popup">
           <div className="d-flex justify-content-center align-items-center h-100">
             <div className="overviewTableWrapper col-xl-6">
@@ -518,7 +525,7 @@ const WebrtcWrapper = () => {
                         </div>
                         <button
                           class="clearButton2 xl"
-                          onClick={() => setInitailCallCenterPopup(false)}
+                          onClick={() => { setInitailCallCenterPopup(false); dispatch({ type: "SET_CALL_CENTER_POPUP", callCenterPopUp: account?.extension?.extension }); localStorage.setItem("callCenterPopUp", account?.extension?.extension) }}
                         >
                           <i
                             class={"fa-regular fa-xmark"}
@@ -534,7 +541,6 @@ const WebrtcWrapper = () => {
               </div>
             </div>
           </div>
-
         </div>
       }
 

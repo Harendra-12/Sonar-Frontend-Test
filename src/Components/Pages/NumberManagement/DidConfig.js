@@ -579,7 +579,6 @@ const DidConfig = () => {
                               name="forward_to"
                               className="formItem"
                               {...register("tag", {
-                                ...requiredValidator,
                               })}
                             />
                             {errors?.tag && (
