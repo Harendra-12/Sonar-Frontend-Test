@@ -663,7 +663,7 @@ function Roles() {
                                                 <label>{item}</label>
                                               </button>
                                             </h2>
-                                            <div
+                                            <div 
                                               id={`collapseRole${key}`}
                                               class="accordion-collapse collapse"
                                               aria-labelledby={`collapseHeading${key}`}
@@ -785,24 +785,24 @@ function Roles() {
         {/*  Add new role */}
         {popup ? (
           <div className="popup">
-            <div className="row">
-              <div className="">
-                <div className="row content col-xl-4">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-5 col-md-5">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-circle-exclamation"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
+                 
                     {saveClick ? (
-                      <div>
+                      <div >
                         <span>
-                          From which role you want to add to this role?
+                          Choose which role you want to add to this role?
                         </span>
-                        <div className="">
+                        <div className="mt-2">
                           <select
-                            className="col-8 formInput"
+                            className="col-8 formItem"
                             value={addSelectedRoleId || ""}
                             name=""
                             onChange={(e) => {
@@ -831,11 +831,13 @@ function Roles() {
                             })}
                           </select>
                         </div>
-                        <p>
+                     <div className="mt-3">
+                     <p>
                           Are you sure you want to add this Role:{" "}
                           <b style={{ color: "var(--ui-accent)" }}>{newRole}</b>
                           ?
                         </p>
+                     </div>
                       </div>
                     ) : editClick ? (
                       <p>
@@ -896,16 +898,12 @@ function Roles() {
         )}
         {/* set permissions of new role */}
         {submitPopup ? (
-          <div className="popup">
-            <div className="container mx-auto mt-0 h-100 ">
-              <div className=" d-flex justify-content-center align-items-center">
-                <div className="flex content col-xl-5 col-md-6">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-circle-exclamation"></i>
-                    </div>
-                  </div>
-                  <p>Add the permission you want?</p>
+          <div className="addNewContactPopup profileDetailsHolder">
+          <div className="row">
+            <div className="col-12 heading mb-0">
+              <i className="fa-light fa-user-plus" />
+              <h5>Add role and permission </h5>
+            </div>
                   <div>
                     <div class="accordion permissionListWrapper ">
                       {selectedRole === "Agent" ? (
@@ -1048,7 +1046,7 @@ function Roles() {
                         </div>
                       )}
                     </div>
-                    <div className="d-flex justify-content-between">
+                    <div className="d-flex justify-content-between mt-2">
                       <button
                         className="panelButton m-0"
                         onClick={() => {
@@ -1075,8 +1073,7 @@ function Roles() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+           
         ) : (
           ""
         )}
