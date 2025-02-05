@@ -69,6 +69,7 @@ var previewDialer = [];
 var agentDeposition = false
 var desposiTionOptions = []
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
+var logout = 0
 
 const initialState = {
   account,
@@ -141,6 +142,7 @@ const initialState = {
   agentDeposition,
   desposiTionOptions,
   callCenterPopUp,
+  logout,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -341,6 +343,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         callCenterPopUp: action.callCenterPopUp,
+      };
+    case "SET_LOGOUT":
+      return {
+        ...state,
+        logout: action.logout,
       };
     default:
       return state;

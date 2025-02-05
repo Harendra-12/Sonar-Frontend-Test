@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  generalGetFunction,
   generalPostFunction,
 } from "../GlobalFunction/globalFunction";
 import DarkModeToggle from "./DarkModeToggle";
@@ -75,20 +74,6 @@ function Header(props) {
       setAccountName(account.name);
     }
   }, [account, navigate]);
-
-  // Handle log out function
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        type: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
 
   // Handel outside click from profile picture
   function useOutsideAlerter(ref) {
@@ -211,7 +196,7 @@ function Header(props) {
               </Link>
             </div>
             <div
-              onClick={logOut}
+              onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}
               className="d-flex w-100 gap-3 align-items-center justify-content-start"
             >
               <Link to={"/"} className="logoutBtn">

@@ -8,7 +8,6 @@ import {
 import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
-import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 function AllContact({
@@ -18,7 +17,6 @@ function AllContact({
   setAllContactLoading,
 }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   // const [contact, setContact] = useState([]);
@@ -88,19 +86,6 @@ function AllContact({
       setAllContactLoading(false);
     }
   };
-
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
 
   const handleContactRefresh = () => {
     setAllContactLoading(true);
@@ -182,7 +167,7 @@ function AllContact({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

@@ -9,7 +9,6 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 
 const CallCenter = ({initial}) => {
@@ -21,7 +20,6 @@ const CallCenter = ({initial}) => {
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
 
   const Id = account?.id || "";
@@ -56,20 +54,6 @@ const CallCenter = ({initial}) => {
     }
   }, [Id, callCenter]);
 
-  // useEffect(() => {}, [refreshCenter, callCenterRefresh]);
-
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   return (
     <>
       <style>
@@ -140,7 +124,7 @@ const CallCenter = ({initial}) => {
                         </div>
                       </div>
                       <ul class="dropdown-menu">
-                        <li onClick={logOut}>
+                      <li onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}

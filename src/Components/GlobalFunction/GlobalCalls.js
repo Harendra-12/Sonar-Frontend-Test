@@ -4,8 +4,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
+import { useSIPProvider } from "react-sipjs";
+import { useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
+  const { sessionManager } = useSIPProvider();
   const account = useSelector((state) => state.account);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
@@ -21,6 +24,10 @@ function GlobalCalls() {
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const updateBalance = useSelector((state) => state.updateBalance);
+  const logout = useSelector((state) => state.logout);
+  console.log("This is l;og out",logout);
+  
+  const navigate = useNavigate()
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
   );
@@ -352,6 +359,25 @@ function GlobalCalls() {
     }
   }, []);
 
+  useEffect(()=>{
+     async function logOut() {
+        const apiData = await generalGetFunction("/logout");
+       sessionManager.disconnect();
+        localStorage.clear();
+        if (apiData?.status) {
+          localStorage.clear();
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: null,
+          });
+          dispatch({type:"SET_LOGOUT",logout:0})
+          navigate("/");
+        }
+      }
+      if(logout>0){
+        logOut()
+      }
+  },[logout])
   return <div></div>;
 }
 

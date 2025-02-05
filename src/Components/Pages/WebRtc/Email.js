@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
-  generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -13,18 +12,7 @@ function Email() {
   const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
+
   return (
     <>
       <main
@@ -97,7 +85,7 @@ function Email() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import {  generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {  generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -61,31 +61,6 @@ function CallDashboard() {
     }
   };
 
-  // async function logOut() {
-  //   const apiData = await generalGetFunction("/logout");
-  //   localStorage.clear();
-  //   if (apiData?.data) {
-  //     localStorage.clear();
-  //     dispatch({
-  //       action: "SET_ACCOUNT",
-  //       account: null,
-  //     });
-  //     navigate("/");
-  //   }
-  // }
-
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -147,7 +122,7 @@ function CallDashboard() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

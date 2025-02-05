@@ -395,7 +395,7 @@ function CampaignCreate() {
                                   key={index}
                                   className="d-flex align-items-center justify-content-start mb-2 p-2 "
                                   style={{ cursor: "pointer" }}
-                                  onClick={() => toggleSelect(item.did)}
+                                  onClick={() => toggleSelect(item.id)}
                                 >
                                   {/* Blank field that toggles a tick */}
                                   <div
@@ -408,7 +408,7 @@ function CampaignCreate() {
                                       borderRadius: "3px",
                                     }}
                                   >
-                                    {selectedItems.includes(item.did) && (
+                                    {selectedItems.includes(item.id) && (
                                       <i className="fa-solid fa-check text-success"></i>
                                     )}
                                   </div>

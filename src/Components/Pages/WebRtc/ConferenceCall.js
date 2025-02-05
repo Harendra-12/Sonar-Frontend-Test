@@ -524,19 +524,6 @@ export const ConferenceCall = ({
     }
   }
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
-
   // Store memeber ID in local storage so that we can access it later
   useEffect(() => {
     if (
@@ -674,7 +661,7 @@ export const ConferenceCall = ({
                                   <span className="status">Available</span>
                                 </div>
                               </div>
-                              <ul class="dropdown-menu" onClick={logOut}>
+                              <ul class="dropdown-menu" onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
                                 <li>
                                   <div
                                     class="dropdown-item"

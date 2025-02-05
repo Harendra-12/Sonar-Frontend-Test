@@ -1,8 +1,8 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { generalGetFunction } from "../GlobalFunction/globalFunction";
-import zIndex from "@mui/material/styles/zIndex";
 
 const ActionList = ({
   category,

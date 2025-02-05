@@ -1,36 +1,21 @@
 /* eslint-disable eqeqeq */
 import React from "react";
 import "../assets/css/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   backToTop,
   featureUnderdevelopment,
-  generalGetFunction,
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideNav } from "./Header";
 
 function Navbar() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype;
   const isCustomerAdmin = account?.email == accountDetails?.email;
-  // Handle log out function by removing token
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
 
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
@@ -1475,7 +1460,7 @@ function Navbar() {
                   </>
                   }
                   <li className="dashboard ">
-                    <NavLink to="/" onClick={logOut} type="button">
+                    <NavLink to="/" onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-power-off"></i>
                       </div>

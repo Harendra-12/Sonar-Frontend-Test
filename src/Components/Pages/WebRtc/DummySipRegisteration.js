@@ -667,23 +667,6 @@ export const DummySipRegisteration = ({
     }
   }
 
-  // window.addEventListener("beforeunload", (event) => {
-  //   callAction("hup");
-  // });
-
-  // async function logOut() {
-  //   const apiData = await generalGetFunction("/logout");
-  //   localStorage.clear();
-  //   if (apiData?.data) {
-  //     localStorage.clear();
-  //     dispatch({
-  //       action: "SET_ACCOUNT",
-  //       account: null,
-  //     });
-  //     navigate("/");
-  //   }
-  // }
-
   // adding logic to update currengt user memeber id to localstorage on page reload
   useEffect(() => {
     if (currentUser) {

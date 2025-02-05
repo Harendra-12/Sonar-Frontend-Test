@@ -791,18 +791,6 @@ function Messages({
     }
   }
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   const filteredUsers = allAgents.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1051,7 +1039,7 @@ function Messages({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

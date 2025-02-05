@@ -113,7 +113,7 @@ const WebrtcWrapper = () => {
   };
   let globalUserAgent = null; // Global reference
   const options = {
-    domain: account.domain.domain_name,
+    domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
@@ -495,7 +495,7 @@ const WebrtcWrapper = () => {
           <ConferenceCall
             conferenceId={conferenceId}
             name={account.username}
-            extension_id={`${account?.extension?.extension}@${account.domain.domain_name}`}
+            extension_id={`${account?.extension?.extension}@${account?.domain?.domain_name}`}
             room_id={conferenceId}
             setactivePage={setactivePage}
             activePage={activePage}
