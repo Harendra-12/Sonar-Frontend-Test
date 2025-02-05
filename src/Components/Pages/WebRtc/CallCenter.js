@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "react-sipjs";
 
 const CallCenter = ({initial}) => {
   const sessions = useSelector((state) => state.sessions);
@@ -21,7 +22,7 @@ const CallCenter = ({initial}) => {
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
-
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
   console.log(assignerCallcenter);
   useEffect(() => {
@@ -124,7 +125,7 @@ const CallCenter = ({initial}) => {
                         </div>
                       </div>
                       <ul class="dropdown-menu">
-                      <li onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
+                      <li onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}

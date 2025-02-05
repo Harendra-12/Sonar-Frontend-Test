@@ -664,12 +664,12 @@ function Call({
                             />
                           </div>
                           <div class="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                        <li onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
+                        <li onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -690,7 +690,7 @@ function Call({
                     Viewing As:
                     {account && extension ? (
                       <span>
-                        {account.username} - {account && extension}
+                        {account?.username} - {account && extension}
                       </span>
                     ) : (
                       <span className="text-danger">No Extension Assigned</span>

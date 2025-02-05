@@ -5,6 +5,7 @@ import {  generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "react-sipjs";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -12,11 +13,9 @@ function CallDashboard() {
   const activeCall = useSelector((state) => state.activeCall);
   const [allParkedCall, setAllParkedCall] = useState([]);
   const extension = account?.extension?.extension || null;
-  const callState = useSelector((state) => state.callState);
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  console.log("callStatesss", callState);
-
+  const { sessionManager } = useSIPProvider();
   useEffect(() => {
     //dest should start with "set:valet_ticket"
     setAllParkedCall(
@@ -122,7 +121,7 @@ function CallDashboard() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
+                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

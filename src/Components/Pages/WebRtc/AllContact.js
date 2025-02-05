@@ -9,6 +9,7 @@ import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "react-sipjs";
 
 function AllContact({
   allContact,
@@ -19,6 +20,7 @@ function AllContact({
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
+  const { sessionManager } = useSIPProvider();
   // const [contact, setContact] = useState([]);
   // const [loading, setLoading] = useState(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState(null);
@@ -167,7 +169,7 @@ function AllContact({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
+                          <li onClick={() =>{ dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

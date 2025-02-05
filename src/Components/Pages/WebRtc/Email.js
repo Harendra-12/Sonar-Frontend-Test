@@ -5,6 +5,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "react-sipjs";
 
 function Email() {
   const sessions = useSelector((state) => state.sessions);
@@ -12,7 +13,7 @@ function Email() {
   const extension = account?.extension?.extension || "";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { sessionManager } = useSIPProvider();
   return (
     <>
       <main
@@ -85,7 +86,7 @@ function Email() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
+                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

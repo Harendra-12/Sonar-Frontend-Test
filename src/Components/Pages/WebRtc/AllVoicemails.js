@@ -10,6 +10,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "react-sipjs";
 
 function AllVoicemails({ isCustomerAdmin }) {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [loading, setLoading] = useState(false);
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
   const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
-
+  const { sessionManager, connectStatus } = useSIPProvider();
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -332,7 +333,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })}>
+                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

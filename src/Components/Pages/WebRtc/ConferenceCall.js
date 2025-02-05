@@ -78,9 +78,7 @@ export const ConferenceCall = ({
   const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
-
-  console.log("CurrentUsersss", currentUser);
-
+  const { sessionManager } = useSIPProvider();
   useEffect(() => {
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
@@ -661,7 +659,7 @@ export const ConferenceCall = ({
                                   <span className="status">Available</span>
                                 </div>
                               </div>
-                              <ul class="dropdown-menu" onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
+                              <ul class="dropdown-menu" onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
                                 <li>
                                   <div
                                     class="dropdown-item"

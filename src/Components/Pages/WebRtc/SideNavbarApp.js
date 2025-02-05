@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "react-sipjs";
@@ -32,7 +33,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
-                  <h5>{account.username}</h5>
+                  <h5>{account?.username}</h5>
                   <p>Ext- {extension}</p>
                 </div>
               </button>

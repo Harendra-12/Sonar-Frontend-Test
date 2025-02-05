@@ -1039,7 +1039,7 @@ function Messages({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})}>
+                          <li onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
