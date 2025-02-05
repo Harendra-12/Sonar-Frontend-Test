@@ -677,6 +677,22 @@ function Call({
                               Logout
                             </div>
                           </li>
+                          <li onClick={()=>{sessionManager.disconnect()}}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Disconnect
+                            </div>
+                          </li>
+                          <li onClick={()=>{sessionManager.connect()}}>
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Reconnect
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
