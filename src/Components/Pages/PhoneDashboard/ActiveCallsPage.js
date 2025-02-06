@@ -50,38 +50,9 @@ function ActiveCallsPage() {
                                                     <button onClick={() => setFilter("all")} className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-2">{activeCall.length}</span></button>
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeCall.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeCall.filter((call) => call.application_state === "callcenter").length}</span></button>
-                                                    {/* <div className='ms-auto me-2 my-auto'>
-                                                        <select
-                                                            className="formItem  formWidth"
-                                                            name="" >
-                                                            <option disabled value="">
-                                                                Select Role type
-                                                            </option>
-                                                            <option>Tags</option>
-                                                            <option>Direction</option>
-                                                        </select>
-                                                    </div> */}
-                                                    {/* <div className='my-auto'>
-                                                        <select
-                                                            className="formItem formWidth"
-                                                            name="" >
-                                                            <option disabled value="">
-                                                                Select Role type
-                                                            </option>
-                                                            <option>Tags</option>
-                                                            <option>Direction</option>
-                                                        </select>
-                                                    </div> */}
+                                                  
                                                     <div className='d-flex align-items-center justify-content-end'>
-                                                        {/* <button
-                                                        effect="ripple"
-                                                        className="panelButton float-right"
-                                                    >
-                                                        <span className="text">Reset</span>
-                                                        <span className="icon">
-                                                            <i className="fa-solid fa-rotate-right"></i>
-                                                        </span>
-                                                    </button> */}
+                                                    
                                                     </div>
                                                 </div>
                                             </nav>
@@ -116,28 +87,6 @@ function ActiveCallsPage() {
                                                     <button className="nav-link active" id="nav-allringing-tab" data-bs-toggle="tab" data-bs-target="#nav-allringing" type="button" role="tab" aria-controls="nav-allringing" aria-selected="true">All <span className="unread ms-2">{ringingState.length}</span></button>
                                                     <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread ms-2">{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button className="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center <span className="unread ms-2">{ringingState.filter((call) => call.application_state === "callcenter").length}</span></button>
-                                                    {/* <div className='ms-auto me-2 my-auto'>
-                                                        <select
-                                                            className="formItem formWidth"
-                                                            name="" >
-                                                            <option disabled value="">
-                                                                Select Role type
-                                                            </option>
-                                                            <option>Tags</option>
-                                                            <option>Direction</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className='my-auto'>
-                                                        <select
-                                                            className="formItem formWidth"
-                                                            name="" >
-                                                            <option disabled value="">
-                                                                Select Role type
-                                                            </option>
-                                                            <option>Tags</option>
-                                                            <option>Direction</option>
-                                                        </select>
-                                                    </div> */}
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -147,10 +96,11 @@ function ActiveCallsPage() {
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
+                                                                    <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
                                                                     <th>Started at</th>
-                                                                    {/* <th>Tag</th> */}
+                                                                    <th>Feature Tag</th>
                                                                 </tr>
                                                             </thead>
 
@@ -160,9 +110,11 @@ function ActiveCallsPage() {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
+                                                                                <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.presence_id.split("@")[0]}</td>
                                                                                 <td>{item.created.split(" ")[1]}</td>
+                                                                                <td>{item.feature_tag}</td>
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
                                                                         )
@@ -179,10 +131,11 @@ function ActiveCallsPage() {
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
+                                                                    <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
                                                                     <th>Started at</th>
-                                                                    <th>Tag</th>
+                                                                    <th>Feature Tag</th>
                                                                 </tr>
                                                             </thead>
 
@@ -192,10 +145,11 @@ function ActiveCallsPage() {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
+                                                                                <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.presence_id.split("@")[0]}</td>
                                                                                 <td>{item.created.split(" ")[1]}</td>
-                                                                                <td>{item.name.split("/")[1]}</td>
+                                                                                <td>{item.feature_tag}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -213,10 +167,11 @@ function ActiveCallsPage() {
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
+                                                                    <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
                                                                     <th>Started at</th>
-                                                                    <th>Tag</th>
+                                                                    <th>Feature Tag</th>
                                                                 </tr>
                                                             </thead>
 
@@ -226,10 +181,11 @@ function ActiveCallsPage() {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
+                                                                                <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.presence_id.split("@")[0]}</td>
                                                                                 <td>{item.created.split(" ")[1]}</td>
-                                                                                <td>{item.name.split("/")[1]}</td>
+                                                                                <td>{item.feature_tag}</td>
                                                                             </tr>
                                                                         )
                                                                     })
