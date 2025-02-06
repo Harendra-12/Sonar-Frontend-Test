@@ -163,6 +163,8 @@ const WebrtcWrapper = () => {
       navigate("/")
     }
   }, []);
+
+  
   useEffect(() => {
     if (
       selectedModule !== "onGoingCall" &&
