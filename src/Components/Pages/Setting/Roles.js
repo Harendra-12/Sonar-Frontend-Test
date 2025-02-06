@@ -42,6 +42,7 @@ function Roles() {
   const [addNewRolePermissions, setAddNewRolePermissions] = useState(null);
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
+  const [newAddedRoleId, setNewAddedRoleId] = useState(null);
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
@@ -117,6 +118,7 @@ function Roles() {
             type: "SET_ROLES_REFRESH",
             rolesRefresh: rolesRefresh + 1,
           });
+          setNewAddedRoleId(apiData.data.id);
           toast.success(apiData.message);
           setSubmitPopup(true);
           setSaveClick(false);
@@ -185,7 +187,7 @@ function Roles() {
 
     const parsedData = isNewRole
       ? {
-          role_id: addSelectedRoleId,
+          role_id: newAddedRoleId,
           permissions: addNewRolePermissions,
         }
       : {
@@ -200,14 +202,13 @@ function Roles() {
 
       if (apiData?.status) {
         toast.success(apiData.message);
+        dispatch({
+          type: "SET_ROLES_REFRESH",
+          rolesRefresh: rolesRefresh + 1,
+        });
         if (isNewRole) {
           setAddNewRoleParentChecked({});
           setAddNewRolePermissions([]);
-        } else {
-          dispatch({
-            type: "SET_ROLES_REFRESH",
-            rolesRefresh: rolesRefresh + 1,
-          });
         }
       } else {
         // const errorMessage = Object.keys(apiData.errors);
