@@ -9,7 +9,7 @@ import AddNewContactPopup from "./AddNewContactPopup";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import {
   featureUnderdevelopment,
   generalGetFunction,

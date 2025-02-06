@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSIPProvider, useSessionCall } from "react-sipjs";
+import { useSIPProvider, useSessionCall } from "modify-react-sipjs";
 import { CallTimer } from "./CallTimer";
 import {
   SessionState,

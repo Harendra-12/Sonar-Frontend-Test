@@ -5,7 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
-import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import { useSIPProvider, CONNECT_STATUS } from "modify-react-sipjs";
 import AgentSearch from "./AgentSearch";
 import {
   featureUnderdevelopment,

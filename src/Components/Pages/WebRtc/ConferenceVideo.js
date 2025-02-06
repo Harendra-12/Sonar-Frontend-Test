@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 

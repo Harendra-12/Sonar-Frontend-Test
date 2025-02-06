@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import React from "react";
 import { useSelector } from "react-redux";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 // import { SessionState } from "sip.js";
 import MediaPermissions from "./MediaPermissions ";
 import { useSelector } from "react-redux";

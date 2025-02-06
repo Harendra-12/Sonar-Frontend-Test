@@ -97,7 +97,7 @@ function Roles() {
       if (newRole === "") {
         toast.error("Please enter new role");
       } else {
-        // setLoading(true);
+        setLoading(true);
         const parsedData = {
           name: newRole,
           // created_by:account.account_id
@@ -464,6 +464,18 @@ function Roles() {
                                 return (
                                   <li
                                     key={index}
+                                    onClick={() => {
+                                            setSelectedRoleId(item.id);
+                                            setSelectedRole(item.name);
+                                            setSelectedIsDefault(
+                                              () => item?.is_default
+                                            );
+                                            setSelectedPermission(
+                                              item?.permissions?.map((item) => {
+                                                return item.permission_id;
+                                              })
+                                            );
+                                          }}
                                     className={
                                       selectedRoleId === item.id ? "active" : ""
                                     }
@@ -483,7 +495,7 @@ function Roles() {
                                         }
                                       ></input>
                                     </div>
-                                    <div className="col-auto d-flex justify-content-end">
+                                    <div className="col-auto d-flex justify-content-end" >
                                       {item.is_default === 0 ? (
                                         <div className="d-flex justify-content-end">
                                           <button

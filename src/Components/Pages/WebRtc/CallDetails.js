@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 

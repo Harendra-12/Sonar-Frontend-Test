@@ -10,7 +10,7 @@ import {
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 
 const CallCenter = ({initial}) => {
   const sessions = useSelector((state) => state.sessions);

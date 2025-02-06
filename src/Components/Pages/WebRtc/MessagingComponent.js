@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSIPProvider, useSessionCall, CONNECT_STATUS } from "react-sipjs";
+import { useSIPProvider, useSessionCall, CONNECT_STATUS } from "modify-react-sipjs";
 
 const MessagingComponent = () => {
   const account = useSelector((state) => state.account);

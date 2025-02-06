@@ -12,7 +12,7 @@ import CallDashboard from "./CallDashboard";
 import EFax from "./EFax";
 import { useSelector, useDispatch } from "react-redux";
 import ActiveCallSidePanel from "./ActiveCallSidePanel";
-import { SIPProvider, useSIPProvider } from "react-sipjs";
+import { SIPProvider, useSIPProvider } from "modify-react-sipjs";
 import IncomingCalls from "./IncomingCalls";
 import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";

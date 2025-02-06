@@ -13,7 +13,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 
 function EFax() {
   const dispatch = useDispatch();

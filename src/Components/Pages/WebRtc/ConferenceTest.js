@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall } from "modify-react-sipjs";
 
 // Conference component
 function ConferenceTest() {

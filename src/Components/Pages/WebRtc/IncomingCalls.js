@@ -1,6 +1,6 @@
 import React from "react";
 import IncomingCallPopup from "./IncomingCallPopup";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 
 const IncomingCalls = ({ setSelectedModule, setactivePage, isMicOn, isVideoOn}) => {
   const { sessions: sipSessions } = useSIPProvider();
