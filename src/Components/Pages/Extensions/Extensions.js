@@ -62,7 +62,7 @@ const Extensions = () => {
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
     }));
-   
+
   // Getting list of all users by various filters like page number, items per page and search keys
   useEffect(() => {
     setLoading(true);
@@ -402,7 +402,7 @@ const Extensions = () => {
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
                                                   navigate(
-                                                    "/device-provisioning-new",
+                                                    "/all-devices",
                                                     {
                                                       state: {
                                                         extension: item.extension,
