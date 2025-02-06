@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { fileUploadFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";

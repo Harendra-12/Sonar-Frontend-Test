@@ -7,22 +7,10 @@ function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
   const activeCall = useSelector((state) => state.activeCall);
   const navigate = useNavigate();
-  const [inboundCall, setInboundCall] = useState([]);
-  const [outboundCall, setOutboundCall] = useState([]);
-  const [allCalls, setAllCalls] = useState([]);
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   useEffect(() => {
     if (callDetails?.calls) {
       setExtensionDataLoading(false);
-      setInboundCall(
-        callDetails?.calls.filter((call) => call["Call-Direction"] === "inbound")
-      );
-      setOutboundCall(
-        callDetails?.calls.filter(
-          (call) => call["Call-Direction"] === "outbound"
-        )
-      );
-      setAllCalls(callDetails?.calls);
     }
   }, [callDetails]);
   console.log("allCalls", callDetails);

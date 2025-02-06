@@ -1,14 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";

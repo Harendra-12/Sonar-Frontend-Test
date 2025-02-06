@@ -7,7 +7,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 
 import Header from "../../CommonComponents/Header";
 
