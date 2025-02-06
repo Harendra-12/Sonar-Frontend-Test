@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
@@ -12,7 +13,6 @@ import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
-  minValidator,
   noSpecialCharactersValidator,
   rangeValidator,
   requiredValidator,
@@ -20,7 +20,6 @@ import {
 } from "../../validations/validation";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
@@ -158,7 +157,6 @@ const DidConfig = () => {
   };
 
   const forwardStatus = watch("forward", "disabled");
-  const stickyAgentStatus = watch("sticky_agent", "0");
 
   const handleFormSubmit = handleSubmit(async (data) => {
     data.record = data.record === true || data.record === "true";

@@ -1,7 +1,8 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import zIndex from "@mui/material/styles/zIndex";
 
 const AgentSearch = ({
   getDropdownValue,
@@ -11,9 +12,7 @@ const AgentSearch = ({
   setExtensionFromCdrMessage,
 }) => {
   const [user, setUser] = useState([]);
-
   const [selectedOption, setSelectedOption] = useState(null);
-
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
@@ -24,7 +23,6 @@ const AgentSearch = ({
     }
     getData();
   }, []);
-
   useEffect(() => {
     // Set default value if provided
     if (value) {

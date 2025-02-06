@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
-  backToTop,
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -25,8 +25,6 @@ const MailSettingsEdit = ({
   setMailDataRefresh,
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const locationState = location.state;
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState();
   const {

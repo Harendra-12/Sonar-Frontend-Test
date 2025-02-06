@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
 import {
-  backToTop,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useForm } from "react-hook-form";
@@ -19,7 +17,6 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
 
 const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const loadings = useSelector((state) => state.loading);
   const {

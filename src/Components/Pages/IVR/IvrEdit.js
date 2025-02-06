@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
@@ -15,7 +16,6 @@ import {
 } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
@@ -30,7 +30,6 @@ function IvrEdit() {
     handleSubmit,
     reset,
     setValue,
-    watch,
   } = useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

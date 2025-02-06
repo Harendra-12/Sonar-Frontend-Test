@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 
 const RingGroup = () => {
   const dispatch = useDispatch();

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import {

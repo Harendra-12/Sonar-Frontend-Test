@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { backToTop } from "../../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
 
 import Header from "../../CommonComponents/Header";
 
