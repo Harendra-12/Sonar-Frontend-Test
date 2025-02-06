@@ -47,6 +47,10 @@ function AvailableDeviceList() {
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton"
+                                                    onClick={() => {
+                                                        navigate('/device-provisioning-new');
+                                                        backToTop();
+                                                    }}
                                                 >
                                                     <span className="text" >Add</span>
                                                     <span className="icon"><i class="fa-solid fa-plus"></i></span>
