@@ -533,6 +533,7 @@ function Navbar() {
                             "/lead-add",
                             "/lead-edit",
                             "/campaigns",
+                            "/agents-dialer",
                             "/call-desposition",
                             "/agent-disposition-manage"
                           ])
@@ -554,6 +555,7 @@ function Navbar() {
                           "/lead-add",
                           "/lead-edit",
                           "/campaigns",
+                          "/agents-dialer",
                           "/call-desposition",
                           "/agent-disposition-manage",
                         ])
@@ -1460,7 +1462,7 @@ function Navbar() {
                   </>
                   }
                   <li className="dashboard ">
-                    <NavLink to="/" onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})} type="button">
+                    <NavLink to="/" onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-power-off"></i>
                       </div>
