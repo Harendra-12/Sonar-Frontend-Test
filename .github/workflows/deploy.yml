@@ -3,7 +3,7 @@ name: DeployFrontend
 on:
   push:
     branches:
-      - Developement  # Ensure this matches your actual branch name
+      - Production  # Ensure this matches your actual branch name
 
 jobs:
   deploy:
@@ -20,7 +20,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: |
-            ${{ secrets.SSH_PRIVATE_KEY }}
+            ${{ secrets.SSH_PRIVATE_KEY_UCAAS }}
 
 
       - name: Add GitHub to known_hosts
@@ -30,7 +30,7 @@ jobs:
       - name: SSH into Debian Server and Build React App
         run: |
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST_UCAAS }} << 'EOF'
            #set -e  # Exit immediately if a command exits with a non-zero status
            # set -x  # Uncomment for debugging purposes
 
@@ -43,12 +43,12 @@ jobs:
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
               echo "Git repository found. Pulling latest changes."
-              git pull origin Developement
+              git pull origin Production
             else
               echo "Git repository not found. Cloning repository." 
               # GIT_TRACE=1 GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
-              git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
-              # git checkout Developement
+              git clone -b Production git@github.com:AngelPbx/UcaaS-Frontend.git .
+              # git checkout Production
             fi
 
             echo "Listing deployment directory contents:"
