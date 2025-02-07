@@ -236,13 +236,15 @@ function OngoingCall({
   };
 
   // Function to merge two sessions
-  const handleMergeCall = async (sessionIds) => {
+  const handleMergeCall2 = async (sessionIds) => {
     console.log("handleMergeCall Started for sessions:", sessionIds);
 
     const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
     if (activeSessions.length < 2) {
       console.error("At least two sessions are required to merge.");
       return;
+    }else{
+      toast.success("Call Merged")
     }
 
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -253,10 +255,6 @@ function OngoingCall({
       // if (!session || !session.isOnHold) return;
 
       console.log(`Unholding session ${session.id}...`);
-
-      let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-      sessionDescriptionHandlerOptions.hold = false;
-      session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
 
       let options = {
         requestDelegate: {
@@ -357,6 +355,126 @@ function OngoingCall({
     }
   };
 
+  const handleMergeCall = async (sessionIds) => {
+    console.log("handleMergeCall Started for sessions:", sessionIds);
+  
+    const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
+    if (activeSessions.length < 2) {
+      console.error("At least two sessions are required to merge.");
+      return;
+    } else {
+      toast.success("Call Merged");
+    }
+  
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let remoteStreams = new Map();
+  
+    // Unhold each session before merging
+    await Promise.all(activeSessions.map(async (session) => {
+      console.log(`Unholding session ${session.id}...`);
+      let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
+      sessionDescriptionHandlerOptions.hold = false;
+      session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
+  
+      let options = {
+        requestDelegate: {
+          onAccept: function () {
+            if (session?.sessionDescriptionHandler?.peerConnection) {
+              let pc = session.sessionDescriptionHandler.peerConnection;
+  
+              // Restore inbound streams
+              pc.getReceivers().forEach(receiver => {
+                if (receiver.track) receiver.track.enabled = true;
+              });
+  
+              // Restore outbound streams
+              pc.getSenders().forEach(sender => {
+                if (sender.track) {
+                  console.log(`Unmuting ${sender.track.kind} track: ${sender.track.label}`);
+                  sender.track.enabled = true;
+                }
+              });
+            }
+            session.isOnHold = false;
+          },
+          onReject: function () {
+            session.isOnHold = true;
+          }
+        }
+      };
+  
+      try {
+        await session.invite(options);
+      } catch (error) {
+        console.error(`Error unholding session ${session.id}:`, error);
+      }
+    }));
+  
+    try {
+      console.log("Requesting user audio...");
+      const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  
+      // Retrieve remote audio streams for each session
+      activeSessions.forEach((session) => {
+        let remoteStream = new MediaStream();
+        session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
+          if (receiver.track && receiver.track.kind === "audio") {
+            remoteStream.addTrack(receiver.track);
+          }
+        });
+        remoteStreams.set(session.id, remoteStream);
+      });
+  
+      // Function to mix audio streams (Include user mic but exclude own remote audio)
+      function mixAudioStreams(excludeStream) {
+        const destination = audioContext.createMediaStreamDestination();
+  
+        // Add user's microphone (to be sent to others)
+        const sourceMyAudio = audioContext.createMediaStreamSource(myAudioStream);
+        sourceMyAudio.connect(destination);
+  
+        // Add other remote streams except for the excluded one
+        remoteStreams.forEach((stream, sessionId) => {
+          if (stream !== excludeStream) { // Exclude the session’s own remote stream
+            const sourceRemote = audioContext.createMediaStreamSource(stream);
+            sourceRemote.connect(destination);
+          }
+        });
+  
+        console.log("Mixed stream created:", destination.stream);
+        return destination.stream;
+      }
+  
+      // Send the mixed audio stream to each session
+      function sendMixedStreamToSession(session, mixedStream) {
+        if (!mixedStream || mixedStream.getAudioTracks().length === 0) {
+          console.error("No valid mixed stream to send.");
+          return;
+        }
+        const mixedAudioTrack = mixedStream.getAudioTracks()[0];
+  
+        session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
+          if (sender.track && sender.track.kind === "audio") {
+            console.log(`Replacing audio track in Session ${session.id}`);
+            sender.replaceTrack(mixedAudioTrack);
+          }
+        });
+      }
+  
+      // Mix and send the correct streams to each session
+      activeSessions.forEach((session) => {
+        const mixedStream = mixAudioStreams(remoteStreams.get(session.id)); // Exclude their own remote stream
+        sendMixedStreamToSession(session, mixedStream);
+      });
+  
+      console.log("All selected sessions have been merged.");
+    } catch (err) {
+      console.error("Error during call merging:", err);
+    }
+  };
+  
+  
+  
   return (
     <>
       <div className="audioCall position-relative">
