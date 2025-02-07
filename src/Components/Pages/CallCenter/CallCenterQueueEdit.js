@@ -1317,8 +1317,8 @@ function CallCenterQueueEdit() {
                                 })}
                                 onKeyDown={restrictToAllowedChars}
                               >
-                              <option value="1">Enable</option>
-                              <option value="0">Disable</option>
+                                <option value="1">Enable</option>
+                                <option value="0">Disable</option>
                               </select>
                               {errors.queue_description && (
                                 <ErrorMessage text={errors.queue_description} />
@@ -1514,13 +1514,22 @@ function CallCenterQueueEdit() {
                           agent.map((item, index) => {
                             return (
                               <div
-                                className="row pb-3 pt-2 ps-3 col-12"
+                                className="row py-2 ps-3 col-12"
                                 key={index}
                                 style={{ borderBottom: "1px solid #8f8f8f47" }}
                               >
+                                {index === 0 &&
+                                  <style>
+                                    {`
+                                    #canDo{
+                                      margin-top: 30px !important;
+                                    }
+                                  `}
+                                  </style>}
                                 <div
                                   className="formLabel pe-2 m-0 d-flex justify-content-between"
                                   style={{ width: "40px" }}
+                                  id={index === 0 && "canDo"}
                                 >
                                   <div>
                                     <input
@@ -2687,7 +2696,7 @@ function CallCenterQueueEdit() {
                   <label htmlFor="">Call Timeout</label>
                 </div>
                 <div className="position-relative">
-                <input
+                  <input
                     type="number"
                     name="call_timeout"
                     value={settingsForBulkEdit.call_timeout}
