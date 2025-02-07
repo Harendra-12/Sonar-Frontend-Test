@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
@@ -10,7 +11,6 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import ActionList from "../../CommonComponents/ActionList";
 import { useForm } from "react-hook-form";
 import {
@@ -52,12 +52,11 @@ function CallCenterQueueEdit() {
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectAll, setSelectAll] = useState(false);
-  const [bulkEditAllToggle, setBulkEditAllToggle] = useState(true);
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: 0,
-    tier_position: 0,
+    tier_level: 1,
+    tier_position: 1,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
@@ -73,8 +72,8 @@ function CallCenterQueueEdit() {
     {
       id: Math.floor(Math.random() * 10000),
       name: "",
-      level: "0",
-      position: "0",
+      level: "1",
+      position: "1",
       type: "callback",
       password: "1234",
       contact: "",
@@ -216,34 +215,6 @@ function CallCenterQueueEdit() {
     if (result.length > 0) return true;
     return false;
   };
-
-  // Add new agent with some default value
-  function addNewAgent() {
-    setAgent([
-      ...agent,
-      {
-        id: Math.floor(Math.random() * 10000),
-        name: "",
-        level: "0",
-        position: "0",
-        type: "callback",
-        password: "1234",
-        call_timeout: "",
-        reject_delay_time: "",
-        max_no_answer: "",
-        no_answer_delay_time: "",
-        wrap_up_time: "",
-        reserve_agents: 0,
-        "truncate-agents-on-load": 0,
-        "truncate-tiers-on-load": 0,
-        busy_delay_time: "",
-        contact: "",
-      },
-    ]);
-  }
-  // if (agent.length === 0) {
-  //   addNewAgent();
-  // }
 
   // Handle agent change
   const handleAgentChange = (event, index) => {
@@ -514,8 +485,8 @@ function CallCenterQueueEdit() {
 
           id: Math.floor(Math.random() * 10000),
 
-          level: "0",
-          position: "0",
+          level: "1",
+          position: "1",
           type: "callback",
           password: "1234",
 

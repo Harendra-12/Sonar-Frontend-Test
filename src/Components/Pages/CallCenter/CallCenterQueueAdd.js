@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-useless-escape */
 /* eslint-disable array-callback-return */
@@ -10,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import {
   nameNumberValidator,
@@ -29,7 +29,6 @@ function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const loadings = useSelector((state) => state.loading);
   const [user, setUser] = useState([]);
   const [greetingSound, setGreetingSound] = useState();
   const [holdSound, setHoldSound] = useState();
@@ -53,8 +52,8 @@ function CallCenterQueueAdd() {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
-    tier_level: 0,
-    tier_position: 0,
+    tier_level: 1,
+    tier_position: 1,
     call_timeout: "",
     reject_delay: "",
     max_no_answer: "",
@@ -157,30 +156,6 @@ function CallCenterQueueAdd() {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  // This is for new agent add
-  function addNewAgent() {
-    setAgent([
-      ...agent,
-      {
-        id: Math.floor(Math.random() * 10000),
-        name: "",
-        level: "0",
-        position: "0",
-        type: "callback",
-        password: "1234",
-        contact: "",
-        call_timeout: "",
-        reject_delay_time: "",
-        max_no_answer: "",
-        busy_delay_time: "",
-        no_answer_delay_time: "",
-        wrap_up_time: "",
-        reserve_agents: 0,
-        "truncate-agents-on-load": 0,
-        "truncate-tiers-on-load": 0,
-      },
-    ]);
-  }
 
   // Remove agent
   function removeAgenet(id) {
@@ -397,8 +372,8 @@ function CallCenterQueueAdd() {
 
         id: Math.floor(Math.random() * 10000),
 
-        level: "0",
-        position: "0",
+        level: "1",
+        position: "1",
         type: "callback",
         password: "1234",
 
@@ -435,8 +410,8 @@ function CallCenterQueueAdd() {
 
             id: Math.floor(Math.random() * 10000),
 
-            level: "0",
-            position: "0",
+            level: "1",
+            position: "1",
             type: "callback",
             password: "1234",
 
@@ -1549,7 +1524,7 @@ function CallCenterQueueAdd() {
                                       }
                                       id="selectFormRow"
                                     >
-                                      <option value={0}>0</option>
+                                      {/* <option value={0}>0</option> */}
                                       <option value={1}>1</option>
                                       <option value={2}>2</option>
                                       <option value={3}>3</option>
@@ -1583,7 +1558,7 @@ function CallCenterQueueAdd() {
                                       }
                                       id="selectFormRow"
                                     >
-                                      <option value={0}>0</option>
+                                      {/* <option value={0}>0</option> */}
                                       <option value={1}>1</option>
                                       <option value={2}>2</option>
                                       <option value={3}>3</option>
@@ -2113,9 +2088,9 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
-                  defaultValue={0}
+                  defaultValue={1}
                 >
-                  <option value={0}>0</option>
+                  {/* <option value={0}>0</option> */}
                   <option value={1}>1</option>
                   <option value={2}>2</option>
                   <option value={3}>3</option>
@@ -2145,9 +2120,9 @@ function CallCenterQueueAdd() {
                     })
                   }
                   id="selectFormRow"
-                  defaultValue={0}
+                  defaultValue={1}
                 >
-                  <option value={0}>0</option>
+                  {/* <option value={0}>0</option> */}
                   <option value={1}>1</option>
                   <option value={2}>2</option>
                   <option value={3}>3</option>

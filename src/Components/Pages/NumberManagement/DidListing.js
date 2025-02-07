@@ -98,8 +98,11 @@ function DidListing({ page }) {
         const newData = await generalGetFunction(`/did/all`);
         if (newData?.status) {
           setDid(newData.data);
+          toast.success(apiData.message);
+          setRefreshDid(refreshDid + 1);
         } else {
-          navigate(-1);
+          toast.error(apiData.message);
+          // navigate(-1);
         }
       }
     } catch (error) {
