@@ -1575,7 +1575,7 @@ const ExtensionsEdit = ({ page }) => {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-3 pe-2">
                                       <div className="formLabel">
                                         <label htmlFor="">Destination</label>
                                       </div>
