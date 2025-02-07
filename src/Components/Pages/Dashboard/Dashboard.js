@@ -14,6 +14,8 @@ const Dashboard = () => {
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account);
+  const timeZone = useSelector((state) => state.timeZone);
+  const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +30,33 @@ const Dashboard = () => {
   const registerUser = useSelector((state) => state.registerUser || []);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const isCustomerAdmin = account?.email == accountDetails?.email;
+  const [time, setTime] = useState(new Date());
+
+  // Setting clock for the selected timnezone
+  useEffect(() => {
+    if (timeZoneRefresh > 0) {
+
+    } else {
+      dispatch({
+        type: "SET_TIMEZONEREFRESH",
+        timeZoneRefresh: timeZoneRefresh + 1,
+      });
+    }
+  }, [timeZone]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Convert current time to the given timezone
+      const value = accountDetails?.timezone?.value;
+      const timeInZone = new Date(
+        new Date().toLocaleString("en-US", { timeZone: value })
+      );
+      setTime(timeInZone);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeZone]);
+
+
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {
@@ -44,15 +73,6 @@ const Dashboard = () => {
     }
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   // Initializing call card data
   const [callCardData, setCallCardData] = useState({
@@ -345,7 +365,7 @@ const Dashboard = () => {
                       className="col-xl-3 mb-3 mb-xl-0"
                       style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper a" onClick={()=>navigate("/my-profile")}>
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -374,7 +394,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-3">
                               <Clock
-                                value={currentTime}
+                                value={time}
                                 size={50}
                                 secondHandWidth={1}
                                 renderMinuteMarks={false}

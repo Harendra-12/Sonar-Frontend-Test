@@ -160,7 +160,7 @@ function GetDid() {
       companyId: account.account_id,
       usage: usagePayload,
     };
-    const apiData = await generalPostFunction("/searchTfn", parsedData);
+    const apiData = await generalPostFunction("/search-number", parsedData);
     setLoading(false);
     if (apiData?.status) {
       setDid(apiData.data);

@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 const Profile = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const accountRefresh = useSelector((state) => state.accountRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const allUser = useSelector((state) => state.allUser);
@@ -24,6 +25,7 @@ const Profile = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
+  const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
@@ -129,6 +131,24 @@ const Profile = () => {
     }
     setPopup(true);
   };
+
+  const handleChangeTimeZone = async () => {
+    const apiData = await generalPutFunction(
+      `/account/timezone/${account.id}`,
+      {
+        timezone: selectedTimeZone,
+      }
+    );
+    if (apiData.status) {
+      toast.success(apiData.message);
+      dispatch({
+        type: "SET_ACCOUNTREFRESH",
+        accountRefresh: accountRefresh + 1,
+      })
+    }else{
+      toast.error(apiData.message);
+    }
+  }
   return (
     <main className="mainContent">
       {loading && <CircularLoader />}
@@ -315,6 +335,7 @@ const Profile = () => {
                             </div>
                           </div>
                           {isCustomerAdmin && (
+                            <>
                             <div className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="data">Extension</label>
@@ -369,6 +390,50 @@ const Profile = () => {
                                 </div>
                               </div>
                             </div>
+                            <div className="formRow col-xl-12">
+                              <div className="formLabel">
+                                <label htmlFor="data">Time zone</label>
+                              </div>
+                              <div className="col-6">
+                                <div className="row">
+                                  <div className="col-8">
+                                    <select
+                                      className="formItem me-0"
+                                      style={{ width: "100%" }}
+                                      name="delay"
+                                      id="selectFormRow"
+                                      value={selectedTimeZone}
+                                      onChange={(e) => {
+                                        setSelectedTimeZone(e.target.value);
+                                      }}
+                                    >
+                                      {timeZone?.map(
+                                        (item, index) => {
+                                          return (
+                                            <>
+                                              <option value={item.id}>
+                                                {item.name}
+                                              </option>
+                                            </>
+                                          );
+                                        }
+                                      )}
+                                    </select>
+                                  </div>
+                                  <div className="col-4 ps-0">
+                                    <button
+                                      className="panelButton static ms-0 w-100"
+                                      style={{ height: "34px" }}
+                                      onClick={() => handleChangeTimeZone()}
+                                    >
+                                      <span className="text">Change</span>
+                                      {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            </>
                           )}
 
                           {/* <div className="formRow col-xl-4">
@@ -441,7 +506,7 @@ const Profile = () => {
                             <p className=" me-2">TimeZone:</p>
 
                             <p className=" ms-2 me-2">
-                              {timeZoneVal && timeZoneVal[0].name}
+                              {timeZoneVal && timeZoneVal[0]?.name}
                             </p>
                           </div>
                         </div>
