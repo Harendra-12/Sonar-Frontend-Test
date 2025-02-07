@@ -174,20 +174,13 @@ function Header(props) {
               <Link to={"/change-password"}>Change Password</Link>
             </div> */}
             <div className="dropdown-item">
-              {/* <Link
-                to={"/change-password"}
-                className="clearButton text-align-start"
-              >
-                <i className="fa-regular fa-lock me-2"></i>
-                Change Password
-              </Link> */}
-              <div
-                className="clearButton text-align-start"
+              <Link
                 onClick={() => setPopUp(true)}
+                className="clearButton text-align-start"
               >
                 <i className="fa-regular fa-lock me-2"></i>
                 Change Password
-              </div>
+              </Link>
             </div>
             <div className="dropdown-item">
               <Link to={"/my-profile"} className="clearButton">
@@ -209,160 +202,102 @@ function Header(props) {
         )}
       </div>
       {popUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i
-                      className="fa fa-key text-primary"
-                      aria-hidden="true"
-                    ></i>
+        <>
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading">
+                  <i className="fa-light fa-key" />
+                  <h5>Change Password</h5>
+                  <p>
+                    Change your account password effortlessly, keeping your account secure and private.
+                  </p>
+                  <div className="border-bottom col-12" />
+                </div>
+                <div className="col-xl-12">
+                  <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
+                    <label className="text-dark">
+                      Current Password :{" "}
+                    </label>
+                    {errorOldPassword ? (
+                      <label className="status missing">
+                        Field Missing
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                    />
+
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>Change Password!</h4>
-                  <div className="col-12" style={{ padding: "25px 23px" }}>
-                    <form>
-                      <div className="formRow col-12">
-                        <div className="formLabel">
-                          <div>
-                            <label className="text-dark">
-                              Current Password :{" "}
-                            </label>
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="data"
-                              className="formItemDesc"
-                              style={{
-                                fontSize: 12,
-                                lineHeight: "18px",
-                                marginTop: 5,
-                              }}
-                            >
-                              This is your current password.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                          />
-                          {errorOldPassword ? (
-                            <label className="status missing">
-                              Field Missing
-                            </label>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-12">
-                        <div className="formLabel">
-                          <div>
-                            <label className="text-dark">New Password : </label>
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="data"
-                              className="formItemDesc"
-                              style={{
-                                fontSize: 12,
-                                lineHeight: "18px",
-                                marginTop: 5,
-                              }}
-                            >
-                              Please input your preferred new password.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                          />
-                          {errorNewPassword ? (
-                            <label className="status missing">
-                              Password must be at least 6 characters
-                            </label>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      </div>
-                      <div className="formRow col-12">
-                        <div className="formLabel">
-                          <div>
-                            <label className="text-dark">
-                              Confirm Password :
-                            </label>
-                            {errorConfirm ? (
-                              <label className="status missing">
-                                Password do not matched
-                              </label>
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="data"
-                              className="formItemDesc"
-                              style={{
-                                fontSize: 12,
-                                lineHeight: "18px",
-                                marginTop: 5,
-                              }}
-                            >
-                              Please retype your password.
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                            value={confPassword}
-                            onChange={(e) => setConfPassword(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </form>
+                <div className="col-xl-12 mt-3">
+                  <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
+                    <label className="text-dark">New Password : </label>
+                    {errorNewPassword ? (
+                      <label className="status missing">
+                        Password must be min. 6 characters
+                      </label>
+                    ) : (
+                      ""
+                    )}
                   </div>
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      disabled={loading}
-                      className="panelButton m-0"
-                      onClick={() => handleSubmit()}
-                    >
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    />
+
+                  </div>
+                </div>
+                <div className="col-xl-12 mt-3">
+                  <div className="formLabel d-flex justify-content-between" style={{ maxWidth: "100%" }}>
+                    <label className="text-dark">
+                      Confirm Password :
+                    </label>
+                    {errorConfirm ? (
+                      <label className="status missing">
+                        Password do not matched
+                      </label>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="col-12">
+                    <input
+                      type="text"
+                      name="extension"
+                      className="formItem"
+                      value={confPassword}
+                      onChange={(e) => setConfPassword(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 mt-4">
+                  <div className="d-flex justify-content-between">
+                    <button className="panelButton ms-0" disabled={loading} onClick={() => handleSubmit()}>
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check" />
                       </span>
                     </button>
-                    {/* ) : ( */}
-
-                    {/* )} */}
-
-                    <button
-                      className="panelButton gray m-0 float-end"
+                    <button className="panelButton gray me-0"
                       onClick={() => {
                         setPopUp(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
+                      }}>
+                      <span className="text">Close</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark" />
                       </span>
                     </button>
                   </div>
@@ -370,7 +305,7 @@ function Header(props) {
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         ""
       )}
