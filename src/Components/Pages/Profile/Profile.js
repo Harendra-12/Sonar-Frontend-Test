@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 const Profile = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const accountRefresh = useSelector((state) => state.accountRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const allUser = useSelector((state) => state.allUser);
@@ -24,6 +25,7 @@ const Profile = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
+  const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
@@ -129,6 +131,24 @@ const Profile = () => {
     }
     setPopup(true);
   };
+
+  const handleChangeTimeZone = async () => {
+    const apiData = await generalPutFunction(
+      `/account/timezone/${account.id}`,
+      {
+        timezone: selectedTimeZone,
+      }
+    );
+    if (apiData.status) {
+      toast.success(apiData.message);
+      dispatch({
+        type: "SET_ACCOUNTREFRESH",
+        accountRefresh: accountRefresh + 1,
+      })
+    } else {
+      toast.error(apiData.message);
+    }
+  }
   return (
     <main className="mainContent">
       {loading && <CircularLoader />}
@@ -233,11 +253,10 @@ const Profile = () => {
                 <div className="col-md-12">
                   <div className="profileView">
                     <div className="profileDetailsHolder p-0">
-                      <div className="profileView mt-xl-2">
-                        <div className="  d-flex align-items-center">
-                          {/* <div className="ribbon-left ">Account Details</div> */}
+                      <div className="profileView position-relative mt-xl-2">
+                        <div style={{ position: 'absolute', right: 0, top: 0 }}>
+                          <button className="cartButton" style={{ borderRadius: '0px 10px' }}><i className="fa-regular fa-pen-to-square" /> Edit</button>
                         </div>
-
                         <div className="row" style={{ padding: 5 }}>
                           <div className="header">Account Details</div>
                           <div className="formRow col-xl-12">
@@ -315,60 +334,104 @@ const Profile = () => {
                             </div>
                           </div>
                           {isCustomerAdmin && (
-                            <div className="formRow col-xl-12">
-                              <div className="formLabel">
-                                <label htmlFor="data">Extension</label>
-                              </div>
-                              <div className="col-6">
-                                <div className="row">
-                                  <div className="col-8">
-                                    <select
-                                      className="formItem me-0"
-                                      style={{ width: "100%" }}
-                                      name="delay"
-                                      id="selectFormRow"
-                                      value={selectedExtension}
-                                      onChange={(e) => {
-                                        setSelectedExtension(e.target.value);
-                                      }}
-                                    >
-                                      <option value={""}>None</option>
-                                      {extensionAll?.data?.map(
-                                        (item, index) => {
-                                          const foundUser =
-                                            userWithExtension.find(
-                                              (value) =>
-                                                value.extension ===
-                                                item.extension
+                            <>
+                              <div className="formRow col-xl-12">
+                                <div className="formLabel">
+                                  <label htmlFor="data">Time zone</label>
+                                </div>
+                                <div className="col-6">
+                                  <div className="row">
+                                    <div className="col-12">
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        name="delay"
+                                        id="selectFormRow"
+                                        value={selectedTimeZone}
+                                        onChange={(e) => {
+                                          setSelectedTimeZone(e.target.value);
+                                        }}
+                                      >
+                                        {timeZone?.map(
+                                          (item, index) => {
+                                            return (
+                                              <>
+                                                <option value={item.id}>
+                                                  {item.name}
+                                                </option>
+                                              </>
                                             );
-                                          return (
-                                            <>
-                                              <option value={item.extension}>
-                                                {item.extension}{" "}
-                                                {foundUser
-                                                  ? `(${foundUser.name})`
-                                                  : ""}
-                                              </option>
-                                            </>
-                                          );
-                                        }
-                                      )}
-                                    </select>
-                                  </div>
-                                  <div className="col-4 ps-0">
-                                    <button
-                                      className="panelButton static ms-0 w-100"
-                                      style={{ height: "34px" }}
-                                      onClick={() => handleSetExtension()}
-                                      // effect="ripple"
-                                    >
-                                      <span className="text">Save</span>
-                                      {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
-                                    </button>
+                                          }
+                                        )}
+                                      </select>
+                                    </div>
+                                    {/* <div className="col-4 ps-0">
+                                      <button
+                                        className="panelButton static ms-0 w-100"
+                                        style={{ height: "34px" }}
+                                        onClick={() => handleChangeTimeZone()}
+                                      >
+                                        <span className="text">Change</span>
+                                      </button>
+                                    </div> */}
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                              <div className="formRow col-xl-12">
+                                <div className="formLabel">
+                                  <label htmlFor="data">Extension</label>
+                                </div>
+                                <div className="col-6">
+                                  <div className="row">
+                                    <div className="col-8">
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        name="delay"
+                                        id="selectFormRow"
+                                        value={selectedExtension}
+                                        onChange={(e) => {
+                                          setSelectedExtension(e.target.value);
+                                        }}
+                                      >
+                                        <option value={""}>None</option>
+                                        {extensionAll?.data?.map(
+                                          (item, index) => {
+                                            const foundUser =
+                                              userWithExtension.find(
+                                                (value) =>
+                                                  value.extension ===
+                                                  item.extension
+                                              );
+                                            return (
+                                              <>
+                                                <option value={item.extension}>
+                                                  {item.extension}{" "}
+                                                  {foundUser
+                                                    ? `(${foundUser.name})`
+                                                    : ""}
+                                                </option>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      </select>
+                                    </div>
+                                    <div className="col-4 ps-0">
+                                      <button
+                                        className="panelButton static ms-0 w-100"
+                                        style={{ height: "34px" }}
+                                        onClick={() => handleSetExtension()}
+                                      // effect="ripple"
+                                      >
+                                        <span className="text">Save</span>
+                                        {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
                           )}
 
                           {/* <div className="formRow col-xl-4">
@@ -411,7 +474,7 @@ const Profile = () => {
 
                             <p className="imgwidth d-flex ms-2 me-2">
                               <img
-                              alt=""
+                                alt=""
                                 src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
                               ></img>
                               &nbsp;&nbsp;
@@ -426,7 +489,7 @@ const Profile = () => {
                             <div>
                               <p className="imgwidth d-flex  ms-2 me-2">
                                 <img
-                                alt=""
+                                  alt=""
                                   src={`https://flagsapi.com/GB/flat/16.png`}
                                 ></img>
                                 &nbsp;&nbsp;
@@ -441,7 +504,7 @@ const Profile = () => {
                             <p className=" me-2">TimeZone:</p>
 
                             <p className=" ms-2 me-2">
-                              {timeZoneVal && timeZoneVal[0].name}
+                              {timeZoneVal && timeZoneVal[0]?.name}
                             </p>
                           </div>
                         </div>
@@ -450,7 +513,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-             {isCustomerAdmin&& <div className="row">
+              {isCustomerAdmin && <div className="row">
                 <div className="col-md-12">
                   <div className="profileView mt-2">
                     <div className="profileDetailsHolder p-0">

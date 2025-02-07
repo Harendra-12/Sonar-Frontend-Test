@@ -816,7 +816,8 @@ function CdrReport({ page }) {
                                           item["application_state"] ===
                                           "eavesdrop" ||
                                           item["application_state"] ===
-                                          "whisper"
+                                          "whisper" || item["application_state"] ===
+                                          "barge"
                                           ? item["other_leg_destination_number"]
                                           : item["Caller-Callee-ID-Number"]}{" "}
                                         {item["application_state_name"] &&

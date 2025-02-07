@@ -533,6 +533,7 @@ function Navbar() {
                             "/lead-add",
                             "/lead-edit",
                             "/campaigns",
+                            "/agents-dialer",
                             "/call-desposition",
                             "/agent-disposition-manage"
                           ])
@@ -554,6 +555,7 @@ function Navbar() {
                           "/lead-add",
                           "/lead-edit",
                           "/campaigns",
+                          "/agents-dialer",
                           "/call-desposition",
                           "/agent-disposition-manage",
                         ])
@@ -934,20 +936,13 @@ function Navbar() {
                               </Link>
                             </li>
                             <li className="tabItem ">
-                              <NavLink
-                                to="/agent-reports"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/agent-reports"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                              <Link
+                                // to="/agent-reports"
+                                onClick={() => featureUnderdevelopment()}
+                                className="nav-links"
                               >
                                 <div className="itemTitle">Agent Report</div>
-                              </NavLink>
+                              </Link>
                             </li>
                             <li className="tabItem ">
                               <NavLink
@@ -1004,34 +999,19 @@ function Navbar() {
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                                className="nav-link"
                               >
                                 <div className="itemTitle">Call Tracking</div>
                               </Link>
                             </li>
                             <li className="tabItem ">
-                              <NavLink
-                                to="/meeting-reports"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/meeting-reports"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                              <Link
+                                // to="/meeting-reports"
+                                onClick={() => featureUnderdevelopment()}
+                                className="nav-link"
                               >
                                 <div className="itemTitle">Meeting Reports</div>
-                              </NavLink>
+                              </Link>
                             </li>
                           </ul>
                         </div>
@@ -1460,7 +1440,7 @@ function Navbar() {
                   </>
                   }
                   <li className="dashboard ">
-                    <NavLink to="/" onClick={()=>dispatch({type:"SET_LOGOUT",logout:1})} type="button">
+                    <NavLink to="/" onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-power-off"></i>
                       </div>
