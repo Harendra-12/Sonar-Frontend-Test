@@ -42,11 +42,13 @@ const ExtensionsEdit = ({ page }) => {
   const [musicRefresh, setMusicRefresh] = useState(0);
   const account = useSelector((state) => state.account);
   const [callSetting, setCallSetting] = useState({
+    followMeDestinationType: "extension",
     followMeDestinationError: false,
     followMeDestination: "",
     followMeDelay: 0,
     followMeTimeOut: 20,
     followMePrompt: "Prompt",
+    followMeId: "",
   });
 
   // React Hook Form for handling form in efficient way
@@ -65,8 +67,7 @@ const ExtensionsEdit = ({ page }) => {
     },
   });
 
-
-  // Getting extension data and manage its state locally 
+  // Getting extension data and manage its state locally
   useEffect(() => {
     setLoading(true);
     if (account === null) {
@@ -92,7 +93,7 @@ const ExtensionsEdit = ({ page }) => {
         const apiData = await generalGetFunction(`/extension/${value}`);
         if (apiData?.status) {
           setLoading(false);
-          console.log(apiData);
+          // console.log("99999999", { apiData });
           const resetInfo = {
             account_code: apiData.data.account_code,
             callgroup: apiData.data.callgroup,
@@ -175,14 +176,15 @@ const ExtensionsEdit = ({ page }) => {
             setCallSetting((prevState) => ({
               ...prevState,
               followMeDestinationError: false,
-
+              followMeDestinationType:
+                apiData.data.followmes[0].destination_type,
               followMeDestination: apiData.data.followmes[0].destination,
               followMeDelay: apiData.data.followmes[0].delay,
               followMeTimeOut: apiData.data.followmes[0].timeout,
               followMePrompt: apiData.data.followmes[0].prompt,
+              followMeId: apiData.data.followmes[0].id,
             }));
           }
-
         } else {
           setLoading(false);
         }
@@ -231,6 +233,7 @@ const ExtensionsEdit = ({ page }) => {
 
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
   const handleFormSubmit = handleSubmit(async (data, title) => {
+    debugger;
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
         type: "manual",
@@ -263,7 +266,7 @@ const ExtensionsEdit = ({ page }) => {
       (data.onbusy == 1 && !data.onbusyTo) ||
       (data.noanswer == "Forward" && !data.noanswerTo) ||
       (data.notregistered == 1 && !data.notregisteredTo) ||
-      (data.followme == 1 && !data.destination_forward_to)
+      (data.followme == 1 && !data?.destination_forward_to)
     ) {
       return;
     }
@@ -282,8 +285,6 @@ const ExtensionsEdit = ({ page }) => {
           emergencyCallerIdNumber: data.emergencyCallerIdNumber,
           directoryFullname: data.directoryFullname,
           directoryExtensionVisible: data.directoryExtensionVisible,
-          destinationType: data.destinationType,
-          destination: data.destination_forward_to,
           maxRegistration: data.maxRegistration,
           limitMax: data.limitMax,
           limitDestinations: data.limitDestinations,
@@ -311,29 +312,31 @@ const ExtensionsEdit = ({ page }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -355,8 +358,6 @@ const ExtensionsEdit = ({ page }) => {
           emergencyCallerIdNumber: data.emergencyCallerIdNumber,
           directoryFullname: data.directoryFullname,
           directoryExtensionVisible: data.directoryExtensionVisible,
-          destinationType: data.destinationType,
-          destination: data.destination_forward_to,
           maxRegistration: data.maxRegistration,
           limitMax: data.limitMax,
           forward: data.forward,
@@ -386,29 +387,31 @@ const ExtensionsEdit = ({ page }) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination: callSetting.followMeDestination,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -1558,8 +1561,17 @@ const ExtensionsEdit = ({ page }) => {
                                           className="formItem"
                                           name="destinationType"
                                           id="destinationType"
-                                          {...register("destinationType")}
-                                          defaultValue="extension"
+                                          onChange={(e) => {
+                                            setCallSetting((prevData) => ({
+                                              ...prevData,
+                                              followMeDestinationType:
+                                                e.target.value,
+                                              followMeDestination: "",
+                                            }));
+                                          }}
+                                          defaultValue={
+                                            callSetting.followMeDestinationType
+                                          }
                                         >
                                           <option value="pstn">PSTN</option>
                                           <option value="extension">
@@ -1579,65 +1591,180 @@ const ExtensionsEdit = ({ page }) => {
                                       <div className="formLabel">
                                         <label htmlFor="">Destination</label>
                                       </div>
-
-                                      {watch("destinationType") !== "pstn" && (
-                                        <div className="w-full">
-                                          <ActionList
-                                            category={watch().destinationType}
-                                            title={null}
-                                            label={null}
-                                            getDropdownValue={
-                                              forwardToValueDestination
-                                            }
-                                            value={
-                                              watch().destination_forward_to
-                                            }
-                                            {...register(
-                                              "destination_forward_to",
-                                              requiredValidator
-                                            )}
-                                          />
-                                          {errors.destination_forward_to && (
-                                            <ErrorMessage
-                                              text={errors.destinationType}
-                                            />
+                                      {callSetting.followMeDestinationType ? (
+                                        <>
+                                          {callSetting.followMeDestinationType !==
+                                          "pstn" ? (
+                                            <div className="w-full">
+                                              <ActionList
+                                                category={
+                                                  callSetting.followMeDestinationType
+                                                }
+                                                title={null}
+                                                label={null}
+                                                getDropdownValue={
+                                                  forwardToValueDestination
+                                                }
+                                                value={
+                                                  callSetting.followMeDestination
+                                                }
+                                                {...register(
+                                                  "destination_forward_to",
+                                                  {
+                                                    required:
+                                                      "This field is required",
+                                                    ...(callSetting.followMeDestinationType !==
+                                                    "pstn"
+                                                      ? {
+                                                          minLength: {
+                                                            value: 4,
+                                                            message:
+                                                              "Must be at least 4 digits",
+                                                          },
+                                                        }
+                                                      : {}),
+                                                  }
+                                                )}
+                                              />
+                                              {errors?.destination_forward_to && (
+                                                <ErrorMessage
+                                                  text={
+                                                    errors
+                                                      .destination_forward_to
+                                                      .message
+                                                  }
+                                                />
+                                              )}
+                                            </div>
+                                          ) : (
+                                            <div className="w-full">
+                                              <input
+                                                type="number"
+                                                name="destination_forward_to"
+                                                value={
+                                                  callSetting.followMeDestination
+                                                }
+                                                className="formItem"
+                                                {...register(
+                                                  "destination_forward_to",
+                                                  {
+                                                    required:
+                                                      "PSTN is required",
+                                                    pattern: {
+                                                      value: /^[0-9]*$/,
+                                                      message:
+                                                        "Only digits are allowed",
+                                                    },
+                                                    ...(callSetting.followMeDestinationType ===
+                                                    "pstn"
+                                                      ? {
+                                                          minLength: {
+                                                            value: 10,
+                                                            message:
+                                                              "Must be at least 10 digits",
+                                                          },
+                                                        }
+                                                      : {}),
+                                                  }
+                                                )}
+                                                onChange={(e) => {
+                                                  const newValue =
+                                                    e.target.value;
+                                                  setCallSetting((prev) => ({
+                                                    ...prev,
+                                                    followMeDestination:
+                                                      newValue,
+                                                  }));
+                                                }}
+                                              />
+                                              {errors?.destination_forward_to && (
+                                                <ErrorMessage
+                                                  text={
+                                                    errors
+                                                      .destination_forward_to
+                                                      .message
+                                                  }
+                                                />
+                                              )}
+                                            </div>
                                           )}
-                                        </div>
-                                      )}
-                                      {watch("destinationType") === "pstn" && (
-                                        <div className="w-full">
-                                          <input
-                                            type="number"
-                                            name="destination_forward_to"
-                                            className="formItem"
-                                            {...register(
-                                              "destination_forward_to",
-                                              {
-                                                required: "PSTN is required",
-                                                pattern: {
-                                                  value: /^[0-9]*$/,
-                                                  message:
-                                                    "Only digits are allowed",
-                                                },
-                                                minLength: {
-                                                  value: 10,
-                                                  message:
-                                                    "Must be at least 10 digits",
-                                                },
-
-                                                ...noSpecialCharactersValidator,
-                                              }
-                                            )}
-                                          />
-                                          {errors.destination_forward_to && (
-                                            <ErrorMessage
-                                              text={
-                                                errors.destination_forward_to
-                                                  .message
-                                              }
-                                            />
+                                        </>
+                                      ) : (
+                                        <>
+                                          {watch("destinationType") !==
+                                          "pstn" ? (
+                                            <div className="w-full">
+                                              <ActionList
+                                                category={watch(
+                                                  "destinationType"
+                                                )}
+                                                title={null}
+                                                label={null}
+                                                getDropdownValue={
+                                                  forwardToValueDestination
+                                                }
+                                                value={
+                                                  watch().destination_forward_to
+                                                }
+                                                {...register(
+                                                  "destination_forward_to",
+                                                  {
+                                                    required:
+                                                      "This field is required",
+                                                    minLength: {
+                                                      value: 4,
+                                                      message:
+                                                        "Must be at least 4 digits",
+                                                    },
+                                                  }
+                                                )}
+                                              />
+                                              {errors.destination_forward_to && (
+                                                <ErrorMessage
+                                                  text={
+                                                    errors
+                                                      .destination_forward_to
+                                                      .message
+                                                  }
+                                                />
+                                              )}
+                                            </div>
+                                          ) : (
+                                            <div className="w-full">
+                                              <input
+                                                type="number"
+                                                name="destination_forward_to"
+                                                className="formItem"
+                                                {...register(
+                                                  "destination_forward_to",
+                                                  {
+                                                    required:
+                                                      "PSTN is required",
+                                                    pattern: {
+                                                      value: /^[0-9]*$/,
+                                                      message:
+                                                        "Only digits are allowed",
+                                                    },
+                                                    minLength: {
+                                                      value: 10,
+                                                      message:
+                                                        "Must be at least 10 digits",
+                                                    },
+                                                  }
+                                                )}
+                                              />
+                                              {errors.destination_forward_to && (
+                                                <ErrorMessage
+                                                  text={
+                                                    errors
+                                                      .destination_forward_to
+                                                      .message
+                                                  }
+                                                />
+                                              )}
+                                            </div>
                                           )}
-                                        </div>
+                                        </>
                                       )}
                                     </div>
                                     <div className="col-3 pe-2">
