@@ -233,7 +233,6 @@ const ExtensionsEdit = ({ page }) => {
 
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
   const handleFormSubmit = handleSubmit(async (data, title) => {
-    debugger;
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
         type: "manual",
@@ -312,14 +311,14 @@ const ExtensionsEdit = ({ page }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
@@ -404,14 +403,14 @@ const ExtensionsEdit = ({ page }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
