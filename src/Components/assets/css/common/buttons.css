@@ -308,7 +308,7 @@
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    margin: 3px;
+  margin: 3px;
 }
 
 .tabButton.active {
@@ -358,15 +358,21 @@
 .cartButton {
   background-color: #2bad8d;
   border: none;
-  padding: 5px 25px;
+  padding: 5px 20px;
   color: #fff;
   font-size: 14px;
-  border-radius: 5px !important;
+  font-weight: 500;
+  border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cartButton i {
+  margin-right: 5px;
+  font-size: 12px;
 }
 
 .logoutBtn {
