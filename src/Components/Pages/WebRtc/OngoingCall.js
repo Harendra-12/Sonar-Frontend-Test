@@ -256,10 +256,6 @@ function OngoingCall({
 
       console.log(`Unholding session ${session.id}...`);
 
-      let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-      sessionDescriptionHandlerOptions.hold = false;
-      session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-
       let options = {
         requestDelegate: {
           onAccept: function () {
