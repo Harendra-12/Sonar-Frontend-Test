@@ -25,6 +25,7 @@ const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -107,14 +108,14 @@ const UsersAdd = () => {
   useEffect(() => {
     if (extension && user) {
       setFilterExtensions(
-        extension.filter((item) => {
+        accountDetails?.extensions?.filter((item) => {
           return !user.some((userItem) => {
             return userItem.extension_id === item.id;
           });
         })
       );
     }
-  }, [extension, user]);
+  }, [accountDetails, user]);
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {

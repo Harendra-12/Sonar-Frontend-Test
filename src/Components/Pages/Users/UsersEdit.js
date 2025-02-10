@@ -27,6 +27,7 @@ const UsersEdit = ({ page }) => {
   const dispatch = useDispatch();
   const locationState = location.state;
   const showHeader = location.pathname == "/users-edit";
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
@@ -175,7 +176,7 @@ const UsersEdit = ({ page }) => {
   useEffect(() => {
     if (extension && user && locationState) {
       setFilterExtensions(
-        extension.filter((item) => {
+        accountDetails?.extensions?.filter((item) => {
           return !user.some((userItem) => {
             return (
               userItem.extension_id === item.id &&
@@ -185,7 +186,7 @@ const UsersEdit = ({ page }) => {
         })
       );
     }
-  }, [extension, user, locationState]);
+  }, [accountDetails, user, locationState]);
 
   // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -629,10 +630,10 @@ const UsersEdit = ({ page }) => {
                                     value={watch().extension_id}
                                     {...register("extension_id")}
                                     // disabled
-                                    disabled={
-                                      watch().extension_id != "" ||
-                                      watch().extension_id != null
-                                    }
+                                    // disabled={
+                                    //   watch().extension_id != "" ||
+                                    //   watch().extension_id != null
+                                    // }
                                   >
                                     <option value="" disabled>
                                       Available Extensions
