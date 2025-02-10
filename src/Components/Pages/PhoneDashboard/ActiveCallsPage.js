@@ -7,6 +7,22 @@ function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
     const ringingState = activeCall.filter((item) => item.callstate === "RINGING");
+
+    const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
+    const numberCount = outboundCalls.reduce((acc, call) => {
+        acc[call.dialed_extension] = (acc[call.dialed_extension] || 0) + 1;
+        return acc;
+    }, {});
+
+
+    const activeState = activeCall.filter((item) => item.callstate === "ACTIVE");
+    const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
+    const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
+        acc[call.dialed_extension] = (acc[call.dialed_extension] || 0) + 1;
+        return acc;
+    }, {});
+    console.log("--------------", numberCount);
+
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -87,21 +103,16 @@ function ActiveCallsPage() {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999999</td>
-                                                                    <td>2</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999991</td>
-                                                                    <td>3</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999992</td>
-                                                                    <td>4</td>
-                                                                </tr>
+
+                                                                {activenumberCount && Object.keys(activenumberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{activenumberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -241,21 +252,16 @@ function ActiveCallsPage() {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999999</td>
-                                                                    <td>2</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999991</td>
-                                                                    <td>3</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>19999999992</td>
-                                                                    <td>4</td>
-                                                                </tr>
+
+                                                                {numberCount && Object.keys(numberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{numberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
                                                             </tbody>
                                                         </table>
                                                     </div>
