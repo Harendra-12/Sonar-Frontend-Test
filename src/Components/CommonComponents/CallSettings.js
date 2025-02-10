@@ -6,7 +6,7 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import CircularLoader from "../Loader/CircularLoader";
 import Header from "./Header";
