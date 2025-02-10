@@ -25,16 +25,19 @@ const Profile = () => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
-  const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
-  const [profileNmae,setProfileName] = useState(account?.name);
-  const [email,setEmail]=useState(account?.email);
-  const [phone,setPhone]=useState(account?.phone);
+  const [selectedTimeZone, setSelectedTimeZone] = useState(
+    account?.timezone_id
+  );
+  const [profileNmae, setProfileName] = useState(account?.name);
+  const [email, setEmail] = useState(account?.email);
+  const [phone, setPhone] = useState(account?.phone);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
   const profileName = account.name;
   const acount = useSelector((state) => state.account);
   const isCustomerAdmin = account?.email == accountDetails?.email;
+  console.log("9999999999account", account);
   useEffect(() => {
     if (isCustomerAdmin) {
       if (allUser?.length == 0) {
@@ -101,6 +104,9 @@ const Profile = () => {
       account_id: acount.account_id,
       user: acount.id,
       ...(preassignedExtension ? { forceUpdate: true } : { forceUpdate: true }),
+      forward: account.extension.forward,
+      forward_to: account.extension.forward_to,
+      timezone_id: selectedTimeZone,
     };
     setPopup(false);
     const apiData = await generalPutFunction(
@@ -147,11 +153,11 @@ const Profile = () => {
       dispatch({
         type: "SET_ACCOUNTREFRESH",
         accountRefresh: accountRefresh + 1,
-      })
+      });
     } else {
       toast.error(apiData.message);
     }
-  }
+  };
   return (
     <main className="mainContent">
       {loading && <CircularLoader />}
@@ -424,8 +430,8 @@ const Profile = () => {
                                       <button
                                         className="panelButton static ms-0 w-100"
                                         style={{ height: "34px" }}
-                                        onClick={() => handleSetExtension()}
-                                      // effect="ripple"
+                                        onClick={() => handleUpdateExtension()}
+                                        // effect="ripple"
                                       >
                                         <span className="text">Save</span>
                                         {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
