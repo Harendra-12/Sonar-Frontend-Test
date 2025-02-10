@@ -112,7 +112,7 @@ function AgentsAdd() {
                                         </div>
                                         <div className="formRow col-xl-3">
                                             <div className="formLabel">
-                                                <label className="text-dark">First Name</label>
+                                                <label className="text-dark">Full Name</label>
 
                                             </div>
                                             <div className="col-6">

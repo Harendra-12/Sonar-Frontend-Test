@@ -32,16 +32,6 @@ function AddOns() {
                                                     <i class="fa-solid fa-caret-left"></i>
                                                 </span>
                                             </button>
-                                            <button
-                                                type="button"
-                                                effect="ripple"
-                                                className="panelButton"
-                                            >
-                                                <span className="text">Save</span>
-                                                <span className="icon">
-                                                    <i class="fa-solid fa-floppy-disk"></i>
-                                                </span>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -379,7 +369,7 @@ function AddOns() {
                                             </div>
                                         </div>
                                     </div>
-                                </> 
+                                </>
                             </div>
                         </div>
                     </div>
