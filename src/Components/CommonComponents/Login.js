@@ -13,7 +13,7 @@ function Login() {
   const account = useSelector((state) => state.account);
   const navigate = useNavigate();
   useEffect(()=>{
-    if(account.id){
+    if(account?.id){
       navigate("/dashboard")
     }
   })

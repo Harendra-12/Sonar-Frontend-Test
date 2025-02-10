@@ -23,8 +23,7 @@ function GlobalCalls() {
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const updateBalance = useSelector((state) => state.updateBalance);
   const logout = useSelector((state) => state.logout);
-  console.log("This is l;og out",logout);
-  
+
   const navigate = useNavigate()
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
@@ -357,25 +356,25 @@ function GlobalCalls() {
     }
   }, []);
 
-  useEffect(()=>{
-     async function logOut() {
-        const apiData = await generalGetFunction("/logout");
-       
+  useEffect(() => {
+    async function logOut() {
+      const apiData = await generalGetFunction("/logout");
+      navigate("/");
+      localStorage.clear();
+      if (apiData?.status) {
         localStorage.clear();
-        if (apiData?.status) {
-          localStorage.clear();
-          dispatch({
-            type: "SET_ACCOUNT",
-            account: null,
-          });
-          dispatch({type:"SET_LOGOUT",logout:0})
-          navigate("/");
-        }
+        dispatch({
+          type: "SET_ACCOUNT",
+          account: null,
+        });
+        dispatch({ type: "SET_LOGOUT", logout: 0 })
+
       }
-      if(logout>0){
-        logOut()
-      }
-  },[logout])
+    }
+    if (logout > 0) {
+      logOut()
+    }
+  }, [logout])
   return <div></div>;
 }
 

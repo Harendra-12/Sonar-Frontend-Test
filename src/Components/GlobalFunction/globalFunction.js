@@ -34,7 +34,7 @@ export async function login(userName, password) {
   };
 
   return axios
-    .post(`/auth/login`, parsedData)
+    .post(`${baseName}/auth/login`, parsedData)
     .then((res) => {
       const token = res.data.token;
       localStorage.setItem("token", token);

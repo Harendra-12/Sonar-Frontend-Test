@@ -26,9 +26,9 @@ const Profile = () => {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
   const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
-  const [profileNmae,setProfileName] = useState(account?.name);
-  const [email,setEmail]=useState(account?.email);
-  const [phone,setPhone]=useState(account?.phone);
+  const [profileNmae, setProfileName] = useState(account?.name);
+  const [email, setEmail] = useState(account?.email);
+  const [phone, setPhone] = useState(account?.phone);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
