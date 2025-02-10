@@ -268,7 +268,7 @@ function CallDashboard() {
                                       <td>{item.cid_name}</td>
                                       <td>{item.presence_id.split("@")[0]}</td>
                                       <td>{item.created.split(" ")[1]}</td>
-                                      <td>{item.name.split("/")[1]}</td>
+                                      <td>{item.did_tag}</td>
                                     </tr>
                                   )
                                 })
