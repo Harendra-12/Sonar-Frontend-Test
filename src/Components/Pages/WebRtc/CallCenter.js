@@ -6,11 +6,13 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
 const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
@@ -22,7 +24,7 @@ const CallCenter = ({ initial }) => {
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
-  const [allCallCenterIds, setAllCallCenterIds] = useState([]);
+  const allCallCenterIds=useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
@@ -56,31 +58,12 @@ const CallCenter = ({ initial }) => {
       setAssignerCallcenter(AssignedCallcenter);
     }
   }, [Id, callCenter]);
+  
+  // Function to handle logout
   const handleLogOut = async () => {
-    const parsedData = { status: "Logged Out" };
     setLoading(true);
     try {
-      const apiResponses = await Promise.allSettled(
-        allCallCenterIds.map((id) =>
-          generalPutFunction(`call-center-agent/update/${id}`, parsedData)
-        )
-      );
-      const failedResponses = apiResponses.filter(
-        (res) => res.status === "rejected"
-      );
-      if (failedResponses.length > 0) {
-        console.error(
-          `Error updating ${failedResponses.length} agents:`,
-          failedResponses
-        );
-        alert(
-          `Failed to update ${failedResponses.length} agents. Please try again.`
-        );
-      } else {
-        dispatch({ type: "SET_LOGOUT", logout: 1 });
-        sessionManager.disconnect();
-        setAllLogOut(false);
-      }
+      const apiResponses = await logout(allCallCenterIds, dispatch, sessionManager);
     } catch (error) {
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
@@ -109,40 +92,7 @@ const CallCenter = ({ initial }) => {
         }}
       >
         {allLogOut && (
-          <div className="addNewContactPopup">
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                {/* <i className="fa-light fa-user-plus" /> */}
-                <h5>Are you sure , you want to logout from all ?</h5>
-              </div>
-              {/* <div className="col-xl-12">
-            </div> */}
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between">
-                  <button
-                    className="panelButton gray ms-0"
-                    onClick={() => {
-                      setAllLogOut(false);
-                    }}
-                  >
-                    <span className="text">Cancel</span>
-                    <span className="icon">
-                      <i class="fa-light fa-xmark"></i>
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => handleLogOut()}
-                    className="panelButton"
-                  >
-                    <span className="text">Ok</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-check" />
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut}/>
         )}
 
         <div className="container-fluid">
@@ -196,7 +146,12 @@ const CallCenter = ({ initial }) => {
                         </div>
                       </div>
                       <ul class="dropdown-menu">
-                        <li onClick={() => setAllLogOut(true)}>
+                        <li onClick={() =>{ 
+                          if (allCallCenterIds.length > 0) {
+                          setAllLogOut(true)}else{
+                            handleLogOut()
+                          }
+                        }}>
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}
@@ -274,7 +229,6 @@ const CallCenter = ({ initial }) => {
                                     Id={Id}
                                     setRefreshCenter={setRefreshCenter}
                                     callCenterDetailData={callCenterDetailData}
-                                    setAllCallCenterIds={setAllCallCenterIds}
                                   />
                                 );
                               })}
@@ -320,8 +274,7 @@ const CallCenterListItem = ({
   index,
   Id,
   setRefreshCenter,
-  callCenterDetailData,
-  setAllCallCenterIds,
+  callCenterDetailData
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOnBreak, setIsOnBreak] = useState(false);
@@ -330,6 +283,7 @@ const CallCenterListItem = ({
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const dispatch = useDispatch();
 
   // Extract the agent's reference ID and status
   const { id: refId = "", status = "" } =
@@ -437,13 +391,20 @@ const CallCenterListItem = ({
     if (apiData.status) {
       setLoading(false);
       if (action === "Logged Out") {
+        dispatch({
+          type: "DELETE_CALLER_ID",
+          CallerId, // Pass the callCenterID to delete
+        });
         toast.success(`Logged out for ${callCenterName}`);
         setIsOnBreak(false);
         setIsLoggedIn(false);
         stopTimer(); // Stop the timer when logging out
       } else if (action === "Available") {
         setIsLoggedIn(true);
-        setAllCallCenterIds((prev) => [...prev, CallerId]);
+        dispatch({
+          type: "SET_ALL_CALL_CENTER_IDS",
+         CallerId, // Adding another callCenterID
+        });
         setIsOnBreak(false);
         stopTimer(); // Stop the timer when becoming available
         toast.success(`Available for ${callCenterName}`);

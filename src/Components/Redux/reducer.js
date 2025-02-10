@@ -68,6 +68,7 @@ var groupMessage = [];
 var previewDialer = [];
 var agentDeposition = false
 var desposiTionOptions = []
+var allCallCenterIds =[]
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
 var logout = 0
 
@@ -141,6 +142,7 @@ const initialState = {
   previewDialer,
   agentDeposition,
   desposiTionOptions,
+  allCallCenterIds,
   callCenterPopUp,
   logout,
 };
@@ -260,6 +262,16 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivrRefresh: action.ivrRefresh };
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
+    case "SET_ALL_CALL_CENTER_IDS":
+        return { 
+           ...state, 
+           allCallCenterIds: [...state.allCallCenterIds, action.CallerId] 
+        };
+    case "DELETE_CALLER_ID":
+          return {
+             ...state,
+             allCallCenterIds: state.allCallCenterIds.filter(id => id !== action.CallerId)
+          };
     case "SET_DEVICE_PROVISIONINGREFRESH":
       return {
         ...state,

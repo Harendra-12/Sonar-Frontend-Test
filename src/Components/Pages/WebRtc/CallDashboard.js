@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import {  generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {  generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -14,8 +15,28 @@ function CallDashboard() {
   const [allParkedCall, setAllParkedCall] = useState([]);
   const extension = account?.extension?.extension || null;
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { sessionManager } = useSIPProvider();
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     //dest should start with "set:valet_ticket"
     setAllParkedCall(
@@ -63,6 +84,9 @@ function CallDashboard() {
   return (
     <>
       {/* <SideNavbarApp /> */}
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -121,7 +145,15 @@ function CallDashboard() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
