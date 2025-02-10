@@ -33,7 +33,7 @@ export async function login(userName, password) {
     password: password,
   };
 
-  return axiosInstance
+  return axios
     .post(`/auth/login`, parsedData)
     .then((res) => {
       const token = res.data.token;
