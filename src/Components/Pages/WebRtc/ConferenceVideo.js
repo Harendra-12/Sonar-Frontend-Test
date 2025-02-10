@@ -73,7 +73,7 @@ function ConferenceVideo({
         }
       });
       if (!isMounted) return;
-
+      try{
       session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
         if (!isMounted) return; // Check if the component is still mounted
 
@@ -94,6 +94,9 @@ function ConferenceVideo({
           });
         }
       };
+    }catch(error){
+      console.log(error);
+    }
 
       const remoteDescription =
         session.sessionDescriptionHandler?.peerConnection
