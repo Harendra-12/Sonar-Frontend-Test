@@ -26,9 +26,9 @@ const Profile = () => {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
   const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
-  const [profileNmae,setProfileName] = useState(account?.name);
-  const [email,setEmail]=useState(account?.email);
-  const [phone,setPhone]=useState(account?.phone);
+  const [profileNmae, setProfileName] = useState(account?.name);
+  const [email, setEmail] = useState(account?.email);
+  const [phone, setPhone] = useState(account?.phone);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
@@ -258,7 +258,7 @@ const Profile = () => {
                     <div className="profileDetailsHolder p-0">
                       <div className="profileView position-relative mt-xl-2">
                         <div style={{ position: 'absolute', right: 0, top: 0 }}>
-                          <button className="cartButton" style={{ borderRadius: '0px 10px' }}><i className="fa-regular fa-pen-to-square" /> Edit</button>
+                          <button className="cartButton" style={{ borderRadius: '0px 10px' }}><i className="fa-regular fa-pen-to-square" /> Edit Profile</button>
                         </div>
                         <div className="row" style={{ padding: 5 }}>
                           <div className="header">Account Details</div>
@@ -427,7 +427,7 @@ const Profile = () => {
                                         onClick={() => handleSetExtension()}
                                       // effect="ripple"
                                       >
-                                        <span className="text">Save</span>
+                                        <span className="text">Set</span>
                                         {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
                                       </button>
                                     </div>
