@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import ContentLoader from "../../Loader/ContentLoader";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
 function AllVoicemails({ isCustomerAdmin }) {
   const navigate = useNavigate();
@@ -24,6 +26,8 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [clickedVoiceMail, setClickedVoiceMail] = useState(null);
   const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
   const { sessionManager, connectStatus } = useSIPProvider();
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -65,6 +69,22 @@ function AllVoicemails({ isCustomerAdmin }) {
     }
   }, [voiceMail]);
 
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   const groupVoicemailsByDate = (voiceMail) => {
     if (voiceMail.length == 0) return [];
 
@@ -257,6 +277,9 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   return (
     <>
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -333,7 +356,15 @@ function AllVoicemails({ isCustomerAdmin }) {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
