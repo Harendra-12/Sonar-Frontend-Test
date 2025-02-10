@@ -1,10 +1,10 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useDispatch, useSelector } from "react-redux";
 import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
@@ -160,7 +160,7 @@ function GetDid() {
       companyId: account.account_id,
       usage: usagePayload,
     };
-    const apiData = await generalPostFunction("/searchTfn", parsedData);
+    const apiData = await generalPostFunction("/search-number", parsedData);
     setLoading(false);
     if (apiData?.status) {
       setDid(apiData.data);
@@ -317,6 +317,9 @@ function GetDid() {
                           style={{ width: "100%" }}
                         >
                           <label htmlFor="quantity">Quantity</label>
+                          {errors.quantity && (
+                            <ErrorMessage text={errors.quantity.message} />
+                          )}
                         </div>
                         <div className="col-12">
                           <input
@@ -331,11 +334,6 @@ function GetDid() {
                             })}
                             onKeyDown={restrictToNumbers}
                           />
-                        
-                          {errors.quantity && (
-                            <ErrorMessage text={errors.quantity.message} />
-                          )}
-
                           <label htmlFor="data" className="formItemDesc">
                             Input the quantity
                           </label>
@@ -366,6 +364,9 @@ function GetDid() {
                           style={{ width: "100%" }}
                         >
                           <label htmlFor="npa">NPA</label>
+                          {errors.npa && (
+                            <ErrorMessage text={errors.npa.message} />
+                          )}
                         </div>
                         <div className="col-12">
                           <input
@@ -378,10 +379,6 @@ function GetDid() {
                               ...noSpecialCharactersValidator,
                             })}
                           />
-                          {errors.npa && (
-                            <ErrorMessage text={errors.npa.message} />
-                          )}
-
                           <label htmlFor="data" className="formItemDesc">
                             Input the NPA for the DID
                           </label>

@@ -1,5 +1,6 @@
 // reducer.js
 var account = JSON.parse(localStorage.getItem("account"));
+var accountRefresh = 0;
 var registerUser = [];
 var loginUser = [];
 var callState = [];
@@ -145,12 +146,15 @@ const initialState = {
   allCallCenterIds,
   callCenterPopUp,
   logout,
+  accountRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_ACCOUNT":
       return { ...state, account: action.account };
+    case "SET_ACCOUNTREFRESH":
+      return { ...state, accountRefresh: action.accountRefresh };
     case "SET_REGISTERUSER":
       return { ...state, registerUser: action.registerUser };
     case "SET_LOGINUSER":

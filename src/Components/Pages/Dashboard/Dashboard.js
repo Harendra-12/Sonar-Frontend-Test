@@ -9,11 +9,14 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
+import Tippy from "@tippyjs/react";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account);
+  const timeZone = useSelector((state) => state.timeZone);
+  const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +31,33 @@ const Dashboard = () => {
   const registerUser = useSelector((state) => state.registerUser || []);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const isCustomerAdmin = account?.email == accountDetails?.email;
+  const [time, setTime] = useState(new Date());
+
+  // Setting clock for the selected timnezone
+  useEffect(() => {
+    if (timeZoneRefresh > 0) {
+
+    } else {
+      dispatch({
+        type: "SET_TIMEZONEREFRESH",
+        timeZoneRefresh: timeZoneRefresh + 1,
+      });
+    }
+  }, [timeZone]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Convert current time to the given timezone
+      const value = accountDetails?.timezone?.value;
+      const timeInZone = new Date(
+        new Date().toLocaleString("en-US", { timeZone: value })
+      );
+      setTime(timeInZone);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeZone]);
+
+
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {
@@ -44,15 +74,6 @@ const Dashboard = () => {
     }
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   // Initializing call card data
   const [callCardData, setCallCardData] = useState({
@@ -343,11 +364,10 @@ const Dashboard = () => {
                   <div className="row">
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper a" >
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Timezone</h5>
                               <p>
@@ -374,7 +394,7 @@ const Dashboard = () => {
                             </div>
                             <div className="col-3">
                               <Clock
-                                value={currentTime}
+                                value={time}
                                 size={50}
                                 secondHandWidth={1}
                                 renderMinuteMarks={false}
@@ -390,18 +410,16 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
                             <div
                               className="col-2"
-                              onClick={() => navigate("/my-profile")}
                             >
                               <i className="fa-solid fa-user"></i>
                             </div>
@@ -427,18 +445,16 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
                             <div
                               className="col-3"
-                              onClick={() => navigate("/card-details")}
                             >
                               <i className="fa-duotone fa-file"></i>
                             </div>
@@ -469,7 +485,6 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
@@ -514,16 +529,17 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
+                              <div className="d-flex flex-wrap justify-content-between"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() =>
+                                  navigate("/card-transaction-list")
+                                }>
                                 <div className="col-9">
                                   <h5>Payment Details</h5>
                                   <p>Click to view transaction history</p>
                                 </div>
                                 <div
                                   className="col-3"
-                                  onClick={() =>
-                                    navigate("/card-transaction-list")
-                                  }
                                 >
                                   <i class="fa-solid fa-file-invoice"></i>
                                 </div>
@@ -644,7 +660,7 @@ const Dashboard = () => {
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading">
-                                <div className="d-flex flex-wrap justify-content-between">
+                                <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/extensions")} style={{ cursor: 'pointer' }}>
                                   <div className="col-9">
                                     <h5>Extensions</h5>
                                     <p>
@@ -652,11 +668,10 @@ const Dashboard = () => {
                                       Registered
                                     </p>
                                   </div>
-                                  <div
-                                    className="col-3"
-                                    onClick={() => navigate("/extensions")}
-                                  >
-                                    <i class="fa-duotone fa-phone-office"></i>
+                                  <div className="col-3">
+                                    <Tippy content="Click to view extensions">
+                                      <i class="fa-duotone fa-phone-office"></i>
+                                    </Tippy>
                                   </div>
                                 </div>
                               </div>

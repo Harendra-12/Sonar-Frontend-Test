@@ -284,8 +284,7 @@ function PortNumberAdd() {
                             <span className="text-danger">*</span>
                           </label>
                           <label htmlFor="data" className="formItemDesc">
-                            Account Number with Current Provider. This can often
-                            be found on
+                            Account Number with Current Provider.
                           </label>
                         </div>
                         <div className="col-6">

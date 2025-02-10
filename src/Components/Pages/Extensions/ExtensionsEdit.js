@@ -324,18 +324,18 @@ const ExtensionsEdit = ({ page }) => {
           followme: data.followme,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination_type: callSetting.followMeDestinationType,
-                    destination: data?.destination_forward_to,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    id: callSetting.followMeId,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination_type: callSetting.followMeDestinationType,
+                  destination: data?.destination_forward_to,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  id: callSetting.followMeId,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -386,18 +386,18 @@ const ExtensionsEdit = ({ page }) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination_type: callSetting.followMeDestinationType,
-                    destination: data?.destination_forward_to,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    id: callSetting.followMeId,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination_type: callSetting.followMeDestinationType,
+                  destination: data?.destination_forward_to,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  id: callSetting.followMeId,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
@@ -1052,7 +1052,7 @@ const ExtensionsEdit = ({ page }) => {
                                   defaultValue={"false"}
                                 >
                                   <option value="" disabled>
-                                    Select User
+                                    Select Status
                                   </option>
                                   <option value="true">True</option>
                                   <option value="false">False</option>
@@ -1145,7 +1145,7 @@ const ExtensionsEdit = ({ page }) => {
                                   Directory Extension Visible
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Select whether announce the extension when
+                                  Select whether to announce the extension when
                                   calling the directory.
                                 </label>
                               </div>
@@ -1586,14 +1586,14 @@ const ExtensionsEdit = ({ page }) => {
                                         </select>
                                       </div>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-3 pe-2">
                                       <div className="formLabel">
                                         <label htmlFor="">Destination</label>
                                       </div>
                                       {callSetting.followMeDestinationType ? (
                                         <>
                                           {callSetting.followMeDestinationType !==
-                                          "pstn" ? (
+                                            "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={
@@ -1613,14 +1613,14 @@ const ExtensionsEdit = ({ page }) => {
                                                     required:
                                                       "This field is required",
                                                     ...(callSetting.followMeDestinationType !==
-                                                    "pstn"
+                                                      "pstn"
                                                       ? {
-                                                          minLength: {
-                                                            value: 4,
-                                                            message:
-                                                              "Must be at least 4 digits",
-                                                          },
-                                                        }
+                                                        minLength: {
+                                                          value: 4,
+                                                          message:
+                                                            "Must be at least 4 digits",
+                                                        },
+                                                      }
                                                       : {}),
                                                   }
                                                 )}
@@ -1655,14 +1655,14 @@ const ExtensionsEdit = ({ page }) => {
                                                         "Only digits are allowed",
                                                     },
                                                     ...(callSetting.followMeDestinationType ===
-                                                    "pstn"
+                                                      "pstn"
                                                       ? {
-                                                          minLength: {
-                                                            value: 10,
-                                                            message:
-                                                              "Must be at least 10 digits",
-                                                          },
-                                                        }
+                                                        minLength: {
+                                                          value: 10,
+                                                          message:
+                                                            "Must be at least 10 digits",
+                                                        },
+                                                      }
                                                       : {}),
                                                   }
                                                 )}
@@ -1691,7 +1691,7 @@ const ExtensionsEdit = ({ page }) => {
                                       ) : (
                                         <>
                                           {watch("destinationType") !==
-                                          "pstn" ? (
+                                            "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={watch(

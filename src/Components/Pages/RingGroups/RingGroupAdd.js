@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -181,7 +181,7 @@ const RingGroupAdd = () => {
     if (name === "destination" && !allowedCharacters.test(value)) {
       console.log("Invalid characters detected");
       return;
-    }    
+    }
     const newDestination = [...destination];
     newDestination[index][name] = value;
     setDestination(newDestination);
@@ -314,7 +314,7 @@ const RingGroupAdd = () => {
     }
   });
 
-  
+
   // Open popup for upload new music
   const handleAddMusic = () => {
     setValue("ring_back", "");
@@ -481,7 +481,7 @@ const RingGroupAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Groups" />
-         
+
         </div>
         <>
           {loading ? (
@@ -616,7 +616,13 @@ const RingGroupAdd = () => {
                       </div>
                       <div className="col-6">
                         <div className="row">
-                          <div className="col-5">
+                          <div
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
+                          >
+                            {showTimeoutDestinationToggle && <div className="formLabel">
+                              <label htmlFor="">Type</label>
+                            </div>}
                             <select
                               className="formItem"
                               {...register("destination_type", {
@@ -651,67 +657,72 @@ const RingGroupAdd = () => {
                               <option value="PSTN">PSTN</option>
                             </select>
                           </div>
-                          <div className="col-7">
-                            {showTimeoutDestinationToggle ? (
-                              timeoutDestPstnToggle ? (
+                          {showTimeoutDestinationToggle && (
+                            <>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="">Destination</label>
+                                </div>
+                                {showTimeoutDestinationToggle ? (
+                                  timeoutDestPstnToggle ? (
+                                    <input
+                                      placeholder="PSTN"
+                                      className="formItem"
+                                      {...register("timeout_destination", {
+                                        ...numberValidator,
+                                      })}
+                                    ></input>
+                                  ) : (
+                                    <ActionList
+                                      title={null}
+                                      label={null}
+                                      getDropdownValue={actionListValue}
+                                      value={watch().timeout_destination}
+                                    />
+                                  )
+                                ) : (
+                                  <input
+                                    placeholder="None"
+                                    disabled
+                                    className="formItem"
+                                    {...register("timeout_destination", {
+                                      ...numberValidator,
+                                    })}
+                                  ></input>
+                                )}
+                              </div>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="">Call Timeout</label>
+                                </div>
                                 <input
-                                  placeholder="PSTN"
+                                  type="text"
+                                  name="extension"
                                   className="formItem"
-                                  {...register("timeout_destination", {
-                                    ...numberValidator,
+                                  {...register("call_timeout", {
+                                    ...noSpecialCharactersValidator,
+                                    ...(watch("call_timeout") !== "" &&
+                                      minValidator(
+                                        destination.reduce(
+                                          (max, obj) => Math.max(max, obj.delay),
+                                          0
+                                        )
+                                      )),
                                   })}
-                                ></input>
-                              ) : (
-                                <ActionList
-                                  title={null}
-                                  label={null}
-                                  getDropdownValue={actionListValue}
-                                  value={watch().timeout_destination}
+                                  onKeyDown={restrictToNumbers}
                                 />
-                              )
-                            ) : (
-                              <input
-                                disabled
-                                placeholder="None"
-                                className="formItem"
-                                {...register("timeout_destination", {
-                                  ...numberValidator,
-                                })}
-                              ></input>
-                            )}
-                          </div>
+                                {errors.call_timeout && (
+                                  <ErrorMessage text={errors.call_timeout.message} />
+                                )}
+                              </div>
+                            </>
+                          )}
                           {errors?.timeout_destination && (
                             <ErrorMessage
                               text={errors?.timeout_destination?.message}
                             />
                           )}
                         </div>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Call Timeout</label>
-                      </div>
-                      <div className="col-6">
-                        <input
-                          type="text"
-                          name="extension"
-                          className="formItem"
-                          {...register("call_timeout", {
-                            ...noSpecialCharactersValidator,
-                            ...(watch("call_timeout") !== "" &&
-                              minValidator(
-                                destination.reduce(
-                                  (max, obj) => Math.max(max, obj.delay),
-                                  0
-                                )
-                              )),
-                          })}
-                          onKeyDown={restrictToNumbers}
-                        />
-                        {errors.call_timeout && (
-                          <ErrorMessage text={errors.call_timeout.message} />
-                        )}
                       </div>
                     </div>
                     <div className="formRow col-xl-3">

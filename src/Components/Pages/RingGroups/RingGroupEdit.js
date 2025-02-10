@@ -63,7 +63,7 @@ const RingGroupEdit = () => {
     timeOut: "0",
     status: "active",
   });
-   // Using useForm hook to manage data and validation we are setting some default value in it as well
+  // Using useForm hook to manage data and validation we are setting some default value in it as well
   const {
     register,
     watch,
@@ -194,7 +194,7 @@ const RingGroupEdit = () => {
     }
   }, [account, navigate, value, getAllDataRefresh]);
 
-   // Get all ringbacks music for dropdown
+  // Get all ringbacks music for dropdown
   useEffect(() => {
     const getRingBackData = async () => {
       setLoading(true);
@@ -214,7 +214,7 @@ const RingGroupEdit = () => {
     getRingBackData();
   }, [musicRefresh, getAllDataRefresh]);
 
- // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
+  // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
     if (allUserRefresh > 0) {
       const filterUser = allUserArr.data.filter(
@@ -307,7 +307,7 @@ const RingGroupEdit = () => {
     return allFieldsFilled;
   };
 
-    // Checlking unique agents for listing
+  // Checlking unique agents for listing
   const validateUniqueAgents = () => {
     const agentValues = destination.map((item) => item.destination);
     const uniqueValues = [...new Set(agentValues)];
@@ -344,7 +344,7 @@ const RingGroupEdit = () => {
     return false;
   };
 
-    // Function to delete a destination
+  // Function to delete a destination
   async function deleteDestination(id) {
     if (checkPrevDestination(id)) {
       setLoading(true);
@@ -368,7 +368,7 @@ const RingGroupEdit = () => {
     }
   }
 
-    // Function to validate destination 
+  // Function to validate destination 
   const destinationValidation = () => {
     const allFilled = destination.every(
       (item) => item.destination.trim() !== ""
@@ -449,7 +449,7 @@ const RingGroupEdit = () => {
     setShowMusic(true);
   };
 
-    // Validating the string
+  // Validating the string
   function truncateString(str) {
     if (str.length > 8) {
       return str.substring(0, 8) + "...";
@@ -457,7 +457,7 @@ const RingGroupEdit = () => {
     return str; // Return the string as is if it's 8 characters or less
   }
 
-   // Handle chek box for bulk edit 
+  // Handle chek box for bulk edit 
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (prevSelected.some((agent) => agent.name === item.name)) {
@@ -470,7 +470,7 @@ const RingGroupEdit = () => {
     });
   };
 
-   // Filter data based on search those wo match will comes first
+  // Filter data based on search those wo match will comes first
   const filteredUsers = user?.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -479,7 +479,7 @@ const RingGroupEdit = () => {
         .includes(searchQuery.toLowerCase())
   );
 
-    // The user which is not assign 
+  // The user which is not assign 
   const availableUsers = filteredUsers?.filter(
     (user) =>
       !destination.some(
@@ -487,7 +487,7 @@ const RingGroupEdit = () => {
       )
   );
 
-    // Logic to upload bulk destination
+  // Logic to upload bulk destination
   const handleBulkDestinationUpload = (selectedDestinations) => {
     if (destination.length === 1 && destination[0].destination === "") {
       const newDestinations = selectedDestinations.map(
@@ -528,7 +528,7 @@ const RingGroupEdit = () => {
     setSelectAll(false);
   };
 
-    // Select all for bulk edit
+  // Select all for bulk edit
   const handleSelectAll = () => {
     const newSelectAllState = !selectAll; // Toggle Select All state
     setSelectAll(newSelectAllState);
@@ -750,9 +750,12 @@ const RingGroupEdit = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${showTimeoutDestinationToggle ? "5" : "12"
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
                               }`}
                           >
+                            {showTimeoutDestinationToggle && <div className="formLabel">
+                              <label htmlFor="">Type</label>
+                            </div>}
                             <select
                               className="formItem"
                               {...register("destination_type", {
@@ -788,35 +791,64 @@ const RingGroupEdit = () => {
                             </select>
                           </div>
                           {showTimeoutDestinationToggle && (
-                            <div className="col-7">
-                              {showTimeoutDestinationToggle ? (
-                                timeoutDestPstnToggle ? (
+                            <>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="">Destination</label>
+                                </div>
+                                {showTimeoutDestinationToggle ? (
+                                  timeoutDestPstnToggle ? (
+                                    <input
+                                      placeholder="PSTN"
+                                      className="formItem"
+                                      {...register("timeout_destination", {
+                                        ...numberValidator,
+                                      })}
+                                    ></input>
+                                  ) : (
+                                    <ActionList
+                                      title={null}
+                                      label={null}
+                                      getDropdownValue={actionListValue}
+                                      value={watch().timeout_destination}
+                                    />
+                                  )
+                                ) : (
                                   <input
-                                    placeholder="PSTN"
+                                    placeholder="None"
+                                    disabled
                                     className="formItem"
                                     {...register("timeout_destination", {
                                       ...numberValidator,
                                     })}
                                   ></input>
-                                ) : (
-                                  <ActionList
-                                    title={null}
-                                    label={null}
-                                    getDropdownValue={actionListValue}
-                                    value={watch().timeout_destination}
-                                  />
-                                )
-                              ) : (
+                                )}
+                              </div>
+                              <div className="col-4">
+                                <div className="formLabel">
+                                  <label htmlFor="">Call Timeout</label>
+                                </div>
                                 <input
-                                  placeholder="None"
-                                  disabled
+                                  type="text"
+                                  name="extension"
                                   className="formItem"
-                                  {...register("timeout_destination", {
-                                    ...numberValidator,
+                                  {...register("call_timeout", {
+                                    ...noSpecialCharactersValidator,
+                                    ...(watch("call_timeout") !== "" &&
+                                      minValidator(
+                                        destination.reduce(
+                                          (max, obj) => Math.max(max, obj.delay),
+                                          0
+                                        )
+                                      )),
                                   })}
-                                ></input>
-                              )}
-                            </div>
+                                  onKeyDown={restrictToNumbers}
+                                />
+                                {errors.call_timeout && (
+                                  <ErrorMessage text={errors.call_timeout.message} />
+                                )}
+                              </div>
+                            </>
                           )}
                           {errors?.timeout_destination && (
                             <ErrorMessage
@@ -824,32 +856,6 @@ const RingGroupEdit = () => {
                             />
                           )}
                         </div>
-                      </div>
-                    </div>
-                    <div className="formRow col-xl-3">
-                      <div className="formLabel">
-                        <label htmlFor="">Call Timeout</label>
-                      </div>
-                      <div className="col-6">
-                        <input
-                          type="text"
-                          name="extension"
-                          className="formItem"
-                          {...register("call_timeout", {
-                            ...noSpecialCharactersValidator,
-                            ...(watch("call_timeout") !== "" &&
-                              minValidator(
-                                destination.reduce(
-                                  (max, obj) => Math.max(max, obj.delay),
-                                  0
-                                )
-                              )),
-                          })}
-                          onKeyDown={restrictToNumbers}
-                        />
-                        {errors.call_timeout && (
-                          <ErrorMessage text={errors.call_timeout.message} />
-                        )}
                       </div>
                     </div>
                     <div className="formRow col-xl-3">
