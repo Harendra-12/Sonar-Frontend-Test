@@ -7,10 +7,17 @@ import {
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
-
+  const account = useSelector((state) => state.account);
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(account?.id){
+      navigate("/dashboard")
+    }
+  })
+  
   return (
     <>
       <style>

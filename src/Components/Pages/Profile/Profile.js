@@ -26,6 +26,9 @@ const Profile = () => {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const [selectedExtension, setSelectedExtension] = useState("");
   const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
+  const [profileNmae, setProfileName] = useState(account?.name);
+  const [email, setEmail] = useState(account?.email);
+  const [phone, setPhone] = useState(account?.phone);
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
@@ -472,7 +475,7 @@ const Profile = () => {
                           >
                             <p className=" me-2">Country:</p>
 
-                            <p className="imgwidth d-flex ms-2 me-2">
+                            <p className="imgwidth d-flex ms-2 me-2" style={{ minWidth: '75px' }}>
                               <img
                                 alt=""
                                 src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
@@ -487,7 +490,7 @@ const Profile = () => {
                           >
                             <p className=" me-2">Language:</p>
                             <div>
-                              <p className="imgwidth d-flex  ms-2 me-2">
+                              <p className="imgwidth d-flex  ms-2 me-2" style={{ minWidth: '75px' }}>
                                 <img
                                   alt=""
                                   src={`https://flagsapi.com/GB/flat/16.png`}
@@ -503,7 +506,7 @@ const Profile = () => {
                           >
                             <p className=" me-2">TimeZone:</p>
 
-                            <p className=" ms-2 me-2">
+                            <p className=" ms-2 me-2" style={{ minWidth: '75px' }}>
                               {timeZoneVal && timeZoneVal[0]?.name}
                             </p>
                           </div>

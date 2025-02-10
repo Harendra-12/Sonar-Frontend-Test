@@ -33,8 +33,8 @@ export async function login(userName, password) {
     password: password,
   };
 
-  return axiosInstance
-    .post(`/auth/login`, parsedData)
+  return axios
+    .post(`${baseName}/auth/login`, parsedData)
     .then((res) => {
       const token = res.data.token;
       localStorage.setItem("token", token);

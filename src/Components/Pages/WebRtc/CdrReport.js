@@ -729,7 +729,7 @@ function CdrReport({ page }) {
                       </thead>
                       <tbody>
                         {loading ? (
-                          <SkeletonTableLoader col={page === "billing" ? 12 : 17} row={12} />
+                          <SkeletonTableLoader col={page === "billing" ? 13 : 17} row={12} />
                         ) : (
                           <>
                             {cdr?.data &&
