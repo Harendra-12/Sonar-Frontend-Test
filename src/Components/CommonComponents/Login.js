@@ -12,13 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 function Login() {
   const account = useSelector((state) => state.account);
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(account?.user_role?.roles?.name==="Agent"){
-      navigate("/webrtc")
-    }else if(account?.id){
-      navigate("/dashboard")
-    }
-  })
+  // useEffect(()=>{
+  //   if(account?.user_role?.roles?.name==="Agent"){
+  //     navigate("/webrtc")
+  //   }else if(account?.id){
+  //     navigate("/dashboard")
+  //   }
+  // })
   
   return (
     <>

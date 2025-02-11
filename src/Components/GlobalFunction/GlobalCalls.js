@@ -159,7 +159,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/all?account=${account?.account_id}`
+        `/extension/all`
       );
       if (apiData?.status) {
         dispatch({
