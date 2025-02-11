@@ -110,7 +110,6 @@ import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
 import DialerDashboard from "./Components/Pages/DialerModule/DialerDashboard";
 import AgentsEdits from "./Components/Pages/Agents/AgentsEdits";
 import AgentsAdd from "./Components/Pages/Agents/AgentsAdd";
-import AgentReport from "./Components/Pages/Agents/AgentReport";
 import MeetingReports from "./Components/Pages/Agents/MeetingReports";
 import CallRecording from "./Components/Pages/Setting/CallRecording";
 import FaxSettings from "./Components/Pages/Setting/FaxSettings";
@@ -132,6 +131,9 @@ import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
 import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/AvailableDeviceList";
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
+import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
+import AgentReports from "./Components/Pages/Reports/AgentReports";
+import GetDidNew from "./Components/Pages/NumberManagement/GetDidNew";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -317,7 +319,6 @@ function App() {
           <Route path="/agents-edit" element={<AgentsEdits />} />
           <Route path="/agents-edit-dialer" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
-          <Route path="/agent-reports" element={<AgentReport />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
           {/*Agents path */}
 
@@ -416,6 +417,7 @@ function App() {
           <Route path="/rate-card" element={<RateCharge />} />
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
+          <Route path="/get-did-new" element={<GetDidNew />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
@@ -657,7 +659,14 @@ function App() {
           <Route path="/campaign-create" element={<CampaignCreate />} />
           {/* ------ Campaigns */}
 
-          {/* Dialer Modules */}
+          {/* ------ Call Tracker */}
+          <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
+          <Route path="/did-listing-tracker" element={<DidListing page="tracker" />} />
+          {/* ------ Call Tracker */}
+
+          {/* ------ Reports */}
+          <Route path="/agent-report" element={< AgentReports />} />
+          {/* ------ Reports */}
 
           {/* 404 Redirection */}
           <Route path="*" element={<Navigate to="/" />} />

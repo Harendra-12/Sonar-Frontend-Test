@@ -9,6 +9,7 @@ import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
+import Tippy from "@tippyjs/react";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -363,11 +364,10 @@ const Dashboard = () => {
                   <div className="row">
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
-                      <div className="itemWrapper a" onClick={()=>navigate("/my-profile")}>
+                      <div className="itemWrapper a" >
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Timezone</h5>
                               <p>
@@ -410,18 +410,16 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
                             <div
                               className="col-2"
-                              onClick={() => navigate("/my-profile")}
                             >
                               <i className="fa-solid fa-user"></i>
                             </div>
@@ -447,18 +445,16 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
                             <div className="col-9">
                               <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
                             <div
                               className="col-3"
-                              onClick={() => navigate("/card-details")}
                             >
                               <i className="fa-duotone fa-file"></i>
                             </div>
@@ -489,7 +485,6 @@ const Dashboard = () => {
                     </div>
                     <div
                       className="col-xl-3 mb-3 mb-xl-0"
-                      style={{ cursor: "pointer" }}
                     >
                       <div className="itemWrapper a">
                         <div className="heading">
@@ -534,16 +529,17 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
+                              <div className="d-flex flex-wrap justify-content-between"
+                                style={{ cursor: 'pointer' }}
+                                onClick={() =>
+                                  navigate("/card-transaction-list")
+                                }>
                                 <div className="col-9">
                                   <h5>Payment Details</h5>
                                   <p>Click to view transaction history</p>
                                 </div>
                                 <div
                                   className="col-3"
-                                  onClick={() =>
-                                    navigate("/card-transaction-list")
-                                  }
                                 >
                                   <i class="fa-solid fa-file-invoice"></i>
                                 </div>
@@ -664,7 +660,7 @@ const Dashboard = () => {
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading">
-                                <div className="d-flex flex-wrap justify-content-between">
+                                <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/extensions")} style={{ cursor: 'pointer' }}>
                                   <div className="col-9">
                                     <h5>Extensions</h5>
                                     <p>
@@ -672,11 +668,10 @@ const Dashboard = () => {
                                       Registered
                                     </p>
                                   </div>
-                                  <div
-                                    className="col-3"
-                                    onClick={() => navigate("/extensions")}
-                                  >
-                                    <i class="fa-duotone fa-phone-office"></i>
+                                  <div className="col-3">
+                                    <Tippy content="Click to view extensions">
+                                      <i class="fa-duotone fa-phone-office"></i>
+                                    </Tippy>
                                   </div>
                                 </div>
                               </div>

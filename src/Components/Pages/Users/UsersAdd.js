@@ -549,7 +549,7 @@ const UsersAdd = () => {
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Status</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Set the user's presence.
+                              Set the user's account status.
                             </label>
                           </div>
                           <div className="col-6">
@@ -576,8 +576,7 @@ const UsersAdd = () => {
                               Role Type <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Select Default to enable login or to disable login
-                              select Virtual.
+                              Select the Role with appropriate permissions for the User.
                             </label>
                           </div>
                           <div className="col-6">

@@ -252,6 +252,7 @@ const CallCenterListItem = ({
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const dispatch = useDispatch();
 
   // Extract the agent's reference ID and status
   const { id: refId = "", status = "" } =
@@ -359,6 +360,10 @@ const CallCenterListItem = ({
     if (apiData.status) {
       setLoading(false);
       if (action === "Logged Out") {
+        dispatch({
+          type: "DELETE_CALLER_ID",
+          CallerId, // Pass the callCenterID to delete
+        });
         toast.success(`Logged out for ${callCenterName}`);
         setIsOnBreak(false);
         setIsLoggedIn(false);

@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import CircularLoader from "../../Loader/CircularLoader";
+import LogOutPopUp from "./LogOutPopUp";
 
 function AllContact({
   allContact,
@@ -22,7 +25,7 @@ function AllContact({
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const { sessionManager } = useSIPProvider();
   // const [contact, setContact] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState(null);
   const [selectedEditContact, setSelectedEditContact] = useState(null);
   const [editContactToggle, setEditContactToggle] = useState(false);
@@ -31,6 +34,8 @@ function AllContact({
   const [popUp, setPopUp] = useState(false);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
   // useEffect(() => {
   //   const getContact = async () => {
   //     const apiData = await generalGetFunction("/contact/all");
@@ -96,9 +101,31 @@ function AllContact({
       addContactRefresh: addContactRefresh + 1,
     });
   };
+  // Function to handle logout
+  const handleLogOut = async () => {
+    debugger;
+    console.log("000000", { allCallCenterIds });
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {/* <SideNavbarApp /> */}
+      {/* {loading ? <CircularLoader /> : ""} */}
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -169,7 +196,15 @@ function AllContact({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={() =>{ dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

@@ -91,16 +91,10 @@ function Leads() {
                                                 <thead>
                                                     <tr>
                                                         <th>Id</th>
-                                                        <th>List Name</th>
-                                                        <th>List Description</th>
+                                                        <th>Lead Name</th>
+                                                        <th>Lead Description</th>
                                                         <th>Campaign</th>
-                                                        <th>Total</th>
-                                                        <th>Available</th>
-                                                        <th>Queued</th>
-                                                        <th>Reset Count</th>
-                                                        <th>Duplicate Count</th>
-                                                        <th>Archive</th>
-                                                        <th>TPS</th>
+                                                        <th>Rows</th>
                                                         <th>Active</th>
                                                         <th style={{ textAlign: "center" }}>Download</th>
                                                         <th style={{ textAlign: "center" }}>Edit</th>
@@ -112,21 +106,8 @@ function Leads() {
                                                         <td>78</td>
                                                         <td>xyz</td>
                                                         <td>USA CST</td>
-                                                        <td>
-                                                            <div><select name="" id="" class="formItem ">
-                                                                <option value="">a</option>
-                                                                <option value="">b</option>
-                                                                <option value="">c </option>
-                                                            </select>
-                                                            </div>
-                                                        </td>
+                                                        <td>Campaign Name</td>
                                                         <td>1200</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td> 0</td>
                                                         <td>
                                                             <div className="my-auto position-relative mx-1">
                                                                 <label className="switch">

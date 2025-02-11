@@ -446,7 +446,7 @@ function CdrReport({ page }) {
                             setEndDateFlag("");
                           }}
                         >
-                          <option value={"date"}>Only Date</option>
+                          <option value={"date"}>Single Date</option>
                           <option value={"date_range"}>Date Range</option>
                           <option value={"7_days"}>Last 7 Days</option>
                           <option value={"1_month"}>Last 1 Month</option>
@@ -621,12 +621,12 @@ function CdrReport({ page }) {
                           <option value={"NOANSWER"}>No Answer</option>
                           <option value={"NOT CONNECTED"}>Not Connected</option>
                           <option value={"USER_NOT_REGISTERED"}>
-                            User Not Register
+                            User Not Registered
                           </option>
                           <option value={"SUBSCRIBER_ABSENT"}>
                             Subscriber Absent
                           </option>
-                          <option value={"CANCEL"}>Cancel</option>
+                          <option value={"CANCEL"}>Cancelled</option>
                         </select>
                       </div>
                       <div className="formRow border-0 pe-xl-0">
@@ -643,7 +643,7 @@ function CdrReport({ page }) {
                           <option value={""}>All</option>
                           <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
                           <option value={"NORMAL_CLEARING"}>
-                            Normal Clear
+                            Normal Clearing
                           </option>
                         </select>
                       </div>
