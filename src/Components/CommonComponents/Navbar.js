@@ -800,7 +800,7 @@ function Navbar() {
                           <i class="fa-regular fa-microphone-stand"></i>
                         </div>
                         <div className="itemTitle">
-                          Interactive Voice Response (IVR)
+                          Interactive Voice Response
                         </div>
                       </NavLink>
                     </li>
@@ -822,7 +822,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-microphone-stand"></i>
+                          <i class="fa-regular fa-screen-users"></i>
                         </div>
                         <div className="itemTitle">
                           Meeting Rooms
@@ -851,10 +851,10 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/cdr-report",
-                            "/agent-reports",
                             "/meeting-reports",
                             "/call-center-report",
                             "/ring-group-report",
+                            "/agent-report",
                           ])
                             ? "true"
                             : "false"
@@ -870,10 +870,10 @@ function Navbar() {
                         id="collapse4"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/cdr-report",
-                          "/agent-reports",
                           "/meeting-reports",
                           "/call-center-report",
                           "/ring-group-report",
+                          "/agent-report",
                         ])
                           ? "show"
                           : ""
@@ -929,13 +929,13 @@ function Navbar() {
                               </Link>
                             </li>
                             <li className="tabItem ">
-                              <Link
-                                // to="/agent-reports"
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/agent-report"
+                                onClick={backToTop}
                                 className="nav-links"
                               >
                                 <div className="itemTitle">Agent Report</div>
-                              </Link>
+                              </NavLink>
                             </li>
                             <li className="tabItem ">
                               <NavLink

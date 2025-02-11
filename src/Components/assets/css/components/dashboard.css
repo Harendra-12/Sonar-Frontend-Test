@@ -517,3 +517,8 @@
 .itemWrapper .invoiceList li a i {
     color: var(--color3);
 }
+
+.itemWrapper.onQueue {
+    border: 1px solid rgb(255, 41, 41);
+    box-shadow: #ff000054 0px 3px 8px;
+}
