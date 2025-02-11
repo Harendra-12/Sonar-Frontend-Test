@@ -151,7 +151,11 @@
     padding: 10px;
     float: none;
     font-size: 30px;
+    margin: 0 auto 20px auto;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

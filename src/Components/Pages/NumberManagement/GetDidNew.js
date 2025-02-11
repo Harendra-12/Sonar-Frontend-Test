@@ -45,7 +45,7 @@ function GetDidNew() {
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div class="float-none">
                             <div>
-                              <i className="fa-solid mb-3 fa-phone-flip"></i>
+                              <i className="fa-solid fa-phone-flip"></i>
                               <h5 >Local Call</h5>
                               <p>Local voice, fax and application messaging services</p>
                             </div>
@@ -58,7 +58,7 @@ function GetDidNew() {
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div class="float-none">
                             <div>
-                              <i class="fa-solid mb-3 fa-phone-volume"></i>
+                              <i class="fa-solid fa-phone-volume"></i>
                               <h5 >Toll Free</h5>
                               <p>Business voice , fax and application messaging services</p>
                             </div>
@@ -71,7 +71,7 @@ function GetDidNew() {
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div class="float-none">
                             <div>
-                              <i class="fa-regular mb-3 fa-comment-dots"></i>
+                              <i class="fa-regular fa-comment-dots"></i>
                               <h5 >Shortcode</h5>
                               <p>Enterprising , messaging and Exclusive Ownership</p>
                             </div>
@@ -82,7 +82,7 @@ function GetDidNew() {
                   </div>
                   <div className='row mt-4'>
                     <div className="col-xl-3">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                         <div className="heading h-auto">
                           <div className="">
                             <div className="formRow col-xl-12">
@@ -182,99 +182,94 @@ function GetDidNew() {
                             </div>
                           </div>
                         </div>
-
                       </div>
                     </div>
                     <div className="col-xl-9">
-                      <div className="itemWrapper a">
-                        <div className="heading d-block h-auto">
-                          <div className="tableContainer">
-                            <table>
-                              <thead>
-                                <tr>
-                                  <th>Number</th>
-                                  <th>Capabilities</th>
-                                  <th>Cost</th>
-                                  <th>Add To Cart</th>
-                                </tr>
-                              </thead>
-                              <tbody className="">
-                                <tr>
-                                  <td>+1564651654</td>
-                                  <td>
-                                    <div className='d-flex align-items-center'>
-                                      <i class="fa-solid m-1 fa-phone"></i>
-                                      <i class="fa-regular m-1 fa-comments"></i>
-                                      <i class="fa-solid m-1 fa-fax"></i>
-                                      <i class="fa-regular m-1 fa-light-emergency-on"></i>
-                                    </div>
-                                  </td>
-                                  <td>$0.51/month</td>
-                                  <td>
-                                    <button
-                                      className="tableButton  align-items-center justify-content-center" >
-                                      <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>+1564651654</td>
-                                  <td>
-                                    <div className='d-flex align-items-center'>
-                                      <i class="fa-solid m-1 fa-phone"></i>
-                                      <i class="fa-regular m-1 fa-comments"></i>
-                                      <i class="fa-solid m-1 fa-fax"></i>
-                                      <i class="fa-regular m-1 fa-light-emergency-on"></i>
-                                    </div>
-                                  </td>
-                                  <td>$0.51/month</td>
-                                  <td>
-                                    <button
-                                      className="tableButton  align-items-center justify-content-center" >
-                                      <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>+1564651654</td>
-                                  <td>
-                                    <div className='d-flex align-items-center'>
-                                      <i class="fa-solid m-1 fa-phone"></i>
-                                      <i class="fa-regular m-1 fa-comments"></i>
-                                      <i class="fa-solid m-1 fa-fax"></i>
-                                      <i class="fa-regular m-1 fa-light-emergency-on"></i>
-                                    </div>
-                                  </td>
-                                  <td>$0.51/month</td>
-                                  <td>
-                                    <button
-                                      className="tableButton  align-items-center justify-content-center" >
-                                      <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>+1564651654</td>
-                                  <td>
-                                    <div className='d-flex align-items-center'>
-                                      <i class="fa-solid m-1 fa-phone"></i>
-                                      <i class="fa-regular m-1 fa-comments"></i>
-                                      <i class="fa-solid m-1 fa-fax"></i>
-                                      <i class="fa-regular m-1 fa-light-emergency-on"></i>
-                                    </div>
-                                  </td>
-                                  <td>$0.51/month</td>
-                                  <td>
-                                    <button
-                                      className="tableButton  align-items-center justify-content-center" >
-                                      <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                      <div className="tableContainer mt-0" style={{ borderRadius: '10px' }}>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Number</th>
+                              <th>Capabilities</th>
+                              <th>Cost</th>
+                              <th>Add To Cart</th>
+                            </tr>
+                          </thead>
+                          <tbody className="">
+                            <tr>
+                              <td>+1564651654</td>
+                              <td>
+                                <div className='d-flex align-items-center' style={{ color: 'var(--ui-accent)' }}>
+                                  <i class="fa-solid m-1 fa-phone"></i>
+                                  <i class="fa-regular m-1 fa-comments"></i>
+                                  <i class="fa-solid m-1 fa-fax"></i>
+                                  <i class="fa-regular m-1 fa-light-emergency-on"></i>
+                                </div>
+                              </td>
+                              <td>$0.51/month</td>
+                              <td>
+                                <button
+                                  className="tableButton  align-items-center justify-content-center" >
+                                  <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>+1564651654</td>
+                              <td>
+                                <div className='d-flex align-items-center' style={{ color: 'var(--ui-accent)' }}>
+                                  <i class="fa-solid m-1 fa-phone"></i>
+                                  <i class="fa-regular m-1 fa-comments"></i>
+                                  <i class="fa-solid m-1 fa-fax"></i>
+                                  <i class="fa-regular m-1 fa-light-emergency-on"></i>
+                                </div>
+                              </td>
+                              <td>$0.51/month</td>
+                              <td>
+                                <button
+                                  className="tableButton  align-items-center justify-content-center" >
+                                  <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>+1564651654</td>
+                              <td>
+                                <div className='d-flex align-items-center' style={{ color: 'var(--ui-accent)' }}>
+                                  <i class="fa-solid m-1 fa-phone"></i>
+                                  <i class="fa-regular m-1 fa-comments"></i>
+                                  <i class="fa-solid m-1 fa-fax"></i>
+                                  <i class="fa-regular m-1 fa-light-emergency-on"></i>
+                                </div>
+                              </td>
+                              <td>$0.51/month</td>
+                              <td>
+                                <button
+                                  className="tableButton  align-items-center justify-content-center" >
+                                  <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>+1564651654</td>
+                              <td>
+                                <div className='d-flex align-items-center' style={{ color: 'var(--ui-accent)' }}>
+                                  <i class="fa-solid m-1 fa-phone"></i>
+                                  <i class="fa-regular m-1 fa-comments"></i>
+                                  <i class="fa-solid m-1 fa-fax"></i>
+                                  <i class="fa-regular m-1 fa-light-emergency-on"></i>
+                                </div>
+                              </td>
+                              <td>$0.51/month</td>
+                              <td>
+                                <button
+                                  className="tableButton  align-items-center justify-content-center" >
+                                  <i class="fa-solid bg-transparent shadow-none fa-plus "></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
