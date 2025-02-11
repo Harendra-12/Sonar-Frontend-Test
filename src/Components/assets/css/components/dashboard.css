@@ -142,6 +142,29 @@
     text-align: center;
 }
 
+
+
+
+.local-calls .heading i {
+    width: 60px !important;
+    height: 60px !important;
+    padding: 10px;
+    float: none;
+    font-size: 30px;
+
+}
+
+
+.local-calls .heading {
+    text-align: center;
+}
+
+.local-calls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .itemWrapper .heading:hover i {
     box-shadow: none
 }
@@ -304,6 +327,13 @@
 .itemWrapper.a .heading i {
     color: var(--color2);
 }
+
+.itemWrapper.a .icons i {
+    color: var(--color2);
+    background-color: transparent;
+    box-shadow: none;
+}
+
 
 .itemWrapper.b .heading i,
 .itemWrapper.b i {
