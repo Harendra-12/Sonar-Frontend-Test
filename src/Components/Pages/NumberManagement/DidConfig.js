@@ -44,6 +44,7 @@ const DidConfig = () => {
     handleSubmit,
     setValue,
     watch,
+    unregister,
   } = useForm();
 
   useEffect(() => {
@@ -59,11 +60,11 @@ const DidConfig = () => {
       setValue("hold_music", locationData.configuration.hold_music || "");
       setValue(
         "stick_agent_expires",
-        locationData.configuration.stick_agent_expires || ""
+        locationData.configuration.stick_agent_expires || null
       );
       setValue(
         "stick_agent_type",
-        locationData.configuration.stick_agent_type || ""
+        locationData.configuration.stick_agent_type || null
       );
       setValue("tag", locationData.configuration.tag || "");
       setValue(
@@ -159,11 +160,16 @@ const DidConfig = () => {
   const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
+    console.log(data,"-------------");
+    
     data.record = data.record === true || data.record === "true";
     data.sticky_agent_enable =
       data.sticky_agent_enable === true || data.sticky_agent_enable === "true";
     data.status = data.status === true || data.status === "true";
-
+    if(!data.sticky_agent_enable){
+      delete data.stick_agent_type
+      delete data.stick_agent_expires
+    }
     if (data.forward === "pstn" && !data.forward_to) {
       setErr("forward_to", {
         type: "required",
@@ -180,7 +186,6 @@ const DidConfig = () => {
         message: "This field is required when forwarding directly.",
       });
     }
-
     // Final data preparation
     if (data.forward === "pstn") {
       data.forward_to = data.forward_to || "";
@@ -199,6 +204,7 @@ const DidConfig = () => {
       if (apiData?.status) {
         setLoading(false);
         toast.success(apiData.message);
+        navigate(-1)
       } else {
         setLoading(false);
         // toast.error(apiData.message);
