@@ -1161,7 +1161,7 @@ function Navbar() {
                           "/mail-settings",
                           "/fax-settings",
                           "/call-recording",
-                          "/voice-music"
+                          "/voice-music",
                         ])
                           ? "show"
                           : ""

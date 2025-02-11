@@ -14,11 +14,9 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useSelector } from "react-redux";
 
 const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
   const [loading, setLoading] = useState(false);
-  const loadings = useSelector((state) => state.loading);
   const {
     register,
     formState: { errors },
@@ -386,7 +384,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
           </div>
         </section>
 
-        {loading && loadings && (
+        {loading && (
           <div colSpan={99}>
             <CircularLoader />
           </div>

@@ -131,6 +131,7 @@ import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListin
 import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
 import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/AvailableDeviceList";
+import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -557,6 +558,16 @@ function App() {
             element={
               permission?.includes(249) ? (
                 <MailSettingsEdit />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+           <Route
+            path="/mail-settings"
+            element={
+              permission?.includes(249) ? (
+                <MailSettings />
               ) : (
                 <Navigate to="/dashboard" replace />
               )

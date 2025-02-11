@@ -473,7 +473,7 @@ function GetDid() {
                                 name="rateCenter"
                                 className={`formItem ${errors.rateCenter ? "error" : ""}`}
                                 {...register("rateCenter", {
-                                  ...requiredValidator
+                                  // ...requiredValidator
                                 })}
                               />
                               <label htmlFor="data" className="formItemDesc">
