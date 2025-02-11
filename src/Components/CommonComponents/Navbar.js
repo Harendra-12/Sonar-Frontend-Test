@@ -678,7 +678,7 @@ function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse7"
                         aria-expanded={
-                          isChildActive(["/call-tracker"]) ? "true" : "false"
+                          isChildActive(["/tracker-dashboard", "/did-listing-tracker"]) ? "true" : "false"
                         }
                         aria-controls="collapse7"
                       >
@@ -689,35 +689,28 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse7"
-                        className={`accordion-collapse collapse ${isChildActive([]) ? "show" : ""
+                        className={`accordion-collapse collapse ${isChildActive(["/tracker-dashboard", "/did-listing-tracker"]) ? "show" : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             <li className="tabItem ">
-                              <Link
-                                onClick={() => featureUnderdevelopment()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                              <NavLink
+                                to="/tracker-dashboard"
+                                onClick={backToTop}
                               >
                                 <div className="itemTitle">Dashboard</div>
-                              </Link>
+                              </NavLink>
                             </li>
 
                             <li className="tabItem ">
-                              <Link
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/did-listing-tracker"
+                                onClick={backToTop}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/did-listing-tracker"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -728,7 +721,7 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Number Configuration
                                 </div>
-                              </Link>
+                              </NavLink>
                             </li>
 
                             <li className="tabItem ">

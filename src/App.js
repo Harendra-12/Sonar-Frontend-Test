@@ -131,6 +131,7 @@ import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListin
 import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
 import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/AvailableDeviceList";
+import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -645,6 +646,11 @@ function App() {
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
           {/* ------ Campaigns */}
+
+          {/* ------ Call Tracker */}
+          <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
+          <Route path="/did-listing-tracker" element={<DidListing page="tracker" />} />
+          {/* ------ Call Tracker */}
 
           {/* Dialer Modules */}
 

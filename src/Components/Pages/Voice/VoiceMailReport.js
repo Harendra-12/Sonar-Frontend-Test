@@ -61,8 +61,8 @@ function VoiceMailReport() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>CDR Reports</h4>
-                        <p>Here are all the CDR Reports</p>
+                        <h4>Voicemail Reports</h4>
+                        <p>Here are all the Voicemail Reports</p>
                       </div>
                       <div className="buttonGroup">
                         <button
@@ -132,69 +132,68 @@ function VoiceMailReport() {
                         </thead>
                         <tbody>
                           {
-                          voiceMail?.data.map((item, index) => {
-                            return (
-                              <>
-                                <tr className="cdrTableRow">
-                                  <td>{index + 1}.</td>
-                                  <td>{item.src}</td>
-                                  <td>{item.dest}</td>
-                                  {/* <td>www.voicemailrecordingpath.com</td> */}
-                                  <td>
-                                    <button
-                                      className="tableButton px-2 mx-0"
-                                      onClick={() => {
-                                        if (
-                                          currentPlaying ==
-                                          item["recording_path"]
-                                        ) {
-                                          setCurrentPlaying(null);
-                                        } else {
-                                          handlePlaying(item["recording_path"]);
-                                        }
-                                      }}
-                                    >
-                                      <i
-                                        className={`fa-duotone fa-${
-                                          currentPlaying ==
-                                          item["recording_path"]
-                                            ? "stop"
-                                            : "play"
-                                        }`}
-                                      ></i>
-                                    </button>
-                                  </td>
-                                  <td>{item.duration}</td>
-                                  <td>{extractDate(item.created_at)}</td>
-                                </tr>
-                                {currentPlaying == item["recording_path"] && (
-                                  <tr>
-                                    <td colSpan={99}>
-                                      <div className="audio-container mx-2">
-                                        <audio
-                                          controls={true}
-                                          ref={thisAudioRef}
-                                          autoPlay={true}
-                                          onEnded={() => {
+                            voiceMail?.data.map((item, index) => {
+                              return (
+                                <>
+                                  <tr className="cdrTableRow">
+                                    <td>{index + 1}.</td>
+                                    <td>{item.src}</td>
+                                    <td>{item.dest}</td>
+                                    {/* <td>www.voicemailrecordingpath.com</td> */}
+                                    <td>
+                                      <button
+                                        className="tableButton px-2 mx-0"
+                                        onClick={() => {
+                                          if (
+                                            currentPlaying ==
+                                            item["recording_path"]
+                                          ) {
                                             setCurrentPlaying(null);
-                                          }}
-                                        >
-                                          <source
-                                            src={item["recording_path"]}
-                                            type="audio/mpeg"
-                                          />
-                                        </audio>
-
-                                        <button className="audioCustomButton">
-                                          <i className="fa-sharp fa-solid fa-download" />
-                                        </button>
-                                      </div>
+                                          } else {
+                                            handlePlaying(item["recording_path"]);
+                                          }
+                                        }}
+                                      >
+                                        <i
+                                          className={`fa-duotone fa-${currentPlaying ==
+                                              item["recording_path"]
+                                              ? "stop"
+                                              : "play"
+                                            }`}
+                                        ></i>
+                                      </button>
                                     </td>
+                                    <td>{item.duration}</td>
+                                    <td>{extractDate(item.created_at)}</td>
                                   </tr>
-                                )}
-                              </>
-                            );
-                          })}
+                                  {currentPlaying == item["recording_path"] && (
+                                    <tr>
+                                      <td colSpan={99}>
+                                        <div className="audio-container mx-2">
+                                          <audio
+                                            controls={true}
+                                            ref={thisAudioRef}
+                                            autoPlay={true}
+                                            onEnded={() => {
+                                              setCurrentPlaying(null);
+                                            }}
+                                          >
+                                            <source
+                                              src={item["recording_path"]}
+                                              type="audio/mpeg"
+                                            />
+                                          </audio>
+
+                                          <button className="audioCustomButton">
+                                            <i className="fa-sharp fa-solid fa-download" />
+                                          </button>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </>
+                              );
+                            })}
 
                           {/* {!loading && cdr && cdr.data.length === 0 ? (
                                                         <td colSpan={99}>
