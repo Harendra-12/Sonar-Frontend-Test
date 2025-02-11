@@ -131,6 +131,7 @@ import ClickToCallListing from "./Components/Pages/ClickToCall/ClickToCallListin
 import ClickToCallEdit from "./Components/Pages/ClickToCall/ClickToCallEdit";
 import AgentDispositionManage from "./Components/Pages/DialerModule/Campaigns/AgentDispositionManage";
 import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/AvailableDeviceList";
+import GetDidNew from "./Components/Pages/NumberManagement/GetDidNew";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -415,6 +416,7 @@ function App() {
           <Route path="/rate-card" element={<RateCharge />} />
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
+          <Route path="/get-did-new" element={<GetDidNew />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />

@@ -35,6 +35,12 @@
     margin: 2px;
 }
 
+
+.mainContent .boxshadow {
+   
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+}
+
 .mainContent .itemWrapperb:hover {
     border: 1px solid var(--ui-accent);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
@@ -140,6 +146,29 @@
     width: 42px;
     height: 42px;
     text-align: center;
+}
+
+
+
+
+.local-calls .heading i {
+    width: 60px !important;
+    height: 60px !important;
+    padding: 10px;
+    float: none;
+    font-size: 30px;
+  
+}
+
+
+.local-calls  .heading
+{
+    text-align: center;
+}
+.local-calls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .itemWrapper .heading:hover i {
@@ -304,6 +333,13 @@
 .itemWrapper.a .heading i {
     color: var(--color2);
 }
+
+.itemWrapper.a .icons i {
+    color: var(--color2);
+    background-color: transparent;
+    box-shadow: none;
+}
+
 
 .itemWrapper.b .heading i,
 .itemWrapper.b i {
