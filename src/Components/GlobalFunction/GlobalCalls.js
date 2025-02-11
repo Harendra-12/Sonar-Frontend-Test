@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
+  const Id = account?.id || "";
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const accountDetailsRefresh = useSelector(
@@ -136,6 +138,43 @@ function GlobalCalls() {
       getData();
     }
   }, [callCenterRefresh]);
+
+  // refresh allCallCenterIds
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/call-center-queues/all`);
+      const details = apiData.data;
+      if (apiData?.status) {
+        const AssignedCallcenter = [...details].filter((queue) =>
+          queue.agents.some((agent) => Number(agent.agent_name) == Id)
+        );
+        let CallerId = null; 
+        if (AssignedCallcenter.length > 0) {
+          dispatch({
+            type: "SET_OPEN_CALLCENTER_POPUP",
+            openCallCenterPopUp: true,
+          });
+          AssignedCallcenter.forEach((item) => {
+            const foundAgent = item.agents.find(
+              (agent) =>
+                Number(agent.agent_name) === Id && agent.status === "Available"
+            );
+
+            if (foundAgent && foundAgent?.id) {
+              CallerId = foundAgent.id; // Assign only if found
+              if (!allCallCenterIds.includes(CallerId)) {
+                dispatch({
+                  type: "SET_ALL_CALL_CENTER_IDS",
+                  CallerId,
+                });
+              }
+            }
+          });
+        }
+      }
+    }
+    getData();
+  }, []);
 
   // Getting extension details
   useEffect(() => {

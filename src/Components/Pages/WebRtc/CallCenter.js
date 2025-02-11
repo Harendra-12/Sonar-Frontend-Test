@@ -55,10 +55,26 @@ const CallCenter = ({ initial }) => {
       const AssignedCallcenter = [...callCenter].filter((queue) =>
         queue.agents.some((agent) => Number(agent.agent_name) == Id)
       );
+      let CallerId = null;
+      AssignedCallcenter.forEach((item) => {
+        const foundAgent = item.agents.find(
+          (agent) =>
+            Number(agent.agent_name) === Id && agent.status === "Available"
+        );
+
+        if (foundAgent && foundAgent?.id) {
+          CallerId = foundAgent.id; // Assign only if found
+          if (!allCallCenterIds.includes(CallerId)) {
+            dispatch({
+              type: "SET_ALL_CALL_CENTER_IDS",
+              CallerId, 
+            });
+          }
+        }
+      });
       setAssignerCallcenter(AssignedCallcenter);
     }
   }, [Id, callCenter]);
-  
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);

@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 
 const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
+  const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
@@ -511,42 +512,49 @@ const WebrtcWrapper = () => {
           ""
         )}
       </SIPProvider>
-      {initailCallCenterPopup && callCenterPopUp !== account?.extension?.extension &&
-        <div className="popup">
-          <div className="d-flex justify-content-center align-items-center h-100">
-            <div className="overviewTableWrapper col-xl-6">
-              <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
-                  <div className="col-12">
-                    <div className="heading">
-                      <div className="content bg-transparent shadow-none p-0 d-flex justify-content-between align-items-center w-100">
-                        <div>
-                          <h4>
-                            Please Login!
-                          </h4>
-                          <p>Please Login to your Designated Call Center</p>
+      {openCallCenterPopUp &&
+        initailCallCenterPopup &&
+        callCenterPopUp !== account?.extension?.extension && (
+          <div className="popup">
+            <div className="d-flex justify-content-center align-items-center h-100">
+              <div className="overviewTableWrapper col-xl-6">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content bg-transparent shadow-none p-0 d-flex justify-content-between align-items-center w-100">
+                          <div>
+                            <h4>Please Login!</h4>
+                            <p>Please Login to your Designated Call Center</p>
+                          </div>
+                          <button
+                            class="clearButton2 xl"
+                            onClick={() => {
+                              setInitailCallCenterPopup(false);
+                              dispatch({
+                                type: "SET_CALL_CENTER_POPUP",
+                                callCenterPopUp: account?.extension?.extension,
+                              });
+                              localStorage.setItem(
+                                "callCenterPopUp",
+                                account?.extension?.extension
+                              );
+                            }}
+                          >
+                            <i class={"fa-regular fa-xmark"}></i>
+                          </button>
                         </div>
-                        <button
-                          class="clearButton2 xl"
-                          onClick={() => { setInitailCallCenterPopup(false); dispatch({ type: "SET_CALL_CENTER_POPUP", callCenterPopUp: account?.extension?.extension }); localStorage.setItem("callCenterPopUp", account?.extension?.extension) }}
-                        >
-                          <i
-                            class={"fa-regular fa-xmark"}
-                          ></i>
-                        </button>
                       </div>
                     </div>
-                  </div>
-                  <div className="w-100">
-                    <CallCenter initial={true} />
+                    <div className="w-100">
+                      <CallCenter initial={true} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      }
-
+        )}
     </>
   );
 };

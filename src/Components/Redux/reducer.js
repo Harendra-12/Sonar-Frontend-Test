@@ -71,6 +71,7 @@ var agentDeposition = false
 var desposiTionOptions = []
 var allCallCenterIds =[]
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
+var openCallCenterPopUp= false
 var logout = 0
 
 const initialState = {
@@ -95,6 +96,7 @@ const initialState = {
   extensionRefresh,
   ringGroup,
   ringGroupRefresh,
+  openCallCenterPopUp,
   callCenter,
   callCenterRefresh,
   allUser,
@@ -191,6 +193,11 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, extensionRefresh: action.extensionRefresh };
     case "SET_RINGGROUP":
       return { ...state, ringGroup: action.ringGroup };
+    case "SET_OPEN_CALLCENTER_POPUP":
+      return { 
+          ...state, 
+          openCallCenterPopUp: action.openCallCenterPopUp
+        };
     case "SET_RINGGROUPREFRESH":
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
