@@ -90,7 +90,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Contacts</div>
               </div>
             </li>
-            {account.user_role?.roles?.name !== "Agent" ?
+            {account?.user_role?.roles?.name !== "Agent" ?
               <li>
                 <div
                   // to="/call-dashboard"

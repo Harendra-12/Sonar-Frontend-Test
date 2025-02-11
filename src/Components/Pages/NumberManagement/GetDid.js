@@ -139,6 +139,7 @@ function GetDid() {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
 
   // Handle TFN search
@@ -154,9 +155,10 @@ function GetDid() {
     });
 
     const parsedData = {
-      searchType: data.searchType,
-      quantity: data.quantity,
-      npa: data.npa,
+      ...data,
+      // searchType: data.searchType,
+      // quantity: data.quantity,
+      // npa: data.npa,
       companyId: account.account_id,
       usage: usagePayload,
     };
@@ -166,6 +168,7 @@ function GetDid() {
       setDid(apiData.data);
     } else {
       setDid([]);
+      toast.error(apiData.message)
     }
   };
 
@@ -249,7 +252,7 @@ function GetDid() {
   function handleBuyPopUp(value) {
     setDidBuyPopUp(value);
   }
-  // console.log(selectedDid);
+  console.log(watch());
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -299,6 +302,7 @@ function GetDid() {
                             {...register("searchType", {
                               ...requiredValidator,
                             })}
+                            defaultValue={"tollfree"}
                           >
                             <option value="tollfree">Toll free</option>
                             <option value="domestic">Domestic</option>
@@ -358,32 +362,177 @@ function GetDid() {
                           </label>
                         </div>
                       </div>
-                      <div className="formRow col-xl-2">
-                        <div
-                          className="formLabel d-flex justify-content-between"
-                          style={{ width: "100%" }}
-                        >
-                          <label htmlFor="npa">NPA</label>
-                          {errors.npa && (
-                            <ErrorMessage text={errors.npa.message} />
-                          )}
-                        </div>
-                        <div className="col-12">
-                          <input
-                            type="number"
-                            name="npa"
-                            className={`formItem ${errors.npa ? "error" : ""}`}
-                            {...register("npa", {
-                              ...requiredValidator,
-                              ...lengthValidator(3, 3),
-                              ...noSpecialCharactersValidator,
-                            })}
-                          />
-                          <label htmlFor="data" className="formItemDesc">
-                            Input the NPA for the DID
-                          </label>
-                        </div>
-                      </div>
+                      {
+                        watch().searchType === "domestic" ? <>
+                          <div className="formRow col-xl-2">
+                            <div className="formLabel">
+                              <label htmlFor="searchBy">Search By</label>
+                            </div>
+                            <div className="col-12">
+                              <select
+                                name="searchBy"
+                                className={`formItem ${errors.searchBy ? "error" : ""
+                                  }`}
+                                {...register("searchBy", {
+                                  ...requiredValidator,
+                                })}
+                                defaultValue={"npa"}
+                              >
+                                <option value="npa">NPA</option>
+                                <option value="npanxx">NPANXX</option>
+                                <option value="ratecenter">Rate Center</option>
+                              </select>
+                              {errors.searchBy && (
+                                <ErrorMessage text={errors.searchBy.message} />
+                              )}
+                              <label htmlFor="data" className="formItemDesc">
+                                Select the type of domestic DID
+                              </label>
+                            </div>
+                          </div>
+                        </> : ""
+                      }
+                      {
+                        (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType==="tollfree" || !watch().searchBy) && <>
+                          <div className="formRow col-xl-2">
+                            <div
+                              className="formLabel d-flex justify-content-between"
+                              style={{ width: "100%" }}
+                            >
+                              <label htmlFor="npa">NPA</label>
+                              {errors.npa && (
+                                <ErrorMessage text={errors.npa.message} />
+                              )}
+                            </div>
+                            <div className="col-12">
+                              <input
+                                type="number"
+                                name="npa"
+                                className={`formItem ${errors.npa ? "error" : ""}`}
+                                {...register("npa", {
+                                  ...requiredValidator,
+                                  ...lengthValidator(3, 3),
+                                  ...noSpecialCharactersValidator,
+                                })}
+                              />
+                              <label htmlFor="data" className="formItemDesc">
+                                Input the NPA for the DID
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      }
+
+                      {
+                        (watch().searchBy === "npanxx" && watch().searchType==="domestic") && <>
+                          <div className="formRow col-xl-2">
+                            <div
+                              className="formLabel d-flex justify-content-between"
+                              style={{ width: "100%" }}
+                            >
+                              <label htmlFor="nxx">NXX</label>
+                              {errors.nxx && (
+                                <ErrorMessage text={errors.nxx.message} />
+                              )}
+                            </div>
+                            <div className="col-12">
+                              <input
+                                type="number"
+                                name="nxx"
+                                className={`formItem ${errors.nxx ? "error" : ""}`}
+                                {...register("nxx", {
+                                  ...requiredValidator,
+                                  ...lengthValidator(3, 3),
+                                  ...noSpecialCharactersValidator,
+                                })}
+                              />
+                              <label htmlFor="data" className="formItemDesc">
+                                Input the nxx for the DID
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      }
+
+
+                      {
+                        (watch().searchBy === "ratecenter" && watch().searchType==="domestic") && <>
+                          <div className="formRow col-xl-2">
+                            <div
+                              className="formLabel d-flex justify-content-between"
+                              style={{ width: "100%" }}
+                            >
+                              <label htmlFor="rateCenter">Rate Center</label>
+                              {errors.rateCenter && (
+                                <ErrorMessage text={errors.rateCenter.message} />
+                              )}
+                            </div>
+                            <div className="col-12">
+                              <input
+                                type="string"
+                                name="rateCenter"
+                                className={`formItem ${errors.rateCenter ? "error" : ""}`}
+                                {...register("rateCenter", {
+                                  ...requiredValidator
+                                })}
+                              />
+                              <label htmlFor="data" className="formItemDesc">
+                                Input the rateCenter for the DID
+                              </label>
+                            </div>
+                          </div>
+                          <div className="formRow col-xl-2">
+                            <div
+                              className="formLabel d-flex justify-content-between"
+                              style={{ width: "100%" }}
+                            >
+                              <label htmlFor="state">State</label>
+                              {errors.state && (
+                                <ErrorMessage text={errors.state.message} />
+                              )}
+                            </div>
+                            <div className="col-12">
+                              <input
+                                type="state"
+                                name="state"
+                                className={`formItem ${errors.state ? "error" : ""}`}
+                                {...register("state", {
+                                  ...requiredValidator
+                                })}
+                              />
+                              <label htmlFor="data" className="formItemDesc">
+                                Input the state for the DID
+                              </label>
+                            </div>
+                          </div>
+                          <div className="formRow col-xl-2">
+                            <div className="formLabel">
+                              <label htmlFor="contiguous">Contiguous</label>
+                            </div>
+                            <div className="col-12">
+                              <select
+                                name="contiguous"
+                                className={`formItem ${errors.contiguous ? "error" : ""
+                                  }`}
+                                {...register("contiguous", {
+                                  ...requiredValidator,
+                                })}
+                                defaultValue={1}
+                              >
+                                <option value={1}>True</option>
+                                <option value={0}>False</option>
+                              </select>
+                              {errors.contiguous && (
+                                <ErrorMessage text={errors.contiguous.message} />
+                              )}
+                              <label htmlFor="data" className="formItemDesc">
+                                Select the type of domestic DID
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      }
+
                       <div className="formRow col">
                         <div className="col-12">
                           <div className="formLabel">

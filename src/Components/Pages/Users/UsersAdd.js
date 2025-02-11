@@ -369,7 +369,7 @@ const UsersAdd = () => {
                               className="formItem"
                               {...register("username", {
                                 ...requiredValidator,
-                                ...noSpecialCharactersValidator,
+                                // ...noSpecialCharactersValidator,
                               })}
                               onKeyDown={restrictToAllowedChars}
                             />

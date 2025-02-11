@@ -41,7 +41,7 @@ function ConfigureStepDashboard({ account2 }) {
         npa: Number(npx),
         companyId: account.account_id,
       };
-      const apiData = await generalPostFunction("/searchTfn", parsedData);
+      const apiData = await generalPostFunction("/search-number", parsedData);
       if (apiData.status) {
         setSearchingDid(false);
         setDidRawData(apiData);

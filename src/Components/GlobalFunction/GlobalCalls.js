@@ -359,8 +359,8 @@ function GlobalCalls() {
   useEffect(() => {
     async function logOut() {
       const apiData = await generalGetFunction("/logout");
-      navigate("/");
       localStorage.clear();
+      navigate("/");
       if (apiData?.status) {
         localStorage.clear();
         dispatch({

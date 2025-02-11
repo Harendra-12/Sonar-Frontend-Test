@@ -870,7 +870,7 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      <button
+                      {/* <button
                         onClick={() => setClickStatus("all")}
                         className={
                           clickStatus === "all" ? "tabLink active" : "tabLink"
@@ -878,8 +878,8 @@ function Call({
                         data-category="all"
                       >
                         <i className="fa-light fa-phone" />
-                      </button>
-                      <button
+                      </button> */}
+                      {/* <button
                         onClick={() => setClickStatus("incoming")}
                         className={
                           clickStatus === "incoming"
@@ -914,7 +914,7 @@ function Call({
                         data-category="missed"
                       >
                         <i className="fa-light fa-phone-missed" />
-                      </button>
+                      </button> */}
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={
