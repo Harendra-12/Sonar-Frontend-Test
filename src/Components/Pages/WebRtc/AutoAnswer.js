@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useSessionCall } from 'react-sipjs';
+import { useSessionCall } from 'modify-react-sipjs';
 
 function AutoAnswer({ id,isVideoOn }) {
   const dispatch = useDispatch();

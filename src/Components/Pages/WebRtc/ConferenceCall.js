@@ -202,12 +202,10 @@ export const ConferenceCall = ({
   // Monitor incoming SIP sessions
   const incomingSessionsArray = Object.keys(sipSessions).filter(
     (id) =>
-      sipSessions[id].state === "Initial" &&
+      sipSessions[id]._state === "Initial" &&
       sipSessions[id].logger.category === "sip.Invitation"
   );
-
-  console.log("conferenceDataaa", conferenceData, confList);
-
+  console.log("incomingSessionsArray", incomingSessionsArray);  
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
     if (conferenceData) {
