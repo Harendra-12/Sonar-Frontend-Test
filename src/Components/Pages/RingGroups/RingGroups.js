@@ -42,7 +42,7 @@ const RingGroups = () => {
       if (account && account.id) {
         setLoading(true);
         const apidata = await generalGetFunction(
-          `/ringgroup/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+          `/ringgroup-dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
         console.log(apidata);
         if (apidata?.status) {
