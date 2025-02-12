@@ -964,21 +964,20 @@ export const DummySipRegisteration = ({
                                   ></i>
                                 </button>
                                 <div className="noScrollbar" style={{ height: '100vh', overflowY: 'auto', paddingLeft: '10px' }}>
-
+                                  {confList.map((item, index) => {
+                                    return (
+                                      <ConferenceUserTab
+                                        item={item}
+                                        key={index}
+                                        index={index}
+                                        handleSelectConferenceUser={
+                                          handleSelectConferenceUser
+                                        }
+                                        getInitials={getInitials}
+                                      />
+                                    );
+                                  })}
                                 </div>
-                                {confList.map((item, index) => {
-                                  return (
-                                    <ConferenceUserTab
-                                      item={item}
-                                      key={index}
-                                      index={index}
-                                      handleSelectConferenceUser={
-                                        handleSelectConferenceUser
-                                      }
-                                      getInitials={getInitials}
-                                    />
-                                  );
-                                })}
                               </div>
                             </div>
                             {participantList && (
