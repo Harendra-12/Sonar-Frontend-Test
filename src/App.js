@@ -334,7 +334,7 @@ function App() {
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
-          <Route path="/call-recording" element={<CallRecording />} />
+          <Route path="/call-recording-settings" element={<CallRecording />} />
           {/* Settings Path */}
 
           {/* Voice path start */}
@@ -663,7 +663,8 @@ function App() {
           {/* ------ Call Tracker */}
 
           {/* ------ Reports */}
-          <Route path="/agent-report" element={< AgentReports />} />
+          <Route path="/call-recording" element={<CdrReport page="callrecording" />} />
+          <Route path="/agent-report" element={<AgentReports />} />
           {/* ------ Reports */}
 
           {/* 404 Redirection */}
