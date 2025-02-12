@@ -148,10 +148,10 @@ function ActiveCalls({ isWebrtc,filter }) {
         <thead>
           <tr>
             <th>#</th>
-            <th>Did Tag</th>
             <th>Call Started</th>
-            <th>CID Number</th>
+            <th>Did Tag</th>
             <th>Feature Tag</th>
+            <th>CID Number</th>
             <th>Destination</th>
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
@@ -169,14 +169,14 @@ function ActiveCalls({ isWebrtc,filter }) {
                 return (
                   <tr>
                     <td>{key + 1}</td>
+                    <td>{item.created.split(" ")[1]}</td>
                     <td>
                       {item.did_tag}
                     </td>
-                    <td>{item.created.split(" ")[1]}</td>
-                    <td>{item.cid_num}</td>
                     <td>{item.feature_tag}</td>
+                    <td>{item.cid_num}</td>
                     <td>{item.dest}</td>
-                    <td>{formatDuration(calculateDuration(item.created, item.serverTime))}</td>
+                    <td>{item.duration}</td>
                     {isWebrtc !== false && <td>
                       <select
                         className="formItem"
