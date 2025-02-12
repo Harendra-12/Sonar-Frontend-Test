@@ -851,6 +851,7 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/cdr-report",
+                            "/call-recording",
                             "/meeting-reports",
                             "/call-center-report",
                             "/ring-group-report",
@@ -870,6 +871,7 @@ function Navbar() {
                         id="collapse4"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/cdr-report",
+                          "/call-recording",
                           "/meeting-reports",
                           "/call-center-report",
                           "/ring-group-report",
@@ -893,6 +895,15 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
+                            <li className="tabItem">
+                              <NavLink
+                                to="/call-recording"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="itemTitle">Call Recording</div>
+                              </NavLink>
+                            </li>
                             <li className="tabItem ">
                               <Link
                                 onClick={() => featureUnderdevelopment()}
@@ -1135,7 +1146,7 @@ function Navbar() {
                           isChildActive([
                             "/mail-settings",
                             "/fax-settings",
-                            "/call-recording",
+                            "/call-recording-settings",
                             "/voice-music"
                           ])
                             ? "true"
@@ -1153,7 +1164,7 @@ function Navbar() {
                         className={`accordion-collapse collapse ${isChildActive([
                           "/mail-settings",
                           "/fax-settings",
-                          "/call-recording",
+                          "/call-recording-settings",
                           "/voice-music",
                         ])
                           ? "show"
@@ -1226,11 +1237,11 @@ function Navbar() {
                             ) : null}
                             <li className="tabItem ">
                               <NavLink
-                                to="/call-recording"
+                                to="/call-recording-settings"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/call-recording"].some((path) =>
+                                    ["/call-recording-settings"].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
                                     ? "nav-link active"

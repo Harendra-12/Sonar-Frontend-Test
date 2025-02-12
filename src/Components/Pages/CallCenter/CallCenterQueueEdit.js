@@ -953,23 +953,6 @@ function CallCenterQueueEdit() {
                           </div>
                           <div className="formRow col-xl-3">
                             <div className="formLabel">
-                              <label htmlFor="">Action</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Set the action to perform when the max wait time
-                                is reached.
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <ActionList
-                                title={null}
-                                label={null}
-                                getDropdownValue={actionListValue}
-                                value={watch().queue_timeout_action}
-                              />
-                            </div>
-                          </div>
-                          <div className="formRow col-xl-3">
-                            <div className="formLabel">
                               <label htmlFor="">Discard Abandoned After</label>
                               <label htmlFor="data" className="formItemDesc">
                                 The number of seconds before the abandoned call
@@ -1203,6 +1186,23 @@ function CallCenterQueueEdit() {
                                   }
                                 />
                               )}
+                            </div>
+                          </div>
+                          <div className="formRow col-xl-3">
+                            <div className="formLabel">
+                              <label htmlFor="">Action</label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Set the action to perform when the max wait time
+                                is reached.
+                              </label>
+                            </div>
+                            <div className="col-6">
+                              <ActionList
+                                title={null}
+                                label={null}
+                                getDropdownValue={actionListValue}
+                                value={watch().queue_timeout_action}
+                              />
                             </div>
                           </div>
                         </form>
