@@ -1803,9 +1803,9 @@ function Messages({
                                         <span data-id="3">Priority</span>
                                       </div> */}
                                     </div>
-                                    {/* <div className="col text-end">
-                                      <p className="timeAgo">5min ago</p>
-                                    </div> */}
+                                    <div className="col text-end">
+                                      <button class="clearButton2 xl" onClick={() => setManageGroupChat(true)}><i class="fa-regular fa-pen"></i></button>
+                                    </div>
                                   </div>{" "}
                                 </div>
                               </div>
