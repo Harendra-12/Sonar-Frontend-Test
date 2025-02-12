@@ -42,13 +42,19 @@ jobs:
 
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
-              echo "Git repository found. Pulling latest changes."
-              git pull origin Developement
+                echo "Git repository found. Checking out Production branch and pulling latest changes."
+            
+                # Ensure we are on the correct branch
+                git checkout Developement
+            
+                # Reset local changes and sync with the remote branch
+                git fetch origin
+                git reset --hard origin/Developement
             else
-              echo "Git repository not found. Cloning repository." 
-              # GIT_TRACE=1 GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
-              git clone -b Production git@github.com:AngelPbx/UcaaS-Frontend.git .
-              # git checkout Developement
+                echo "Git repository not found. Cloning repository."
+            
+                # Clone only the Production branch
+                 git clone --single-branch --branch Developement git@github.com:AngelPbx/UcaaS-Frontend.git .
             fi
 
             echo "Listing deployment directory contents:"
