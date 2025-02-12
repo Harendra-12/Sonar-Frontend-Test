@@ -411,12 +411,21 @@ function PhoneDashboard() {
                                   user.extension !== null &&
                                   user.extension.extension !== null &&
                                   onlineUser.includes(
-                                    user?.extension?.extension
+                                    user?.id
                                   )
                               ).length) ||
                               0}{" "}
-                            Active Users /{" "}
-                            {(logonUser.length) ||
+                            Active Users.
+                             {/* /{" "}
+                            {(allUser.data &&
+                              allUser.data.length -
+                              allUser.data.filter((user) => {
+                                user.extension !== null &&
+                                  user.extension.extension !== null &&
+                                  onlineUser.includes(
+                                    user?.extension?.extension
+                                  );
+                              }).length) ||
                               0}{" "}
                             Idle Users /{" "}
                             {(allUser.data &&
@@ -427,7 +436,7 @@ function PhoneDashboard() {
                                 )
                               ).length) ||
                               0}{" "}
-                            On Call
+                            On Call */}
                           </p>
                         </div>
                         <div className="col-2">

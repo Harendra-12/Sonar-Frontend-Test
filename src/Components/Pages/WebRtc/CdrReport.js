@@ -861,7 +861,7 @@ function CdrReport({ page }) {
                                                 }
                                               }}
                                             >
-                                              {currentPlaying ? (
+                                              {currentPlaying === item["recording_path"] ? (
                                                 <i className="fa-solid fa-stop"></i>
                                               ) : (
                                                 <i className="fa-solid fa-play"></i>
@@ -944,7 +944,7 @@ function CdrReport({ page }) {
                                       )}
                                     </tr>
                                     {currentPlaying ===
-                                      item["recording_path"] && (
+                                      item["recording_path"] && item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
