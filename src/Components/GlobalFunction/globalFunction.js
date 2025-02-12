@@ -1,8 +1,6 @@
 import axios from "axios";
 import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
-// const baseName = "http://127.0.0.1:8000/api"
-// const baseName = "https://ucaas.webvio.in/backend/api";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 
 // Creating instance of axios
@@ -44,38 +42,6 @@ export async function login(userName, password) {
     .catch((error) => {
       return error;
     });
-}
-
-// General logout Function
-export async function logout(allCallCenterIds, dispatch, sessionManager) {
-  if (allCallCenterIds.length > 0) {
-    const parsedData = { status: "Logged Out" };
-    try {
-      const apiResponses = await Promise.allSettled(
-        allCallCenterIds.map((id) =>
-          generalPutFunction(`call-center-agent/update/${id}`, parsedData)
-        )
-      );
-      const failedResponses = apiResponses.filter(
-        (res) => res.status === "rejected"
-      );
-      if (failedResponses.length > 0) {
-        console.error(
-          `Error updating ${failedResponses.length} agents:`,
-          failedResponses
-        );
-        alert(
-          `Failed to update ${failedResponses.length} agents. Please try again.`
-        );
-      }
-    } catch (error) {
-      console.error("Unexpected error in logout:", error);
-      alert("Something went wrong. Please try again.");
-    }
-  }
-  // Dispatch logout action and disconnect session
-  dispatch({ type: "SET_LOGOUT", logout: 1 });
-  sessionManager.disconnect();
 }
 
 export async function generalGetFunction(endpoint) {
@@ -275,4 +241,37 @@ export function featureUnderdevelopment() {
     </div>`;
     document.body.appendChild(popup);
   }
+}
+
+
+// General logout Function
+export async function logout(allCallCenterIds, dispatch, sessionManager) {
+  if (allCallCenterIds.length > 0) {
+    const parsedData = { status: "Logged Out" };
+    try {
+      const apiResponses = await Promise.allSettled(
+        allCallCenterIds.map((id) =>
+          generalPutFunction(`call-center-agent/update/${id}`, parsedData)
+        )
+      );
+      const failedResponses = apiResponses.filter(
+        (res) => res.status === "rejected"
+      );
+      if (failedResponses.length > 0) {
+        console.error(
+          `Error updating ${failedResponses.length} agents:`,
+          failedResponses
+        );
+        alert(
+          `Failed to update ${failedResponses.length} agents. Please try again.`
+        );
+      }
+    } catch (error) {
+      console.error("Unexpected error in logout:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  }
+  // Dispatch logout action and disconnect session
+  dispatch({ type: "SET_LOGOUT", logout: 1 });
+  sessionManager.disconnect();
 }

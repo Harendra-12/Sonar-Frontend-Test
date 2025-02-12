@@ -47,7 +47,7 @@ const Dashboard = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       // Convert current time to the given timezone
-      const value = accountDetails?.timezone?.value;
+      const value = timeZone.filter((item)=>item.id === account.timezone_id)[0]?.name;
       const timeInZone = new Date(
         new Date().toLocaleString("en-US", { timeZone: value })
       );
@@ -390,7 +390,7 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
-                              <p>TimeZone: {accountDetails?.timezone?.name}</p>
+                              <p>TimeZone: {timeZone.filter((item)=>item.id===account?.timezone_id)[0]?.name}</p>
                             </div>
                             <div className="col-3">
                               <Clock
