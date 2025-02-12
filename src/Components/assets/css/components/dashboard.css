@@ -556,3 +556,8 @@
     border: 1px solid rgb(255, 41, 41);
     box-shadow: #ff000054 0px 3px 8px;
 }
+
+.itemWrapper.active {
+    border: 1px solid green;
+    box-shadow: #00ff1554 0px 3px 8px;
+}

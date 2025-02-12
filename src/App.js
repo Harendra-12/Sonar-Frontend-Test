@@ -133,7 +133,6 @@ import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/Available
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
-import GetDidNew from "./Components/Pages/NumberManagement/GetDidNew";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -417,7 +416,6 @@ function App() {
           <Route path="/rate-card" element={<RateCharge />} />
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
-          <Route path="/get-did-new" element={<GetDidNew />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
@@ -565,7 +563,7 @@ function App() {
               )
             }
           />
-           <Route
+          <Route
             path="/mail-settings"
             element={
               permission?.includes(249) ? (

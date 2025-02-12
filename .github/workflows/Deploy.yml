@@ -3,7 +3,7 @@ name: DeployFrontend
 on:
   push:
     branches:
-      - Production  # Ensure this matches your actual branch name
+      - Developement  # Ensure this matches your actual branch name
 
 jobs:
   deploy:
@@ -20,7 +20,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: |
-            ${{ secrets.SSH_PRIVATE_KEY_UCAAS }}
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
 
       - name: Add GitHub to known_hosts
@@ -30,7 +30,7 @@ jobs:
       - name: SSH into Debian Server and Build React App
         run: |
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST_UCAAS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
            #set -e  # Exit immediately if a command exits with a non-zero status
            # set -x  # Uncomment for debugging purposes
 
@@ -42,13 +42,19 @@ jobs:
 
             # Check if the directory is a Git repository
             if [ -d ".git" ]; then
-              echo "Git repository found. Pulling latest changes."
-              git pull origin Production
+                echo "Git repository found. Checking out Production branch and pulling latest changes."
+            
+                # Ensure we are on the correct branch
+                git checkout Developement
+            
+                # Reset local changes and sync with the remote branch
+                git fetch origin
+                git reset --hard origin/Developement
             else
-              echo "Git repository not found. Cloning repository." 
-              # GIT_TRACE=1 GIT_SSH_COMMAND='ssh -i ~/.ssh/ucaas-testing-frontend' git clone git@github.com:AngelPbx/UcaaS-Frontend.git .
-              git clone -b Production git@github.com:AngelPbx/UcaaS-Frontend.git .
-              # git checkout Production
+                echo "Git repository not found. Cloning repository."
+            
+                # Clone only the Production branch
+                 git clone --single-branch --branch Developement git@github.com:AngelPbx/UcaaS-Frontend.git .
             fi
 
             echo "Listing deployment directory contents:"
