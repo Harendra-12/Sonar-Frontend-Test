@@ -20,7 +20,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: |
-            ${{ secrets.SSH_PRIVATE_KEY_UCAAS }}
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
 
       - name: Add GitHub to known_hosts
@@ -30,7 +30,7 @@ jobs:
       - name: SSH into Debian Server and Build React App
         run: |
           
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST_UCAAS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
            #set -e  # Exit immediately if a command exits with a non-zero status
            # set -x  # Uncomment for debugging purposes
 
