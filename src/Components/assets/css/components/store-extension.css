@@ -34,7 +34,7 @@
 }
 
 .package h2 {
-    font-size: 17px;
+    font-size: 30px;
     color: var(--text-color);
     /* margin-bottom: 10px; */
     margin-top: 10px;
@@ -80,15 +80,15 @@
 }
 
 .total-save {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 21px;
-    width: 93px;
-    color: var(--ui-accent);
-    background-color: #e7f2ff;
-    border-radius: 20px;
-    padding: 15px;
+    display: flex ;
+        align-items: center;
+        justify-content: center;
+        height: 18px;
+        width: 90px;
+        color: var(--ui-accent);
+        background-color: #e7f2ff;
+        border-radius: 20px;
+        padding: 13px;
 }
 
 

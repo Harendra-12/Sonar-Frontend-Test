@@ -253,7 +253,7 @@ function PhoneDashboard() {
               {group ? <RingGroup /> : ""}
               {queue ? <CallQueueDetails /> : ""}
               <div className="row mt-3">
-                <div className="col-xl-3">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -300,7 +300,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -345,7 +345,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -387,7 +387,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="col-xl-3">
+                <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
                       <div class="d-flex flex-wrap justify-content-between align-items-center">
