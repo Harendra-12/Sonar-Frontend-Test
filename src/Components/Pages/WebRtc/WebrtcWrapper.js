@@ -64,6 +64,7 @@ const WebrtcWrapper = () => {
   const [pin, setPin] = useState("");
   const agentDeposition = useSelector((state) => state.agentDeposition);
   const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -107,6 +108,13 @@ const WebrtcWrapper = () => {
       };
       // };
     };
+
+    useEffect(() => {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
+    }, []);
 
     useEffect(() => {
       connectWebSocket();
@@ -219,6 +227,13 @@ const WebrtcWrapper = () => {
       sessions: updatedSession,
     });
   }, [dummySession]);
+
+  useEffect(() => {
+    const videos = document.querySelectorAll("video:not([class])");
+    videos.forEach((video) => {
+      video.style.display = "none";
+    });
+  }, []);
   return (
     <>
       <style>

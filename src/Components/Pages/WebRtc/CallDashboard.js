@@ -293,12 +293,12 @@ function CallDashboard() {
 
                             <tbody>
                               {
-                                activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item, key) => {
+                                activeCall && activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT").map((item, key) => {
                                   return (
                                     <tr>
                                       <td>{key + 1}</td>
                                       <td>{item.cid_name}</td>
-                                      <td>{item.presence_id.split("@")[0]}</td>
+                                      <td>{item.dest}</td>
                                       <td>{item.created.split(" ")[1]}</td>
                                       <td>{item.feature_tag}</td>
                                     </tr>

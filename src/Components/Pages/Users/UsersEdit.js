@@ -2,6 +2,7 @@
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Select from "react-select";
 import {
   backToTop,
   generalGetFunction,
@@ -45,8 +46,10 @@ const UsersEdit = ({ page }) => {
   const [parentChecked, setParentChecked] = useState({});
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
+  const [searchExtensions, setSearchExtensions] = useState();
+  const [selectedSearch, setSelectedSearch] = useState("");
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
-    locationState.user_role == "Company"
+    locationState?.user_role == "Company"
   );
 
   const {
@@ -175,16 +178,25 @@ const UsersEdit = ({ page }) => {
   // Filtering unused extension
   useEffect(() => {
     if (extension && user && locationState) {
-      setFilterExtensions(
-        accountDetails?.extensions?.filter((item) => {
-          return !user.some((userItem) => {
-            return (
-              userItem.extension_id === item.id &&
-              userItem.extension_id !== locationState.extension_id
-            );
-          });
-        })
-      );
+      const data = extension.filter((item) => {
+        return !user.some((userItem) => {
+          return (
+            userItem.extension_id === item.id &&
+            userItem.extension_id !== locationState.extension_id
+          );
+        });
+      });
+      setFilterExtensions(data);
+
+      const options = data?.map((extension) => ({
+        value: extension.id,
+        label: extension.extension,
+      }));
+
+      setSearchExtensions([
+        { value: null, label: "None" },
+        ...options,
+      ]);
     }
   }, [accountDetails, user, locationState]);
 
@@ -206,6 +218,7 @@ const UsersEdit = ({ page }) => {
 
     let updatedData = {
       ...data,
+      extension_id: selectedSearch,
       ...{
         name: `${firstName} ${lastName}`,
       },
@@ -223,7 +236,7 @@ const UsersEdit = ({ page }) => {
       role_id,
       account_id: account.account_id,
       permissions: selectedPermission,
-      extension_id: data.extension_id,
+      extension_id: selectedSearch,
       usages: data.usages,
       alias: data.alias,
       ...(password && password.length > 5 && { password }),
@@ -438,7 +451,8 @@ const UsersEdit = ({ page }) => {
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="">
-                                First Name <span className="text-danger">*</span>
+                                First Name{" "}
+                                <span className="text-danger">*</span>
                               </label>
                             </div>
                             <div className="col-6">
@@ -524,7 +538,9 @@ const UsersEdit = ({ page }) => {
                                   })}
                               </select>
                               {errors.timezone_id && (
-                                <ErrorMessage text={errors.timezone_id.message} />
+                                <ErrorMessage
+                                  text={errors.timezone_id.message}
+                                />
                               )}
                             </div>
                           </div>
@@ -541,7 +557,9 @@ const UsersEdit = ({ page }) => {
                               <select
                                 className="formItem"
                                 name=""
-                                {...register("status", { ...requiredValidator })}
+                                {...register("status", {
+                                  ...requiredValidator,
+                                })}
                               >
                                 <option disabled value="">
                                   Choose Status
@@ -558,10 +576,12 @@ const UsersEdit = ({ page }) => {
                             <div className="formRow col-xl-12">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
-                                  Role Type <span className="text-danger">*</span>
+                                  Role Type{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  Select the Role with appropriate permissions for the User.
+                                  Select the Role with appropriate permissions
+                                  for the User.
                                 </label>
                               </div>
                               <div className="col-6">
@@ -623,29 +643,82 @@ const UsersEdit = ({ page }) => {
                                     watch().extension_id ? "col-8" : "col-12"
                                   }
                                 >
-                                  <select
-                                    className="formItem"
-                                    name="extension_id"
-                                    value={watch().extension_id}
-                                    {...register("extension_id")}
-                                    // disabled
-                                    // disabled={
-                                    //   watch().extension_id != "" ||
-                                    //   watch().extension_id != null
-                                    // }
-                                  >
-                                    <option value="" disabled>
-                                      Available Extensions
-                                    </option>
-                                    {filterExtensions &&
-                                      filterExtensions.map((extension, key) => {
-                                        return (
-                                          <option value={extension.id} key={key}>
-                                            {extension.extension}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
+                                  {watch().extension_id ?
+                                    <Select
+                                      isDisabled={true}
+                                      placeholder="Available Extensions"
+                                      isClearable={false}
+                                      defaultValue={{
+                                        label: watch()?.extension?.extension,
+                                        value: watch()?.extension?.extension,
+                                      }} // Default selected option
+                                      onChange={(e) => {
+                                        setSelectedSearch(e.value);
+                                      }}
+                                      // {...register("extension_id")}
+                                      styles={{
+                                        control: (provided, state) => ({
+                                          ...provided,
+                                          height: "25px",
+                                          fontSize: "12px",
+                                        }),
+                                        singleValue: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        option: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        placeholder: (provided) => ({
+                                          ...provided,
+                                          fontSize: "13px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "start",
+                                          marginBottom: "15px",
+                                        }),
+
+                                      }}
+                                    /> : <Select
+                                      options={searchExtensions}
+                                      placeholder="Available Extensions"
+                                      isClearable={false}
+                                      defaultValue={{
+                                        label: watch()?.extension?.extension,
+                                        value: watch()?.extension?.extension,
+                                      }} // Default selected option
+                                      onChange={(e) => {
+                                        setSelectedSearch(e.value);
+                                      }}
+                                      // {...register("extension_id")}
+                                      styles={{
+                                        control: (provided, state) => ({
+                                          ...provided,
+                                          height: "25px",
+                                          fontSize: "12px",
+                                        }),
+                                        singleValue: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        option: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        placeholder: (provided) => ({
+                                          ...provided,
+                                          fontSize: "13px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "start",
+                                          marginBottom: "15px",
+                                        }),
+
+                                      }}
+                                    />
+
+                                  }
                                 </div>
                                 {watch().extension_id && (
                                   <div className="col-4">
@@ -666,7 +739,9 @@ const UsersEdit = ({ page }) => {
                           </div>
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
-                              <label htmlFor="selectFormRow">New Password</label>
+                              <label htmlFor="selectFormRow">
+                                New Password
+                              </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Set new password to user.
                               </label>
@@ -687,7 +762,9 @@ const UsersEdit = ({ page }) => {
                       {selectedRole && (
                         <div
                           className="col-xl-6"
-                          style={{ borderLeft: "1px solid var(--border-color)" }}
+                          style={{
+                            borderLeft: "1px solid var(--border-color)",
+                          }}
                         >
                           <div className="profileView p-0">
                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
@@ -814,25 +891,59 @@ const UsersEdit = ({ page }) => {
                                 watch().extension_id ? "col-5" : "col-5"
                               }
                             >
-                              <select
-                                className="formItem"
-                                name="extension_id"
-                                value={watch().extension_id}
-                                {...register("extension_id")}
-                              >
-                                <option value="" disabled>
-                                  Available Extensions
-                                </option>
-                                <option value="">None</option>
-                                {filterExtensions &&
-                                  filterExtensions.map((extension, key) => {
-                                    return (
-                                      <option value={extension.id} key={key}>
-                                        {extension.extension}
-                                      </option>
-                                    );
-                                  })}
-                              </select>
+                              <Select
+                                options={searchExtensions}
+                                placeholder="Available Extensions"
+                                isClearable={false}
+                                defaultValue={{
+                                  label: watch()?.extension?.extension,
+                                  value: watch()?.extension?.extension,
+                                }} // Default selected option
+                                onChange={(e) => {
+                                  setSelectedSearch(e.value);
+                                }}
+                                // {...register("extension_id")}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    height: "25px",
+                                    fontSize: "12px",
+                                  }),
+                                  valueContainer: (provided) => ({
+                                    ...provided,
+                                    height: "24px",
+                                  }),
+                                  input: (provided) => ({
+                                    ...provided,
+                                    margin: "0px",
+                                  }),
+                                  singleValue: (provided) => ({
+                                    ...provided,
+                                    fontSize: "14px",
+                                  }),
+                                  option: (provided) => ({
+                                    ...provided,
+                                    fontSize: "14px",
+                                  }),
+                                  menu: (provided) => ({
+                                    ...provided,
+                                    maxHeight: "120px",
+                                    // overflowY: "auto",
+                                  }),
+                                  placeholder: (provided) => ({
+                                    ...provided,
+                                    fontSize: "13px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "start",
+                                    marginBottom: "15px",
+                                  }),
+                                  menuList: (provided) => ({
+                                    ...provided,
+                                    maxHeight: "120px",
+                                  }),
+                                }}
+                              />
                             </div>
                             <div
                               className={`${watch().extension_id ? "col-5" : "col-5"
@@ -875,7 +986,10 @@ const UsersEdit = ({ page }) => {
                           <i class="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
-                      <button className="panelButton gray" onClick={() => setPopUp(false)}>
+                      <button
+                        className="panelButton gray"
+                        onClick={() => setPopUp(false)}
+                      >
                         <span className="text">Close</span>
                         <span className="icon">
                           <i class="fa-solid fa-xmark"></i>

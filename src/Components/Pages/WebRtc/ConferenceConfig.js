@@ -613,6 +613,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                     <div className="content" style={{ padding: '25px' }}>
                                       <div className='conferenceJoinVideo'>
                                         <video
+                                          className="donotremoveclassname"
                                           ref={videoRef}
                                           autoPlay
                                           playsInline
@@ -624,7 +625,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                           <button className='clearButton2 xl white'>
                                             <i class="fa-light fa-microphone"></i>
                                           </button>
-                                          <button className='clearButton2 xl white ms-3' onClick={()=>{if(isVideoOn){toggleVideo()}}}>
+                                          <button className='clearButton2 xl white ms-3' onClick={() => { if (isVideoOn) { toggleVideo() } }}>
                                             <i class={videoEnable && isVideoOn ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
                                           </button>
                                         </div>
