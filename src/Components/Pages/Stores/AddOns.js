@@ -52,22 +52,31 @@ function AddOns() {
                                         <div className="col-md-12">
                                             <div className="product-container">
                                                 {/* Product 1 */}
-                                                <div>
+                                                <div className="product-cart">
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
-                                                    <div className="product-title">
+                                                    <div className="product-title hover mt-4">
                                                         <p>
-                                                            Click to Call{" "}
-                                                            <span className="text-smalls">(Poly CCX 700)</span>
+                                                            Click to Call <span className="text-smalls">(Poly CCX 700)</span>
                                                         </p>
                                                     </div>
-                                                    <div className="product-description">
+
+                                                    <div className="product-description mt-2">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -79,233 +88,249 @@ function AddOns() {
                                                                 <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
+
                                                 {/* Product 2 */}
-                                                <div>
+                                                <div className='product-cart'>
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
-                                                        className="product-image"
-                                                    />
-                                                    <div className="product-title">
+                                                        className="product-image" />
+                                                    <div className="product-title mt-4">
                                                         <p>
                                                             WhatsApp Integration
-                                                            <span className="text-smalls">(Messenger)</span>
+                                                            <span className="text-smalls"> (Messenger)</span>
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
-                                                            <div className="product-price me-2">$60.00</div>
+                                                            <div className="product-price me-2">$50.00</div>
                                                         </div>
                                                         <div>
                                                             <span className="borders-left-small " />
                                                         </div>
                                                         <div>
                                                             <div className="total-price-month ms-2 me-2">
-                                                                <span> $30/month</span>
+                                                                <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 3 */}
-                                                <div>
+                                                <div className='product-cart'>
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
-                                                    <div className="product-title">
+                                                    <div className="product-title  mt-4">
                                                         <p>
                                                             Messenger Integration
-                                                            <span className="text-smalls">(facebook)</span>
+                                                            <span className="text-smalls"> (facebook)</span>
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
-                                                            <div className="product-price me-2">$70.00</div>
+                                                            <div className="product-price me-2">$50.00</div>
                                                         </div>
                                                         <div>
                                                             <span className="borders-left-small " />
                                                         </div>
                                                         <div>
                                                             <div className="total-price-month ms-2 me-2">
-                                                                <span> $33/month</span>
+                                                                <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 4 */}
-                                                <div>
+                                                <div className='product-cart'>
+
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
-                                                    <div className="product-title">
+                                                    <div className="product-title  mt-4">
                                                         <p>
-                                                            Skype Integration<span className="text-smalls">(facebook)</span>
+                                                            Skype Integration<span className="text-smalls"> (facebook)</span>
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
-                                                            <div className="product-price me-2">$70.00</div>
+                                                            <div className="product-price me-2">$50.00</div>
                                                         </div>
                                                         <div>
                                                             <span className="borders-left-small " />
                                                         </div>
                                                         <div>
                                                             <div className="total-price-month ms-2 me-2">
-                                                                <span> $33/month</span>
+                                                                <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 5 */}
-                                                <div>
+                                                <div className='product-cart'>
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
-                                                    <div className="product-title">
+                                                    <div className="product-title  mt-4">
                                                         <p>
                                                             Team Collaboration
-                                                            <span className="text-smalls">(facebook)</span>
+                                                            <span className="text-smalls"> (facebook)</span>
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
-                                                            <div className="product-price me-2">$70.00</div>
+                                                            <div className="product-price me-2">$50.00</div>
                                                         </div>
                                                         <div>
                                                             <span className="borders-left-small " />
                                                         </div>
                                                         <div>
                                                             <div className="total-price-month ms-2 me-2">
-                                                                <span> $33/month</span>
+                                                                <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 6 */}
-                                                <div>
+                                                <div className='product-cart'>
+                                                    <div className="add-to-carts ms-2">
+                                                        <p
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasRight"
+                                                            aria-controls="offcanvasRight"
+                                                        >
+                                                            <i className="fa-solid fa-heart"></i>
+                                                        </p>
+                                                    </div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Cisco8861-png-rendition.webp"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
-                                                    <div className="product-title">
+                                                    <div className="product-title  mt-4">
                                                         <p>
                                                             Real-Time Reporting
-                                                            <span className="text-smalls">(facebook)</span>
+                                                            <span className="text-smalls"> (facebook)</span>
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center  teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color">
                                                         <div>
-                                                            <div className="product-price me-2">$70.00</div>
+                                                            <div className="product-price me-2">$50.00</div>
                                                         </div>
                                                         <div>
                                                             <span className="borders-left-small " />
                                                         </div>
                                                         <div>
                                                             <div className="total-price-month ms-2 me-2">
-                                                                <span> $33/month</span>
+                                                                <span> $29/month</span>
                                                             </div>
                                                         </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
+                                                    </div>
+
+                                                    {/* Add to Cart (Initially Hidden) */}
+                                                    <div className="add-to-cart-container">
+                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                                            <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <div className="add-to-cart ms-2">
-                                                            <p
-                                                                className=""
-                                                                data-bs-toggle="offcanvas"
-                                                                data-bs-target="#offcanvasRight"
-                                                                aria-controls="offcanvasRight"
-                                                            >
-                                                                Add this item{" "}
-                                                            </p>
-                                                        </div>
+                                                        <h4> Add to cart </h4>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,34 +350,41 @@ function AddOns() {
                                                 type="button"
                                                 className="btn-close"
                                                 data-bs-dismiss="offcanvas"
-                                                aria-label="Close"
-                                            />
+                                                aria-label="Close" />
                                         </div>
                                         <div className="offcanvas-body">
                                             <div className="offcanvas-sider">
                                                 <div>
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
-                                                        alt=""
-                                                    />
+                                                        alt="" />
                                                 </div>
-                                                <div>
-                                                    <div className="offcanvas-text-side">
-                                                        <p> Click to Call</p>
-                                                        <span className="text-font-small">(Poly CCX 700)</span>
-                                                        <div className="test-number mt-2">
-                                                            <p className="">$50.00</p>
-                                                            <span>$29/month</span>
+                                            </div>
+                                            <div className="paragrap">
+                                                <div className="offcanvas-text-side">
+                                                    <div className='d-flex align-items-center justify-content-between'>
+                                                        <div>
+                                                            <p className=' m-0 p-0'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
+                                                            <div className="test-number m-0 p-0">
+                                                                <p className="">$50.00 <span>$29/month</span></p>
+                                                            </div>
                                                         </div>
-                                                        <div className="btn-add mt-2 " onclick="changeText(this)">
-                                                            <p>Add</p>
+                                                        <div>
+                                                            <button
+                                                                effect="ripple"
+                                                                className="panelButton" >
+                                                                <span className="text">Buy</span>
+                                                                <span className="icon">
+                                                                    <i class="fa-solid fa-cart-shopping"></i>
+                                                                </span>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div></div>
-                                            </div>
-                                            <div className="paragrap">
                                                 <div className="para-hading">
+                                                    <h4 className='mb-3 '>
+                                                        Description
+                                                    </h4>
                                                     <p>
                                                         The Unify CP700 brings expanded interoperability, the power of
                                                         simplicity, as well as the high-quality audio you expect.
@@ -377,9 +409,10 @@ function AddOns() {
                                                     </ul>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-                                </> 
+                                </>
                             </div>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ function DialerDashboard() {
                             </div>
                         </div> */}
                         <div className="row mt-3 gx-3">
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
                                 <div className="itemWrapper a">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -58,7 +58,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
                                 <div className="itemWrapper b">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -73,7 +73,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
                                 <div className="itemWrapper c">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -88,7 +88,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
                                 <div className="itemWrapper d">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -103,7 +103,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
                                 <div className="itemWrapper a">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -118,7 +118,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-4 col-xl-2">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
                                 <div className="itemWrapper b">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
@@ -135,7 +135,7 @@ function DialerDashboard() {
                             </div>
                         </div>
                         <div className="row mt-3 gx-3">
-                            <div className="col-xl-3">
+                            <div className="col-xl-3 col-sm-12 mb-md-2 mb-sm-2 col-md-12 ">
                                 <div className="itemWrapper a">
                                     <div className='heading h-auto'>
                                         <h5>Call Per Hour</h5>
@@ -153,9 +153,9 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-xl-6">
                                 <div className="row gx-3">
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 ">
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
                                                 <h3 style={{ fontWeight: 700 }}>00:06</h3>
@@ -184,7 +184,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                                 <div className="row mt-3 gx-3">
-                                    <div className="col-md-6">
+                                    <div className="col-md-6 mb-md-2">
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
                                                 <div className="d-flex flex-wrap justify-content-between">
@@ -221,7 +221,7 @@ function DialerDashboard() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6  mb-md-2">
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
                                                 <div className="d-flex flex-wrap justify-content-between">
@@ -253,7 +253,7 @@ function DialerDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-3">
+                            <div className="col-xl-3">
                                 <div className="itemWrapper a">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-between">
