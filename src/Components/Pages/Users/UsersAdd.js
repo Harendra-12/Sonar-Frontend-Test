@@ -119,7 +119,7 @@ const UsersAdd = () => {
         label: extension.extension,
       }));
       setFilterExtensions([
-        { value: null, label: "Available Extensions" },{value: null, label: "None"},
+        { value: null, label: "None" },
         ...options,
       ]);
     }
@@ -646,24 +646,6 @@ const UsersAdd = () => {
                             </label>
                           </div>
                           <div className="col-6">
-                            {/* <select
-                              className="formItem"
-                              name="extension_id"
-                              defaultValue=""
-                              {...register("extension_id")}
-                            >
-                              <option value="" disabled>
-                                Available Extensions
-                              </option>
-                              {filterExtensions &&
-                                filterExtensions.map((extension, key) => {
-                                  return (
-                                    <option value={extension.id} key={key}>
-                                      {extension.extension}
-                                    </option>
-                                  );
-                                })}
-                            </select> */}
                             <Select
                               options={filterExtensions}
                               placeholder="Available Extensions"
@@ -672,20 +654,11 @@ const UsersAdd = () => {
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));
                               }}
-                              // {...register("extension_id")}
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
                                   height: "25px",
                                   fontSize: "12px",
-                                }),
-                                valueContainer: (provided) => ({
-                                  ...provided,
-                                  height: "24px",
-                                }),
-                                input: (provided) => ({
-                                  ...provided,
-                                  margin: "0px",
                                 }),
                                 singleValue: (provided) => ({
                                   ...provided,
@@ -695,11 +668,6 @@ const UsersAdd = () => {
                                   ...provided,
                                   fontSize: "14px",
                                 }),
-                                menu: (provided) => ({
-                                  ...provided,
-                                  maxHeight: "120px",
-                                  // overflowY: "auto",
-                                }),
                                 placeholder: (provided) => ({
                                   ...provided,
                                   fontSize: "13px",
@@ -708,10 +676,7 @@ const UsersAdd = () => {
                                   justifyContent: "start",
                                   marginBottom: "15px",
                                 }),
-                                menuList: (provided) => ({
-                                  ...provided,
-                                  maxHeight: "120px",
-                                }),
+                               
                               }}
                             />
                           </div>

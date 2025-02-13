@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,7 +19,8 @@ function DeviceProvisioningNew() {
     const deviceProvisioningRefresh = useSelector(
         (state) => state.deviceProvisioningRefresh
     );
-    const extensionData = location.state;
+    const extensionId = location.state.id;
+    const extension = location.state.extension
 
     const [loading, setLoading] = useState(true);
     const {
@@ -32,7 +34,7 @@ function DeviceProvisioningNew() {
 
     const handleFormSubmit = handleSubmit(async (data) => {
         setLoading(true);
-        data.address = extensionData.id;
+        data.address = extensionId;
         const apiData = await generalPostFunction("/provision/store", data);
         if (apiData.status) {
             setLoading(false);
@@ -50,9 +52,9 @@ function DeviceProvisioningNew() {
     });
 
     useEffect(() => {
-        setValue("address", extensionData.id);
+        setValue("address", extensionId);
         setLoading(false);
-    }, [extensionData]);
+    }, [extensionId]);
     return (
         <>
             <main className="mainContent">
@@ -116,7 +118,7 @@ function DeviceProvisioningNew() {
                                                         <div className="row col-12 mx-auto mb-0">
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
-                                                                    <img src={require('../../assets/images/cisco.jpg')}></img>
+                                                                    <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                                 </div>
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
@@ -129,7 +131,7 @@ function DeviceProvisioningNew() {
                                                             </div>
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
-                                                                    <img src={require('../../assets/images/cisco.jpg')}></img>
+                                                                    <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                                 </div>
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
@@ -198,7 +200,7 @@ function DeviceProvisioningNew() {
                                                         <div className="row col-12 mx-auto mb-0">
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
-                                                                    <img src={require('../../assets/images/eyebeam.png')}></img>
+                                                                    <img src={require('../../assets/images/eyebeam.png')} alt=""></img>
                                                                 </div>
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>EyeBeam</h5></label>
@@ -212,7 +214,7 @@ function DeviceProvisioningNew() {
                                                             </div>
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
-                                                                    <img src={require('../../assets/images/webrtc.png')}></img>
+                                                                    <img src={require('../../assets/images/webrtc.png')} alt=""></img>
                                                                 </div>
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>WebRTC</h5></label>
@@ -241,7 +243,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                     <div className="col-6">
                                                         <input
-                                                            value={extensionData.extension}
+                                                            value={extension}
                                                             disabled
                                                             type="text"
                                                             name="address"

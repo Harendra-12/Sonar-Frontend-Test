@@ -194,7 +194,6 @@ const UsersEdit = ({ page }) => {
       }));
 
       setSearchExtensions([
-        { value: null, label: "Available Extensions" },
         { value: null, label: "None" },
         ...options,
       ]);
@@ -604,8 +603,8 @@ const UsersEdit = ({ page }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                            return item.permission_id;
-                                          })
+                                          return item.permission_id;
+                                        })
                                     );
                                   }}
                                 >
@@ -644,114 +643,82 @@ const UsersEdit = ({ page }) => {
                                     watch().extension_id ? "col-8" : "col-12"
                                   }
                                 >
-                                {watch().extension_id ?  
-                                 <Select
-                                   isDisabled={true}
-                                    placeholder="Available Extensions"
-                                    isClearable={false}
-                                    defaultValue={{
-                                      label: watch()?.extension?.extension,
-                                      value: watch()?.extension?.extension,
-                                    }} // Default selected option
-                                    onChange={(e) => {
-                                      setSelectedSearch(e.value);
-                                    }}
-                                    // {...register("extension_id")}
-                                    styles={{
-                                      control: (provided, state) => ({
-                                        ...provided,
-                                        height: "25px",
-                                        fontSize: "12px",
-                                      }),
-                                      valueContainer: (provided) => ({
-                                        ...provided,
-                                        height: "24px",
-                                      }),
-                                      input: (provided) => ({
-                                        ...provided,
-                                        margin: "0px",
-                                      }),
-                                      singleValue: (provided) => ({
-                                        ...provided,
-                                        fontSize: "14px",
-                                      }),
-                                      option: (provided) => ({
-                                        ...provided,
-                                        fontSize: "14px",
-                                      }),
-                                      menu: (provided) => ({
-                                        ...provided,
-                                        maxHeight: "120px",
-                                        // overflowY: "auto",
-                                      }),
-                                      placeholder: (provided) => ({
-                                        ...provided,
-                                        fontSize: "13px",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "start",
-                                        marginBottom: "15px",
-                                      }),
-                                      menuList: (provided) => ({
-                                        ...provided,
-                                        maxHeight: "120px",
-                                      }),
-                                    }}
-                                  />:  <Select
-                                  options={searchExtensions}
-                                  placeholder="Available Extensions"
-                                  isClearable={false}
-                                  defaultValue={{
-                                    label: watch()?.extension?.extension,
-                                    value: watch()?.extension?.extension,
-                                  }} // Default selected option
-                                  onChange={(e) => {
-                                    setSelectedSearch(e.value);
-                                  }}
-                                  // {...register("extension_id")}
-                                  styles={{
-                                    control: (provided, state) => ({
-                                      ...provided,
-                                      height: "25px",
-                                      fontSize: "12px",
-                                    }),
-                                    valueContainer: (provided) => ({
-                                      ...provided,
-                                      height: "24px",
-                                    }),
-                                    input: (provided) => ({
-                                      ...provided,
-                                      margin: "0px",
-                                    }),
-                                    singleValue: (provided) => ({
-                                      ...provided,
-                                      fontSize: "14px",
-                                    }),
-                                    option: (provided) => ({
-                                      ...provided,
-                                      fontSize: "14px",
-                                    }),
-                                    menu: (provided) => ({
-                                      ...provided,
-                                      maxHeight: "120px",
-                                      // overflowY: "auto",
-                                    }),
-                                    placeholder: (provided) => ({
-                                      ...provided,
-                                      fontSize: "13px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "start",
-                                      marginBottom: "15px",
-                                    }),
-                                    menuList: (provided) => ({
-                                      ...provided,
-                                      maxHeight: "120px",
-                                    }),
-                                  }}
-                                />
-                                  
-                                }
+                                  {watch().extension_id ?
+                                    <Select
+                                      isDisabled={true}
+                                      placeholder="Available Extensions"
+                                      isClearable={false}
+                                      defaultValue={{
+                                        label: watch()?.extension?.extension,
+                                        value: watch()?.extension?.extension,
+                                      }} // Default selected option
+                                      onChange={(e) => {
+                                        setSelectedSearch(e.value);
+                                      }}
+                                      // {...register("extension_id")}
+                                      styles={{
+                                        control: (provided, state) => ({
+                                          ...provided,
+                                          height: "25px",
+                                          fontSize: "12px",
+                                        }),
+                                        singleValue: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        option: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        placeholder: (provided) => ({
+                                          ...provided,
+                                          fontSize: "13px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "start",
+                                          marginBottom: "15px",
+                                        }),
+
+                                      }}
+                                    /> : <Select
+                                      options={searchExtensions}
+                                      placeholder="Available Extensions"
+                                      isClearable={false}
+                                      defaultValue={{
+                                        label: watch()?.extension?.extension,
+                                        value: watch()?.extension?.extension,
+                                      }} // Default selected option
+                                      onChange={(e) => {
+                                        setSelectedSearch(e.value);
+                                      }}
+                                      // {...register("extension_id")}
+                                      styles={{
+                                        control: (provided, state) => ({
+                                          ...provided,
+                                          height: "25px",
+                                          fontSize: "12px",
+                                        }),
+                                        singleValue: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        option: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        placeholder: (provided) => ({
+                                          ...provided,
+                                          fontSize: "13px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "start",
+                                          marginBottom: "15px",
+                                        }),
+
+                                      }}
+                                    />
+
+                                  }
                                 </div>
                                 {watch().extension_id && (
                                   <div className="col-4">
@@ -979,9 +946,8 @@ const UsersEdit = ({ page }) => {
                               />
                             </div>
                             <div
-                              className={`${
-                                watch().extension_id ? "col-5" : "col-5"
-                              }`}
+                              className={`${watch().extension_id ? "col-5" : "col-5"
+                                }`}
                             >
                               <select
                                 className="formItem"
@@ -990,8 +956,8 @@ const UsersEdit = ({ page }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                                // value={watch().extension_id}
-                                // {...register("extension_id")}
+                              // value={watch().extension_id}
+                              // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>
