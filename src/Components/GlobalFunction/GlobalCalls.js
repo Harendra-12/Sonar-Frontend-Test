@@ -4,10 +4,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
+  const location = useLocation();
   const Id = account?.id || "";
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
@@ -26,7 +27,7 @@ function GlobalCalls() {
   const updateBalance = useSelector((state) => state.updateBalance);
   const logout = useSelector((state) => state.logout);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
   );
@@ -172,8 +173,10 @@ function GlobalCalls() {
         }
       }
     }
-    getData();
-  }, []);
+    if (callCenterRefresh > 0) {
+      getData();
+    }
+  }, [callCenterRefresh]);
 
   // Getting extension details
   useEffect(() => {

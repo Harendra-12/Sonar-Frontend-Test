@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import {
   backToTop,
   generalGetFunction,
@@ -43,6 +44,7 @@ const UsersAdd = () => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const account = useSelector((state) => state.account);
   const [parentChecked, setParentChecked] = useState({});
+  const [selectedExtension, setSelectedExtension] = useState("");
 
   const {
     register,
@@ -107,13 +109,19 @@ const UsersAdd = () => {
   //Filtering out which extension is not assign
   useEffect(() => {
     if (extension && user) {
-      setFilterExtensions(
-        accountDetails?.extensions?.filter((item) => {
-          return !user.some((userItem) => {
-            return userItem.extension_id === item.id;
-          });
-        })
-      );
+      const data = extension.filter((item) => {
+        return !user.some((userItem) => {
+          return userItem.extension_id === item.id;
+        });
+      });
+      const options = data?.map((extension) => ({
+        value: extension.id,
+        label: extension.extension,
+      }));
+      setFilterExtensions([
+        { value: null, label: "Available Extensions" },{value: null, label: "None"},
+        ...options,
+      ]);
     }
   }, [accountDetails, user]);
 
@@ -163,6 +171,7 @@ const UsersAdd = () => {
 
     let updatedData = {
       ...data,
+      extension_id: selectedExtension,
       ...{
         name: `${firstName} ${lastName}`,
         // domain_id: `${domainId}`,
@@ -286,8 +295,11 @@ const UsersAdd = () => {
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
-                  <div className="col-12" >
+                <div
+                  className="d-flex flex-wrap"
+                  style={{ position: "sticky", top: "0", zIndex: "9" }}
+                >
+                  <div className="col-12">
                     <div className="heading">
                       <div className="content">
                         <h4>User Add</h4>
@@ -576,7 +588,8 @@ const UsersAdd = () => {
                               Role Type <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Select the Role with appropriate permissions for the User.
+                              Select the Role with appropriate permissions for
+                              the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -633,7 +646,7 @@ const UsersAdd = () => {
                             </label>
                           </div>
                           <div className="col-6">
-                            <select
+                            {/* <select
                               className="formItem"
                               name="extension_id"
                               defaultValue=""
@@ -650,7 +663,57 @@ const UsersAdd = () => {
                                     </option>
                                   );
                                 })}
-                            </select>
+                            </select> */}
+                            <Select
+                              options={filterExtensions}
+                              placeholder="Available Extensions"
+                              isClearable={false}
+                              defaultValue={"0"} // Default selected option
+                              onChange={(e) => {
+                                setSelectedExtension(String(e.value));
+                              }}
+                              // {...register("extension_id")}
+                              styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  height: "25px",
+                                  fontSize: "12px",
+                                }),
+                                valueContainer: (provided) => ({
+                                  ...provided,
+                                  height: "24px",
+                                }),
+                                input: (provided) => ({
+                                  ...provided,
+                                  margin: "0px",
+                                }),
+                                singleValue: (provided) => ({
+                                  ...provided,
+                                  fontSize: "14px",
+                                }),
+                                option: (provided) => ({
+                                  ...provided,
+                                  fontSize: "14px",
+                                }),
+                                menu: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "120px",
+                                  // overflowY: "auto",
+                                }),
+                                placeholder: (provided) => ({
+                                  ...provided,
+                                  fontSize: "13px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "start",
+                                  marginBottom: "15px",
+                                }),
+                                menuList: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "120px",
+                                }),
+                              }}
+                            />
                           </div>
                         </div>
                         <div className="formRow col-xl-12">
