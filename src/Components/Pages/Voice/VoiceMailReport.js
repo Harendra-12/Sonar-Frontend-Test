@@ -17,6 +17,7 @@ function VoiceMailReport() {
   const [voiceMailRefresh, setVoiceMailRefresh] = useState(0);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const thisAudioRef = useRef(null);
+  const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
 
   const handlePlaying = (audio) => {
@@ -32,7 +33,7 @@ function VoiceMailReport() {
     setLoading(true);
     async function getData() {
       const apiData = await generalGetFunction(
-        `/voicemails?page=${pageNumber}&row_per_page=${rowPerPage}`
+        `/voicemails?page=${pageNumber}&row_per_page=${rowPerPage}&search=${searchValue}`
       );
       if (apiData?.status) {
         setVoiceMail(apiData.data);
@@ -42,8 +43,15 @@ function VoiceMailReport() {
       }
       console.log("api_data:", apiData);
     }
-    getData();
-  }, [pageNumber, voiceMailRefresh, rowPerPage]);
+    if (searchValue.trim().length === 0) {
+      getData();
+    } else {
+      const timer = setTimeout(() => {
+        getData();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [pageNumber, voiceMailRefresh, rowPerPage,searchValue]);
 
   function extractDate(dateTimeString) {
     // Split the string by space and return the first part
@@ -115,6 +123,15 @@ function VoiceMailReport() {
                           <option value={80}>80</option>
                         </select>
                         <label>entries</label>
+                      </div>
+                      <div className="searchBox">
+                        <label>Search:</label>
+                        <input
+                          type="text"
+                          value={searchValue}
+                          className="formItem"
+                          onChange={(e) => setSearchValue(e.target.value)}
+                        />
                       </div>
                     </div>
                     <div className="tableContainer">

@@ -31,7 +31,7 @@ function Roles() {
   const [newRole, setNewRole] = useState("");
   const [addRole, setAddRole] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedRoleId, setSelectedRoleId] = useState();
   const [selectedIsDefault, setSelectedIsDefault] = useState(null);
   const [selectedRole, setSelectedRole] = useState();
@@ -70,7 +70,7 @@ function Roles() {
         })
       );
     } else {
-      setLoading(false);
+      setLoading(true);
     }
   }, []);
 

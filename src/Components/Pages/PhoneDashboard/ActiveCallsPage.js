@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
-    const ringingState = activeCall.filter((item) => item.callstate === "RINGING");
+    const ringingState = activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT");
 
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
@@ -21,7 +21,7 @@ function ActiveCallsPage() {
         acc[call.dialed_extension] = (acc[call.dialed_extension] || 0) + 1;
         return acc;
     }, {});
-    console.log("--------------", numberCount);
+    console.log("-------------------------------------------------------------------------------------------------------", ringingState);
 
     return (
         <main className="mainContent">
@@ -156,7 +156,7 @@ function ActiveCallsPage() {
                                                                                 <td>{key + 1}</td>
                                                                                 <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
-                                                                                <td>{item.presence_id.split("@")[0]}</td>
+                                                                                <td>{item.dest}</td>
                                                                                 <td>{item.created.split(" ")[1]}</td>
                                                                                 <td>{item.feature_tag}</td>
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}

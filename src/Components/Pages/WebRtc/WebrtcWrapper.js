@@ -219,6 +219,13 @@ const WebrtcWrapper = () => {
       sessions: updatedSession,
     });
   }, [dummySession]);
+
+  useEffect(() => {
+    const videos = document.querySelectorAll("video:not([class])");
+    videos.forEach((video) => {
+      video.style.display = "none";
+    });
+  }, []);
   return (
     <>
       <style>
