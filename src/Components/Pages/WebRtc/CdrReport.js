@@ -580,6 +580,7 @@ function CdrReport({ page }) {
                               <option value={"outbound"}>Outbound Calls</option>
                               <option value={"missed"}>Missed Calls</option>
                               <option value={"internal"}>Internal Calls</option>
+                              <option value={"transfer"}>Transfer Calls</option>
                             </select>
                           </div>
                           <div className="formRow border-0">

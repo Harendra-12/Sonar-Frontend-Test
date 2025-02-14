@@ -33,7 +33,7 @@ function Agents({ type }) {
     const getData = async () => {
       setLoading(true);
       const apiData = await generalGetFunction(
-        `/agents?usages=${type}&row_per_page=${entriesPerPage}`
+        `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}`
       );
       if (apiData?.status) {
         console.log(apiData);
@@ -44,7 +44,7 @@ function Agents({ type }) {
       }
     };
     getData();
-  }, [entriesPerPage]);
+  }, [entriesPerPage,pageNumber,type]);
 
   return (
     <main className="mainContent">
