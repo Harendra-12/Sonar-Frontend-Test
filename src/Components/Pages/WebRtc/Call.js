@@ -70,7 +70,7 @@ function Call({
       if (currentPage === 1) {
         setLoading(true);
       } else {
-        setIsLoading(true);
+        setIsLoading(false);
       }
       const basePaths = {
         all: "/call-details-phone",
@@ -81,7 +81,7 @@ function Call({
       const basePath = basePaths[clickStatus] || "";
       if (basePath) {
         const dateParam =
-          filterBy === "date"
+          filterBy === "date" || startDate=="" || endDate==""
             ? `date=${startDate}`
             : `date_range=${startDate},${endDate}`;
         const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
@@ -102,7 +102,7 @@ function Call({
       }
     }
     fetchData();
-  }, [currentPage, startDate, endDate, searchQuery, clickStatus, filterBy,refreshCalls]);
+  }, [currentPage, startDate, endDate, searchQuery, clickStatus,refreshCalls]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -208,8 +208,8 @@ function Call({
     }
 
     setCallHistory(
-      filteredCalls[0] &&
-        allApiData.filter((item) => {
+      filteredCalls?.[0] &&
+        allApiData?.filter((item) => {
           if (!isCustomerAdmin) {
             return (
               (item["Caller-Callee-ID-Number"] === extension &&
