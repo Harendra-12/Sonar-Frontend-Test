@@ -420,7 +420,7 @@ function Roles() {
                       >
                         <div className="masterSegment">
                           <ul>
-                            {addRole ? (
+                            {/* {addRole ? (
                               <li>
                                 <div className="col-xl-8 col-7">
                                   <input
@@ -461,7 +461,7 @@ function Roles() {
                               </li>
                             ) : (
                               ""
-                            )}
+                            )} */}
                             {role &&
                               role.map((item, index) => {
                                 return (
