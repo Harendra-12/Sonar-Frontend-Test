@@ -27,6 +27,7 @@ const UsersAdd = () => {
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -123,8 +124,16 @@ const UsersAdd = () => {
         ...options,
       ]);
     }
-  }, [accountDetails, user]);
+  }, [accountDetails, user,extension]);
+  
 
+  // Get the latest data of account
+    useEffect(()=>{
+      dispatch({
+        type:"SET_ACCOUNTDETAILSREFRESH",
+        accountDetailsRefresh: accountDetailsRefresh + 1,
+      })
+    },[])
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
     if (watch().username.length > 2) {
