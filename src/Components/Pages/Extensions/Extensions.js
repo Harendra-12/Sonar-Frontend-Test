@@ -169,14 +169,7 @@ console.log("extensionByAccount",extensionByAccount);
                           </span>
                         </button>
                         <Link
-                          // to="/extensions-add"
-                          to="#"
-                          onClick={() =>
-                            window.open(
-                              "https://ucaas.webvio.in:3001/",
-                              "_blank"
-                            )
-                          }
+                          to="/store-extension"
                           effect="ripple"
                           className="panelButton"
                         >
