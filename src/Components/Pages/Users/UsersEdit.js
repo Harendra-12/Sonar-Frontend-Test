@@ -337,7 +337,7 @@ const UsersEdit = ({ page }) => {
       `}
       </style>
       <main
-        className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}
+        className={page === "marginleftAdjust" ? "mainContentAgents ms-0" : "mainContent"}
       >
         <section id="phonePage">
           {showHeader && (

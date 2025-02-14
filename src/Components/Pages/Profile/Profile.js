@@ -225,10 +225,7 @@ const Profile = () => {
                 <div className="col-md-12">
                   <div className="profileView">
                     <div className="profileDetailsHolder p-0">
-                      <div className="profileView position-relative mt-xl-2">
-                        <div style={{ position: 'absolute', right: 0, top: 0 }}>
-                          <button className="cartButton" style={{ borderRadius: '0px 10px' }}><i className="fa-regular fa-pen-to-square" /> Edit Profile</button>
-                        </div>
+                      <div className="profileView mt-xl-2">
                         <div className="row" style={{ padding: 5 }}>
                           <div className="header">Account Details</div>
                           <div className="formRow col-xl-12">
@@ -305,6 +302,7 @@ const Profile = () => {
                               />
                             </div>
                           </div>
+                          <hr className="my-3" />
                           {isCustomerAdmin && (
                             <>
                               <div className="formRow col-xl-12">
@@ -355,7 +353,7 @@ const Profile = () => {
                                 </div>
                                 <div className="col-6">
                                   <div className="row">
-                                    <div className="col-8">
+                                    <div className="col-12">
                                       <select
                                         className="formItem me-0"
                                         style={{ width: "100%" }}
@@ -389,19 +387,19 @@ const Profile = () => {
                                         )}
                                       </select>
                                     </div>
-                                    <div className="col-4 ps-0">
-                                      <button
-                                        className="panelButton static ms-0 w-100"
-                                        style={{ height: "34px" }}
-                                        onClick={() => handleUpdateExtension()}
-                                      // effect="ripple"
-                                      >
-                                        <span className="text">Set</span>
-                                        {/* <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span> */}
-                                      </button>
-                                    </div>
                                   </div>
                                 </div>
+                              </div>
+                              <div className="col-12 mt-2">
+                                <button
+                                  className="panelButton ms-auto"
+                                  style={{ height: "34px" }}
+                                  onClick={() => handleUpdateExtension()}
+                                // effect="ripple"
+                                >
+                                  <span className="text">Save</span>
+                                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                </button>
                               </div>
                             </>
                           )}

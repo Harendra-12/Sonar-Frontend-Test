@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import {  generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -284,23 +284,26 @@ function CallDashboard() {
                             <thead>
                               <tr>
                                 <th>#</th>
+                                <th>Did Tag</th>
                                 <th>From </th>
                                 <th>To</th>
-                                <th>Started at</th>
-                                <th>Tag</th>
+                                <th>Feature Tag</th>
+                                <th>Started since</th>
+
                               </tr>
                             </thead>
 
                             <tbody>
                               {
-                                activeCall && activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT").map((item, key) => {
+                                activeCall && activeCall.filter((item) => item.b_callstate !== "ACTIVE").map((item, key) => {
                                   return (
                                     <tr>
                                       <td>{key + 1}</td>
+                                      <td>{item.did_tag}</td>
                                       <td>{item.cid_name}</td>
                                       <td>{item.dest}</td>
-                                      <td>{item.created.split(" ")[1]}</td>
                                       <td>{item.feature_tag}</td>
+                                      <td>{item.duration}</td>
                                     </tr>
                                   )
                                 })

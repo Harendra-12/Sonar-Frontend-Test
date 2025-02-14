@@ -133,6 +133,7 @@ import AvailableDeviceList from "./Components/Pages/DeviceProvisioning/Available
 import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
+import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -276,6 +277,7 @@ function App() {
             }
           />
           <Route path="/users-import" element={<UsersImport />} />
+          <Route path="/users-config" element={<UserConfiguration />} />
           {/* Users Path End */}
 
           {/* Extensions Path Start */}
