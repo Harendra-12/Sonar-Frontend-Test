@@ -58,7 +58,7 @@ function AgentsEdits() {
                   className="col-12 formScroller"
                   style={{ padding: "25px 23px" }}
                 >
-                  <nav>
+                  <nav className="tangoNavs">
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
                         class="nav-link active"
@@ -111,7 +111,7 @@ function AgentsEdits() {
                       aria-labelledby="nav-exten-tab"
                       tabindex="0"
                     >
-                      <ExtensionsEdit page="agents"/>
+                      <ExtensionsEdit page="agents" />
                     </div>
                   </div>
                 </div>

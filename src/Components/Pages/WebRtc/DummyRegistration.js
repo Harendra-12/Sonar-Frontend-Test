@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { SIPProvider } from "react-sipjs";
+import { SIPProvider } from "modify-react-sipjs";
 import { DummySipRegisteration } from "./DummySipRegisteration";
 import { useLocation, useNavigate } from "react-router-dom";
 

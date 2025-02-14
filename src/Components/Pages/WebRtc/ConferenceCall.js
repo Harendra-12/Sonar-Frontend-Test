@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import {
@@ -78,9 +78,7 @@ export const ConferenceCall = ({
   const [numberOfTimeUserVisit, setNumberOfTimeUserVisit] = useState(0);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
-
-  console.log("CurrentUsersss", currentUser);
-
+  const { sessionManager } = useSIPProvider();
   useEffect(() => {
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
@@ -204,12 +202,10 @@ export const ConferenceCall = ({
   // Monitor incoming SIP sessions
   const incomingSessionsArray = Object.keys(sipSessions).filter(
     (id) =>
-      sipSessions[id].state === "Initial" &&
+      sipSessions[id]._state === "Initial" &&
       sipSessions[id].logger.category === "sip.Invitation"
   );
-
-  console.log("conferenceDataaa", conferenceData, confList);
-
+  console.log("incomingSessionsArray", incomingSessionsArray);  
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
     if (conferenceData) {
@@ -524,19 +520,6 @@ export const ConferenceCall = ({
     }
   }
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
-
   // Store memeber ID in local storage so that we can access it later
   useEffect(() => {
     if (
@@ -674,7 +657,7 @@ export const ConferenceCall = ({
                                   <span className="status">Available</span>
                                 </div>
                               </div>
-                              <ul class="dropdown-menu" onClick={logOut}>
+                              <ul class="dropdown-menu" onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
                                 <li>
                                   <div
                                     class="dropdown-item"

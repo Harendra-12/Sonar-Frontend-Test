@@ -4,9 +4,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
+  const location = useLocation();
+  const Id = account?.id || "";
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const accountDetailsRefresh = useSelector(
@@ -21,6 +25,9 @@ function GlobalCalls() {
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const updateBalance = useSelector((state) => state.updateBalance);
+  const logout = useSelector((state) => state.logout);
+
+  const navigate = useNavigate();
   const deviceProvisioningRefresh = useSelector(
     (state) => state.deviceProvisioningRefresh
   );
@@ -132,6 +139,45 @@ function GlobalCalls() {
     }
   }, [callCenterRefresh]);
 
+  // refresh allCallCenterIds
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction(`/call-center-queues/all`);
+      const details = apiData.data;
+      if (apiData?.status) {
+        const AssignedCallcenter = [...details].filter((queue) =>
+          queue.agents.some((agent) => Number(agent.agent_name) == Id)
+        );
+        let CallerId = null; 
+        if (AssignedCallcenter.length > 0) {
+          dispatch({
+            type: "SET_OPEN_CALLCENTER_POPUP",
+            openCallCenterPopUp: true,
+          });
+          AssignedCallcenter.forEach((item) => {
+            const foundAgent = item.agents.find(
+              (agent) =>
+                Number(agent.agent_name) === Id && agent.status === "Available"
+            );
+
+            if (foundAgent && foundAgent?.id) {
+              CallerId = foundAgent.id; // Assign only if found
+              if (!allCallCenterIds.includes(CallerId)) {
+                dispatch({
+                  type: "SET_ALL_CALL_CENTER_IDS",
+                  CallerId,
+                });
+              }
+            }
+          });
+        }
+      }
+    }
+    if (callCenterRefresh > 0) {
+      getData();
+    }
+  }, [callCenterRefresh]);
+
   // Getting extension details
   useEffect(() => {
     async function getData() {
@@ -155,7 +201,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/all?account=${account?.account_id}`
+        `/extension/all`
       );
       if (apiData?.status) {
         dispatch({
@@ -352,6 +398,25 @@ function GlobalCalls() {
     }
   }, []);
 
+  useEffect(() => {
+    async function logOut() {
+      const apiData = await generalGetFunction("/logout");
+      localStorage.clear();
+      navigate("/");
+      if (apiData?.status) {
+        localStorage.clear();
+        dispatch({
+          type: "SET_ACCOUNT",
+          account: null,
+        });
+        dispatch({ type: "SET_LOGOUT", logout: 0 })
+
+      }
+    }
+    if (logout > 0) {
+      logOut()
+    }
+  }, [logout])
   return <div></div>;
 }
 

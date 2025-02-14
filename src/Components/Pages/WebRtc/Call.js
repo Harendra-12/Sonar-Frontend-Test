@@ -9,12 +9,14 @@ import AddNewContactPopup from "./AddNewContactPopup";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import { toast } from "react-toastify";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import LogOutPopUp from "./LogOutPopUp";
 
 function Call({
   selectedModule,
@@ -59,6 +61,8 @@ function Call({
   const [filterState, setfilterState] = useState("all");
   const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
     useState(false);
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
 
   console.log(startDate, endDate);
   useEffect(() => {
@@ -104,14 +108,28 @@ function Call({
   const handleScroll = () => {
     const div = callListRef.current;
     if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-
       console.log(rawData.current_page, rawData?.last_page, rawData);
       if (!isLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
     }
   };
-
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
@@ -191,17 +209,17 @@ function Call({
 
     setCallHistory(
       filteredCalls[0] &&
-      allApiData.filter((item) => {
-        if (!isCustomerAdmin) {
-          return (
-            (item["Caller-Callee-ID-Number"] === extension &&
-              item["Caller-Caller-ID-Number"] === clickedExtension) ||
-            (item["Caller-Caller-ID-Number"] === extension &&
-              item["Caller-Callee-ID-Number"] === clickedExtension)
-          );
-        }
-        return true;
-      })
+        allApiData.filter((item) => {
+          if (!isCustomerAdmin) {
+            return (
+              (item["Caller-Callee-ID-Number"] === extension &&
+                item["Caller-Caller-ID-Number"] === clickedExtension) ||
+              (item["Caller-Caller-ID-Number"] === extension &&
+                item["Caller-Callee-ID-Number"] === clickedExtension)
+            );
+          }
+          return true;
+        })
     );
   }, [data, clickStatus]);
   console.log(clickedExtension);
@@ -588,22 +606,13 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
 
   return (
     <>
       {/* <SideNavbarApp /> */}
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -676,12 +685,20 @@ function Call({
                             />
                           </div>
                           <div class="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -689,14 +706,30 @@ function Call({
                               Logout
                             </div>
                           </li>
-                          {/* <li onClick={() => navigate("/my-profile")}>
+                          <li
+                            onClick={() => {
+                              sessionManager.disconnect();
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
-                              Profile
+                              Disconnect
                             </div>
-                          </li> */}
+                          </li>
+                          <li
+                            onClick={() => {
+                              sessionManager.connect();
+                            }}
+                          >
+                            <div
+                              class="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Reconnect
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -710,7 +743,7 @@ function Call({
                     Viewing As:
                     {account && extension ? (
                       <span>
-                        {account.username} - {account && extension}
+                        {account?.username} - {account && extension}
                       </span>
                     ) : (
                       <span className="text-danger">No Extension Assigned</span>
@@ -874,7 +907,7 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      <button
+                      {/* <button
                         onClick={() => setClickStatus("all")}
                         className={
                           clickStatus === "all" ? "tabLink active" : "tabLink"
@@ -882,8 +915,8 @@ function Call({
                         data-category="all"
                       >
                         <i className="fa-light fa-phone" />
-                      </button>
-                      <button
+                      </button> */}
+                      {/* <button
                         onClick={() => setClickStatus("incoming")}
                         className={
                           clickStatus === "incoming"
@@ -918,7 +951,7 @@ function Call({
                         data-category="missed"
                       >
                         <i className="fa-light fa-phone-missed" />
-                      </button>
+                      </button> */}
                       {/* <button
                         onClick={() => setClickStatus("voicemail")}
                         className={

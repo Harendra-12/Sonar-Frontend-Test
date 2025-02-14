@@ -83,7 +83,7 @@ function Agents({ type }) {
 
                           <button
                             onClick={() => {
-                              navigate("/agents-add");
+                              navigate("/users-add");
                               backToTop();
                             }}
                             className="panelButton"

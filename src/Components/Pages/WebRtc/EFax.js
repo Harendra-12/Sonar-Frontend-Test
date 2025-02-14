@@ -13,6 +13,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "modify-react-sipjs";
 
 function EFax() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function EFax() {
   const [destinationId, setDestinationId] = useState("");
   const [faxIdent, setFaxIdent] = useState("");
   const [faxHeader, setFaxHeader] = useState("");
-
+  const { sessionManager } = useSIPProvider();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
 
@@ -138,18 +139,6 @@ function EFax() {
     }
   }
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -223,7 +212,7 @@ function EFax() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}

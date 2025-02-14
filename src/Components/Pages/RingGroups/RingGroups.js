@@ -42,7 +42,7 @@ const RingGroups = () => {
       if (account && account.id) {
         setLoading(true);
         const apidata = await generalGetFunction(
-          `/ringgroup/dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+          `/ringgroup-dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
         console.log(apidata);
         if (apidata?.status) {
@@ -103,7 +103,7 @@ const RingGroups = () => {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/ringgroup/${id}`);
     if (apiData?.status) {
-      const newArray = ringGroup.data.filter((item) => item.id !== id);
+      const newArray = ringGroup?.data?.filter((item) => item.id !== id);
       setRingGroup({ ...ringGroup, data: newArray });
       setLoading(false);
       toast.success(apiData.message);
@@ -155,7 +155,7 @@ const RingGroups = () => {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
-      const ringGroupData = ringGroup.data;
+      const ringGroupData = ringGroup?.data;
       const updatedRingGroupState = ringGroupData.map((item) => {
         if (item.id === id) {
           return {
@@ -310,7 +310,7 @@ const RingGroups = () => {
                               ) : (
                                 <>
                                   {ringGroup &&
-                                    ringGroup.data.map((item, index) => {
+                                    ringGroup?.data?.map((item, index) => {
                                       return (
                                         <tr key={index}>
                                           <td
@@ -417,7 +417,7 @@ const RingGroups = () => {
                                         </tr>
                                       );
                                     })}
-                                  {ringGroup && ringGroup.data.length === 0 ? (
+                                  {ringGroup && ringGroup?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Ring Group"

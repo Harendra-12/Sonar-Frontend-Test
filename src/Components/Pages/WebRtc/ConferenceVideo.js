@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 
@@ -73,7 +73,7 @@ function ConferenceVideo({
         }
       });
       if (!isMounted) return;
-
+      try{
       session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
         if (!isMounted) return; // Check if the component is still mounted
 
@@ -94,6 +94,9 @@ function ConferenceVideo({
           });
         }
       };
+    }catch(error){
+      console.log(error);
+    }
 
       const remoteDescription =
         session.sessionDescriptionHandler?.peerConnection

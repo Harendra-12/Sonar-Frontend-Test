@@ -1,6 +1,7 @@
+/* eslint-disable eqeqeq */
 import React from "react";
 import { useSelector } from "react-redux";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -32,7 +33,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
-                  <h5>{account.username}</h5>
+                  <h5>{account?.username}</h5>
                   <p>Ext- {extension}</p>
                 </div>
               </button>
@@ -89,7 +90,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 <div className="itemTitle">Contacts</div>
               </div>
             </li>
-            {account.user_role?.roles?.name !== "Agent" ?
+            {account?.user_role?.roles?.name !== "Agent" ?
               <li>
                 <div
                   // to="/call-dashboard"

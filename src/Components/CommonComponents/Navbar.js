@@ -1,36 +1,21 @@
 /* eslint-disable eqeqeq */
 import React from "react";
 import "../assets/css/style.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   backToTop,
   featureUnderdevelopment,
-  generalGetFunction,
 } from "../GlobalFunction/globalFunction";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideNav } from "./Header";
 
 function Navbar() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype;
   const isCustomerAdmin = account?.email == accountDetails?.email;
-  // Handle log out function by removing token
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
 
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
@@ -548,6 +533,7 @@ function Navbar() {
                             "/lead-add",
                             "/lead-edit",
                             "/campaigns",
+                            "/agents-dialer",
                             "/call-desposition",
                             "/agent-disposition-manage"
                           ])
@@ -569,6 +555,7 @@ function Navbar() {
                           "/lead-add",
                           "/lead-edit",
                           "/campaigns",
+                          "/agents-dialer",
                           "/call-desposition",
                           "/agent-disposition-manage",
                         ])
@@ -691,7 +678,7 @@ function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse7"
                         aria-expanded={
-                          isChildActive(["/call-tracker"]) ? "true" : "false"
+                          isChildActive(["/tracker-dashboard", "/did-listing-tracker"]) ? "true" : "false"
                         }
                         aria-controls="collapse7"
                       >
@@ -702,35 +689,28 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse7"
-                        className={`accordion-collapse collapse ${isChildActive([]) ? "show" : ""
+                        className={`accordion-collapse collapse ${isChildActive(["/tracker-dashboard", "/did-listing-tracker"]) ? "show" : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             <li className="tabItem ">
-                              <Link
-                                onClick={() => featureUnderdevelopment()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                              <NavLink
+                                to="/tracker-dashboard"
+                                onClick={backToTop}
                               >
                                 <div className="itemTitle">Dashboard</div>
-                              </Link>
+                              </NavLink>
                             </li>
 
                             <li className="tabItem ">
-                              <Link
-                                onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                                to="/did-listing-tracker"
+                                onClick={backToTop}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/did-listing-tracker"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -741,7 +721,7 @@ function Navbar() {
                                 <div className="itemTitle">
                                   Number Configuration
                                 </div>
-                              </Link>
+                              </NavLink>
                             </li>
 
                             <li className="tabItem ">
@@ -820,7 +800,7 @@ function Navbar() {
                           <i class="fa-regular fa-microphone-stand"></i>
                         </div>
                         <div className="itemTitle">
-                          Interactive Voice Response (IVR)
+                          Interactive Voice Response
                         </div>
                       </NavLink>
                     </li>
@@ -842,7 +822,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-microphone-stand"></i>
+                          <i class="fa-regular fa-screen-users"></i>
                         </div>
                         <div className="itemTitle">
                           Meeting Rooms
@@ -871,10 +851,11 @@ function Navbar() {
                         aria-expanded={
                           isChildActive([
                             "/cdr-report",
-                            "/agent-reports",
+                            "/call-recording",
                             "/meeting-reports",
                             "/call-center-report",
                             "/ring-group-report",
+                            "/agent-report",
                           ])
                             ? "true"
                             : "false"
@@ -890,10 +871,11 @@ function Navbar() {
                         id="collapse4"
                         className={`accordion-collapse collapse ${isChildActive([
                           "/cdr-report",
-                          "/agent-reports",
+                          "/call-recording",
                           "/meeting-reports",
                           "/call-center-report",
                           "/ring-group-report",
+                          "/agent-report",
                         ])
                           ? "show"
                           : ""
@@ -913,6 +895,15 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
+                            <li className="tabItem">
+                              <NavLink
+                                to="/call-recording"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="itemTitle">Call Recording</div>
+                              </NavLink>
+                            </li>
                             <li className="tabItem ">
                               <Link
                                 onClick={() => featureUnderdevelopment()}
@@ -950,16 +941,9 @@ function Navbar() {
                             </li>
                             <li className="tabItem ">
                               <NavLink
-                                to="/agent-reports"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/agent-reports"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                                to="/agent-report"
+                                onClick={backToTop}
+                                className="nav-links"
                               >
                                 <div className="itemTitle">Agent Report</div>
                               </NavLink>
@@ -1019,34 +1003,19 @@ function Navbar() {
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                                className="nav-link"
                               >
                                 <div className="itemTitle">Call Tracking</div>
                               </Link>
                             </li>
                             <li className="tabItem ">
-                              <NavLink
-                                to="/meeting-reports"
-                                onClick={() => backToTop()}
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/meeting-reports"].some((path) =>
-                                      window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
+                              <Link
+                                // to="/meeting-reports"
+                                onClick={() => featureUnderdevelopment()}
+                                className="nav-link"
                               >
                                 <div className="itemTitle">Meeting Reports</div>
-                              </NavLink>
+                              </Link>
                             </li>
                           </ul>
                         </div>
@@ -1177,7 +1146,7 @@ function Navbar() {
                           isChildActive([
                             "/mail-settings",
                             "/fax-settings",
-                            "/call-recording",
+                            "/call-recording-settings",
                             "/voice-music"
                           ])
                             ? "true"
@@ -1195,8 +1164,8 @@ function Navbar() {
                         className={`accordion-collapse collapse ${isChildActive([
                           "/mail-settings",
                           "/fax-settings",
-                          "/call-recording",
-                          "/voice-music"
+                          "/call-recording-settings",
+                          "/voice-music",
                         ])
                           ? "show"
                           : ""
@@ -1268,11 +1237,11 @@ function Navbar() {
                             ) : null}
                             <li className="tabItem ">
                               <NavLink
-                                to="/call-recording"
+                                to="/call-recording-settings"
                                 onClick={() => backToTop()}
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/call-recording"].some((path) =>
+                                    ["/call-recording-settings"].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
                                     ? "nav-link active"
@@ -1475,7 +1444,7 @@ function Navbar() {
                   </>
                   }
                   <li className="dashboard ">
-                    <NavLink to="/" onClick={logOut} type="button">
+                    <NavLink to="/" onClick={() => dispatch({ type: "SET_LOGOUT", logout: 1 })} type="button">
                       <div className="iconHolder">
                         <i class="fa-regular fa-power-off"></i>
                       </div>

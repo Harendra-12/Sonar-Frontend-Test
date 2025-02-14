@@ -35,7 +35,7 @@ const Users = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
+  const [refreshData,setRefreshData] = useState(0);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -89,7 +89,7 @@ const Users = () => {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [account, navigate, pageNumber, refreshState, itemsPerPage, userInput]);
+  }, [account, navigate, pageNumber, refreshState, itemsPerPage, userInput, refreshData]);
 
   // Checking if role is created and the current user have permsiion to create user
   const handleAddUserValidation = (e) => {
@@ -163,6 +163,7 @@ const Users = () => {
       const updatedData = user.data.filter((item) => item.id !== deleteId);
       setUser({ ...user, data: updatedData });
       setFilterUser(updatedData);
+      setRefreshData(refreshData+1);
       dispatch({
         type: "SET_USERSBYACCOUNT",
         usersByAccount: { ...user, data: updatedData },

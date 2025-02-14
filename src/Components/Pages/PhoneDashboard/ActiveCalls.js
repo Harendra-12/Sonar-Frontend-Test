@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -7,6 +8,8 @@ import CircularLoader from "../../Loader/CircularLoader";
 
 function ActiveCalls({ isWebrtc,filter }) {
   const activeCall = useSelector((state) => state.activeCall);
+  console.log(activeCall);
+  
   const [filterCalls,setFilterCalls] = useState([]);
   useEffect(()=>{
     if(filter==="all"){
@@ -21,6 +24,13 @@ function ActiveCalls({ isWebrtc,filter }) {
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
   const [dest, setDest] = useState("")
+  // const [timer,setTimer]=useState(0)
+  // useEffect(() => {
+  //  setTimer(0)
+  // },[activeCall.length])
+  // setTimeout(() => {
+  //   setTimer(timer + 1);
+  // },1000);
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -120,19 +130,30 @@ function ActiveCalls({ isWebrtc,filter }) {
       return null;
     }
   }
-
-  console.log(activeCall);
+  const calculateDuration = (createdAt, serverTime) => {
+    const createdAtTimestamp = new Date(createdAt).getTime();
+    const serverTimestamp = new Date(serverTime).getTime();
+    return Math.floor((serverTimestamp - createdAtTimestamp) / 1000); // Duration in seconds
+  };
+  
+  const formatDuration = (seconds) => {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${hrs}:${mins}:${secs}`;
+  };
   return (
     <>
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th>Did Tag</th>
             <th>Call Started</th>
-            <th>CID Number</th>
+            <th>Did Tag</th>
             <th>Feature Tag</th>
+            <th>CID Number</th>
             <th>Destination</th>
+            <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
             {isWebrtc !== false && <th className="text-align">Hang Up</th>}
           </tr>
@@ -148,13 +169,14 @@ function ActiveCalls({ isWebrtc,filter }) {
                 return (
                   <tr>
                     <td>{key + 1}</td>
+                    <td>{item.created.split(" ")[1]}</td>
                     <td>
                       {item.did_tag}
                     </td>
-                    <td>{item.created.split(" ")[1]}</td>
-                    <td>{item.cid_num}</td>
                     <td>{item.feature_tag}</td>
+                    <td>{item.cid_num}</td>
                     <td>{item.dest}</td>
+                    <td>{item.duration}</td>
                     {isWebrtc !== false && <td>
                       <select
                         className="formItem"

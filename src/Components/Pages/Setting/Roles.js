@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -30,7 +31,7 @@ function Roles() {
   const [newRole, setNewRole] = useState("");
   const [addRole, setAddRole] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedRoleId, setSelectedRoleId] = useState();
   const [selectedIsDefault, setSelectedIsDefault] = useState(null);
   const [selectedRole, setSelectedRole] = useState();
@@ -41,6 +42,7 @@ function Roles() {
   const [addNewRolePermissions, setAddNewRolePermissions] = useState(null);
   const [addNewRoleParentChecked, setAddNewRoleParentChecked] = useState({});
   const [addSelectedRoleId, setAddSelectedRoleId] = useState("");
+  const [newAddedRoleId, setNewAddedRoleId] = useState(null);
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
@@ -68,7 +70,7 @@ function Roles() {
         })
       );
     } else {
-      setLoading(false);
+      setLoading(true);
     }
   }, []);
 
@@ -96,7 +98,7 @@ function Roles() {
       if (newRole === "") {
         toast.error("Please enter new role");
       } else {
-        // setLoading(true);
+        setLoading(true);
         const parsedData = {
           name: newRole,
           // created_by:account.account_id
@@ -116,6 +118,7 @@ function Roles() {
             type: "SET_ROLES_REFRESH",
             rolesRefresh: rolesRefresh + 1,
           });
+          setNewAddedRoleId(apiData.data.id);
           toast.success(apiData.message);
           setSubmitPopup(true);
           setSaveClick(false);
@@ -184,7 +187,7 @@ function Roles() {
 
     const parsedData = isNewRole
       ? {
-          role_id: addSelectedRoleId,
+          role_id: newAddedRoleId,
           permissions: addNewRolePermissions,
         }
       : {
@@ -199,14 +202,13 @@ function Roles() {
 
       if (apiData?.status) {
         toast.success(apiData.message);
+        dispatch({
+          type: "SET_ROLES_REFRESH",
+          rolesRefresh: rolesRefresh + 1,
+        });
         if (isNewRole) {
           setAddNewRoleParentChecked({});
           setAddNewRolePermissions([]);
-        } else {
-          dispatch({
-            type: "SET_ROLES_REFRESH",
-            rolesRefresh: rolesRefresh + 1,
-          });
         }
       } else {
         // const errorMessage = Object.keys(apiData.errors);
@@ -463,6 +465,18 @@ function Roles() {
                                 return (
                                   <li
                                     key={index}
+                                    onClick={() => {
+                                            setSelectedRoleId(item.id);
+                                            setSelectedRole(item.name);
+                                            setSelectedIsDefault(
+                                              () => item?.is_default
+                                            );
+                                            setSelectedPermission(
+                                              item?.permissions?.map((item) => {
+                                                return item.permission_id;
+                                              })
+                                            );
+                                          }}
                                     className={
                                       selectedRoleId === item.id ? "active" : ""
                                     }
@@ -482,7 +496,7 @@ function Roles() {
                                         }
                                       ></input>
                                     </div>
-                                    <div className="col-auto d-flex justify-content-end">
+                                    <div className="col-auto d-flex justify-content-end" >
                                       {item.is_default === 0 ? (
                                         <div className="d-flex justify-content-end">
                                           <button

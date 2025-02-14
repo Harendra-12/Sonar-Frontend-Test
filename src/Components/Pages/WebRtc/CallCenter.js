@@ -6,13 +6,15 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
-const CallCenter = ({initial}) => {
+const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
@@ -21,11 +23,12 @@ const CallCenter = ({initial}) => {
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
-
+  const allCallCenterIds=useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
-  console.log(assignerCallcenter);
+
   useEffect(() => {
     setLoading(true);
     dispatch({
@@ -52,24 +55,39 @@ const CallCenter = ({initial}) => {
       const AssignedCallcenter = [...callCenter].filter((queue) =>
         queue.agents.some((agent) => Number(agent.agent_name) == Id)
       );
+      let CallerId = null;
+      AssignedCallcenter.forEach((item) => {
+        const foundAgent = item.agents.find(
+          (agent) =>
+            Number(agent.agent_name) === Id && agent.status === "Available"
+        );
+
+        if (foundAgent && foundAgent?.id) {
+          CallerId = foundAgent.id; // Assign only if found
+          if (!allCallCenterIds.includes(CallerId)) {
+            dispatch({
+              type: "SET_ALL_CALL_CENTER_IDS",
+              CallerId, 
+            });
+          }
+        }
+      });
       setAssignerCallcenter(AssignedCallcenter);
     }
   }, [Id, callCenter]);
-
-  // useEffect(() => {}, [refreshCenter, callCenterRefresh]);
-
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(allCallCenterIds, dispatch, sessionManager);
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   return (
     <>
       <style>
@@ -81,7 +99,7 @@ const CallCenter = ({initial}) => {
       </style>
       {/* <SideNavbarApp /> */}
       <main
-        className={initial?"":"mainContentApp"}
+        className={initial ? "" : "mainContentApp"}
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
@@ -89,6 +107,10 @@ const CallCenter = ({initial}) => {
               : "0",
         }}
       >
+        {allLogOut && (
+         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut}/>
+        )}
+
         <div className="container-fluid">
           <div className="row">
             <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
@@ -140,7 +162,12 @@ const CallCenter = ({initial}) => {
                         </div>
                       </div>
                       <ul class="dropdown-menu">
-                        <li onClick={logOut}>
+                        <li onClick={() =>{ 
+                          if (allCallCenterIds.length > 0) {
+                          setAllLogOut(true)}else{
+                            handleLogOut()
+                          }
+                        }}>
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}
@@ -163,66 +190,71 @@ const CallCenter = ({initial}) => {
               </div>
             </div>
             <>
-            <div className="overviewTableWrapper">
-              <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
-                  <div className={!initial ? "col-12" : "col-12 d-none"}>
-                    <div className="heading">
-                      <div className="content">
-                        <h4>
-                          Call Center Queue{" "}
-                          <button
-                            disabled={loading}
-                            onClick={() => setRefreshCenter(refreshCenter + 1)}
-                            class="clearButton2"
-                          >
-                            <i
-                              class={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className={!initial ? "col-12" : "col-12 d-none"}>
+                      <div className="heading">
+                        <div className="content">
+                          <h4>
+                            Call Center Queue{" "}
+                            <button
+                              disabled={loading}
+                              onClick={() =>
+                                setRefreshCenter(refreshCenter + 1)
                               }
-                            ></i>
-                          </button>
-                        </h4>
-                        <p>You can see the status of the agents</p>
+                              class="clearButton2"
+                            >
+                              <i
+                                class={
+                                  loading
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
+                            </button>
+                          </h4>
+                          <p>You can see the status of the agents</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-12" style={{ padding: "25px 20px 0px" }}>
-                    <div className="tableContainer mt-0">
-                      <table className="callCenter">
-                        <thead>
-                          <tr>
-                            <th className="sl">#</th>
-                            <th>Name</th>
-                            <th className="extension">Extension</th>
-                            <th className="options">Options</th>
-                            <th className="options">Break-Timer</th>
-                            <th className="options">Total-Break</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {assignerCallcenter.length > 0 &&
-                            assignerCallcenter.map((item, index) => {
-                              return (
-                                <CallCenterListItem
-                                  key={index}
-                                  index={index}
-                                  item={item}
-                                  Id={Id}
-                                  setRefreshCenter={setRefreshCenter}
-                                  callCenterDetailData={callCenterDetailData}
-                                />
-                              );
-                            })}
-                        </tbody>
-                      </table>
+                    <div
+                      className="col-12"
+                      style={{ padding: "25px 20px 0px" }}
+                    >
+                      <div className="tableContainer mt-0">
+                        <table className="callCenter">
+                          <thead>
+                            <tr>
+                              <th className="sl">#</th>
+                              <th>Name</th>
+                              <th className="extension">Extension</th>
+                              <th className="options">Options</th>
+                              <th className="options">Break-Timer</th>
+                              <th className="options">Total-Break</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {assignerCallcenter.length > 0 &&
+                              assignerCallcenter.map((item, index) => {
+                                return (
+                                  <CallCenterListItem
+                                    key={index}
+                                    index={index}
+                                    item={item}
+                                    Id={Id}
+                                    setRefreshCenter={setRefreshCenter}
+                                    callCenterDetailData={callCenterDetailData}
+                                  />
+                                );
+                              })}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             </>
           </div>
         </div>
@@ -258,7 +290,7 @@ const CallCenterListItem = ({
   index,
   Id,
   setRefreshCenter,
-  callCenterDetailData,
+  callCenterDetailData
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOnBreak, setIsOnBreak] = useState(false);
@@ -267,6 +299,7 @@ const CallCenterListItem = ({
   const [isActive, setIsActive] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const dispatch = useDispatch();
 
   // Extract the agent's reference ID and status
   const { id: refId = "", status = "" } =
@@ -374,12 +407,20 @@ const CallCenterListItem = ({
     if (apiData.status) {
       setLoading(false);
       if (action === "Logged Out") {
+        dispatch({
+          type: "DELETE_CALLER_ID",
+          CallerId, // Pass the callCenterID to delete
+        });
         toast.success(`Logged out for ${callCenterName}`);
         setIsOnBreak(false);
         setIsLoggedIn(false);
         stopTimer(); // Stop the timer when logging out
       } else if (action === "Available") {
         setIsLoggedIn(true);
+        dispatch({
+          type: "SET_ALL_CALL_CENTER_IDS",
+         CallerId, // Adding another callCenterID
+        });
         setIsOnBreak(false);
         stopTimer(); // Stop the timer when becoming available
         toast.success(`Available for ${callCenterName}`);

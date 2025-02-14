@@ -403,7 +403,7 @@ function PhoneDashboard() {
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>{(allUser.data && allUser.data.length - 1) || 0}</h5>
+                          <h5>{(allUser.data && allUser.data.length) || 0}</h5>
                           <p>
                             {(allUser.data &&
                               allUser.data.filter(
@@ -411,11 +411,12 @@ function PhoneDashboard() {
                                   user.extension !== null &&
                                   user.extension.extension !== null &&
                                   onlineUser.includes(
-                                    user?.extension?.extension
+                                    user?.id
                                   )
                               ).length) ||
                               0}{" "}
-                            Active Users /{" "}
+                            Active Users.
+                             {/* /{" "}
                             {(allUser.data &&
                               allUser.data.length -
                               allUser.data.filter((user) => {
@@ -435,7 +436,7 @@ function PhoneDashboard() {
                                 )
                               ).length) ||
                               0}{" "}
-                            On Call
+                            On Call */}
                           </p>
                         </div>
                         <div className="col-2">

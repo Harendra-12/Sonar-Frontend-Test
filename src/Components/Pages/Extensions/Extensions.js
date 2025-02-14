@@ -29,6 +29,7 @@ const Extensions = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
+console.log("extensionByAccount",extensionByAccount);
 
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
@@ -62,7 +63,7 @@ const Extensions = () => {
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
     }));
-   
+
   // Getting list of all users by various filters like page number, items per page and search keys
   useEffect(() => {
     setLoading(true);
@@ -73,9 +74,11 @@ const Extensions = () => {
       }
       // setLoading(false);
       async function getData() {
+        console.log("-----------------------------------------11111111111");
+        
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
           );
           if (apiData?.status) {
             setExtension(apiData.data);
@@ -97,9 +100,11 @@ const Extensions = () => {
         }, 1000);
         return () => clearTimeout(timer);
       }
-      getData();
     } else {
       async function getData() {
+        console.log("-----------------------------------------22222222222");
+        
+        
         setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
@@ -402,7 +407,7 @@ const Extensions = () => {
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
                                                   navigate(
-                                                    "/device-provisioning-new",
+                                                    "/all-devices",
                                                     {
                                                       state: {
                                                         extension: item.extension,

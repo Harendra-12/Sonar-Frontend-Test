@@ -3,7 +3,7 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall } from "modify-react-sipjs";
 import { SessionState } from "sip.js";
 import { toast } from "react-toastify";
 

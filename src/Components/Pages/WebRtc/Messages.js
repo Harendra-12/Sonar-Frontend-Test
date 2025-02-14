@@ -5,7 +5,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Messager, UserAgent } from "sip.js";
-import { useSIPProvider, CONNECT_STATUS } from "react-sipjs";
+import { useSIPProvider, CONNECT_STATUS } from "modify-react-sipjs";
 import AgentSearch from "./AgentSearch";
 import {
   featureUnderdevelopment,
@@ -13,6 +13,7 @@ import {
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -22,6 +23,7 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
 import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
+import LogOutPopUp from "./LogOutPopUp";
 
 function Messages({
   setSelectedModule,
@@ -84,6 +86,25 @@ function Messages({
   const [groupLeavePopUp, setGroupLeavePopUp] = useState(false)
   const [groupLeaveId, setGroupLeaveId] = useState("")
   const [emojiOpen, setEmojiOpen] = useState(false);
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
+
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleEmojiClick = (emojiData) => {
 
     // setMessageInput(messageInput + emojiData.emoji);
@@ -791,18 +812,6 @@ function Messages({
     }
   }
 
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   const filteredUsers = allAgents.filter(
     (user) =>
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -977,6 +986,9 @@ function Messages({
   console.log(example === newExample)
   return (
     <>
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -1051,7 +1063,15 @@ function Messages({
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -1783,9 +1803,9 @@ function Messages({
                                         <span data-id="3">Priority</span>
                                       </div> */}
                                     </div>
-                                    {/* <div className="col text-end">
-                                      <p className="timeAgo">5min ago</p>
-                                    </div> */}
+                                    <div className="col text-end">
+                                      <button class="clearButton2 xl" onClick={() => setManageGroupChat(true)}><i class="fa-regular fa-pen"></i></button>
+                                    </div>
                                   </div>{" "}
                                 </div>
                               </div>
@@ -2576,7 +2596,6 @@ function Messages({
                         Are you sure you want to leave from this group?
                       </p>
                       <div className="mt-2 d-flex justify-content-between">
-
                         <button
                           disabled={loading}
                           className="panelButton m-0"

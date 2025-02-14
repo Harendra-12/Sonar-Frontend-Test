@@ -107,7 +107,7 @@ function KnowledgeBase() {
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading">
                                                                 <div className="d-flex align-items-center  justify-content-between ">
-                                                                    <h6>How do I setup my deskphopne?</h6>
+                                                                    <h6>How do I setup my deskphone?</h6>
                                                                     <div className="col-3 text-end">
                                                                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>

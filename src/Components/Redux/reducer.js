@@ -1,5 +1,6 @@
 // reducer.js
 var account = JSON.parse(localStorage.getItem("account"));
+var accountRefresh = 0;
 var registerUser = [];
 var loginUser = [];
 var callState = [];
@@ -68,7 +69,10 @@ var groupMessage = [];
 var previewDialer = [];
 var agentDeposition = false
 var desposiTionOptions = []
+var allCallCenterIds =[]
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
+var openCallCenterPopUp= false
+var logout = 0
 
 const initialState = {
   account,
@@ -92,6 +96,7 @@ const initialState = {
   extensionRefresh,
   ringGroup,
   ringGroupRefresh,
+  openCallCenterPopUp,
   callCenter,
   callCenterRefresh,
   allUser,
@@ -140,13 +145,18 @@ const initialState = {
   previewDialer,
   agentDeposition,
   desposiTionOptions,
+  allCallCenterIds,
   callCenterPopUp,
+  logout,
+  accountRefresh,
 };
 
 const counterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_ACCOUNT":
       return { ...state, account: action.account };
+    case "SET_ACCOUNTREFRESH":
+      return { ...state, accountRefresh: action.accountRefresh };
     case "SET_REGISTERUSER":
       return { ...state, registerUser: action.registerUser };
     case "SET_LOGINUSER":
@@ -183,6 +193,11 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, extensionRefresh: action.extensionRefresh };
     case "SET_RINGGROUP":
       return { ...state, ringGroup: action.ringGroup };
+    case "SET_OPEN_CALLCENTER_POPUP":
+      return { 
+          ...state, 
+          openCallCenterPopUp: action.openCallCenterPopUp
+        };
     case "SET_RINGGROUPREFRESH":
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
@@ -258,6 +273,16 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivrRefresh: action.ivrRefresh };
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
+    case "SET_ALL_CALL_CENTER_IDS":
+        return { 
+           ...state, 
+           allCallCenterIds: [...state.allCallCenterIds, action.CallerId] 
+        };
+    case "DELETE_CALLER_ID":
+          return {
+             ...state,
+             allCallCenterIds: state.allCallCenterIds.filter(id => id !== action.CallerId)
+          };
     case "SET_DEVICE_PROVISIONINGREFRESH":
       return {
         ...state,
@@ -341,6 +366,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         callCenterPopUp: action.callCenterPopUp,
+      };
+    case "SET_LOGOUT":
+      return {
+        ...state,
+        logout: action.logout,
       };
     default:
       return state;

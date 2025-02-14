@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,12 +8,11 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
-  domainValidator,
   emailValidator,
   lengthValidator,
   noSpecialCharactersValidator,
@@ -29,13 +29,11 @@ const ExtensionsAdd = () => {
   // const [domains, setDomains] = useState();
   const [loading, setLoading] = useState(false);
   const [music, setMusic] = useState([]);
-  const [musicHold, setMusicHold] = useState();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const dispatch = useDispatch();
   const { id: domainId = "" } = domain;
   const {
     register,
-    watch,
     formState: { errors },
     handleSubmit,
     reset,

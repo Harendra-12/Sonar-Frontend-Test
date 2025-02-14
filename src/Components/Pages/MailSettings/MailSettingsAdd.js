@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
 import {
-  backToTop,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useForm } from "react-hook-form";
@@ -16,12 +14,9 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useSelector } from "react-redux";
 
 const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const loadings = useSelector((state) => state.loading);
   const {
     register,
     formState: { errors },
@@ -389,7 +384,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
           </div>
         </section>
 
-        {loading && loadings && (
+        {loading && (
           <div colSpan={99}>
             <CircularLoader />
           </div>

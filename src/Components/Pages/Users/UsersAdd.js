@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import {
   backToTop,
   generalGetFunction,
@@ -25,6 +26,7 @@ const UsersAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
+  const accountDetails = useSelector((state) => state.accountDetails);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -42,6 +44,7 @@ const UsersAdd = () => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const account = useSelector((state) => state.account);
   const [parentChecked, setParentChecked] = useState({});
+  const [selectedExtension, setSelectedExtension] = useState("");
 
   const {
     register,
@@ -106,15 +109,21 @@ const UsersAdd = () => {
   //Filtering out which extension is not assign
   useEffect(() => {
     if (extension && user) {
-      setFilterExtensions(
-        extension.filter((item) => {
-          return !user.some((userItem) => {
-            return userItem.extension_id === item.id;
-          });
-        })
-      );
+      const data = extension.filter((item) => {
+        return !user.some((userItem) => {
+          return userItem.extension_id === item.id;
+        });
+      });
+      const options = data?.map((extension) => ({
+        value: extension.id,
+        label: extension.extension,
+      }));
+      setFilterExtensions([
+        { value: null, label: "None" },
+        ...options,
+      ]);
     }
-  }, [extension, user]);
+  }, [accountDetails, user]);
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
@@ -162,6 +171,7 @@ const UsersAdd = () => {
 
     let updatedData = {
       ...data,
+      extension_id: selectedExtension,
       ...{
         name: `${firstName} ${lastName}`,
         // domain_id: `${domainId}`,
@@ -285,8 +295,11 @@ const UsersAdd = () => {
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
-                  <div className="col-12" >
+                <div
+                  className="d-flex flex-wrap"
+                  style={{ position: "sticky", top: "0", zIndex: "9" }}
+                >
+                  <div className="col-12">
                     <div className="heading">
                       <div className="content">
                         <h4>User Add</h4>
@@ -368,7 +381,7 @@ const UsersAdd = () => {
                               className="formItem"
                               {...register("username", {
                                 ...requiredValidator,
-                                ...noSpecialCharactersValidator,
+                                // ...noSpecialCharactersValidator,
                               })}
                               onKeyDown={restrictToAllowedChars}
                             />
@@ -548,7 +561,7 @@ const UsersAdd = () => {
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Status</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Set the user's presence.
+                              Set the user's account status.
                             </label>
                           </div>
                           <div className="col-6">
@@ -575,8 +588,8 @@ const UsersAdd = () => {
                               Role Type <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Select Default to enable login or to disable login
-                              select Virtual.
+                              Select the Role with appropriate permissions for
+                              the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -633,24 +646,39 @@ const UsersAdd = () => {
                             </label>
                           </div>
                           <div className="col-6">
-                            <select
-                              className="formItem"
-                              name="extension_id"
-                              defaultValue=""
-                              {...register("extension_id")}
-                            >
-                              <option value="" disabled>
-                                Available Extensions
-                              </option>
-                              {filterExtensions &&
-                                filterExtensions.map((extension, key) => {
-                                  return (
-                                    <option value={extension.id} key={key}>
-                                      {extension.extension}
-                                    </option>
-                                  );
-                                })}
-                            </select>
+                            <Select
+                              options={filterExtensions}
+                              placeholder="Available Extensions"
+                              isClearable={false}
+                              defaultValue={"0"} // Default selected option
+                              onChange={(e) => {
+                                setSelectedExtension(String(e.value));
+                              }}
+                              styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  height: "25px",
+                                  fontSize: "12px",
+                                }),
+                                singleValue: (provided) => ({
+                                  ...provided,
+                                  fontSize: "14px",
+                                }),
+                                option: (provided) => ({
+                                  ...provided,
+                                  fontSize: "14px",
+                                }),
+                                placeholder: (provided) => ({
+                                  ...provided,
+                                  fontSize: "13px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "start",
+                                  marginBottom: "15px",
+                                }),
+                               
+                              }}
+                            />
                           </div>
                         </div>
                         <div className="formRow col-xl-12">

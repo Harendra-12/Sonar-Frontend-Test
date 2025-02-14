@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { Link, useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 import {
-  backToTop,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -14,7 +12,6 @@ import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
 
 const MailSettings = ({ style }) => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);

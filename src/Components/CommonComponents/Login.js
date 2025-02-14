@@ -7,10 +7,19 @@ import {
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
-
+  const account = useSelector((state) => state.account);
+  const navigate = useNavigate();
+  // useEffect(()=>{
+  //   if(account?.user_role?.roles?.name==="Agent"){
+  //     navigate("/webrtc")
+  //   }else if(account?.id){
+  //     navigate("/dashboard")
+  //   }
+  // })
+  
   return (
     <>
       <style>
@@ -45,7 +54,7 @@ function Login() {
                         marginBottom: 0,
                       }}
                     >
-                      2024 AnglePBX. All rights Reserved
+                      2025 AngelPBX. All rights Reserved
                     </p>
                   </div>
                 </div>
@@ -54,7 +63,7 @@ function Login() {
                     <div className="content">
                       <h3>The simplest way to manage your workforce</h3>
                       <p>Enter your credentials to access your control</p>
-                      <img src={require("../assets/images/logindash.png")} alt="logo"/>
+                      <img src={require("../assets/images/logindash.png")} alt="logo" />
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
@@ -63,7 +72,7 @@ function Login() {
             </div>
           </div>
           <div className="loginWave">
-            <img src={require("../assets/images/wave.png")} alt="background"/>
+            <img src={require("../assets/images/wave.png")} alt="background" />
           </div>
         </main>
       </div>

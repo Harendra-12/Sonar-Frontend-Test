@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {  generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ConferenceLoader from '../../Loader/ConferenceLoader';
@@ -153,6 +153,7 @@ function ConferenceJoin() {
                                         <div className="content" style={{ padding: '25px' }}>
                                             <div className='conferenceJoinVideo'>
                                                 <video
+                                                    className="donotremoveclassname"
                                                     ref={videoRef}
                                                     autoPlay
                                                     playsInline
@@ -176,7 +177,7 @@ function ConferenceJoin() {
                         </div>
                     </div>
                     <div className="loginWave">
-                        <img src={require('../../assets/images/wave.png')} alt=""/>
+                        <img src={require('../../assets/images/wave.png')} alt="" />
                     </div>
                 </main>
             }

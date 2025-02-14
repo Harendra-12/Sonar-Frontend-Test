@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
-import { useSIPProvider } from "react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import MediaPermissions from "./MediaPermissions ";
 import AutoAnswer from "./AutoAnswer";
 import {
@@ -667,23 +667,6 @@ export const DummySipRegisteration = ({
     }
   }
 
-  // window.addEventListener("beforeunload", (event) => {
-  //   callAction("hup");
-  // });
-
-  // async function logOut() {
-  //   const apiData = await generalGetFunction("/logout");
-  //   localStorage.clear();
-  //   if (apiData?.data) {
-  //     localStorage.clear();
-  //     dispatch({
-  //       action: "SET_ACCOUNT",
-  //       account: null,
-  //     });
-  //     navigate("/");
-  //   }
-  // }
-
   // adding logic to update currengt user memeber id to localstorage on page reload
   useEffect(() => {
     if (currentUser) {
@@ -981,21 +964,20 @@ export const DummySipRegisteration = ({
                                   ></i>
                                 </button>
                                 <div className="noScrollbar" style={{ height: '100vh', overflowY: 'auto', paddingLeft: '10px' }}>
-
+                                  {confList.map((item, index) => {
+                                    return (
+                                      <ConferenceUserTab
+                                        item={item}
+                                        key={index}
+                                        index={index}
+                                        handleSelectConferenceUser={
+                                          handleSelectConferenceUser
+                                        }
+                                        getInitials={getInitials}
+                                      />
+                                    );
+                                  })}
                                 </div>
-                                {confList.map((item, index) => {
-                                  return (
-                                    <ConferenceUserTab
-                                      item={item}
-                                      key={index}
-                                      index={index}
-                                      handleSelectConferenceUser={
-                                        handleSelectConferenceUser
-                                      }
-                                      getInitials={getInitials}
-                                    />
-                                  );
-                                })}
                               </div>
                             </div>
                             {participantList && (

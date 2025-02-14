@@ -36,7 +36,8 @@ const Socket = () => {
         const parsedData = JSON.parse(event.data);
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
-          const { key, result } = message;
+          const { key, result,current_time } = message;
+          
           switch (key) {
             case "UserRegister":
               dispatch({
@@ -62,7 +63,12 @@ const Socket = () => {
               }
               break;
             case "activeCalls":
-              dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id) });
+              console.log("-------------Active call---------------------------------",result);
+              
+              dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item)=>({
+                ...item,
+                "serverTime":current_time
+              })) });
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });

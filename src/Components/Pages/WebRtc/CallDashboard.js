@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import {  generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {  generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
+import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -12,11 +14,29 @@ function CallDashboard() {
   const activeCall = useSelector((state) => state.activeCall);
   const [allParkedCall, setAllParkedCall] = useState([]);
   const extension = account?.extension?.extension || null;
-  const callState = useSelector((state) => state.callState);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  console.log("callStatesss", callState);
+  const dispatch = useDispatch();
+  const { sessionManager } = useSIPProvider();
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     //dest should start with "set:valet_ticket"
     setAllParkedCall(
@@ -61,34 +81,12 @@ function CallDashboard() {
     }
   };
 
-  // async function logOut() {
-  //   const apiData = await generalGetFunction("/logout");
-  //   localStorage.clear();
-  //   if (apiData?.data) {
-  //     localStorage.clear();
-  //     dispatch({
-  //       action: "SET_ACCOUNT",
-  //       account: null,
-  //     });
-  //     navigate("/");
-  //   }
-  // }
-
-  async function logOut() {
-    const apiData = await generalGetFunction("/logout");
-    localStorage.clear();
-    if (apiData?.data) {
-      localStorage.clear();
-      dispatch({
-        action: "SET_ACCOUNT",
-        account: null,
-      });
-      navigate("/");
-    }
-  }
   return (
     <>
       {/* <SideNavbarApp /> */}
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       <main
         className="mainContentApp"
         style={{
@@ -147,7 +145,15 @@ function CallDashboard() {
                           </div>
                         </div>
                         <ul class="dropdown-menu">
-                          <li onClick={logOut}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               class="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -287,14 +293,14 @@ function CallDashboard() {
 
                             <tbody>
                               {
-                                activeCall && activeCall.filter((item) => item.callstate === "RINGING").map((item, key) => {
+                                activeCall && activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT").map((item, key) => {
                                   return (
                                     <tr>
                                       <td>{key + 1}</td>
                                       <td>{item.cid_name}</td>
-                                      <td>{item.presence_id.split("@")[0]}</td>
+                                      <td>{item.dest}</td>
                                       <td>{item.created.split(" ")[1]}</td>
-                                      <td>{item.name.split("/")[1]}</td>
+                                      <td>{item.feature_tag}</td>
                                     </tr>
                                   )
                                 })

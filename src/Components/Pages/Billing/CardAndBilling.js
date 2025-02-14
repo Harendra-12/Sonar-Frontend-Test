@@ -390,16 +390,6 @@ function CardAndBilling() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
-                          effect="ripple"
-                          className="panelButton"
-                          onClick={() => featureUnderdevelopment()}
-                        >
-                          <span className="text">Refresh</span>
-                          <span className="icon">
-                            <i class="fa-regular fa-arrows-rotate fs-5"></i>
-                          </span>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -441,7 +431,7 @@ function CardAndBilling() {
                                 <i
                                   className="fa-duotone fa-ballot"
                                   style={{
-                                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
                                   }}
                                 ></i>
                               </div>
@@ -495,16 +485,13 @@ function CardAndBilling() {
                         <div className="col-xl-4">
                           <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading">
-                              <div className="heading">
+                              <div className="heading" style={{ cursor: "pointer" }}
+                                onClick={() => setRechargePopUp(true)}>
                                 <div class="col-10">
                                   <h5>Wallet Balance</h5>
                                   <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
                                 </div>
-                                <div
-                                  class="col-2"
-                                  style={{ cursor: "pointer" }}
-                                 
-                                >
+                                <div class="col-2">
                                   <i
                                     className="fa-duotone fa-credit-card"
                                     style={{
@@ -1152,7 +1139,7 @@ function CardAndBilling() {
                               <i
                                 className="fa-duotone fa-ballot-check"
                                 style={{
-                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
                                 }}
                               ></i>
                             </div>

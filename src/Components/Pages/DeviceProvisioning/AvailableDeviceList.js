@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import CircularLoader from '../../Loader/CircularLoader'
 import Header from '../../CommonComponents/Header'
 import { backToTop } from '../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function AvailableDeviceList() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const id = location.state.id
+    const extension = location.state.extension
     const [selectDeviceEdit, setSelectDeviceEdit] = useState();
     return (
         <>
@@ -47,6 +49,15 @@ function AvailableDeviceList() {
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton"
+                                                    onClick={() => {
+                                                        navigate('/device-provisioning-new',{
+                                                            state: {
+                                                              id: id,
+                                                              extension:extension,
+                                                            },
+                                                          });
+                                                        backToTop();
+                                                    }}
                                                 >
                                                     <span className="text" >Add</span>
                                                     <span className="icon"><i class="fa-solid fa-plus"></i></span>
@@ -61,7 +72,7 @@ function AvailableDeviceList() {
                                             <div className='deviceProvision row align-items-center active'>
                                                 <div className="formRow col-xl-6">
                                                     <div className="col-4">
-                                                        <img src={require('../../assets/images/cisco.jpg')}></img>
+                                                        <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                     </div>
                                                     <div className="formLabel ">
                                                         <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
@@ -89,7 +100,7 @@ function AvailableDeviceList() {
                                             <div className='deviceProvision row align-items-center'>
                                                 <div className="formRow col-xl-6">
                                                     <div className="col-4">
-                                                        <img src={require('../../assets/images/cisco.jpg')}></img>
+                                                        <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                     </div>
                                                     <div className="formLabel ">
                                                         <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
@@ -117,7 +128,7 @@ function AvailableDeviceList() {
                                             <div className='deviceProvision row align-items-center'>
                                                 <div className="formRow col-xl-6">
                                                     <div className="col-4">
-                                                        <img src={require('../../assets/images/cisco.jpg')}></img>
+                                                        <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                     </div>
                                                     <div className="formLabel ">
                                                         <label htmlFor=""><h5>Cisco Long Schlong</h5></label>

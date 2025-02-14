@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
@@ -21,7 +22,6 @@ import Header from "../../CommonComponents/Header";
 
 function PortNumberEdit() {
   const [loading, setLoading] = useState(true);
-  const [getportByIdRefresh, setgetportByIdRefresh] = useState(0);
   const account = useSelector((state) => state.account);
   const accountId = account.account_id || "";
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ function PortNumberEdit() {
     } else {
       navigate("/");
     }
-  }, [account, getportByIdRefresh]);
+  }, [account]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
@@ -301,8 +301,7 @@ function PortNumberEdit() {
                           </label>
                           <br />
                           <label htmlFor="data" className="formItemDesc">
-                            Account Number with Current Provider. This can often
-                            be found on
+                            Account Number with Current Provider.
                           </label>
                         </div>
                         <div className="col-6">

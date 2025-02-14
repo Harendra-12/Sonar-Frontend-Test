@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSessionCall } from "react-sipjs";
+import { useSessionCall } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import { UserAgent } from "sip.js";
 import ringtone from "../../assets/music/cellphone-ringing-6475.mp3";
