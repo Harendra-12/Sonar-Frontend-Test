@@ -652,6 +652,7 @@ const UsersEdit = ({ page }) => {
                                         label: watch()?.extension?.extension,
                                         value: watch()?.extension?.extension,
                                       }} // Default selected option
+                                      onInputChange={(e) => e.replace(/\D/g, "")}
                                       onChange={(e) => {
                                         setSelectedSearch(e.value);
                                       }}
