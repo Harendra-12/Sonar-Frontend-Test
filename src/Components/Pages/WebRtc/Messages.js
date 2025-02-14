@@ -2504,7 +2504,7 @@ function Messages({
                           </div>
                         ) :
                           (
-                            <div style={{ height: 'calc(100vh - 254px)', overflow: 'hidden scroll' }}>
+                            <div style={{ height: 'calc(100vh - 265px)', overflow: 'hidden scroll' }}>
                               {
                                 allAgents
                                   .filter((item) => {
@@ -2538,17 +2538,40 @@ function Messages({
                                               <h4>{item.name}</h4>
                                             </div>
                                             {item.email !== account.email ? <div className="col text-end my-auto">
-                                              <button
-                                                class="clearButton2"
-                                                effect="ripple"
-                                                onClick={() =>
-                                                  handleremoveUserFromGroup(
-                                                    item.agentId
-                                                  )
-                                                }
-                                              >
-                                                <i class="fa-regular fa-xmark"></i>
-                                              </button>
+                                              <div className="dropdown">
+                                                <button
+                                                  className="clearButton2"
+                                                  type="button"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="true"
+                                                >
+                                                  <i className="fa-solid fa-ellipsis-vertical" />
+                                                </button>
+                                                <ul
+                                                  className="dropdown-menu light"
+                                                >
+                                                  <li>
+                                                    <div className="dropdown-item" href="#">
+                                                      Make Group Admin
+                                                    </div>
+                                                  </li>
+                                                  <li>
+                                                    <div className="dropdown-item" href="#">
+                                                      Dismiss Group Admin
+                                                    </div>
+                                                  </li>
+                                                  <li>
+                                                    <div className="dropdown-item text-danger"
+                                                      onClick={() =>
+                                                        handleremoveUserFromGroup(
+                                                          item.agentId
+                                                        )
+                                                      }>
+                                                      Kick User
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div>
                                             </div> : ""}
 
                                           </div>
@@ -2560,7 +2583,7 @@ function Messages({
                             </div>
                           )
                         }
-                        <div className="mb-auto">
+                        {!addMember && <div className="mb-auto">
                           <button
                             className="panelButton gray ms-0"
                             onClick={() => {
@@ -2572,7 +2595,7 @@ function Messages({
                               <i className="fa-solid fa-caret-left" />
                             </span>
                           </button>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   )}

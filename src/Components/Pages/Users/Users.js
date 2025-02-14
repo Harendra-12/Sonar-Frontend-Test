@@ -35,7 +35,7 @@ const Users = () => {
   const [refreshState, setRefreshState] = useState(false);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
-  const [refreshData,setRefreshData] = useState(0);
+  const [refreshData, setRefreshData] = useState(0);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -163,7 +163,7 @@ const Users = () => {
       const updatedData = user.data.filter((item) => item.id !== deleteId);
       setUser({ ...user, data: updatedData });
       setFilterUser(updatedData);
-      setRefreshData(refreshData+1);
+      setRefreshData(refreshData + 1);
       dispatch({
         type: "SET_USERSBYACCOUNT",
         usersByAccount: { ...user, data: updatedData },
@@ -383,7 +383,7 @@ const Users = () => {
                                           <button
                                             className="tableButton edit"
                                             onClick={() =>
-                                              navigate(`/users-edit`, {
+                                              navigate(`/users-config`, {
                                                 state: item,
                                               })
                                             }
