@@ -540,23 +540,7 @@ function CardAndBilling() {
                                         )}
                                       </p>
                                     </div>
-                                  
                                   </div>
-
-                                </div>
-                                <div class="col-2">
-                                <div className="\ heading" 
-                                 onClick={() => setRechargePopUp(true)}
-                                >
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                      </div>
-                                  {/* <div
-                                onClick={() => setRechargePopUp(true)}
-                                className="cartButton p-2"
-                                style={{ width: '50px', height: '50px', fontSize: '18px' }}
-                              >
-                                <i class="fa-solid fa-rectangle-history-circle-plus"></i>
-                              </div> */}
                                 </div>
                               </div>
                             </div>
