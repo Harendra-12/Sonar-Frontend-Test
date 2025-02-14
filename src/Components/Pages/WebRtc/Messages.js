@@ -1741,7 +1741,30 @@ function Messages({
                                       </div> */}
                                     </div>
                                     <div className="col text-end">
-                                      <button class="clearButton2 xl" onClick={() => setManageGroupChat(true)}><i class="fa-regular fa-pen"></i></button>
+                                      <div className="dropdown">
+                                        <button
+                                          className="clearButton2 xl"
+                                          type="button"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="true"
+                                        >
+                                          <i className="fa-solid fa-ellipsis-vertical" />
+                                        </button>
+                                        <ul
+                                          className="dropdown-menu light"
+                                        >
+                                          <li>
+                                            <div className="dropdown-item" onClick={() => setManageGroupChat(true)}>
+                                              Edit Group Chat
+                                            </div>
+                                          </li>
+                                          <li>
+                                            <div className="dropdown-item text-danger">
+                                              Delete Group Chat
+                                            </div>
+                                          </li>
+                                        </ul>
+                                      </div>
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2210,7 +2233,7 @@ function Messages({
                       <div className="messageOverlay">
                         <div class="contactHeader" style={{ height: "71px" }}>
                           <div className="col">
-                            <h4>
+                            <h4 className="my-0">
                               <input
                                 value={groupNameEdit}
                                 disabled={!saveEditToggleGroupNameChange}
@@ -2469,7 +2492,7 @@ function Messages({
                                         <div className="row justify-content-between">
                                           <div className="col-xl-12 d-flex">
                                             <div className="profileHolder">
-                                              <i className="fa-light fa-user fs-5" />
+                                              <i className="fa-light fa-user" />
                                             </div>
                                             <div className="my-auto ms-2 ms-xl-3">
                                               <h4>{item.name}</h4>

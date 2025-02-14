@@ -660,32 +660,63 @@ const UsersAdd = () => {
                               placeholder="Available Extensions"
                               isClearable={false}
                               defaultValue={"0"} // Default selected option
+                              onInputChange={(e) => e.replace(/\D/g, "")}
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));
                               }}
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
-                                  height: "25px",
-                                  fontSize: "12px",
+                                  border: "1px solid var(--color4);",
+                                  borderRadius: "3px",
+                                  backgroundColor: "var(--ele-color)",
+                                  outline: "none",
+                                  fontSize: "14px",
+                                  width: "100%",
+                                  minHeight: "35px",
+                                  height: "35px",
+                                  boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                                  "&:hover": {
+                                    borderColor: "var(--ui-accent)",
+                                  },
                                 }),
                                 singleValue: (provided) => ({
                                   ...provided,
                                   fontSize: "14px",
                                 }),
-                                option: (provided) => ({
+                                option: (provided, state) => ({
                                   ...provided,
+                                  paddingLeft: "15px",
+                                  paddingTop: 0,
+                                  paddingBottom: 0,
+                                  backgroundColor: state.isSelected ? "#5a9fff" : "transparent",
+                                  "&:hover": {
+                                    backgroundColor: "#0055cc",
+                                    color: "#fff",
+                                  },
                                   fontSize: "14px",
                                 }),
                                 placeholder: (provided) => ({
                                   ...provided,
-                                  fontSize: "13px",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "start",
-                                  marginBottom: "15px",
+                                  fontSize: "14px",
                                 }),
-                               
+                                dropdownIndicator: (provided) => ({
+                                  ...provided,
+                                  color: "var(--form-input-text)",
+                                  "&:hover": {
+                                    color: "var(--ui-accent)",
+                                  },
+                                }),
+                                menu: (provided) => ({
+                                  ...provided,
+                                  backgroundColor: "var(--ele-color)",
+                                }),
+                                menuList: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "150px",
+                                  overflowY: "auto",
+                                  color: "var(--form-input-text)",
+                                }),
                               }}
                             />
                           </div>
