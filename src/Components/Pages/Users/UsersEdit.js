@@ -335,6 +335,14 @@ const UsersEdit = ({ page }) => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
+  const handleSelectInputChange = (inputValue, { action }) => {
+    if (action === "input-change") {
+      const numericInput = inputValue.replace(/[^0-9]/g, '');
+      // setSelectedExtension(numericInput)
+      return numericInput;
+    }
+    return inputValue;
+  };
   return (
     <>
       <style>
@@ -660,6 +668,7 @@ const UsersEdit = ({ page }) => {
                                         label: watch()?.extension?.extension,
                                         value: watch()?.extension?.extension,
                                       }} // Default selected option
+                                      onInputChange={handleSelectInputChange}
                                       onChange={(e) => {
                                         setSelectedSearch(e.value);
                                       }}
@@ -693,6 +702,7 @@ const UsersEdit = ({ page }) => {
                                       placeholder="No extension assigned"
                                       isClearable={false}
                                       defaultValue={""} // Default selected option
+                                      onInputChange={handleSelectInputChange}
                                       onChange={(e) => {
                                         setSelectedSearch(e.value);
                                       }}
@@ -904,6 +914,7 @@ const UsersEdit = ({ page }) => {
                                   label: watch()?.extension?.extension,
                                   value: watch()?.extension?.extension,
                                 }} // Default selected option
+                                onInputChange={handleSelectInputChange}
                                 onChange={(e) => {
                                   setSelectedSearch(e.value);
                                 }}
