@@ -29,6 +29,7 @@ const UsersEdit = ({ page }) => {
   const locationState = location.state;
   const showHeader = location.pathname == "/users-edit";
   const accountDetails = useSelector((state) => state.accountDetails);
+  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
@@ -198,8 +199,15 @@ const UsersEdit = ({ page }) => {
         ...options,
       ]);
     }
-  }, [accountDetails, user, locationState]);
+  }, [accountDetails, user, locationState,extension]);
 
+  // Get the latest data of account
+  useEffect(()=>{
+    dispatch({
+      type:"SET_ACCOUNTDETAILSREFRESH",
+      accountDetailsRefresh: accountDetailsRefresh + 1,
+    })
+  },[])
   // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
@@ -682,12 +690,9 @@ const UsersEdit = ({ page }) => {
                                       }}
                                     /> : <Select
                                       options={searchExtensions}
-                                      placeholder="Available Extensions"
+                                      placeholder="No extension assigned"
                                       isClearable={false}
-                                      defaultValue={{
-                                        label: watch()?.extension?.extension,
-                                        value: watch()?.extension?.extension,
-                                      }} // Default selected option
+                                      defaultValue={""} // Default selected option
                                       onChange={(e) => {
                                         setSelectedSearch(e.value);
                                       }}
