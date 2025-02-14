@@ -795,15 +795,28 @@ function CdrReport({ page }) {
                                             ></i>{" "}
                                             Missed
                                           </span>
-                                        ) : (
-                                          <span>
-                                            <i
-                                              class="fa-solid fa-headset me-1"
-                                              style={{ color: "var(--color2)" }}
-                                            ></i>{" "}
-                                            Internal
-                                          </span>
-                                        )}
+                                        )
+                                          : item["Call-Direction"] ===
+                                            "transfer" ? (
+                                            <span>
+                                              <i
+                                                class="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Transfer
+                                            </span>
+                                          )
+                                            : (
+                                              <span>
+                                                <i
+                                                  class="fa-solid fa-headset me-1"
+                                                  style={{ color: "var(--color2)" }}
+                                                ></i>{" "}
+                                                Internal
+                                              </span>
+                                            )}
                                       </td>
                                       {page === "billing" ? (
                                         ""
