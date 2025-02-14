@@ -102,7 +102,7 @@ function AgentsEdits() {
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit page="agents" />
+                      <UsersEdit page="marginleftAdjust" />
                     </div>
                     <div
                       class="tab-pane fade"
