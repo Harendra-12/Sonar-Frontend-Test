@@ -446,6 +446,7 @@ function CdrReport({ page }) {
                             setEndDateFlag("");
                           }}
                         >
+                          
                           <option value={"date"}>Single Date</option>
                           <option value={"date_range"}>Date Range</option>
                           <option value={"7_days"}>Last 7 Days</option>
