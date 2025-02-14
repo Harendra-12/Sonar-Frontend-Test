@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { backToTop } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +6,13 @@ import UsersEdit from './UsersEdit';
 
 function UserConfiguration() {
     const navigate = useNavigate();
+    const [isEditable, setIsEditable] = useState(true);
     return (
         <>
             <main className="mainContent">
                 <section id="phonePage">
                     <div className="container-fluid px-0">
-                        <Header title="Agents" />
+                        <Header title="User Configuration" />
                     </div>
                     <div className="col-xl-12" style={{ overflow: "auto" }}>
                         <div className="overviewTableWrapper">
@@ -20,8 +21,8 @@ function UserConfiguration() {
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4>Agents Edit</h4>
-                                                <p>Edit user information and group membership.</p>
+                                                <h4>User Configuration</h4>
+                                                <p>Edit the configuration of the user including settings and permissions.</p>
                                             </div>
                                             <div className="buttonGroup">
                                                 <button
@@ -58,7 +59,7 @@ function UserConfiguration() {
                                                 aria-controls="nav-user"
                                                 aria-selected="true"
                                             >
-                                                User Configuration
+                                                User Settings
                                             </button>
                                             <button
                                                 class="nav-link"
@@ -112,7 +113,7 @@ function UserConfiguration() {
                                                                         <div className="heading">
                                                                             <div className="content">
                                                                                 <h4>Permissions Edit</h4>
-                                                                                <p>Edit user information and group membership.</p>
+                                                                                <p>Edit user's permission to view or edit pages.</p>
                                                                             </div>
                                                                             <div className="buttonGroup">
                                                                                 <button
@@ -158,18 +159,10 @@ function UserConfiguration() {
                                                                             <div className="col-xl-12">
                                                                                 <div className="col-xl-12 pt-3 ">
                                                                                     <div className="d-flex justify-content-center align-items-center">
-                                                                                        <div className="savedCardWrapper col">
+                                                                                        <div className="savedCardWrapper col active">
                                                                                             <div>
                                                                                                 <label>Call Details Report (CDR)</label>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton  m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -180,14 +173,6 @@ function UserConfiguration() {
                                                                                                 <label>Call Recording</label>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton  m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
-                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="col-xl-12 pt-3 ">
@@ -196,14 +181,6 @@ function UserConfiguration() {
                                                                                             <div>
                                                                                                 <label>Agent Report</label>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton  m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -214,14 +191,6 @@ function UserConfiguration() {
                                                                                                 <label>Call Queue Report</label>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton  m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
-                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="col-xl-12 pt-3 ">
@@ -230,14 +199,6 @@ function UserConfiguration() {
                                                                                             <div>
                                                                                                 <label>Ring Group Report</label>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton  m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -248,76 +209,160 @@ function UserConfiguration() {
                                                                                                 <label>Meeting Reports</label>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="d-flex align-items-center ">
-                                                                                            <button className="tableButton edit m-2">
-                                                                                                <i className="fa-solid fa-pencil" />
-                                                                                            </button>
-                                                                                            <button className="tableButton m-2">
-                                                                                                <i className="fa-solid fa-arrows-rotate" />
-                                                                                            </button>
-                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-xl-6" style={{ borderLeft: "1px solid var(--border-color)" }}>
-                                                                            <div className="header d-flex align-items-center justify-content-between">
-                                                                                <div className="col fw-bold" style={{ fontFamily: '"Noto Sans"' }}>
-                                                                                    Choose what should be visible
-                                                                                </div>
-                                                                                <div className="col-auto">
-                                                                                    <button type="button" className="panelButton">
-                                                                                        <span className="text">Save</span>
-                                                                                        <span className="icon">
-                                                                                            <i className="fa-solid fa-floppy-disk" />
-                                                                                        </span>
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className='col-xl-12'>
-                                                                                <div className='row'>
-                                                                                    <div className="formRow col-xl-3">
-                                                                                        <div className="formLabel">
-                                                                                            <label htmlFor="">Direction</label>
+                                                                            {isEditable && (
+                                                                                <>
+                                                                                    <div className="header d-flex align-items-center justify-content-between">
+                                                                                        <div className="col fw-bold" style={{ fontFamily: '"Noto Sans"' }}>
+                                                                                            Choose what should be visible
                                                                                         </div>
-                                                                                        <div className="col-xl-6 col-12">
-                                                                                            <input type="checkbox" />
+                                                                                        <div className="col-auto">
+                                                                                            <button type="button" className="panelButton" onClick={() => setIsEditable(false)}>
+                                                                                                <span className="text">Done</span>
+                                                                                                <span className="icon">
+                                                                                                    <i className="fa-solid fa-check" />
+                                                                                                </span>
+                                                                                            </button>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="formRow col-xl-3">
-                                                                                        <div className="formLabel">
-                                                                                            <label htmlFor="">Direction</label>
-                                                                                        </div>
-                                                                                        <div className="col-xl-6 col-12">
-                                                                                            <input type="checkbox" />
+                                                                                    <div className='col-xl-12'>
+                                                                                        <div className='row'>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Direction</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Call Type</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Caller Name</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Caller No.</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Tag</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Via / Route</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Extension</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Username</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Date</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Time</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Recording</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Duration</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Hangup Status</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Hangup Cause</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Charge</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="formRow col-xl-3">
+                                                                                                <div className="formLabel">
+                                                                                                    <label htmlFor="">Block</label>
+                                                                                                </div>
+                                                                                                <div className="col-xl-6 col-12">
+                                                                                                    <input type="checkbox" />
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="formRow col-xl-3">
-                                                                                        <div className="formLabel">
-                                                                                            <label htmlFor="">Direction</label>
-                                                                                        </div>
-                                                                                        <div className="col-xl-6 col-12">
-                                                                                            <input type="checkbox" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="formRow col-xl-3">
-                                                                                        <div className="formLabel">
-                                                                                            <label htmlFor="">Direction</label>
-                                                                                        </div>
-                                                                                        <div className="col-xl-6 col-12">
-                                                                                            <input type="checkbox" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="formRow col-xl-3">
-                                                                                        <div className="formLabel">
-                                                                                            <label htmlFor="">Direction</label>
-                                                                                        </div>
-                                                                                        <div className="col-xl-6 col-12">
-                                                                                            <input type="checkbox" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                                                </>
+                                                                            )}
                                                                         </div>
                                                                     </div>
                                                                 </div>
