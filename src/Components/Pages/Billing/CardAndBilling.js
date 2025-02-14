@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 
 import CircularLoader from "../../Loader/CircularLoader";
 import { useNavigate } from "react-router-dom";
+import Tippy from "@tippyjs/react";
 
 function CardAndBilling() {
   const dispatch = useDispatch();
@@ -485,8 +486,7 @@ function CardAndBilling() {
                         <div className="col-xl-4">
                           <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading">
-                              <div className="heading" style={{ cursor: "pointer" }}
-                                onClick={() => setRechargePopUp(true)}>
+                              <div className="heading">
                                 <div class="col-10">
                                   <h5>Wallet Balance</h5>
                                   <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
@@ -496,51 +496,54 @@ function CardAndBilling() {
                                     className="fa-duotone fa-credit-card"
                                     style={{
                                       boxShadow:
-                                        "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                        "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
                                     }}
                                   ></i>
                                 </div>
                               </div>
                             </div>
                             <div className="data-number2 ">
-                              <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="col-10">
-                                  <div className="">
-                                    <div>
-                                      <h5>
-                                        ${" "}
-                                        {accountDetails?.balance?.amount?.split(".")[0]
-                                          ? accountDetails?.balance?.amount?.split(
-                                            "."
-                                          )[0]
-                                          : 0}
-                                        .
-                                        <sub style={{ fontSize: 14 }}>
-                                          {accountDetails?.balance?.amount?.split(".")[1]
-                                            ? accountDetails?.balance?.amount?.split(
-                                              "."
-                                            )[1]
-                                            : "00"}
-                                        </sub>
-                                      </h5>
-                                      <p>
-                                        Min Balance: $
-                                        {accountDetails?.balance?.min_amount || 0}
-                                      </p>
-                                      <p>
-                                        {!selectedCard?.[0]?.card_number ? (
-                                          <span className="text-danger">
-                                            Please add a card before recharge!
-                                          </span>
-                                        ) : (
-                                          <span className="text-success">
-                                            Active Card: *** *** ***{" "}
-                                            {selectedCard?.[0]?.card_number.slice(-4)}
-                                          </span>
-                                        )}
-                                      </p>
-                                    </div>
-                                  </div>
+                              <h5>
+                                ${" "}
+                                {accountDetails?.balance?.amount?.split(".")[0]
+                                  ? accountDetails?.balance?.amount?.split(
+                                    "."
+                                  )[0]
+                                  : 0}
+                                .
+                                <sub style={{ fontSize: 14 }}>
+                                  {accountDetails?.balance?.amount?.split(".")[1]
+                                    ? accountDetails?.balance?.amount?.split(
+                                      "."
+                                    )[1]
+                                    : "00"}
+                                </sub>
+                              </h5>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <div className="col-auto">
+                                  <p>
+                                    Min Balance: $
+                                    {accountDetails?.balance?.min_amount || 0}
+                                  </p>
+                                  <p>
+                                    {!selectedCard?.[0]?.card_number ? (
+                                      <span className="text-danger">
+                                        Please add a card before recharge!
+                                      </span>
+                                    ) : (
+                                      <span className="text-success">
+                                        Active Card: *** *** ***{" "}
+                                        {selectedCard?.[0]?.card_number.slice(-4)}
+                                      </span>
+                                    )}
+                                  </p>
+                                </div>
+                                <div className="col">
+                                  <Tippy content="Click to add balance!">
+                                    <button className="cartButton ms-auto" onClick={() => setRechargePopUp(true)}>
+                                      Top up
+                                    </button>
+                                  </Tippy>
                                 </div>
                               </div>
                             </div>
