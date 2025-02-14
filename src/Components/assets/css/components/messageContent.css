@@ -670,13 +670,15 @@
     width: 100%;
 }
 
-.contactHeader .dropdown-menu {
+.contactHeader .dropdown-menu,
+.dropdown-menu.light {
     padding: 5px 0;
     background-color: var(--ele-color);
     height: auto;
 }
 
-.contactHeader .dropdown-menu .dropdown-item {
+.contactHeader .dropdown-menu .dropdown-item,
+.dropdown-menu.light .dropdown-item {
     font-size: 13px;
     color: var(--color-subtext);
     padding: 5px 10px;
@@ -684,11 +686,13 @@
     font-family: Outfit;
 }
 
-.contactHeader .dropdown-menu .dropdown-item:active {
+.contactHeader .dropdown-menu .dropdown-item:active,
+.dropdown-menu.light .dropdown-item:active {
     background-color: #dfdfdf;
 }
 
-.contactHeader .dropdown-menu li {
+.contactHeader .dropdown-menu li,
+.dropdown-menu.light li {
     margin-bottom: 0;
     padding-bottom: 0;
 }
