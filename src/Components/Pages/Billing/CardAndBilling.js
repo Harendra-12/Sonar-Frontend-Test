@@ -503,7 +503,7 @@ function CardAndBilling() {
                                 <div
                                   class="col-2"
                                   style={{ cursor: "pointer" }}
-                                  onClick={() => setRechargePopUp(true)}
+                                 
                                 >
                                   <i
                                     className="fa-duotone fa-credit-card"
@@ -515,43 +515,54 @@ function CardAndBilling() {
                                 </div>
                               </div>
                             </div>
-                            <div className="data-number2">
+                            <div className="data-number2 ">
                               <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="col-10">
-                                  <h5>
-                                    ${" "}
-                                    {accountDetails?.balance?.amount?.split(".")[0]
-                                      ? accountDetails?.balance?.amount?.split(
-                                        "."
-                                      )[0]
-                                      : 0}
-                                    .
-                                    <sub style={{ fontSize: 14 }}>
-                                      {accountDetails?.balance?.amount?.split(".")[1]
-                                        ? accountDetails?.balance?.amount?.split(
-                                          "."
-                                        )[1]
-                                        : "00"}
-                                    </sub>
-                                  </h5>
-                                  <p>
-                                    Min Balance: $
-                                    {accountDetails?.balance?.min_amount || 0}
-                                  </p>
-                                  <p>
-                                    {!selectedCard?.[0]?.card_number ? (
-                                      <span className="text-danger">
-                                        Please add a card before recharge!
-                                      </span>
-                                    ) : (
-                                      <span className="text-success">
-                                        Active Card: *** *** ***{" "}
-                                        {selectedCard?.[0]?.card_number.slice(-4)}
-                                      </span>
-                                    )}
-                                  </p>
+                                  <div className="">
+                                    <div>
+                                      <h5>
+                                        ${" "}
+                                        {accountDetails?.balance?.amount?.split(".")[0]
+                                          ? accountDetails?.balance?.amount?.split(
+                                            "."
+                                          )[0]
+                                          : 0}
+                                        .
+                                        <sub style={{ fontSize: 14 }}>
+                                          {accountDetails?.balance?.amount?.split(".")[1]
+                                            ? accountDetails?.balance?.amount?.split(
+                                              "."
+                                            )[1]
+                                            : "00"}
+                                        </sub>
+                                      </h5>
+                                      <p>
+                                        Min Balance: $
+                                        {accountDetails?.balance?.min_amount || 0}
+                                      </p>
+                                      <p>
+                                        {!selectedCard?.[0]?.card_number ? (
+                                          <span className="text-danger">
+                                            Please add a card before recharge!
+                                          </span>
+                                        ) : (
+                                          <span className="text-success">
+                                            Active Card: *** *** ***{" "}
+                                            {selectedCard?.[0]?.card_number.slice(-4)}
+                                          </span>
+                                        )}
+                                      </p>
+                                    </div>
+                                  
+                                  </div>
+
                                 </div>
                                 <div class="col-2">
+                                <div className="\ heading" 
+                                 onClick={() => setRechargePopUp(true)}
+                                >
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                      </div>
                                   {/* <div
                                 onClick={() => setRechargePopUp(true)}
                                 className="cartButton p-2"

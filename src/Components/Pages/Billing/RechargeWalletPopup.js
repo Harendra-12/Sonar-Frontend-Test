@@ -173,7 +173,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
         />
       ) : (
         <div className="row">
-          <div className="col-xl-4 mx-auto">
+          <div className="col-xxl-6 col-xl-5  mx-auto">
             <div className="profileView">
               <div className="profileDetailsHolder position-relative">
                 <div className="header d-flex align-items-center">
@@ -189,10 +189,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                   </div>
                 </div>
                 <div
-                  className="row"
-                  style={{ padding: "5px", maxHeight: 191, overflowY: "auto" }}
-                >
-                  <div className="col-12">
+                  className="row p-2">
+                  <div className="col-12" style={{ padding: "5px", maxHeight: 191, overflowY: "auto" }}>
                     {cardList &&
                       cardList?.map((item, key) => {
                         return (
@@ -270,179 +268,183 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                   <div className="col-12">Choose Billing Address</div>
                 </div>
                 <div
-                  className="row"
-                  style={{ padding: "5px", maxHeight: 189, overflowY: "auto" }}
+                  className="row p-2"
+                 
                 >
-                  {billingList &&
-                    billingList?.map((item, key) => {
-                      return (
-                        <div
-                          key={key}
-                          className="accordion accordion-flush mb-2"
-                          id={key}
-                        >
-                          <div className="accordion-item">
-                            <h2
-                              className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
-                                }`}
-                            >
-                              <div
-                                className="d-flex flex-wrap align-items-center"
-                                style={{ padding: "0 10px" }}
+
+                  <div className="col-12" style={{ padding: "5px", maxHeight: 191, overflowY: "auto" }}>
+                    {billingList &&
+                      billingList?.map((item, key) => {
+                        return (
+                          <div
+                            key={key}
+                            className="accordion accordion-flush mb-2"
+                            id={key}
+                          >
+                            <div className="accordion-item">
+                              <h2
+                                className={`accordion-header addressDrawer ${item.id === selectedBillId ? "active" : ""
+                                  }`}
                               >
-                                <div className="col-10">
-                                  <button
-                                    className="accordion-button collapsed justify-content-between"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target={`#flush-collapse${key}recharge`}
-                                    aria-expanded="false"
-                                    aria-controls={`flush-collapse${key}recharge`}
-                                  >
-                                    <div>
-                                      <h5
-                                        className="mb-0"
-                                        style={{
-                                          maxWidth: 150,
-                                          textOverflow: "ellipsis",
-                                          overflow: "hidden",
-                                        }}
-                                      >
-                                        {item.fullname}
-                                      </h5>
-                                    </div>
-                                  </button>
-                                </div>
-                                <div className="ms-auto d-flex">
-                                  <label className="switch">
-                                    <input
-                                      type="checkbox"
-                                      id="showAllCheck"
-                                      checked={
-                                        item.id === selectedBillId
-                                          ? true
-                                          : false
-                                      }
-                                      onChange={(e) => {
-                                        if (e.target.checked) {
-                                          setSelectedBillId(item.id);
-                                        } else {
-                                          setSelectedBillId();
+                                <div
+                                  className="d-flex flex-wrap align-items-center"
+                                  style={{ padding: "0 10px" }}
+                                >
+                                  <div className="col-10">
+                                    <button
+                                      className="accordion-button collapsed justify-content-between"
+                                      type="button"
+                                      data-bs-toggle="collapse"
+                                      data-bs-target={`#flush-collapse${key}recharge`}
+                                      aria-expanded="false"
+                                      aria-controls={`flush-collapse${key}recharge`}
+                                    >
+                                      <div>
+                                        <h5
+                                          className="mb-0"
+                                          style={{
+                                            maxWidth: 150,
+                                            textOverflow: "ellipsis",
+                                            overflow: "hidden",
+                                          }}
+                                        >
+                                          {item.fullname}
+                                        </h5>
+                                      </div>
+                                    </button>
+                                  </div>
+                                  <div className="ms-auto d-flex">
+                                    <label className="switch">
+                                      <input
+                                        type="checkbox"
+                                        id="showAllCheck"
+                                        checked={
+                                          item.id === selectedBillId
+                                            ? true
+                                            : false
                                         }
-                                      }}
-                                    />
-                                    <span className="slider round"></span>
-                                  </label>
+                                        onChange={(e) => {
+                                          if (e.target.checked) {
+                                            setSelectedBillId(item.id);
+                                          } else {
+                                            setSelectedBillId();
+                                          }
+                                        }}
+                                      />
+                                      <span className="slider round"></span>
+                                    </label>
+                                  </div>
                                 </div>
-                              </div>
-                            </h2>
-                            <div
-                              id={`flush-collapse${key}recharge`}
-                              className="accordion-collapse collapse"
-                              data-bs-parent={`#${key}`}
-                            >
-                              <div className="accordion-body">
-                                <ul className="billingDetails">
-                                  <div className="pe-3 col-auto">
-                                    <li>
-                                      <span>Full Name:</span>
-                                    </li>
-                                    <li>
-                                      <span>Phone:</span>
-                                    </li>
-                                    <li>
-                                      <span>Email Address:</span>
-                                    </li>
-                                    <li>
-                                      <span>Address:</span>{" "}
-                                    </li>
-                                    <li>
-                                      <span>City:</span>{" "}
-                                    </li>
-                                    <li>
-                                      <span>State:</span>{" "}
-                                    </li>
-                                    <li>
-                                      <span>Zip Code:</span>{" "}
-                                    </li>
-                                    <li>
-                                      <span>Country:</span>{" "}
-                                    </li>
-                                  </div>
-                                  <div style={{ width: "80%" }}>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.fullname}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.contact_no}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.email}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.address}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.city}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.state}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.zip}
-                                        disabled
-                                      />
-                                    </li>
-                                    <li>
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        value={item.country}
-                                        disabled
-                                      />
-                                    </li>
-                                  </div>
-                                </ul>
+                              </h2>
+                              <div
+                                id={`flush-collapse${key}recharge`}
+                                className="accordion-collapse collapse"
+                                data-bs-parent={`#${key}`}
+                              >
+                                <div className="accordion-body">
+                                  <ul className="billingDetails">
+                                    <div className="pe-3 col-auto">
+                                      <li>
+                                        <span>Full Name:</span>
+                                      </li>
+                                      <li>
+                                        <span>Phone:</span>
+                                      </li>
+                                      <li>
+                                        <span>Email Address:</span>
+                                      </li>
+                                      <li>
+                                        <span>Address:</span>{" "}
+                                      </li>
+                                      <li>
+                                        <span>City:</span>{" "}
+                                      </li>
+                                      <li>
+                                        <span>State:</span>{" "}
+                                      </li>
+                                      <li>
+                                        <span>Zip Code:</span>{" "}
+                                      </li>
+                                      <li>
+                                        <span>Country:</span>{" "}
+                                      </li>
+                                    </div>
+                                    <div style={{ width: "80%" }}>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.fullname}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.contact_no}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.email}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.address}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.city}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.state}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.zip}
+                                          disabled
+                                        />
+                                      </li>
+                                      <li>
+                                        <input
+                                          type="text"
+                                          className="formItem"
+                                          value={item.country}
+                                          disabled
+                                        />
+                                      </li>
+                                    </div>
+                                  </ul>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                 </div>
+
                 <div className="row" style={{ padding: "5px" }}>
                   <div className="col-6">
                     <div className="form-group">
