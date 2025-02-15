@@ -328,7 +328,7 @@ const Users = () => {
                                     <tr key={index}>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-config`, {
+                                          navigate(`/users-edit`, {
                                             state: item,
                                           })
                                         }
@@ -337,7 +337,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-config`, {
+                                          navigate(`/users-edit`, {
                                             state: item,
                                           })
                                         }
@@ -355,7 +355,7 @@ const Users = () => {
                                         </td> */}
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-config`, {
+                                          navigate(`/users-edit`, {
                                             state: item,
                                           })
                                         }
@@ -364,7 +364,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-config`, {
+                                          navigate(`/users-edit`, {
                                             state: item,
                                           })
                                         }
@@ -373,7 +373,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-config`, {
+                                          navigate(`/users-edit`, {
                                             state: item,
                                           })
                                         }
@@ -390,7 +390,7 @@ const Users = () => {
                                         <button
                                           className="tableButton edit"
                                           onClick={() =>
-                                            navigate(`/users-config`, {
+                                            navigate(`/users-edit`, {
                                               state: item,
                                             })
                                           }

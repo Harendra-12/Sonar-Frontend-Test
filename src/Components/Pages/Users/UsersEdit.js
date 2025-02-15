@@ -133,7 +133,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                 role_id: `${role_id}`,
               },
             };
-            setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
+            // setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
             setSelectedSearch(newData.extension_id);
             if (!isCustomerAdmin) {
               console.log(isCustomerAdmin);
@@ -263,7 +263,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         allUserRefresh: allUserRefresh + 1,
       });
 
-      navigate(-1); // Navigate back to the previous page
+      // navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
     }

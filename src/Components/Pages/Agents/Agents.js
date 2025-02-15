@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalGetFunction,
@@ -18,6 +18,7 @@ function Agents({ type }) {
   const [loading, setLoading] = useState(false);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
+  const [userInput, setuserInput] = useState("");
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -33,7 +34,7 @@ function Agents({ type }) {
     const getData = async () => {
       setLoading(true);
       const apiData = await generalGetFunction(
-        `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}`
+        `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}&search=${userInput}`
       );
       if (apiData?.status) {
         console.log(apiData);
@@ -43,8 +44,15 @@ function Agents({ type }) {
         setLoading(false);
       }
     };
-    getData();
-  }, [entriesPerPage,pageNumber,type]);
+    if (userInput.trim().length === 0) {
+      getData();
+    } else {
+      const timer = setTimeout(() => {
+        getData();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [entriesPerPage, pageNumber, type,userInput]);
 
   return (
     <main className="mainContent">
@@ -114,12 +122,15 @@ function Agents({ type }) {
                           </select>
                           <label>entries</label>
                         </div>
+
                         <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
                             type="search"
                             name="Search"
                             className="formItem"
+                            value={userInput}
+                            onChange={(e) => setuserInput(e.target.value)}
                           />
                         </div>
                       </div>

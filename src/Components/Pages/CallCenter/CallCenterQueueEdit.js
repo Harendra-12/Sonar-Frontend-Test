@@ -105,16 +105,16 @@ function CallCenterQueueEdit() {
     if (account && account.id) {
       async function getData() {
         setLoading(true);
-        const userData = await generalGetFunction("/user/all");
+        const userData = await generalGetFunction(`/user/search?account=${account.account_id}`);
         const callCenterData = await generalGetFunction(
           `call-center-queues/show/${value}`
         );
         if (userData?.status) {
           setLoading(false);
-          if (userData.data.data.length === 0) {
+          if (userData.data.length === 0) {
             toast.error("Please create user first");
           } else {
-            const filterUser = userData.data.data.filter(
+            const filterUser = userData.data.filter(
               (item) => item.extension_id !== null
             );
 
@@ -380,15 +380,9 @@ function CallCenterQueueEdit() {
         type: "SET_CALLCENTERREFRESH",
         callCenterRefresh: callCenterRefresh + 1,
       });
-      navigate("/cal-center-queue");
+      // navigate("/cal-center-queue");
     } else {
       setLoading(false);
-      // if (apiData.error) {
-      //   toast.error(apiData.error);
-      // } else {
-      //   const errorMessage = Object.keys(apiData.errors);
-      //   toast.error(apiData.errors[errorMessage[0]][0]);
-      // }
     }
   });
 
@@ -2576,8 +2570,8 @@ function CallCenterQueueEdit() {
             <div>
               Affected user:{" "}
               {selectedAgentToEdit
-                .map((item) => user.find((user) => item.name == user.id))
-                .map((items) => items.name)
+                .map((item) => user.find((user) => item?.name == user.id))
+                .map((items) => items?.name)
                 .join(", ")}
             </div>
             <div className="col-xl-12">
