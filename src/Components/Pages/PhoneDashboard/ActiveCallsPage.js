@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
-    const ringingState = activeCall.filter((item) => item.b_callstate !== "ACTIVE");
+    const ringingState = activeCall.filter((item) => item.b_callstate !== "ACTIVE" || item.b_callstate !== "HELD");
 
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {

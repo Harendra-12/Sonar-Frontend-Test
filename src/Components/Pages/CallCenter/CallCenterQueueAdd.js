@@ -83,13 +83,13 @@ function CallCenterQueueAdd() {
     // Calling user and sound api to get user and sound data
     async function getData() {
       setLoading(true);
-      const userData = await generalGetFunction("/user/all");
+      const userData = await generalGetFunction(`/user/search?account=${account.account_id}`);
       const musicData = await generalGetFunction("/sound/all");
       if (userData?.status) {
-        if (userData.data.data.length === 0) {
+        if (userData.data.length === 0) {
           toast.error("Please create user first");
         } else {
-          const filterUser = userData.data.data.filter(
+          const filterUser = userData.data.filter(
             (item) => item.extension_id !== null
           );
           if (filterUser.length > 0) {
@@ -2073,8 +2073,8 @@ function CallCenterQueueAdd() {
             <div>
               Affected user:{" "}
               {selectedAgentToEdit
-                .map((item) => user.find((user) => item.name == user.id))
-                .map((items) => items.name)
+                .map((item) => user.find((user) => item?.name == user.id))
+                .map((items) => items?.name)
                 .join(", ")}
             </div>
             <div className="col-xl-12">

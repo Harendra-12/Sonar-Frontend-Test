@@ -39,7 +39,7 @@ function CallDashboard() {
     setAllParkedCall(
       activeCall.filter(
         (call) =>
-          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && call.b_callee_direction !== "ACTIVE"
+          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && (call.b_callee_direction !== "ACTIVE" || call.b_callee_direction !== "HELD")
       )
     );
   }, [activeCall]);

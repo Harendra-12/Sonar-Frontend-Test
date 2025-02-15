@@ -425,7 +425,7 @@ const ExtensionsEdit = ({ page }) => {
       if (apiData.status) {
         toast.success(apiData.message);
         await generalGetFunction(`/user/all`);
-        navigate(-1);
+        // navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);

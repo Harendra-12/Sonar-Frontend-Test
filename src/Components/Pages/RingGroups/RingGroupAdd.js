@@ -34,7 +34,8 @@ const RingGroupAdd = () => {
   const [loading, setLoading] = useState(true);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const allUserArr = useSelector((state) => state.allUser);
+  // const allUserArr = useSelector((state) => state.allUser);
+  const [allUserArr, setAllUserArr] = useState([]);
   const [ringBack, setRingBack] = useState();
   const [user, setUser] = useState();
   const extension = useSelector((state) => state.extension);
@@ -52,6 +53,7 @@ const RingGroupAdd = () => {
   const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const [selectedAgentToEdit, setSelectedAgentToEdit] = useState([]);
   const [destination, setDestination] = useState([]);
+
   const [settingsForBulkEdit, setSettingsForBulkEdit] = useState({
     delay: 0,
     timeOut: "0",
@@ -79,10 +81,10 @@ const RingGroupAdd = () => {
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
     if (allUserRefresh > 0) {
-      if (allUserArr.data.length === 0) {
+      if (allUserArr.length === 0) {
         toast.error("Please create user first");
       } else {
-        const filterUser = allUserArr.data.filter(
+        const filterUser = allUserArr.filter(
           (item) => item.extension_id !== null
         );
         if (filterUser.length > 0) {
@@ -104,15 +106,14 @@ const RingGroupAdd = () => {
     if (account && account.id) {
       async function getData() {
         setLoading(true);
-        // const apidataUser = await generalGetFunction(
-        //   `/user/search?account=${account.account_id}`
-        // );
+        const apidataUser = await generalGetFunction(
+          `/user/search?account=${account.account_id}`
+        );
         const ringBack = await generalGetFunction("/sound/all?type=ringback");
         setLoading(false);
-        // if (apidataUser?.status) {
-        // } else {
-        //   navigate("/");
-        // }
+        if (apidataUser?.status) {
+          setAllUserArr(apidataUser.data);
+        } 
         if (ringBack?.status) {
           setRingBack(ringBack.data);
           if (ringBack.data.length > 0 && uploadedMusic) {
@@ -132,7 +133,7 @@ const RingGroupAdd = () => {
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
     if (allUserRefresh > 0) {
-      const filterUser = allUserArr.data.filter(
+      const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
       if (filterUser.length > 0) {
