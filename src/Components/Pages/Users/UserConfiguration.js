@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
+import { toast } from "react-toastify";
 import {
   backToTop,
   generalGetFunction,
@@ -45,13 +46,10 @@ function UserConfiguration() {
       tb_permissions: checkedUserPermissionData,
     };
     try {
-      const res = generalPostFunction("/assign-table-permissions ", payload);
+      const res = await generalPostFunction("/assign-table-permissions ", payload);
       if (res?.status) {
-        setUserPermission({
-          user_id: "",
-          role_id: "",
-        });
         setCheckedUserPermissionData([]);
+        toast.success("Assigned Permissions Successfully");
       }
     } catch (error) {
       console.log(error);
