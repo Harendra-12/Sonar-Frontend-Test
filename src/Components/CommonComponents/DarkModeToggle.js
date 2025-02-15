@@ -29,6 +29,7 @@ function DarkModeToggle({ marginLeft }) {
         }
     }, [])
 
+    
     const toggleTheme = (e) => {
         if (e.target.checked) {
             setIsDark(true)
