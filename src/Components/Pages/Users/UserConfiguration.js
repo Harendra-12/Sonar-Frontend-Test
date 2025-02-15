@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
