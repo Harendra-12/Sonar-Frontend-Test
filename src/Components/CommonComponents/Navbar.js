@@ -904,7 +904,7 @@ function Navbar() {
                                 <div className="itemTitle">Call Recording</div>
                               </NavLink>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link
                                 onClick={() => featureUnderdevelopment()}
                                 className={({ isActive }) =>
@@ -947,7 +947,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Agent Report</div>
                               </NavLink>
-                            </li>
+                            </li> */}
                             <li className="tabItem ">
                               <NavLink
                                 to="/call-center-report"
@@ -980,7 +980,7 @@ function Navbar() {
                                 <div className="itemTitle">Ring Groups</div>
                               </NavLink>
                             </li>
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
@@ -1016,7 +1016,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Meeting Reports</div>
                               </Link>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
@@ -1174,7 +1174,7 @@ function Navbar() {
                       >
                         <div className="menuWrapper">
                           <ul className="tabMenu">
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
@@ -1190,13 +1190,20 @@ function Navbar() {
                               >
                                 <div className="itemTitle">General</div>
                               </Link>
-                            </li>
-                            <li className="tabItem ">
-                              <NavLink to="/voice-music">
-                                <div className="itemTitle">Voice Music</div>
-                              </NavLink>
-                            </li>
-                            <li className="tabItem">
+                            </li> */}
+                            {account?.permissions?.includes(385) ||
+                              account?.permissions?.includes(386) ||
+                              account?.permissions?.includes(387) ||
+                              account?.permissions?.includes(388) ||
+                              account?.permissions?.includes(389) ||
+                              account?.permissions?.includes(390) ?
+                              <li className="tabItem ">
+                                <NavLink to="/voice-music">
+                                  <div className="itemTitle">Voice Music</div>
+                                </NavLink>
+                              </li> : ""
+                            }
+                            {/* <li className="tabItem">
                               <NavLink
                                 to="/fax-settings"
                                 onClick={() => backToTop()}
@@ -1211,7 +1218,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Fax</div>
                               </NavLink>
-                            </li>
+                            </li> */}
                             {account?.permissions?.includes(248) ||
                               account?.permissions?.includes(250) ? (
                               <li className="tabItem ">
@@ -1235,7 +1242,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
-                            <li className="tabItem ">
+                            {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
                                 onClick={() => backToTop()}
@@ -1250,7 +1257,7 @@ function Navbar() {
                               >
                                 <div className="itemTitle">Call Recording</div>
                               </NavLink>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>

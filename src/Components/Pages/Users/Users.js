@@ -223,8 +223,7 @@ const Users = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(442) &&
-                          roles?.length > 1 ? (
+                        {account?.permissions?.includes(442) ? (
                           <Link
                             // to="/users-add"
                             // onClick={backToTop}
