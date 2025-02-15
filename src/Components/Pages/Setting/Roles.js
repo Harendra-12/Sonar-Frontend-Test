@@ -49,7 +49,7 @@ function Roles() {
 
   // Getting roles and permission data from redux by trigger its api calling by changing its refresh value
   useEffect(() => {
-    if (roles.length === 0) {
+    if (rolesRefresh === 0) {
       setLoading(true);
     }
     dispatch({
@@ -70,10 +70,13 @@ function Roles() {
           return item.permission_id;
         })
       );
-    } else {
-      setLoading(true);
     }
   }, []);
+  useEffect(() => {
+    if (rolesRefresh > 0) {
+      setLoading(false);
+    }
+  }, [rolesRefresh]);
 
   // Handle roles select and set default permission
   useEffect(() => {
@@ -163,7 +166,7 @@ function Roles() {
       if (apiData?.status) {
         setEditClick(false);
         setDeleteIndex();
-        toast.success(apiData.success);
+        toast.success(apiData.message);
         setLoading(false);
         dispatch({
           type: "SET_ROLES_REFRESH",
@@ -173,8 +176,6 @@ function Roles() {
         setSelectedRoleId();
       } else {
         setLoading(false);
-        // const errorMessage = Object.keys(apiData.errors);
-        // toast.error(apiData.errors[errorMessage[0]][0]);
       }
     }
   }
