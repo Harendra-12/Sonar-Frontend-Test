@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
-import ContentLoader from "../../Loader/ContentLoader";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -25,23 +24,6 @@ function CardTransactionsList() {
     if (allCardTransactions && !refreshState) {
       setTransaction(allCardTransactions);
       setLoading(false);
-      // async function getData() {
-      //   const apiData = await generalGetFunction(
-      //     `/payments/all?page=${pageNumber}`
-      //   );
-      //   if (apiData?.status) {
-      //     setLoading(false);
-      //     setTransaction(apiData.data);
-      //     dispatch({
-      //       type: "SET_ALLCARDTRANSACTIONS",
-      //       allCardTransactions: apiData.data,
-      //     });
-      //   } else {
-      //     setLoading(false);
-      //     navigate(-1);
-      //   }
-      // }
-      // getData();
     } else {
       setLoading(true);
       async function getData() {

@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
-  generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import ContentLoader from "../../Loader/ContentLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -25,17 +25,6 @@ const DeviceProvisioning = () => {
   );
 
   useEffect(() => {
-    // setLoading(true);
-    // const apiData = async () => {
-    //   const apiData = await generalGetFunction("/provision/all");
-    //   if (apiData?.status) {
-    //     setLoading(false);
-    //     setProvisioningData(apiData.data);
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // };
-    // apiData();
     setLoading(true);
     if (deviceProvisioningRefresh > 0) {
       setProvisioningData(deviceProvisioning);

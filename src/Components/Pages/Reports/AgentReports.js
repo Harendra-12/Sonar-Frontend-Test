@@ -2,7 +2,6 @@ import React from 'react'
 import Header from '../../CommonComponents/Header'
 import GraphChart from '../../CommonComponents/GraphChart'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
-import { Link } from 'react-router-dom'
 
 function AgentReports() {
     return (

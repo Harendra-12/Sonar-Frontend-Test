@@ -661,12 +661,12 @@ function UserRegistrationProcessOverview() {
                         </div>
                         <div style={{ cursor: "pointer" }}>
                           <div className="clearButton">
-                            <a
+                            <div
                               target="_blank"
                               rel="noreferrer"
                             >
                               <i class="fa-sharp fa-solid fa-eye"></i> View
-                            </a>
+                            </div>
                           </div>
                         </div>
                       </div>

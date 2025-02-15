@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import AddNewAddress from "./AddNewAddress";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalDeleteFunction,
   generalPostFunction,
   generalPutFunction,

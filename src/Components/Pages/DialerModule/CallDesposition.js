@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import { Link, Navigate } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 
@@ -98,22 +98,22 @@ function CallDesposition() {
                                                         <td>Test</td>
                                                         <td>
                                                             <div class="dropdown">
-                                                                <a class={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <div class={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i className="fa-solid fa-ellipsis-vertical" />
-                                                                </a>
+                                                                </div>
                                                                 <ul class="dropdown-menu actionBtnDropdowns">
                                                                     <li className='dropdown-item'>
                                                                         <Tippy content="Reset configuration of this DID">
-                                                                            <a class="clearButton text-align-start">
+                                                                            <div class="clearButton text-align-start">
                                                                                 <i class="fa-regular fa-pen me-2"></i>Update
-                                                                            </a>
+                                                                            </div>
                                                                         </Tippy>
                                                                     </li>
                                                                     <li className='dropdown-item'>
                                                                         <Tippy content="Reset configuration of this DID">
-                                                                            <a class="clearButton text-align-start">
+                                                                            <div class="clearButton text-align-start">
                                                                                 <i class="fa-regular fa-trash me-2"></i>Delete
-                                                                            </a>
+                                                                            </div>
                                                                         </Tippy>
                                                                     </li>
                                                                 </ul>
