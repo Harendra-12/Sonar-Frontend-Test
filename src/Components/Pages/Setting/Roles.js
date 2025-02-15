@@ -974,7 +974,7 @@ function Roles() {
                                     {filteredPermission[item].map(
                                       (innerItem, key) => (
                                         <div
-                                          className="col-xxl col-auto col-md-4 col-6"
+                                          className="col-6"
                                           key={key}
                                         >
                                           <input
