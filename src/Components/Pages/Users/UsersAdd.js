@@ -27,7 +27,6 @@ const UsersAdd = () => {
   const dispatch = useDispatch();
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState([]);
@@ -120,20 +119,13 @@ const UsersAdd = () => {
         label: extension.extension,
       }));
       setFilterExtensions([
+        { value: null, label: "Available Extensions" },
         { value: null, label: "None" },
         ...options,
       ]);
     }
-  }, [accountDetails, user,extension]);
-  
+  }, [accountDetails, user]);
 
-  // Get the latest data of account
-    useEffect(()=>{
-      dispatch({
-        type:"SET_ACCOUNTDETAILSREFRESH",
-        accountDetailsRefresh: accountDetailsRefresh + 1,
-      })
-    },[])
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
     if (watch().username.length > 2) {
@@ -285,6 +277,14 @@ const UsersAdd = () => {
 
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
+  };
+  const handleSelectInputChange = (inputValue, { action }) => {
+    if (action === "input-change") {
+      const numericInput = inputValue.replace(/[^0-9]/g, '');
+      // setSelectedExtension(numericInput)
+      return numericInput;
+    }
+    return inputValue;
   };
 
   return (
@@ -655,30 +655,47 @@ const UsersAdd = () => {
                             </label>
                           </div>
                           <div className="col-6">
+                            {/* <select
+                              className="formItem"
+                              name="extension_id"
+                              defaultValue=""
+                              {...register("extension_id")}
+                            >
+                              <option value="" disabled>
+                                Available Extensions
+                              </option>
+                              {filterExtensions &&
+                                filterExtensions.map((extension, key) => {
+                                  return (
+                                    <option value={extension.id} key={key}>
+                                      {extension.extension}
+                                    </option>
+                                  );
+                                })}
+                            </select> */}
                             <Select
                               options={filterExtensions}
                               placeholder="Available Extensions"
                               isClearable={false}
-                              defaultValue={"0"} // Default selected option
-                              onInputChange={(e) => e.replace(/\D/g, "")}
+                              defaultValue={{ value: "0", label: "0" }} // Default selected option
+                              onInputChange={handleSelectInputChange}
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));
                               }}
+                              // {...register("extension_id")}
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
-                                  border: "1px solid var(--color4);",
-                                  borderRadius: "3px",
-                                  backgroundColor: "var(--ele-color)",
-                                  outline: "none",
-                                  fontSize: "14px",
-                                  width: "100%",
-                                  minHeight: "35px",
-                                  height: "35px",
-                                  boxShadow: state.isFocused ? "none" : provided.boxShadow,
-                                  "&:hover": {
-                                    borderColor: "var(--ui-accent)",
-                                  },
+                                  height: "25px",
+                                  fontSize: "12px",
+                                }),
+                                valueContainer: (provided) => ({
+                                  ...provided,
+                                  height: "24px",
+                                }),
+                                input: (provided) => ({
+                                  ...provided,
+                                  margin: "0px",
                                 }),
                                 singleValue: (provided) => ({
                                   ...provided,
@@ -696,26 +713,22 @@ const UsersAdd = () => {
                                   },
                                   fontSize: "14px",
                                 }),
-                                placeholder: (provided) => ({
-                                  ...provided,
-                                  fontSize: "14px",
-                                }),
-                                dropdownIndicator: (provided) => ({
-                                  ...provided,
-                                  color: "var(--form-input-text)",
-                                  "&:hover": {
-                                    color: "var(--ui-accent)",
-                                  },
-                                }),
                                 menu: (provided) => ({
                                   ...provided,
-                                  backgroundColor: "var(--ele-color)",
+                                  maxHeight: "120px",
+                                  // overflowY: "auto",
+                                }),
+                                placeholder: (provided) => ({
+                                  ...provided,
+                                  fontSize: "13px",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "start",
+                                  marginBottom: "15px",
                                 }),
                                 menuList: (provided) => ({
                                   ...provided,
-                                  maxHeight: "150px",
-                                  overflowY: "auto",
-                                  color: "var(--form-input-text)",
+                                  maxHeight: "120px",
                                 }),
                               }}
                             />
