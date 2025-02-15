@@ -46,10 +46,8 @@ jobs:
             
                 # Ensure we are on the correct branch
                 git checkout Developement
-            
-                # Reset local changes and sync with the remote branch
-                git fetch origin
-                git reset --hard origin/Developement
+                git pull origin Developement
+
             else
                 echo "Git repository not found. Cloning repository."
             
