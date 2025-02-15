@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,8 +15,6 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import {
   backToTop,
   generalDeleteFunction,
-  generalGetFunction,
-  generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
@@ -37,7 +36,6 @@ const DeviceProvisioningEdit = () => {
   const {
     register,
     formState: { errors },
-    handleSubmit,
     reset,
     watch,
   } = useForm();
@@ -51,27 +49,27 @@ const DeviceProvisioningEdit = () => {
     });
   }, [provisionings]);
 
-  const handleFormSubmit = handleSubmit(async (data) => {
-    setLoading(true);
-    const apiData = await generalPutFunction(
-      `/provision/update/${provisionings.id}`,
-      data
-    );
-    if (apiData.status) {
-      setLoading(false);
-      toast.success(apiData.message);
+  // const handleFormSubmit = handleSubmit(async (data) => {
+  //   setLoading(true);
+  //   const apiData = await generalPutFunction(
+  //     `/provision/update/${provisionings.id}`,
+  //     data
+  //   );
+  //   if (apiData.status) {
+  //     setLoading(false);
+  //     toast.success(apiData.message);
 
-      // after succesfully editing data need to recall the global function to update the global state
-      dispatch({
-        type: "SET_DEVICE_PROVISIONINGREFRESH",
-        deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
-      });
-      reset();
-      navigate(-1);
-    } else {
-      setLoading(false);
-    }
-  });
+  //     // after succesfully editing data need to recall the global function to update the global state
+  //     dispatch({
+  //       type: "SET_DEVICE_PROVISIONINGREFRESH",
+  //       deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
+  //     });
+  //     reset();
+  //     navigate(-1);
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // });
 
   async function handleDelete(id) {
     setPopUp(false);

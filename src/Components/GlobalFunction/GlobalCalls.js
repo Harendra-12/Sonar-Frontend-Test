@@ -1,14 +1,14 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 // This file is used to store the global calls, and It will refresh the data in global state
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
-  const location = useLocation();
   const Id = account?.id || "";
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);

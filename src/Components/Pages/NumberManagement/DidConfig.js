@@ -44,7 +44,6 @@ const DidConfig = () => {
     handleSubmit,
     setValue,
     watch,
-    unregister,
   } = useForm();
 
   useEffect(() => {

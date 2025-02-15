@@ -1,13 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
@@ -25,23 +24,6 @@ function WalletTransactionsList() {
     if (allWaletTransactions && !refreshState) {
       setTransaction(allWaletTransactions);
       setLoading(false);
-      // async function getData() {
-      //   const apiData = await generalGetFunction(
-      //     `/transaction/wallet?page=${pageNumber}`
-      //   );
-      //   if (apiData?.status) {
-      //     setLoading(false);
-      //     setTransaction(apiData.data);
-      //     dispatch({
-      //       type: "SET_ALLWALLETTRANSACTIONS",
-      //       allWaletTransactions: apiData.data,
-      //     });
-      //   } else {
-      //     setLoading(false);
-      //     navigate(-1);
-      //   }
-      // }
-      // getData();
     } else {
       async function getData() {
         setLoading(true);

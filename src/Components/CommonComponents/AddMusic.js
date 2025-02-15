@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { fileUploadFunction } from "../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import CircularLoader from "../Loader/CircularLoader";
-import { ListItem } from "@mui/material";
 
 const AddMusic = ({
   setShow,
