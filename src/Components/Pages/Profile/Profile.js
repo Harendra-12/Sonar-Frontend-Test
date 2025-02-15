@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   backToTop,
   featureUnderdevelopment,
+  generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
@@ -23,15 +24,21 @@ const Profile = () => {
   const extensionAll = useSelector((state) => state.extensionAll);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
-  const [selectedExtension, setSelectedExtension] = useState("");
-  const [selectedTimeZone, setSelectedTimeZone] = useState(account?.timezone_id);
+  const [selectedExtension, setSelectedExtension] = useState(
+    account?.extension?.extension
+  );
+
+  const [selectedTimeZone, setSelectedTimeZone] = useState(
+    account?.timezone_id
+  );
+
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
   const profileName = account.name;
   const acount = useSelector((state) => state.account);
   const isCustomerAdmin = account?.email == accountDetails?.email;
-  console.log("9999999999account", account);
+
   useEffect(() => {
     if (isCustomerAdmin) {
       if (allUser?.length == 0) {
@@ -43,7 +50,7 @@ const Profile = () => {
         const result = allUser?.data?.find((item) => {
           return item.name == profileName;
         });
-        setSelectedExtension(result?.extension?.extension);
+        // setSelectedExtension(result?.extension?.extension);
       }
     }
   }, [allUser]);
@@ -61,8 +68,33 @@ const Profile = () => {
       }
     }
   }, [extensionAll]);
+
+  useEffect(() => {
+    const updateAccountDetails = async () => {
+      try {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+          const timezoneId = profile?.data?.timezone_id;
+          const selectedTimeZone = timeZone.filter((item) => {
+            return item.id === timezoneId;
+          });
+          setTimeZoneVal(selectedTimeZone.name);
+          setSelectedTimeZone(profile?.data?.timezone_id);
+          setTimeZoneVal(selectedTimeZone);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    updateAccountDetails();
+  }, []);
+
   const userWithExtension = allUser?.data
-    ?.filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
+    ?.filter((user) => user.extension && user?.extension?.extension) // Filter out null or undefined extensions
     .map((user) => ({
       name: user.name,
       extension: user.extension.extension, // Access the nested extension value
@@ -91,6 +123,7 @@ const Profile = () => {
     })[0]?.id;
     if (!extensionId) {
       toast.error("Extension not found");
+      setLoading(false);
       return;
     }
 
@@ -114,6 +147,12 @@ const Profile = () => {
       });
       toast.success(apiData.message);
       setPreassignedExtension(false);
+      setTimeZoneVal(
+        timeZone.filter((item) => {
+          return item.id == selectedTimeZone;
+        })
+      );
+
       setLoading(false);
     } else {
       setLoading(false);
@@ -319,20 +358,24 @@ const Profile = () => {
                                         id="selectFormRow"
                                         value={selectedTimeZone}
                                         onChange={(e) => {
+                                          console.log(
+                                            "9999999999timeXXXXXXX",
+                                            e.target.value,
+                                            "        ",
+                                            selectedTimeZone
+                                          );
                                           setSelectedTimeZone(e.target.value);
                                         }}
                                       >
-                                        {timeZone?.map(
-                                          (item, index) => {
-                                            return (
-                                              <>
-                                                <option value={item.id}>
-                                                  {item.name}
-                                                </option>
-                                              </>
-                                            );
-                                          }
-                                        )}
+                                        {timeZone?.map((item, index) => {
+                                          return (
+                                            <>
+                                              <option value={item.id}>
+                                                {item.name}
+                                              </option>
+                                            </>
+                                          );
+                                        })}
                                       </select>
                                     </div>
                                     {/* <div className="col-4 ps-0">
@@ -364,11 +407,10 @@ const Profile = () => {
                                           setSelectedExtension(e.target.value);
                                         }}
                                       >
-                                        <option value={""}>None</option>
                                         {extensionAll?.data?.map(
                                           (item, index) => {
                                             const foundUser =
-                                              userWithExtension.find(
+                                              userWithExtension?.find(
                                                 (value) =>
                                                   value.extension ===
                                                   item.extension
@@ -395,10 +437,12 @@ const Profile = () => {
                                   className="panelButton ms-auto"
                                   style={{ height: "34px" }}
                                   onClick={() => handleUpdateExtension()}
-                                // effect="ripple"
+                                  // effect="ripple"
                                 >
                                   <span className="text">Save</span>
-                                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                  <span className="icon">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                  </span>
                                 </button>
                               </div>
                             </>
@@ -442,7 +486,10 @@ const Profile = () => {
                           >
                             <p className=" me-2">Country:</p>
 
-                            <p className="imgwidth d-flex ms-2 me-2" style={{ minWidth: '75px' }}>
+                            <p
+                              className="imgwidth d-flex ms-2 me-2"
+                              style={{ minWidth: "75px" }}
+                            >
                               <img
                                 alt=""
                                 src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
@@ -457,7 +504,10 @@ const Profile = () => {
                           >
                             <p className=" me-2">Language:</p>
                             <div>
-                              <p className="imgwidth d-flex  ms-2 me-2" style={{ minWidth: '75px' }}>
+                              <p
+                                className="imgwidth d-flex  ms-2 me-2"
+                                style={{ minWidth: "75px" }}
+                              >
                                 <img
                                   alt=""
                                   src={`https://flagsapi.com/GB/flat/16.png`}
@@ -473,7 +523,10 @@ const Profile = () => {
                           >
                             <p className=" me-2">TimeZone:</p>
 
-                            <p className=" ms-2 me-2" style={{ minWidth: '75px' }}>
+                            <p
+                              className=" ms-2 me-2"
+                              style={{ minWidth: "75px" }}
+                            >
                               {timeZoneVal && timeZoneVal[0]?.name}
                             </p>
                           </div>
@@ -483,82 +536,90 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              {isCustomerAdmin && <div className="row">
-                <div className="col-md-12">
-                  <div className="profileView mt-2">
-                    <div className="profileDetailsHolder p-0">
-                      {/* <div className="ribbon">Subscription Details</div> */}
-                      <div className="row" style={{ padding: "15px" }}>
-                        <div className="col-12 header">
-                          Subscription Details
-                        </div>
-                        <div className="wrapper0">
-                          <ul>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Package Name</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails.package.name}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Package Price</label>{" "}
-                              <label className="formLabel details">
-                                ${accountDetails.package.offer_price}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">Package Type</label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails.package.subscription_type}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">
-                                Subscription Start
-                              </label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.subscription?.[0].start_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">
-                                Subscription End
-                              </label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.subscription?.[0].end_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">
-                                Time of Payment
-                              </label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].transaction_date}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-1">
-                              <label className="formLabel">
-                                Payment Status
-                              </label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].payment_status}
-                              </label>
-                            </li>
-                            <li className="d-flex justify-content-between border-bottom py-2">
-                              <label className="formLabel">
-                                Transaction Id
-                              </label>{" "}
-                              <label className="formLabel details">
-                                {accountDetails?.payments[0].transaction_id}
-                              </label>
-                            </li>
-                          </ul>
+              {isCustomerAdmin && (
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="profileView mt-2">
+                      <div className="profileDetailsHolder p-0">
+                        {/* <div className="ribbon">Subscription Details</div> */}
+                        <div className="row" style={{ padding: "15px" }}>
+                          <div className="col-12 header">
+                            Subscription Details
+                          </div>
+                          <div className="wrapper0">
+                            <ul>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Package Name
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails.package.name}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Package Price
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  ${accountDetails.package.offer_price}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Package Type
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails.package.subscription_type}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Subscription Start
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.subscription?.[0].start_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Subscription End
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.subscription?.[0].end_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Time of Payment
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].transaction_date}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-1">
+                                <label className="formLabel">
+                                  Payment Status
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].payment_status}
+                                </label>
+                              </li>
+                              <li className="d-flex justify-content-between border-bottom py-2">
+                                <label className="formLabel">
+                                  Transaction Id
+                                </label>{" "}
+                                <label className="formLabel details">
+                                  {accountDetails?.payments[0].transaction_id}
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>}
+              )}
             </div>
 
             <div className="col-xl-3">
