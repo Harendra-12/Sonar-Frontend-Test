@@ -35,7 +35,7 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
-  const { sessions: sipSessions } = useSIPProvider();
+  const { sessions: sipSessions,sessionManager, connectStatus,registerStatus } = useSIPProvider();
   const dispatch = useDispatch();
   const callCenterPopUp = useSelector((state) => state.callCenterPopUp);
   const sessions = useSelector((state) => state.sessions);
