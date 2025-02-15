@@ -10,6 +10,7 @@ import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -34,6 +35,23 @@ const Dashboard = () => {
   const [time, setTime] = useState(new Date());
 
   // Setting clock for the selected timnezone
+  useEffect(() => {
+    const updateAccountDetails = async () => {
+      try {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    updateAccountDetails();
+  }, []);
+  
   useEffect(() => {
     if (timeZoneRefresh > 0) {
 
