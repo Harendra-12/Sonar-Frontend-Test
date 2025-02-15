@@ -114,7 +114,7 @@ function UserConfiguration() {
                       >
                         User Settings
                       </button>
-                      <button
+                      {/* <button
                         class="nav-link"
                         id="nav-exten-tab"
                         data-bs-toggle="tab"
@@ -125,7 +125,7 @@ function UserConfiguration() {
                         aria-selected="false"
                       >
                         Permissions Configuration
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   <div

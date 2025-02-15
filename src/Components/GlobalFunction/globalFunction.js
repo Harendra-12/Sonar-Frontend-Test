@@ -263,13 +263,13 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
           `Error updating ${failedResponses.length} agents:`,
           failedResponses
         );
-        alert(
-          `Failed to update ${failedResponses.length} agents. Please try again.`
-        );
+        // alert(
+        //   `Failed to update ${failedResponses.length} agents. Please try again.`
+        // );
       }
     } catch (error) {
       console.error("Unexpected error in logout:", error);
-      alert("Something went wrong. Please try again.");
+      // alert("Something went wrong. Please try again.");
     }
   }
   // Dispatch logout action and disconnect session

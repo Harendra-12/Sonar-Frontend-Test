@@ -89,6 +89,7 @@ function Messages({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false)
+console.log("groupSelecedAgents", groupSelecedAgents);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -468,10 +469,10 @@ function Messages({
       if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
         setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
-        setGroupSelecedAgents((prevSelected) => {
-          return [...apiData.data.filter((item) => item.email === account.email)];
-        }
-        )
+        // setGroupSelecedAgents((prevSelected) => {
+        //   return [...apiData.data.filter((item) => item.email === account.email)];
+        // }
+        // )
       }
     }
     getData();
@@ -807,7 +808,7 @@ function Messages({
     setNewGroupLoader(true);
     const parsedData = {
       group_name: groupname,
-      user_id: groupSelecedAgents.map((agent) => agent.id),
+      user_id: [...groupSelecedAgents.map((agent) => agent.id),account.id],
     };
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
