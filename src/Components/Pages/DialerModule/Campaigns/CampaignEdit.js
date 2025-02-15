@@ -1881,7 +1881,7 @@ function CampaignCreate() {
                           </div>
                           <div className="col-6">
                             <input
-                              type="text"
+                              type="number"
                               className="formItem"
                               value={leadsEditState.phone_code}
                               onChange={(e) => {
