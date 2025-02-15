@@ -3,6 +3,7 @@ import Header from "../../CommonComponents/Header";
 import {
   backToTop,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import UsersEdit from "./UsersEdit";
@@ -13,6 +14,10 @@ function UserConfiguration() {
   const [userPermission, setUserPermission] = useState([]);
   const [userPermissionData, setUserPermissionData] = useState([]);
   const [activeUserPermission, setActiveUserPermission] = useState([]);
+  const [usersDetails, setUsersDetails] = useState({
+    user_id: "",
+    role_id: "",
+  });
   const [checkedUserPermissionData, setCheckedUserPermissionData] = useState(
     []
   );
@@ -21,24 +26,36 @@ function UserConfiguration() {
     const permissionData = async () => {
       try {
         const response = await generalGetFunction("/table-permission-all");
-        setUserPermission(response.data);
-        setUserPermissionData(response.data[Object.keys(response.data)[0]]);
-        setActiveUserPermission(Object.keys(response.data)[0]);
+        setUserPermission(response?.data);
+        setUserPermissionData(response?.data[Object.keys(response?.data)[0]]);
+        setActiveUserPermission(Object.keys(response?.data)[0]);
       } catch (error) {
         console.log(error);
       }
     };
     permissionData();
   }, []);
-  console.log(
-    "00000000user",
-    { userPermission },
-    { userPermissionData },
-    { checkedUserPermissionData }
-  );
   const handleSetUserPermissionData = (data) => {
     setUserPermissionData(userPermission[data]);
     setActiveUserPermission(data);
+  };
+  const handlePermissionSave = async () => {
+    const payload = {
+      ...usersDetails,
+      tb_permissions: checkedUserPermissionData,
+    };
+    try {
+      const res = generalPostFunction("/assign-table-permissions ", payload);
+      if (res?.status) {
+        setUserPermission({
+          user_id: "",
+          role_id: "",
+        });
+        setCheckedUserPermissionData([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -127,7 +144,10 @@ function UserConfiguration() {
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit page="marginleftAdjust" />
+                      <UsersEdit
+                        page="marginleftAdjust"
+                        setUsersDetails={setUsersDetails}
+                      />
                     </div>
                     <div
                       class="tab-pane fade"
@@ -177,6 +197,7 @@ function UserConfiguration() {
                                           type="button"
                                           effect="ripple"
                                           className="panelButton"
+                                          onClick={() => handlePermissionSave()}
                                         >
                                           <span className="text">Save</span>
                                           <span className="icon">
@@ -265,7 +286,10 @@ function UserConfiguration() {
                                               {userPermissionData.map(
                                                 (item) => {
                                                   return (
-                                                    <div className="formRow col-xl-3">
+                                                    <div
+                                                      className="formRow col-xl-3"
+                                                      key={item?.id}
+                                                    >
                                                       <div className="formLabel">
                                                         <label htmlFor="">
                                                           {item.column_name}
@@ -274,6 +298,9 @@ function UserConfiguration() {
                                                       <div className="col-xl-6 col-12">
                                                         <input
                                                           type="checkbox"
+                                                          checked={checkedUserPermissionData.includes(
+                                                            item?.id
+                                                          )}
                                                           onChange={(e) => {
                                                             if (
                                                               e.target.checked
@@ -281,8 +308,18 @@ function UserConfiguration() {
                                                               setCheckedUserPermissionData(
                                                                 (pre) => [
                                                                   ...pre,
-                                                                  item.id,
+                                                                  item?.id,
                                                                 ]
+                                                              );
+                                                            } else {
+                                                              const newCheck =
+                                                                checkedUserPermissionData.filter(
+                                                                  (id) =>
+                                                                    id !==
+                                                                    item?.id
+                                                                );
+                                                              setCheckedUserPermissionData(
+                                                                newCheck
                                                               );
                                                             }
                                                           }}

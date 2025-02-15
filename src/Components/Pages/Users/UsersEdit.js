@@ -22,14 +22,16 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
-const UsersEdit = ({ page }) => {
+const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const locationState = location.state;
   const showHeader = location.pathname == "/users-edit";
   const accountDetails = useSelector((state) => state.accountDetails);
-  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
@@ -131,6 +133,8 @@ const UsersEdit = ({ page }) => {
                 role_id: `${role_id}`,
               },
             };
+            setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
+            setSelectedSearch(newData.extension_id);
             if (!isCustomerAdmin) {
               console.log(isCustomerAdmin);
               setSelectedPermission(newData.permissions);
@@ -194,20 +198,17 @@ const UsersEdit = ({ page }) => {
         label: extension.extension,
       }));
 
-      setSearchExtensions([
-        { value: null, label: "None" },
-        ...options,
-      ]);
+      setSearchExtensions([{ value: null, label: "None" }, ...options]);
     }
-  }, [accountDetails, user, locationState,extension]);
+  }, [accountDetails, user, locationState, extension]);
 
   // Get the latest data of account
-  useEffect(()=>{
+  useEffect(() => {
     dispatch({
-      type:"SET_ACCOUNTDETAILSREFRESH",
+      type: "SET_ACCOUNTDETAILSREFRESH",
       accountDetailsRefresh: accountDetailsRefresh + 1,
-    })
-  },[])
+    });
+  }, []);
   // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
@@ -337,7 +338,7 @@ const UsersEdit = ({ page }) => {
   };
   const handleSelectInputChange = (inputValue, { action }) => {
     if (action === "input-change") {
-      const numericInput = inputValue.replace(/[^0-9]/g, '');
+      const numericInput = inputValue.replace(/[^0-9]/g, "");
       // setSelectedExtension(numericInput)
       return numericInput;
     }
@@ -353,7 +354,9 @@ const UsersEdit = ({ page }) => {
       `}
       </style>
       <main
-        className={page === "marginleftAdjust" ? "mainContentAgents ms-0" : "mainContent"}
+        className={
+          page === "marginleftAdjust" ? "mainContentAgents ms-0" : "mainContent"
+        }
       >
         <section id="phonePage">
           {showHeader && (
@@ -619,8 +622,8 @@ const UsersEdit = ({ page }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                          return item.permission_id;
-                                        })
+                                            return item.permission_id;
+                                          })
                                     );
                                   }}
                                 >
@@ -659,7 +662,7 @@ const UsersEdit = ({ page }) => {
                                     watch().extension_id ? "col-8" : "col-12"
                                   }
                                 >
-                                  {watch().extension_id ?
+                                  {watch().extension_id ? (
                                     <Select
                                       isDisabled={true}
                                       placeholder="Available Extensions"
@@ -695,9 +698,10 @@ const UsersEdit = ({ page }) => {
                                           justifyContent: "start",
                                           marginBottom: "15px",
                                         }),
-
                                       }}
-                                    /> : <Select
+                                    />
+                                  ) : (
+                                    <Select
                                       options={searchExtensions}
                                       placeholder="No extension assigned"
                                       isClearable={false}
@@ -729,11 +733,9 @@ const UsersEdit = ({ page }) => {
                                           justifyContent: "start",
                                           marginBottom: "15px",
                                         }),
-
                                       }}
                                     />
-
-                                  }
+                                  )}
                                 </div>
                                 {watch().extension_id && (
                                   <div className="col-4">
@@ -962,8 +964,9 @@ const UsersEdit = ({ page }) => {
                               />
                             </div>
                             <div
-                              className={`${watch().extension_id ? "col-5" : "col-5"
-                                }`}
+                              className={`${
+                                watch().extension_id ? "col-5" : "col-5"
+                              }`}
                             >
                               <select
                                 className="formItem"
@@ -972,8 +975,8 @@ const UsersEdit = ({ page }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                              // value={watch().extension_id}
-                              // {...register("extension_id")}
+                                // value={watch().extension_id}
+                                // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>
