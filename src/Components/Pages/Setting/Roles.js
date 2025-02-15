@@ -30,6 +30,7 @@ function Roles() {
   const [editIndex, setEditIndex] = useState();
   const [newRole, setNewRole] = useState("");
   const [addRole, setAddRole] = useState(false);
+  const [addRolePopup, setAddRolePopup] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState();
   const [loading, setLoading] = useState(true);
   const [selectedRoleId, setSelectedRoleId] = useState();
@@ -187,13 +188,13 @@ function Roles() {
 
     const parsedData = isNewRole
       ? {
-          role_id: newAddedRoleId,
-          permissions: addNewRolePermissions,
-        }
+        role_id: newAddedRoleId,
+        permissions: addNewRolePermissions,
+      }
       : {
-          role_id: selectedRoleId,
-          permissions: selectedPermission,
-        };
+        role_id: selectedRoleId,
+        permissions: selectedPermission,
+      };
     try {
       const apiData = await generalPostFunction(
         "/assign-permission-role",
@@ -380,6 +381,7 @@ function Roles() {
                             <button
                               onClick={() => {
                                 setAddRole(true);
+                                setAddRolePopup(true);
                                 setEditClick(false);
                                 setAddSelectedRoleId("");
                               }}
@@ -418,7 +420,7 @@ function Roles() {
                       >
                         <div className="masterSegment">
                           <ul>
-                            {addRole ? (
+                            {/* {addRole ? (
                               <li>
                                 <div className="col-xl-8 col-7">
                                   <input
@@ -459,24 +461,24 @@ function Roles() {
                               </li>
                             ) : (
                               ""
-                            )}
+                            )} */}
                             {role &&
                               role.map((item, index) => {
                                 return (
                                   <li
                                     key={index}
                                     onClick={() => {
-                                            setSelectedRoleId(item.id);
-                                            setSelectedRole(item.name);
-                                            setSelectedIsDefault(
-                                              () => item?.is_default
-                                            );
-                                            setSelectedPermission(
-                                              item?.permissions?.map((item) => {
-                                                return item.permission_id;
-                                              })
-                                            );
-                                          }}
+                                      setSelectedRoleId(item.id);
+                                      setSelectedRole(item.name);
+                                      setSelectedIsDefault(
+                                        () => item?.is_default
+                                      );
+                                      setSelectedPermission(
+                                        item?.permissions?.map((item) => {
+                                          return item.permission_id;
+                                        })
+                                      );
+                                    }}
                                     className={
                                       selectedRoleId === item.id ? "active" : ""
                                     }
@@ -677,7 +679,7 @@ function Roles() {
                                                 <label>{item}</label>
                                               </button>
                                             </h2>
-                                            <div 
+                                            <div
                                               id={`collapseRole${key}`}
                                               class="accordion-collapse collapse"
                                               aria-labelledby={`collapseHeading${key}`}
@@ -801,20 +803,21 @@ function Roles() {
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-5 col-md-5">
+                <div className="row content col-xxl-4 col-xl-5 col-xl-5 col-md-5">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-circle-exclamation"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
-                 
+
                     {saveClick ? (
                       <div >
-                        <span>
-                          Choose which role you want to add to this role?
-                        </span>
-                        <div className="mt-2">
+                        <h4>
+                          Choose template permission!
+                        </h4>
+                        <p className="mt-1 mb-0">You need to choose a template from the list below</p>
+                        <div className="mt-2 mb-3">
                           <select
                             className="col-8 formItem"
                             value={addSelectedRoleId || ""}
@@ -834,7 +837,7 @@ function Roles() {
                             }}
                           >
                             <option value="" disabled>
-                              Please Select Role
+                              Please Select Template
                             </option>
                             {roles.map((item, key) => {
                               return (
@@ -845,13 +848,13 @@ function Roles() {
                             })}
                           </select>
                         </div>
-                     <div className="mt-3">
-                     <p>
-                          Are you sure you want to add this Role:{" "}
-                          <b style={{ color: "var(--ui-accent)" }}>{newRole}</b>
-                          ?
-                        </p>
-                     </div>
+                        {/* <div className="mt-3">
+                          <p>
+                            Are you sure you want to add this Role:{" "}
+                            <b style={{ color: "var(--ui-accent)" }}>{newRole}</b>
+                            ?
+                          </p>
+                        </div> */}
                       </div>
                     ) : editClick ? (
                       <p>
@@ -866,13 +869,16 @@ function Roles() {
                         ?
                       </p>
                     ) : (
-                      <p>
-                        Are you sure you want to delete this{" "}
-                        <b style={{ color: "var(--ui-accent)" }}>
-                          {role[deleteIndex].name}
-                        </b>{" "}
-                        ?
-                      </p>
+                      <>
+                        <h4>Confirmation</h4>
+                        <p className="mt-1">
+                          Are you sure you want to delete this role:{" "}
+                          <b style={{ color: "var(--ui-accent)" }}>
+                            {role[deleteIndex].name}
+                          </b>{" "}
+                          ?
+                        </p>
+                      </>
                     )}
 
                     <div className="d-flex justify-content-between">
@@ -913,92 +919,23 @@ function Roles() {
         {/* set permissions of new role */}
         {submitPopup ? (
           <div className="addNewContactPopup profileDetailsHolder">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add role and permission </h5>
-            </div>
-                  <div>
-                    <div class="accordion permissionListWrapper ">
-                      {selectedRole === "Agent" ? (
-                        <div className="d-flex flex-column">
-                          <span>
-                            This will apper only for agents (Agents will only
-                            access webrtc)
-                          </span>
-                          <div class="accordion permissionListWrapper ">
-                            {filteredPermission &&
-                              Object.keys(filteredPermission).map(
-                                (item, key) => (
-                                  <div className="accordion-item" key={key}>
-                                    <h2
-                                      class="accordion-header"
-                                      id={`collapseHeading${key}`}
-                                    >
-                                      <button
-                                        class="accordion-button collapsed"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target={`#collapseRole${key}`}
-                                        aria-expanded="true"
-                                        aria-controls={`collapse${key}`}
-                                      >
-                                        <input
-                                          type="checkbox"
-                                          checked={
-                                            addNewRoleParentChecked[item]
-                                          }
-                                          onChange={() =>
-                                            handleSubmitParentCheckboxChange(
-                                              item
-                                            )
-                                          }
-                                        />
-
-                                        <label>{item}</label>
-                                      </button>
-                                    </h2>
-                                    <div
-                                      id={`collapseRole${key}`}
-                                      class="accordion-collapse collapse"
-                                      aria-labelledby={`collapseHeading${key}`}
-                                    >
-                                      <div class="accordion-body">
-                                        {filteredPermission[item].map(
-                                          (innerItem, key) => (
-                                            <div
-                                              className="col-xxl col-auto col-md-4 col-6"
-                                              key={key}
-                                            >
-                                              <input
-                                                type="checkbox"
-                                                id={`permission-${innerItem.id}`}
-                                                checked={addNewRolePermissions?.includes(
-                                                  innerItem.id
-                                                )}
-                                                onChange={() =>
-                                                  handleSubmitCheckboxChange(
-                                                    innerItem.id
-                                                  )
-                                                }
-                                              />
-                                              <label className="formLabel ms-2 text-capitalize">
-                                                {innerItem.action}
-                                              </label>
-                                            </div>
-                                          )
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                          </div>
-                        </div>
-                      ) : (
-                        <div class="accordion permissionListWrapper h-auto">
-                          {filteredPermission &&
-                            Object.keys(filteredPermission).map((item, key) => (
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Select Permissions for this Role</h5>
+              </div>
+              <div>
+                <div class="accordion permissionListWrapper ">
+                  {selectedRole === "Agent" ? (
+                    <div className="d-flex flex-column">
+                      <span>
+                        This will apper only for agents (Agents will only
+                        access webrtc)
+                      </span>
+                      <div class="accordion permissionListWrapper ">
+                        {filteredPermission &&
+                          Object.keys(filteredPermission).map(
+                            (item, key) => (
                               <div className="accordion-item" key={key}>
                                 <h2
                                   class="accordion-header"
@@ -1014,9 +951,13 @@ function Roles() {
                                   >
                                     <input
                                       type="checkbox"
-                                      checked={addNewRoleParentChecked[item]}
+                                      checked={
+                                        addNewRoleParentChecked[item]
+                                      }
                                       onChange={() =>
-                                        handleSubmitParentCheckboxChange(item)
+                                        handleSubmitParentCheckboxChange(
+                                          item
+                                        )
                                       }
                                     />
 
@@ -1038,7 +979,7 @@ function Roles() {
                                           <input
                                             type="checkbox"
                                             id={`permission-${innerItem.id}`}
-                                            checked={addNewRolePermissions.includes(
+                                            checked={addNewRolePermissions?.includes(
                                               innerItem.id
                                             )}
                                             onChange={() =>
@@ -1056,38 +997,174 @@ function Roles() {
                                   </div>
                                 </div>
                               </div>
-                            ))}
-                        </div>
-                      )}
+                            )
+                          )}
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-between mt-2">
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          handlePermissionSave(true);
-                        }}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                      <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => {
-                          setSubmitPopup(false);
-                        }}
-                      >
-                        <span className="text">Cancel</span>
-                        <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
-                        </span>
-                      </button>
+                  ) : (
+                    <div class="accordion permissionListWrapper h-auto">
+                      {filteredPermission &&
+                        Object.keys(filteredPermission).map((item, key) => (
+                          <div className="accordion-item" key={key}>
+                            <h2
+                              class="accordion-header"
+                              id={`collapseHeading${key}`}
+                            >
+                              <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target={`#collapseRole${key}`}
+                                aria-expanded="true"
+                                aria-controls={`collapse${key}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={addNewRoleParentChecked[item]}
+                                  onChange={() =>
+                                    handleSubmitParentCheckboxChange(item)
+                                  }
+                                />
+
+                                <label>{item}</label>
+                              </button>
+                            </h2>
+                            <div
+                              id={`collapseRole${key}`}
+                              class="accordion-collapse collapse"
+                              aria-labelledby={`collapseHeading${key}`}
+                            >
+                              <div class="accordion-body">
+                                {filteredPermission[item].map(
+                                  (innerItem, key) => (
+                                    <div
+                                      className="col-xxl col-auto col-md-4 col-6"
+                                      key={key}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        id={`permission-${innerItem.id}`}
+                                        checked={addNewRolePermissions.includes(
+                                          innerItem.id
+                                        )}
+                                        onChange={() =>
+                                          handleSubmitCheckboxChange(
+                                            innerItem.id
+                                          )
+                                        }
+                                      />
+                                      <label className="formLabel ms-2 text-capitalize">
+                                        {innerItem.action}
+                                      </label>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+                <div className="d-flex justify-content-between mt-2">
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => {
+                      handlePermissionSave(true);
+                    }}
+                  >
+                    <span className="text">Confirm</span>
+                    <span className="icon">
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton gray m-0 float-end"
+                    onClick={() => {
+                      setSubmitPopup(false);
+                    }}
+                  >
+                    <span className="text">Cancel</span>
+                    <span className="icon">
+                      <i class="fa-solid fa-xmark"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {addRole ? addRolePopup && (
+          <>
+            <div className="popup">
+              <div className="container h-100">
+                <div className="row h-100 justify-content-center align-items-center">
+                  <div className="row content col-xxl-4 col-xl-5 col-md-5">
+                    <div className="col-2 px-0">
+                      <div className="iconWrapper">
+                        <i className="fa-duotone fa-circle-exclamation"></i>
+                      </div>
+                    </div>
+                    <div className="col-10 ps-0">
+                      <div >
+                        <h4>
+                          Please type the name of new role below
+                        </h4>
+                      </div>
+                      <div className="my-2">
+                        <input
+                          type="text"
+                          value={newRole}
+                          className="formItem"
+                          // onChange={(e) => setNewRole(e.target.value)}
+                          onChange={handleChange}
+                          placeholder="Add new Role"
+                          //on enter press, add new role
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              setPopup(true);
+                              setSaveClick(true);
+                              setAddRolePopup(false);
+                            }
+                          }}
+                        ></input>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            setPopup(true);
+                            setSaveClick(true);
+                            setAddRolePopup(false);
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                        <button
+                          className="panelButton gray m-0 float-end"
+                          onClick={() => {
+                            setAddRole(false);
+                            setNewRole("");
+                          }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i class="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-           
+            </div>
+          </>
         ) : (
           ""
         )}

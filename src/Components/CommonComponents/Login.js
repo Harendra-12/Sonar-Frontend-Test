@@ -7,19 +7,9 @@ import {
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function Login() {
-  const account = useSelector((state) => state.account);
-  const navigate = useNavigate();
-  // useEffect(()=>{
-  //   if(account?.user_role?.roles?.name==="Agent"){
-  //     navigate("/webrtc")
-  //   }else if(account?.id){
-  //     navigate("/dashboard")
-  //   }
-  // })
-  
   return (
     <>
       <style>

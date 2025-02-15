@@ -701,8 +701,16 @@ const UsersAdd = () => {
                                   ...provided,
                                   fontSize: "14px",
                                 }),
-                                option: (provided) => ({
+                                option: (provided, state) => ({
                                   ...provided,
+                                  paddingLeft: "15px",
+                                  paddingTop: 0,
+                                  paddingBottom: 0,
+                                  backgroundColor: state.isSelected ? "#5a9fff" : "transparent",
+                                  "&:hover": {
+                                    backgroundColor: "#0055cc",
+                                    color: "#fff",
+                                  },
                                   fontSize: "14px",
                                 }),
                                 menu: (provided) => ({

@@ -446,6 +446,7 @@ function CdrReport({ page }) {
                             setEndDateFlag("");
                           }}
                         >
+                          
                           <option value={"date"}>Single Date</option>
                           <option value={"date_range"}>Date Range</option>
                           <option value={"7_days"}>Last 7 Days</option>
@@ -795,15 +796,28 @@ function CdrReport({ page }) {
                                             ></i>{" "}
                                             Missed
                                           </span>
-                                        ) : (
-                                          <span>
-                                            <i
-                                              class="fa-solid fa-headset me-1"
-                                              style={{ color: "var(--color2)" }}
-                                            ></i>{" "}
-                                            Internal
-                                          </span>
-                                        )}
+                                        )
+                                          : item["Call-Direction"] ===
+                                            "transfer" ? (
+                                            <span>
+                                              <i
+                                                class="fa-solid fa-phone-missed me-1"
+                                                style={{
+                                                  color: "var(--funky-boy3)",
+                                                }}
+                                              ></i>{" "}
+                                              Transfer
+                                            </span>
+                                          )
+                                            : (
+                                              <span>
+                                                <i
+                                                  class="fa-solid fa-headset me-1"
+                                                  style={{ color: "var(--color2)" }}
+                                                ></i>{" "}
+                                                Internal
+                                              </span>
+                                            )}
                                       </td>
                                       {page === "billing" ? (
                                         ""

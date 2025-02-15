@@ -38,7 +38,7 @@ const UsersEdit = ({ page }) => {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
-  const [filterExtensions, setFilterExtensions] = useState();
+  // const [filterExtensions, setFilterExtensions] = useState();
   const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
@@ -187,7 +187,7 @@ const UsersEdit = ({ page }) => {
           );
         });
       });
-      setFilterExtensions(data);
+      // setFilterExtensions(data);
 
       const options = data?.map((extension) => ({
         value: extension.id,

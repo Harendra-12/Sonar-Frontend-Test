@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,7 +9,6 @@ import {
 import { useForm } from "react-hook-form";
 import {
   lengthValidator,
-  minValidator,
   numberValidator,
   requiredValidator,
   restrictToMacAddress,

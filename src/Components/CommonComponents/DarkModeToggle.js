@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
 
 function DarkModeToggle({ marginLeft }) {
@@ -11,8 +12,6 @@ function DarkModeToggle({ marginLeft }) {
             localStorage.setItem("theme", "dark");
             document.body.classList.add("dark");
             root.classList.add("dark");
-
-            const darkLink = document.createElement("link");
         } else {
             localStorage.setItem("theme", "light");
             root.classList.remove("dark");

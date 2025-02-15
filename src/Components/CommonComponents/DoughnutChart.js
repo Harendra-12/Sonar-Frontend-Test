@@ -1,7 +1,6 @@
 import React from 'react';
-import { Doughnut, PolarArea } from 'react-chartjs-2';
+import {  PolarArea } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, PolarAreaController, RadialLinearScale, PointElement, LineElement } from 'chart.js';
-import { styled } from '@mui/material';
 
 // Register necessary components
 ChartJS.register(PolarAreaController, RadialLinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);

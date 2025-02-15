@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
@@ -18,7 +19,7 @@ const ActionListMulti = ({
   const [callCenter, setCallCenter] = useState([]);
   const [ivr, setIvr] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedTypes, setSelectedTypes] = useState([]); // New state for types
+  const [setSelectedTypes] = useState([]); // New state for types
 
   // Redux selectors for state
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
