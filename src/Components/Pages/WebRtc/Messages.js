@@ -941,6 +941,20 @@ console.log("groupSelecedAgents", groupSelecedAgents);
       toast.error(apiData.message)
     }
   }
+
+  // Handle delete group 
+  async function handleDeleteGroup(id) {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
+    if(apiData.status){
+      setLoading(false);
+      toast.success(apiData.message)
+      setGroupRefresh(groupRefresh + 1);
+    }else{
+      setLoading(false);
+      toast.error(apiData.message)
+    }
+  }
   const example = []
   const newExample = []
   console.log(example === newExample)
@@ -1760,7 +1774,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                             </div>
                                           </li>
                                           <li>
-                                            <div className="dropdown-item text-danger">
+                                            <div className="dropdown-item text-danger" onClick={() => handleDeleteGroup(item.id)}>
                                               Delete Group Chat
                                             </div>
                                           </li>
