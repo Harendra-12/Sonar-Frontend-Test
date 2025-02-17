@@ -80,7 +80,7 @@ const RingGroupAdd = () => {
 
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if (allUserRefresh > 0 && !loading) {
       if (allUserArr.length === 0) {
         toast.error("Please create user first");
       } else {
@@ -132,7 +132,7 @@ const RingGroupAdd = () => {
 
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if (allUserRefresh > 0 && !loading) {
       const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
@@ -142,10 +142,10 @@ const RingGroupAdd = () => {
         toast.error("No user found with assign extension");
       }
     } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+      // dispatch({
+      //   type: "SET_ALLUSERREFRESH",
+      //   allUserRefresh: allUserRefresh + 1,
+      // });
     }
 
     if (extensionRefresh > 0) {

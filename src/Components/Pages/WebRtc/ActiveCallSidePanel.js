@@ -312,7 +312,7 @@ function ActiveCallSidePanel({
           <div className="callBtnGrp my-auto ms-auto">
             <button
               className="appPanelButtonCaller bg-warning"
-              onClick={() => holdCall("unhold")}
+              // onClick={() => holdCall("unhold")}
             >
               <i class="fa-solid fa-pause"></i>
             </button>

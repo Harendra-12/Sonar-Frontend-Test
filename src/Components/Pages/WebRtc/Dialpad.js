@@ -215,20 +215,26 @@ function Dialpad({
                   className="d-flex justify-content-between align-items-center"
                   style={{ width: "75%", margin: "auto" }}
                 >
-                  <input
-                    type="text"
-                    placeholder="Dial"
-                    className="dialerInput"
-                    ref={dialpadRef}
-                    value={destNumber}
-                    // onChange={(e) => setDestNumber(e.target.value)}
-                    onChange={handleInputChange}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        onSubmit("audio");
-                      }
-                    }}
-                  />
+                  <div className="position-relative">
+                    <input
+                      type="text"
+                      placeholder="Dial"
+                      className="dialerInput w-100"
+                      ref={dialpadRef}
+                      value={destNumber}
+                      // onChange={(e) => setDestNumber(e.target.value)}
+                      onChange={handleInputChange}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          onSubmit("audio");
+                        }
+                      }}
+                    />
+                    {destNumber.length > 0 && (
+                        <i onClick={()=>setDestNumber(destNumber.slice(0,-1))} className="fa-solid fa-xmark text-white position-absolute" style={{ top: '50%', right: 10, transform: 'translateY(-50%)',cursor: 'pointer' }}></i>
+                    )}
+                   
+                  </div>
                   <div
                     className="ms-3 d-flex align-items-center"
                     onClick={() => setSavedContactShow(true)}
