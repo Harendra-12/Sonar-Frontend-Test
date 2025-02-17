@@ -62,133 +62,136 @@ const RingGroup = () => {
   }, [ringGroup, activeCall]);
 
   return (
-    <div
-      className="tabGroupDetails"
-      data-id={2}
-    // style={{ display: "none" }}
-    >
-      <div className="col-12">
-        <div className="col-12 title text-start">
-          <i className="fa-duotone fa-ball-pile" /> Ring Group{" "}
-          {ringGroupDataLoading && (
-            <i class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}></i>
-          )}
-        </div>
-        {ringGroupData &&
-          ringGroup &&
-          ringGroup.map((call) => (
-            <div className="row my-3 gx-xxl-3 gx-xl-2">
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Ring Group</div>
-                  <div className="data-number" style={{ fontSize: "19px" }}>
-                    {`${call.name}`}
-                  </div>
-                  <div className="label2">Extension - {call.extension}</div>
-                </div>
+    <div className="overviewTableWrapper px-0 pt-0">
+      <div className="overviewTableChild">
+        <div className="d-flex flex-wrap">
+          <div className="col-12">
+            <div className="heading">
+              <div className="content">
+                <h4>Ring Group</h4>
+                <p>You can see a brief analysis of all the ring groups</p>
               </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Total Calls</div>
-                  <div className="data-number">
-                    {
-                      ringGroupData.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">100% of total calls</div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb b">
-                  <div className="heading">Total Calls Completed</div>
-                  <div className="data-number">
-                    {
-                      ringGroupData.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] === "SUCCESS"
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">
-                    Percentage{" "}
-                    {(
-                      (ringGroupData.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] === "SUCCESS"
-                      ).length /
-                        ringGroupData.filter(
-                          (data) =>
-                            data["Caller-Callee-ID-Number"] === call.extension
-                        ).length) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb d">
-                  <div className="heading">Missed Calls</div>
-                  <div className="data-number">
-                    {
-                      ringGroupData.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] !== "SUCCESS"
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">
-                    Percentage{" "}
-                    {(
-                      (ringGroupData.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] !== "SUCCESS"
-                      ).length /
-                        ringGroupData.filter(
-                          (data) =>
-                            data["Caller-Callee-ID-Number"] === call.extension
-                        ).length) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb c">
-                  <div className="heading">Active Calls</div>
-                  <div className="data-number">
-                    {
-                      activeCallData.filter((e) => e.dest === call.extension)
-                        .length
-                    }
-                  </div>
-                  <div className="label2">Percentage 0%</div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Total Extensions</div>
-                  <div className="data-number">0</div>
-                  <div className="label2">N/A</div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Total Spent</div>
-                  <div className="data-number">$0.00</div>
-                  <div className="label2">N/A</div>
-                </div>
+              <div className="buttonGroup">
+                <button effect="ripple" className="panelButton">
+                  <span className="text">Export</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-file-csv" />
+                  </span>
+                </button>
               </div>
             </div>
-          ))}
+          </div>
+          <div
+            className="col-12"
+            style={{ overflow: "auto", padding: "25px 20px 0px" }}
+          >
+            {/* <div className="tableHeader">
+                <div className="showEntries">
+                  <label>Show</label>
+                  <select className="formItem">
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>30</option>
+                  </select>
+                  <label>entries</label>
+                </div>
+                <div className="searchBox position-relative">
+                  <label>Search:</label>
+                  <input
+                    type="text"
+                    name="Search"
+                    placeholder="Search"
+                    className="formItem"
+                    defaultValue=""
+                  />
+                </div>
+              </div> */}
+            <div className="tableContainer" style={{ height: "30vh" }}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Total Calls</th>
+                    <th>Calls Completed</th>
+                    <th>Missed Calls</th>
+                    <th>Active Calls</th>
+                    <th style={{ width: '100px' }}>Members</th>
+                    <th>Destination</th>
+                  </tr>
+                </thead>
+                <tbody className="">
+                  {ringGroupData && ringGroup && ringGroup.map((call, index) => (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{call.name}</td>
+                      <td>
+                        {
+                          ringGroupData.filter(
+                            (data) =>
+                              data["Caller-Callee-ID-Number"] === call.extension
+                          ).length
+                        }
+                      </td>
+                      <td>
+                        {
+                          ringGroupData.filter(
+                            (data) =>
+                              data["Caller-Callee-ID-Number"] === call.extension &&
+                              data["variable_DIALSTATUS"] === "SUCCESS"
+                          ).length
+                        }
+                      </td>
+                      <td>
+                        {
+                          ringGroupData.filter(
+                            (data) =>
+                              data["Caller-Callee-ID-Number"] === call.extension &&
+                              data["variable_DIALSTATUS"] !== "SUCCESS"
+                          ).length
+                        }
+                      </td>
+                      <td>
+                        {
+                          activeCallData.filter((e) => e.dest === call.extension)
+                            .length
+                        }
+                      </td>
+                      <td>
+
+                        <div className="dropdown">
+                          <a
+                            style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            {call.ring_group_destination.length}
+                          </a>
+                          <ul className="dropdown-menu light" >
+                            <li className="col-12"><a className="dropdown-item fw-bold disabled">Extensions</a></li>
+                            <div style={{ columnCount: call.ring_group_destination.length > 6 ? 2 : 1 }}>
+                              {
+                                call.ring_group_destination.map((item, index) => (
+                                  <li>
+                                    <a className="dropdown-item">
+                                      {item.destination}
+                                    </a>
+                                  </li>
+                                ))
+                              }
+                            </div>
+                          </ul>
+                        </div>
+                      </td>
+                      <td>{call.extension}</td>
+                    </tr>)
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
