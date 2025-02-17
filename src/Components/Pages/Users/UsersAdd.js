@@ -119,6 +119,7 @@ const UsersAdd = () => {
         label: extension.extension,
       }));
       setFilterExtensions([
+        { value: null, label: "Available Extensions" },
         { value: null, label: "None" },
         ...options,
       ]);
@@ -276,6 +277,14 @@ const UsersAdd = () => {
 
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
+  };
+  const handleSelectInputChange = (inputValue, { action }) => {
+    if (action === "input-change") {
+      const numericInput = inputValue.replace(/[^0-9]/g, '');
+      // setSelectedExtension(numericInput)
+      return numericInput;
+    }
+    return inputValue;
   };
 
   return (
@@ -646,27 +655,68 @@ const UsersAdd = () => {
                             </label>
                           </div>
                           <div className="col-6">
+                            {/* <select
+                              className="formItem"
+                              name="extension_id"
+                              defaultValue=""
+                              {...register("extension_id")}
+                            >
+                              <option value="" disabled>
+                                Available Extensions
+                              </option>
+                              {filterExtensions &&
+                                filterExtensions.map((extension, key) => {
+                                  return (
+                                    <option value={extension.id} key={key}>
+                                      {extension.extension}
+                                    </option>
+                                  );
+                                })}
+                            </select> */}
                             <Select
                               options={filterExtensions}
                               placeholder="Available Extensions"
                               isClearable={false}
-                              defaultValue={"0"} // Default selected option
+                              defaultValue={{ value: "0", label: "0" }} // Default selected option
+                              onInputChange={handleSelectInputChange}
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));
                               }}
+                              // {...register("extension_id")}
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
                                   height: "25px",
                                   fontSize: "12px",
                                 }),
+                                valueContainer: (provided) => ({
+                                  ...provided,
+                                  height: "24px",
+                                }),
+                                input: (provided) => ({
+                                  ...provided,
+                                  margin: "0px",
+                                }),
                                 singleValue: (provided) => ({
                                   ...provided,
                                   fontSize: "14px",
                                 }),
-                                option: (provided) => ({
+                                option: (provided, state) => ({
                                   ...provided,
+                                  paddingLeft: "15px",
+                                  paddingTop: 0,
+                                  paddingBottom: 0,
+                                  backgroundColor: state.isSelected ? "#5a9fff" : "transparent",
+                                  "&:hover": {
+                                    backgroundColor: "#0055cc",
+                                    color: "#fff",
+                                  },
                                   fontSize: "14px",
+                                }),
+                                menu: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "120px",
+                                  // overflowY: "auto",
                                 }),
                                 placeholder: (provided) => ({
                                   ...provided,
@@ -676,7 +726,10 @@ const UsersAdd = () => {
                                   justifyContent: "start",
                                   marginBottom: "15px",
                                 }),
-                               
+                                menuList: (provided) => ({
+                                  ...provided,
+                                  maxHeight: "120px",
+                                }),
                               }}
                             />
                           </div>

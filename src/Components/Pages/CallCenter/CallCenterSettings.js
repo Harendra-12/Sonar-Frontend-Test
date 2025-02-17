@@ -1,13 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import Header from "../../CommonComponents/Header";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   generalGetFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
-import CircularLoader from "../../Loader/CircularLoader";
 import { useForm } from "react-hook-form";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 

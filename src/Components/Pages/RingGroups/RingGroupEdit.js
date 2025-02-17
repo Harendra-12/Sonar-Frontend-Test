@@ -41,7 +41,8 @@ const RingGroupEdit = () => {
   const [prevDestinations, setprevDestinations] = useState([]);
   const [getAllDataRefresh, setGetAllDataRefresh] = useState(0);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  const allUserArr = useSelector((state) => state.allUser);
+  // const allUserArr = useSelector((state) => state.allUser);
+  const [allUserArr, setAllUserArr] = useState([]);
   const [ringBack, setRingBack] = useState();
   const [user, setUser] = useState();
   const extension = useSelector((state) => state.extension);
@@ -102,10 +103,10 @@ const RingGroupEdit = () => {
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
     if (allUserRefresh > 0) {
-      if (allUserArr.data.length === 0) {
+      if (allUserArr?.length === 0) {
         toast.error("Please create user first");
       } else {
-        const filterUser = allUserArr.data.filter(
+        const filterUser = allUserArr.filter(
           (item) => item.extension_id !== null
         );
         if (filterUser.length > 0) {
@@ -122,6 +123,9 @@ const RingGroupEdit = () => {
     }
   }, [allUserArr]);
 
+  console.log("aaaaaaaa",user);
+  
+
   // Checking validation for the extension if extension not present then show message please create extension first and getting data of selcetdc ring group
   useEffect(() => {
     if (account && account.id) {
@@ -132,9 +136,8 @@ const RingGroupEdit = () => {
           `/user/search?account=${account.account_id}`
         );
         if (apidataUser?.status) {
-        } else {
-          navigate("/");
-        }
+          setAllUserArr(apidataUser.data);
+        } 
         if (ringData?.status) {
           setLoading(false);
 
@@ -217,7 +220,7 @@ const RingGroupEdit = () => {
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
     if (allUserRefresh > 0) {
-      const filterUser = allUserArr.data.filter(
+      const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
       if (filterUser.length > 0) {
@@ -436,7 +439,7 @@ const RingGroupEdit = () => {
         type: "SET_RINGGROUPREFRESH",
         ringGroupRefresh: ringGroupRefresh + 1,
       });
-      navigate("/ring-groups");
+      // navigate("/ring-groups");
     } else {
       setLoading(false);
     }
@@ -483,7 +486,7 @@ const RingGroupEdit = () => {
   const availableUsers = filteredUsers?.filter(
     (user) =>
       !destination.some(
-        (agent) => user.extension.extension == agent.destination
+        (agent) => user?.extension?.extension == agent.destination
       )
   );
 
@@ -538,7 +541,7 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           !bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item.extension.extension
+            (agent) => agent.extension.extension == item?.extension?.extension
           )
         ) {
           handleCheckboxChange(item);
@@ -549,7 +552,7 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item.extension.extension
+            (agent) => agent.extension.extension == item?.extension?.extension
           )
         ) {
           handleCheckboxChange(item);
@@ -1071,7 +1074,7 @@ const RingGroupEdit = () => {
                                     user
                                       .filter((item1) => {
                                         return (
-                                          item1.extension.extension ==
+                                          item1?.extension?.extension ==
                                           destination[index]?.destination ||
                                           !destination.some(
                                             (
@@ -1079,7 +1082,7 @@ const RingGroupEdit = () => {
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                              item1.extension.extension &&
+                                              item1?.extension?.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1312,7 +1315,7 @@ const RingGroupEdit = () => {
                         (user) =>
                           !destination.some(
                             (agent) =>
-                              user.extension.extension == agent.destination
+                              user?.extension?.extension == agent.destination
                           )
                       )
                       .map((item, index) => {
@@ -1320,7 +1323,7 @@ const RingGroupEdit = () => {
                           <tr key={item.id || index}>
                             <td>{index + 1}</td>
                             <td>{item.name}</td>
-                            <td>{item.extension.extension}</td>
+                            <td>{item?.extension?.extension}</td>
                             <td>
                               <input
                                 type="checkbox"

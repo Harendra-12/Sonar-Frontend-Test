@@ -86,7 +86,8 @@
   /* Light Mode */
   --color4: #abababa6;
   /* UI Items Color */
-  --color-subtext: #767676;
+  /* --color-subtext: #767676; */
+  --color-subtext: #606060;
   /* Contrast Subtext Color */
   --sideNav-width: 250px;
   --sideNavApp-width: 210px;

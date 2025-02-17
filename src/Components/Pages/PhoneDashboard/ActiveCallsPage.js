@@ -6,19 +6,19 @@ import { useSelector } from 'react-redux';
 function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
-    const ringingState = activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT");
+    const ringingState = activeCall.filter((item) => item.b_callstate !== "ACTIVE" || item.b_callstate !== "HELD");
 
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
-        acc[call.dialed_extension] = (acc[call.dialed_extension] || 0) + 1;
+        acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
 
 
-    const activeState = activeCall.filter((item) => item.callstate === "ACTIVE");
+    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE");
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
-        acc[call.dialed_extension] = (acc[call.dialed_extension] || 0) + 1;
+        acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
     console.log("-------------------------------------------------------------------------------------------------------", ringingState);
@@ -143,8 +143,9 @@ function ActiveCallsPage() {
                                                                     <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
-                                                                    <th>Started at</th>
                                                                     <th>Feature Tag</th>
+                                                                    <th>Started since</th>
+                                                                   
                                                                 </tr>
                                                             </thead>
 
@@ -157,8 +158,9 @@ function ActiveCallsPage() {
                                                                                 <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
-                                                                                <td>{item.created.split(" ")[1]}</td>
                                                                                 <td>{item.feature_tag}</td>
+                                                                                <td>{item.duration}</td>
+                                                                               
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
                                                                         )
@@ -178,8 +180,9 @@ function ActiveCallsPage() {
                                                                     <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
-                                                                    <th>Started at</th>
                                                                     <th>Feature Tag</th>
+                                                                    <th>Started at</th>
+                                                                   
                                                                 </tr>
                                                             </thead>
 
@@ -191,9 +194,9 @@ function ActiveCallsPage() {
                                                                                 <td>{key + 1}</td>
                                                                                 <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
-                                                                                <td>{item.presence_id.split("@")[0]}</td>
-                                                                                <td>{item.created.split(" ")[1]}</td>
+                                                                                <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
+                                                                                <td>{item.duration}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -214,8 +217,8 @@ function ActiveCallsPage() {
                                                                     <th>Did Tag</th>
                                                                     <th>From </th>
                                                                     <th>To</th>
-                                                                    <th>Started at</th>
                                                                     <th>Feature Tag</th>
+                                                                    <th>Started at</th>
                                                                 </tr>
                                                             </thead>
 
@@ -224,13 +227,13 @@ function ActiveCallsPage() {
                                                                     activeCall && ringingState.filter((call) => call.application_state === "callcenter").map((item, key) => {
                                                                         return (
                                                                             <tr>
-                                                                                <td>{key + 1}</td>
-                                                                                <td>{item.did_tag}</td>
-                                                                                <td>{item.cid_name}</td>
-                                                                                <td>{item.presence_id.split("@")[0]}</td>
-                                                                                <td>{item.created.split(" ")[1]}</td>
-                                                                                <td>{item.feature_tag}</td>
-                                                                            </tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item.did_tag}</td>
+                                                                            <td>{item.cid_name}</td>
+                                                                            <td>{item.dest}</td>
+                                                                            <td>{item.feature_tag}</td>
+                                                                            <td>{item.duration}</td>
+                                                                        </tr>
                                                                         )
                                                                     })
                                                                 }

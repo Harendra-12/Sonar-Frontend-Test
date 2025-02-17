@@ -63,8 +63,6 @@ const Socket = () => {
               }
               break;
             case "activeCalls":
-              console.log("-------------Active call---------------------------------",result);
-              
               dispatch({ type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item)=>({
                 ...item,
                 "serverTime":current_time

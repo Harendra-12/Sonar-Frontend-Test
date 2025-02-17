@@ -130,18 +130,6 @@ function ActiveCalls({ isWebrtc,filter }) {
       return null;
     }
   }
-  const calculateDuration = (createdAt, serverTime) => {
-    const createdAtTimestamp = new Date(createdAt).getTime();
-    const serverTimestamp = new Date(serverTime).getTime();
-    return Math.floor((serverTimestamp - createdAtTimestamp) / 1000); // Duration in seconds
-  };
-  
-  const formatDuration = (seconds) => {
-    const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
-    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const secs = String(seconds % 60).padStart(2, "0");
-    return `${hrs}:${mins}:${secs}`;
-  };
   return (
     <>
       <table>
@@ -163,7 +151,7 @@ function ActiveCalls({ isWebrtc,filter }) {
             filterCalls
               .filter(
                 (call) =>
-                  call.callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE" || call.callstate === "HELD"
+                  call.b_callstate === "ACTIVE" || call.b_callee_direction === "ACTIVE" || call.callstate === "HELD"
               ).map
               ((item, key) => {
                 return (

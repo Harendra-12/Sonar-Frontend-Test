@@ -1,7 +1,6 @@
 import React from 'react'
 import GraphChart from '../../CommonComponents/GraphChart'
 import Header from '../../CommonComponents/Header'
-import DoughnutChart from '../../CommonComponents/DoughnutChart'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 
 function TrackerDashboard() {

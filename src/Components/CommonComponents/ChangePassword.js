@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { backToTop, generalPostFunction } from "../GlobalFunction/globalFunction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import CircularLoader from "../Loader/CircularLoader";
 import Header from "./Header";
-import { useSelector } from "react-redux";
 
 function ChangePassword() {
   const navigate = useNavigate();
@@ -16,7 +15,6 @@ function ChangePassword() {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const loadings = useSelector((state) => state.loading);
 
   async function handleSubmit() {
     if (oldPassword === "") {

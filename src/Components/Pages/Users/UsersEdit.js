@@ -22,13 +22,16 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
-const UsersEdit = ({ page }) => {
+const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const locationState = location.state;
   const showHeader = location.pathname == "/users-edit";
   const accountDetails = useSelector((state) => state.accountDetails);
+  const accountDetailsRefresh = useSelector(
+    (state) => state.accountDetailsRefresh
+  );
   const [timeZone, setTimeZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState([]);
@@ -37,7 +40,7 @@ const UsersEdit = ({ page }) => {
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [extension, setExtension] = useState();
   const [user, setUser] = useState();
-  const [filterExtensions, setFilterExtensions] = useState();
+  // const [filterExtensions, setFilterExtensions] = useState();
   const allUser = useSelector((state) => state.allUser);
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const extensionAll = useSelector((state) => state.extensionAll);
@@ -130,6 +133,8 @@ const UsersEdit = ({ page }) => {
                 role_id: `${role_id}`,
               },
             };
+            // setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
+            setSelectedSearch(newData.extension_id);
             if (!isCustomerAdmin) {
               console.log(isCustomerAdmin);
               setSelectedPermission(newData.permissions);
@@ -186,20 +191,24 @@ const UsersEdit = ({ page }) => {
           );
         });
       });
-      setFilterExtensions(data);
+      // setFilterExtensions(data);
 
       const options = data?.map((extension) => ({
         value: extension.id,
         label: extension.extension,
       }));
 
-      setSearchExtensions([
-        { value: null, label: "None" },
-        ...options,
-      ]);
+      setSearchExtensions([{ value: null, label: "None" }, ...options]);
     }
-  }, [accountDetails, user, locationState]);
+  }, [accountDetails, user, locationState, extension]);
 
+  // Get the latest data of account
+  useEffect(() => {
+    dispatch({
+      type: "SET_ACCOUNTDETAILSREFRESH",
+      accountDetailsRefresh: accountDetailsRefresh + 1,
+    });
+  }, []);
   // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
@@ -254,7 +263,7 @@ const UsersEdit = ({ page }) => {
         allUserRefresh: allUserRefresh + 1,
       });
 
-      navigate(-1); // Navigate back to the previous page
+      // navigate(-1); // Navigate back to the previous page
     } else {
       setLoading(false);
     }
@@ -327,6 +336,14 @@ const UsersEdit = ({ page }) => {
     setSelectedPermission(newSelectedPermission);
     setParentChecked({ ...parentChecked, [item]: newParentChecked });
   };
+  const handleSelectInputChange = (inputValue, { action }) => {
+    if (action === "input-change") {
+      const numericInput = inputValue.replace(/[^0-9]/g, "");
+      // setSelectedExtension(numericInput)
+      return numericInput;
+    }
+    return inputValue;
+  };
   return (
     <>
       <style>
@@ -337,7 +354,9 @@ const UsersEdit = ({ page }) => {
       `}
       </style>
       <main
-        className={page === "marginleftAdjust" ? "mainContentAgents ms-0" : "mainContent"}
+        className={
+          page === "marginleftAdjust" ? "mainContentAgents ms-0" : "mainContent"
+        }
       >
         <section id="phonePage">
           {showHeader && (
@@ -603,8 +622,8 @@ const UsersEdit = ({ page }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                          return item.permission_id;
-                                        })
+                                            return item.permission_id;
+                                          })
                                     );
                                   }}
                                 >
@@ -643,7 +662,7 @@ const UsersEdit = ({ page }) => {
                                     watch().extension_id ? "col-8" : "col-12"
                                   }
                                 >
-                                  {watch().extension_id ?
+                                  {watch().extension_id ? (
                                     <Select
                                       isDisabled={true}
                                       placeholder="Available Extensions"
@@ -652,6 +671,7 @@ const UsersEdit = ({ page }) => {
                                         label: watch()?.extension?.extension,
                                         value: watch()?.extension?.extension,
                                       }} // Default selected option
+                                      onInputChange={handleSelectInputChange}
                                       onChange={(e) => {
                                         setSelectedSearch(e.value);
                                       }}
@@ -678,47 +698,44 @@ const UsersEdit = ({ page }) => {
                                           justifyContent: "start",
                                           marginBottom: "15px",
                                         }),
-
-                                      }}
-                                    /> : <Select
-                                      options={searchExtensions}
-                                      placeholder="Available Extensions"
-                                      isClearable={false}
-                                      defaultValue={{
-                                        label: watch()?.extension?.extension,
-                                        value: watch()?.extension?.extension,
-                                      }} // Default selected option
-                                      onChange={(e) => {
-                                        setSelectedSearch(e.value);
-                                      }}
-                                      // {...register("extension_id")}
-                                      styles={{
-                                        control: (provided, state) => ({
-                                          ...provided,
-                                          height: "25px",
-                                          fontSize: "12px",
-                                        }),
-                                        singleValue: (provided) => ({
-                                          ...provided,
-                                          fontSize: "14px",
-                                        }),
-                                        option: (provided) => ({
-                                          ...provided,
-                                          fontSize: "14px",
-                                        }),
-                                        placeholder: (provided) => ({
-                                          ...provided,
-                                          fontSize: "13px",
-                                          display: "flex",
-                                          alignItems: "center",
-                                          justifyContent: "start",
-                                          marginBottom: "15px",
-                                        }),
-
                                       }}
                                     />
-
-                                  }
+                                  ) : (
+                                    <Select
+                                      options={searchExtensions}
+                                      placeholder="No extension assigned"
+                                      isClearable={false}
+                                      defaultValue={""} // Default selected option
+                                      onInputChange={handleSelectInputChange}
+                                      onChange={(e) => {
+                                        setSelectedSearch(e.value);
+                                      }}
+                                      // {...register("extension_id")}
+                                      styles={{
+                                        control: (provided, state) => ({
+                                          ...provided,
+                                          height: "25px",
+                                          fontSize: "12px",
+                                        }),
+                                        singleValue: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        option: (provided) => ({
+                                          ...provided,
+                                          fontSize: "14px",
+                                        }),
+                                        placeholder: (provided) => ({
+                                          ...provided,
+                                          fontSize: "13px",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "start",
+                                          marginBottom: "15px",
+                                        }),
+                                      }}
+                                    />
+                                  )}
                                 </div>
                                 {watch().extension_id && (
                                   <div className="col-4">
@@ -899,6 +916,7 @@ const UsersEdit = ({ page }) => {
                                   label: watch()?.extension?.extension,
                                   value: watch()?.extension?.extension,
                                 }} // Default selected option
+                                onInputChange={handleSelectInputChange}
                                 onChange={(e) => {
                                   setSelectedSearch(e.value);
                                 }}
@@ -946,8 +964,9 @@ const UsersEdit = ({ page }) => {
                               />
                             </div>
                             <div
-                              className={`${watch().extension_id ? "col-5" : "col-5"
-                                }`}
+                              className={`${
+                                watch().extension_id ? "col-5" : "col-5"
+                              }`}
                             >
                               <select
                                 className="formItem"
@@ -956,8 +975,8 @@ const UsersEdit = ({ page }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                              // value={watch().extension_id}
-                              // {...register("extension_id")}
+                                // value={watch().extension_id}
+                                // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>

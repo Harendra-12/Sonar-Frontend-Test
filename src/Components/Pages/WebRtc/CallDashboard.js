@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
-import {  generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
 
 function CallDashboard() {
@@ -15,26 +14,24 @@ function CallDashboard() {
   const [allParkedCall, setAllParkedCall] = useState([]);
   const extension = account?.extension?.extension || null;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { sessionManager } = useSIPProvider();
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  const [loading, setLoading] = useState(true);
+
 
   // Function to handle logout
   const handleLogOut = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
-      const apiResponses = await logout(
-        allCallCenterIds,
-        dispatch,
-        sessionManager
-      );
+      // const apiResponses = await logout(
+      //   allCallCenterIds,
+      //   dispatch,
+      //   sessionManager
+      // );
     } catch (error) {
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
   useEffect(() => {
@@ -42,7 +39,7 @@ function CallDashboard() {
     setAllParkedCall(
       activeCall.filter(
         (call) =>
-          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && call.b_callee_direction !== "ACTIVE"
+          (call.dest.includes("set:valet_ticket") || call.dest.includes("*")) && (call.b_callee_direction !== "ACTIVE" || call.b_callee_direction !== "HELD")
       )
     );
   }, [activeCall]);
@@ -284,23 +281,26 @@ function CallDashboard() {
                             <thead>
                               <tr>
                                 <th>#</th>
+                                <th>Did Tag</th>
                                 <th>From </th>
                                 <th>To</th>
-                                <th>Started at</th>
-                                <th>Tag</th>
+                                <th>Feature Tag</th>
+                                <th>Started since</th>
+
                               </tr>
                             </thead>
 
                             <tbody>
                               {
-                                activeCall && activeCall.filter((item) => item.callstate === "RINGING" || item.callstate === "RING_WAIT").map((item, key) => {
+                                activeCall && activeCall.filter((item) => item.b_callstate !== "ACTIVE").map((item, key) => {
                                   return (
                                     <tr>
                                       <td>{key + 1}</td>
+                                      <td>{item.did_tag}</td>
                                       <td>{item.cid_name}</td>
                                       <td>{item.dest}</td>
-                                      <td>{item.created.split(" ")[1]}</td>
                                       <td>{item.feature_tag}</td>
+                                      <td>{item.duration}</td>
                                     </tr>
                                   )
                                 })

@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../../CommonComponents/Header";
-import PaginationComponent from "../../../CommonComponents/PaginationComponent";
 import { useNavigate } from "react-router-dom";
 import { backToTop } from "../../../GlobalFunction/globalFunction";
 

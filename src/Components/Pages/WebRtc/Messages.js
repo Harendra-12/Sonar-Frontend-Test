@@ -88,6 +88,8 @@ function Messages({
   const [emojiOpen, setEmojiOpen] = useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false)
+console.log("groupSelecedAgents", groupSelecedAgents);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -106,18 +108,10 @@ function Messages({
     }
   };
   const handleEmojiClick = (emojiData) => {
-
-    // setMessageInput(messageInput + emojiData.emoji);
     setMessageInput((prevMessage) => {
       return prevMessage + emojiData.emoji
     })
   };
-
-
-  console.log("Allmessages", allMessage);
-  console.log("groupMessages", groupMessage);
-  console.log("selectedGroupUsers", selectedgroupUsers);
-  console.log("groupLeaveId", groupLeaveId)
   const {
     formState: { errors },
   } = useForm();
@@ -336,65 +330,6 @@ function Messages({
     }
   };
 
-  // const sendFileMessage = async (file) => {
-  //   if (isSIPReady) {
-  //     const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
-  //     const userAgent = sipProvider?.sessionManager?.userAgent;
-
-  //     const target = UserAgent.makeURI(targetURI);
-
-  //     const convertImageToBase64 = (file) => {
-  //       return new Promise((resolve, reject) => {
-  //         const reader = new FileReader();
-  //         reader.onloadend = () => resolve(reader.result);
-  //         reader.onerror = (error) => reject(error);
-  //         reader.readAsDataURL(file); // This converts to Base64
-  //       });
-  //     };
-
-  //     if (target && file) {
-  //       try {
-  //         // Convert file to Base64 string
-  //         const fileContent = await convertImageToBase64(file); // Await here!
-
-  //         // Create a message with the Base64 content
-  //         const messager = new Messager(
-  //           userAgent,
-  //           target,
-  //           fileContent,
-  //           file.type
-  //         ); // Use correct content type
-
-  //         // Send the message with proper MIME type and extra headers
-  //         messager.message({
-  //           extraHeaders: [
-  //             `Content-Type: ${file.type}`, // e.g., image/png
-  //             `Content-Disposition: attachment; filename="${file.name}"`,
-  //           ],
-  //         });
-
-  //         // Add a record to the message history (optional)
-  //         const time = new Date().toLocaleString();
-  //         setAllMessage((prevState) => ({
-  //           ...prevState,
-  //           [recipient[0]]: [
-  //             ...(prevState[recipient[0]] || []),
-  //             { from: extension, body: messageInput, time },
-  //           ],
-  //         }));
-  //         setActiveTab("all");
-
-  //         console.log("File sent to:", targetURI);
-  //       } catch (error) {
-  //         console.error("Error sending file:", error);
-  //       }
-  //     } else {
-  //       console.error("Invalid recipient address or file.");
-  //     }
-  //   } else {
-  //     console.error("UserAgent or session not ready.");
-  //   }
-  // };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -534,10 +469,10 @@ function Messages({
       if (apiData?.status) {
         // setUser(apiData.data.filter((item) => item.extension_id !== null));
         setAllAgents(apiData.data.filter((item) => item.extension_id !== null));
-        setGroupSelecedAgents((prevSelected) => {
-          return [...apiData.data.filter((item) => item.email === account.email)];
-        }
-        )
+        // setGroupSelecedAgents((prevSelected) => {
+        //   return [...apiData.data.filter((item) => item.email === account.email)];
+        // }
+        // )
       }
     }
     getData();
@@ -743,6 +678,7 @@ function Messages({
     }
   }
 
+  // Filter out the user from selcted group
   useEffect(() => {
     const getGroups = async () => {
       setLoading(true);
@@ -756,8 +692,12 @@ function Messages({
           setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat"]);
           setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
-          // getGroupDataById(isGroupSelected.id);
           setSelectedgroupUsers(isGroupSelected.groupusers);
+          isGroupSelected.groupusers.map((user) => {
+            if (user.user_id === account.id) {
+              setIsAdmin(user.is_admin)
+            }
+          })
         }
         setLoading(false);
       } else {
@@ -766,6 +706,8 @@ function Messages({
     };
     getGroups();
   }, [groupRefresh]);
+
+  console.log("Is admin", isAdmin);
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -866,7 +808,7 @@ function Messages({
     setNewGroupLoader(true);
     const parsedData = {
       group_name: groupname,
-      user_id: groupSelecedAgents.map((agent) => agent.id),
+      user_id: [...groupSelecedAgents.map((agent) => agent.id),account.id],
     };
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
@@ -925,7 +867,6 @@ function Messages({
       setAddMember(false);
       setGroupSelecedAgents([]);
       setNewGroupLoader(false);
-      // setSelectedgroupUsers((prevUsers) => [...prevUsers, ...apiData.data]);
     } else {
       setNewGroupLoader(false);
       console.log(apiData);
@@ -951,6 +892,7 @@ function Messages({
     }
   };
 
+  // Logic to send group messages
   function sendGroupMessage() {
     sendMessage({
       "action": "broadcastGroupMessage",
@@ -981,6 +923,38 @@ function Messages({
     }));
   }, [groupMessage])
 
+  // Handle logic to make any user admin or remove any user from admin
+  async function manageAdmin(id,groupId,userId,isAdmin) {
+    setLoading(true);
+    const parsedData = {
+      'group_id' : groupId,
+      'user_id' : userId,
+      'is_admin' : isAdmin,
+    }
+    const apiData = await generalPutFunction(`/group-users/update/${id}`,parsedData)
+    if(apiData.status){
+      setLoading(false);
+      toast.success(apiData.message)
+      setGroupRefresh(groupRefresh + 1);
+    }else{
+      setLoading(false);
+      toast.error(apiData.message)
+    }
+  }
+
+  // Handle delete group 
+  async function handleDeleteGroup(id) {
+    setLoading(true);
+    const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
+    if(apiData.status){
+      setLoading(false);
+      toast.success(apiData.message)
+      setGroupRefresh(groupRefresh + 1);
+    }else{
+      setLoading(false);
+      toast.error(apiData.message)
+    }
+  }
   const example = []
   const newExample = []
   console.log(example === newExample)
@@ -1356,6 +1330,11 @@ function Messages({
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
                                     setSelectedgroupUsers(item.groupusers);
+                                    item.groupusers.map((user) => {
+                                      if (user.user_id === account.id) {
+                                        setIsAdmin(user.is_admin)
+                                      }
+                                    })
                                   }}
                                 >
                                   <div className="row justify-content-between">
@@ -1373,46 +1352,17 @@ function Messages({
                                           <span data-id="3">Priority</span>
                                         </div> */}
                                       </div>
-                                      {/* <div className="col text-end">
-                                        <p className="timeAgo">5min ago</p>
-                                      </div> */}
                                     </div>{" "}
                                   </div>
                                 </div>
                               );
                             })
                           }
-                          {/* <div className="contactListItem" data-bell={""}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div
-                                  className="profileHolder"
-                                  id={"profileOfflineNav"}
-                                >
-                                  <i className="fa-light fa-users fs-5"></i>
-                                </div>
-                                <div className="my-auto ms-2 ms-xl-3">
-                                  <h4>Group Chat</h4>
-                                  <h5>Alright</h5>
-                                  <div className="contactTags">
-                                    <span data-id="3">Priority</span>
-                                  </div>
-                                </div>
-                                <div className="col text-end">
-                                  <p className="timeAgo">5min ago</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div> */}
                         </div>
                       </div>
                     </div>
                   ) : activeTab === "online" ? (
                     <div className="tab-content">
-                      {/* <AgentSearch
-                        getDropdownValue={setRecipient}
-                        getAllAgents={setAgents}
-                      /> */}
                       <div
                         className="callList"
                         style={{ height: "calc(100vh - 270px)" }}
@@ -1477,10 +1427,6 @@ function Messages({
                     </div>
                   ) : activeTab === "tags" ? (
                     <div className="tab-content">
-                      {/* <AgentSearch
-                        getDropdownValue={setRecipient}
-                        getAllAgents={setAgents}
-                      /> */}
                       <div
                         className="callList"
                         style={{ height: "calc(100vh - 270px)" }}
@@ -1784,8 +1730,14 @@ function Messages({
                                   setRecipient([item.group_name, item.id, "groupChat"]);
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
-                                  // getGroupDataById(item.id);
                                   setSelectedgroupUsers(item.groupusers);
+                                  item.groupusers.map((user) => {
+                                    console.log("--------------------------------------------------------", account.id, "user", user, user.is_admin);
+
+                                    if (user.user_id === account.id) {
+                                      setIsAdmin(user.is_admin)
+                                    }
+                                  })
                                 }}
                               >
                                 <div className="row justify-content-between">
@@ -1804,7 +1756,30 @@ function Messages({
                                       </div> */}
                                     </div>
                                     <div className="col text-end">
-                                      <button class="clearButton2 xl" onClick={() => setManageGroupChat(true)}><i class="fa-regular fa-pen"></i></button>
+                                      <div className="dropdown">
+                                        <button
+                                          className="clearButton2 xl"
+                                          type="button"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="true"
+                                        >
+                                          <i className="fa-solid fa-ellipsis-vertical" />
+                                        </button>
+                                        <ul
+                                          className="dropdown-menu light"
+                                        >
+                                          <li>
+                                            <div className="dropdown-item" onClick={() => setManageGroupChat(true)}>
+                                              Edit Group Chat
+                                            </div>
+                                          </li>
+                                          <li>
+                                            <div className="dropdown-item text-danger" onClick={() => handleDeleteGroup(item.id)}>
+                                              Delete Group Chat
+                                            </div>
+                                          </li>
+                                        </ul>
+                                      </div>
                                     </div>
                                   </div>{" "}
                                 </div>
@@ -2273,7 +2248,7 @@ function Messages({
                       <div className="messageOverlay">
                         <div class="contactHeader" style={{ height: "71px" }}>
                           <div className="col">
-                            <h4>
+                            <h4 className="my-0">
                               <input
                                 value={groupNameEdit}
                                 disabled={!saveEditToggleGroupNameChange}
@@ -2504,25 +2479,25 @@ function Messages({
                           </div>
                         ) :
                           (
-                            <div style={{ height: 'calc(100vh - 254px)', overflow: 'hidden scroll' }}>
+                            <div style={{ height: 'calc(100vh - 265px)', overflow: 'hidden scroll' }}>
                               {
                                 allAgents
                                   .filter((item) => {
                                     return selectedgroupUsers.some(
                                       (agent) => agent.user_id === item.id
                                     );
-                                  })
-                                  .map((item) => {
+                                  }).map((item) => {
                                     const matchingAgent = selectedgroupUsers.find(
                                       (agent) => agent.user_id === item.id
                                     );
                                     return {
                                       ...item, // Include all existing properties of the agent
                                       agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                                      is_admin: matchingAgent?.is_admin,
+                                      userId: matchingAgent?.user_id,
+                                      group_id:matchingAgent?.group_id,
                                     };
-                                  })
-
-                                  .map((item, index) => {
+                                  }).map((item, index) => {
                                     return (
                                       <div
                                         data-bell=""
@@ -2532,23 +2507,49 @@ function Messages({
                                         <div className="row justify-content-between">
                                           <div className="col-xl-12 d-flex">
                                             <div className="profileHolder">
-                                              <i className="fa-light fa-user fs-5" />
+                                              <i className="fa-light fa-user" />
                                             </div>
                                             <div className="my-auto ms-2 ms-xl-3">
                                               <h4>{item.name}</h4>
                                             </div>
-                                            {item.email !== account.email ? <div className="col text-end my-auto">
-                                              <button
-                                                class="clearButton2"
-                                                effect="ripple"
-                                                onClick={() =>
-                                                  handleremoveUserFromGroup(
-                                                    item.agentId
-                                                  )
-                                                }
-                                              >
-                                                <i class="fa-regular fa-xmark"></i>
-                                              </button>
+                                            {(item.email !== account.email) && isAdmin ? <div className="col text-end my-auto">
+                                              <div className="dropdown">
+                                                <button
+                                                  className="clearButton2"
+                                                  type="button"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="true"
+                                                >
+                                                  <i className="fa-solid fa-ellipsis-vertical" />
+                                                </button>
+                                                <ul
+                                                  className="dropdown-menu light"
+                                                >
+                                                  {
+                                                    item.is_admin ?
+                                                      <li>
+                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                          Dismiss Group Admin
+                                                        </div>
+                                                      </li>
+                                                      :
+                                                      <li>
+                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                          Make Group Admin
+                                                        </div>
+                                                      </li>}
+                                                  <li>
+                                                    <div className="dropdown-item text-danger"
+                                                      onClick={() =>
+                                                        handleremoveUserFromGroup(
+                                                          item.agentId
+                                                        )
+                                                      }>
+                                                      Kick User
+                                                    </div>
+                                                  </li>
+                                                </ul>
+                                              </div>
                                             </div> : ""}
 
                                           </div>
@@ -2560,7 +2561,7 @@ function Messages({
                             </div>
                           )
                         }
-                        <div className="mb-auto">
+                        {!addMember && <div className="mb-auto">
                           <button
                             className="panelButton gray ms-0"
                             onClick={() => {
@@ -2572,7 +2573,7 @@ function Messages({
                               <i className="fa-solid fa-caret-left" />
                             </span>
                           </button>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   )}

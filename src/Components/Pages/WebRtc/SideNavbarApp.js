@@ -1,14 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
-  const { connectStatus } = useSIPProvider();
+  const { sessionManager,connectStatus,registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
   const isCustomerAdmin = account?.email == accountDetails?.email;
+    useEffect(() => {
+      if(connectStatus === "CONNECTED"){
+        if(registerStatus === "UNREGISTERED"){
+          sessionManager.connect()
+        }
+      }
+    },[connectStatus,registerStatus])
   return (
     <section>
       <style>

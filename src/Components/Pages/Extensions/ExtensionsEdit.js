@@ -425,7 +425,7 @@ const ExtensionsEdit = ({ page }) => {
       if (apiData.status) {
         toast.success(apiData.message);
         await generalGetFunction(`/user/all`);
-        navigate(-1);
+        // navigate(-1);
       } else {
         if (apiData.message === "Already assigned to a different user") {
           setPopUp(true);
@@ -2010,29 +2010,31 @@ const ExtensionsEdit = ({ page }) => {
                         })}
                       ?
                     </p>
-                    <button
-                      className="panelButton m-0"
-                      onClick={() => {
-                        // setForce(true);
-                        setPopUp(false);
-                        // handleSubmit("force");
-                        handleFormSubmit("force");
-                      }}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => setPopUp(false)}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={() => {
+                          // setForce(true);
+                          setPopUp(false);
+                          // handleSubmit("force");
+                          handleFormSubmit("force");
+                        }}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => setPopUp(false)}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
