@@ -72,18 +72,6 @@ const RingGroup = () => {
                 <p>You can see a brief analysis of all the ring groups</p>
               </div>
               <div className="buttonGroup">
-                <button effect="ripple" className="panelButton gray">
-                  <span className="text">Back</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button effect="ripple" className="panelButton">
-                  <span className="text">Refresh</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-arrows-rotate" />
-                  </span>
-                </button>
                 <button effect="ripple" className="panelButton">
                   <span className="text">Export</span>
                   <span className="icon">
