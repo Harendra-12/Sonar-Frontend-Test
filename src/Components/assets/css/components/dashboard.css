@@ -561,3 +561,19 @@
     border: 1px solid green;
     box-shadow: #00ff1554 0px 3px 8px;
 }
+
+
+/* Dashboard Accordion */
+
+.accordion.dashboard .accordion-button:not(.collapsed) {
+    background: transparent;
+    border-bottom: none;
+}
+
+.accordion.dashboard .accordion-button {
+    padding: 0;
+}
+
+.accordion.dashboard .accordion-body {
+    margin-top: 15px;
+}

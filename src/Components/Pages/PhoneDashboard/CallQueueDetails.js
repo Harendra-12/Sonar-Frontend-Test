@@ -60,155 +60,135 @@ const CallQueueDetails = () => {
   }, [callCenter, activeCall]);
 
   return (
-    <div className="tabGroupDetails" data-id={3}>
-      <div className="col-12">
-        <div className="col-12 title text-start">
-          <i className="fa-duotone fa-code-pull-request-draft" /> Call Queue{" "}
-          {callCenterLoading && (
-            <i class="fa-regular fa-arrows-rotate fs-5 fa-spin"></i>
-          )}
-        </div>
-        {callQueue &&
-          callCenter &&
-          callCenter.map((call) => (
-            <div className="row my-3 gx-xxl-3 gx-xl-2">
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Queue Name</div>
-                  <div className="data-number ellipsis">
-                    {`${call.queue_name}`}
-                  </div>
-                  <div className="label2">Extension - {call.extension}</div>
-                </div>
+    <div className="overviewTableWrapper px-0 pt-0">
+      <div className="overviewTableChild">
+        <div className="d-flex flex-wrap">
+          <div className="col-12">
+            <div className="heading">
+              <div className="content">
+                <h4>Call Queue</h4>
+                <p>You can see a brief analysis of all the call queues</p>
               </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a agents">
-                  <div className="heading">Agents</div>
-                  <div className="d-flex justify-content-between">
-                    <div className="group">
-                      <div className="data-number">{call.agents.length}</div>
-                      <div className="label2">Total</div>
-                    </div>
-                    <div style={{ borderLeft: '1px solid var(--border-color)' }} />
-                    <div className="group">
-                      <div className="data-number" style={{ color: 'var(--funky-boy3)' }}>
-                        {
-                          call.agents.filter(
-                            (agent) => agent.status === "available"
-                          ).length
-                        }
-                      </div>
-                      <div className="label2">Active</div>
-                    </div>
-                    <div style={{ borderLeft: '1px solid var(--border-color)' }} />
-                    <div className="group">
-                      <div className="data-number" style={{ color: 'var(--funky-boy4)' }}>
-                        {
-                          call.agents.filter(
-                            (agent) => agent.status !== "available"
-                          ).length
-                        }
-                      </div>
-                      <div className="label2">Offline</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Total Calls</div>
-                  <div className="data-number">
-                    {
-                      callQueue.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">100% of total calls</div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb b">
-                  <div className="heading">Total Calls Completed</div>
-                  <div className="data-number">
-                    {
-                      callQueue.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] === "SUCCESS"
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">
-                    Percentage{" "}
-                    {(
-                      (callQueue.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] === "SUCCESS"
-                      ).length /
-                        callQueue.filter(
-                          (data) =>
-                            data["Caller-Callee-ID-Number"] === call.extension
-                        ).length) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb d">
-                  <div className="heading">Missed Calls</div>
-                  <div className="data-number">
-                    {
-                      callQueue.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] !== "SUCCESS"
-                      ).length
-                    }
-                  </div>
-                  <div className="label2">
-                    Percentage{" "}
-                    {(
-                      (callQueue.filter(
-                        (data) =>
-                          data["Caller-Callee-ID-Number"] === call.extension &&
-                          data["variable_DIALSTATUS"] !== "SUCCESS"
-                      ).length /
-                        callQueue.filter(
-                          (data) =>
-                            data["Caller-Callee-ID-Number"] === call.extension
-                        ).length) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb c">
-                  <div className="heading">Active Calls</div>
-                  <div className="data-number">
-                    {
-                      activeCallData.filter((e) => e.dest === call.extension)
-                        .length
-                    }
-                  </div>
-                  <div className="label2">Percentage 0%</div>
-                </div>
-              </div>
-              <div className="col-xl-1b">
-                <div className="itemWrapperb a">
-                  <div className="heading">Total Spent</div>
-                  <div className="data-number">$0.00</div>
-                  <div className="label2">N/A</div>
-                </div>
+              <div className="buttonGroup">
+                <button effect="ripple" className="panelButton gray">
+                  <span className="text">Back</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-caret-left" />
+                  </span>
+                </button>
+                <button effect="ripple" className="panelButton">
+                  <span className="text">Refresh</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-arrows-rotate" />
+                  </span>
+                </button>
+                <button effect="ripple" className="panelButton">
+                  <span className="text">Export</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-file-csv" />
+                  </span>
+                </button>
               </div>
             </div>
-          ))}
+          </div>
+          <div
+            className="col-12"
+            style={{ overflow: "auto", padding: "25px 20px 0px" }}
+          >
+            <div className="tableContainer" style={{ height: "30vh" }}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Agents</th>
+                    <th>Total Calls</th>
+                    <th>Calls Completed</th>
+                    <th>Missed Calls</th>
+                    <th>Active Calls</th>
+                    <th>Destinations</th>
+                  </tr>
+                </thead>
+                <tbody className="">
+                  {callQueue &&
+                    callCenter &&
+                    callCenter.map((call, index) => (
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{call.queue_name}</td>
+                        <td>
+
+                          <div className="dropdown">
+                            <a
+                              style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              {call.agents.length}
+                            </a>
+                            <ul className="dropdown-menu light" >
+                              <li>
+                                <a className="dropdown-item">
+                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Active:</span> {
+                                    call.agents.filter(
+                                      (agent) => agent.status === "available"
+                                    ).length
+                                  }
+                                </a>
+                              </li>
+                              <li>
+                                <a className="dropdown-item">
+                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Offline:</span> {
+                                    call.agents.filter(
+                                      (agent) => agent.status !== "available"
+                                    ).length
+                                  }
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>
+                          {
+                            callQueue.filter(
+                              (data) =>
+                                data["Caller-Callee-ID-Number"] === call.extension
+                            ).length
+                          }
+                        </td>
+                        <td>
+                          {
+                            callQueue.filter(
+                              (data) =>
+                                data["Caller-Callee-ID-Number"] === call.extension &&
+                                data["variable_DIALSTATUS"] === "SUCCESS"
+                            ).length
+                          }
+                        </td>
+                        <td>
+                          {
+                            callQueue.filter(
+                              (data) =>
+                                data["Caller-Callee-ID-Number"] === call.extension &&
+                                data["variable_DIALSTATUS"] !== "SUCCESS"
+                            ).length
+                          }
+                        </td>
+                        <td>
+                          {
+                            activeCallData.filter((e) => e.dest === call.extension)
+                              .length
+                          }
+                        </td>
+                        <td>{call.extension}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
