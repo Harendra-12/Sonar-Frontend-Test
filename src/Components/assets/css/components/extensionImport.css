@@ -459,3 +459,27 @@ form.tangoNavs .nav-tabs {
 .actionBtnDropdowns li>* {
     color: #fff;
 }
+
+.timeTableWrapper {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--formHeadingBloc);
+}
+
+.timeTableWrapper .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.timeTableWrapper .item {
+    display: flex;
+    align-items: center;
+}
+
+.timeTableWrapper .item label {
+    font-size: 14px;
+}
