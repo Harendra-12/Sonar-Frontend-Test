@@ -92,6 +92,7 @@ const RingGroupEdit = () => {
       status: "active",
     },
   ]);
+  const [searchEditAllUser, setSearchEditAllUser] = useState("");
 
   useEffect(() => {
     if (successMessage) {
@@ -123,8 +124,8 @@ const RingGroupEdit = () => {
     }
   }, [allUserArr]);
 
-  console.log("aaaaaaaa",user);
-  
+  console.log("aaaaaaaa", user);
+
 
   // Checking validation for the extension if extension not present then show message please create extension first and getting data of selcetdc ring group
   useEffect(() => {
@@ -137,7 +138,7 @@ const RingGroupEdit = () => {
         );
         if (apidataUser?.status) {
           setAllUserArr(apidataUser.data);
-        } 
+        }
         if (ringData?.status) {
           setLoading(false);
 
@@ -1383,11 +1384,19 @@ const RingGroupEdit = () => {
               <h5>Edit People to the selected Queue</h5>
             </div>
             <div>
-              Affected user:{" "}
-              {selectedAgentToEdit
-                .map((item) => destination.find((user) => item.id == user.id))
-                .map((items) => items.destination)
-                .join(", ")}
+              <div className="d-flex justify-content-between mb-2">
+                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                  Affected user:{" "}
+                </h5>
+                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+              </div>
+              <ul>
+                {selectedAgentToEdit
+                  .map((item) => destination.find((user) => item.id == user.id)).filter((item) => item.destination.includes(searchEditAllUser.trim()))
+                  .map((items) => (
+                    <li><i className="fa-regular fa-user me-2" />{items?.destination}</li>
+                  ))}
+              </ul>
             </div>
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
@@ -1505,6 +1514,7 @@ const RingGroupEdit = () => {
                       truncate_agents_on_load: "",
                       truncate_tiers_on_load: "",
                     });
+                    setSearchEditAllUser("");
                   }}
                 >
                   <span className="text">Close</span>

@@ -99,6 +99,7 @@ function CallCenterQueueEdit() {
       call_timeout: `${160}`,
     },
   });
+  const [searchEditAllUser, setSearchEditAllUser] = useState("");
 
   // Calling api for getting user data and call center queue data
   useEffect(() => {
@@ -588,7 +589,7 @@ function CallCenterQueueEdit() {
     setAgent(mergedAgents);
     setBulkEditPopup(false);
   };
-  console.log(selectedAgentToEdit);
+  console.log('selectedAgentToEdit', selectedAgentToEdit);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -2567,17 +2568,22 @@ function CallCenterQueueEdit() {
               <i className="fa-light fa-user-plus" />
               <h5>Edit People to the selected Queue</h5>
             </div>
-            <div>
-              Affected user:{" "}
-              {selectedAgentToEdit
-                .map((item) => user.find((user) => item?.name == user.id))
-                .map((items) => items?.name)
-                .join(", ")}
+            <div className="px-1">
+              <div className="d-flex justify-content-between mb-2">
+                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                  Affected user:{" "}
+                </h5>
+                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+              </div>
+              <ul>
+                {selectedAgentToEdit
+                  .map((item) => user.find((user) => item?.name == user.id)).filter((item) => item.name.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
+                  .map((items) => (
+                    <li><i className="fa-regular fa-user me-2" />{items?.name}</li>
+                  ))}
+              </ul>
             </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center"></div>
-            </div>
-            <div className="mt-3 row g-2">
+            <div className="row g-2 mt-0">
               <div className="col-3">
                 <div className="formLabel">
                   <label htmlFor="">Tier Level</label>
@@ -2841,7 +2847,7 @@ function CallCenterQueueEdit() {
                 </select>
               </div>
             </div>
-            <div className="col-xl-12 mt-2">
+            <div className="col-xl-12 mt-2 px-1">
               <div className="d-flex justify-content-between">
                 <button
                   className="panelButton gray ms-0"
@@ -2860,6 +2866,7 @@ function CallCenterQueueEdit() {
                       truncate_agents_on_load: "",
                       truncate_tiers_on_load: "",
                     });
+                    setSearchEditAllUser("");
                   }}
                 >
                   <span className="text">Close</span>
