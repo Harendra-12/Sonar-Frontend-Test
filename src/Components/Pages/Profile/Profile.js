@@ -131,8 +131,8 @@ const Profile = () => {
       account_id: acount.account_id,
       user: acount.id,
       ...(preassignedExtension ? { forceUpdate: true } : { forceUpdate: true }),
-      forward: account.extension.forward,
-      forward_to: account.extension.forward_to,
+      forward: account?.extension?account?.extension?.forward:"disabled",
+      forward_to: account?.extension?account?.extension?.forward_to:null,
       timezone_id: selectedTimeZone,
     };
     setPopup(false);
@@ -159,6 +159,10 @@ const Profile = () => {
       setPreassignedExtension(false);
     }
   };
+
+  useEffect(()=>{
+    generalGetFunction("/cdr?page=1&row_per_page=20")
+  },[])
 
   return (
     <main className="mainContent">

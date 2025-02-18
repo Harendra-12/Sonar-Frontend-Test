@@ -99,10 +99,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         async function getData() {
           if (locationState) {
             let data = locationState;
-
             let firstName = "";
             let lastName = "";
-
             const {
               name,
               user_role, // Default to an empty object if user_role is null or undefined
