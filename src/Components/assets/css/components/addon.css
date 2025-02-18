@@ -49,11 +49,13 @@
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    
 }
 
 /* Show the Add to Cart section only when hovering over .product-cart */
 .product-cart:hover .add-to-cart-container {
     display: flex;
+    
 }
 
 

@@ -134,6 +134,7 @@ import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
+import UserProfile from "./Components/Pages/Users/UserProfile";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -266,6 +267,7 @@ function App() {
               )
             }
           />
+          <Route path="/users-profile" element={<UserProfile />} />
           <Route
             path="/users-edit"
             element={
