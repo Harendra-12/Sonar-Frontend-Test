@@ -257,6 +257,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     );
     if (addUser.status) {
       setLoading(false);
+      setPopUp(false);
       toast.success(addUser.message);
       dispatch({
         type: "SET_ALLUSERREFRESH",

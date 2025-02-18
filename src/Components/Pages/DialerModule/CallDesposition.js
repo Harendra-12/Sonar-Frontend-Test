@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import Tippy from '@tippyjs/react'
 
@@ -35,9 +35,9 @@ function CallDesposition() {
 
                                                     effect="ripple"
                                                     className="panelButton" >
-                                                    <span className="text">Buy</span>
+                                                    <span className="text">Add</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-cart-shopping"></i>
+                                                        <i class="fa-solid fa-plus"></i>
                                                     </span>
                                                 </Link>
                                             </div>

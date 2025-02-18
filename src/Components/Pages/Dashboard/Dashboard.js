@@ -62,20 +62,25 @@ const Dashboard = () => {
       });
     }
   }, [timeZone]);
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Convert current time to the given timezone
-      const value = timeZone.filter((item)=>item.id === account.timezone_id)[0]?.name;
+    const updateTime = () => {
+     // Convert current time to the given timezone
+      const value = timeZone.find(
+        (item) => item.id === account.timezone_id
+      )?.name;
+      if (!value) return;
+
       const timeInZone = new Date(
         new Date().toLocaleString("en-US", { timeZone: value })
       );
       setTime(timeInZone);
-    }, 1000);
+    };
 
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, [timeZone]);
-
-
+  }, [timeZone, account.timezone_id]);
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {
@@ -341,7 +346,7 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {account?.permissions?.includes(86) &&
+                  {account?.permissions?.includes(86) && (
                     <button
                       className="nav-link"
                       id="nav-home-tab"
@@ -354,8 +359,8 @@ const Dashboard = () => {
                     >
                       Calls
                     </button>
-                  }
-                  {account?.permissions?.includes(470) &&
+                  )}
+                  {account?.permissions?.includes(470) && (
                     <button
                       className="nav-link"
                       id="nav-contact-tab"
@@ -368,7 +373,7 @@ const Dashboard = () => {
                     >
                       Billing
                     </button>
-                  }
+                  )}
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
@@ -380,12 +385,14 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div
-                      className="col-xl-3 mb-3 mb-xl-0"
-                    >
-                      <div className="itemWrapper a" >
+                    <div className="col-xl-3 mb-3 mb-xl-0">
+                      <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
+                          <div
+                            className="d-flex flex-wrap justify-content-between"
+                            onClick={() => navigate("/my-profile")}
+                            style={{ cursor: "pointer" }}
+                          >
                             <div className="col-9">
                               <h5>Timezone</h5>
                               <p>
@@ -408,7 +415,14 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
-                              <p>TimeZone: {timeZone.filter((item)=>item.id===account?.timezone_id)[0]?.name}</p>
+                              <p>
+                                TimeZone:{" "}
+                                {
+                                  timeZone.filter(
+                                    (item) => item.id === account?.timezone_id
+                                  )[0]?.name
+                                }
+                              </p>
                             </div>
                             <div className="col-3">
                               <Clock
@@ -426,19 +440,19 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-xl-3 mb-3 mb-xl-0"
-                    >
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
+                          <div
+                            className="d-flex flex-wrap justify-content-between"
+                            onClick={() => navigate("/my-profile")}
+                            style={{ cursor: "pointer" }}
+                          >
                             <div className="col-9">
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div
-                              className="col-2"
-                            >
+                            <div className="col-2">
                               <i className="fa-solid fa-user"></i>
                             </div>
                           </div>
@@ -461,19 +475,19 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-xl-3 mb-3 mb-xl-0"
-                    >
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
-                          <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/my-profile")} style={{ cursor: "pointer" }}>
+                          <div
+                            className="d-flex flex-wrap justify-content-between"
+                            onClick={() => navigate("/my-profile")}
+                            style={{ cursor: "pointer" }}
+                          >
                             <div className="col-9">
                               <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
-                            <div
-                              className="col-3"
-                            >
+                            <div className="col-3">
                               <i className="fa-duotone fa-file"></i>
                             </div>
                           </div>
@@ -501,9 +515,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div
-                      className="col-xl-3 mb-3 mb-xl-0"
-                    >
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
@@ -547,18 +559,18 @@ const Dashboard = () => {
                         <div className="col-xl-4 mb-3 mb-xl-0">
                           <div className="itemWrapper a">
                             <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between"
-                                style={{ cursor: 'pointer' }}
+                              <div
+                                className="d-flex flex-wrap justify-content-between"
+                                style={{ cursor: "pointer" }}
                                 onClick={() =>
                                   navigate("/card-transaction-list")
-                                }>
+                                }
+                              >
                                 <div className="col-9">
                                   <h5>Payment Details</h5>
                                   <p>Click to view transaction history</p>
                                 </div>
-                                <div
-                                  className="col-3"
-                                >
+                                <div className="col-3">
                                   <i class="fa-solid fa-file-invoice"></i>
                                 </div>
                               </div>
@@ -607,82 +619,91 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-                        {isCustomerAdmin ? <div className="col-xl-4 mb-3 mb-xl-0">
-                          <div className="itemWrapper a">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-9">
-                                  <h5>Subscription Details</h5>
-                                  <p>Click the icon to view it</p>
-                                </div>
-                                <div
-                                  className="col-3"
-                                  onClick={() => navigate("/card-details")}
-                                >
-                                  <i class="fa-duotone fa-money-check-dollar-pen"></i>
+                        {isCustomerAdmin ? (
+                          <div className="col-xl-4 mb-3 mb-xl-0">
+                            <div className="itemWrapper a">
+                              <div className="heading">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-9">
+                                    <h5>Subscription Details</h5>
+                                    <p>Click the icon to view it</p>
+                                  </div>
+                                  <div
+                                    className="col-3"
+                                    onClick={() => navigate("/card-details")}
+                                  >
+                                    <i class="fa-duotone fa-money-check-dollar-pen"></i>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-12">
-                                  <ul>
-                                    <li>
-                                      Subscription Status{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]
-                                            ?.status
-                                        }
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Subscription Start{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]?.start_date?.split(
-                                            " "
-                                          )[0]
-                                        }
-                                        ,{" "}
-                                        {
-                                          accountDetails?.subscription[0]?.start_date?.split(
-                                            " "
-                                          )[1]
-                                        }
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Subscription End{" "}
-                                      <span className="float-end">
-                                        {
-                                          accountDetails?.subscription[0]?.end_date?.split(
-                                            " "
-                                          )[0]
-                                        }
-                                        ,{" "}
-                                        {
-                                          accountDetails?.subscription[0]?.end_date?.split(
-                                            " "
-                                          )[1]
-                                        }
-                                      </span>
-                                    </li>
-                                  </ul>
+                              <div className="data-number2">
+                                <div className="d-flex flex-wrap justify-content-between">
+                                  <div className="col-12">
+                                    <ul>
+                                      <li>
+                                        Subscription Status{" "}
+                                        <span className="float-end">
+                                          {
+                                            accountDetails?.subscription[0]
+                                              ?.status
+                                          }
+                                        </span>
+                                      </li>
+                                      <li>
+                                        Subscription Start{" "}
+                                        <span className="float-end">
+                                          {
+                                            accountDetails?.subscription[0]?.start_date?.split(
+                                              " "
+                                            )[0]
+                                          }
+                                          ,{" "}
+                                          {
+                                            accountDetails?.subscription[0]?.start_date?.split(
+                                              " "
+                                            )[1]
+                                          }
+                                        </span>
+                                      </li>
+                                      <li>
+                                        Subscription End{" "}
+                                        <span className="float-end">
+                                          {
+                                            accountDetails?.subscription[0]?.end_date?.split(
+                                              " "
+                                            )[0]
+                                          }
+                                          ,{" "}
+                                          {
+                                            accountDetails?.subscription[0]?.end_date?.split(
+                                              " "
+                                            )[1]
+                                          }
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div> : <></>}
-                        {account?.permissions?.includes(176) &&
+                        ) : (
+                          <></>
+                        )}
+                        {account?.permissions?.includes(176) && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading">
-                                <div className="d-flex flex-wrap justify-content-between" onClick={() => navigate("/extensions")} style={{ cursor: 'pointer' }}>
+                                <div
+                                  className="d-flex flex-wrap justify-content-between"
+                                  onClick={() => navigate("/extensions")}
+                                  style={{ cursor: "pointer" }}
+                                >
                                   <div className="col-9">
                                     <h5>Extensions</h5>
                                     <p>
-                                      Total: {accountDetails?.extensions?.length}{" "}
+                                      Total:{" "}
+                                      {accountDetails?.extensions?.length}{" "}
                                       Registered
                                     </p>
                                   </div>
@@ -732,7 +753,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -768,16 +789,38 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{allCall?.totalCalls !== undefined ? allCall?.totalCalls : <i
-                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                              ></i>}</h5>
+                              <h5>
+                                {allCall?.totalCalls !== undefined ? (
+                                  allCall?.totalCalls
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}
+                              </h5>
                               <p>
-                                {allCall?.inbound?.total !== undefined ? allCall.inbound.total : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>} Inbound /{" "}
-                                {allCall?.outbound?.total !== undefined ? allCall.outbound.total : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>} Outbound
+                                {allCall?.inbound?.total !== undefined ? (
+                                  allCall.inbound.total
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
+                                Inbound /{" "}
+                                {allCall?.outbound?.total !== undefined ? (
+                                  allCall.outbound.total
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
+                                Outbound
                               </p>
                             </div>
                             <div className="col-3">
@@ -814,16 +857,41 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{!isNaN(allCall?.inbound?.duration + allCall?.outbound?.duration) ? (allCall?.inbound?.duration + allCall?.outbound?.duration) : <i
-                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                              ></i>}</h5>
+                              <h5>
+                                {!isNaN(
+                                  allCall?.inbound?.duration +
+                                    allCall?.outbound?.duration
+                                ) ? (
+                                  allCall?.inbound?.duration +
+                                  allCall?.outbound?.duration
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}
+                              </h5>
                               <p>
-                                {allCall?.inbound?.duration !== undefined ? allCall?.inbound?.duration : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>} Inbound /{" "}
-                                {allCall?.outbound?.duration !== undefined ? allCall?.outbound?.duration : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>}{" "}
+                                {allCall?.inbound?.duration !== undefined ? (
+                                  allCall?.inbound?.duration
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
+                                Inbound /{" "}
+                                {allCall?.outbound?.duration !== undefined ? (
+                                  allCall?.outbound?.duration
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
                                 Outbound
                               </p>
                             </div>
@@ -864,17 +932,38 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
-                              <h5>{allCall?.missed !== undefined ? allCall?.missed : <i
-                                class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                              ></i>}</h5>
+                              <h5>
+                                {allCall?.missed !== undefined ? (
+                                  allCall?.missed
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}
+                              </h5>
                               <p>
-                                {allCall?.inbound?.missed !== undefined ? allCall?.inbound?.missed : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>} inbound
-                                Missed/ {allCall?.outbound?.missed !== undefined ? allCall?.outbound?.missed : <i
-                                  class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                ></i>} outbound
-                                Missed
+                                {allCall?.inbound?.missed !== undefined ? (
+                                  allCall?.inbound?.missed
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
+                                inbound Missed/{" "}
+                                {allCall?.outbound?.missed !== undefined ? (
+                                  allCall?.outbound?.missed
+                                ) : (
+                                  <i
+                                    class={
+                                      "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    }
+                                  ></i>
+                                )}{" "}
+                                outbound Missed
                               </p>
                             </div>
                             <div className="col-3">
@@ -1011,7 +1100,7 @@ const Dashboard = () => {
                                 Price: ${accountDetails?.package?.regular_price}{" "}
                                 /{" "}
                                 {accountDetails?.package?.subscription_type ===
-                                  "annually"
+                                "annually"
                                   ? "Annually"
                                   : "Monthly"}
                               </p>
@@ -1065,7 +1154,7 @@ const Dashboard = () => {
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
-                                  "annually"
+                                "annually"
                                   ? "Annually"
                                   : "Monthly"}{" "}
                                 Basis
@@ -1108,7 +1197,17 @@ const Dashboard = () => {
                               </h5>
                               <p>
                                 Transaction Time:{" "}
-                                {accountDetails?.payments[0]?.transaction_date.split(" ")[0]},{" "}{accountDetails?.payments[0]?.transaction_date.split(" ")[1]}
+                                {
+                                  accountDetails?.payments[0]?.transaction_date.split(
+                                    " "
+                                  )[0]
+                                }
+                                ,{" "}
+                                {
+                                  accountDetails?.payments[0]?.transaction_date.split(
+                                    " "
+                                  )[1]
+                                }
                               </p>
                             </div>
                             <div className="col-3">

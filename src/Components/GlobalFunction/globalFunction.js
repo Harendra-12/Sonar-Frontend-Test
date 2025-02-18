@@ -88,10 +88,10 @@ export async function generalPostFunction(endpoint, data) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
         const errorMessage = Object.keys(err.response.data.errors);
-        toast.error(err.response.data.errors[errorMessage[0]][0]);
+        // toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
         const errorMessage = Object.keys(err.response.data.error);
-        toast.error(err.response.data.error[errorMessage[0]][0]);
+        // toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(
           err.response.data.message

@@ -8,11 +8,16 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
+import DoughnutChart from "../../CommonComponents/DoughnutChart";
+import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
+  const [calls, setCalls] = useState(true);
+  const [group, setGroup] = useState(false);
+  const [queue, setQueue] = useState(false);
   const navigate = useNavigate();
   // const account = useSelector((state) => state.account)
-  // const [extensionList, setExtensionList] = useState(0);
+  const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -23,7 +28,7 @@ function PhoneDashboard() {
   const [ringGroupData, setRingGroupData] = useState([]);
   const allCall = useSelector((state) => state.allCall);
   const extension = useSelector((state) => state.extension || []);
-  // const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
@@ -32,6 +37,7 @@ function PhoneDashboard() {
   const callCenter = useSelector((state) => state.callCenter);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callQueue, setCallQueue] = useState([]);
+  const accountDetails = useSelector((state) => state.accountDetails);
 
   useEffect(() => {
     async function getData() {
@@ -67,14 +73,14 @@ function PhoneDashboard() {
     } else {
       setOnlineExtension([0]);
     }
-    // if (extensionRefresh > 0) {
-    //   setExtensionList(extension.length);
-    // } else {
-    //   dispatch({
-    //     type: "SET_EXTENSIONREFRESH",
-    //     extensionRefresh: extensionRefresh + 1,
-    //   });
-    // }
+    if (extensionRefresh > 0) {
+      setExtensionList(extension.length);
+    } else {
+      dispatch({
+        type: "SET_EXTENSIONREFRESH",
+        extensionRefresh: extensionRefresh + 1,
+      });
+    }
 
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -212,7 +218,7 @@ function PhoneDashboard() {
                   </div>
               </div> */}
             <div className="col-12 mt-3 tangoNavs">
-              {/* <div className="col-12 mt-3">
+              <div className="col-12 mt-3">
                 <div className="row">
                   <div className="col-xl-4 tabButtonParent">
                     <button
@@ -242,12 +248,11 @@ function PhoneDashboard() {
                     </button>
                   </div>
                 </div>
-              </div> */}
-              {/* {calls ? <AllCallsDetails /> : ""} */}
-              {/* {group ? <RingGroup /> : ""} */}
-              {/* {queue ? <CallQueueDetails /> : ""} */}
-              <AllCallsDetails />
-              <div className="row my-3">
+              </div>
+              {calls ? <AllCallsDetails /> : ""}
+              {group ? <RingGroup /> : ""}
+              {queue ? <CallQueueDetails /> : ""}
+              <div className="row mt-3">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
@@ -411,7 +416,7 @@ function PhoneDashboard() {
                               ).length) ||
                               0}{" "}
                             Active Users.
-                            {/* /{" "}
+                             {/* /{" "}
                             {(allUser.data &&
                               allUser.data.length -
                               allUser.data.filter((user) => {
@@ -448,7 +453,7 @@ function PhoneDashboard() {
               </div>
             </div>
 
-            {/* <div className="col-12 mt-4 mb-2 chartWrapper">
+            <div className="col-12 mt-4 mb-2 chartWrapper">
               <div className="row">
                 <div className="col-xl-3">
                   <div className="wrapper">
@@ -484,6 +489,23 @@ function PhoneDashboard() {
                       colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
                     />
                   </div>
+                  {/* <div className='circularProgressWrapper'>
+                                        <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
+                                            <circle className="bg"
+                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
+                                            ></circle>
+                                            <circle className="fg"
+                                                cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
+                                                stroke-dasharray="361.25 361.25"
+                                            ></circle>
+                                        </svg>
+                                        <div className='circularProgressContent'>
+                                            <div className="data-number">
+                                                <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
+                                            </div>
+                                            <p>Total Users Created</p>
+                                        </div>
+                                    </div> */}
                 </div>
                 <div className="col-xl-6">
                   <div className="wrapper">
@@ -504,31 +526,6 @@ function PhoneDashboard() {
                   </div>
                 </div>
               </div>
-            </div> */}
-
-            {/* <div className='circularProgressWrapper'>
-              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
-                <circle className="bg"
-                  cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
-                ></circle>
-                <circle className="fg"
-                  cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
-                  stroke-dasharray="361.25 361.25"
-                ></circle>
-              </svg>
-              <div className='circularProgressContent'>
-                <div className="data-number">
-                  <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
-                </div>
-                <p>Total Users Created</p>
-              </div>
-            </div> */}
-
-            <div className="col-xl-6">
-              <RingGroup />
-            </div>
-            <div className="col-xl-6">
-              <CallQueueDetails />
             </div>
           </div>
         </div>
