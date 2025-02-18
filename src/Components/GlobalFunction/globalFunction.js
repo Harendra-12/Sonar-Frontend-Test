@@ -200,6 +200,39 @@ export async function fileUploadPutFunction(endpoint, data) {
       return err.response.data;
     });
 }
+
+// Generate presigned url function
+export async function generatePreSignedUrl(name) {
+  return axiosInstance
+    .post("/s3/presigned-url", {src: name})
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      if (err.response.status === 500) {
+        toast.error("Something went wrong");
+      } else if (err.response.data.errors) {
+        const errorMessage = Object.keys(err.response.data.errors);
+        // toast.error(err.response.data.errors[errorMessage[0]][0]);
+      } else if (err.response.data.error) {
+        const errorMessage = Object.keys(err.response.data.error);
+        // toast.error(err.response.data.error[errorMessage[0]][0]);
+      } else {
+        toast.error(
+          err.response.data.message
+            ? err.response.data.message
+            : "Something went wrong"
+        );
+      }
+      if (err.response.status === 401) {
+        // handleNavigation("/");
+        return err.response.data;
+      } else {
+        return err.response.data;
+      }
+    });
+}
+
 // Back to top function
 export const backToTop = () => {
   window.scrollTo(0, 0);

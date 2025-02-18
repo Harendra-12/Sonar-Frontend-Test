@@ -624,124 +624,150 @@ function OngoingCall({
                 </select>
               </div>
             )}
-            <Tippy content="Mute Microphone">
-              <button
-                onClick={
-                  isMuted ? () => muteCall("unmute") : () => muteCall("mute")
-                }
-                className={
-                  isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
-                }
-                effect="ripple"
-              >
-                <i
-                  className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
-                />
-              </button>
-            </Tippy>
-            <Tippy content="Merge Call">
-              <button
-                onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false);setSelectedSessions([]) }}
-                className={` ${showActiveSessions
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-                  } `}
-                effect="ripple"
-              >
-                <i class="fa-solid fa-merge"></i>
-              </button>
-            </Tippy>
-            <Tippy content="Toggle Dialpad">
-              <button
-                onClick={() => {
-                  setHideDialpad(!hideDialpad);
-                }}
-                className={
-                  hideDialpad
+            <>
+              {true ? (
+                <>
+              <Tippy content="Mute Microphone">
+                <button
+                  onClick={
+                    isMuted ? () => muteCall("unmute") : () => muteCall("mute")
+                  }
+                  className={
+                    isMuted ? "appPanelButtonCaller active" : "appPanelButtonCaller"
+                  }
+                  effect="ripple"
+                >
+                  <i
+                    className={`fa-solid fa-microphone${isMuted ? "-slash" : ""}`}
+                  />
+                </button>
+              </Tippy>
+              <Tippy content="Merge Call">
+                <button
+                  onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false);setSelectedSessions([]) }}
+                  className={` ${showActiveSessions
                     ? "appPanelButtonCaller active"
                     : "appPanelButtonCaller"
-                }
-                effect="ripple"
-              >
-                <i className="fa-solid fa-grid" />
-              </button>
-            </Tippy>
+                    } `}
+                  effect="ripple"
+                >
+                  <i class="fa-solid fa-merge"></i>
+                </button>
+              </Tippy>
+              <Tippy content="Toggle Dialpad">
+                <button
+                  onClick={() => {
+                    setHideDialpad(!hideDialpad);
+                  }}
+                  className={
+                    hideDialpad
+                      ? "appPanelButtonCaller active"
+                      : "appPanelButtonCaller"
+                  }
+                  effect="ripple"
+                >
+                  <i className="fa-solid fa-grid" />
+                </button>
+              </Tippy>
 
-            <Tippy content="Attendant Transfer">
-              <button
-                className={` ${showTranferableList
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-                  } `}
-                effect="ripple"
-                onClick={() => { setShowTranferableList(!showTranferableList); setAttendShow(false); setShowActiveSessions(false); setShowParkList(false); }}
-              >
-                {/* <i className="fa-solid fa-user-plus" /> */}
-                <i class="fa fa-exchange" aria-hidden="true"></i>
-              </button>
-            </Tippy>
-
-            <Tippy content="Blind Transfer">
-              <button
-                className={` ${attendShow
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-                  } `}
-                effect="ripple"
-                onClick={() => {
-                  setAttendShow(!attendShow);
-                  setShowTranferableList(false);
-                  setShowActiveSessions(false);
-                  setShowParkList(false);
-                }}
-              >
-                <i className="fa-solid fa-phone-arrow-up-right" />
-              </button>
-            </Tippy>
-
-            <Tippy content="Park Call">
-              <button
-                className={` ${showParkList
-                  ? "appPanelButtonCaller active"
-                  : "appPanelButtonCaller"
-                  } `}
-                effect="ripple"
-                onClick={() => { setShowParkList(!showParkList); setAttendShow(false); setShowActiveSessions(false); setShowTranferableList(false); }}
-              >
-                P
-              </button>
-            </Tippy>
-
-            <Tippy content="Hold Call">
-              <button
-                // onClick={isHeld ? unhold : hold}
-                onClick={
-                  isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
-                }
-                className={
-                  isOnHeld
+              <Tippy content="Attendant Transfer">
+                <button
+                  className={` ${showTranferableList
                     ? "appPanelButtonCaller active"
                     : "appPanelButtonCaller"
-                }
-                effect="ripple"
-              >
-                <i className="fa-solid fa-pause" />
-              </button>
-            </Tippy>
+                    } `}
+                  effect="ripple"
+                  onClick={() => { setShowTranferableList(!showTranferableList); setAttendShow(false); setShowActiveSessions(false); setShowParkList(false); }}
+                >
+                  {/* <i className="fa-solid fa-user-plus" /> */}
+                  <i class="fa fa-exchange" aria-hidden="true"></i>
+                </button>
+              </Tippy>
 
-            <Tippy content="Hang Up">
-              <button
-                onClick={() => {
-                  hangup();
-                  setHangupRefresh(hangupRefresh + 1);
-                  setSelectedModule("callDetails");
-                }}
-                className="appPanelButtonCaller bg-danger"
-                effect="ripple"
-              >
-                <i className="fa-solid fa-phone-hangup text-white" />
-              </button>
-            </Tippy>
+              <Tippy content="Blind Transfer">
+                <button
+                  className={` ${attendShow
+                    ? "appPanelButtonCaller active"
+                    : "appPanelButtonCaller"
+                    } `}
+                  effect="ripple"
+                  onClick={() => {
+                    setAttendShow(!attendShow);
+                    setShowTranferableList(false);
+                    setShowActiveSessions(false);
+                    setShowParkList(false);
+                  }}
+                >
+                  <i className="fa-solid fa-phone-arrow-up-right" />
+                </button>
+              </Tippy>
+
+              <Tippy content="Park Call">
+                <button
+                  className={` ${showParkList
+                    ? "appPanelButtonCaller active"
+                    : "appPanelButtonCaller"
+                    } `}
+                  effect="ripple"
+                  onClick={() => { setShowParkList(!showParkList); setAttendShow(false); setShowActiveSessions(false); setShowTranferableList(false); }}
+                >
+                  P
+                </button>
+              </Tippy>
+
+              <Tippy content="Hold Call">
+                <button
+                  // onClick={isHeld ? unhold : hold}
+                  onClick={
+                    isOnHeld ? () => holdCall("unhold") : () => holdCall("hold")
+                  }
+                  className={
+                    isOnHeld
+                      ? "appPanelButtonCaller active"
+                      : "appPanelButtonCaller"
+                  }
+                  effect="ripple"
+                >
+                  <i className="fa-solid fa-pause" />
+                </button>
+              </Tippy>
+
+              <Tippy content="Hang Up">
+                <button
+                  onClick={() => {
+                    hangup();
+                    setHangupRefresh(hangupRefresh + 1);
+                    setSelectedModule("callDetails");
+                  }}
+                  className="appPanelButtonCaller bg-danger"
+                  effect="ripple"
+                >
+                  <i className="fa-solid fa-phone-hangup text-white" />
+                </button>
+              </Tippy>
+              </>
+              ):(
+              <>
+                <div className="mt-5"/>
+                <Tippy content="Merge Call">
+                  <button
+                    className="appPanelButtonCaller"
+                    effect="ripple"
+                  >
+                    <i className="fa-solid fa-exchange" />
+                  </button>
+                </Tippy>
+                <Tippy content="Hang Up">
+                  <button
+                    className="appPanelButtonCaller bg-danger"
+                    effect="ripple"
+                  >
+                    <i className="fa-solid fa-phone-hangup text-white" />
+                  </button>
+                </Tippy>
+              </>
+              )}
+            </>
           </div>
         </div>
         {hideDialpad ? (
