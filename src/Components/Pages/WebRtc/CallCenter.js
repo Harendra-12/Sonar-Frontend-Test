@@ -6,6 +6,7 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
+  logout,
   // logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -13,6 +14,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 // import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
+import { useSIPProvider } from "modify-react-sipjs";
 
 const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
@@ -24,9 +26,9 @@ const CallCenter = ({ initial }) => {
   const [refreshCenter, setRefreshCenter] = useState(0);
   const [loading, setLoading] = useState(true);
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
-  const allCallCenterIds=useSelector((state) => state.allCallCenterIds);
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  // const { sessionManager } = useSIPProvider();
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const CallCenter = ({ initial }) => {
           if (!allCallCenterIds.includes(CallerId)) {
             dispatch({
               type: "SET_ALL_CALL_CENTER_IDS",
-              CallerId, 
+              CallerId,
             });
           }
         }
@@ -79,7 +81,11 @@ const CallCenter = ({ initial }) => {
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      // const apiResponses = await logout(allCallCenterIds, dispatch, sessionManager);
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
     } catch (error) {
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
@@ -108,7 +114,10 @@ const CallCenter = ({ initial }) => {
         }}
       >
         {allLogOut && (
-         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut}/>
+          <LogOutPopUp
+            setAllLogOut={setAllLogOut}
+            handleLogOut={handleLogOut}
+          />
         )}
 
         <div className="container-fluid">
@@ -162,12 +171,15 @@ const CallCenter = ({ initial }) => {
                         </div>
                       </div>
                       <ul class="dropdown-menu">
-                        <li onClick={() =>{ 
-                          if (allCallCenterIds.length > 0) {
-                          setAllLogOut(true)}else{
-                            handleLogOut()
-                          }
-                        }}>
+                        <li
+                          onClick={() => {
+                            if (allCallCenterIds.length > 0) {
+                              setAllLogOut(true);
+                            } else {
+                              handleLogOut();
+                            }
+                          }}
+                        >
                           <div
                             class="dropdown-item"
                             style={{ cursor: "pointer" }}
@@ -290,7 +302,7 @@ const CallCenterListItem = ({
   index,
   Id,
   setRefreshCenter,
-  callCenterDetailData
+  callCenterDetailData,
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOnBreak, setIsOnBreak] = useState(false);
@@ -419,7 +431,7 @@ const CallCenterListItem = ({
         setIsLoggedIn(true);
         dispatch({
           type: "SET_ALL_CALL_CENTER_IDS",
-         CallerId, // Adding another callCenterID
+          CallerId, // Adding another callCenterID
         });
         setIsOnBreak(false);
         stopTimer(); // Stop the timer when becoming available
