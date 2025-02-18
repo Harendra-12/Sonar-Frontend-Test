@@ -22,14 +22,13 @@ const Extensions = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const [pageNumber, setPageNumber] = useState(1);
   const registerUser = useSelector((state) => state.registerUser);
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionByAccount = useSelector((state) => state.extensionByAccount);
-  const userList = useSelector((state) => state.allUser?.data) || [];
+  const [userList, setUserList] = useState([]);
+  // const userList = useSelector((state) => state.allUser?.data) || [];
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
-console.log("extensionByAccount",extensionByAccount);
 
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
@@ -48,12 +47,15 @@ console.log("extensionByAccount",extensionByAccount);
 
   // Trigger user api to get latest users
   useEffect(() => {
-    if (userList.length == 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
+    async function getData() {
+      const userApi = await generalGetFunction(
+        `/user/search?account=1`,
+      );
+      if(userApi?.status){
+        setUserList(userApi.data);
+      }
     }
+    getData()
   }, []);
 
   // Filtering users with extensions
@@ -74,8 +76,6 @@ console.log("extensionByAccount",extensionByAccount);
       }
       // setLoading(false);
       async function getData() {
-        console.log("-----------------------------------------11111111111");
-        
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
             `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
@@ -102,9 +102,6 @@ console.log("extensionByAccount",extensionByAccount);
       }
     } else {
       async function getData() {
-        console.log("-----------------------------------------22222222222");
-        
-        
         setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
@@ -163,7 +160,7 @@ console.log("extensionByAccount",extensionByAccount);
                             backToTop();
                           }}
                         >
-                          
+
 
                           <span className="text">Back</span>
                           <span className="icon">
@@ -223,7 +220,7 @@ console.log("extensionByAccount",extensionByAccount);
                         <thead>
                           <tr>
                             <th>Extensions</th>
-                            <th>Name</th>
+                            <th>User</th>
                             {/* <th>Domains</th> */}
                             <th>Effective CID Name</th>
                             <th>Outbound CID Name</th>

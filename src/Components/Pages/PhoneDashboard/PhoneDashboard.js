@@ -8,16 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
-import DoughnutChart from "../../CommonComponents/DoughnutChart";
-import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
-  const [calls, setCalls] = useState(true);
-  const [group, setGroup] = useState(false);
-  const [queue, setQueue] = useState(false);
   const navigate = useNavigate();
   // const account = useSelector((state) => state.account)
-  const [extensionList, setExtensionList] = useState(0);
+  // const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -28,7 +23,7 @@ function PhoneDashboard() {
   const [ringGroupData, setRingGroupData] = useState([]);
   const allCall = useSelector((state) => state.allCall);
   const extension = useSelector((state) => state.extension || []);
-  const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  // const extensionRefresh = useSelector((state) => state.extensionRefresh);
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
@@ -37,7 +32,6 @@ function PhoneDashboard() {
   const callCenter = useSelector((state) => state.callCenter);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callQueue, setCallQueue] = useState([]);
-  const accountDetails = useSelector((state) => state.accountDetails);
 
   useEffect(() => {
     async function getData() {
@@ -73,14 +67,14 @@ function PhoneDashboard() {
     } else {
       setOnlineExtension([0]);
     }
-    if (extensionRefresh > 0) {
-      setExtensionList(extension.length);
-    } else {
-      dispatch({
-        type: "SET_EXTENSIONREFRESH",
-        extensionRefresh: extensionRefresh + 1,
-      });
-    }
+    // if (extensionRefresh > 0) {
+    //   setExtensionList(extension.length);
+    // } else {
+    //   dispatch({
+    //     type: "SET_EXTENSIONREFRESH",
+    //     extensionRefresh: extensionRefresh + 1,
+    //   });
+    // }
 
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
