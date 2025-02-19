@@ -109,6 +109,7 @@ function Header(props) {
       <div className="col-8 d-flex justify-content-end align-items-center">
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
+            {account?.extension_id &&
             <div className="my-auto mx-3">
               <Tippy content="Click here to open dialer!">
                 <a
@@ -124,6 +125,7 @@ function Header(props) {
                 </a>
               </Tippy>
             </div>
+            }
             <div>
               <Tippy content="Your available balance, click to know more!">
                 <div

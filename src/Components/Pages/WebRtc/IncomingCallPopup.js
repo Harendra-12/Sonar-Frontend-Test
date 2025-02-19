@@ -363,7 +363,7 @@ function IncomingCallPopup({
                 <div class="circle1"></div>
                 <div class="circle2"></div>
               </button>
-              <button
+              {/* <button
                 className="callButton bg-primary"
                 onClick={() => {
                   setAttendShow(true);
@@ -371,7 +371,7 @@ function IncomingCallPopup({
                 }}
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
-              </button>
+              </button> */}
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-solid fa-phone-hangup"></i>
               </button>
