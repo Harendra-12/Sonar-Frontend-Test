@@ -201,7 +201,6 @@ function OngoingCall({
         const customHeaders = {
           "X-Custom-Header": "Value",
           "Refer-To": transferTo,
-          "Referred-By": `sip:${extension}@${account.domain.domain_name}`,
         };
 
         const target = UserAgent.makeURI(transferTo);

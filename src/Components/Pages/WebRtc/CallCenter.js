@@ -324,13 +324,14 @@ const CallCenterListItem = ({
     });
 
     const totalBreakTimeInMs = filteredData.reduce((total, breakTime) => {
-      if (breakTime.end_time) {
-        const startTime = new Date(breakTime.start_time);
-        const endTime = new Date(breakTime.end_time);
-        return total + (endTime - startTime);
+      if (breakTime.break_duration) {
+        const [hours, minutes, seconds] = breakTime.break_duration.split(":").map(Number);
+        const durationMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
+        return total + durationMs;
       }
       return total;
     }, 0);
+    
     setTotalTime(totalBreakTimeInMs / 1000);
 
     const ongoingBreak = filteredData.find(
