@@ -137,7 +137,6 @@ function OngoingCall({
     if (destNumber.length > 3) {
       const dialog = session.dialog;
       const transferTo = `sip:${destNumber}@${account.domain.domain_name}`;
-      console.log(transferTo);
       if (session.state !== "Established") {
         toast.warn("cannot transfer call: session is not established");
         return;
@@ -155,7 +154,6 @@ function OngoingCall({
           session.userAgent,
           UserAgent.makeURI(transferTo)
         );
-        console.log(replacementSession);
         if (target) {
           // Initiate the refer request
           // const referRequest = dialog.refer(replacementSession);
@@ -240,7 +238,6 @@ function OngoingCall({
 
   // Handle merge call
   const handleMergeCall = async (sessionIds) => {
-    console.log("handleMergeCall Started for sessions:", sessionIds);
 
     const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
     if (activeSessions.length < 2) {
@@ -255,7 +252,6 @@ function OngoingCall({
 
     // Unhold each session before merging
     await Promise.all(activeSessions.map(async (session) => {
-      console.log(`Unholding session ${session.id}...`);
       let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
       sessionDescriptionHandlerOptions.hold = false;
       session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
@@ -274,7 +270,6 @@ function OngoingCall({
               // Restore outbound streams
               pc.getSenders().forEach(sender => {
                 if (sender.track) {
-                  console.log(`Unmuting ${sender.track.kind} track: ${sender.track.label}`);
                   sender.track.enabled = true;
                 }
               });
@@ -295,7 +290,6 @@ function OngoingCall({
     }));
 
     try {
-      console.log("Requesting user audio...");
       const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       // Retrieve remote audio streams for each session
@@ -324,8 +318,6 @@ function OngoingCall({
             sourceRemote.connect(destination);
           }
         });
-
-        console.log("Mixed stream created:", destination.stream);
         return destination.stream;
       }
 
@@ -339,7 +331,6 @@ function OngoingCall({
 
         session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
           if (sender.track && sender.track.kind === "audio") {
-            console.log(`Replacing audio track in Session ${session.id}`);
             sender.replaceTrack(mixedAudioTrack);
           }
         });
@@ -350,8 +341,6 @@ function OngoingCall({
         const mixedStream = mixAudioStreams(remoteStreams.get(session.id)); // Exclude their own remote stream
         sendMixedStreamToSession(session, mixedStream);
       });
-
-      console.log("All selected sessions have been merged.");
     } catch (err) {
       console.error("Error during call merging:", err);
     }
@@ -365,8 +354,6 @@ function OngoingCall({
   // Logic to transfer call using attendent transfer
    function handleAttendedTransfer2(e) {
     const previosSession = sessions[currentSession.transferableSessionId]
-    console.log(previosSession,callProgressDestination,callProgressId);
-    
     if (callProgressDestination.length > 3) {
       const dialog = previosSession.dialog;
       const transferTo = `sip:${callProgressDestination}@${account.domain.domain_name}`;
@@ -689,7 +676,7 @@ function OngoingCall({
                       <i className="fa-solid fa-phone-arrow-up-right" />
                     </button>
                   </Tippy>
-                  <Tippy content="Merge Call">
+                  {/* <Tippy content="Merge Call">
                     <button
                       onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false); setSelectedSessions([]) }}
                       className={` ${showActiveSessions
@@ -700,7 +687,7 @@ function OngoingCall({
                     >
                       <i class="fa-solid fa-merge"></i>
                     </button>
-                  </Tippy>
+                  </Tippy> */}
                   <Tippy content="Hang Up">
                     <button
                       className="appPanelButtonCaller bg-danger"
