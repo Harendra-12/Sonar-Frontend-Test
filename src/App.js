@@ -136,6 +136,7 @@ import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 import UserProfile from "./Components/Pages/Users/UserProfile";
 import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
+import Ticket from "./Components/Pages/Support/Ticket";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -655,8 +656,8 @@ function App() {
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/live-chat" element={<LiveSupportChat />} />
+          <Route path="/ticket" element={<Ticket />} />
           {/* ------ Support  */}
-
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />

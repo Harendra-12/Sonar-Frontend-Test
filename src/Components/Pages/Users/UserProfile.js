@@ -38,7 +38,7 @@ function UserProfile() {
                     </div>
                     <div className="row" style={{
                         padding: "20px 10px",
-                        backgroundImage: "linear-gradient(0deg, white 0%, #3e8ef7 90%)"
+                        // backgroundImage: "linear-gradient(0deg, white 0%, #3e8ef7 90%)"
                     }}
                     >
                         <div className="col-xl-12 pe-xl-0 mt-5">
