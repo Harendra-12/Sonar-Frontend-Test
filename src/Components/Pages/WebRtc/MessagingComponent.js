@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSIPProvider, useSessionCall, CONNECT_STATUS } from "modify-react-sipjs";
+import { useSIPProvider,  CONNECT_STATUS } from "modify-react-sipjs";
 
 const MessagingComponent = () => {
   const account = useSelector((state) => state.account);
