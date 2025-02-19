@@ -50,7 +50,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const account = useSelector((state) => state.account);
   const [searchExtensions, setSearchExtensions] = useState();
-  const [selectedSearch, setSelectedSearch] = useState("");
+  const [selectedSearch, setSelectedSearch] = useState({
+    label: "",
+    value: "",
+  });
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState?.user_role == "Company"
   );
@@ -132,7 +135,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
               },
             };
             // setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
-            setSelectedSearch(newData.extension_id);
+            setSelectedSearch({
+              label: newData?.extension?.extension,
+              value: newData?.extension_id,
+            });
             if (!isCustomerAdmin) {
               console.log(isCustomerAdmin);
               setSelectedPermission(newData.permissions);
@@ -190,10 +196,15 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         });
       });
       // setFilterExtensions(data);
-
-      const options = data?.map((extension) => ({
-        value: extension.id,
-        label: extension.extension,
+      let filteredData;
+      if (data.length > 0) {
+        filteredData = data.filter(
+          (item) => item?.extension !== account?.extension?.extension
+        );
+      }
+      const options = filteredData?.map((extension) => ({
+        value: extension?.id,
+        label: extension?.extension,
       }));
 
       setSearchExtensions([{ value: null, label: "None" }, ...options]);
@@ -225,7 +236,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
 
     let updatedData = {
       ...data,
-      extension_id: selectedSearch,
+      extension_id: selectedSearch.value,
       ...{
         name: `${firstName} ${lastName}`,
       },
@@ -243,7 +254,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       role_id,
       account_id: account.account_id,
       permissions: selectedPermission,
-      extension_id: selectedSearch,
+      extension_id: selectedSearch.value,
       usages: data.usages,
       alias: data.alias,
       ...(password && password.length > 5 && { password }),
@@ -667,12 +678,15 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       placeholder="Available Extensions"
                                       isClearable={false}
                                       defaultValue={{
-                                        label: watch()?.extension?.extension,
-                                        value: watch()?.extension?.extension,
+                                        label: selectedSearch.label,
+                                        value: selectedSearch.value,
                                       }} // Default selected option
                                       onInputChange={handleSelectInputChange}
                                       onChange={(e) => {
-                                        setSelectedSearch(e.value);
+                                        setSelectedSearch({
+                                          label: e.label,
+                                          value: e.value,
+                                        });
                                       }}
                                       // {...register("extension_id")}
                                       styles={{
@@ -707,7 +721,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       defaultValue={""} // Default selected option
                                       onInputChange={handleSelectInputChange}
                                       onChange={(e) => {
-                                        setSelectedSearch(e.value);
+                                        setSelectedSearch({
+                                          label: e.label,
+                                          value: e.value,
+                                        });
                                       }}
                                       // {...register("extension_id")}
                                       styles={{
@@ -917,7 +934,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 }} // Default selected option
                                 onInputChange={handleSelectInputChange}
                                 onChange={(e) => {
-                                  setSelectedSearch(e.value);
+                                  setSelectedSearch({
+                                    label: e.label,
+                                    value: e.value,
+                                  });
                                 }}
                                 // {...register("extension_id")}
                                 styles={{
