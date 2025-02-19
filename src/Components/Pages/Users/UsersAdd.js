@@ -114,7 +114,13 @@ const UsersAdd = () => {
           return userItem.extension_id === item.id;
         });
       });
-      const options = data?.map((extension) => ({
+      let filteredData;
+      if (data.length > 0) {
+        filteredData = data.filter(
+          (item) => item?.extension !== account?.extension?.extension
+        );
+      }
+      const options = filteredData?.map((extension) => ({
         value: extension.id,
         label: extension.extension,
       }));
@@ -706,7 +712,9 @@ const UsersAdd = () => {
                                   paddingLeft: "15px",
                                   paddingTop: 0,
                                   paddingBottom: 0,
-                                  backgroundColor: state.isSelected ? "#5a9fff" : "transparent",
+                                  backgroundColor: state.isSelected
+                                    ? "#5a9fff"
+                                    : "transparent",
                                   "&:hover": {
                                     backgroundColor: "#0055cc",
                                     color: "#fff",

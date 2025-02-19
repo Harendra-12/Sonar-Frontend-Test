@@ -8,6 +8,7 @@ import {
   backToTop,
   generalGetFunction,
   generalPostFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -49,6 +50,8 @@ function CdrReport({ page }) {
   const [selectedNumberToBlock, setSelectedNumberToBlock] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [updatedQueryparams, setUpdatedQueryparams] = useState("");
+  const [audioURL, setAudioURL] = useState("");
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -156,20 +159,28 @@ function CdrReport({ page }) {
             `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
         )
         .join("&");
+      setUpdatedQueryparams(queryParams);
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
       `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
-        callDirection: callDirection,
-        application_state: page === "all" ? callType : page === "billing" ? "pstn" : page === "callrecording" ? callType : page,
-        origin: callOrigin,
-        destination: callDestination,
+        "Call-Direction": callDirection,
+        application_state:
+          page === "all"
+            ? callType
+            : page === "billing"
+            ? "pstn"
+            : page === "callrecording"
+            ? callType
+            : page,
+        variable_sip_from_user: callOrigin,
+        variable_sip_to_user: callDestination,
         start_date: startDate,
         end_date: endDate,
         variable_DIALSTATUS: hangupCause,
-        hangupCause: hangupStatus,
-        charges: page === "billing" ? "give" : "",
+        "Hangup-Cause": hangupStatus,
+        call_cost: page === "billing" ? "give" : "",
       }
     );
 
@@ -270,13 +281,28 @@ function CdrReport({ page }) {
     }
   }, [filterBy]);
 
-  const handlePlaying = (audio) => {
-    setCurrentPlaying(audio);
-    setTimeout(() => {
-      if (currentPlaying) {
-        thisAudioRef.current.play();
+  const handlePlaying = async (audio) => {
+    try {
+      setCurrentPlaying(audio);
+      const url = audio.split("/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url); // Update audio URL state
+
+        // Wait for React state update before accessing ref
+        setTimeout(() => {
+          if (thisAudioRef.current) {
+            thisAudioRef.current.load(); // Reload audio source
+            thisAudioRef.current.play().catch((error) => {
+              console.error("Audio play error:", error);
+            });
+          }
+        }, 100); // Reduced timeout to minimize delay
       }
-    }, 200);
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
+    }
   };
 
   const handleBlockNumber = async (blockNumber) => {
@@ -349,19 +375,68 @@ function CdrReport({ page }) {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }
+
+  // function to handle export
+  const handleExport = async () => {
+    try {
+      const res = await generalGetFunction(
+        `cdr?${updatedQueryparams}&export=true`
+      );
+      if (res.status) {
+        exportToCSV(res.data);
+      }
+      toast.success("Data Successfully Exported.");
+    } catch (error) {
+      toast.error("Error during export:", error?.message);
+    }
+  };
+
   return (
     <main className="mainContent">
       <section id="phonePage">
         <div className="container-fluid px-0 position-relative">
-          <Header title={`${page === "billing" ? "Billing Reports" : page === "callcenter" ? "Call Center Reports" : page === "ringgroup" ? "Ring Group Reports" : page === "callrecording" ? "Call Recordings" : "CDR Reports"}`} />
+          <Header
+            title={`${
+              page === "billing"
+                ? "Billing Reports"
+                : page === "callcenter"
+                ? "Call Center Reports"
+                : page === "ringgroup"
+                ? "Ring Group Reports"
+                : page === "callrecording"
+                ? "Call Recordings"
+                : "CDR Reports"
+            }`}
+          />
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div className="d-flex flex-wrap">
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
-                      <h4>{page === "billing" ? "Billing" : page === "callcenter" ? "Call Center Reports" : page === "ringgroup" ? "Ring Group Reports" : page === "callrecording" ? "Call Recordings" : "CDR Reports"}</h4>
-                      <p>Here are all the {page === "billing" ? "Billing Reports" : page === "callcenter" ? "Call Center Reports" : page === "ringgroup" ? "Ring Group Reports" : page === "callrecording" ? "Call Recordings" : "CDR Reports"}</p>
+                      <h4>
+                        {page === "billing"
+                          ? "Billing"
+                          : page === "callcenter"
+                          ? "Call Center Reports"
+                          : page === "ringgroup"
+                          ? "Ring Group Reports"
+                          : page === "callrecording"
+                          ? "Call Recordings"
+                          : "CDR Reports"}
+                      </h4>
+                      <p>
+                        Here are all the{" "}
+                        {page === "billing"
+                          ? "Billing Reports"
+                          : page === "callcenter"
+                          ? "Call Center Reports"
+                          : page === "ringgroup"
+                          ? "Ring Group Reports"
+                          : page === "callrecording"
+                          ? "Call Recordings"
+                          : "CDR Reports"}
+                      </p>
                     </div>
                     <div className="buttonGroup">
                       <button
@@ -397,7 +472,7 @@ function CdrReport({ page }) {
                       <button
                         effect="ripple"
                         className="panelButton"
-                        onClick={() => exportToCSV(cdr?.data)}
+                        onClick={() => handleExport()}
                         disabled={loading}
                       >
                         <span className="text">Export</span>
@@ -446,7 +521,6 @@ function CdrReport({ page }) {
                             setEndDateFlag("");
                           }}
                         >
-                          
                           <option value={"date"}>Single Date</option>
                           <option value={"date_range"}>Date Range</option>
                           <option value={"7_days"}>Last 7 Days</option>
@@ -574,7 +648,7 @@ function CdrReport({ page }) {
                                 setPageNumber(1);
                               }}
                               value={callDirection}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                             >
                               <option value={""}>All Calls</option>
                               <option value={"inbound"}>Inbound Calls</option>
@@ -606,51 +680,59 @@ function CdrReport({ page }) {
                       ) : (
                         ""
                       )}
-                      {page === "callrecording" ? "" : <>
-                        <div className="formRow border-0 ">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Hangup Cause
-                          </label>
-                          <select
-                            className="formItem"
-                            onChange={(e) => {
-                              setHagupCause(e.target.value);
-                              setPageNumber(1);
-                            }}
-                          >
-                            <option value={""}>All</option>
-                            <option value={"SUCCESS"}>Success</option>
-                            <option value={"BUSY"}>Busy</option>
-                            <option value={"NOANSWER"}>No Answer</option>
-                            <option value={"NOT CONNECTED"}>Not Connected</option>
-                            <option value={"USER_NOT_REGISTERED"}>
-                              User Not Registered
-                            </option>
-                            <option value={"SUBSCRIBER_ABSENT"}>
-                              Subscriber Absent
-                            </option>
-                            <option value={"CANCEL"}>Cancelled</option>
-                          </select>
-                        </div>
-                        <div className="formRow border-0 pe-xl-0">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Hangup status
-                          </label>
-                          <select
-                            className="formItem"
-                            onChange={(e) => {
-                              setHangupStatus(e.target.value);
-                              setPageNumber(1);
-                            }}
-                          >
-                            <option value={""}>All</option>
-                            <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
-                            <option value={"NORMAL_CLEARING"}>
-                              Normal Clearing
-                            </option>
-                          </select>
-                        </div>
-                      </>}
+                      {page === "callrecording" ? (
+                        ""
+                      ) : (
+                        <>
+                          <div className="formRow border-0 ">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Hangup Cause
+                            </label>
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                setHagupCause(e.target.value);
+                                setPageNumber(1);
+                              }}
+                            >
+                              <option value={""}>All</option>
+                              <option value={"SUCCESS"}>Success</option>
+                              <option value={"BUSY"}>Busy</option>
+                              <option value={"NOANSWER"}>No Answer</option>
+                              <option value={"NOT CONNECTED"}>
+                                Not Connected
+                              </option>
+                              <option value={"USER_NOT_REGISTERED"}>
+                                User Not Registered
+                              </option>
+                              <option value={"SUBSCRIBER_ABSENT"}>
+                                Subscriber Absent
+                              </option>
+                              <option value={"CANCEL"}>Cancelled</option>
+                            </select>
+                          </div>
+                          <div className="formRow border-0 pe-xl-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Hangup status
+                            </label>
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                setHangupStatus(e.target.value);
+                                setPageNumber(1);
+                              }}
+                            >
+                              <option value={""}>All</option>
+                              <option value={"MEDIA_TIMEOUT"}>
+                                Media Timeout
+                              </option>
+                              <option value={"NORMAL_CLEARING"}>
+                                Normal Clearing
+                              </option>
+                            </select>
+                          </div>
+                        </>
+                      )}
                       {/* <Link
                   to="#"
                   onClick={() => {
@@ -713,13 +795,16 @@ function CdrReport({ page }) {
                           <th>Caller No.</th>
                           <th>Tag</th>
                           <th>Via/Route</th>
-                          {page === "callrecording" ? "" :
+                          {page === "callrecording" ? (
+                            ""
+                          ) : (
                             <>
                               <th>Extension</th>
                               <th>User name</th>
                               <th>Date</th>
                               <th>Time</th>
-                            </>}
+                            </>
+                          )}
                           <th>Recording</th>
                           <th>Duration</th>
                           {page === "billing" || page === "callrecording" ? (
@@ -731,12 +816,25 @@ function CdrReport({ page }) {
                             </>
                           )}
                           {page === "callrecording" ? "" : <th>Charge</th>}
-                          {page === "billing" || page === "callrecording" ? "" : <th>Block</th>}
+                          {page === "billing" || page === "callrecording" ? (
+                            ""
+                          ) : (
+                            <th>Block</th>
+                          )}
                         </tr>
                       </thead>
                       <tbody>
                         {loading ? (
-                          <SkeletonTableLoader col={page === "billing" ? 13 : page === "callrecording" ? 9 : 17} row={12} />
+                          <SkeletonTableLoader
+                            col={
+                              page === "billing"
+                                ? 13
+                                : page === "callrecording"
+                                ? 9
+                                : 17
+                            }
+                            row={12}
+                          />
                         ) : (
                           <>
                             {cdr?.data &&
@@ -766,7 +864,7 @@ function CdrReport({ page }) {
                                       </td>
                                       <td>
                                         {item["Call-Direction"] ===
-                                          "inbound" ? (
+                                        "inbound" ? (
                                           <span>
                                             <i
                                               class="fa-solid fa-phone-arrow-down-left me-1"
@@ -796,28 +894,26 @@ function CdrReport({ page }) {
                                             ></i>{" "}
                                             Missed
                                           </span>
-                                        )
-                                          : item["Call-Direction"] ===
-                                            "transfer" ? (
-                                            <span>
-                                              <i
-                                                class="fa-solid fa-phone-missed me-1"
-                                                style={{
-                                                  color: "var(--funky-boy3)",
-                                                }}
-                                              ></i>{" "}
-                                              Transfer
-                                            </span>
-                                          )
-                                            : (
-                                              <span>
-                                                <i
-                                                  class="fa-solid fa-headset me-1"
-                                                  style={{ color: "var(--color2)" }}
-                                                ></i>{" "}
-                                                Internal
-                                              </span>
-                                            )}
+                                        ) : item["Call-Direction"] ===
+                                          "transfer" ? (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-phone-missed me-1"
+                                              style={{
+                                                color: "var(--funky-boy3)",
+                                              }}
+                                            ></i>{" "}
+                                            Transfer
+                                          </span>
+                                        ) : (
+                                          <span>
+                                            <i
+                                              class="fa-solid fa-headset me-1"
+                                              style={{ color: "var(--color2)" }}
+                                            ></i>{" "}
+                                            Internal
+                                          </span>
+                                        )}
                                       </td>
                                       {page === "billing" ? (
                                         ""
@@ -833,40 +929,42 @@ function CdrReport({ page }) {
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                          item["application_state"] ===
+                                        item["application_state"] ===
                                           "eavesdrop" ||
-                                          item["application_state"] ===
-                                          "whisper" || item["application_state"] ===
-                                          "barge"
+                                        item["application_state"] ===
+                                          "whisper" ||
+                                        item["application_state"] === "barge"
                                           ? item["other_leg_destination_number"]
-                                          : item["Caller-Callee-ID-Number"]}{" "}
+                                          : item[
+                                              "Caller-Callee-ID-Number"
+                                            ]}{" "}
                                         {item["application_state_name"] &&
                                           `(${item["application_state_name"]})`}
                                       </td>
-                                      {page === "callrecording" ? "" :
+                                      {page === "callrecording" ? (
+                                        ""
+                                      ) : (
                                         <>
                                           <td>
                                             {item["application_state_to_ext"]}
                                           </td>
-                                          <td>
-                                            {item["e_name"]}
-                                          </td>
+                                          <td>{item["e_name"]}</td>
                                           <td>
                                             {
-                                              item["variable_start_stamp"].split(
-                                                " "
-                                              )[0]
+                                              item[
+                                                "variable_start_stamp"
+                                              ].split(" ")[0]
                                             }
                                           </td>
                                           <td>
                                             {
-                                              item["variable_start_stamp"].split(
-                                                " "
-                                              )[1]
+                                              item[
+                                                "variable_start_stamp"
+                                              ].split(" ")[1]
                                             }
                                           </td>
                                         </>
-                                      }
+                                      )}
                                       <td>
                                         {item["recording_path"] &&
                                           item["variable_billsec"] > 0 && (
@@ -878,6 +976,7 @@ function CdrReport({ page }) {
                                                   currentPlaying
                                                 ) {
                                                   setCurrentPlaying("");
+                                                  setAudioURL("");
                                                 } else {
                                                   handlePlaying(
                                                     item["recording_path"]
@@ -885,7 +984,8 @@ function CdrReport({ page }) {
                                                 }
                                               }}
                                             >
-                                              {currentPlaying === item["recording_path"] ? (
+                                              {currentPlaying ===
+                                              item["recording_path"] ? (
                                                 <i className="fa-solid fa-stop"></i>
                                               ) : (
                                                 <i className="fa-solid fa-play"></i>
@@ -906,7 +1006,8 @@ function CdrReport({ page }) {
                                       <td>
                                         {formatTime(item["variable_billsec"])}
                                       </td>
-                                      {page === "billing" || page === "callrecording" ? (
+                                      {page === "billing" ||
+                                      page === "callrecording" ? (
                                         ""
                                       ) : (
                                         <>
@@ -922,8 +1023,13 @@ function CdrReport({ page }) {
                                           <td>{item["variable_DIALSTATUS"]}</td>
                                         </>
                                       )}
-                                      {page === "callrecording" ? "" : <td>{item["call_cost"]}</td>}
-                                      {page === "billing" || page === "callrecording" ? (
+                                      {page === "callrecording" ? (
+                                        ""
+                                      ) : (
+                                        <td>{item["call_cost"]}</td>
+                                      )}
+                                      {page === "billing" ||
+                                      page === "callrecording" ? (
                                         ""
                                       ) : (
                                         <td>
@@ -931,22 +1037,23 @@ function CdrReport({ page }) {
                                           <button
                                             disabled={isBlocked}
                                             effect="ripple"
-                                            className={`tableButton ${isBlocked ? "delete" : "warning"
-                                              } ms-0`}
+                                            className={`tableButton ${
+                                              isBlocked ? "delete" : "warning"
+                                            } ms-0`}
                                             // style={{ height: "34px" }}
                                             onClick={() => {
                                               setSelectedNumberToBlock(
                                                 item["Call-Direction"] ===
                                                   "inbound"
                                                   ? item[
-                                                  "Caller-Caller-ID-Number"
-                                                  ]
+                                                      "Caller-Caller-ID-Number"
+                                                    ]
                                                   : item["Call-Direction"] ===
                                                     "outbound"
-                                                    ? item[
-                                                    "Caller-Callee-ID-Number"
+                                                  ? item[
+                                                      "Caller-Callee-ID-Number"
                                                     ]
-                                                    : "N/A"
+                                                  : "N/A"
                                               );
                                               setPopUp(true);
                                             }}
@@ -968,7 +1075,8 @@ function CdrReport({ page }) {
                                       )}
                                     </tr>
                                     {currentPlaying ===
-                                      item["recording_path"] && item["recording_path"] && (
+                                      item["recording_path"] &&
+                                      item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
@@ -978,21 +1086,22 @@ function CdrReport({ page }) {
                                                 autoPlay={true}
                                                 onEnded={() => {
                                                   setCurrentPlaying(null);
+                                                  setAudioURL("");
                                                 }}
                                               >
                                                 <source
-                                                  src={item["recording_path"]}
+                                                  src={audioURL}
                                                   type="audio/mpeg"
                                                 />
                                               </audio>
 
                                               <button
                                                 className="audioCustomButton"
-                                              // onClick={() =>
-                                              //   handleAudioDownload(
-                                              //     clickedVoiceMail.recording_path
-                                              //   )
-                                              // }
+                                                // onClick={() =>
+                                                //   handleAudioDownload(
+                                                //     clickedVoiceMail.recording_path
+                                                //   )
+                                                // }
                                               >
                                                 <i className="fa-sharp fa-solid fa-download" />
                                               </button>

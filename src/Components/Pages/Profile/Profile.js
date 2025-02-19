@@ -362,12 +362,6 @@ const Profile = () => {
                                         id="selectFormRow"
                                         value={selectedTimeZone}
                                         onChange={(e) => {
-                                          console.log(
-                                            "9999999999timeXXXXXXX",
-                                            e.target.value,
-                                            "        ",
-                                            selectedTimeZone
-                                          );
                                           setSelectedTimeZone(e.target.value);
                                         }}
                                       >
@@ -406,11 +400,16 @@ const Profile = () => {
                                         style={{ width: "100%" }}
                                         name="delay"
                                         id="selectFormRow"
-                                        value={selectedExtension}
+                                        value={selectedExtension ?? ""}
                                         onChange={(e) => {
                                           setSelectedExtension(e.target.value);
                                         }}
                                       >
+                                        {/* Placeholder Option */}
+                                        <option value="" disabled>
+                                          Please select any value
+                                        </option>
+
                                         {extensionAll?.data?.map(
                                           (item, index) => {
                                             const foundUser =

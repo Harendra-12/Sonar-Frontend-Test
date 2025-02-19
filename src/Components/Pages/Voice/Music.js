@@ -10,6 +10,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -32,6 +33,7 @@ function Music() {
   const [selectedMusicToEdit, setSelectedMusicToEdit] = useState();
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
+  const [audioURL, setAudioURL] = useState("");
 
   // Get all previous music data
   useEffect(() => {
@@ -139,6 +141,22 @@ function Music() {
       setLoading(false);
     }
   }
+
+  // function to play the music
+  const handlePlayMusic = async (id, path) => {
+    if (currentPlaying === id) {
+      setCurrentPlaying(null); // Pause if already playing
+      setAudioURL(null);
+    } else {
+      setCurrentPlaying(id); // Play selected audio
+      const url = path.split("/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url);
+      }
+    }
+  };
 
   return (
     <main className="mainContent">
@@ -307,13 +325,12 @@ function Music() {
                                         <td>
                                           <button
                                             className="tableButton play"
-                                            onClick={() => {
-                                              if (currentPlaying === item.id) {
-                                                setCurrentPlaying(null); // Pause if already playing
-                                              } else {
-                                                setCurrentPlaying(item.id); // Play selected audio
-                                              }
-                                            }}
+                                            onClick={() =>
+                                              handlePlayMusic(
+                                                item.id,
+                                                item.path
+                                              )
+                                            }
                                           >
                                             {isCurrent ? (
                                               <i className="fa-solid fa-stop"></i>
@@ -365,7 +382,7 @@ function Music() {
                                                 } // Reset on end
                                               >
                                                 <source
-                                                  src={item.path}
+                                                  src={audioURL}
                                                   type="audio/mpeg"
                                                 />
                                               </audio>

@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import {
   backToTop,
   generalGetFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -19,14 +20,30 @@ function VoiceMailReport() {
   const thisAudioRef = useRef(null);
   const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
+  const [audioURL, setAudioURL] = useState("");
 
-  const handlePlaying = (audio) => {
-    setCurrentPlaying(audio);
-    setTimeout(() => {
-      if (currentPlaying) {
-        thisAudioRef.current.play();
+  const handlePlaying = async (audio) => {
+    try {
+      setCurrentPlaying(audio);
+      const url = audio.split("/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url); // Update audio URL state
+
+        // Wait for React state update before accessing ref
+        setTimeout(() => {
+          if (thisAudioRef.current) {
+            thisAudioRef.current.load(); // Reload audio source
+            thisAudioRef.current.play().catch((error) => {
+              console.error("Audio play error:", error);
+            });
+          }
+        }, 100); // Reduced timeout to minimize delay
       }
-    }, 200);
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
+    }
   };
 
   useEffect(() => {
@@ -51,7 +68,7 @@ function VoiceMailReport() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [pageNumber, voiceMailRefresh, rowPerPage,searchValue]);
+  }, [pageNumber, voiceMailRefresh, rowPerPage, searchValue]);
 
   function extractDate(dateTimeString) {
     // Split the string by space and return the first part
@@ -148,69 +165,69 @@ function VoiceMailReport() {
                           </tr>
                         </thead>
                         <tbody>
-                          {
-                            voiceMail?.data.map((item, index) => {
-                              return (
-                                <>
-                                  <tr className="cdrTableRow">
-                                    <td>{index + 1}.</td>
-                                    <td>{item.src}</td>
-                                    <td>{item.dest}</td>
-                                    {/* <td>www.voicemailrecordingpath.com</td> */}
-                                    <td>
-                                      <button
-                                        className="tableButton px-2 mx-0"
-                                        onClick={() => {
-                                          if (
-                                            currentPlaying ==
-                                            item["recording_path"]
-                                          ) {
+                          {voiceMail?.data.map((item, index) => {
+                            return (
+                              <>
+                                <tr className="cdrTableRow">
+                                  <td>{index + 1}.</td>
+                                  <td>{item.src}</td>
+                                  <td>{item.dest}</td>
+                                  {/* <td>www.voicemailrecordingpath.com</td> */}
+                                  <td>
+                                    <button
+                                      className="tableButton px-2 mx-0"
+                                      onClick={() => {
+                                        if (
+                                          currentPlaying ==
+                                          item["recording_path"]
+                                        ) {
+                                          setCurrentPlaying(null);
+                                        } else {
+                                          handlePlaying(item["recording_path"]);
+                                        }
+                                      }}
+                                    >
+                                      <i
+                                        className={`fa-duotone fa-${
+                                          currentPlaying ==
+                                          item["recording_path"]
+                                            ? "stop"
+                                            : "play"
+                                        }`}
+                                      ></i>
+                                    </button>
+                                  </td>
+                                  <td>{item.duration}</td>
+                                  <td>{extractDate(item.created_at)}</td>
+                                </tr>
+                                {currentPlaying == item["recording_path"] && (
+                                  <tr>
+                                    <td colSpan={99}>
+                                      <div className="audio-container mx-2">
+                                        <audio
+                                          controls={true}
+                                          ref={thisAudioRef}
+                                          autoPlay={true}
+                                          onEnded={() => {
                                             setCurrentPlaying(null);
-                                          } else {
-                                            handlePlaying(item["recording_path"]);
-                                          }
-                                        }}
-                                      >
-                                        <i
-                                          className={`fa-duotone fa-${currentPlaying ==
-                                              item["recording_path"]
-                                              ? "stop"
-                                              : "play"
-                                            }`}
-                                        ></i>
-                                      </button>
-                                    </td>
-                                    <td>{item.duration}</td>
-                                    <td>{extractDate(item.created_at)}</td>
-                                  </tr>
-                                  {currentPlaying == item["recording_path"] && (
-                                    <tr>
-                                      <td colSpan={99}>
-                                        <div className="audio-container mx-2">
-                                          <audio
-                                            controls={true}
-                                            ref={thisAudioRef}
-                                            autoPlay={true}
-                                            onEnded={() => {
-                                              setCurrentPlaying(null);
-                                            }}
-                                          >
-                                            <source
-                                              src={item["recording_path"]}
-                                              type="audio/mpeg"
-                                            />
-                                          </audio>
+                                          }}
+                                        >
+                                          <source
+                                            src={audioURL}
+                                            type="audio/mpeg"
+                                          />
+                                        </audio>
 
-                                          <button className="audioCustomButton">
-                                            <i className="fa-sharp fa-solid fa-download" />
-                                          </button>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  )}
-                                </>
-                              );
-                            })}
+                                        <button className="audioCustomButton">
+                                          <i className="fa-sharp fa-solid fa-download" />
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
+                              </>
+                            );
+                          })}
 
                           {/* {!loading && cdr && cdr.data.length === 0 ? (
                                                         <td colSpan={99}>
