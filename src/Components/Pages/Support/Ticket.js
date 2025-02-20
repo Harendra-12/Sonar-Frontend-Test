@@ -1,9 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 
+
 function Ticket() {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate =useNavigate();
+  const handleSubmit=() =>{
+    navigate('/view-massage')
+  }
+  const openPopup = () => {
+    setIsOpen(true);
+  };
+
+  const closePopupAndPage = () => {
+    setIsOpen(false); 
+    setTimeout(() => {
+      // window.close();
+    }, 300); 
+  };
+
+  // const closePopup = () => {
+  //   setIsOpen(false);
+  // };
+
+  console.log(openPopup,"working")
+
+
   return (
     <>
       <main className='mainContent'>
@@ -21,11 +45,11 @@ function Ticket() {
                           <p>You can Create ticket of users </p>
                         </div>
                         <div class="buttonGroup">
-                          <button class="panelButton gray">
+                          <button class="panelButton gray" >
                             <span class="text">Back</span>
                             <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
                           </button>
-                          <button class="panelButton" onClick={() => Navigate("/campaign-create")}>
+                          <button class="panelButton" onClick={openPopup}>
                             <span class="text">Create</span>
                             <span class="icon"><i class="fa-solid fa-plus"></i></span>
                           </button>
@@ -139,13 +163,13 @@ function Ticket() {
                                       <td>
                                         <div>
                                           <div className='open-live'>
-                                            <p>Open</p>
+                                            <p className='p-0 m-0 '>Open</p>
                                           </div>
                                         </div>
                                       </td>
-                                      <td><div className='d-flex align-items-center justify-content-center'>
+                                      <td><div className=''>
                                           <button
-                                            className="tableButton edit"
+                                            className="tableButton edit" onClick={handleSubmit}
 
                                           >
                                             <i class="fa-regular fa-eye"></i>
@@ -248,7 +272,14 @@ function Ticket() {
                                       <td>Rishabh Maurya</td>
                                       <td>rishabhmaurya@gmail.com</td>
                                       <td>Support</td>
-                                      <td>Open</td>
+                                      <td><div className=''>
+                                          <button
+                                            className="tableButton edit" onClick={handleSubmit}
+
+                                          >
+                                            <i class="fa-regular fa-eye"></i>
+                                          </button>
+                                        </div></td>
                                       {/* <td>
                                                 <div className='d-flex align-items-center justify-content-start'>
                                                 <button
@@ -264,94 +295,13 @@ function Ticket() {
                                   </>
                                 </tbody>
                               </table>
+                             
 
-                              <div className="addNewContactPopup p-3">
-                                <div className="row">
-                                  <div className="col-12 heading border-0 bg-transparent">
-                                    <i className="fa-light fa-user-plus" />
-                                    <h5>Create Ticket</h5>
-                                  </div>
-                                  <div className="col-xl-12">
-                                    <div
-                                      className="tableContainer0"
-                                      style={{ maxHeight: "calc(100vh - 100px)" }}>
-                                      <div class="formLabel">
-                                      <label for="">Subject : </label>
-                                      </div>
-                                      <div className="col-12">
-                                        <select
-                                          className="formItem"
-                                          name="" >
-                                          <option value="" disabled>Choose Type</option>
-                                          <option></option>
-                                        </select>
-                                      </div>
-                                      <div class="formLabel">
-                                      <label for="">Department : </label>
-
-                                      </div>
-                                    
-                                      <div className="col-12">
-                                        <select
-                                          className="formItem"
-                                          name="" >
-                                          <option value="" disabled>Choose Type</option>
-                                          <option>Support</option>
-                                          <option>Support</option>
-                                          <option>Support</option>
-                                        </select>
-                                      </div>
-                                      <div class="formLabel">
-                                        <label for="">Query Type: </label>
-                                      </div>
-                                      <div className="col-12">
-                                        <select
-                                          className="formItem"
-                                          name="" >
-                                          <option value="" disabled>Choose Type</option>
-                                          <option>Minor </option>
-                                          <option>Major</option>
-                                          <option>Critical</option>
-                                          <option>Fatal</option>
-                                        </select>
-                                      </div>
-                                      <div class="formLabel">
-                                        <label for="">Massage </label>
-                                      </div>
-                                      <div className="col-12">
-                                        <textarea
-                                          type="text"
-                                          name="did"
-                                          className="formItem" />
-                                      </div>
-                                      
-                                    </div>
-                                  </div>
-                                  <div className="col-xl-12 mt-2">
-                                    <div className="d-flex justify-content-between">
-                                      <button
-                                        className="panelButton gray ms-0"
-
-                                      >
-                                        <span className="text">Close</span>
-                                        <span className="icon">
-                                          <i className="fa-solid fa-caret-left" />
-                                        </span>
-                                      </button>
-                                      {/* <button
-                              className="panelButton me-0"
-
-                            >
-                              <span className="text">Done</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-check" />
-                              </span>
-                            </button> */}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              
                             </div>
+
+
+                            
                             <div className="tableHeader mb-3">
                               {/* <PaginationComponent
                                   pageNumber={(e) => setPageNumber(e)}
@@ -373,6 +323,98 @@ function Ticket() {
 
 
                     </div>
+
+
+                    {isOpen && (
+                                  <div className="addNewContactPopup p-3">
+                                  <div className="row">
+                                    <div className="col-12 heading border-0 bg-transparent">
+                                      <i className="fa-light fa-user-plus" />
+                                      <h5>Create Ticket</h5>
+                                    </div>
+                                    <div className="col-xl-12">
+                                      <div
+                                        className="tableContainer0"
+                                        style={{ maxHeight: "calc(100vh - 100px)" }}>
+                                        <div class="formLabel">
+                                        <label for="">Subject : </label>
+                                        </div>
+                                        <div className="col-12">
+                                          <select
+                                            className="formItem"
+                                            name="" >
+                                            <option value="" disabled>Choose Type</option>
+                                            <option></option>
+                                          </select>
+                                        </div>
+                                        <div class="formLabel">
+                                        <label for="">Department : </label>
+    
+                                        </div>
+                                      
+                                        <div className="col-12">
+                                          <select
+                                            className="formItem"
+                                            name="" >
+                                            <option value="" disabled>Choose Type</option>
+                                            <option>Support</option>
+                                            <option>Support</option>
+                                            <option>Support</option>
+                                          </select>
+                                        </div>
+                                        <div class="formLabel">
+                                          <label for="">Query Type: </label>
+                                        </div>
+                                        <div className="col-12">
+                                          <select
+                                            className="formItem"
+                                            name="" >
+                                            <option value="" disabled>Choose Type</option>
+                                            <option>Minor </option>
+                                            <option>Major</option>
+                                            <option>Critical</option>
+                                            <option>Fatal</option>
+                                          </select>
+                                        </div>
+                                        <div class="formLabel">
+                                          <label for="">Massage </label>
+                                        </div>
+                                        <div className="col-12">
+                                          <textarea
+                                            type="text"
+                                            name="did"
+                                            className="formItem" />
+                                        </div>
+                                        
+                                      </div>
+                                    </div>
+                                    <div className="col-xl-12 mt-2">
+                                      <div className="d-flex justify-content-between">
+                                        <button
+                                          className="panelButton gray ms-0"
+                                          onClick={closePopupAndPage}
+                                        >
+                                          <span className="text">Close</span>
+                                          <span className="icon">
+                                            <i className="fa-solid fa-caret-left" />
+                                          </span>
+                                        </button>
+                                        <button
+                                className="panelButton me-0"
+    
+                              >
+                                <span className="text">Done</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-check" />
+                                </span>
+                              </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            
+                            }
                   </div>
                 </div>
               </div>

@@ -136,6 +136,7 @@ import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 import UserProfile from "./Components/Pages/Users/UserProfile";
 import Ticket from "./Components/Pages/Support/Ticket";
+import ViewMessages from "./Components/Pages/Support/ViewMessages";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -656,6 +657,7 @@ function App() {
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           {/* <Route path="/ticket" element={<Ticket />} /> */}
           <Route path="/ticket" element={<Ticket/>} />
+          <Route path="/view-massage" element={<ViewMessages/>} />
 
 
 
