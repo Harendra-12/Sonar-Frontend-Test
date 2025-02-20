@@ -43,15 +43,7 @@ function AddOns() {
                                             <div className="product-container">
                                                 {/* Product 1 */}
                                                 <div className="product-cart">
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
@@ -85,21 +77,13 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
 
                                                 {/* Product 2 */}
                                                 <div className='product-cart'>
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
@@ -132,20 +116,12 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 3 */}
                                                 <div className='product-cart'>
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
@@ -179,21 +155,13 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 4 */}
                                                 <div className='product-cart'>
 
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
@@ -226,20 +194,12 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 5 */}
                                                 <div className='product-cart'>
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
@@ -273,20 +233,12 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 6 */}
                                                 <div className='product-cart'>
-                                                    <div className="add-to-carts ms-2">
-                                                        <p
-                                                            data-bs-toggle="offcanvas"
-                                                            data-bs-target="#offcanvasRight"
-                                                            aria-controls="offcanvasRight"
-                                                        >
-                                                            <i className="fa-solid fa-heart"></i>
-                                                        </p>
-                                                    </div>
+                                                    
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Cisco8861-png-rendition.webp"
                                                         alt="Click to Call"
@@ -320,7 +272,7 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4> Add to cart </h4>
+                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                             </div>

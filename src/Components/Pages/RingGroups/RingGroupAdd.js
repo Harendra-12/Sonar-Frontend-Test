@@ -78,6 +78,8 @@ const RingGroupAdd = () => {
     },
   });
 
+  const [searchEditAllUser, setSearchEditAllUser] = useState("");
+
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
     if (!loading) {
@@ -108,7 +110,7 @@ const RingGroupAdd = () => {
         if (apidataUser?.status) {
           setLoading(false);
           setAllUserArr(apidataUser.data);
-        } 
+        }
         if (ringBack?.status) {
           setRingBack(ringBack.data);
           if (ringBack.data.length > 0 && uploadedMusic) {
@@ -1248,11 +1250,20 @@ const RingGroupAdd = () => {
               <h5>Edit People to the selected Queue</h5>
             </div>
             <div>
-              Affected user:{" "}
-              {selectedAgentToEdit
-                .map((item) => destination.find((user) => item.id == user.id))
-                .map((items) => items.destination)
-                .join(", ")}
+              <div className="d-flex justify-content-between mb-2">
+                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                  Affected user:{" "}
+                </h5>
+                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+              </div>
+
+              <ul>
+                {selectedAgentToEdit
+                  .map((item) => destination.find((user) => item.id == user.id)).filter((item) => item.destination.includes(searchEditAllUser.trim()))
+                  .map((items) => (
+                    <li><i className="fa-regular fa-user me-2" />{items?.destination}</li>
+                  ))}
+              </ul>
             </div>
             <div className="col-xl-12">
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
@@ -1370,6 +1381,7 @@ const RingGroupAdd = () => {
                       truncate_agents_on_load: "",
                       truncate_tiers_on_load: "",
                     });
+                    setSearchEditAllUser("");
                   }}
                 >
                   <span className="text">Close</span>
