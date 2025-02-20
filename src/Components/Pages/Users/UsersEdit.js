@@ -125,6 +125,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
             } else if (separateName.length == 2) {
               firstName = separateName[0];
               lastName = separateName[1];
+            }else{
+              firstName = separateName[0];
+              lastName = separateName.slice(1,separateName.length).join(" ");
             }
             const newData = {
               ...data,

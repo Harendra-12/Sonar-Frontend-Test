@@ -69,9 +69,9 @@ var groupMessage = [];
 var previewDialer = [];
 var agentDeposition = false
 var desposiTionOptions = []
-var allCallCenterIds =[]
+var allCallCenterIds = []
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
-var openCallCenterPopUp= false
+var openCallCenterPopUp = false
 var logout = 0
 
 const initialState = {
@@ -156,7 +156,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_ACCOUNT":
       return { ...state, account: action.account };
     case "SET_ACCOUNTREFRESH":
-      return { ...state, accountRefresh: action.accountRefresh };
+      return { ...state, accountRefresh: action.accountRefresh };   
     case "SET_REGISTERUSER":
       return { ...state, registerUser: action.registerUser };
     case "SET_LOGINUSER":
@@ -194,10 +194,10 @@ const counterReducer = (state = initialState, action) => {
     case "SET_RINGGROUP":
       return { ...state, ringGroup: action.ringGroup };
     case "SET_OPEN_CALLCENTER_POPUP":
-      return { 
-          ...state, 
-          openCallCenterPopUp: action.openCallCenterPopUp
-        };
+      return {
+        ...state,
+        openCallCenterPopUp: action.openCallCenterPopUp
+      };
     case "SET_RINGGROUPREFRESH":
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
@@ -274,15 +274,15 @@ const counterReducer = (state = initialState, action) => {
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
     case "SET_ALL_CALL_CENTER_IDS":
-        return { 
-           ...state, 
-           allCallCenterIds: [...state.allCallCenterIds, action.CallerId] 
-        };
+      return {
+        ...state,
+        allCallCenterIds: [...state.allCallCenterIds, action.CallerId]
+      };
     case "DELETE_CALLER_ID":
-          return {
-             ...state,
-             allCallCenterIds: state.allCallCenterIds.filter(id => id !== action.CallerId)
-          };
+      return {
+        ...state,
+        allCallCenterIds: state.allCallCenterIds.filter(id => id !== action.CallerId)
+      };
     case "SET_DEVICE_PROVISIONINGREFRESH":
       return {
         ...state,
