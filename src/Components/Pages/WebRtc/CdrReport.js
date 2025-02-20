@@ -284,7 +284,7 @@ function CdrReport({ page }) {
   const handlePlaying = async (audio) => {
     try {
       setCurrentPlaying(audio);
-      const url = audio.split("/").pop();
+      const url = audio.split(".com/").pop();
       const res = await generatePreSignedUrl(url);
 
       if (res?.status && res?.url) {
@@ -378,12 +378,14 @@ function CdrReport({ page }) {
 
   // function to handle export
   const handleExport = async () => {
+    setLoading(true);
     try {
       const res = await generalGetFunction(
         `cdr?${updatedQueryparams}&export=true`
       );
       if (res.status) {
         exportToCSV(res.data);
+        setLoading(false);
       }
       toast.success("Data Successfully Exported.");
     } catch (error) {

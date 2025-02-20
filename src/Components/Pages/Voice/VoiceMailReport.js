@@ -25,7 +25,7 @@ function VoiceMailReport() {
   const handlePlaying = async (audio) => {
     try {
       setCurrentPlaying(audio);
-      const url = audio.split("/").pop();
+      const url = audio.split(".com/").pop();
       const res = await generatePreSignedUrl(url);
 
       if (res?.status && res?.url) {
