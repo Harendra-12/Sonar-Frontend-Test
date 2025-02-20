@@ -47,7 +47,10 @@ function UserConfiguration() {
       tb_permissions: checkedUserPermissionData,
     };
     try {
-      const res = await generalPostFunction("/assign-table-permissions ", payload);
+      const res = await generalPostFunction(
+        "/assign-table-permissions ",
+        payload
+      );
       if (res?.status) {
         setCheckedUserPermissionData([]);
         toast.success("Assigned Permissions Successfully");
@@ -113,7 +116,7 @@ function UserConfiguration() {
                       >
                         User Settings
                       </button>
-                      {/* <button
+                      <button
                         class="nav-link"
                         id="nav-exten-tab"
                         data-bs-toggle="tab"
@@ -124,7 +127,7 @@ function UserConfiguration() {
                         aria-selected="false"
                       >
                         Permissions Configuration
-                      </button> */}
+                      </button>
                     </div>
                   </nav>
                   <div
@@ -291,7 +294,8 @@ function UserConfiguration() {
                                                     >
                                                       <div className="formLabel">
                                                         <label htmlFor="">
-                                                          {item.column_name}
+                                                          {item.column_name}{" "}
+                                                          {item?.action}
                                                         </label>
                                                       </div>
                                                       <div className="col-xl-6 col-12">
