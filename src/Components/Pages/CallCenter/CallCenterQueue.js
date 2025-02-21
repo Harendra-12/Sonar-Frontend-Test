@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
-
 function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

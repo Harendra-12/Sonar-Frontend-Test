@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../../CommonComponents/Header'
 
 function LiveSupportChat() {
+    
     return (
         <>
             <main className="mainContent">

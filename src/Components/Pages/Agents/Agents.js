@@ -9,7 +9,6 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
-
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);

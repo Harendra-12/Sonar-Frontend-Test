@@ -1,6 +1,5 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-
 // This file is used to store the global calls, and It will refresh the data in global state
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
