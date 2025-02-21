@@ -785,7 +785,7 @@ function CdrFilterReport({ page }) {
                                 <option value={"CANCEL"}>Cancelled</option>
                               </select>
                             </div>
-                            <div className="formRow border-0 pe-xl-0">
+                            {filteredKeys.includes("Hangup-Cause")&&<div className="formRow border-0 pe-xl-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Hangup status
                               </label>
@@ -804,7 +804,7 @@ function CdrFilterReport({ page }) {
                                   Normal Clearing
                                 </option>
                               </select>
-                            </div>
+                            </div>}
                           </>
                         )}
                         {/* <Link
