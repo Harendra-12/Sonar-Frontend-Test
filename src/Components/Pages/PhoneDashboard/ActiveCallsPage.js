@@ -273,7 +273,102 @@ function ActiveCallsPage() {
                                         </>
                                     </div>
                                 </div>
+
+
+                                
                             </div>
+                            <div className="row mt-3 gx-3">
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
+                                <div className="itemWrapper a">
+                                    <div className='heading d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>56</h3>
+                                                <p>Agents logged in</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-square-check" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
+                                <div className="itemWrapper b">
+                                    <div className='heading  d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>50</h3>
+                                                <p>Available Agents</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-user-check" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
+                                <div className="itemWrapper c">
+                                    <div className='heading  d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>45</h3>
+                                                <p>Waiting Calls</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-phone-arrow-down-left" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
+                                <div className="itemWrapper d">
+                                    <div className='heading  d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>78</h3>
+                                                <p>Active Calls</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-phone-volume" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
+                                <div className="itemWrapper a">
+                                    <div className='heading  d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>545</h3>
+                                                <p>Calls on Queue</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-clock-rotate-left" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
+                                <div className="itemWrapper b">
+                                    <div className='heading  d-block h-auto'>
+                                        <div className="d-flex flex-wrap justify-content-between">
+                                            <div className='col-9'>
+                                                <h3 style={{ fontWeight: 900 }}>7 <span style={{ fontSize: '15px', fontWeight: '500' }}>seconds</span></h3>
+                                                <p>Avg. Response Time</p>
+                                            </div>
+                                            <div className='col-3'>
+                                                <i className="fa-solid fa-phone-slash" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

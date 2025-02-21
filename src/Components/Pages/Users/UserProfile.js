@@ -37,44 +37,46 @@ function UserProfile() {
           </div> */}
                     </div>
                     <div className="row" style={{
-                        padding: "20px 10px",
-                        // backgroundImage: "linear-gradient(0deg, white 0%, #3e8ef7 90%)"
+                        backgroundImage: `url(${require('../../assets/images/images12.jpg')})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
                     }}
                     >
                         <div className="col-xl-12 pe-xl-0 mt-5">
                             <div className="profileView mt-2">
                                 <div className="profileDetailsHolder p-0">
-                                    <div className="baseDetails">
-                                        <div className="col-xxl-5 col-xl-5">
+                                    <div className="baseDetails d-block">
+                                        <div className='row'>
+                                        <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-4">
                                             <div className="profilePicHolders">
                                                 <img
                                                     src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                                                     alt="img"
                                                 />
                                                 <div className='mt-3'>
-                                                <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
-                                                    <span>
-                                                        <i class="fa-regular me-3 fa-user"></i>
-                                                    </span>
-                                                    <h4 className="mb-0">
-                                                        Rishabh Maurya <span className=''>(Rishu ) </span>
-                                                    </h4>
-                                                </div>
-                                                <div className="content profileicons mt-1  d-flex align-items-center justify-content-start">
-                                                    <span>
-                                                        <i class="fa-regular me-3 fa-envelope"></i>
-                                                    </span>
-                                                    <p className="mb-0">
-                                                        {" "}
-                                                      rishabhmaurya@gmail.com
-                                                    </p>
-                                                </div>
+                                                    <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
+                                                        <span>
+                                                            <i class="fa-regular me-3 fa-user"></i>
+                                                        </span>
+                                                        <h4 className="mb-0">
+                                                            Rishabh Maurya <span className=''>(Rishu ) </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div className="content profileicons mt-1  d-flex align-items-center justify-content-start">
+                                                        <span>
+                                                            <i class="fa-regular me-3 fa-envelope"></i>
+                                                        </span>
+                                                        <p className="mb-0">
+                                                            {" "}
+                                                            rishabhmaurya@gmail.com
+                                                        </p>
+                                                    </div>
                                                 </div>
 
-                                             
+
                                             </div>
                                         </div>
-                                        <div className="col-xxl-5 col-xl-5">
+                                        <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-4">
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="content w-100">
@@ -84,16 +86,16 @@ function UserProfile() {
                                                                 className=" d-flex align-items-center justify-content-start"
                                                                 style={{ height: "25px" }}
                                                             >
-                                                                <h4 className=" me-2">Status :</h4>
-                                                                <div className='assigned'>
-                                                                   
+                                                                <h4 className=" me-2">Extension :</h4>
+                                                                <div className='assigned0'>
+
                                                                     <p
                                                                         className="p-0 m-0 px-2 "
 
                                                                     >
-                                                                        Enabled
+                                                                        1011
                                                                     </p>
-                                                                    <div> <i class="fa-solid fa-check"></i></div>
+                                                                    {/* <div> <i class="fa-solid fa-check"></i></div> */}
                                                                 </div>
                                                                 {/* <p
                                                                     className="imgwidth d-flex ms-2 me-2"
@@ -104,7 +106,7 @@ function UserProfile() {
                                                                 </p> */}
 
 
-                                                           
+
                                                             </div>
                                                             <div
                                                                 className=" d-flex align-items-center justify-content-start"
@@ -154,7 +156,7 @@ function UserProfile() {
                                             </div>
                                         </div>
 
-                                        <div className="col-xxl-2 col-xl-2">
+                                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4">
                                             <div className="row">
                                                 <div className="col-md-12">
                                                     <div className="content w-100">
@@ -164,15 +166,16 @@ function UserProfile() {
                                                                 className=""
                                                                 style={{ height: "25px" }}
                                                             >
-                                                                <h4 className=" me-2">Extension </h4>
-                                                                <div className='assigned mt-2'>
-                                                                    {/* <div> <i class="fa-solid fa-check"></i></div> */}
+                                                                <h4 className="">Status</h4>
+                                                                <div className='assigned'>
+
                                                                     <p
-                                                                        className="p-0 m-0 px-2 "
+                                                                        className=""
 
                                                                     >
-                                                                       1001
+                                                                        Enabled
                                                                     </p>
+                                                                    <div> <i className="fa-solid ms-1 fa-check"></i></div>
                                                                 </div>
 
                                                             </div>
@@ -197,6 +200,7 @@ function UserProfile() {
                                             </div>
                                         </div>
 
+                                        </div>
 
                                     </div>
                                 </div>
@@ -208,7 +212,7 @@ function UserProfile() {
 
                     }}
                     >
-                        <div className="col-xl-3 mb-3 mb-xl-0">
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6  mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                                 <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between">
@@ -243,7 +247,7 @@ function UserProfile() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6  mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                                 <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between">
@@ -278,7 +282,7 @@ function UserProfile() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6  mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                                 <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between" style={{ cursor: 'pointer' }}>
@@ -323,7 +327,7 @@ function UserProfile() {
                             </div>
                         </div>
 
-                        <div className="col-xl-3 mb-3 mb-xl-0">
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6  mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                                 <div className="heading">
                                     <div className="d-flex flex-wrap justify-content-between" style={{ cursor: 'pointer' }}>
