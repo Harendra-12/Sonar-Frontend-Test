@@ -199,7 +199,7 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{(extension && extension.length)}</h5>
                           <p>
-                            {activeCall.length} on Call /{" "}
+                            {/* {activeCall.length} on Call /{" "} */}
                             {(assignedExtension.length) ||
                               0}{" "}
                             Assigned /{" "}

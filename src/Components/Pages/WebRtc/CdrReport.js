@@ -163,7 +163,7 @@ function CdrReport({ page }) {
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
+      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
         "Call-Direction": callDirection,
         application_state:
