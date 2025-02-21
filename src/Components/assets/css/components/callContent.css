@@ -480,3 +480,54 @@
 .messageOverlay .contactListItem h4 {
     font-size: 16px !important;
 }
+
+.addNewContactPopup ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+
+    max-height: 140px;
+    overflow-y: scroll;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.addNewContactPopup ul li {
+    width: 50%;
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+
+.addNewContactPopup ul li i {
+    color: var(--ui-accent);
+}
+
+.addNewContactPopup .searchBar {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 20px 0 0px;
+    outline: none;
+    transition: 0.1s ease-in-out;
+    font-size: 14px;
+}
+
+.addNewContactPopup .searchBar:focus-within {
+    border-color: var(--ui-accent);
+}
+
+.addNewContactPopup .searchBoxWrapper {
+    position: relative;
+}
+
+.addNewContactPopup .searchBoxWrapper::after {
+    content: '\f002';
+    color: var(--ui-accent);
+    font-size: 16px;
+    font-family: 'FontAwesome';
+    position: absolute;
+    top: 0;
+    right: 5px;
+}

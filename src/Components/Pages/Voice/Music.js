@@ -123,14 +123,17 @@ function Music() {
   }
 
   // Handle edit music
-  async function handleEditMusic(){
+  async function handleEditMusic() {
     console.log("Hit music updat e");
-    
+
     const parsedData = {
-      name:selectedMusicName,
-      type:selecetdMusicType,
-    }
-    const apiData = await generalPutFunction(`/sound/${selectedMusicToEdit.id}`,parsedData)
+      name: selectedMusicName,
+      type: selecetdMusicType,
+    };
+    const apiData = await generalPutFunction(
+      `/sound/${selectedMusicToEdit.id}`,
+      parsedData
+    );
     if (apiData.status) {
       setLoading(false);
       setMusicEditPopup(false);
@@ -149,7 +152,7 @@ function Music() {
       setAudioURL(null);
     } else {
       setCurrentPlaying(id); // Play selected audio
-      const url = path.split("/").pop();
+      const url = path.split(".com/").pop();
       const res = await generatePreSignedUrl(url);
 
       if (res?.status && res?.url) {
@@ -380,6 +383,7 @@ function Music() {
                                                 onEnded={() =>
                                                   setCurrentPlaying(null)
                                                 } // Reset on end
+                                                src={audioURL}
                                               >
                                                 <source
                                                   src={audioURL}
@@ -683,7 +687,9 @@ function Music() {
                             type="text"
                             className="mb-3 formItem"
                             value={selectedMusicName}
-                            onChange={(e) => setSelectedMusicName(e.target.value)}
+                            onChange={(e) =>
+                              setSelectedMusicName(e.target.value)
+                            }
                           ></input>
                         </div>
                         <div className="col-4">
@@ -691,7 +697,9 @@ function Music() {
                             name="music"
                             className="formItem"
                             value={selecetdMusicType}
-                            onChange={(e) => setSelectedMusicType(e.target.value)}
+                            onChange={(e) =>
+                              setSelectedMusicType(e.target.value)
+                            }
                           >
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>
