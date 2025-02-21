@@ -156,7 +156,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_ACCOUNT":
       return { ...state, account: action.account };
     case "SET_ACCOUNTREFRESH":
-      return { ...state, accountRefresh: action.accountRefresh };   
+      return { ...state, accountRefresh: action.accountRefresh };
     case "SET_REGISTERUSER":
       return { ...state, registerUser: action.registerUser };
     case "SET_LOGINUSER":
@@ -367,6 +367,8 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callCenterPopUp: action.callCenterPopUp,
       };
+    case "RESET_STATE":
+      return initialState;
     case "SET_LOGOUT":
       return {
         ...state,

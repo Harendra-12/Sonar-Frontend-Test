@@ -24,7 +24,6 @@ import ActionList from "../../CommonComponents/ActionList";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
-
 function CallCenterQueueAdd() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

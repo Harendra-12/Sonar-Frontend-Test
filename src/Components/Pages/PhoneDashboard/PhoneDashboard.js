@@ -9,6 +9,7 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 
+
 function PhoneDashboard() {
   const navigate = useNavigate();
   // const account = useSelector((state) => state.account)
@@ -199,7 +200,7 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{(extension && extension.length)}</h5>
                           <p>
-                            {activeCall.length} on Call /{" "}
+                            {/* {activeCall.length} on Call /{" "} */}
                             {(assignedExtension.length) ||
                               0}{" "}
                             Assigned /{" "}

@@ -4,6 +4,7 @@ import Header from '../../CommonComponents/Header';
 import Tippy from '@tippyjs/react';
 
 function UserProfile() {
+    
     return (
         <main className="mainContent">
             {/* {<CircularLoader />} */}

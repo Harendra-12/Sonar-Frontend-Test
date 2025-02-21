@@ -3,6 +3,7 @@ import Header from '../../CommonComponents/Header'
 import { Navigate } from 'react-router-dom'
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 
+
 function Ticket() {
   return (
     <>

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const RingGroup = () => {
+    
     return (
         <div
             className="tabGroupDetails"

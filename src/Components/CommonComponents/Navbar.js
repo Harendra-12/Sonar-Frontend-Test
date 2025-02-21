@@ -9,7 +9,6 @@ import {
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSideNav } from "./Header";
-
 function Navbar() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);

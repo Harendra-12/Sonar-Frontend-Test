@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
+
 function VoiceMailReport() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

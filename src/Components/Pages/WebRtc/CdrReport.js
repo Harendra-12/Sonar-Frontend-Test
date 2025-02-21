@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 
+
 function CdrReport({ page }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -163,7 +164,7 @@ function CdrReport({ page }) {
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      `/cdr?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
+      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
       {
         "Call-Direction": callDirection,
         application_state:
