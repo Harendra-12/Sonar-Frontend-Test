@@ -10,7 +10,6 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-  const [ringGroupDataLoading, setRingGroupDataLoading] = useState(true);
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -30,7 +29,6 @@ const RingGroup = () => {
           (data) => data && data["Call-Direction"] === "inbound"
         );
         if (filteredRingGroup.length > 0) {
-          setRingGroupDataLoading(false);
         }
         setRingGroupData(filteredRingGroup);
       };
@@ -71,41 +69,21 @@ const RingGroup = () => {
                 <h4>Ring Group</h4>
                 <p>You can see a brief analysis of all the ring groups</p>
               </div>
-              <div className="buttonGroup">
+              {/* <div className="buttonGroup">
                 <button effect="ripple" className="panelButton">
                   <span className="text">Export</span>
                   <span className="icon">
                     <i className="fa-solid fa-file-csv" />
                   </span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div
             className="col-12"
             style={{ overflow: "auto", padding: "25px 20px 0px" }}
           >
-            {/* <div className="tableHeader">
-                <div className="showEntries">
-                  <label>Show</label>
-                  <select className="formItem">
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={30}>30</option>
-                  </select>
-                  <label>entries</label>
-                </div>
-                <div className="searchBox position-relative">
-                  <label>Search:</label>
-                  <input
-                    type="text"
-                    name="Search"
-                    placeholder="Search"
-                    className="formItem"
-                    defaultValue=""
-                  />
-                </div>
-              </div> */}
+           
             <div className="tableContainer" style={{ height: "30vh" }}>
               <table>
                 <thead>
@@ -160,23 +138,23 @@ const RingGroup = () => {
                       <td>
 
                         <div className="dropdown">
-                          <a
+                          <div
                             style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
                             {call.ring_group_destination.length}
-                          </a>
+                          </div>
                           <ul className="dropdown-menu light" >
-                            <li className="col-12"><a className="dropdown-item fw-bold disabled">Extensions</a></li>
+                            <li className="col-12"><div className="dropdown-item fw-bold disabled">Agents</div></li>
                             <div style={{ columnCount: call.ring_group_destination.length > 6 ? 2 : 1 }}>
                               {
                                 call.ring_group_destination.map((item, index) => (
                                   <li>
-                                    <a className="dropdown-item">
-                                      {item.destination}
-                                    </a>
+                                    <div className="dropdown-item">
+                                      {item.username}
+                                    </div>
                                   </li>
                                 ))
                               }

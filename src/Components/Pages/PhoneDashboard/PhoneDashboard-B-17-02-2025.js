@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
+import { use } from "react";
 
 function PhoneDashboard() {
   const [calls, setCalls] = useState(true);
@@ -38,6 +39,7 @@ function PhoneDashboard() {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callQueue, setCallQueue] = useState([]);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const account = useSelector((state) => state.account);
 
   useEffect(() => {
     async function getData() {
@@ -46,7 +48,7 @@ function PhoneDashboard() {
       //   navigate
       // );
       const userApi = await generalGetFunction(
-        `/user/search?account=1`,
+        `/user/search?account=${account.account_id}`,
         navigate
       );
       // if (apiData.status) {

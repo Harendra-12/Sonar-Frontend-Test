@@ -33,8 +33,6 @@ const RingGroupAdd = () => {
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  // const allUserArr = useSelector((state) => state.allUser);
   const [allUserArr, setAllUserArr] = useState([]);
   const [ringBack, setRingBack] = useState();
   const [user, setUser] = useState();

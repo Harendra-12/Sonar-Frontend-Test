@@ -189,13 +189,10 @@ const RingGroupEdit = () => {
           }
         } else {
           setLoading(false);
-          navigate("/");
         }
       }
       getData();
-    } else {
-      navigate("/");
-    }
+    } 
   }, [account, navigate, value, getAllDataRefresh]);
 
   // Get all ringbacks music for dropdown
@@ -206,7 +203,7 @@ const RingGroupEdit = () => {
 
       if (ringBack?.status) {
         setRingBack(ringBack.data);
-        if (ringBack.data.length > 0 && uploadedMusic) {
+        if (ringBack?.data?.length > 0 && uploadedMusic) {
           setValue("ring_back", uploadedMusic.id);
         }
         setLoading(false);

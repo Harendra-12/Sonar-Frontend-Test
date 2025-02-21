@@ -309,11 +309,10 @@ function CallCenterQueue() {
                       <table>
                         <thead>
                           <tr>
+                            <th>Prefix</th>
                             <th>Queue Name</th>
                             <th>Extension</th>
                             <th>Strategy</th>
-                            <th>Timeout Action</th>
-                            <th>Prefix</th>
                             <th>Total Agents</th>
                             <th>Status</th>
                             <th>Edit</th>
@@ -350,6 +349,15 @@ function CallCenterQueue() {
                                               )
                                             }
                                           >
+                                            {item.queue_cid_prefix}
+                                          </td>
+                                          <td
+                                            onClick={() =>
+                                              navigate(
+                                                `/cal-center-queue-edit?id=${item.id}`
+                                              )
+                                            }
+                                          >
                                             {item.queue_name}
                                           </td>
                                           <td
@@ -369,24 +377,6 @@ function CallCenterQueue() {
                                             }
                                           >
                                             {item.strategy}
-                                          </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.queue_timeout_action}
-                                          </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.queue_cid_prefix}
                                           </td>
                                           <td
                                             onClick={() =>
@@ -453,7 +443,7 @@ function CallCenterQueue() {
                                       );
                                     })}
                                   {callCenter &&
-                                  callCenter.data.length === 0 ? (
+                                    callCenter.data.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Call Center"
@@ -507,8 +497,7 @@ function CallCenterQueue() {
                       ? error
                       : "Are you sure you want to delete this queue?"}
                     {selectedCallCenter?.id &&
-                      `Are you sure you want to ${
-                        selectedCallCenter?.status == 1 ? "disable" : "enable"
+                      `Are you sure you want to ${selectedCallCenter?.status == 1 ? "disable" : "enable"
                       } the queue ${selectedCallCenter?.queue_name}?`}
                   </p>
                   <div className="mt-2 d-flex justify-content-between">
