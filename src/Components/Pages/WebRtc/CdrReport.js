@@ -950,6 +950,7 @@ function CdrReport({ page }) {
                                           <td>
                                             {item["application_state_to_ext"]}
                                           </td>
+                                          {/* time */}
                                           <td>{item["e_name"]}</td>
                                           <td>
                                             {

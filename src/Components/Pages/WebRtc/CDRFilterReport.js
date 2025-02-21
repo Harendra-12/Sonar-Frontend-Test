@@ -55,6 +55,20 @@ function CdrFilterReport({ page }) {
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [filteredKeys, setFilteredKeys] = useState([]);
+  const [showKeys,setShowKeys]=useState([
+    "Call-Direction",
+    "application_state",
+    "variable_sip_from_user",
+    "variable_sip_to_user",
+    "start_date",
+    "end_date",
+    "variable_DIALSTATUS",
+    "Hangup-Cause",
+    "call_cost",
+    "recording_path",
+    "Date",
+    "Time"
+  ]);
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -187,13 +201,16 @@ function CdrFilterReport({ page }) {
       }
     );
 
+// function to filter object
     function filterObjectKeys(obj, keys) {
       let filteredObj = {};
 
       keys.forEach((key) => {
-        if (key === "channel_hangup_completes.id" && obj.hasOwnProperty("id")) {
-          filteredObj["id"] = obj["id"];
-        } else if (obj.hasOwnProperty(key)) {
+        if (key === "variable_start_stamp" && obj.hasOwnProperty("variable_start_stamp")) {
+          filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
+          filteredObj["Time"]= obj["variable_start_stamp"]?.split(" ")[1];
+        } 
+        if (obj.hasOwnProperty(key)) {
           filteredObj[key] = obj[key];
         }
       });
@@ -848,17 +865,21 @@ function CdrFilterReport({ page }) {
                             <thead>
                             <tr style={{ whiteSpace: "nowrap" }}>
 
+                                <th>#</th>
                                 {Object.keys(cdr?.data[0]).map((key) => {
-                                  let formattedKey = "";
+                                  let formattedKey = ""
+                                 if(showKeys.includes(key)){
                                   if (key === "variable_sip_from_user") {
                                     formattedKey = "Call Origin";
                                   } else if (key === "variable_sip_to_user") {
                                     formattedKey = "Call Destination";
                                   } else if (key === "variable_DIALSTATUS") {
                                     formattedKey = "Hangup Cause";
-                                  } else if (key === "Hangup-Cause") {
+                                  }
+                                   else if (key === "Hangup-Cause") {
                                     formattedKey = "Hangup Status";
-                                  } else {
+                                  } 
+                                  else {
                                     formattedKey = key
                                       .replace(/[-_]/g, " ")
                                       .toLowerCase()
@@ -868,6 +889,7 @@ function CdrFilterReport({ page }) {
                                   }
 
                                   return <th key={key}>{formattedKey}</th>;
+                                 }
                                 })}
                                 <th>Block</th>
                               </tr>
@@ -910,7 +932,13 @@ function CdrFilterReport({ page }) {
                                     return (
                                       <React.Fragment key={index}>
                                         <tr className="cdrTableRow">
+                                        <td>
+                                              {(pageNumber - 1) *
+                                                Number(itemsPerPage) +
+                                                (index + 1)}
+                                            </td>
                                           {Object.keys(item).map((key) => {
+                                           if(showKeys.includes(key)){
                                             if (key === "recording_path") {
                                               return (
                                                 <td key={key}>
@@ -940,10 +968,14 @@ function CdrFilterReport({ page }) {
                                                   </button>
                                                 </td>
                                               );
-                                            }
-                                            return (
-                                              <td key={key}>{item[key]}</td>
-                                            );
+                                            }else if(key==="created_at"){
+                                                  <td key={key}>{item["created_at"]}</td>
+                                            }else{
+                                              return (
+                                                <td key={key}>{item[key]}</td>
+                                              );
+                                            }  
+                                           }
                                           })}
                                           <td>
                                             <button
