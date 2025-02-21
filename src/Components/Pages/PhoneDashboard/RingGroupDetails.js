@@ -171,6 +171,7 @@ const RingGroup = () => {
           </div>
         </div>
       </div>
+      
     </div>
   );
 };
