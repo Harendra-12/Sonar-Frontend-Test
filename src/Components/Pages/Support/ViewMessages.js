@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import { Navigate , useNavigate} from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 // import React, { useState } from 'react'
 
 
@@ -10,12 +10,12 @@ import { Navigate , useNavigate} from 'react-router-dom'
 
 function ViewMessages() {
 
-const navigate =useNavigate();
+    const navigate = useNavigate();
 
 
-const handleback=() =>{
-    navigate('/ticket')
-  }
+    const handleback = () => {
+        navigate('/ticket')
+    }
     return (
         <main className='mainContent'>
             <section className="campaignPage">
@@ -60,7 +60,7 @@ const handleback=() =>{
                                                                         </li>
                                                                     </ul>
                                                                 </div>
-                                                            </div>                                                  
+                                                            </div>
                                                         </div>
                                                         <div className="d-flex my-auto">
                                                             <button className="clearButton2 xl"
@@ -118,7 +118,7 @@ const handleback=() =>{
                                                         </div>
                                                     </div>
                                                     <div className="messageContent">
-                                                        <div className="messageList">
+                                                        <div className="messageList" style={{ height: "calc(100vh - 370px)" }}>
                                                             <>
                                                                 <div className="dateHeader">
                                                                     <p>
@@ -134,7 +134,7 @@ const handleback=() =>{
                                                                     <div className="second">
                                                                         <h6>
                                                                             fgdfgfd,
-                                                                        
+
                                                                         </h6>
                                                                         <div className="messageDetails">
                                                                             <p>oiyuiyu</p>
@@ -145,7 +145,7 @@ const handleback=() =>{
                                                                     <div className="second">
                                                                         <h6>
                                                                             sdfsdf,
-                                                                            
+
                                                                         </h6>
                                                                         <div className="messageDetails">
                                                                             <p>fdgd</p>
@@ -169,15 +169,6 @@ const handleback=() =>{
                                                             </div>
                                                         </div>
                                                         <div className="messageInput">
-                                                            <div className="col-12">
-                                                                <nav>
-                                                                    <div
-                                                                        class="nav nav-tabs"
-                                                                        id="nav-tab"
-                                                                        role="tablist">                                                               
-                                                                    </div>
-                                                                </nav>
-                                                            </div>
                                                             <div class="tab-content col-12" id="nav-tabContent">
                                                                 <div
                                                                     class="tab-pane fade show active"
