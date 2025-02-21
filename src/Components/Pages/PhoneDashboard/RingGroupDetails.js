@@ -67,8 +67,8 @@ const RingGroup = () => {
           <div className="col-12">
             <div className="heading">
               <div className="content">
-                <h4>Ring Group</h4>
-                <p>You can see a brief analysis of all the ring groups</p>
+                <h4>Ring Groups</h4>
+                <p>You can see a brief analysis of all the ring group</p>
               </div>
               {/* <div className="buttonGroup">
                 <button effect="ripple" className="panelButton">
