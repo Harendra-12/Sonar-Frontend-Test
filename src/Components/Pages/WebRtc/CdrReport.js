@@ -186,7 +186,7 @@ function CdrReport({ page }) {
 
     async function getData() {
       if (account && account.account_id) {
-        const apiData = await generalGetFunction(finalUrl);
+        const apiData = await generalGetFunction("/all-cdr-reports");
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
@@ -284,7 +284,7 @@ function CdrReport({ page }) {
   const handlePlaying = async (audio) => {
     try {
       setCurrentPlaying(audio);
-      const url = audio.split(".com/").pop();
+      const url = audio?.split(".com/").pop();
       const res = await generatePreSignedUrl(url);
 
       if (res?.status && res?.url) {
@@ -538,7 +538,7 @@ function CdrReport({ page }) {
                           <input
                             type="date"
                             className="formItem"
-                            max={new Date().toISOString().split("T")[0]}
+                            max={new Date()?.toISOString()?.split("T")[0]}
                             value={startDateFlag}
                             onChange={(e) => {
                               setStartDateFlag(e.target.value);
@@ -556,7 +556,7 @@ function CdrReport({ page }) {
                             <input
                               type="date"
                               className="formItem"
-                              max={new Date().toISOString().split("T")[0]}
+                              max={new Date()?.toISOString()?.split("T")[0]}
                               value={startDateFlag}
                               onChange={(e) => {
                                 setStartDateFlag(e.target.value);
@@ -571,7 +571,7 @@ function CdrReport({ page }) {
                             <input
                               type="date"
                               className="formItem"
-                              max={new Date().toISOString().split("T")[0]}
+                              max={new Date()?.toISOString()?.split("T")[0]}
                               value={endDateFlag}
                               onChange={(e) => {
                                 setEndDateFlag(e.target.value);
@@ -955,14 +955,14 @@ function CdrReport({ page }) {
                                             {
                                               item[
                                                 "variable_start_stamp"
-                                              ].split(" ")[0]
+                                              ]?.split(" ")[0]
                                             }
                                           </td>
                                           <td>
                                             {
                                               item[
                                                 "variable_start_stamp"
-                                              ].split(" ")[1]
+                                              ]?.split(" ")[1]
                                             }
                                           </td>
                                         </>
