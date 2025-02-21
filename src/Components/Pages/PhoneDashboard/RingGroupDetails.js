@@ -79,12 +79,8 @@ const RingGroup = () => {
               </div> */}
             </div>
           </div>
-          <div
-            className="col-12"
-            style={{ overflow: "auto", padding: "25px 20px 0px" }}
-          >
-
-            <div className="tableContainer" style={{ height: "30vh" }}>
+          <div className="col-12" style={{ overflow: "auto", padding: "10px 10px 0px" }}>
+            <div className="tableContainer mt-0" style={{ height: "30vh" }}>
               <table>
                 <thead>
                   <tr>
