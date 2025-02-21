@@ -138,6 +138,7 @@ import UserProfile from "./Components/Pages/Users/UserProfile";
 import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
+import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -221,6 +222,7 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
+          <Route path="/custom-dashboard" element={<CustomDashboardManage />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
