@@ -141,7 +141,7 @@ function CdrFilterReport({ page }) {
         const apidata = await generalGetFunction(`/spam/all?all`);
         if (apidata?.status) {
           setCallBlock(apidata?.data);
-          // setLoading(false);
+          setLoading(false);
         } else {
           navigate("/");
         }
@@ -202,7 +202,7 @@ function CdrFilterReport({ page }) {
     }
 
     async function getData() {
-      setCircularLoader(true);
+      setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
         if (apiData?.status) {
@@ -226,12 +226,12 @@ function CdrFilterReport({ page }) {
             });
           }
         } else {
-          setLoading(false);
-          setContentLoader(false);
+          setLoading(true);
+          setContentLoader(true);
         }
       } else {
-        setLoading(false);
-        setContentLoader(false);
+        setLoading(true);
+        setContentLoader(true);
         navigate("/");
       }
     }
@@ -846,7 +846,8 @@ function CdrFilterReport({ page }) {
                         {cdr?.data?.length > 0 && (
                           <>
                             <thead>
-                              <tr>
+                            <tr style={{ whiteSpace: "nowrap" }}>
+
                                 {Object.keys(cdr?.data[0]).map((key) => {
                                   let formattedKey = "";
                                   if (key === "variable_sip_from_user") {
@@ -951,7 +952,7 @@ function CdrFilterReport({ page }) {
                                               className={`tableButton ${
                                                 isBlocked ? "delete" : "warning"
                                               } ms-0`}
-                                              style={{ height: "34px" }}
+                                              style={{ height: "34px", width:"34px" }}
                                               onClick={() => {
                                                 setSelectedNumberToBlock(
                                                   item["Call-Direction"] ===
