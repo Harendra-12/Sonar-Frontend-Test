@@ -1366,7 +1366,7 @@ function Navbar() {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse12"
                         aria-expanded={
-                          isChildActive(["/support", "/knowledge-base"])
+                          isChildActive(["/knowledge-base", "/live-chat"])
                             ? "true"
                             : "false"
                         }
@@ -1379,7 +1379,7 @@ function Navbar() {
                       </button>
                       <div
                         id="collapse12"
-                        className={`accordion-collapse collapse ${isChildActive(["/support", "/knowledge-base"])
+                        className={`accordion-collapse collapse ${isChildActive(["/knowledge-base", "/live-chat"])
                           ? "show"
                           : ""
                           }`}
@@ -1423,25 +1423,15 @@ function Navbar() {
                             {account?.permissions?.includes(248) ||
                               account?.permissions?.includes(250) ? (
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                                <NavLink
+                                  to="/live-chat"
+                                  onClick={backToTop}
                                   type="button"
-                                  className={({ isActive }) =>
-                                    isActive ||
-                                      [
-                                        "/mail-settings-add",
-                                        "/mail-settings-edit",
-                                      ].some((path) =>
-                                        window.location.pathname.includes(path)
-                                      )
-                                      ? "nav-link active"
-                                      : "nav-link"
-                                  }
                                 >
                                   <div className="itemTitle">
                                     Live Chat Support
                                   </div>
-                                </Link>
+                                </NavLink>
                               </li>
                             ) : null}
                           </ul>

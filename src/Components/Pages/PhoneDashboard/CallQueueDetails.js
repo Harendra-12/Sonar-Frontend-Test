@@ -10,7 +10,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-  const [callCenterLoading, setCallCenterLoading] = useState(true);
+  // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
       const filterCallQueue = () => {
@@ -29,7 +29,7 @@ const CallQueueDetails = () => {
         const filteredCallCenter = filteredData.filter(
           (data) => data && data["Call-Direction"] === "inbound"
         );
-        if (filteredCallCenter.length > 0) setCallCenterLoading(false);
+        // if (filteredCallCenter.length > 0) setCallCenterLoading(false);
         setCallQueue(filteredCallCenter);
       };
       filterCallQueue();
@@ -69,14 +69,14 @@ const CallQueueDetails = () => {
                 <h4>Call Queue</h4>
                 <p>You can see a brief analysis of all the call queues</p>
               </div>
-              <div className="buttonGroup">
+              {/* <div className="buttonGroup">
                 <button effect="ripple" className="panelButton">
                   <span className="text">Export</span>
                   <span className="icon">
                     <i className="fa-solid fa-file-csv" />
                   </span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div
@@ -138,32 +138,32 @@ const CallQueueDetails = () => {
                         </td>
                         <td>
                           <div className="dropdown">
-                            <a
+                            <div
                               style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
                               type="button"
                               data-bs-toggle="dropdown"
                               aria-expanded="false"
                             >
                               {call.agents.length}
-                            </a>
+                            </div>
                             <ul className="dropdown-menu light" >
                               <li>
-                                <a className="dropdown-item">
+                                <div className="dropdown-item">
                                   <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Active:</span> {
                                     call.agents.filter(
                                       (agent) => agent.status === "available"
                                     ).length
                                   }
-                                </a>
+                                </div>
                               </li>
                               <li>
-                                <a className="dropdown-item">
+                                <div className="dropdown-item">
                                   <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Offline:</span> {
                                     call.agents.filter(
                                       (agent) => agent.status !== "available"
                                     ).length
                                   }
-                                </a>
+                                </div>
                               </li>
                             </ul>
                           </div>

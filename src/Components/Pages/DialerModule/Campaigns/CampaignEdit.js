@@ -62,6 +62,7 @@ function CampaignCreate() {
     formState: { errors },
     handleSubmit,
     reset,
+    watch
   } = useForm();
 
   const handleDeleteAgent = async (id) => {
@@ -681,6 +682,219 @@ function CampaignCreate() {
                                   )}
                                 </div>
                               </div>
+                              <div className="formRow">
+                                <div className="formLabel">
+                                  <label>Target Timezone</label>
+                                </div>
+                                <div className="col-6">
+                                  <select
+                                    className="formItem"
+                                  >
+                                    <option value="1">Asia/Kolkata</option>
+                                    <option value="2">Pacific/California</option>
+                                  </select>
+                                  {/* {errors.title && (
+                                    <ErrorMessage text={errors.title.message} />
+                                  )} */}
+                                </div>
+                              </div>
+                              <div className="formRow">
+                                <div className="formLabel">
+                                  <label>Target Date Range</label>
+                                </div>
+                                <div className="col-6">
+                                  <div className="row">
+                                    <div className="col-6 pe-2">
+                                      <div className="formLabel">
+                                        <label>From</label>
+                                      </div>
+                                      <input
+                                        type="date"
+                                        className="formItem"
+                                      />
+                                    </div>
+                                    <div className="col-6 ps-2">
+                                      <div className="formLabel">
+                                        <label>To</label>
+                                      </div>
+                                      <input
+                                        type="date"
+                                        className="formItem"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="formRow d-block">
+                                <div className="formLabel">
+                                  <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                                </div>
+                                <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                  <div className="timeTableWrapper col-auto">
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Sunday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Monday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Tuesday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Wednesday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Thursday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Friday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12">
+                                      <div className="wrapper mb-0">
+                                        <div className="item" style={{ width: '95px' }}>
+                                          <input type="checkbox" />
+                                          <label className="ms-2 fw-bold">Saturday</label>
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <input type="time" className="formItem" />
+                                        </div>
+                                        <div className="item">
+                                          <div class="my-auto position-relative mx-1">
+                                            <label class="switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span class="slider round"></span>
+                                            </label>
+                                          </div>
+                                          <label className="ms-1">Full day</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </form>
                           </div>
                           <div
@@ -812,108 +1026,215 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               <div></div>
-                              <div className="formRow col-xl-6">
-                                <div className="formLabel">
-                                  <label>Preview Time</label>
-                                </div>
-                                <div className="col-6">
-                                  <input
-                                    type="number"
-                                    className="formItem"
-                                    {...register("preview_time", {
-                                      ...requiredValidator,
-                                      ...numberValidator,
-                                    })}
-                                  />
-                                  {errors.preview_time && (
-                                    <ErrorMessage
-                                      text={errors.preview_time.message}
+                              {watch().type === "preview" ? <>
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Preview Time</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <input
+                                      type="number"
+                                      className="formItem"
+                                      {...register("preview_time", {
+                                        ...requiredValidator,
+                                        ...numberValidator,
+                                      })}
                                     />
-                                  )}
+                                    {errors.preview_time && (
+                                      <ErrorMessage
+                                        text={errors.preview_time.message}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="formRow col-xl-6">
-                                <div className="formLabel">
-                                  <label>Wrap Up Time</label>
-                                </div>
-                                <div className="col-6">
-                                  <input
-                                    type="number"
-                                    className="formItem"
-                                    {...register("wrapup_time", {
-                                      ...requiredValidator,
-                                      ...numberValidator,
-                                    })}
-                                  />
-                                  {errors.wrapup_time && (
-                                    <ErrorMessage
-                                      text={errors.wrapup_time.message}
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Wrap Up Time</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <input
+                                      type="number"
+                                      className="formItem"
+                                      {...register("wrapup_time", {
+                                        ...requiredValidator,
+                                        ...numberValidator,
+                                      })}
                                     />
-                                  )}
+                                    {errors.wrapup_time && (
+                                      <ErrorMessage
+                                        text={errors.wrapup_time.message}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="formRow col-xl-6">
-                                <div className="formLabel">
-                                  <label>Max Ring Time</label>
-                                </div>
-                                <div className="col-6">
-                                  <input
-                                    type="number"
-                                    className="formItem"
-                                    {...register("max_ring_time", {
-                                      ...requiredValidator,
-                                      ...numberValidator,
-                                    })}
-                                  />
-                                  {errors.max_ring_time && (
-                                    <ErrorMessage
-                                      text={errors.max_ring_time.message}
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Max Ring Time</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <input
+                                      type="number"
+                                      className="formItem"
+                                      {...register("max_ring_time", {
+                                        ...requiredValidator,
+                                        ...numberValidator,
+                                      })}
                                     />
-                                  )}
+                                    {errors.max_ring_time && (
+                                      <ErrorMessage
+                                        text={errors.max_ring_time.message}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="formRow col-xl-6">
-                                <div className="formLabel">
-                                  <label>Default Retry Period</label>
-                                </div>
-                                <div className="col-6">
-                                  <input
-                                    type="number"
-                                    className="formItem"
-                                    {...register("default_retry_period", {
-                                      ...requiredValidator,
-                                      ...numberValidator,
-                                    })}
-                                  />
-                                  {errors.default_retry_period && (
-                                    <ErrorMessage
-                                      text={errors.default_retry_period.message}
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Default Retry Period</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <input
+                                      type="number"
+                                      className="formItem"
+                                      {...register("default_retry_period", {
+                                        ...requiredValidator,
+                                        ...numberValidator,
+                                      })}
                                     />
-                                  )}
+                                    {errors.default_retry_period && (
+                                      <ErrorMessage
+                                        text={errors.default_retry_period.message}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="formRow col-xl-6">
-                                <div className="formLabel">
-                                  <label>Max Attempt Per Record</label>
-                                </div>
-                                <div className="col-6">
-                                  <input
-                                    type="number"
-                                    className="formItem"
-                                    {...register("max_attempts_per_record", {
-                                      ...requiredValidator,
-                                      ...numberValidator,
-                                    })}
-                                  />
-                                  {errors.max_attempts_per_record && (
-                                    <ErrorMessage
-                                      text={
-                                        errors.max_attempts_per_record.message
-                                      }
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Max Attempt Per Record</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <input
+                                      type="number"
+                                      className="formItem"
+                                      {...register("max_attempts_per_record", {
+                                        ...requiredValidator,
+                                        ...numberValidator,
+                                      })}
                                     />
-                                  )}
+                                    {errors.max_attempts_per_record && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.max_attempts_per_record.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
+                              </> : watch().type === "progressive" ?
+                                <>
+                                  <div className="formRow col-xl-6">
+                                    <div className="formLabel">
+                                      <label>Ringing Agent Time</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        {...register("preview_time", {
+                                          ...requiredValidator,
+                                          ...numberValidator,
+                                        })}
+                                      />
+                                      {errors.preview_time && (
+                                        <ErrorMessage
+                                          text={errors.preview_time.message}
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="formRow col-xl-6">
+                                    <div className="formLabel">
+                                      <label>Wrap Up Time</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        {...register("wrapup_time", {
+                                          ...requiredValidator,
+                                          ...numberValidator,
+                                        })}
+                                      />
+                                      {errors.wrapup_time && (
+                                        <ErrorMessage
+                                          text={errors.wrapup_time.message}
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="formRow col-xl-6">
+                                    <div className="formLabel">
+                                      <label>Max Ring Time</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        {...register("max_ring_time", {
+                                          ...requiredValidator,
+                                          ...numberValidator,
+                                        })}
+                                      />
+                                      {errors.max_ring_time && (
+                                        <ErrorMessage
+                                          text={errors.max_ring_time.message}
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="formRow col-xl-6">
+                                    <div className="formLabel">
+                                      <label>Default Retry Period</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        {...register("default_retry_period", {
+                                          ...requiredValidator,
+                                          ...numberValidator,
+                                        })}
+                                      />
+                                      {errors.default_retry_period && (
+                                        <ErrorMessage
+                                          text={errors.default_retry_period.message}
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="formRow col-xl-6">
+                                    <div className="formLabel">
+                                      <label>Max Attempt Per Record</label>
+                                    </div>
+                                    <div className="col-6">
+                                      <input
+                                        type="number"
+                                        className="formItem"
+                                        {...register("max_attempts_per_record", {
+                                          ...requiredValidator,
+                                          ...numberValidator,
+                                        })}
+                                      />
+                                      {errors.max_attempts_per_record && (
+                                        <ErrorMessage
+                                          text={
+                                            errors.max_attempts_per_record.message
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                  </div>
+                                </>
+                                : ""}
                             </form>
                             <div className="row mt-2 gx-xxl-5">
                               <div className="col-xl-6">

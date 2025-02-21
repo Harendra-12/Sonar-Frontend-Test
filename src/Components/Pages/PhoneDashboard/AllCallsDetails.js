@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ContentLoader from "../../Loader/ContentLoader";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function AllCallsDetails() {
   const callDetails = useSelector((state) => state.allCall);
   const activeCall = useSelector((state) => state.activeCall);
-  const navigate = useNavigate();
   const [extensionDataLoading, setExtensionDataLoading] = useState(true);
   useEffect(() => {
     if (callDetails?.calls) {
@@ -50,8 +49,6 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {/* {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
-                                    <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start"} ></i>} */}
                                   {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
                                     <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                                 </h3>
@@ -77,17 +74,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p>Total Calls Completed</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.success * 100) / callDetails?.totalCalls
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.success * 100) / callDetails?.totalCalls
-                                  ).toFixed(2)) : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                  ></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
@@ -109,17 +95,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p>Missed Calls</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.missed * 100) / callDetails?.totalCalls
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.missed * 100) / callDetails?.totalCalls
-                                  ).toFixed(2)) : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                  ></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
@@ -136,11 +111,11 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {activeCall.length}
                                 </h3>
-                                <p>Extensions On Calls</p>
+                                <p>Agents On Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to="/active-calls" className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -210,19 +185,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p> Inbound Calls Completed</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.inbound?.completed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.inbound?.completed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                  ></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
@@ -244,18 +206,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p>Missed Inbound Calls</p>
-                                {/* <div className="label2">
-                                  {((
-                                    (callDetails?.inbound?.missed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.inbound?.missed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                  ></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
@@ -276,23 +226,11 @@ function AllCallsDetails() {
                                     ).length
                                   }
                                 </h3>
-                                <p>Extensions On Calls</p>
-                                {/* <div className="label2">
-                                  {((
-                                    (callDetails?.inbound?.missed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.inbound?.missed * 100) /
-                                    callDetails?.inbound?.total
-                                  ).toFixed(2)) : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
-                                  ></i>}
-                                  %
-                                </div> */}
+                                <p>Agents On Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to="/active-calls" className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -362,17 +300,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p>Outbound Calls Completed</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.outbound?.completed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.outbound?.completed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) : <i class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
@@ -394,17 +321,6 @@ function AllCallsDetails() {
                                   }
                                 </h3>
                                 <p>Missed Outbound Calls</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.outbound?.missed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.outbound?.missed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) : <i class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}></i>}
-                                  %
-                                </div> */}
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
@@ -425,22 +341,11 @@ function AllCallsDetails() {
                                     ).length
                                   }
                                 </h3>
-                                <p>Extensions On Calls</p>
-                                {/* <div className="label2">
-                                  Percentage{" "}
-                                  {((
-                                    (callDetails?.outbound?.missed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) ? ((
-                                    (callDetails?.outbound?.missed * 100) /
-                                    callDetails?.outbound?.total
-                                  ).toFixed(2)) : <i class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}></i>}
-                                  %
-                                </div> */}
+                                <p>Agents On Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to="/active-calls" className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>

@@ -134,6 +134,9 @@ import MailSettings from "./Components/Pages/MailSettings/MailSettings";
 import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
+import UserProfile from "./Components/Pages/Users/UserProfile";
+import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
+import Ticket from "./Components/Pages/Support/Ticket";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 
 // Unlock this if want push notification
@@ -280,6 +283,7 @@ function App() {
               )
             }
           />
+          <Route path="/users-profile" element={<UserProfile />} />
           <Route
             path="/users-edit"
             element={
@@ -668,8 +672,9 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
+          <Route path="/live-chat" element={<LiveSupportChat />} />
+          <Route path="/ticket" element={<Ticket />} />
           {/* ------ Support  */}
-
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />

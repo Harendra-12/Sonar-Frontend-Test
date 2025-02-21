@@ -49,7 +49,7 @@ const Extensions = () => {
   useEffect(() => {
     async function getData() {
       const userApi = await generalGetFunction(
-        `/user/search?account=1`,
+        `/user/search?account=${account.account_id}`,
       );
       if(userApi?.status){
         setUserList(userApi.data);
@@ -62,7 +62,7 @@ const Extensions = () => {
   const userWithExtension = userList
     .filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
     .map((user) => ({
-      name: user.name,
+      name: user.username,
       extension: user.extension.extension, // Access the nested extension value
     }));
 
