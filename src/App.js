@@ -222,7 +222,7 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-dashboard" element={<CustomDashboardManage />} />
+          <Route path="/custom-module" element={<CustomDashboardManage />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
