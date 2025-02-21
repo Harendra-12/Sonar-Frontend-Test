@@ -374,6 +374,7 @@ const WebrtcWrapper = () => {
                   setHangupRefresh={setHangupRefresh}
                   hangupRefresh={hangupRefresh}
                   setSelectedModule={setSelectedModule}
+                  allContact={allContact}
                 // globalSession={sessions}
                 />
               </div>

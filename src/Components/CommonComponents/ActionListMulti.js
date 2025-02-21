@@ -19,7 +19,7 @@ const ActionListMulti = ({
   const [callCenter, setCallCenter] = useState([]);
   const [ivr, setIvr] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [setSelectedTypes] = useState([]); // New state for types
+  // const [selectedTypes, setSelectedTypes] = useState([]); // New state for types
 
   // Redux selectors for state
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -131,7 +131,7 @@ const ActionListMulti = ({
     const types = Array.from(
       new Set(selectedOptions.map((option) => option.value[1]))
     );
-    setSelectedTypes(types);
+    // setSelectedTypes(types);
     getSelectedTypes(types); // Send types to the parent component
   }, [selectedOptions]);
 

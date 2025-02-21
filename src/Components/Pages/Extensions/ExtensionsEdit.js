@@ -78,12 +78,9 @@ const ExtensionsEdit = ({ page }) => {
         const apidataUser = await generalGetFunction(
           `/user/search?account=${account.account_id}`
         );
-
         if (apidataUser?.status) {
           setUsers(apidataUser.data);
-        } else {
-          navigate("/");
-        }
+        } 
       }
       getDomain();
     }
@@ -126,7 +123,6 @@ const ExtensionsEdit = ({ page }) => {
             onbusy: apiData.data.onbusy,
             onbusyTo: apiData.data.onbusyTo,
             noanswer: apiData.data.noanswer,
-
             // noanswerTo: apiData.data.noanswerTo,
             forward: apiData.data.forward,
             forward_to: apiData.data.forward_to,
@@ -644,6 +640,7 @@ const ExtensionsEdit = ({ page }) => {
                               <div className="col-xl-6 col-12">
                                 <select
                                   className="formItem"
+                                  value={watch().user}
                                   {...register("user")}
                                   id="selectFormRow"
                                 >

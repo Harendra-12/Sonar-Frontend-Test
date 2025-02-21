@@ -237,6 +237,10 @@ function IncomingCallPopup({
     if (session.incomingInviteRequest) {
       if (session?.incomingInviteRequest?.message?.headers?.["X-Call-Type"]?.[0]?.["raw"] === "auto_answered") {
         handleAnswerCall("audio")
+        
+      // In case of call transfer by any other extension then it is auto answered
+      }else if(session?.incomingInviteRequest?.message?.headers?.["Referred-By"]?.length===1){
+        handleAnswerCall("audio")
       }
     }
     // Handle incoming call notification and answer the call
@@ -363,7 +367,7 @@ function IncomingCallPopup({
                 <div class="circle1"></div>
                 <div class="circle2"></div>
               </button>
-              <button
+              {/* <button
                 className="callButton bg-primary"
                 onClick={() => {
                   setAttendShow(true);
@@ -371,7 +375,7 @@ function IncomingCallPopup({
                 }}
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
-              </button>
+              </button> */}
               <button class="callButton hangup" onClick={decline}>
                 <i class="fa-solid fa-phone-hangup"></i>
               </button>

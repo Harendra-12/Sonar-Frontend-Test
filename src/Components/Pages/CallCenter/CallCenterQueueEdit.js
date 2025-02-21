@@ -476,7 +476,7 @@ function CallCenterQueueEdit() {
         // Add new agent if it doesn't already exist
         newAgents.push({
           name: `${selectedAgent.id}`,
-          contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+          contact: `user/${selectedAgent.extension?.extension}@${account.domain?.domain_name}`,
 
           id: Math.floor(Math.random() * 10000),
 

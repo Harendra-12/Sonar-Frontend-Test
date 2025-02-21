@@ -5,7 +5,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
@@ -42,9 +42,7 @@ function GlobalCalls() {
   useEffect(() => {
     if (account && account?.account_id) {
       async function getData() {
-        const apiData = await generalGetFunction(
-          `/call-details?account_id=${account?.account_id}`
-        );
+        const apiData = await generalGetFunction(`/call-details?account=${account.account_id}`);
         if (apiData?.status) {
           dispatch({
             type: "SET_ALLCALL",
@@ -201,12 +199,12 @@ function GlobalCalls() {
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(
-        `/extension/all`
+        `/extension/search?account=${account?.account_id}`
       );
       if (apiData?.status) {
         dispatch({
           type: "SET_EXTENSIONALL",
-          extensionAll: apiData.data,
+          extensionAll: apiData,
         });
       }
     }

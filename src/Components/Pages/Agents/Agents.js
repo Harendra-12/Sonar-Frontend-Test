@@ -140,7 +140,7 @@ function Agents({ type }) {
                             <tr>
                               <th>Name</th>
                               <th>Extension</th>
-                              <th>Account ID</th>
+                              {/* <th>Account ID</th> */}
                               {/* <th>Role</th> */}
                               {/* <th>Domain</th> */}
                               <th>Online</th>
@@ -154,7 +154,7 @@ function Agents({ type }) {
                                 <tr>
                                   <td>{item.name}</td>
                                   <td>{item.extension.extension}</td>
-                                  <td>{item.account_id}</td>
+                                  {/* <td>{item.account_id}</td> */}
                                   <td>
                                     <span
                                       className={

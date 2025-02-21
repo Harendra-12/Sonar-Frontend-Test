@@ -10,6 +10,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -32,6 +33,7 @@ function Music() {
   const [selectedMusicToEdit, setSelectedMusicToEdit] = useState();
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
+  const [audioURL, setAudioURL] = useState("");
 
   // Get all previous music data
   useEffect(() => {
@@ -121,14 +123,17 @@ function Music() {
   }
 
   // Handle edit music
-  async function handleEditMusic(){
+  async function handleEditMusic() {
     console.log("Hit music updat e");
-    
+
     const parsedData = {
-      name:selectedMusicName,
-      type:selecetdMusicType,
-    }
-    const apiData = await generalPutFunction(`/sound/${selectedMusicToEdit.id}`,parsedData)
+      name: selectedMusicName,
+      type: selecetdMusicType,
+    };
+    const apiData = await generalPutFunction(
+      `/sound/${selectedMusicToEdit.id}`,
+      parsedData
+    );
     if (apiData.status) {
       setLoading(false);
       setMusicEditPopup(false);
@@ -139,6 +144,22 @@ function Music() {
       setLoading(false);
     }
   }
+
+  // function to play the music
+  const handlePlayMusic = async (id, path) => {
+    if (currentPlaying === id) {
+      setCurrentPlaying(null); // Pause if already playing
+      setAudioURL(null);
+    } else {
+      setCurrentPlaying(id); // Play selected audio
+      const url = path.split(".com/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url);
+      }
+    }
+  };
 
   return (
     <main className="mainContent">
@@ -307,13 +328,12 @@ function Music() {
                                         <td>
                                           <button
                                             className="tableButton play"
-                                            onClick={() => {
-                                              if (currentPlaying === item.id) {
-                                                setCurrentPlaying(null); // Pause if already playing
-                                              } else {
-                                                setCurrentPlaying(item.id); // Play selected audio
-                                              }
-                                            }}
+                                            onClick={() =>
+                                              handlePlayMusic(
+                                                item.id,
+                                                item.path
+                                              )
+                                            }
                                           >
                                             {isCurrent ? (
                                               <i className="fa-solid fa-stop"></i>
@@ -363,9 +383,10 @@ function Music() {
                                                 onEnded={() =>
                                                   setCurrentPlaying(null)
                                                 } // Reset on end
+                                                src={audioURL}
                                               >
                                                 <source
-                                                  src={item.path}
+                                                  src={audioURL}
                                                   type="audio/mpeg"
                                                 />
                                               </audio>
@@ -666,7 +687,9 @@ function Music() {
                             type="text"
                             className="mb-3 formItem"
                             value={selectedMusicName}
-                            onChange={(e) => setSelectedMusicName(e.target.value)}
+                            onChange={(e) =>
+                              setSelectedMusicName(e.target.value)
+                            }
                           ></input>
                         </div>
                         <div className="col-4">
@@ -674,7 +697,9 @@ function Music() {
                             name="music"
                             className="formItem"
                             value={selecetdMusicType}
-                            onChange={(e) => setSelectedMusicType(e.target.value)}
+                            onChange={(e) =>
+                              setSelectedMusicType(e.target.value)
+                            }
                           >
                             <option value="hold">Hold</option>
                             <option value="busy">Busy</option>

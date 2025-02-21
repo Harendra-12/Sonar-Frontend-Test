@@ -8,16 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
-import DoughnutChart from "../../CommonComponents/DoughnutChart";
-import GraphChart from "../../CommonComponents/GraphChart";
 
 function PhoneDashboard() {
-  const [calls, setCalls] = useState(true);
-  const [group, setGroup] = useState(false);
-  const [queue, setQueue] = useState(false);
   const navigate = useNavigate();
   // const account = useSelector((state) => state.account)
-  const [extensionList, setExtensionList] = useState(0);
+  // const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -37,8 +32,8 @@ function PhoneDashboard() {
   const callCenter = useSelector((state) => state.callCenter);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const [callQueue, setCallQueue] = useState([]);
-  const accountDetails = useSelector((state) => state.accountDetails);
-
+  const account = useSelector((state) => state.account);
+  const assignedExtension = extension.filter((item) => item.user);
   useEffect(() => {
     async function getData() {
       // const apiData = await generalGetFunction(
@@ -46,7 +41,7 @@ function PhoneDashboard() {
       //   navigate
       // );
       const userApi = await generalGetFunction(
-        `/user/search?account=1`,
+        `/user/search?account=${account.account_id}`,
         navigate
       );
       // if (apiData.status) {
@@ -74,7 +69,7 @@ function PhoneDashboard() {
       setOnlineExtension([0]);
     }
     if (extensionRefresh > 0) {
-      setExtensionList(extension.length);
+      // setExtensionList(extension.length);
     } else {
       dispatch({
         type: "SET_EXTENSIONREFRESH",
@@ -180,78 +175,7 @@ function PhoneDashboard() {
                 </svg>
               </div>
             </div>
-            {/* <div
-                  className="row pt-3 justify-content-between"
-                  style={{}}
-                >
-                  <div className="col-xl-4 col-6 my-auto">
-                      <div className="position-relative searchBox">
-                          <input
-                              type="search"
-                              name="Search"
-                              id="headerSearch"
-                              placeholder="Looking for an option?"
-                          />
-                      </div>
-                  </div>
-                  <div className="col-xl-8 col-6">
-                      <div className="d-flex justify-content-end">
-                          <button
-                              effect="ripple"
-                              className="appPanelButton"
-                          >
-                              <i className="fa-duotone fa-pen" />
-                          </button>
-                          <button
-                              effect="ripple"
-                              className="appPanelButton"
-                          >
-                              <i className="fa-duotone fa-message" />
-                          </button>
-                          <button
-                              effect="ripple"
-                              className="appPanelButton"
-                          >
-                              <i className="fa-duotone fa-gear" />
-                          </button>
-                      </div>
-                  </div>
-              </div> */}
             <div className="col-12 mt-3 tangoNavs">
-              {/* <div className="col-12 mt-3">
-                <div className="row">
-                  <div className="col-xl-4 tabButtonParent">
-                    <button
-                      className={calls ? "tabButton active" : "tabButton"}
-                      onClick={() => setCalls(!calls)}
-                      data-id={1}
-                    >
-                      Calls
-                    </button>
-                  </div>
-                  <div className="col-xl-4 tabButtonParent">
-                    <button
-                      className={group ? "tabButton active" : "tabButton"}
-                      onClick={() => setGroup(!group)}
-                      data-id={2}
-                    >
-                      Ring Group
-                    </button>
-                  </div>
-                  <div className="col-xl-4 tabButtonParent">
-                    <button
-                      className={queue ? "tabButton active" : "tabButton"}
-                      onClick={() => setQueue(!queue)}
-                      data-id={3}
-                    >
-                      Call Queue
-                    </button>
-                  </div>
-                </div>
-              </div> */}
-              {/* {calls ? <AllCallsDetails /> : ""} */}
-              {/* {group ? <RingGroup /> : ""} */}
-              {/* {queue ? <CallQueueDetails /> : ""} */}
               <AllCallsDetails />
               <div className="row my-3">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
@@ -273,22 +197,15 @@ function PhoneDashboard() {
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>{(extension && extension.length) || 0}</h5>
+                          <h5>{(extension && extension.length)}</h5>
                           <p>
-                            {activeCall.length} on Call /{" "}
-                            {(extension &&
-                              extension.length -
-                              extension.filter((extension) =>
-                                onlineExtension.includes(extension.extension)
-                              ).length) ||
+                            {/* {activeCall.length} on Call /{" "} */}
+                            {(assignedExtension.length) ||
                               0}{" "}
-                            Offline /{" "}
-                            {(extension &&
-                              extension.filter((extension) =>
-                                onlineExtension.includes(extension.extension)
-                              ).length) ||
+                            Assigned /{" "}
+                            {(extension.length - assignedExtension.length) ||
                               0}{" "}
-                            Online
+                            Available
                           </p>
                         </div>
                         <div className="col-2">
@@ -417,27 +334,6 @@ function PhoneDashboard() {
                               ).length) ||
                               0}{" "}
                             Active Users.
-                            {/* /{" "}
-                            {(allUser.data &&
-                              allUser.data.length -
-                              allUser.data.filter((user) => {
-                                user.extension !== null &&
-                                  user.extension.extension !== null &&
-                                  onlineUser.includes(
-                                    user?.extension?.extension
-                                  );
-                              }).length) ||
-                              0}{" "}
-                            Idle Users /{" "}
-                            {(allUser.data &&
-                              allUser.data.filter((user) =>
-                                activeCall.some(
-                                  (call) =>
-                                    call.dest === user?.extension?.extension
-                                )
-                              ).length) ||
-                              0}{" "}
-                            On Call */}
                           </p>
                         </div>
                         <div className="col-2">
@@ -448,88 +344,10 @@ function PhoneDashboard() {
                         </div>
                       </div>
                     </div>
-                    {/* <button className="moreInfo" onclick="window.location.href='http://192.168.1.88/ringerappCI/user'" effect="ripple"><i className="fa-duotone fa-users"></i> View All Users</button> */}
-                  </div>
+                   </div>
                 </div>
               </div>
             </div>
-
-            {/* <div className="col-12 mt-4 mb-2 chartWrapper">
-              <div className="row">
-                <div className="col-xl-3">
-                  <div className="wrapper">
-                    <DoughnutChart
-                      fields={[
-                        "Online Extension",
-                        "Register Extension",
-                        "Available Extension",
-                      ]}
-                      percentage={[
-                        registerUser.length,
-                        extensionList,
-                        Number(accountDetails.package?.number_of_user) -
-                        extensionList,
-                      ]}
-                      colors={["#9999", "#FF638470", "#36A2EB70"]}
-                    />
-                  </div>
-                </div>
-                <div className="col-xl-3">
-                  <div className="wrapper">
-                    <DoughnutChart
-                      fields={["Registered Users", "Available Users"]}
-                      percentage={[
-                        userList,
-                        Number(accountDetails.package?.number_of_user) -
-                        userList,
-                      ]}
-                      centerTitle={`${userList}/${Number(
-                        accountDetails.package?.number_of_user
-                      )}`}
-                      centerDesc="Total Users Available"
-                      colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
-                    />
-                  </div>
-                </div>
-                <div className="col-xl-6">
-                  <div className="wrapper">
-                    <GraphChart
-                      fields={["Available Extension", "Registered Extension"]}
-                      percentage={[
-                        ((Number(accountDetails.package?.number_of_user) -
-                          extensionList) *
-                          100) /
-                        Number(accountDetails.package?.number_of_user),
-                        (extensionList * 100) /
-                        Number(accountDetails.package?.number_of_user),
-                      ]}
-                      centerTitle={`${extensionList}/${accountDetails.package?.number_of_user}`}
-                      centerDesc="Total Extensions"
-                      colors={["#f18f01", "#36A2EB"]}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-            {/* <div className='circularProgressWrapper'>
-              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `50` }}>
-                <circle className="bg"
-                  cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
-                ></circle>
-                <circle className="fg"
-                  cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
-                  stroke-dasharray="361.25 361.25"
-                ></circle>
-              </svg>
-              <div className='circularProgressContent'>
-                <div className="data-number">
-                  <label style={{ color: '#f18f01' }}>{userList}</label> <span>/ 69</span>
-                </div>
-                <p>Total Users Created</p>
-              </div>
-            </div> */}
-
             <div className="col-xl-6">
               <RingGroup />
             </div>

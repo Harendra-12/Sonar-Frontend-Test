@@ -33,8 +33,6 @@ const RingGroupAdd = () => {
   const account = useSelector((state) => state.account);
   const [loading, setLoading] = useState(true);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
-  const allUserRefresh = useSelector((state) => state.allUserRefresh);
-  // const allUserArr = useSelector((state) => state.allUser);
   const [allUserArr, setAllUserArr] = useState([]);
   const [ringBack, setRingBack] = useState();
   const [user, setUser] = useState();
@@ -82,7 +80,7 @@ const RingGroupAdd = () => {
 
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if (!loading) {
       if (allUserArr.length === 0) {
         toast.error("Please create user first");
       } else {
@@ -95,12 +93,7 @@ const RingGroupAdd = () => {
           toast.error("No user found with assign extension");
         }
       }
-    } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
+    } 
   }, [allUserArr]);
 
   // Get all ringbacks music for dropdown
@@ -112,8 +105,8 @@ const RingGroupAdd = () => {
           `/user/search?account=${account.account_id}`
         );
         const ringBack = await generalGetFunction("/sound/all?type=ringback");
-        setLoading(false);
         if (apidataUser?.status) {
+          setLoading(false);
           setAllUserArr(apidataUser.data);
         }
         if (ringBack?.status) {
@@ -134,7 +127,7 @@ const RingGroupAdd = () => {
 
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if ( !loading) {
       const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
@@ -143,12 +136,7 @@ const RingGroupAdd = () => {
       } else {
         toast.error("No user found with assign extension");
       }
-    } else {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
+    } 
 
     if (extensionRefresh > 0) {
     } else {
@@ -157,7 +145,7 @@ const RingGroupAdd = () => {
         extensionRefresh: extensionRefresh + 1,
       });
     }
-  }, [allUserArr, extension]);
+  }, [allUserArr, extension,]);
 
 
   // Function to handle click outside to close popup

@@ -292,7 +292,7 @@ function CallDashboard() {
 
                             <tbody>
                               {
-                                activeCall && activeCall.filter((item) => item.b_callstate !== "ACTIVE").map((item, key) => {
+                                activeCall && activeCall.filter((item) => item.b_callstate === "").map((item, key) => {
                                   return (
                                     <tr>
                                       <td>{key + 1}</td>

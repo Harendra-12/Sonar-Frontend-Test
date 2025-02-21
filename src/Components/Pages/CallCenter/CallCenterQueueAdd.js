@@ -369,7 +369,7 @@ function CallCenterQueueAdd() {
     if (agent.length == 1 && agent[0].name == "") {
       const newAgents = selectedAgents.map((selectedAgent) => ({
         name: `${selectedAgent.id}`,
-        contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+        contact: `user/${selectedAgent.extension?.extension}@${account.domain?.domain_name}`,
 
         id: Math.floor(Math.random() * 10000),
 
@@ -407,7 +407,7 @@ function CallCenterQueueAdd() {
           // Add new agent if it doesn't already exist
           newAgents.push({
             name: `${selectedAgent.id}`,
-            contact: `user/${selectedAgent.extension?.extension}@${selectedAgent.domain?.domain_name}`,
+            contact: `user/${selectedAgent.extension?.extension}@${account.domain?.domain_name}`,
 
             id: Math.floor(Math.random() * 10000),
 

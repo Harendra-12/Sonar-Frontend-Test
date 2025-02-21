@@ -350,7 +350,7 @@ const RingGroups = () => {
                                             {item.ring_group_destination.map(
                                               (item, index, array) => (
                                                 <span>
-                                                  {item.destination}
+                                                  {item.username}
                                                   {index < array.length - 1
                                                     ? ", "
                                                     : ""}

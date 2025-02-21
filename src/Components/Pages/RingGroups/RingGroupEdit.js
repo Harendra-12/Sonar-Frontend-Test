@@ -103,7 +103,7 @@ const RingGroupEdit = () => {
 
   // Checking validation for the user if user not present then show message please create user first
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if (allUserRefresh > 0 && !loading) {
       if (allUserArr?.length === 0) {
         toast.error("Please create user first");
       } else {
@@ -189,13 +189,10 @@ const RingGroupEdit = () => {
           }
         } else {
           setLoading(false);
-          navigate("/");
         }
       }
       getData();
-    } else {
-      navigate("/");
-    }
+    } 
   }, [account, navigate, value, getAllDataRefresh]);
 
   // Get all ringbacks music for dropdown
@@ -206,7 +203,7 @@ const RingGroupEdit = () => {
 
       if (ringBack?.status) {
         setRingBack(ringBack.data);
-        if (ringBack.data.length > 0 && uploadedMusic) {
+        if (ringBack?.data?.length > 0 && uploadedMusic) {
           setValue("ring_back", uploadedMusic.id);
         }
         setLoading(false);
@@ -220,7 +217,7 @@ const RingGroupEdit = () => {
 
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
-    if (allUserRefresh > 0) {
+    if (allUserRefresh > 0 && !loading) {
       const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
