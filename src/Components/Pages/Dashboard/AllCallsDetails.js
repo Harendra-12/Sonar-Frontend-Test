@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import ContentLoader from '../../Loader/ContentLoader';
 
+
 function AllCallsDetails() {
     const callDetails = useSelector((state)=>state.allCall)
     console.log("This is call details",callDetails);

@@ -24,7 +24,6 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
-
 function CallCenterQueueEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

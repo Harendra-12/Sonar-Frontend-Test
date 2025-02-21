@@ -20,7 +20,6 @@ import ErrorMessage from "../../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import CircularLoader from "../../../Loader/CircularLoader";
-
 function CampaignCreate() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);

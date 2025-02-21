@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { generalDeleteFunction, generalGetFunction } from '../../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
-
 function Campaigns() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

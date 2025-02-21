@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
 const ActionListMulti = ({
+  
   category,
   getDropdownValues,
   getSelectedTypes, // Callback to return the types to the parent

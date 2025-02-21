@@ -2,6 +2,7 @@ import React from "react";
 
 const CallQueueDetails = () => {
   return (
+    
     <div className="tabGroupDetails" data-id={3}>
       <div className="col-12">
         <div className="col-12 title text-start">
