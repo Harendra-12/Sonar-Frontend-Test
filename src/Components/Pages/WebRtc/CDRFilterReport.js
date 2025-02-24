@@ -57,21 +57,26 @@ function CdrFilterReport({ page }) {
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys,setShowKeys]=useState([
     "Call-Direction",
+    "Caller-Orig-Caller-ID-Name",
+    "tag",
     "application_state",
+    "application_state_to_ext",
+    "e_name",
     "variable_sip_from_user",
     "variable_sip_to_user",
     "start_date",
     "end_date",
     "variable_DIALSTATUS",
     "Hangup-Cause",
-    "call_cost",
+    // "call_cost",
     "recording_path",
     "Date",
-    "Time"
+    "Time",
+    "variable_billsec"
   ]);
 
   const thisAudioRef = useRef(null);
-  console.log(cdr, callBlock);
+  console.log("000000000cdr",cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -388,6 +393,7 @@ function CdrFilterReport({ page }) {
     const secs = (seconds % 60).toString().padStart(2, "0");
     return `${hours}:${minutes}:${secs}`;
   }
+
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -870,10 +876,23 @@ function CdrFilterReport({ page }) {
                                   let formattedKey = ""
                                  if(showKeys.includes(key)){
                                   if (key === "variable_sip_from_user") {
-                                    formattedKey = "Call Origin";
+                                    formattedKey = "Caller No.";
                                   } else if (key === "variable_sip_to_user") {
                                     formattedKey = "Call Destination";
-                                  } else if (key === "variable_DIALSTATUS") {
+                                  } else if(key=== "Caller-Orig-Caller-ID-Name"){
+                                     formattedKey="Caller Name"
+                                  }else if( key==="variable_billsec"){
+                                    formattedKey="Duration"
+                                  }
+                                  else if( key==="application_state"){
+                                    formattedKey="Via/Route"
+                                  }
+                                  else if(key==="application_state_to_ext"){
+                                    formattedKey="Extension"
+                                  }else if(key==="e_name"){
+                                      formattedKey="User Name"
+                                  }
+                                  else if (key === "variable_DIALSTATUS") {
                                     formattedKey = "Hangup Cause";
                                   }
                                    else if (key === "Hangup-Cause") {
@@ -939,38 +958,81 @@ function CdrFilterReport({ page }) {
                                             </td>
                                           {Object.keys(item).map((key) => {
                                            if(showKeys.includes(key)){
+                                            
                                             if (key === "recording_path") {
                                               return (
                                                 <td key={key}>
-                                                  <button
-                                                    className="tableButton px-2 mx-0"
-                                                    onClick={() => {
-                                                      if (
-                                                        item[
-                                                          "recording_path"
-                                                        ] === currentPlaying
-                                                      ) {
-                                                        setCurrentPlaying("");
-                                                        setAudioURL("");
-                                                      } else {
-                                                        handlePlaying(
-                                                          item["recording_path"]
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    {currentPlaying ===
-                                                    item["recording_path"] ? (
-                                                      <i className="fa-solid fa-stop"></i>
-                                                    ) : (
-                                                      <i className="fa-solid fa-play"></i>
-                                                    )}
-                                                  </button>
+                                                  {item["recording_path"] &&
+                                          item["variable_billsec"] > 0 &&( <button
+                                            className="tableButton px-2 mx-0"
+                                            onClick={() => {
+                                              if (
+                                                item[
+                                                  "recording_path"
+                                                ] === currentPlaying
+                                              ) {
+                                                setCurrentPlaying("");
+                                                setAudioURL("");
+                                              } else {
+                                                handlePlaying(
+                                                  item["recording_path"]
+                                                );
+                                              }
+                                            }}
+                                          >
+                                            {currentPlaying ===
+                                            item["recording_path"] ? (
+                                              <i className="fa-solid fa-stop"></i>
+                                            ) : (
+                                              <i className="fa-solid fa-play"></i>
+                                            )}
+                                          </button>)}
                                                 </td>
                                               );
-                                            }else if(key==="created_at"){
-                                                  <td key={key}>{item["created_at"]}</td>
-                                            }else{
+                                            }else if (key === "Call-Direction") {
+                                              const callIcons = {
+                                                inbound: { icon: "fa-phone-arrow-down-left", color: "var(--funky-boy3)", label: "Inbound" },
+                                                outbound: { icon: "fa-phone-arrow-up-right", color: "var(--color3)", label: "Outbound" },
+                                                missed: { icon: "fa-phone-missed", color: "var(--funky-boy3)", label: "Missed" },
+                                                transfer: { icon: "fa-phone-missed", color: "var(--funky-boy3)", label: "Transfer" },
+                                                internal: { icon: "fa-headset", color: "var(--color2)", label: "Internal" }
+                                              };
+                                            
+                                              const callType = callIcons[item["Call-Direction"]] || callIcons.internal;
+                                            
+                                              return (
+                                                <td>
+                                                  <i className={`fa-solid ${callType.icon} me-1`} style={{ color: callType.color }}></i>
+                                                  {callType.label}
+                                                </td>
+                                              );
+                                            }
+                                            else if(key==="application_state"){
+                                             return <td>
+                                              {item["application_state"] ===
+                                                "intercept" ||
+                                              item["application_state"] ===
+                                                "eavesdrop" ||
+                                              item["application_state"] ===
+                                                "whisper" ||
+                                              item["application_state"] === "barge"
+                                                ? item["other_leg_destination_number"]
+                                                : item[
+                                                    "Caller-Callee-ID-Number"
+                                                  ]}{" "}
+                                              {item["application_state_name"] &&
+                                                `(${item["application_state_name"]})`}
+                                            </td>
+                                            }
+                                            else if(key=== "variable_billsec"){
+                                              return  <td>
+                                              {formatTime(item["variable_billsec"])}
+                                            </td>
+                                            }
+                                            else if(key==="created_at"){
+                                              return    <td key={key}>{item["created_at"]}</td>
+                                            }
+                                            else{
                                               return (
                                                 <td key={key}>{item[key]}</td>
                                               );
