@@ -7,7 +7,7 @@ import {
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UsersEdit from "./UsersEdit";
 
 function UserConfiguration() {
@@ -23,6 +23,8 @@ function UserConfiguration() {
   const [checkedUserPermissionData, setCheckedUserPermissionData] = useState(
     []
   );
+  const location = useLocation();
+  const locationState = location.state;
 
   useEffect(() => {
     const permissionData = async () => {
@@ -31,6 +33,9 @@ function UserConfiguration() {
         setUserPermission(response?.data);
         setUserPermissionData(response?.data[Object.keys(response?.data)[0]]);
         setActiveUserPermission(Object.keys(response?.data)[0]);
+        if(locationState.table_permissions.length>0){
+          setCheckedUserPermissionData([...locationState.table_permissions])
+        }
       } catch (error) {
         console.log(error);
       }
@@ -52,7 +57,6 @@ function UserConfiguration() {
         payload
       );
       if (res?.status) {
-        // setCheckedUserPermissionData([]);
         toast.success("Assigned Permissions Successfully");
       }
     } catch (error) {
