@@ -139,6 +139,7 @@ import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
 import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
+import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
