@@ -124,8 +124,22 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
                                                                     <label><p>Brand: Cisco</p></label>
                                                                     <br />
-                                                                    <label>
-                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    <label className='mt-2'>
+                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
+
+                                                                        <div className="col-xl-12 col-12">
+                                                                            <select
+                                                                                className="formItem">
+                                                                                <option value="" disabled>
+                                                                                    Device
+                                                                                </option>
+                                                                                <option>Premium </option>
+                                                                                <option>Double</option>
+                                                                                <option>Signal</option>
+                                                                                <option>None</option>
+                                                                            </select>
+                                                                        </div>
+
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -137,8 +151,22 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
                                                                     <label><p>Brand: Cisco</p></label>
                                                                     <br />
-                                                                    <label>
-                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    <label className='mt-2'>
+                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
+                                                                        <div className="col-xl-12 col-12">
+                                                                            <select
+                                                                                className="formItem">
+                                                                                <option value="" disabled>
+                                                                                    Device
+                                                                                </option>
+                                                                                <option>Premium </option>
+                                                                                <option>Double</option>
+                                                                                <option>Signal</option>
+                                                                                <option>None</option>
+
+
+                                                                            </select>
+                                                                        </div>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -164,7 +192,7 @@ function DeviceProvisioningNew() {
                                                                             <div className='col-7'>
                                                                                 <div className="content">
                                                                                     <h5 className='mb-1'>Select from your Account</h5>
-                                                                                    <p className='mb-0'>Available in your account: 0</p>
+                                                                                    {/* <p className='mb-0'>Available in your account: 0</p> */}
                                                                                 </div>
 
                                                                             </div>
@@ -207,8 +235,22 @@ function DeviceProvisioningNew() {
                                                                     <br />
                                                                     <label><p>Brand: EyeBeam</p></label>
                                                                     <br />
-                                                                    <label>
-                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    <label className='mt-2'>
+                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
+                                                                        <div className="col-xl-12 col-12">
+                                                                            <select
+                                                                                className="formItem">
+                                                                                <option value="" disabled>
+                                                                                    Device
+                                                                                </option>
+                                                                                <option>Premium </option>
+                                                                                <option>Double</option>
+                                                                                <option>Signal</option>
+                                                                                <option>None</option>
+
+
+                                                                            </select>
+                                                                        </div>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -221,8 +263,22 @@ function DeviceProvisioningNew() {
                                                                     <br />
                                                                     <label><p>Brand: UcaaS</p></label>
                                                                     <br />
-                                                                    <label>
-                                                                        <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b>
+                                                                    <label className='mt-2'>
+                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
+                                                                        <div className="col-xl-12 col-12">
+                                                                            <select
+                                                                                className="formItem">
+                                                                                <option value="" disabled>
+                                                                                    Device
+                                                                                </option>
+                                                                                <option>Premium </option>
+                                                                                <option>Double</option>
+                                                                                <option>Signal</option>
+                                                                                <option>None</option>
+
+
+                                                                            </select>
+                                                                        </div>
                                                                     </label>
                                                                 </div>
                                                             </div>

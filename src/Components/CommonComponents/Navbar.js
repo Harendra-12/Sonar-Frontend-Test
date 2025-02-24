@@ -1146,7 +1146,8 @@ function Navbar() {
                             "/mail-settings",
                             "/fax-settings",
                             "/call-recording-settings",
-                            "/voice-music"
+                            "/voice-music",
+                            "/custom-module"
                           ])
                             ? "true"
                             : "false"
@@ -1165,6 +1166,7 @@ function Navbar() {
                           "/fax-settings",
                           "/call-recording-settings",
                           "/voice-music",
+                          "/custom-module"
                         ])
                           ? "show"
                           : ""
@@ -1241,6 +1243,14 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             ) : null}
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/custom-module"
+                                onClick={() => backToTop()}
+                              >
+                                <div className="itemTitle">Custom Module Integration</div>
+                              </NavLink>
+                            </li>
                             {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
