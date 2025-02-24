@@ -55,23 +55,28 @@ function CdrFilterReport({ page }) {
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [filteredKeys, setFilteredKeys] = useState([]);
-  const [showKeys,setShowKeys]=useState([
+  const [showKeys, setShowKeys] = useState([
     "Call-Direction",
-    "application_state",
+    "Caller-Orig-Caller-ID-Name",
     "variable_sip_from_user",
-    "variable_sip_to_user",
+    "tag",
+    "application_state",
+    "application_state_to_ext",
+    "e_name",
+    "Date",
+    "Time",
+    "recording_path",
+    "variable_billsec",
+    // "variable_sip_to_user",
+    "Hangup-Cause",
+    "variable_DIALSTATUS",
     "start_date",
     "end_date",
-    "variable_DIALSTATUS",
-    "Hangup-Cause",
-    "call_cost",
-    "recording_path",
-    "Date",
-    "Time"
+   "call_cost",
   ]);
 
   const thisAudioRef = useRef(null);
-  console.log(cdr, callBlock);
+  console.log("000000000cdr", cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -201,15 +206,18 @@ function CdrFilterReport({ page }) {
       }
     );
 
-// function to filter object
+    // function to filter object
     function filterObjectKeys(obj, keys) {
       let filteredObj = {};
 
       keys.forEach((key) => {
-        if (key === "variable_start_stamp" && obj.hasOwnProperty("variable_start_stamp")) {
+        if (
+          key === "variable_start_stamp" &&
+          obj.hasOwnProperty("variable_start_stamp")
+        ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"]= obj["variable_start_stamp"]?.split(" ")[1];
-        } 
+          filteredObj["Time"] = obj["variable_start_stamp"]?.split(" ")[1];
+        }
         if (obj.hasOwnProperty(key)) {
           filteredObj[key] = obj[key];
         }
@@ -388,6 +396,7 @@ function CdrFilterReport({ page }) {
     const secs = (seconds % 60).toString().padStart(2, "0");
     return `${hours}:${minutes}:${secs}`;
   }
+
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -437,7 +446,6 @@ function CdrFilterReport({ page }) {
       toast.error("Error during export:", error?.message);
     }
   };
-
 
   return (
     <>
@@ -785,26 +793,28 @@ function CdrFilterReport({ page }) {
                                 <option value={"CANCEL"}>Cancelled</option>
                               </select>
                             </div>
-                            {filteredKeys.includes("Hangup-Cause")&&<div className="formRow border-0 pe-xl-0">
-                              <label className="formLabel text-start mb-0 w-100">
-                                Hangup status
-                              </label>
-                              <select
-                                className="formItem"
-                                onChange={(e) => {
-                                  setHangupStatus(e.target.value);
-                                  setPageNumber(1);
-                                }}
-                              >
-                                <option value={""}>All</option>
-                                <option value={"MEDIA_TIMEOUT"}>
-                                  Media Timeout
-                                </option>
-                                <option value={"NORMAL_CLEARING"}>
-                                  Normal Clearing
-                                </option>
-                              </select>
-                            </div>}
+                            {filteredKeys.includes("Hangup-Cause") && (
+                              <div className="formRow border-0 pe-xl-0">
+                                <label className="formLabel text-start mb-0 w-100">
+                                  Hangup status
+                                </label>
+                                <select
+                                  className="formItem"
+                                  onChange={(e) => {
+                                    setHangupStatus(e.target.value);
+                                    setPageNumber(1);
+                                  }}
+                                >
+                                  <option value={""}>All</option>
+                                  <option value={"MEDIA_TIMEOUT"}>
+                                    Media Timeout
+                                  </option>
+                                  <option value={"NORMAL_CLEARING"}>
+                                    Normal Clearing
+                                  </option>
+                                </select>
+                              </div>
+                            )}
                           </>
                         )}
                         {/* <Link
@@ -863,47 +873,56 @@ function CdrFilterReport({ page }) {
                         {cdr?.data?.length > 0 && (
                           <>
                             <thead>
-                            <tr style={{ whiteSpace: "nowrap" }}>
-
+                              <tr style={{ whiteSpace: "nowrap" }}>
                                 <th>#</th>
-                                {Object.keys(cdr?.data[0]).map((key) => {
-                                  let formattedKey = ""
-                                 if(showKeys.includes(key)){
-                                  if (key === "variable_sip_from_user") {
-                                    formattedKey = "Call Origin";
-                                  } else if (key === "variable_sip_to_user") {
-                                    formattedKey = "Call Destination";
-                                  } else if (key === "variable_DIALSTATUS") {
-                                    formattedKey = "Hangup Cause";
+                                {showKeys.map((key) => {
+                                  if (cdr?.data[0]?.hasOwnProperty(key)) {
+                                    let formattedKey = "";
+                                    if (key === "variable_sip_from_user") {
+                                      formattedKey = "Caller No.";
+                                    } else if (key === "variable_sip_to_user") {
+                                      formattedKey = "Call Destination";
+                                    } else if (
+                                      key === "Caller-Orig-Caller-ID-Name"
+                                    ) {
+                                      formattedKey = "Caller Name";
+                                    } else if (key === "variable_billsec") {
+                                      formattedKey = "Duration";
+                                    } else if (key === "application_state") {
+                                      formattedKey = "Via/Route";
+                                    } else if (
+                                      key === "application_state_to_ext"
+                                    ) {
+                                      formattedKey = "Extension";
+                                    } else if (key === "e_name") {
+                                      formattedKey = "User Name";
+                                    } else if (key === "variable_DIALSTATUS") {
+                                      formattedKey = "Hangup Cause";
+                                    } else if (key === "Hangup-Cause") {
+                                      formattedKey = "Hangup Status";
+                                    }
+                                    else if(key==="call_cost"){
+                                      formattedKey="Charge"
+                                    } else {
+                                      formattedKey = key
+                                        .replace(/[-_]/g, " ")
+                                        .toLowerCase()
+                                        .replace(/\b\w/g, (char) =>
+                                          char.toUpperCase()
+                                        );
+                                    }
+                                    return <th key={key}>{formattedKey}</th>;
                                   }
-                                   else if (key === "Hangup-Cause") {
-                                    formattedKey = "Hangup Status";
-                                  } 
-                                  else {
-                                    formattedKey = key
-                                      .replace(/[-_]/g, " ")
-                                      .toLowerCase()
-                                      .replace(/\b\w/g, (char) =>
-                                        char.toUpperCase()
-                                      );
-                                  }
-
-                                  return <th key={key}>{formattedKey}</th>;
-                                 }
+                                  return null;
                                 })}
                                 <th>Block</th>
                               </tr>
                             </thead>
+
                             <tbody>
                               {loading ? (
                                 <SkeletonTableLoader
-                                  col={
-                                    page === "billing"
-                                      ? 13
-                                      : page === "callrecording"
-                                      ? 9
-                                      : 17
-                                  }
+                                  col={showKeys.length + 1}
                                   row={12}
                                 />
                               ) : (
@@ -932,51 +951,145 @@ function CdrFilterReport({ page }) {
                                     return (
                                       <React.Fragment key={index}>
                                         <tr className="cdrTableRow">
-                                        <td>
-                                              {(pageNumber - 1) *
-                                                Number(itemsPerPage) +
-                                                (index + 1)}
-                                            </td>
-                                          {Object.keys(item).map((key) => {
-                                           if(showKeys.includes(key)){
-                                            if (key === "recording_path") {
-                                              return (
-                                                <td key={key}>
-                                                  <button
-                                                    className="tableButton px-2 mx-0"
-                                                    onClick={() => {
-                                                      if (
-                                                        item[
-                                                          "recording_path"
-                                                        ] === currentPlaying
-                                                      ) {
-                                                        setCurrentPlaying("");
-                                                        setAudioURL("");
-                                                      } else {
-                                                        handlePlaying(
-                                                          item["recording_path"]
-                                                        );
-                                                      }
-                                                    }}
-                                                  >
-                                                    {currentPlaying ===
-                                                    item["recording_path"] ? (
-                                                      <i className="fa-solid fa-stop"></i>
-                                                    ) : (
-                                                      <i className="fa-solid fa-play"></i>
+                                          <td>
+                                            {(pageNumber - 1) *
+                                              Number(itemsPerPage) +
+                                              (index + 1)}
+                                          </td>
+
+                                          {showKeys.map((key) => {
+                                            if (item.hasOwnProperty(key)) {
+                                              if (key === "recording_path") {
+                                                return (
+                                                  <td key={key}>
+                                                    {item["recording_path"] &&
+                                                      item["variable_billsec"] >
+                                                        0 && (
+                                                        <button
+                                                          className="tableButton px-2 mx-0"
+                                                          onClick={() => {
+                                                            if (
+                                                              item[
+                                                                "recording_path"
+                                                              ] ===
+                                                              currentPlaying
+                                                            ) {
+                                                              setCurrentPlaying(
+                                                                ""
+                                                              );
+                                                              setAudioURL("");
+                                                            } else {
+                                                              handlePlaying(
+                                                                item[
+                                                                  "recording_path"
+                                                                ]
+                                                              );
+                                                            }
+                                                          }}
+                                                        >
+                                                          {currentPlaying ===
+                                                          item[
+                                                            "recording_path"
+                                                          ] ? (
+                                                            <i className="fa-solid fa-stop"></i>
+                                                          ) : (
+                                                            <i className="fa-solid fa-play"></i>
+                                                          )}
+                                                        </button>
+                                                      )}
+                                                  </td>
+                                                );
+                                              } else if (
+                                                key === "Call-Direction"
+                                              ) {
+                                                const callIcons = {
+                                                  inbound: {
+                                                    icon: "fa-phone-arrow-down-left",
+                                                    color: "var(--funky-boy3)",
+                                                    label: "Inbound",
+                                                  },
+                                                  outbound: {
+                                                    icon: "fa-phone-arrow-up-right",
+                                                    color: "var(--color3)",
+                                                    label: "Outbound",
+                                                  },
+                                                  missed: {
+                                                    icon: "fa-phone-missed",
+                                                    color: "var(--funky-boy3)",
+                                                    label: "Missed",
+                                                  },
+                                                  transfer: {
+                                                    icon: "fa-phone-missed",
+                                                    color: "var(--funky-boy3)",
+                                                    label: "Transfer",
+                                                  },
+                                                  internal: {
+                                                    icon: "fa-headset",
+                                                    color: "var(--color2)",
+                                                    label: "Internal",
+                                                  },
+                                                };
+
+                                                const callType =
+                                                  callIcons[
+                                                    item["Call-Direction"]
+                                                  ] || callIcons.internal;
+
+                                                return (
+                                                  <td key={key}>
+                                                    <i
+                                                      className={`fa-solid ${callType.icon} me-1`}
+                                                      style={{
+                                                        color: callType.color,
+                                                      }}
+                                                    ></i>
+                                                    {callType.label}
+                                                  </td>
+                                                );
+                                              } else if (
+                                                key === "application_state"
+                                              ) {
+                                                return (
+                                                  <td key={key}>
+                                                    {[
+                                                      "intercept",
+                                                      "eavesdrop",
+                                                      "whisper",
+                                                      "barge",
+                                                    ].includes(
+                                                      item["application_state"]
+                                                    )
+                                                      ? item[
+                                                          "other_leg_destination_number"
+                                                        ]
+                                                      : item[
+                                                          "Caller-Callee-ID-Number"
+                                                        ]}{" "}
+                                                    {item[
+                                                      "application_state_name"
+                                                    ] &&
+                                                      `(${item["application_state_name"]})`}
+                                                  </td>
+                                                );
+                                              } else if (
+                                                key === "variable_billsec"
+                                              ) {
+                                                return (
+                                                  <td key={key}>
+                                                    {formatTime(
+                                                      item["variable_billsec"]
                                                     )}
-                                                  </button>
-                                                </td>
-                                              );
-                                            }else if(key==="created_at"){
-                                                  <td key={key}>{item["created_at"]}</td>
-                                            }else{
-                                              return (
-                                                <td key={key}>{item[key]}</td>
-                                              );
-                                            }  
-                                           }
+                                                  </td>
+                                                );
+                                              } else {
+                                                return (
+                                                  <td key={key}>{item[key]}</td>
+                                                );
+                                              }
+                                            }
+                                            return null;
                                           })}
+
                                           <td>
                                             <button
                                               disabled={isBlocked}
@@ -984,7 +1097,10 @@ function CdrFilterReport({ page }) {
                                               className={`tableButton ${
                                                 isBlocked ? "delete" : "warning"
                                               } ms-0`}
-                                              style={{ height: "34px", width:"34px" }}
+                                              style={{
+                                                height: "34px",
+                                                width: "34px",
+                                              }}
                                               onClick={() => {
                                                 setSelectedNumberToBlock(
                                                   item["Call-Direction"] ===
@@ -1015,11 +1131,11 @@ function CdrFilterReport({ page }) {
                                           </td>
                                         </tr>
 
-                                        {/* Conditionally render audio row only when audioURL matches current row */}
+                                        {/* Audio Player Row */}
                                         {currentPlaying ===
                                           item["recording_path"] && (
                                           <tr>
-                                            <td colSpan={99}>
+                                            <td colSpan={showKeys.length + 1}>
                                               <div className="audio-container mx-2">
                                                 <audio
                                                   controls={true}
