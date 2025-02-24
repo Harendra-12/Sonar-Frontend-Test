@@ -54,7 +54,7 @@ function CustomDashboardManage() {
                                                     <div className={`deviceProvision ${selectDashMod === 1 ? 'active' : ''}`} onClick={() => { setSelectDashMod(1); setAddNewMod(false) }}>
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto">
-                                                                <h5>Ring Group</h5>
+                                                                <h5><marquee direction="left" scrolldelay="150">Ring Group - Some Really Long Ring Group Name</marquee></h5>
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">
@@ -87,7 +87,7 @@ function CustomDashboardManage() {
                                                     <div className={`deviceProvision ${selectDashMod === 2 ? 'active' : ''}`} onClick={() => { setSelectDashMod(2); setAddNewMod(false) }}>
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto">
-                                                                <h5>Call Queue</h5>
+                                                                <marquee direction="left" scrolldelay="150"><h5>Call Queue - Some Really Long Ring Queue Name</h5></marquee>
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">
@@ -120,7 +120,7 @@ function CustomDashboardManage() {
                                                     <div className={`deviceProvision ${selectDashMod === 3 ? 'active' : ''}`} onClick={() => { setSelectDashMod(3); setAddNewMod(false) }}>
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto">
-                                                                <h5>DID</h5>
+                                                                <h5>DID - 19009009009</h5>
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">
