@@ -335,7 +335,7 @@ function GetDid() {
                       <div className="col-3">
                         <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
-                            <div className="formRow col-12">
+                            <div className="formRow col-12 d-none">
                               <div className="formLabel">
                                 <label htmlFor="searchType">Search Type</label>
                               </div>
