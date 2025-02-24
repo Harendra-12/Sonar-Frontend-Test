@@ -74,8 +74,8 @@ function CustomDashboardManage() {
                                                                         <h4>
                                                                             82{" "}
                                                                             <i
-                                                                                className="fa-solid fa-phone-office ms-1"
-                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                                className="fa-solid fa-bell-ring ms-1"
+                                                                                style={{ color: "var(--color3)", fontSize: 17 }}
                                                                             />
                                                                         </h4>
                                                                     </div>
@@ -108,8 +108,8 @@ function CustomDashboardManage() {
                                                                         <h4>
                                                                             82{" "}
                                                                             <i
-                                                                                className="fa-solid fa-phone-office ms-1"
-                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                                className="fa-solid fa-bell-ring ms-1"
+                                                                                style={{ color: "var(--color3)", fontSize: 17 }}
                                                                             />
                                                                         </h4>
                                                                     </div>
@@ -142,8 +142,8 @@ function CustomDashboardManage() {
                                                                         <h4>
                                                                             82{" "}
                                                                             <i
-                                                                                className="fa-solid fa-phone-office ms-1"
-                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                                className="fa-solid fa-bell-ring ms-1"
+                                                                                style={{ color: "var(--color3)", fontSize: 17 }}
                                                                             />
                                                                         </h4>
                                                                     </div>
@@ -166,51 +166,19 @@ function CustomDashboardManage() {
                                             <form>
                                                 <div className="formRow">
                                                     <div className="formLabel">
-                                                        <label className="text-dark">Select Page</label>
-                                                        <label htmlFor="data" className="formItemDesc">
-                                                            Please select the page where you want to enable the module.
-                                                        </label>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <select className='formItem'>
-                                                            <option>Select Page</option>
-                                                            <option disabled style={{ fontWeight: 900 }}><h5>PBX</h5></option>
-                                                            <option value='active_call'>Active Calls Page</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="formRow">
-                                                    <div className="formLabel">
-                                                        <label className="text-dark">Select User</label>
-                                                        <label htmlFor="data" className="formItemDesc">
-                                                            Please select the user account which will be able to view
-                                                        </label>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <select className="formItem">
-                                                            <option selected={true}>Testuser</option>
-                                                            <option>test test</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div className="formRow">
-                                                    <button className="panelButton ms-auto" onClick={() => selectDashMod()}>
-                                                        <span className="text" >Save</span>
-                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div> : addNewMod ? <div className='col-xl-6'>
-                                            <form>
-                                                <div className="formRow">
-                                                    <div className="formLabel">
                                                         <label className="text-dark">Select Feature to Display</label>
                                                         <label htmlFor="data" className="formItemDesc">
                                                             Please select the feature you want to display in the module.
                                                         </label>
                                                     </div>
                                                     <div className="col-6">
-                                                        <div className='row'>
+                                                        <select className='formItem'>
+                                                            <option>Select Feature</option>
+                                                            <option value='ring_group'>Ring Group</option>
+                                                            <option value='call_center'>Call Queue</option>
+                                                            <option value='did'>DID</option>
+                                                        </select>
+                                                        {/* <div className='row'>
                                                             <div className='col-6 pe-2'>
                                                                 <select className='formItem'>
                                                                     <option>Select Feature</option>
@@ -226,10 +194,25 @@ function CustomDashboardManage() {
                                                                     <option value='2'>Ring Group Name - Ext.</option>
                                                                 </select>
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </div>
                                                 <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select Feature to Display</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please select the feature you want to display in the module.
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <select className='formItem'>
+                                                            <option value='0'>Ring Group Name - Ext.</option>
+                                                            <option value='1'>Ring Group Name - Ext.</option>
+                                                            <option value='2'>Ring Group Name - Ext.</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                {/* <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Select Info</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -262,7 +245,102 @@ function CustomDashboardManage() {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div> */}
+                                                <div className="formRow">
+                                                    <button className="panelButton delete ms-0" onClick={() => setAddNewMod(false)}>
+                                                        <span className="text" >Delete</span>
+                                                        <span className="icon"><i class="fa-solid fa-trash"></i></span>
+                                                    </button>
+                                                    <button className="panelButton ms-auto" onClick={() => setAddNewMod(false)}>
+                                                        <span className="text" >Save</span>
+                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                    </button>
                                                 </div>
+                                            </form>
+                                        </div> : addNewMod ? <div className='col-xl-6'>
+                                            <form>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select Feature to Display</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please select the feature you want to display in the module.
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <select className='formItem'>
+                                                            <option>Select Feature</option>
+                                                            <option value='ring_group'>Ring Group</option>
+                                                            <option value='call_center'>Call Queue</option>
+                                                            <option value='did'>DID</option>
+                                                        </select>
+                                                        {/* <div className='row'>
+                                                            <div className='col-6 pe-2'>
+                                                                <select className='formItem'>
+                                                                    <option>Select Feature</option>
+                                                                    <option value='ring_group'>Ring Group</option>
+                                                                    <option value='call_center'>Call Queue</option>
+                                                                    <option value='did'>DID</option>
+                                                                </select>
+                                                            </div>
+                                                            <div className='col-6'>
+                                                                <select className='formItem'>
+                                                                    <option value='0'>Ring Group Name - Ext.</option>
+                                                                    <option value='1'>Ring Group Name - Ext.</option>
+                                                                    <option value='2'>Ring Group Name - Ext.</option>
+                                                                </select>
+                                                            </div>
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select Feature to Display</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please select the feature you want to display in the module.
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <select className='formItem'>
+                                                            <option value='0'>Ring Group Name - Ext.</option>
+                                                            <option value='1'>Ring Group Name - Ext.</option>
+                                                            <option value='2'>Ring Group Name - Ext.</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                {/* <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select Info</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please select the info of the feature you want to display in the module.
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <div className='row'>
+                                                            <div className='col-6'>
+                                                                <div className='formLabel'>
+                                                                    <label>First Column</label>
+                                                                </div>
+                                                                <select className="formItem">
+                                                                    <option>Active Calls</option>
+                                                                    <option>Ringing Calls</option>
+                                                                    <option>Missed Calls</option>
+                                                                    <option>Total Calls</option>
+                                                                </select>
+                                                            </div>
+                                                            <div className='col-6'>
+                                                                <div className='formLabel'>
+                                                                    <label>Second Column</label>
+                                                                </div>
+                                                                <select className="formItem">
+                                                                    <option>Active Calls</option>
+                                                                    <option>Ringing Calls</option>
+                                                                    <option>Missed Calls</option>
+                                                                    <option>Total Calls</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> */}
                                                 <div className="formRow">
                                                     <button className="panelButton ms-auto" onClick={() => setAddNewMod(false)}>
                                                         <span className="text" >Save</span>
