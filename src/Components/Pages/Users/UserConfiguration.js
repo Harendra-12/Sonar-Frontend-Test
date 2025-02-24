@@ -52,7 +52,7 @@ function UserConfiguration() {
         payload
       );
       if (res?.status) {
-        setCheckedUserPermissionData([]);
+        // setCheckedUserPermissionData([]);
         toast.success("Assigned Permissions Successfully");
       }
     } catch (error) {
