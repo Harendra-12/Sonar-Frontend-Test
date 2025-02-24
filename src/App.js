@@ -137,6 +137,8 @@ import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 import UserProfile from "./Components/Pages/Users/UserProfile";
 import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
+import ViewMessages from "./Components/Pages/Support/ViewMessages";
+import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 
 // Unlock this if want push notification
@@ -227,6 +229,7 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
+          <Route path="/custom-module" element={<CustomDashboardManage />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
@@ -672,8 +675,12 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          <Route path="/live-chat" element={<LiveSupportChat />} />
+          {/* <Route path="/ticket" element={<Ticket />} /> */}
           <Route path="/ticket" element={<Ticket />} />
+          <Route path="/view-massage" element={<ViewMessages />} />
+
+
+
           {/* ------ Support  */}
           {/* ------ Campaigns */}
           <Route path="/campaigns" element={<Campaigns />} />
