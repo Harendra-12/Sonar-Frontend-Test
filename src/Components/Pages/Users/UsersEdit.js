@@ -125,9 +125,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
             } else if (separateName.length == 2) {
               firstName = separateName[0];
               lastName = separateName[1];
-            }else{
+            } else {
               firstName = separateName[0];
-              lastName = separateName.slice(1,separateName.length).join(" ");
+              lastName = separateName.slice(1, separateName.length).join(" ");
             }
             const newData = {
               ...data,
@@ -137,7 +137,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                 role_id: `${role_id}`,
               },
             };
-            // setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
+            setUsersDetails({ user_id: newData.id, role_id: newData.role_id });
             setSelectedSearch({
               label: newData?.extension?.extension,
               value: newData?.extension_id,

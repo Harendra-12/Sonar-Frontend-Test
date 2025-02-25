@@ -102,13 +102,11 @@ const Users = () => {
   // Checking if role is created and the current user have permsiion to create user
   const handleAddUserValidation = (e) => {
     e.preventDefault();
-
     if (roles.length === 0) {
       setPopUp(true);
       setError("Please add roles to create a user");
       return;
     }
-
     const hasPermissions = roles.some((role) => role.permissions.length > 0);
 
     if (!hasPermissions) {
@@ -328,7 +326,7 @@ const Users = () => {
                                     <tr key={index}>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-edit`, {
+                                          navigate(`/users-config`, {
                                             state: item,
                                           })
                                         }
@@ -337,7 +335,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-edit`, {
+                                          navigate(`/users-config`, {
                                             state: item,
                                           })
                                         }
@@ -355,7 +353,7 @@ const Users = () => {
                                         </td> */}
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-edit`, {
+                                          navigate(`/users-config`, {
                                             state: item,
                                           })
                                         }
@@ -364,7 +362,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-edit`, {
+                                          navigate(`/users-config`, {
                                             state: item,
                                           })
                                         }
@@ -373,7 +371,7 @@ const Users = () => {
                                       </td>
                                       <td
                                         onClick={() =>
-                                          navigate(`/users-edit`, {
+                                          navigate(`/users-config`, {
                                             state: item,
                                           })
                                         }
@@ -390,7 +388,7 @@ const Users = () => {
                                         <button
                                           className="tableButton edit"
                                           onClick={() =>
-                                            navigate(`/users-edit`, {
+                                            navigate(`/users-config`, {
                                               state: item,
                                             })
                                           }
@@ -534,7 +532,7 @@ const Users = () => {
           </div>
         </div>
       ) : (
-        ""
+        " "
       )}
     </main>
   );

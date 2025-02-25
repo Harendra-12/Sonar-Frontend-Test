@@ -44,18 +44,38 @@ function AllCallsDetails() {
                   <div className="accordion-body">
                     <div class="row g-3">
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
-                                    <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
+                                  {activeCall.length}
                                 </h3>
-                                <p>Total Calls</p>
+                                <p>Agents On Calls</p>
+                              </div>
+                              <Link to="/active-calls" className="col-3">
+                                <i className="fa-solid fa-phone-intercom"></i>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    callDetails?.missed !== undefined ? callDetails?.missed : <i
+                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    ></i>
+                                  }
+                                </h3>
+                                <p>Missed Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-solid fa-phone-volume"></i>
+                                <i className="fa-solid fa-phone-hangup"></i>
                               </div>
                             </div>
                           </div>
@@ -83,39 +103,19 @@ function AllCallsDetails() {
                         </div>
                       </div>
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {
-                                    callDetails?.missed !== undefined ? callDetails?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                                    ></i>
-                                  }
+                                  {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
+                                    <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                                 </h3>
-                                <p>Missed Calls</p>
+                                <p>Total Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-solid fa-phone-hangup"></i>
+                                <i className="fa-solid fa-phone-volume"></i>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                          <div className="heading h-auto">
-                            <div className="d-flex flex-wrap justify-content-between">
-                              <div className="col-9">
-                                <h3 style={{ fontWeight: 900 }}>
-                                  {activeCall.length}
-                                </h3>
-                                <p>Agents On Calls</p>
-                              </div>
-                              <Link to="/active-calls" className="col-3">
-                                <i className="fa-solid fa-phone-intercom"></i>
-                              </Link>
                             </div>
                           </div>
                         </div>
@@ -154,19 +154,42 @@ function AllCallsDetails() {
                   <div class="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                                  ></i>}
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "inbound"
+                                    ).length
+                                  }
                                 </h3>
-                                <p>Total Inbound Calls</p>
+                                <p>Agents On Calls</p>
+                              </div>
+                              <Link to="/active-calls" className="col-3">
+                                <i className="fa-solid fa-phone-intercom"></i>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
+                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    ></i>
+                                  }
+                                </h3>
+                                <p>Missed Inbound Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="ms-2 fa-solid fa-phone-arrow-down-left"></i>
+                                <i className="fa-solid fa-phone-hangup"></i>
                               </div>
                             </div>
                           </div>
@@ -194,43 +217,20 @@ function AllCallsDetails() {
                         </div>
                       </div>
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {
-                                    callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                                    ></i>
-                                  }
+                                  {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
+                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                  ></i>}
                                 </h3>
-                                <p>Missed Inbound Calls</p>
+                                <p>Total Inbound Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-solid fa-phone-hangup"></i>
+                                <i className="ms-2 fa-solid fa-phone-arrow-down-left"></i>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                          <div className="heading h-auto">
-                            <div className="d-flex flex-wrap justify-content-between">
-                              <div className="col-9">
-                                <h3 style={{ fontWeight: 900 }}>
-                                  {
-                                    activeCall.filter(
-                                      (call) => call.direction === "inbound"
-                                    ).length
-                                  }
-                                </h3>
-                                <p>Agents On Calls</p>
-                              </div>
-                              <Link to="/active-calls" className="col-3">
-                                <i className="fa-solid fa-phone-intercom"></i>
-                              </Link>
                             </div>
                           </div>
                         </div>
@@ -269,19 +269,42 @@ function AllCallsDetails() {
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                                  ></i>}
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "outbound"
+                                    ).length
+                                  }
                                 </h3>
-                                <p>Total Outbound Calls</p>
+                                <p>Agents On Calls</p>
+                              </div>
+                              <Link to="/active-calls" className="col-3">
+                                <i className="fa-solid fa-phone-intercom"></i>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
+                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    ></i>
+                                  }
+                                </h3>
+                                <p>Missed Outbound Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-solid fa-phone-arrow-up-right"></i>
+                                <i className="fa-solid fa-phone-hangup"></i>
                               </div>
                             </div>
                           </div>
@@ -309,43 +332,20 @@ function AllCallsDetails() {
                         </div>
                       </div>
                       <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {
-                                    callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                                    ></i>
-                                  }
+                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                  ></i>}
                                 </h3>
-                                <p>Missed Outbound Calls</p>
+                                <p>Total Outbound Calls</p>
                               </div>
                               <div className="col-3">
-                                <i className="fa-solid fa-phone-hangup"></i>
+                                <i className="fa-solid fa-phone-arrow-up-right"></i>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-xl-6 col-xxl-6">
-                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                          <div className="heading h-auto">
-                            <div className="d-flex flex-wrap justify-content-between">
-                              <div className="col-9">
-                                <h3 style={{ fontWeight: 900 }}>
-                                  {
-                                    activeCall.filter(
-                                      (call) => call.direction === "outbound"
-                                    ).length
-                                  }
-                                </h3>
-                                <p>Agents On Calls</p>
-                              </div>
-                              <Link to="/active-calls" className="col-3">
-                                <i className="fa-solid fa-phone-intercom"></i>
-                              </Link>
                             </div>
                           </div>
                         </div>
