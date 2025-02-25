@@ -102,13 +102,11 @@ const Users = () => {
   // Checking if role is created and the current user have permsiion to create user
   const handleAddUserValidation = (e) => {
     e.preventDefault();
-
     if (roles.length === 0) {
       setPopUp(true);
       setError("Please add roles to create a user");
       return;
     }
-
     const hasPermissions = roles.some((role) => role.permissions.length > 0);
 
     if (!hasPermissions) {
@@ -534,7 +532,7 @@ const Users = () => {
           </div>
         </div>
       ) : (
-        ""
+        " "
       )}
     </main>
   );
