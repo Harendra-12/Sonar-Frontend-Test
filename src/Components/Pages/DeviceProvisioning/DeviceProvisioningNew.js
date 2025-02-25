@@ -39,7 +39,7 @@ function DeviceProvisioningNew() {
         if (apiData.status) {
             setLoading(false);
             toast.success(apiData.message);
-            // // after succesfully adding data need to recall the global function to update the global state
+            // after succesfully adding data need to recall the global function to update the global state
             dispatch({
                 type: "SET_DEVICE_PROVISIONINGREFRESH",
                 deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
@@ -175,7 +175,7 @@ function DeviceProvisioningNew() {
                                                                             </select>
                                                                         </div>
                                                                         <div className="col-auto">
-                                                                            <button className='tableButton edit'>
+                                                                            <button className='tableButton edit' onClick={()=>setIsDeviceChosen("hard")}>
                                                                                 <i class="fa-solid fa-check"></i>
                                                                             </button>
                                                                         </div>
@@ -390,6 +390,68 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
                                             </form>
+
+                                            <form>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Device Name</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter a name for this devices
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <input
+                                                            type="text"
+                                                            name="address"
+                                                            className="formItem"
+                                                        />
+                                                        {/* {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )} */}
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select UUID Type</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter a name for this devices
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <select className="formItem">
+                                                            <option disabled={true}>UUID Type</option>
+                                                            <option selected={true}>MAC Address</option>
+                                                            <option>Serial Number</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Enter MAC Address</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter the MAC address of the selected device
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <input
+                                                            type="text"
+                                                            name="address"
+                                                            className="formItem"
+                                                        />
+                                                        {/* {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )} */}
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <button className="panelButton ms-auto">
+                                                        <span className="text" >Save</span>
+                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                    </button>
+                                                </div>
+                                            </form>
+
+
                                         </div> : isDeviceChosen === "soft" ?
                                             <div className='col-xl-6'>
                                                 <form>
