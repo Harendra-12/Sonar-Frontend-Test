@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import LineChartDashboard from "./LineChartDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -51,7 +52,7 @@ const Dashboard = () => {
     };
     updateAccountDetails();
   }, []);
-  
+
   useEffect(() => {
     if (timeZoneRefresh > 0) {
 
@@ -65,7 +66,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const updateTime = () => {
-     // Convert current time to the given timezone
+      // Convert current time to the given timezone
       const value = timeZone.find(
         (item) => item.id === account.timezone_id
       )?.name;
@@ -385,7 +386,7 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    {/* <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -439,7 +440,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
@@ -824,9 +825,22 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
+                              {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
+                              /> */}
+                              <LineChartDashboard
+                                fields={["Inbound", "Outbound", "Total"]}
+                                percentage={[
+                                  callCardData.handled.inboundAnswered,
+                                  callCardData.handled.outboundAnswered,
+                                  callCardData.handled.count,
+                                ]}
+                                centerTitle={`${extensionList}/${Number(
+                                  accountDetails?.package?.number_of_user
+                                )}`}
+                                centerDesc="Extensions Details"
+                                colors={['#3e8ef7']}
                               />
                             </div>
                           </div>
@@ -860,7 +874,7 @@ const Dashboard = () => {
                               <h5>
                                 {!isNaN(
                                   allCall?.inbound?.duration +
-                                    allCall?.outbound?.duration
+                                  allCall?.outbound?.duration
                                 ) ? (
                                   allCall?.inbound?.duration +
                                   allCall?.outbound?.duration
@@ -1100,7 +1114,7 @@ const Dashboard = () => {
                                 Price: ${accountDetails?.package?.regular_price}{" "}
                                 /{" "}
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Annually"
                                   : "Monthly"}
                               </p>
@@ -1154,7 +1168,7 @@ const Dashboard = () => {
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Annually"
                                   : "Monthly"}{" "}
                                 Basis
