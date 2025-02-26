@@ -1,27 +1,108 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
+import { generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { useNavigate } from 'react-router-dom';
 
 function ActiveCallsPage() {
     const activeCall = useSelector((state) => state.activeCall);
+    const navigate = useNavigate()
     const [filter, setFilter] = useState("all");
+    const [customModule, setCustomModule] = useState([]);
     const ringingState = activeCall.filter((item) => item.b_callstate === "");
-
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
-
-
-    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE");
+    const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD");
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
-    console.log("-------------------------------------------------------------------------------------------------------", ringingState);
+
+    // Getting all custome module for filter on initial phase 
+    useEffect(() => {
+        async function getCustomModule() {
+            const apiData = await generalGetFunction("/usage/all")
+            if (apiData.status) {
+                setCustomModule(apiData.data)
+            }
+        }
+        getCustomModule()
+    }, [])
+
+    // Filter ringing state of a perticular call based on callcenter, ringgroup and DID
+    function filterRingingState(type, value) {
+        if (type === "Ringgroup") {
+            const count = ringingState
+                .filter((item) => item.application_state === "ringgroup")
+                .reduce((acc, call) => {
+                    if (call.dest == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        } else if (type === "CallCenterQueue") {
+            const count = ringingState
+                .filter((item) => item.application_state === "callcenter")
+                .reduce((acc, call) => {
+                    if (call.dest == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        } else {
+            console.log(type, value);
+            const count = ringingState
+                .reduce((acc, call) => {
+                    if (call.did_num == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        }
+    }
+
+    // Filter ringing state of a perticular call based on callcenter, ringgroup and DID
+    function filterActiveState(type, value) {
+        if (type === "Ringgroup") {
+            const count = activeState
+                .filter((item) => item.application_state === "ringgroup")
+                .reduce((acc, call) => {
+                    if (call.dest == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        } else if (type === "CallCenterQueue") {
+            const count = activeState
+                .filter((item) => item.application_state === "callcenter")
+                .reduce((acc, call) => {
+                    if (call.dest == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        } else {
+            console.log(type, value);
+            const count = activeState
+                .reduce((acc, call) => {
+                    if (call.did_num == value) {
+                        acc += 1;
+                    }
+                    return acc;
+                }, 0);
+            return count;
+        }
+    }
 
     return (
         <main className="mainContent">
@@ -39,7 +120,7 @@ function ActiveCallsPage() {
                                                 <p>You can see all of the active calls here</p>
                                             </div>
                                             <div className="content">
-                                                <p className='fw-bold'>Total Calls: {activeCall.length}</p>
+                                                <p className='fw-bold'>Total Calls: {activeState.length}</p>
                                                 <p style={{ height: 21 }}></p>
                                             </div>
                                         </div>
@@ -63,9 +144,9 @@ function ActiveCallsPage() {
                                         <>
                                             <nav className='tangoNavs'>
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button onClick={() => setFilter("all")} className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-2">{activeCall.length}</span></button>
-                                                    <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeCall.filter((call) => call.application_state === "ringgroup").length}</span></button>
-                                                    <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeCall.filter((call) => call.application_state === "callcenter").length}</span></button>
+                                                    <button onClick={() => setFilter("all")} className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-2">{activeState.length}</span></button>
+                                                    <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
+                                                    <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
                                                     <div className='d-flex align-items-center justify-content-end'>
 
@@ -145,7 +226,7 @@ function ActiveCallsPage() {
                                                                     <th>To</th>
                                                                     <th>Feature Tag</th>
                                                                     <th>Started since</th>
-                                                                   
+
                                                                 </tr>
                                                             </thead>
 
@@ -160,7 +241,7 @@ function ActiveCallsPage() {
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
                                                                                 <td>{item.duration}</td>
-                                                                               
+
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
                                                                         )
@@ -182,7 +263,7 @@ function ActiveCallsPage() {
                                                                     <th>To</th>
                                                                     <th>Feature Tag</th>
                                                                     <th>Started at</th>
-                                                                   
+
                                                                 </tr>
                                                             </thead>
 
@@ -227,13 +308,13 @@ function ActiveCallsPage() {
                                                                     activeCall && ringingState.filter((call) => call.application_state === "callcenter").map((item, key) => {
                                                                         return (
                                                                             <tr>
-                                                                            <td>{key + 1}</td>
-                                                                            <td>{item.did_tag}</td>
-                                                                            <td>{item.cid_name}</td>
-                                                                            <td>{item.dest}</td>
-                                                                            <td>{item.feature_tag}</td>
-                                                                            <td>{item.duration}</td>
-                                                                        </tr>
+                                                                                <td>{key + 1}</td>
+                                                                                <td>{item.did_tag}</td>
+                                                                                <td>{item.cid_name}</td>
+                                                                                <td>{item.dest}</td>
+                                                                                <td>{item.feature_tag}</td>
+                                                                                <td>{item.duration}</td>
+                                                                            </tr>
                                                                         )
                                                                     })
                                                                 }
@@ -273,102 +354,59 @@ function ActiveCallsPage() {
                                         </>
                                     </div>
                                 </div>
-
-
-                                
                             </div>
-                            <div className="row mt-3 gx-3">
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
-                                <div className="itemWrapper a">
-                                    <div className='heading d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>56</h3>
-                                                <p>Agents logged in</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-square-check" />
+                            <div className='col-xl-12 mt-3'>
+                                <div className='row gy-4'>
+                                    {
+                                        customModule?.map((item, index) => {
+                                            return (
+                                                <div className='col-xl-2' key={index}>
+                                                    <div className={`deviceProvision `} >
+                                                        <div className="itemWrapper a">
+                                                            <div className="heading h-auto d-block">
+                                                                <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
+                                                                <p>{item.model_type}</p>
+                                                            </div>
+                                                            <div className="data-number2 h-auto">
+                                                                <div className="d-flex flex-wrap justify-content-between">
+                                                                    <div className="col-4">
+                                                                        <p>Active</p>
+                                                                        <h4>
+                                                                            {filterActiveState(item.model_type, item.model_type === "CallCenterQueue" ? item.model.extension : item.model_type === "Ringgroup" ? item.model.extension : item.model.did)}{" "}
+                                                                            <i
+                                                                                className="fa-solid fa-phone-volume ms-1"
+                                                                                style={{ color: "var(--funky-boy4)", fontSize: 17 }}
+                                                                            />
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div className="col-4 text-center">
+                                                                        <p>Ringing</p>
+                                                                        <h4>
+                                                                            {filterRingingState(item.model_type, item.model_type === "CallCenterQueue" ? item.model.extension : item.model_type === "Ringgroup" ? item.model.extension : item.model.did)}{" "}
+                                                                            <i
+                                                                                className="fa-solid fa-phone-office ms-1"
+                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                            />
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    <div className='col-xl-2' onClick={() => navigate("/custom-module")}>
+                                        <div className={`deviceProvision h-100`} >
+                                            <div className="itemWrapper a addNew h-100">
+                                                <i className='fa-regular fa-plus'></i>
+                                                <p>Add New Module</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
-                                <div className="itemWrapper b">
-                                    <div className='heading  d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>50</h3>
-                                                <p>Available Agents</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-user-check" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper c">
-                                    <div className='heading  d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>45</h3>
-                                                <p>Waiting Calls</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-phone-arrow-down-left" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper d">
-                                    <div className='heading  d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>78</h3>
-                                                <p>Active Calls</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-phone-volume" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper a">
-                                    <div className='heading  d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>545</h3>
-                                                <p>Calls on Queue</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-clock-rotate-left" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper b">
-                                    <div className='heading  d-block h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>7 <span style={{ fontSize: '15px', fontWeight: '500' }}>seconds</span></h3>
-                                                <p>Avg. Response Time</p>
-                                            </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-phone-slash" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>

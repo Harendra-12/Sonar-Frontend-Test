@@ -5,7 +5,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import './index.css'
+import "./index.css";
 import ProtectedRoute from "./Components/CommonComponents/ProtectedRoute";
 import Navbar from "./Components/CommonComponents/Navbar";
 import Login from "./Components/CommonComponents/Login";
@@ -139,6 +139,7 @@ import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
 import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
+import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -203,19 +204,25 @@ function App() {
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
 
-
           <Route element={<ProtectedRoute />} />
           <Route path="/campaign-edit" element={<CampaignEdit />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/temporary-dashboard" element={<TempDashboard />} />
-          <Route path="/agent-disposition-manage" element={<AgentDispositionManage />} />
+          <Route
+            path="/agent-disposition-manage"
+            element={<AgentDispositionManage />}
+          />
 
           <Route
-            path="/my-profile" element={permission?.includes(8) ? (<Profile />) : (
-              <Navigate to="/dashboard" replace />
-            )
+            path="/my-profile"
+            element={
+              permission?.includes(8) ? (
+                <Profile />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
             }
           />
           <Route path="/master" element={<Master />} />
@@ -227,16 +234,23 @@ function App() {
 
           {/* Ring Groups Path Start */}
           <Route
-            path="/ring-groups" element={permission?.includes(344) || permission?.includes(346) ? (<RingGroups />) : (
-              <Navigate to="/dashboard" replace />
-            )
+            path="/ring-groups"
+            element={
+              permission?.includes(344) || permission?.includes(346) ? (
+                <RingGroups />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
             }
           />
           <Route
             path="/ring-groups-add"
-            element={permission?.includes(346) ? (<RingGroupAdd />) : (
-              <Navigate to="/dashboard" replace />
-            )
+            element={
+              permission?.includes(346) ? (
+                <RingGroupAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
             }
           />
           <Route
@@ -381,7 +395,7 @@ function App() {
             path="/cdr-report"
             element={
               permission?.includes(86) ? (
-                <CdrReport page="all" />
+                <CdrFilterReport page="all" />
               ) : (
                 <Navigate to="/dashboard" replace />
               )
@@ -640,7 +654,10 @@ function App() {
           {/* Spam Filter end */}
 
           <Route path="click-to-call-edit" element={<ClickToCallEdit />} />
-          <Route path="click-to-call-listing" element={<ClickToCallListing />} />
+          <Route
+            path="click-to-call-listing"
+            element={<ClickToCallListing />}
+          />
           <Route path="click-to-call-add" element={<ClickToCallSetup />} />
 
           {/* Dialer Modules */}
@@ -673,11 +690,17 @@ function App() {
 
           {/* ------ Call Tracker */}
           <Route path="/tracker-dashboard" element={<TrackerDashboard />} />
-          <Route path="/did-listing-tracker" element={<DidListing page="tracker" />} />
+          <Route
+            path="/did-listing-tracker"
+            element={<DidListing page="tracker" />}
+          />
           {/* ------ Call Tracker */}
 
           {/* ------ Reports */}
-          <Route path="/call-recording" element={<CdrReport page="callrecording" />} />
+          <Route
+            path="/call-recording"
+            element={<CdrReport page="callrecording" />}
+          />
           <Route path="/agent-report" element={<AgentReports />} />
           {/* ------ Reports */}
 
