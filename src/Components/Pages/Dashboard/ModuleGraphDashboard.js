@@ -1,12 +1,12 @@
-import { color, display } from '@mui/system';
-import { Chart as ChartJS, ArcElement, CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip, BarElement } from 'chart.js';
+import { borderColor, color, display } from '@mui/system';
+import { Chart as ChartJS, ArcElement, CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip, BarElement, PolarAreaController, RadialLinearScale } from 'chart.js';
 import React from 'react'
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Doughnut, Line, PolarArea } from 'react-chartjs-2';
 
 
 // Register necessary components
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
-function LineChartDashboard({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, height }) {
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, PolarAreaController, RadialLinearScale);
+function ModuleGraphDashboard({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, height }) {
 
     // Define the data for the chart
     // const data = {
@@ -44,14 +44,12 @@ function LineChartDashboard({ fields, percentage, labels, centerTitle, centerDes
     };
 
     const data = {
-        labels: ["Inbound Completed", "Outbound Completed", "Inbound Completed", "Outbound Completed"],
+        labels: fields,
         datasets: [
             {
-                label: "Sales",
-                data: [553, 689, 553, 689],
+                data: percentage,
                 backgroundColor: colors,
-                borderWidth: 2,
-                tension: 0.4, // Smooth curves
+                hoverOffset: 10,
             },
         ],
     };
@@ -76,7 +74,7 @@ function LineChartDashboard({ fields, percentage, labels, centerTitle, centerDes
 
     // Optional: Define options for customization
     const options = {
-        cutout: 90,
+        cutout: '50%',
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -100,10 +98,10 @@ function LineChartDashboard({ fields, percentage, labels, centerTitle, centerDes
     };
 
     return (
-        <div style={{ width: '100%', height: '100%', position: 'relative', margin: '0 auto' }}>
-            <Bar data={chartType === "multiple" ? multiChartData : data} options={options} />
+        <div style={{ width: 'auto', height: '100%', position: 'relative', margin: '0 auto' }}>
+            <Doughnut data={chartType === "multiple" ? multiChartData : data} options={options} />
         </div>
     )
 }
 
-export default LineChartDashboard
+export default ModuleGraphDashboard

@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import LineChartDashboard from "./LineChartDashboard";
+import LineChartDashboard from "./ModuleGraphDashboard";
+import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -477,7 +478,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -517,7 +518,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -825,22 +826,21 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
+                              {
+                                console.log('HELLO RIDDHEE: -------.', allCall)
+                              }
                               {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               /> */}
-                              <LineChartDashboard
-                                fields={["Inbound", "Outbound", "Total"]}
+                              <ModuleGraphDashboard
+                                fields={["In Completed", "Out Completed", "Total Success"]}
                                 percentage={[
-                                  callCardData.handled.inboundAnswered,
-                                  callCardData.handled.outboundAnswered,
-                                  callCardData.handled.count,
+                                  allCall?.inbound?.completed,
+                                  allCall?.outbound?.completed,
+                                  allCall?.success,
                                 ]}
-                                centerTitle={`${extensionList}/${Number(
-                                  accountDetails?.package?.number_of_user
-                                )}`}
-                                centerDesc="Extensions Details"
-                                colors={['#3e8ef7']}
+                                colors={['#bfef35', '#a1cb2a', '#3e8ef7']}
                               />
                             </div>
                           </div>
@@ -848,7 +848,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -910,9 +910,13 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
+                              <ModuleGraphDashboard
+                                fields={["In Duration", "Out Duration"]}
+                                percentage={[
+                                  allCall?.inbound?.duration,
+                                  allCall?.outbound?.duration,
+                                ]}
+                                colors={['#a5d02a', '#3e8ef7']}
                               />
                             </div>
                           </div>
@@ -920,7 +924,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -981,9 +985,14 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
+                              <ModuleGraphDashboard
+                                fields={["In Missed", "Out Missed", "Total Missed"]}
+                                percentage={[
+                                  allCall?.inbound?.missed,
+                                  allCall?.outbound?.missed,
+                                  allCall?.missed,
+                                ]}
+                                colors={['#ff9e36', '#ff8400', '#ff6000']}
                               />
                             </div>
                           </div>
@@ -991,7 +1000,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper d">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -1021,6 +1030,14 @@ const Dashboard = () => {
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
+                              {/* <ModuleGraphDashboard
+                                fields={["In Missed", "Out Missed"]}
+                                percentage={[
+                                  allCall?.inbound?.missed,
+                                  allCall?.outbound?.missed
+                                ]}
+                                colors={['#ff004c', '#ff2365']}
+                              /> */}
                             </div>
                           </div>
                         </div>
