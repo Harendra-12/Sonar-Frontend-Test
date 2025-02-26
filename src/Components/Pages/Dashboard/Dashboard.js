@@ -1062,7 +1062,7 @@ const Dashboard = () => {
                                 console.log('HELLO RIDDHEE: -------.', onlineExtension)
                               }, [onlineExtension])
                             }
-                            {/* <div className='circularProgressWrapper'>
+                            <div className='circularProgressWrapper'>
                               <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                 <circle className="bg"
                                   cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
@@ -1078,7 +1078,7 @@ const Dashboard = () => {
                                 </div>
                                 <p>Online Agents</p>
                               </div>
-                            </div> */}
+                            </div>
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
