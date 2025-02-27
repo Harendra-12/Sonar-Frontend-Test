@@ -1098,7 +1098,7 @@ const Dashboard = () => {
                         </div>
                         <div className="col-xl-6 mb-3 mb-xl-0">
                           <div className="wrapper">
-                            <GraphChart
+                            {/* <GraphChart
                               fields={[
                                 "Available Extension",
                                 "Registered Extension",
@@ -1110,7 +1110,7 @@ const Dashboard = () => {
                               centerTitle={`${extensionList}/${accountDetails?.package?.number_of_user}`}
                               centerDesc="Total Extensions"
                               colors={["#f18f01", "#36A2EB"]}
-                            />
+                            /> */}
                           </div>
                         </div>
                       </div>
