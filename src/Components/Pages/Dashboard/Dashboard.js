@@ -1099,7 +1099,6 @@ const Dashboard = () => {
                         <div className="col-xl-6 mb-3 mb-xl-0">
                           <div className="wrapper">
                             <GraphChart
-                              asdasdas
                               fields={[
                                 "Available Extension",
                                 "Registered Extension",
