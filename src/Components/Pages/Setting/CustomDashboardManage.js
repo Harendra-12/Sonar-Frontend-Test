@@ -163,10 +163,14 @@ function CustomDashboardManage() {
                                                                                 <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
                                                                                 <p>{item.model_type}</p>
                                                                             </div>
-                                                                            <div className="data-number2 h-auto">
+                                                                            <div className="data-number2  h-auto">
                                                                                 <div className="d-flex flex-wrap justify-content-between">
                                                                                     <div className="col-4">
+
+                                                                                        <div className='add-active '>
                                                                                         <p>Active</p>
+                                                                                        </div>
+                                                                                      
                                                                                         {/* <h4>
                                                                                         28{" "}
                                                                                         <i
@@ -176,7 +180,10 @@ function CustomDashboardManage() {
                                                                                     </h4> */}
                                                                                     </div>
                                                                                     <div className="col-4 text-center">
+                                                                                    <div className='add-rings '>
+
                                                                                         <p>Ringing</p>
+                                                                                        </div>
                                                                                         {/* <h4>
                                                                                         82{" "}
                                                                                         <i
