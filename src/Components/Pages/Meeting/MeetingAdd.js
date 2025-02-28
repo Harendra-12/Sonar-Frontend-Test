@@ -48,7 +48,7 @@ function MeetingAdd() {
         ) {
             toast.error("Please enter  retry count between 1 to 5");
         } else if (moh === "") {
-            toast.error("Please select moh");
+            toast.error("Please select hold music");
         } else {
             setLoading(true);
             const parsedData = {

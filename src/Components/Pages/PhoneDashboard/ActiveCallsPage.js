@@ -364,8 +364,8 @@ function ActiveCallsPage() {
                                                     <div className={`deviceProvision `} >
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto d-block">
-                                                                <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : item?.model?.did}</h5>
-                                                                <p>{item?.model_type}</p>
+                                                                <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
+                                                                <p>{item.model_type}</p>
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">

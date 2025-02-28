@@ -135,7 +135,7 @@ export const ConferenceCall = ({
 
   // First check weather user is registered with sip then call start conference and conference listing api
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
       if (connectStatus === "WAIT_REQUEST_CONNECT") {
         setLoading(true);
       } else if (sipRegisterErrror) {
@@ -159,7 +159,6 @@ export const ConferenceCall = ({
             const confLists = await generalGetFunction(
               `/conference/${room_id}/details`
             );
-            // console.log("confListsss", JSON?.parse?.(confLists?.data));
 
             if (
               confLists.status &&
@@ -196,7 +195,7 @@ export const ConferenceCall = ({
         toast.error("Not connected with server please try again later.");
         navigate(-1);
       }
-    }, [3000]);
+    // }, [3000]);
   }, [connectStatus, sipRegisterErrror]);
 
   // Monitor incoming SIP sessions
@@ -205,7 +204,6 @@ export const ConferenceCall = ({
       sipSessions[id]._state === "Initial" &&
       sipSessions[id].logger.category === "sip.Invitation"
   );
-  console.log("incomingSessionsArray", incomingSessionsArray);  
   // Monitor incoming data from web socket accound to its action type
   useEffect(() => {
     if (conferenceData) {
@@ -552,7 +550,6 @@ export const ConferenceCall = ({
       });
     }
   }, []);
-  console.log("selectedConferenceUser", conferenceScreenShareStatus);
   // Handle moderator action
   async function moderatorAction(action, id) {
     const parsedData = {
@@ -562,7 +559,6 @@ export const ConferenceCall = ({
     };
     generalPostFunction(`conference/action`, parsedData);
   }
-  // console.log(screenTogglehit);
 
   // Set name of current user when he joins the conference
   useEffect(() => {
@@ -1070,8 +1066,6 @@ const ConferenceUserTab = ({
   getInitials,
 }) => {
   const [videoCallToggle] = useState(false);
-
-  // console.log("itemaaaa", item);
 
   const truncateString = (str, threshold) => {
     if (typeof str !== "string" || typeof threshold !== "number") {
