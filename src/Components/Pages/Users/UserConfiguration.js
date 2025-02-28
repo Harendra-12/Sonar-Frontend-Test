@@ -289,7 +289,7 @@ function UserConfiguration() {
                                           </div>
                                           <div className="col-xl-12">
                                             <div className="row">
-                                              {userPermissionData.map(
+                                              {userPermissionData&&userPermissionData.map(
                                                 (item) => {
                                                   return (
                                                     <div
