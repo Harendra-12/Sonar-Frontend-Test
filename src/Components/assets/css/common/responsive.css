@@ -302,4 +302,8 @@
     .mainContent .itemWrapper.shadow-none {
         height: 90px;
     }
+
+    .formRow .formItemDesc {
+        font-size: 9px;
+    }
 }

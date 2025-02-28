@@ -159,13 +159,13 @@ const DidConfig = () => {
   const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    console.log(data,"-------------");
-    
+    console.log(data, "-------------");
+
     data.record = data.record === true || data.record === "true";
     data.sticky_agent_enable =
       data.sticky_agent_enable === true || data.sticky_agent_enable === "true";
     data.status = data.status === true || data.status === "true";
-    if(!data.sticky_agent_enable){
+    if (!data.sticky_agent_enable) {
       delete data.stick_agent_type
       delete data.stick_agent_expires
     }
@@ -691,7 +691,7 @@ const DidConfig = () => {
                             {watch().sticky_agent_enable === "true" ||
                               watch().sticky_agent_enable === 1 ? (
                               <div class="formLabel">
-                                <label>Status</label>
+                                <label className="formItemDesc">Status</label>
                               </div>
                             ) : (
                               ""
@@ -716,11 +716,8 @@ const DidConfig = () => {
                               >
                                 <div class="formLabel">
                                   <Tippy content="Input in Days, Max 99">
-                                    <label>
+                                    <label className="formItemDesc">
                                       Duration{" "}
-                                      <span
-                                        style={{ color: "var(--color-subtext)" }}
-                                      ></span>
                                     </label>
                                   </Tippy>
                                 </div>
@@ -744,7 +741,7 @@ const DidConfig = () => {
                             watch().sticky_agent_enable == "true") && (
                               <div className="col-2" style={{ width: "21.3%" }}>
                                 <div className="formLabel">
-                                  <label htmlFor="selectFormRow">
+                                  <label className="formItemDesc">
                                     Agent Type
                                   </label>
                                 </div>
