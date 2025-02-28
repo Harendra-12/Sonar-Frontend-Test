@@ -19,6 +19,7 @@ function CustomDashboardManage() {
     const [customId, setCustomId] = useState('')
     const [customModule, setCustomModule] = useState([])
     const [refresh, setRefresh] = useState(0)
+    const [name,setName] = useState('')
     // Checking if the callcenter, ringgroup and did details is already available or not if not available then get it by api calling
     useEffect(() => {
         async function getData() {
@@ -69,14 +70,18 @@ function CustomDashboardManage() {
 
     // Add new custom filter
     async function addNewCustomFilter() {
+        if(name === '') {
+            toast.error("Please enter a name")
+            return
+        }
         if (customId === "") {
             toast.error("Please select a custom module")
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId,name:name })
         if (apiData.status) {
-            toast.success(apiData.message)
+            toast.success("Successfully created new custom filter")
             setLoading(false)
             setRefresh(refresh + 1)
         } else {
@@ -87,15 +92,22 @@ function CustomDashboardManage() {
 
     // Update custom filter
     async function updateCustomFilter() {
+        if(name === '') {
+            toast.error("Please enter a name")
+            return
+        }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId })
+        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId,name:name })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
             setRefresh(refresh + 1)
+        }else{
+            setLoading(false)
         }
     }
 
+    
     // Remove custom filter
     async function removeCustomFilter() {
         setLoading(true)
@@ -157,10 +169,11 @@ function CustomDashboardManage() {
                                                         customModule?.map((item, index) => {
                                                             return (
                                                                 <div className='col-xl-4' key={index}>
-                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => { setSelectedModule(item?.id); setCustomType(item?.model_type); setCustomId(item?.model?.id); setAddNewMod(false) }}>
+                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => { setSelectedModule(item?.id); setCustomType(item?.model_type); setCustomId(item?.model?.id); setAddNewMod(false);setName(item?.name) }}>
                                                                         <div className="itemWrapper a">
                                                                             <div className="heading h-auto d-block">
-                                                                                <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
+                                                                                <h5>{item.name}</h5>
+                                                                                <p>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : `${item.model.did}-${item.model.tag}`}</p>
                                                                                 <p>{item.model_type}</p>
                                                                             </div>
                                                                             <div className="data-number2 h-auto">
@@ -194,7 +207,7 @@ function CustomDashboardManage() {
                                                         })
                                                     }
                                                     <div className='col-xl-4'>
-                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => { setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId("") }}>
+                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => { setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId("");setName("") }}>
                                                             <div className="itemWrapper a addNew">
                                                                 <i className='fa-regular fa-plus'></i>
                                                                 <p>Add New Module</p>
@@ -205,6 +218,17 @@ function CustomDashboardManage() {
                                             </div>
                                             {(selectedModule != null || addNewMod) && < div className='col-xl-6'>
                                                 <form>
+                                                <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Module Name</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Set name for the custom module.
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input className='formItem' value={name} onChange={(e) => { setName(e.target.value)}}/>
+                                                        </div>
+                                                    </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Select Type</label>
@@ -267,77 +291,6 @@ function CustomDashboardManage() {
                                                     </div>
                                                 </form>
                                             </div>
-                                                // : addNewMod ? <div className='col-xl-6'>
-                                                //     <form>
-                                                //         <div className="formRow">
-                                                //             <div className="formLabel">
-                                                //                 <label className="text-dark">Select Feature to Display</label>
-                                                //                 <label htmlFor="data" className="formItemDesc">
-                                                //                     Please select the feature you want to display in the module.
-                                                //                 </label>
-                                                //             </div>
-                                                //             <div className="col-6">
-                                                //                 <div className='row'>
-                                                //                     <div className='col-6 pe-2'>
-                                                //                         <select className='formItem'>
-                                                //                             <option>Select Feature</option>
-                                                //                             <option value='ring_group'>Ring Group</option>
-                                                //                             <option value='call_center'>Call Queue</option>
-                                                //                             <option value='did'>DID</option>
-                                                //                         </select>
-                                                //                     </div>
-                                                //                     <div className='col-6'>
-                                                //                         <select className='formItem'>
-                                                //                             <option value='0'>Ring Group Name - Ext.</option>
-                                                //                             <option value='1'>Ring Group Name - Ext.</option>
-                                                //                             <option value='2'>Ring Group Name - Ext.</option>
-                                                //                         </select>
-                                                //                     </div>
-                                                //                 </div>
-                                                //             </div>
-                                                //         </div>
-                                                //         <div className="formRow">
-                                                //             <div className="formLabel">
-                                                //                 <label className="text-dark">Select Info</label>
-                                                //                 <label htmlFor="data" className="formItemDesc">
-                                                //                     Please select the info of the feature you want to display in the module.
-                                                //                 </label>
-                                                //             </div>
-                                                //             <div className="col-6">
-                                                //                 <div className='row'>
-                                                //                     <div className='col-6'>
-                                                //                         <div className='formLabel'>
-                                                //                             <label>First Column</label>
-                                                //                         </div>
-                                                //                         <select className="formItem">
-                                                //                             <option>Active Calls</option>
-                                                //                             <option>Ringing Calls</option>
-                                                //                             <option>Missed Calls</option>
-                                                //                             <option>Total Calls</option>
-                                                //                         </select>
-                                                //                     </div>
-                                                //                     <div className='col-6'>
-                                                //                         <div className='formLabel'>
-                                                //                             <label>Second Column</label>
-                                                //                         </div>
-                                                //                         <select className="formItem">
-                                                //                             <option>Active Calls</option>
-                                                //                             <option>Ringing Calls</option>
-                                                //                             <option>Missed Calls</option>
-                                                //                             <option>Total Calls</option>
-                                                //                         </select>
-                                                //                     </div>
-                                                //                 </div>
-                                                //             </div>
-                                                //         </div>
-                                                //         <div className="formRow">
-                                                //             <button className="panelButton ms-auto" onClick={() => setAddNewMod(false)}>
-                                                //                 <span className="text" >Save</span>
-                                                //                 <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                                                //             </button>
-                                                //         </div>
-                                                //     </form>
-                                                // </div> : ""
                                             }
                                         </div>
                                     </div>

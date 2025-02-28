@@ -499,7 +499,7 @@ function CampaignCreate() {
                             <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
-                                  Default Retry Period
+                                  Default Retry Period <i>(minute)</i>
                                 </label>
                               </div>
                               <div className='col-6'>

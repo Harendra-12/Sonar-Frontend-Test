@@ -10,7 +10,9 @@ import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import LineChartDashboard from "./ModuleGraphDashboard";
+import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
@@ -34,6 +36,7 @@ const Dashboard = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Setting clock for the selected timnezone
   useEffect(() => {
@@ -56,7 +59,7 @@ const Dashboard = () => {
       permissionRefresh: permissionRefresh + 1,
     });
   }, []);
-  
+
   useEffect(() => {
     if (timeZoneRefresh > 0) {
 
@@ -70,7 +73,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const updateTime = () => {
-     // Convert current time to the given timezone
+      // Convert current time to the given timezone
       const value = timeZone.find(
         (item) => item.id === account.timezone_id
       )?.name;
@@ -351,7 +354,11 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {account?.permissions?.includes(86) && (
+                  {  checkViewSidebar(
+                            "ChannelHangupComplete",
+                            slugPermissions,
+                            account?.permissions
+                          )&& (
                     <button
                       className="nav-link"
                       id="nav-home-tab"
@@ -365,7 +372,15 @@ const Dashboard = () => {
                       Calls
                     </button>
                   )}
-                  {account?.permissions?.includes(470) && (
+                  {checkViewSidebar(
+                                              "BillingAddress",
+                                              slugPermissions,
+                                              account?.permissions,"read"
+                                            ) &&  checkViewSidebar(
+                                              "WalletTransaction",
+                                              slugPermissions,
+                                              account?.permissions
+                                            )&& (
                     <button
                       className="nav-link"
                       id="nav-contact-tab"
@@ -390,7 +405,7 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    {/* <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -444,7 +459,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
@@ -481,7 +496,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -521,7 +536,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -695,7 +710,7 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )}
-                        {account?.permissions?.includes(176) && (
+                        {  checkViewSidebar("Extension", slugPermissions, account?.permissions,"read") && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading">
@@ -829,9 +844,18 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
+                              {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
+                              /> */}
+                              <ModuleGraphDashboard
+                                fields={["In Completed", "Out Completed", "Total Success"]}
+                                percentage={[
+                                  allCall?.inbound?.completed,
+                                  allCall?.outbound?.completed,
+                                  allCall?.success,
+                                ]}
+                                colors={['#bfef35', '#a1cb2a', '#3e8ef7']}
                               />
                             </div>
                           </div>
@@ -839,7 +863,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -865,7 +889,7 @@ const Dashboard = () => {
                               <h5>
                                 {!isNaN(
                                   allCall?.inbound?.duration +
-                                    allCall?.outbound?.duration
+                                  allCall?.outbound?.duration
                                 ) ? (
                                   allCall?.inbound?.duration +
                                   allCall?.outbound?.duration
@@ -901,9 +925,13 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
+                              <ModuleGraphDashboard
+                                fields={["In Duration", "Out Duration"]}
+                                percentage={[
+                                  allCall?.inbound?.duration,
+                                  allCall?.outbound?.duration,
+                                ]}
+                                colors={['#a5d02a', '#3e8ef7']}
                               />
                             </div>
                           </div>
@@ -911,7 +939,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -972,9 +1000,14 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <img
-                                alt="dashboard"
-                                src={require("../../assets/images/icons/diagram.png")}
+                              <ModuleGraphDashboard
+                                fields={["In Missed", "Out Missed", "Total Missed"]}
+                                percentage={[
+                                  allCall?.inbound?.missed,
+                                  allCall?.outbound?.missed,
+                                  allCall?.missed,
+                                ]}
+                                colors={['#ff9e36', '#ff8400', '#ff6000']}
                               />
                             </div>
                           </div>
@@ -982,7 +1015,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper d">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -1012,6 +1045,14 @@ const Dashboard = () => {
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
+                              {/* <ModuleGraphDashboard
+                                fields={["In Missed", "Out Missed"]}
+                                percentage={[
+                                  allCall?.inbound?.missed,
+                                  allCall?.outbound?.missed
+                                ]}
+                                colors={['#ff004c', '#ff2365']}
+                              /> */}
                             </div>
                           </div>
                         </div>
@@ -1021,7 +1062,7 @@ const Dashboard = () => {
                       <div className="row">
                         <div className="col-xl-3 mb-3 mb-xl-0">
                           <div className="wrapper">
-                            <DoughnutChart
+                            {/* <DoughnutChart
                               fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
                                 callCardData.handled.inboundAnswered,
@@ -1033,7 +1074,29 @@ const Dashboard = () => {
                               )}`}
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            />
+                            /> */}
+                            {
+                              useEffect(() => {
+                                console.log('HELLO RIDDHEE: -------.', onlineExtension)
+                              }, [onlineExtension])
+                            }
+                            <div className='circularProgressWrapper'>
+                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                <circle className="bg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
+                                ></circle>
+                                <circle className="fg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
+                                  stroke-dasharray="361.25 361.25"
+                                ></circle>
+                              </svg>
+                              <div className='circularProgressContent'>
+                                <div className="data-number">
+                                  <label style={{ color: '#f18f01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                </div>
+                                <p>Online Agents</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
@@ -1105,7 +1168,7 @@ const Dashboard = () => {
                                 Price: ${accountDetails?.package?.regular_price}{" "}
                                 /{" "}
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Annually"
                                   : "Monthly"}
                               </p>
@@ -1159,7 +1222,7 @@ const Dashboard = () => {
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
-                                "annually"
+                                  "annually"
                                   ? "Annually"
                                   : "Monthly"}{" "}
                                 Basis

@@ -69,6 +69,8 @@ const Socket = () => {
               })) });
               break;
             case "Conference":
+              console.log("This is conference data",result);
+              
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
             case "screenShare":

@@ -245,7 +245,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
-                account?.permissions
+                account?.permissions,
               ) ? (
                 <RingGroups />
               ) : (
@@ -438,7 +438,7 @@ function App() {
           <Route
             path="/cdr-report"
             element={
-              checkViewSidebar("Cdr", slugPermissions, account?.permissions) ? (
+              checkViewSidebar("ChannelHangupComplete", slugPermissions, account?.permissions) ? (
                 <CdrFilterReport page="all" />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -541,7 +541,7 @@ function App() {
             path="/cal-center-queue"
             element={
               checkViewSidebar(
-                "Call Center Queue",
+                "CallCenterQueue",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -555,7 +555,7 @@ function App() {
             path="/cal-center-queue-edit"
             element={
               checkViewSidebar(
-                "Call Center Queue",
+                "CallCenterQueue",
                 slugPermissions,
                 account?.permissions,"edit"
               )  ? (
@@ -569,7 +569,7 @@ function App() {
             path="/cal-center-queue-add"
             element={
               checkViewSidebar(
-                "Call Center Queue",
+                "CallCenterQueue",
                 slugPermissions,
                 account?.permissions,"add"
               )  ? (
@@ -608,12 +608,12 @@ function App() {
             path="/card-details"
             element={
               checkViewSidebar(
-                "Card Detail",
+                "CardDetail",
                 slugPermissions,
                 account?.permissions
               ) &&
               checkViewSidebar(
-                "Billing Address",
+                "BillingAddress",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -629,7 +629,7 @@ function App() {
             path="/card-transaction-list"
             element={
               checkViewSidebar(
-                "Card Detail",
+                "CardDetail",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -643,7 +643,7 @@ function App() {
             path="/wallet-transaction-list"
             element={
               checkViewSidebar(
-                "Wallet Transaction",
+                "WalletTransaction",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -661,7 +661,7 @@ function App() {
             path="/mail-settings-edit"
             element={
               checkViewSidebar(
-                "Mail Setting",
+                "MailSetting",
                 slugPermissions,
                 account?.permissions,"edit"
               ) ? (
@@ -675,7 +675,7 @@ function App() {
             path="/mail-settings"
             element={
               checkViewSidebar(
-                "Mail Setting",
+                "MailSetting",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -692,7 +692,7 @@ function App() {
             path="/ivr-add"
             element={
               checkViewSidebar(
-                "Ivr Master",
+                "IvrMaster",
                 slugPermissions,
                 account?.permissions,"add"
               ) ? (
@@ -706,7 +706,7 @@ function App() {
             path="/ivr"
             element={
               checkViewSidebar(
-                "Ivr Master",
+                "IvrMaster",
                 slugPermissions,
                 account?.permissions
               ) ? (
@@ -720,7 +720,7 @@ function App() {
             path="/ivr-edit"
             element={
               checkViewSidebar(
-                "Ivr Master",
+                "IvrMaster",
                 slugPermissions,
                 account?.permissions,"edit"
               )? (

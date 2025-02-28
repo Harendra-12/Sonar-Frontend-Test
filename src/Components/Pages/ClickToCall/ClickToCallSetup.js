@@ -19,6 +19,7 @@ function ClickToCallSetup() {
   const [newFile, setNewFile] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [embededCode, setEmbededCode] = useState("")
+  const [widgetExpanded,setWidgetExpanded] = useState(true)
 
   // Handle selected image to display it to the user
   const handleImageChange = (event) => {
@@ -675,8 +676,13 @@ function ClickToCallSetup() {
                               </div>
                               <div className="col-xxl-5 col-xl-5 col-lg-6 col-sm-12">
                                 <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color }}>
-                                  {true ?
-                                    <div className="clickToCallModule">
+                                  <div className="clickToCallButton">
+                                    <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
+                                      <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
+                                    </button>
+                                  </div>
+                                  {widgetExpanded ?
+                                    <div className="clickToCallModule ms-auto">
                                       <div className="clickToCallHeader">
                                         <div className="wrapper">
                                           <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
@@ -684,9 +690,9 @@ function ClickToCallSetup() {
                                             <img src={selectedImage ? selectedImage : require("../../assets/images/logo_login.png")} alt=''></img>
                                           </div>
                                           <div className="text">
-                                            <h5>{watch().name}</h5>
+                                            <h5>{watch().name || "AngelPBX"}</h5>
                                             <p>
-                                              {watch().description}
+                                              {watch().description || "Business Phone System | Cloud Contact Center | Cloud PBX"}
                                             </p>
                                           </div>
                                         </div>

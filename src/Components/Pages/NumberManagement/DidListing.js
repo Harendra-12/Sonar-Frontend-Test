@@ -4,6 +4,7 @@ import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -30,6 +31,8 @@ function DidListing({ page }) {
   const [addNew, setAddNew] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [previousUsages, setPreviousUsages] = useState('')
+  const account = useSelector((state) => state?.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
@@ -205,7 +208,11 @@ function DidListing({ page }) {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
+                     {  checkViewSidebar(
+                            'DidConfigure',
+                            slugPermissions,
+                            account?.permissions,"add"
+                          )&&   <button
                           type="button"
                           class="panelButton"
                           onClick={() => {
@@ -220,7 +227,7 @@ function DidListing({ page }) {
                           <span class="icon">
                             <i class="fa-solid fa-plus"></i>
                           </span>
-                        </button>
+                        </button>}
                       </div>
                     </div>
                   </div>
