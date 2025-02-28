@@ -394,7 +394,7 @@ const Dashboard = () => {
                       Billing
                     </button>
                   )}
-                  <div className="ms-auto pb-2">
+                  {/* <div className="ms-auto pb-2">
                     <Clock
                       value={time}
                       size={50}
@@ -405,7 +405,7 @@ const Dashboard = () => {
                       hourHandWidth={2}
                       minuteHandWidth={1}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
@@ -417,7 +417,7 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    {/* <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -471,8 +471,8 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div> */}
-                    <div className="col-xl-4 mb-3 mb-xl-0">
+                    </div>
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -507,7 +507,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4 mb-3 mb-xl-0">
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper b">
                         <div className="heading">
                           <div
@@ -547,7 +547,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4 mb-3 mb-xl-0">
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">

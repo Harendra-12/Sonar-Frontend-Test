@@ -423,8 +423,8 @@ function GetDid() {
                                       })}
                                       defaultValue={"npa"}
                                     >
-                                      <option value="npa">NPA</option>
-                                      <option value="npanxx">NPANXX</option>
+                                      <option value="npa">First 3 Digit (Area Code)</option>
+                                      <option value="npanxx">First 6 Digits (Area + Exchange Code)</option>
                                       <option value="ratecenter">Rate Center</option>
                                     </select>
                                     {errors.searchBy && (
@@ -444,7 +444,7 @@ function GetDid() {
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="npa">NPA</label>
+                                    <label htmlFor="npa">First 3 Digits (Area Code)</label>
                                     {errors.npa && (
                                       <ErrorMessage text={errors.npa.message} />
                                     )}
@@ -461,7 +461,7 @@ function GetDid() {
                                       })}
                                     />
                                     <label htmlFor="data" className="formItemDesc text-start">
-                                      Input the NPA for the DID
+                                      Input the first 3 digits for the DID
                                     </label>
                                   </div>
                                 </div>
@@ -475,7 +475,7 @@ function GetDid() {
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="nxx">NXX</label>
+                                    <label htmlFor="nxx">Next 3 Digits (Exchange Code)</label>
                                     {errors.nxx && (
                                       <ErrorMessage text={errors.nxx.message} />
                                     )}
