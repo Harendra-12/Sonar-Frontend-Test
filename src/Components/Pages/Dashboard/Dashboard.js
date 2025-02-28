@@ -381,6 +381,18 @@ const Dashboard = () => {
                       Billing
                     </button>
                   )}
+                  <div className="ms-auto pb-2">
+                    <Clock
+                      value={time}
+                      size={50}
+                      secondHandWidth={1}
+                      renderMinuteMarks={false}
+                      hourMarksWidth={1}
+                      hourMarksLength={15}
+                      hourHandWidth={2}
+                      minuteHandWidth={1}
+                    />
+                  </div>
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
@@ -447,7 +459,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div> */}
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -482,7 +494,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper b">
                         <div className="heading">
                           <div
@@ -522,7 +534,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-4 mb-3 mb-xl-0">
                       <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
