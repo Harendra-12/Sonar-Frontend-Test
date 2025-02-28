@@ -449,7 +449,7 @@
     background-color: var(--ele-color);
     border: 1px solid #c9c9c970;
     border-radius: 50%;
-    margin: 48px auto 0 auto;
+    margin: auto;
     height: 250px;
     width: 250px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -470,6 +470,8 @@
 
 .circularProgressContent p {
     margin-bottom: 0;
+    color: #7a7a7a;
+    font-weight: 500;
 }
 
 .circular-progress {

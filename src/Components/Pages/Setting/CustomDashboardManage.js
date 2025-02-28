@@ -120,7 +120,7 @@ function CustomDashboardManage() {
             setAddNewMod(true)
             setLoading(false)
             setRefresh(refresh + 1)
-        }else{
+        } else {
             toast.error(apiData.message)
             setLoading(false)
         }
@@ -193,7 +193,7 @@ function CustomDashboardManage() {
                                                                                         {/* <h4>
                                                                                         82{" "}
                                                                                         <i
-                                                                                            className="fa-solid fa-phone-office ms-1"
+                                                                                            className="fa-solid fa-bell-ring ms-1"
                                                                                             style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
                                                                                         />
                                                                                     </h4> */}

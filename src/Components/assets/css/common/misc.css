@@ -204,12 +204,12 @@
     padding: 0px 0 3px 0;
 }
 
-.searchList.cart ul li:last-child {
+/* .searchList.cart ul li:last-child {
     border-top: 1px solid var(--border-color);
     padding-top: 3px;
     font-size: 14px;
     color: inherit;
-}
+} */
 
 .searchList.checkout ul li {
     border-radius: 10px;

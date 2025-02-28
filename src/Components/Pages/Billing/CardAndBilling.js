@@ -485,20 +485,18 @@ function CardAndBilling() {
                         <div className="col-xl-4">
                           <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading">
-                              <div className="heading">
-                                <div class="col-10">
-                                  <h5>Wallet Balance</h5>
-                                  <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
-                                </div>
-                                <div class="col-2">
-                                  <i
-                                    className="fa-duotone fa-credit-card"
-                                    style={{
-                                      boxShadow:
-                                        "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
-                                    }}
-                                  ></i>
-                                </div>
+                              <div class="col-10">
+                                <h5>Wallet Balance</h5>
+                                <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
+                              </div>
+                              <div class="col-2">
+                                <i
+                                  className="fa-duotone fa-credit-card"
+                                  style={{
+                                    boxShadow:
+                                      "rgba(0, 0, 0, 0.15) 0px 3px 5px", cursor: 'default'
+                                  }}
+                                ></i>
                               </div>
                             </div>
                             <div className="data-number2 ">
@@ -539,8 +537,8 @@ function CardAndBilling() {
                                 </div>
                                 <div className="col">
                                   <Tippy content="Click to add balance!">
-                                    <button className="cartButton ms-auto" onClick={() => setRechargePopUp(true)}>
-                                      Top up
+                                    <button className="tableButton edit ms-auto" style={{ width: 30, height: 30 }} onClick={() => setRechargePopUp(true)}>
+                                      <i className="fa-solid fa-dollar" />
                                     </button>
                                   </Tippy>
                                 </div>
@@ -669,7 +667,7 @@ function CardAndBilling() {
                                               className="d-flex flex-wrap align-items-center"
                                               style={{ padding: "0 10px" }}
                                             >
-                                              <div className="col-11">
+                                              <div className="col">
                                                 <button
                                                   className="accordion-button collapsed justify-content-between bg-transparent"
                                                   type="button"
