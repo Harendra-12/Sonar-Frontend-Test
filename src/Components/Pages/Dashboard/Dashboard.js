@@ -1048,7 +1048,7 @@ const Dashboard = () => {
                     <div className="col-12 mt-xl-4 chartWrapper">
                       <div className="row">
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper">
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
                             {/* <DoughnutChart
                               fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
@@ -1062,24 +1062,19 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            {
-                              useEffect(() => {
-                                console.log('HELLO RIDDHEE: -------.', onlineExtension)
-                              }, [onlineExtension])
-                            }
                             <div className='circularProgressWrapper'>
                               <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                 <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d0130" stroke-width="20"
                                 ></circle>
                                 <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d01" stroke-width="20"
                                   stroke-dasharray="361.25 361.25"
                                 ></circle>
                               </svg>
                               <div className='circularProgressContent'>
                                 <div className="data-number">
-                                  <label style={{ color: '#f18f01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                  <label style={{ color: '#f17d01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
                                 </div>
                                 <p>Online Agents</p>
                               </div>
@@ -1087,18 +1082,37 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper">
-                            <DoughnutChart
-                              fields={["Handled", "Missed", "Abandoned"]}
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                            {/* <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
                                 callCardData.handled.count,
-                                callCardData.missedCalls.count,
-                                callCardData.abandonedCalls.count,
                               ]}
-                              centerTitle={`${userList}/${accountDetails?.package?.number_of_user}`}
-                              centerDesc="Total Users Available"
-                              colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
-                            />
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            /> */}
+                            <div className='circularProgressWrapper'>
+                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((allCall?.inbound?.completed / allCall?.inbound?.total) * 100)}` }}>
+                                <circle className="bg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a30" stroke-width="20"
+                                ></circle>
+                                <circle className="fg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a" stroke-width="20"
+                                  stroke-dasharray="361.25 361.25"
+                                ></circle>
+                              </svg>
+                              <div className='circularProgressContent'>
+                                <div className="data-number">
+                                  <label style={{ color: '#a5d02a' }}>{allCall?.inbound?.completed}</label> <span>/ {allCall?.inbound?.total}</span>
+                                </div>
+                                <p>Inbound Calls Completed</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div className="col-xl-6 mb-3 mb-xl-0">
