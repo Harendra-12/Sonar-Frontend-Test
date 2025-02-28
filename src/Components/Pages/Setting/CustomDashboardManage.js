@@ -120,7 +120,7 @@ function CustomDashboardManage() {
             setAddNewMod(true)
             setLoading(false)
             setRefresh(refresh + 1)
-        }else{
+        } else {
             toast.error(apiData.message)
             setLoading(false)
         }
@@ -193,7 +193,7 @@ function CustomDashboardManage() {
                                                                                         {/* <h4>
                                                                                         82{" "}
                                                                                         <i
-                                                                                            className="fa-solid fa-phone-office ms-1"
+                                                                                            className="fa-solid fa-bell-ring ms-1"
                                                                                             style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
                                                                                         />
                                                                                     </h4> */}
@@ -227,6 +227,17 @@ function CustomDashboardManage() {
                                                         </div>
                                                         <div className="col-6">
                                                             <input className='formItem' value={name} onChange={(e) => { setName(e.target.value)}}/>
+                                                        </div>
+                                                    </div>
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Enter Name</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Please enter the name of the module.
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <input className='formItem' placeholder='Enter Module Name' />
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
@@ -275,6 +286,40 @@ function CustomDashboardManage() {
                                                                                 }) : ""
                                                                 }
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Select Info</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Please select the info of the feature you want to display in the module.
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <div className='row'>
+                                                                <div className='col-6'>
+                                                                    <div className='formLabel'>
+                                                                        <label>First Column</label>
+                                                                    </div>
+                                                                    <select className="formItem">
+                                                                        <option>Active Calls</option>
+                                                                        <option>Ringing Calls</option>
+                                                                        <option>Missed Calls</option>
+                                                                        <option>Total Calls</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div className='col-6'>
+                                                                    <div className='formLabel'>
+                                                                        <label>Second Column</label>
+                                                                    </div>
+                                                                    <select className="formItem">
+                                                                        <option>Active Calls</option>
+                                                                        <option>Ringing Calls</option>
+                                                                        <option>Missed Calls</option>
+                                                                        <option>Total Calls</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
