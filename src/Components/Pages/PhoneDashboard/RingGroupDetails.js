@@ -91,7 +91,7 @@ const RingGroup = () => {
                     <th>Missed Calls</th>
                     <th>Calls Completed</th>
                     <th>Total Calls</th>
-                    <th style={{ width: '100px' }}>Members</th>
+                    <th>Members</th>
                     <th>Destination</th>
                   </tr>
                 </thead>
@@ -168,7 +168,7 @@ const RingGroup = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };
