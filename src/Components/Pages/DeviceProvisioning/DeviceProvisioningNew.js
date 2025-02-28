@@ -39,7 +39,7 @@ function DeviceProvisioningNew() {
         if (apiData.status) {
             setLoading(false);
             toast.success(apiData.message);
-            // // after succesfully adding data need to recall the global function to update the global state
+            // after succesfully adding data need to recall the global function to update the global state
             dispatch({
                 type: "SET_DEVICE_PROVISIONINGREFRESH",
                 deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
@@ -103,7 +103,7 @@ function DeviceProvisioningNew() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
+                                <div className="col-12" style={{ padding: '25px 23px' }}>
                                     <div className='row gx-5'>
                                         <div className='col-xl-6' style={{ borderRight: '1px solid var(--border-color)' }}>
                                             <div className="tangoNavs mb-0">
@@ -123,11 +123,13 @@ function DeviceProvisioningNew() {
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
                                                                     <label><p>Brand: Cisco</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='col-12'>
+                                                                        <label className=''>
+                                                                            Select Model:
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className='row mt-2 align-items-center'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -139,8 +141,12 @@ function DeviceProvisioningNew() {
                                                                                 <option>None</option>
                                                                             </select>
                                                                         </div>
-
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton'>
+                                                                                <i class="fa-solid fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="formRow col-xl-6 deviceProvision">
@@ -150,10 +156,13 @@ function DeviceProvisioningNew() {
                                                                 <div className="formLabel ">
                                                                     <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
                                                                     <label><p>Brand: Cisco</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='col-12'>
+                                                                        <label className=''>
+                                                                            Select Model:
+                                                                        </label>
+                                                                    </div>
+                                                                    <div className='row mt-2 align-items-center'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -163,14 +172,17 @@ function DeviceProvisioningNew() {
                                                                                 <option>Double</option>
                                                                                 <option>Signal</option>
                                                                                 <option>None</option>
-
-
                                                                             </select>
                                                                         </div>
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton edit' onClick={()=>setIsDeviceChosen("hard")}>
+                                                                                <i class="fa-solid fa-check"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div className='col-xl-12'>
+                                                            {/* <div className='col-xl-12'>
                                                                 <div className='deviceProvisionDetails' data-id="1">
                                                                     <div className='title'>
                                                                         Cisco Long Schlong
@@ -192,7 +204,6 @@ function DeviceProvisioningNew() {
                                                                             <div className='col-7'>
                                                                                 <div className="content">
                                                                                     <h5 className='mb-1'>Select from your Account</h5>
-                                                                                    {/* <p className='mb-0'>Available in your account: 0</p> */}
                                                                                 </div>
 
                                                                             </div>
@@ -204,24 +215,9 @@ function DeviceProvisioningNew() {
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        {/* <div className='row'>
-                                                                    <div className='col-7'>
-                                                                        <div className="content">
-                                                                            <p className='mb-0'>Additional Purchase</p>
-                                                                            <p className='mb-0' style={{}}>$256</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='col-5'>
-                                                                        <div class="add-btnss">
-                                                                            <button class="change-btn-colorss radius-2 radius-4" >-</button>
-                                                                            <div class="count-number" id="item-count">0</div>
-                                                                            <button class="change-btn-colorss radius-1 radius-3" >+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> */}
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane fade" id="nav-soft" role="tabpanel" aria-labelledby="nav-soft-tab" tabindex="0">
@@ -394,6 +390,68 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div>
                                             </form>
+
+                                            <form>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Device Name</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter a name for this devices
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <input
+                                                            type="text"
+                                                            name="address"
+                                                            className="formItem"
+                                                        />
+                                                        {/* {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )} */}
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Select UUID Type</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter a name for this devices
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <select className="formItem">
+                                                            <option disabled={true}>UUID Type</option>
+                                                            <option selected={true}>MAC Address</option>
+                                                            <option>Serial Number</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <div className="formLabel">
+                                                        <label className="text-dark">Enter MAC Address</label>
+                                                        <label htmlFor="data" className="formItemDesc">
+                                                            Please enter the MAC address of the selected device
+                                                        </label>
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <input
+                                                            type="text"
+                                                            name="address"
+                                                            className="formItem"
+                                                        />
+                                                        {/* {errors.address && (
+                                                            <ErrorMessage text={errors.address.message} />
+                                                        )} */}
+                                                    </div>
+                                                </div>
+                                                <div className="formRow">
+                                                    <button className="panelButton ms-auto">
+                                                        <span className="text" >Save</span>
+                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                    </button>
+                                                </div>
+                                            </form>
+
+
                                         </div> : isDeviceChosen === "soft" ?
                                             <div className='col-xl-6'>
                                                 <form>
