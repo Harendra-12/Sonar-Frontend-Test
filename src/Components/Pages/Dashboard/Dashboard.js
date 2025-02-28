@@ -22,6 +22,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionList = useSelector((state) => state.extension).length;
   const userList = useSelector((state) => state.allUser?.data?.length) || 0;
@@ -50,6 +51,10 @@ const Dashboard = () => {
       }
     };
     updateAccountDetails();
+    dispatch({
+      type: "SET_PERMISSION_REFRESH",
+      permissionRefresh: permissionRefresh + 1,
+    });
   }, []);
   
   useEffect(() => {

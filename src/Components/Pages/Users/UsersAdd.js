@@ -235,7 +235,7 @@ const UsersAdd = () => {
   };
   const filteredPermission = filterPermissionById(
     defaultPermission,
-    account.permissions
+    account?.permissions
   );
 
   // Initialize parentChecked state
