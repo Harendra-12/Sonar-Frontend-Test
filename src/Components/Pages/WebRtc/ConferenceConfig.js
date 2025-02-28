@@ -184,29 +184,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           An extension is a destinations that can be called.
                         </p>
                       </div>
-                      {/* <div className="buttonGroup">
-                        <button
-                          type="button"
-                          effect="ripple"
-                          className="panelButton gray"
-                        >
-                          <span className="text">Back</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
-                          </span>
-                        </button>
-                        <button
-                          type="button"
-                          effect="ripple"
-                          className="panelButton"
-                          onClick={handleSubmit}
-                        >
-                          <span className="text">Save</span>
-                          <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                          </span>
-                        </button>
-                      </div> */}
                     </div>
                   </div>
                   <div
@@ -218,58 +195,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                     <form action="#" className="tangoNavs">
                       <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                          {/* {allConferences?.data?.length &&
-                            allConferences?.data?.length > 0 ? (
-                            <button
-                              className={`nav-link ${selectedTab == "nav-all-tab" ? "active" : ""
-                                } `}
-                              id="nav-all-tab"
-                              data-bs-toggle="tab"
-                              data-bs-target="#nav-all"
-                              type="button"
-                              role="tab"
-                              aria-controls="nav-all"
-                              aria-selected="false"
-                              onClick={() => setselectedTab("nav-all-tab")}
-                            >
-                              All
-                            </button>
-                          ) : (
-                            ""
-                          )}
-
-                          <button
-                            className={`nav-link ${selectedTab == "nav-gen-tab" ? "active" : ""
-                              } `}
-                            id="nav-gen-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#nav-gen"
-                            type="button"
-                            role="tab"
-                            aria-controls="nav-gen"
-                            aria-selected="true"
-                            onClick={() => setselectedTab("nav-gen-tab")}
-                          >
-                            Create
-                          </button> */}
-                          {/* <button
-                            className={`nav-link ${selectedTab == "nav-voicemail-tab"
-                              ? "active"
-                              : ""
-                              } `}
-                            id="nav-voicemail-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#nav-voicemail"
-                            type="button"
-                            role="tab"
-                            aria-controls="nav-voicemail"
-                            aria-selected="false"
-                            onClick={() =>
-                              setselectedTab("nav-voicemail-tab")
-                            }
-                          >
-                            Join
-                          </button> */}
                         </div>
                       </nav>
                       {loading ? (
@@ -326,19 +251,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                 <i class="fa-solid fa-trash"></i>
                                               </div>
                                             </td>
-                                            {/* <td>
-                                              <button
-                                                className="tableButton edit"
-                                                onClick={() => {
-                                                  setConferenceToggle(true);
-                                                  // setPopUp(true);
-                                                  // setDeleteToggle(true);
-                                                  // setDeleteId(item.id);
-                                                }}
-                                              >
-                                                <i class="fa-solid fa-right-to-bracket"></i>
-                                              </button>
-                                            </td> */}
                                           </tr>
                                         );
                                       })}{" "}
@@ -585,18 +497,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                             />
                                           </div>
                                           <div>
-                                            {/* <button
-                                              className="panelButton"
-                                              type="button"
-                                              effect="ripple"
-                                              onClick={() =>
-                                                validateAndSetConferenceId(conferenceId)
-                                              }
-                                            >
-                                              <span className="text">JOIN</span>
-                                              <span className="icon"><i className="fa-solid fa-right-to-bracket"></i></span>
-                                            </button> */}
-
                                             <button type="button" class="formSubmit" onClick={() =>
                                               validateAndSetConferenceId(conferenceId)
                                             }>
@@ -635,44 +535,6 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                 </div>
                               </div>
                             </div>
-
-
-                            {/* <form className="col-12 mx-auto">
-                              <div className="formRow col-xl-3">
-                                <div className="formLabel">
-                                  <label htmlFor="">Conference link</label>
-                                  <label
-                                    htmlFor="data"
-                                    className="formItemDesc"
-                                  >
-                                    Paste conference link.
-                                  </label>
-                                </div>
-                                <div className="col-xl-6 col-12">
-                                  <input
-                                    type="text"
-                                    name="extension"
-                                    className="formItem"
-                                    value={conferenceId}
-                                    onChange={(e) =>
-                                      setConferenceId(e.target.value)
-                                    }
-                                  />
-                                  {error && (
-                                    <p style={{ color: "red" }}>{error}</p>
-                                  )}
-                                </div>
-                                <div
-                                  className="panelButton"
-                                  onClick={() =>
-                                    validateAndSetConferenceId(conferenceId)
-                                  }
-                                >
-                                  <span className="text">JOIN</span>
-                                  <span className="icon"><i className="fa-solid fa-right-to-bracket"></i></span>
-                                </div>
-                              </div>
-                            </form> */}
                           </div>
                         </div>
                       )}
