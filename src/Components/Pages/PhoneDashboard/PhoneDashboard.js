@@ -12,7 +12,6 @@ import Header from "../../CommonComponents/Header";
 
 function PhoneDashboard() {
   const navigate = useNavigate();
-  // const account = useSelector((state) => state.account)
   // const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -36,6 +37,7 @@ const Users = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [refreshData, setRefreshData] = useState(0);
+  const slugPermissions = useSelector((state) => state?.permissions);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -223,7 +225,7 @@ const Users = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(442) ? (
+                        {  checkViewSidebar("User", slugPermissions, account?.permissions,"add")? (
                           <Link
                             // to="/users-add"
                             // onClick={backToTop}
@@ -293,18 +295,23 @@ const Users = () => {
                             <th>Role</th>
                             <th>Usage</th>
                             <th>Online</th>
-                            <th>Edit</th>
+                            {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
                             <th>Status</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody className="">
-                          {noPermissionToRead ? (
+                          {noPermissionToRead &&   checkViewSidebar(
+                            "User",
+                            slugPermissions,
+                            account?.permissions,
+                            "read"
+                          )? (
                             // <div className="">
                             <tr>
                               <td></td>
                               <td></td>
-                              <td>You dont have permission</td>
+                              <td>You dont have any permission</td>
                               <td></td>
                               <td></td>
                               <td></td>
@@ -326,22 +333,10 @@ const Users = () => {
 
                                   return (
                                     <tr key={index}>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-config`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
+                                      <td>
                                         {item.username}
                                       </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-config`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
+                                      <td>
                                         {item.extension?.extension || "N/A"}
                                       </td>
                                       {/* <td
@@ -353,13 +348,7 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-config`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
+                                      <td>
                                         {item?.user_role?.roles?.name}
                                       </td>
                                       <td
@@ -371,13 +360,7 @@ const Users = () => {
                                       >
                                         {item?.usages}
                                       </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-config`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
+                                      <td >
                                         <span
                                           className={
                                             onlineUser.includes(item.id)
@@ -386,7 +369,7 @@ const Users = () => {
                                           }
                                         ></span>
                                       </td>
-                                      <td>
+                                      {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<td>
                                         <button
                                           className="tableButton edit"
                                           onClick={() =>
@@ -397,7 +380,7 @@ const Users = () => {
                                         >
                                           <i class="fa-solid fa-pencil"></i>
                                         </button>
-                                      </td>
+                                      </td>}
                                       <td
                                       // onClick={() =>
                                       //   handleStatusChange(item.id, item.status)
@@ -421,7 +404,7 @@ const Users = () => {
                                           </label>
                                         </div>
                                       </td>
-                                      <td>
+                                      {  checkViewSidebar("User", slugPermissions, account?.permissions,"delete")&&<td>
                                         <button
                                           className="tableButton delete"
                                           onClick={() => {
@@ -431,7 +414,7 @@ const Users = () => {
                                         >
                                           <i className="fa-solid fa-trash" />
                                         </button>
-                                      </td>
+                                      </td>}
                                     </tr>
                                   );
                                 })}
