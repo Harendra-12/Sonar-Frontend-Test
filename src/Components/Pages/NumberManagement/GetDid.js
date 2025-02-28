@@ -668,11 +668,11 @@ function GetDid() {
                           ) : (
                             <div className="col-3">
                               <div className="searchList cart shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                                <div className="heading mb-3 px-0 bg-transparent">
+                                <div className="heading mb-2 px-0 py-1 bg-transparent">
                                   <h5>Order Summary</h5>
                                 </div>
                                 <div className="wrapper">
-                                  <ul>
+                                  <ul style={{ maxHeight: '225px', overflowY: 'auto' }}>
                                     {selectedDid.map((item) => {
                                       return (
                                         <li>
@@ -681,7 +681,9 @@ function GetDid() {
                                         </li>
                                       );
                                     })}
-                                    <li className="border-black">
+                                  </ul>
+                                  <ul>
+                                    <li className="border-black text-dark" style={{ fontSize: 14, paddingTop: '3px', borderTop: '1px solid var(--border-color)' }}>
                                       <b>Total: </b>{" "}
                                       <span className="float-end">
                                         <b>
@@ -698,7 +700,7 @@ function GetDid() {
                               </div>
 
                               <div className="searchList checkout mt-3 shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                                <div className="heading mb-3 px-0 bg-transparent">
+                                <div className="heading mb-2 px-0 py-1 bg-transparent">
                                   <h5>Payment Method</h5>
                                 </div>
                                 <div className="wrapper">
