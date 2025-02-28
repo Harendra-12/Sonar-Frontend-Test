@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/css/style.css";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -17,12 +17,22 @@ function Navbar() {
   const userType = account?.usertype;
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const permissions = useSelector((state) => state.permissions);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
   // Checking if the current path is active by checking if the current path is in the childPaths array
   const location = useLocation();
   const isChildActive = (childPaths) => {
     return childPaths.some((path) => location.pathname === path);
   };
+
+  useEffect(()=>{
+    if(permissionRefresh==0){
+      dispatch({
+        type: "SET_PERMISSION_REFRESH",
+        permissionRefresh: permissionRefresh + 1,
+      }); 
+    }
+  },[])
 
   return (
     <div>

@@ -408,7 +408,58 @@ function ActiveCallsPage() {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className='col-xl-12 mt-3'>
+                                <div className='row gy-4'>
+                                    {
+                                        customModule?.map((item, index) => {
+                                            return (
+                                                <div className='col-xl-2' key={index}>
+                                                    <div className={`deviceProvision `} >
+                                                        <div className="itemWrapper a">
+                                                            <div className="heading h-auto d-block">
+                                                                <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
+                                                                <p>{item.model_type}</p>
+                                                            </div>
+                                                            <div className="data-number2 h-auto">
+                                                                <div className="d-flex flex-wrap justify-content-between">
+                                                                    <div className="col-4">
+                                                                        <p>Active</p>
+                                                                        <h4>
+                                                                            {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                            <i
+                                                                                className="fa-solid fa-phone-volume ms-1"
+                                                                                style={{ color: "var(--funky-boy4)", fontSize: 17 }}
+                                                                            />
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div className="col-4 text-center">
+                                                                        <p>Ringing</p>
+                                                                        <h4>
+                                                                            {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                            <i
+                                                                                className="fa-solid fa-phone-office ms-1"
+                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                            />
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    <div className='col-xl-2' onClick={() => navigate("/custom-module")}>
+                                        <div className={`deviceProvision h-100`} >
+                                            <div className="itemWrapper a addNew h-100">
+                                                <i className='fa-regular fa-plus'></i>
+                                                <p>Add New Module</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

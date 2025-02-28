@@ -306,7 +306,7 @@ function GlobalCalls() {
         });
       }
     }
-    if (permissionRefresh > 0) {
+    if (permissionRefresh > 0 &&localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);
