@@ -297,7 +297,7 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {checkViewSidebar(
-                            "Did Detail",
+                            "DidDetail",
                             permissions,
                             account?.permissions
                           ) && (
@@ -338,7 +338,7 @@ function Navbar() {
                           ) : null}
 
                           {checkViewSidebar(
-                            "Did Configure",
+                            "DidConfigure",
                             permissions,
                             account?.permissions
                           ) && (
@@ -427,7 +427,7 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {checkViewSidebar(
-                            "phone Dashboard",
+                            "phoneDashboard",
                             permissions,
                             account?.permissions
                           ) && (
@@ -438,7 +438,7 @@ function Navbar() {
                             </li>
                           )}
                           {checkViewSidebar(
-                            "active Call",
+                            "activeCall",
                             permissions,
                             account?.permissions
                           ) && (
@@ -449,7 +449,7 @@ function Navbar() {
                             </li>
                           )}
                           {checkViewSidebar(
-                            "Did Configure",
+                            "DidConfigure",
                             permissions,
                             account?.permissions
                           ) && (
@@ -473,7 +473,7 @@ function Navbar() {
                             </li>
                           )}
                           {checkViewSidebar(
-                            "Call Center Agent",
+                            "CallCenterAgent",
                             permissions,
                             account?.permissions
                           ) && (
@@ -522,7 +522,7 @@ function Navbar() {
                           ) : null}
 
                           {checkViewSidebar(
-                            "Call Center Queue",
+                            "CallCenterQueue",
                             permissions,
                             account?.permissions
                           ) ? (
@@ -549,7 +549,7 @@ function Navbar() {
                           ) : null}
 
                           {checkViewSidebar(
-                            "call Blocking",
+                            "callBlocking",
                             permissions,
                             account?.permissions
                           ) && (
@@ -863,7 +863,7 @@ function Navbar() {
                     </>
                   )}
                   {checkViewSidebar(
-                    "Ivr Master",
+                    "IvrMaster",
                     permissions,
                     account?.permissions
                   ) ? (
@@ -927,7 +927,8 @@ function Navbar() {
                       </li>
                     </>
                   )}
-                  {checkViewSidebar("Cdr", permissions, account?.permissions) ? (
+                  {checkViewSidebar(
+                     permissions, account?.permissions) ? (
                     <li className="">
                       <button
                         data-bs-toggle="collapse"
@@ -970,7 +971,7 @@ function Navbar() {
                         <div className="menuWrapper">
                           <ul className="tabMenu">
                             {checkViewSidebar(
-                              "Cdr",
+                              "ChannelHangupComplete",
                               permissions,
                               account?.permissions
                             ) ? (
@@ -1150,12 +1151,12 @@ function Navbar() {
                       <div className="menuWrapper">
                         <ul className="tabMenu">
                           {checkViewSidebar(
-                            "Card Detail",
+                            "CardDetail",
                             permissions,
                             account?.permissions
                           ) &&
                           checkViewSidebar(
-                            "Billing Address",
+                            "BillingAddress",
                             permissions,
                             account?.permissions
                           ) ? (
@@ -1170,7 +1171,7 @@ function Navbar() {
                             </li>
                           ) : null}
                           {checkViewSidebar(
-                            "Card Detail",
+                            "CardDetail",
                             permissions,
                             account?.permissions
                           ) ? (
@@ -1186,7 +1187,7 @@ function Navbar() {
                           ) : null}
 
                           {checkViewSidebar(
-                            "Wallet Transaction",
+                            "WalletTransaction",
                             permissions,
                             account?.permissions
                           ) ? (
@@ -1329,7 +1330,7 @@ function Navbar() {
                               </NavLink>
                             </li> */}
                               {checkViewSidebar(
-                                "Mail Setting",
+                                "MailSetting",
                                 permissions,
                                 account?.permissions
                               ) ? (

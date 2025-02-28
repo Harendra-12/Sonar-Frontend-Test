@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {
   backToTop,
+  checkViewSidebar,
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
@@ -23,6 +24,7 @@ function PortNumber() {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  const slugPermissions = useSelector((state) => state?.permissions);
   useEffect(() => {
     if (portsAll) {
       // setLoading(false);
@@ -145,7 +147,11 @@ function PortNumber() {
                               <i class="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {account?.permissions?.includes(310) ? (
+                          {  checkViewSidebar(
+                            "Port",
+                            slugPermissions,
+                            account?.permissions,"add"
+                          ) ? (
                             <Link
                               to="/port-number-add"
                               onClick={backToTop}

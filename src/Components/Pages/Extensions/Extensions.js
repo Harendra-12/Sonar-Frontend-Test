@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +36,7 @@ const Extensions = () => {
     "outbundCallerIdName",
     "description",
   ]);
-
+  const slugPermissions = useSelector((state) => state?.permissions);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
     if (registerUser.length > 0) {
@@ -222,7 +223,11 @@ const Extensions = () => {
                     <div className="tableContainer">
                       <table>
                         <tbody>
-                          {noPermissionToRead ? (
+                          {noPermissionToRead &&  checkViewSidebar(
+                            "Extension",
+                            slugPermissions,
+                            account?.permissions,"read"
+                          )? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -281,9 +286,22 @@ const Extensions = () => {
                                                   </th>
                                                 );
                                               })}
-                                              <th className="text-center">Status</th>
-                                              <th  className="text-center">Edit</th>
-                                              <th  className="text-center">Add Devices</th>
+                                              <th className="text-center">
+                                                Status
+                                              </th>
+                                              {checkViewSidebar(
+                                                "Extension",
+                                                slugPermissions,
+                                                account?.permissions,
+                                                "edit"
+                                              ) && (
+                                                <th className="text-center">
+                                                  Edit
+                                                </th>
+                                              )}
+                                              <th className="text-center">
+                                                Add Devices
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -297,14 +315,9 @@ const Extensions = () => {
                                                   );
 
                                                 return (
-                                                  <tr key={index}  
-      >
+                                                  <tr key={index}>
                                                     {validKeys.map((key) => (
-                                                      <td key={key} onClick={() =>
-                                                        navigate(
-                                                          `/extensions-edit?id=${item.id}`
-                                                        )
-                                                      }>
+                                                      <td key={key}>
                                                         {key === "user"
                                                           ? foundUser
                                                             ? foundUser.name
@@ -312,11 +325,7 @@ const Extensions = () => {
                                                           : item[key]}
                                                       </td>
                                                     ))}
-                                                    <td onClick={() =>
-                                                    navigate(
-                                                      `/extensions-edit?id=${item.id}`
-                                                    )
-                                                  }>
+                                                    <td>
                                                       <span
                                                         className={
                                                           onlineExtension.includes(
@@ -327,21 +336,29 @@ const Extensions = () => {
                                                         }
                                                       ></span>
                                                     </td>
-                                                    <td
-                                                      style={{
-                                                        cursor: "default",
-                                                      }}
-                                                    >
-                                                      <button className="tableButton edit mx-auto"  onClick={() =>
-                                              navigate(
-                                                `/extensions-edit?id=${item.id}`
-                                              )
-                                            }
- >
-                                                        <i class="fa-solid fa-pencil"></i>
-                                                      </button>
-                                                    </td>
-
+                                                    {checkViewSidebar(
+                                                      "Extension",
+                                                      slugPermissions,
+                                                      account?.permissions,
+                                                      "edit"
+                                                    ) && (
+                                                      <td
+                                                        style={{
+                                                          cursor: "default",
+                                                        }}
+                                                      >
+                                                        <button
+                                                          className="tableButton edit mx-auto"
+                                                          onClick={() =>
+                                                            navigate(
+                                                              `/extensions-edit?id=${item.id}`
+                                                            )
+                                                          }
+                                                        >
+                                                          <i class="fa-solid fa-pencil"></i>
+                                                        </button>
+                                                      </td>
+                                                    )}
                                                     <td
                                                       style={{
                                                         cursor: "default",

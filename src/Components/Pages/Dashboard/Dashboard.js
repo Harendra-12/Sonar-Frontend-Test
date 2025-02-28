@@ -10,7 +10,7 @@ import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import LineChartDashboard from "./ModuleGraphDashboard";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
@@ -36,6 +36,7 @@ const Dashboard = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Setting clock for the selected timnezone
   useEffect(() => {
@@ -353,7 +354,11 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {account?.permissions?.includes(86) && (
+                  {  checkViewSidebar(
+                            "ChannelHangupComplete",
+                            slugPermissions,
+                            account?.permissions
+                          )&& (
                     <button
                       className="nav-link"
                       id="nav-home-tab"
@@ -367,7 +372,15 @@ const Dashboard = () => {
                       Calls
                     </button>
                   )}
-                  {account?.permissions?.includes(470) && (
+                  {checkViewSidebar(
+                                              "BillingAddress",
+                                              slugPermissions,
+                                              account?.permissions,"read"
+                                            ) &&  checkViewSidebar(
+                                              "WalletTransaction",
+                                              slugPermissions,
+                                              account?.permissions
+                                            )&& (
                     <button
                       className="nav-link"
                       id="nav-contact-tab"
@@ -697,7 +710,7 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )}
-                        {account?.permissions?.includes(176) && (
+                        {  checkViewSidebar("Extension", slugPermissions, account?.permissions,"read") && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
                               <div className="heading">

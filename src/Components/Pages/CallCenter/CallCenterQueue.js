@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -34,6 +35,7 @@ function CallCenterQueue() {
   const [refreshState, setRefreshState] = useState(0);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   useEffect(() => {
     const getCallCenterDashboardData = async () => {
@@ -244,7 +246,11 @@ function CallCenterQueue() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(64) ? (
+                        { checkViewSidebar(
+                                        "CallCenterQueue",
+                                        slugPermissions,
+                                        account?.permissions,"add"
+                                      )  ? (
                           <Link
                             // to="/cal-center-queue-add"
                             // onClick={backToTop}
@@ -319,7 +325,11 @@ function CallCenterQueue() {
                           </tr>
                         </thead>
                         <tbody>
-                          {noPermissionToRead ? (
+                          {noPermissionToRead &&  checkViewSidebar(
+                "CallCenterQueue",
+                slugPermissions,
+                account?.permissions,"read"
+              ) ? (
                             <tr>
                               <td></td>
                               <td></td>

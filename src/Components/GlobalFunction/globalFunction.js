@@ -238,16 +238,17 @@ export const backToTop = () => {
   window.scrollTo(0, 0);
 };
 
+// show sidebar on the base of action
 export function checkViewSidebar(slug,permissions,userPermissions,action=undefined) {
   const sidebar = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
       permissions[key].forEach((item) => {
-        if(userPermissions.includes(item.id)){
+        if(userPermissions?.includes(item.id)){
           sidebar.push({
-            id: item.id,
-            action: item.action,
-            slug: item.slug,
+            id: item?.id,
+            action: item?.action,
+            slug: item?.model,
           });
         }
       });
@@ -261,6 +262,7 @@ export function checkViewSidebar(slug,permissions,userPermissions,action=undefin
         item.action==="read"
     )
     .map((item) => item.slug);
+    // console.log("0000Model",{AllSlug},{sidebar})
   if (AllSlug.includes(slug)&&!action) {
     return true;
   }else if(action){
