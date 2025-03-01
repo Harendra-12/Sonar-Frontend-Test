@@ -83,7 +83,7 @@ function ActiveCallsPage() {
             return count;
         } else if (type === "CallCenterQueue") {
             const count = activeState
-                .filter((item) => item.application_state === "callcenter")
+                .filter((item) => item?.application_state === "callcenter")
                 .reduce((acc, call) => {
                     if (call.dest == value) {
                         acc += 1;
@@ -120,16 +120,16 @@ function ActiveCallsPage() {
                                                     <div className={`deviceProvision `} >
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto d-block">
-                                                                <h5>{item.name}</h5>
-                                                                <p>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : `${item.model.did}-${item.model.tag}`}</p>
-                                                                <p>{item.model_type}</p>
+                                                                <h5>{item?.name}</h5>
+                                                                <p>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}-${item?.model?.tag}`}</p>
+                                                                <p>{item?.model_type}</p>
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">
                                                                     <div className="col-4">
                                                                         <p>Active</p>
                                                                         <h4>
-                                                                            {filterActiveState(item.model_type, item.model_type === "CallCenterQueue" ? item.model.extension : item.model_type === "Ringgroup" ? item.model.extension : item.model.did)}{" "}
+                                                                            {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
                                                                             <i
                                                                                 className="fa-solid fa-phone-volume ms-1"
                                                                                 style={{ color: "var(--funky-boy4)", fontSize: 17 }}
@@ -139,7 +139,7 @@ function ActiveCallsPage() {
                                                                     <div className="col-4 text-center">
                                                                         <p>Ringing</p>
                                                                         <h4>
-                                                                            {filterRingingState(item.model_type, item.model_type === "CallCenterQueue" ? item.model.extension : item.model_type === "Ringgroup" ? item.model.extension : item.model.did)}{" "}
+                                                                            {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
                                                                             <i
                                                                                 className="fa-solid fa-bell-ring ms-1"
                                                                                 style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
@@ -417,7 +417,7 @@ function ActiveCallsPage() {
                                                     <div className={`deviceProvision `} >
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto d-block">
-                                                                <h5>{item.model_type === "CallCenterQueue" ? item.model.queue_name : item.model_type === "Ringgroup" ? item.model.name : item.model.did}</h5>
+                                                                <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : item?.model?.did}</h5>
                                                                 <p>{item.model_type}</p>
                                                             </div>
                                                             <div className="data-number2 h-auto">

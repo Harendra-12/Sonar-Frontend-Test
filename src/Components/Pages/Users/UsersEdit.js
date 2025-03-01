@@ -57,7 +57,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState?.user_role == "Company"
   );
- console.log("0000",setUsersDetails)
   const {
     register,
     watch,

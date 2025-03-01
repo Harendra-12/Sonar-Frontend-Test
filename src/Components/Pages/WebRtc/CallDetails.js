@@ -1,9 +1,12 @@
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
-import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import {
+  featureUnderdevelopment,
+  generatePreSignedUrl,
+} from "../../GlobalFunction/globalFunction";
 
 function CallDetails({
   clickedCall,
@@ -22,6 +25,10 @@ function CallDetails({
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   const [isMessageingAvailable, setIsMessageingAvailable] = useState(false);
+  const thisAudioRef = useRef(null);
+  const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioURL, setAudioURL] = useState("");
+
   useEffect(() => {
     setCallDetails(clickedCall);
   }, [clickedCall]);
@@ -56,7 +63,8 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
+        sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -93,7 +101,39 @@ function CallDetails({
       setactivePage("messages");
     }
   };
-  console.log(callDetails);
+
+  const handlePlaying = async (audio) => {
+    try {
+      setCurrentPlaying(audio);
+      const url = audio.split(".com/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url); // Update audio URL state
+
+        // Wait for React state update before accessing ref
+        setTimeout(() => {
+          if (thisAudioRef.current) {
+            thisAudioRef.current.load(); // Reload audio source
+            thisAudioRef.current.play().catch((error) => {
+              console.error("Audio play error:", error);
+            });
+          }
+        }, 100); // Reduced timeout to minimize delay
+      }
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
+    }
+  };
+
+  const handleAudioDownload = (src) => {
+    const link = document.createElement("a");
+    link.href = src;
+    link.download = "audio-file.wav";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     if (callDetails) {
@@ -335,47 +375,49 @@ function CallDetails({
                     {!isCustomerAdmin ? (
                       <td
                         style={{ paddingLeft: "32px" }}
-                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
-                          extension && callDetails?.["variable_billsec"] > 0
-                          ? "incoming"
-                          : callDetails?.["Caller-Caller-ID-Number"] ===
-                            extension
+                        className={`${
+                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            extension && callDetails?.["variable_billsec"] > 0
+                            ? "incoming"
+                            : callDetails?.["Caller-Caller-ID-Number"] ===
+                              extension
                             ? "outgoing"
                             : callDetails?.["Caller-Callee-ID-Number"] ===
-                              extension &&
+                                extension &&
                               callDetails?.["variable_billsec"] === 0
-                              ? "missed"
-                              : callDetails?.["Call-Direction"] === "voicemail"
-                                ? "voicemail"
-                                : ""
-                          }`}
+                            ? "missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""
+                        }`}
                       >
                         <span>
                           {callDetails &&
-                            callDetails?.["Caller-Callee-ID-Number"] ===
+                          callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                            callDetails?.["variable_billsec"] > 0
+                          callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                              ? "Outgoing"
-                              : callDetails?.["Caller-Callee-ID-Number"] ===
+                            ? "Outgoing"
+                            : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                                callDetails?.["variable_billsec"] === 0
-                                ? "Missed"
-                                : callDetails?.["Call-Direction"] === "voicemail"
-                                  ? "voicemail"
-                                  : ""}
+                              callDetails?.["variable_billsec"] === 0
+                            ? "Missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
+                            ? "voicemail"
+                            : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${callDetails?.["variable_billsec"] === 0
-                          ? "missed"
-                          : callDetails?.["Call-Direction"] === "voicemail"
+                        className={`${
+                          callDetails?.["variable_billsec"] === 0
+                            ? "missed"
+                            : callDetails?.["Call-Direction"] === "voicemail"
                             ? "voicemail"
                             : ""
-                          }`}
+                        }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
@@ -427,7 +469,24 @@ function CallDetails({
                         <tbody>
                           {callHistory?.map((item) => (
                             <>
-                              <tr key={item.id} data-bs-toggle="collapse" href={`#voiceMail${item.id}`} role="button" class="collapsed" aria-expanded="false">
+                              <tr
+                                key={item.id}
+                                data-bs-toggle="collapse"
+                                href={`#voiceMail${item.id}`}
+                                role="button"
+                                class="collapsed"
+                                aria-expanded="false"
+                                onClick={() => {
+                                  if (
+                                    currentPlaying ==
+                                    item["recording_path"]
+                                  ) {
+                                    setCurrentPlaying(null);
+                                  } else {
+                                    handlePlaying(item["recording_path"]);
+                                  }
+                                }}
+                              >
                                 <td>{formatDate(item.variable_start_stamp)}</td>
                                 <td>{formatTime(item.variable_start_stamp)}</td>
                                 {/* <td
@@ -463,38 +522,41 @@ function CallDetails({
                                 {!isCustomerAdmin ? (
                                   <td
                                     style={{ paddingLeft: "32px" }}
-                                    className={`${item?.["Caller-Callee-ID-Number"] ===
-                                      extension &&
+                                    className={`${
+                                      item?.["Caller-Callee-ID-Number"] ===
+                                        extension &&
                                       item?.["variable_billsec"] > 0
-                                      ? "incoming"
-                                      : item?.["Caller-Caller-ID-Number"] ===
-                                        extension
+                                        ? "incoming"
+                                        : item?.["Caller-Caller-ID-Number"] ===
+                                          extension
                                         ? "outgoing"
                                         : item?.["Caller-Callee-ID-Number"] ===
-                                          extension &&
+                                            extension &&
                                           item?.["variable_billsec"] === 0
-                                          ? "missed"
-                                          : item?.["Call-Direction"] === "voicemail"
-                                            ? "voicemail"
-                                            : ""
-                                      }`}
+                                        ? "missed"
+                                        : item?.["Call-Direction"] ===
+                                          "voicemail"
+                                        ? "voicemail"
+                                        : ""
+                                    }`}
                                   >
                                     <span>
                                       {item &&
-                                        item?.["Caller-Callee-ID-Number"] ===
+                                      item?.["Caller-Callee-ID-Number"] ===
                                         extension &&
-                                        item?.["variable_billsec"] > 0
+                                      item?.["variable_billsec"] > 0
                                         ? "Incoming"
                                         : item?.["Caller-Caller-ID-Number"] ===
                                           extension
-                                          ? "Outgoing"
-                                          : item?.["Caller-Callee-ID-Number"] ===
+                                        ? "Outgoing"
+                                        : item?.["Caller-Callee-ID-Number"] ===
                                             extension &&
-                                            item?.["variable_billsec"] === 0
-                                            ? "Missed"
-                                            : item?.["Call-Direction"] === "voicemail"
-                                              ? "voicemail"
-                                              : ""}
+                                          item?.["variable_billsec"] === 0
+                                        ? "Missed"
+                                        : item?.["Call-Direction"] ===
+                                          "voicemail"
+                                        ? "voicemail"
+                                        : ""}
                                     </span>
                                   </td>
                                 ) : (
@@ -534,14 +596,34 @@ function CallDetails({
                                   {formatDuration(item.variable_billsec)}
                                 </td>
                               </tr>
-                              <tr className="collapse" id={`voiceMail${item.id}`}>
+                         {item?.recording_path&&     <tr
+                                className="collapse"
+                                id={`voiceMail${item.id}`}
+                              >
                                 <td colSpan={5}>
-                                  <div class="audio-container collapse" id={`voiceMail${item.id}`}>
-                                    <audio controls={true}>
-                                      <source src="" type="audio/ogg" />
-                                      <source src="" type="audio/mpeg" />
-                                    </audio>
-                                    <button class="audioCustomButton">
+                                  <div
+                                    class="audio-container collapse"
+                                    id={`voiceMail${item.id}`}
+                                  >
+                               <audio
+                                          controls={true}
+                                          ref={thisAudioRef}
+                                          autoPlay={true}
+                                          onEnded={() => {
+                                            setCurrentPlaying(null);
+                                          }}
+                                        >
+                                          <source
+                                            src={audioURL}
+                                            type="audio/mpeg"
+                                          />
+                                        </audio>
+                                    <button
+                                      class="audioCustomButton"
+                                      onClick={() =>
+                                        handleAudioDownload(item.recording_path)
+                                      }
+                                    >
                                       <i class="fa-sharp fa-solid fa-download"></i>
                                     </button>
                                     <button class="audioCustomButton ms-1">
@@ -549,11 +631,11 @@ function CallDetails({
                                     </button>
                                   </div>
                                 </td>
-                              </tr>
+                              </tr>}
                             </>
                           ))}
                         </tbody>
-                      </table >
+                      </table>
                     </div>
                   </div>
                 </div>

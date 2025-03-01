@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { useLocation } from "react-router-dom";
 import UsersEdit from "../Users/UsersEdit";
 import ExtensionsEdit from "../Extensions/ExtensionsEdit";
 
 function AgentsEdits() {
+  const [usersDetails,setUsersDetails]=useState([]);
   const location = useLocation();
   const locationState = location.state;
-  console.log(locationState);
+  console.log("0000location",locationState);
+
   return (
     <>
       <main className="mainContent">
@@ -102,7 +104,7 @@ function AgentsEdits() {
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit page="marginleftAdjust" />
+                      <UsersEdit page="marginleftAdjust" setUsersDetails={setUsersDetails}/>
                     </div>
                     <div
                       class="tab-pane fade"
