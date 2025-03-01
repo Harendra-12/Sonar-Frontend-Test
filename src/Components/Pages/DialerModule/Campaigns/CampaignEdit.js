@@ -1028,7 +1028,7 @@ function CampaignCreate() {
                               <>
                                 <div className="formRow col-xl-6">
                                   <div className="formLabel">
-                                    <label>{watch().type === "preview" ? "Preview Time" : "Ringing Agent Time"}</label>
+                                    <label>{watch().type === "preview" ? "Preview Time" : "Agent Ringing Time"}</label>
                                   </div>
                                   <div className="col-6">
                                     <input
