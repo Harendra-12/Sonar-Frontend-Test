@@ -723,7 +723,7 @@ function Roles() {
                                   </div>
                                 </div>
                               ) : (
-                                <div class="accordion permissionListWrapper h-auto">
+                                <div class="accordion permissionListWrapper">
                                   {filteredPermission &&
                                     Object.keys(filteredPermission).map(
                                       (item, key) => (
