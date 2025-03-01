@@ -675,7 +675,7 @@ export const ConferenceCall = ({
                           // className="col-xl-4 col-xxl-3 col-12 my-auto"
                           className="col-auto my-auto position-relative"
                         >
-                          {toggleMessages &&
+                          {/* {toggleMessages &&
                             <>
                               <button className="clearButton2 xl position-absolute"
                                 style={{ right: '-30px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}
@@ -684,7 +684,7 @@ export const ConferenceCall = ({
                                 <i className="fa-regular fa-chevron-left"></i>
                               </button>
                             </>
-                          }
+                          } */}
                           <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} toggleMessages={toggleMessages} setToggleMessages={setToggleMessages} />
                         </div>
                         {/* )} */}

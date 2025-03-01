@@ -26,6 +26,12 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, toggleMessage
     }
     return (
         <div className={`messageOverlay ${toggleMessages ? "" : "hidden"}`}>
+            <button className="clearButton2 xl position-absolute"
+                style={{ left: '-10px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}
+                onClick={() => setToggleMessages(false)}
+            >
+                <i className="fa-regular fa-chevron-left"></i>
+            </button>
             <div className="contactHeader py-3">
                 <div>
                     <h4>Messages</h4>
