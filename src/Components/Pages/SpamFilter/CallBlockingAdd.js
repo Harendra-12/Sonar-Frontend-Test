@@ -351,8 +351,8 @@ function CallBlockingAdd() {
                   </div>
                   <div className="formRow col-xl-3">
                     <div className="formLabel">
-                      <label htmlFor="">Extension</label>
-                      <label htmlFor="data" className="formItemDesc">
+                      <label>Extension</label>
+                      <label className="formItemDesc">
                         Select the extension to be affected.
                       </label>
                       {/* <label htmlFor="data" className="formItemDesc">
@@ -375,9 +375,10 @@ function CallBlockingAdd() {
                         })}
                       </label> */}
                     </div>
-                    <div className=" ">
-                      <div className="formRow">
-                        <div className=" pe-2 ms-auto">
+                    <div className="col-xl-6 col-12">
+                      <div className="row">
+                        <div className="col-6 pe-2">
+                          <label className="formItemDesc">Type</label>
                           <select
                             className="formItem"
                             name="forward"
@@ -404,7 +405,8 @@ function CallBlockingAdd() {
                             <ErrorMessage text={errors.block_type.message} />
                           )}
                         </div>
-                        <div className="">
+                        <div className="col-6">
+                          <label className="formItemDesc">Extension</label>
                           {/* <Select isMulti options={[]} /> */}
                           <ActionListMulti
                             isDisabled={

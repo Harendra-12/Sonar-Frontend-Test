@@ -1025,10 +1025,10 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               <div></div>
-                              {watch().type === "preview" ? <>
+                              <>
                                 <div className="formRow col-xl-6">
                                   <div className="formLabel">
-                                    <label>Preview Time</label>
+                                    <label>{watch().type === "preview" ? "Preview Time" : "Agent Ringing Time"}</label>
                                   </div>
                                   <div className="col-6">
                                     <input
@@ -1128,112 +1128,7 @@ function CampaignCreate() {
                                     )}
                                   </div>
                                 </div>
-                              </> : watch().type === "progressive" ?
-                                <>
-                                  <div className="formRow col-xl-6">
-                                    <div className="formLabel">
-                                      <label>Ringing Agent Time</label>
-                                    </div>
-                                    <div className="col-6">
-                                      <input
-                                        type="number"
-                                        className="formItem"
-                                        {...register("preview_time", {
-                                          ...requiredValidator,
-                                          ...numberValidator,
-                                        })}
-                                      />
-                                      {errors.preview_time && (
-                                        <ErrorMessage
-                                          text={errors.preview_time.message}
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="formRow col-xl-6">
-                                    <div className="formLabel">
-                                      <label>Wrap Up Time</label>
-                                    </div>
-                                    <div className="col-6">
-                                      <input
-                                        type="number"
-                                        className="formItem"
-                                        {...register("wrapup_time", {
-                                          ...requiredValidator,
-                                          ...numberValidator,
-                                        })}
-                                      />
-                                      {errors.wrapup_time && (
-                                        <ErrorMessage
-                                          text={errors.wrapup_time.message}
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="formRow col-xl-6">
-                                    <div className="formLabel">
-                                      <label>Max Ring Time</label>
-                                    </div>
-                                    <div className="col-6">
-                                      <input
-                                        type="number"
-                                        className="formItem"
-                                        {...register("max_ring_time", {
-                                          ...requiredValidator,
-                                          ...numberValidator,
-                                        })}
-                                      />
-                                      {errors.max_ring_time && (
-                                        <ErrorMessage
-                                          text={errors.max_ring_time.message}
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="formRow col-xl-6">
-                                    <div className="formLabel">
-                                      <label>Default Retry Period</label>
-                                    </div>
-                                    <div className="col-6">
-                                      <input
-                                        type="number"
-                                        className="formItem"
-                                        {...register("default_retry_period", {
-                                          ...requiredValidator,
-                                          ...numberValidator,
-                                        })}
-                                      />
-                                      {errors.default_retry_period && (
-                                        <ErrorMessage
-                                          text={errors.default_retry_period.message}
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="formRow col-xl-6">
-                                    <div className="formLabel">
-                                      <label>Max Attempt Per Record</label>
-                                    </div>
-                                    <div className="col-6">
-                                      <input
-                                        type="number"
-                                        className="formItem"
-                                        {...register("max_attempts_per_record", {
-                                          ...requiredValidator,
-                                          ...numberValidator,
-                                        })}
-                                      />
-                                      {errors.max_attempts_per_record && (
-                                        <ErrorMessage
-                                          text={
-                                            errors.max_attempts_per_record.message
-                                          }
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                </>
-                                : ""}
+                              </>
                             </form>
                             <div className="row mt-2 gx-xxl-5">
                               <div className="col-xl-6">
