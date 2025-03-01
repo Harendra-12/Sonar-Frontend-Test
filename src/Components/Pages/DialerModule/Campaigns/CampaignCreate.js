@@ -33,6 +33,7 @@ function CampaignCreate() {
     register,
     formState: { errors },
     handleSubmit,
+    watch
   } = useForm();
 
   // Getting disposition data
@@ -448,9 +449,7 @@ function CampaignCreate() {
                             <div></div>
                             <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
-                                <label>
-                                  Preview Time
-                                </label>
+                                <label>{watch().type === "preview" ? "Preview Time" : "Agent Ringing Time"}</label>
                               </div>
                               <div className='col-6'>
                                 <input type='number' className='formItem'
@@ -499,7 +498,7 @@ function CampaignCreate() {
                             <div className="formRow col-xl-6 col-12">
                               <div className='formLabel'>
                                 <label>
-                                  Default Retry Period
+                                  Default Retry Period <i>(minute)</i>
                                 </label>
                               </div>
                               <div className='col-6'>

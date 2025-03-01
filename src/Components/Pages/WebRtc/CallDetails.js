@@ -1,9 +1,12 @@
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
-import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import {
+  featureUnderdevelopment,
+  generatePreSignedUrl,
+} from "../../GlobalFunction/globalFunction";
 
 function CallDetails({
   clickedCall,
@@ -22,6 +25,10 @@ function CallDetails({
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
   const [isMessageingAvailable, setIsMessageingAvailable] = useState(false);
+  const thisAudioRef = useRef(null);
+  const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioURL, setAudioURL] = useState("");
+
   useEffect(() => {
     setCallDetails(clickedCall);
   }, [clickedCall]);
@@ -94,7 +101,39 @@ function CallDetails({
       setactivePage("messages");
     }
   };
-  console.log(callDetails);
+console.log('000set',{currentPlaying})
+  const handlePlaying = async (audio) => {  
+    try {
+      setCurrentPlaying(audio);
+      const url = audio.split(".com/").pop();
+      const res = await generatePreSignedUrl(url);
+
+      if (res?.status && res?.url) {
+        setAudioURL(res.url); // Update audio URL state
+
+        // Wait for React state update before accessing ref
+        setTimeout(() => {
+          if (thisAudioRef.current) {
+            thisAudioRef.current.load(); // Reload audio source
+            thisAudioRef.current.play().catch((error) => {
+              console.error("Audio play error:", error);
+            });
+          }
+        }, 100); // Reduced timeout to minimize delay
+      }
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
+    }
+  };
+
+  const handleAudioDownload = (src) => {
+    const link = document.createElement("a");
+    link.href = src;
+    link.download = "audio-file.wav";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   useEffect(() => {
     if (callDetails) {
@@ -429,10 +468,27 @@ function CallDetails({
                         </thead>
                         <tbody>
                           {callHistory?.map((item) => (
-                            <tr key={item.id}>
-                              <td>{formatDate(item.variable_start_stamp)}</td>
-                              <td>{formatTime(item.variable_start_stamp)}</td>
-                              {/* <td
+                            <>
+                              <tr
+                                key={item.id}
+                                data-bs-toggle="collapse"
+                                href={`#voiceMail${item.id}`}
+                                role="button"
+                                class="collapsed"
+                                aria-expanded="false"
+                                onClick={() => {
+                                  if (
+                                    currentPlaying == item["recording_path"]
+                                  ) {
+                                    setCurrentPlaying(null);
+                                  } else {
+                                    handlePlaying(item["recording_path"]);
+                                  }
+                                }}
+                              >
+                                <td>{formatDate(item.variable_start_stamp)}</td>
+                                <td>{formatTime(item.variable_start_stamp)}</td>
+                                {/* <td
                         className={`${
                           item["Caller-Callee-ID-Number"] === extension &&
                           item["variable_billsec"] > 0
@@ -462,81 +518,125 @@ function CallDetails({
                             : ""}
                         </span>
                       </td> */}
-                              {!isCustomerAdmin ? (
-                                <td
-                                  style={{ paddingLeft: "32px" }}
-                                  className={`${
-                                    item?.["Caller-Callee-ID-Number"] ===
-                                      extension &&
-                                    item?.["variable_billsec"] > 0
-                                      ? "incoming"
-                                      : item?.["Caller-Caller-ID-Number"] ===
-                                        extension
-                                      ? "outgoing"
-                                      : item?.["Caller-Callee-ID-Number"] ===
-                                          extension &&
-                                        item?.["variable_billsec"] === 0
-                                      ? "missed"
-                                      : item?.["Call-Direction"] === "voicemail"
-                                      ? "voicemail"
-                                      : ""
-                                  }`}
-                                >
-                                  <span>
-                                    {item &&
-                                    item?.["Caller-Callee-ID-Number"] ===
-                                      extension &&
-                                    item?.["variable_billsec"] > 0
-                                      ? "Incoming"
-                                      : item?.["Caller-Caller-ID-Number"] ===
-                                        extension
-                                      ? "Outgoing"
-                                      : item?.["Caller-Callee-ID-Number"] ===
-                                          extension &&
-                                        item?.["variable_billsec"] === 0
-                                      ? "Missed"
-                                      : item?.["Call-Direction"] === "voicemail"
-                                      ? "voicemail"
-                                      : ""}
-                                  </span>
-                                </td>
-                              ) : (
-                                <td
-                                // className={`${item?.["variable_billsec"] === 0
-                                //   ? "missed"
-                                //   : item?.["Call-Direction"] === "voicemail"
-                                //     ? "voicemail"
-                                //     : ""
-                                //   }`}
-                                >
-                                  <span>
-                                    {item?.["Caller-Callee-ID-Number"]}
-                                    {item?.["variable_billsec"] > 0 ? (
-                                      <i
-                                        class="fa-solid fa-phone mx-2"
-                                        style={{ color: "var(--ui-accent)" }}
-                                      ></i>
-                                    ) : (
-                                      <i
-                                        class="fa-solid fa-phone-xmark mx-2"
-                                        style={{ color: "red" }}
-                                      ></i>
-                                    )}
-                                    {item?.["Caller-Caller-ID-Number"]}
-                                  </span>
-                                </td>
-                              )}
-                              {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
-                              {/* <td>
+                                {!isCustomerAdmin ? (
+                                  <td
+                                    style={{ paddingLeft: "32px" }}
+                                    className={`${
+                                      item?.["Caller-Callee-ID-Number"] ===
+                                        extension &&
+                                      item?.["variable_billsec"] > 0
+                                        ? "incoming"
+                                        : item?.["Caller-Caller-ID-Number"] ===
+                                          extension
+                                        ? "outgoing"
+                                        : item?.["Caller-Callee-ID-Number"] ===
+                                            extension &&
+                                          item?.["variable_billsec"] === 0
+                                        ? "missed"
+                                        : item?.["Call-Direction"] ===
+                                          "voicemail"
+                                        ? "voicemail"
+                                        : ""
+                                    }`}
+                                  >
+                                    <span>
+                                      {item &&
+                                      item?.["Caller-Callee-ID-Number"] ===
+                                        extension &&
+                                      item?.["variable_billsec"] > 0
+                                        ? "Incoming"
+                                        : item?.["Caller-Caller-ID-Number"] ===
+                                          extension
+                                        ? "Outgoing"
+                                        : item?.["Caller-Callee-ID-Number"] ===
+                                            extension &&
+                                          item?.["variable_billsec"] === 0
+                                        ? "Missed"
+                                        : item?.["Call-Direction"] ===
+                                          "voicemail"
+                                        ? "voicemail"
+                                        : ""}
+                                    </span>
+                                  </td>
+                                ) : (
+                                  <td
+                                  // className={`${item?.["variable_billsec"] === 0
+                                  //   ? "missed"
+                                  //   : item?.["Call-Direction"] === "voicemail"
+                                  //     ? "voicemail"
+                                  //     : ""
+                                  //   }`}
+                                  >
+                                    <span>
+                                      {item?.["Caller-Callee-ID-Number"]}
+                                      {item?.["variable_billsec"] > 0 ? (
+                                        <i
+                                          class="fa-solid fa-phone mx-2"
+                                          style={{ color: "var(--ui-accent)" }}
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          class="fa-solid fa-phone-xmark mx-2"
+                                          style={{ color: "red" }}
+                                        ></i>
+                                      )}
+                                      {item?.["Caller-Caller-ID-Number"]}
+                                    </span>
+                                  </td>
+                                )}
+                                {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
+                                {/* <td>
                         {item["Caller-Caller-ID-Number"] ===
                         extension
                           ? item["Caller-Caller-ID-Number"]
                           : item["Caller-Callee-ID-Number"]}
                       </td> */}
-                              <td style={{ color: "var(--color-subtext)" }}>
-                                {formatDuration(item.variable_billsec)}
-                              </td>
-                            </tr>
+                                <td style={{ color: "var(--color-subtext)" }}>
+                                  {formatDuration(item.variable_billsec)}
+                                </td>
+                              </tr>
+                              {item?.recording_path && (
+                                <tr
+                                  className="collapse"
+                                  id={`voiceMail${item.id}`}
+                                >
+                                  <td colSpan={5}>
+                                    <div
+                                      class="audio-container collapse"
+                                      id={`voiceMail${item.id}`}
+                                    >
+                                      <audio
+                                        controls={true}
+                                        ref={thisAudioRef}
+                                        autoPlay={true}
+                                        onEnded={() => {
+                                          setCurrentPlaying(null);
+                                        }}
+                                      >
+                                        <source
+                                          src={audioURL}
+                                          type="audio/mpeg"
+                                        />
+                                      </audio>
+
+                                      <button
+                                        class="audioCustomButton"
+                                        onClick={() =>
+                                          handleAudioDownload(
+                                            item.recording_path
+                                          )
+                                        }
+                                      >
+                                        <i class="fa-sharp fa-solid fa-download"></i>
+                                      </button>
+                                      <button class="audioCustomButton ms-1">
+                                        <i class="fa-sharp fa-solid fa-box-archive"></i>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </>
                           ))}
                         </tbody>
                       </table>

@@ -81,7 +81,7 @@ function Call({
       const basePath = basePaths[clickStatus] || "";
       if (basePath) {
         const dateParam =
-          filterBy === "date" || startDate=="" || endDate==""
+          filterBy === "date" || startDate == "" || endDate == ""
             ? `date=${startDate}`
             : `date_range=${startDate},${endDate}`;
         const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
@@ -102,7 +102,7 @@ function Call({
       }
     }
     fetchData();
-  }, [currentPage, startDate, endDate, searchQuery, clickStatus,refreshCalls]);
+  }, [currentPage, startDate, endDate, searchQuery, clickStatus, refreshCalls]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -209,17 +209,17 @@ function Call({
 
     setCallHistory(
       filteredCalls?.[0] &&
-        allApiData?.filter((item) => {
-          if (!isCustomerAdmin) {
-            return (
-              (item["Caller-Callee-ID-Number"] === extension &&
-                item["Caller-Caller-ID-Number"] === clickedExtension) ||
-              (item["Caller-Caller-ID-Number"] === extension &&
-                item["Caller-Callee-ID-Number"] === clickedExtension)
-            );
-          }
-          return true;
-        })
+      allApiData?.filter((item) => {
+        if (!isCustomerAdmin) {
+          return (
+            (item["Caller-Callee-ID-Number"] === extension &&
+              item["Caller-Caller-ID-Number"] === clickedExtension) ||
+            (item["Caller-Caller-ID-Number"] === extension &&
+              item["Caller-Callee-ID-Number"] === clickedExtension)
+          );
+        }
+        return true;
+      })
     );
   }, [data, clickStatus]);
   console.log(clickedExtension);
@@ -278,18 +278,18 @@ function Call({
         onClick={() => handleCallItemClick(item)}
         onDoubleClick={() => handleDoubleClickCall(item)}
         className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-            item["variable_billsec"] > 0 &&
-            !isCustomerAdmin
-            ? "incoming"
-            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-              ? "outgoing"
-              : item["Caller-Callee-ID-Number"] === extension &&
-                item["variable_billsec"] === 0 &&
-                !isCustomerAdmin
-                ? "missed"
-                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                  ? "voicemail"
-                  : ""
+          item["variable_billsec"] > 0 &&
+          !isCustomerAdmin
+          ? "incoming"
+          : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
+            ? "outgoing"
+            : item["Caller-Callee-ID-Number"] === extension &&
+              item["variable_billsec"] === 0 &&
+              !isCustomerAdmin
+              ? "missed"
+              : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+                ? "voicemail"
+                : ""
           } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
       >
         <div className="row justify-content-between">
@@ -323,28 +323,40 @@ function Call({
               </div>
             ) : (
               <div
-                className="col-5 my-auto ms-2 ms-xl-5"
+                className="col-5 my-auto ms-2 ms-xl-3"
                 style={{ cursor: "pointer" }}
               >
-                <h4>
-                  {matchingCalleeContactForAdmin
-                    ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                    : item["Caller-Callee-ID-Number"]}
-                  {item["variable_billsec"] > 0 ? (
-                    <i
-                      class="fa-solid fa-phone mx-2"
-                      style={{ color: "var(--ui-accent)" }}
-                    ></i>
-                  ) : (
-                    <i
-                      class="fa-solid fa-phone-xmark mx-2"
-                      style={{ color: "red" }}
-                    ></i>
-                  )}
-                  {matchingCallerContactForAdmin
-                    ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                    : item["Caller-Caller-ID-Number"]}
-                </h4>
+                <div className="d-flex">
+                  <div className="source">
+                    <h4>
+                      {matchingCalleeContactForAdmin
+                        ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                        : item["Caller-Callee-ID-Number"]}
+                    </h4>
+                    {/* <h5>Source</h5> */}
+                  </div>
+                  <div className="callIconAdmin">
+                    {item["variable_billsec"] > 0 ? (
+                      <i
+                        class="fa-solid fa-phone mx-2"
+                        style={{ color: "var(--ui-accent)" }}
+                      ></i>
+                    ) : (
+                      <i
+                        class="fa-solid fa-phone-xmark mx-2"
+                        style={{ color: "red" }}
+                      ></i>
+                    )}
+                  </div>
+                  <div className="destination">
+                    <h4>
+                      {matchingCallerContactForAdmin
+                        ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                        : item["Caller-Caller-ID-Number"]}
+                    </h4>
+                    {/* <h5>Destination</h5> */}
+                  </div>
+                </div>
                 {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}

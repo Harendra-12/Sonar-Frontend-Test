@@ -167,6 +167,7 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
+
 }
 
 @media (max-width: 1366px) {
@@ -236,8 +237,9 @@
 
     table tbody tr td,
     table th,
-    .myProfileWidget .profileName span.status {
-        font-size: 12px;
+    .myProfileWidget .profileName span.status,
+    .itemWrapper .heading p {
+        font-size: 10px;
     }
 
     #detailsHeader {
@@ -295,5 +297,22 @@
     .someTempDialerDesign ul li:not(:last-child)::after {
         top: 35px;
         left: 15px;
+    }
+
+    .mainContent .itemWrapper.shadow-none {
+        height: 90px;
+    }
+
+    .formRow .formItemDesc {
+        font-size: 9px;
+    }
+
+    .mainContent .circularProgressWrapper {
+        width: 200px;
+        height: 200px;
+    }
+
+    .circular-progress {
+        --size: 200px;
     }
 }

@@ -19,6 +19,7 @@ function ClickToCallSetup() {
   const [newFile, setNewFile] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [embededCode, setEmbededCode] = useState("")
+  const [widgetExpanded,setWidgetExpanded] = useState(true)
 
   // Handle selected image to display it to the user
   const handleImageChange = (event) => {
@@ -176,7 +177,7 @@ function ClickToCallSetup() {
                               </div>
                             </nav>
                             <div className="row">
-                              <div className=" col-xxl-8 col-xl-7 col-lg-7 col-sm-12">
+                              <div className=" col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
                                 <div class="tab-content" id="nav-tabContent">
                                   <div
                                     class="tab-pane fade show active"
@@ -186,7 +187,7 @@ function ClickToCallSetup() {
                                     tabindex="0"
                                   >
                                     <form>
-                                      <div className="formRow col-xl-10  ">
+                                      <div className="formRow col-xl-12  ">
                                         <div className="formLabel">
                                           <label htmlFor="">Company Logo</label>
                                           <label
@@ -198,7 +199,7 @@ function ClickToCallSetup() {
                                           </label>
                                         </div>
 
-                                        <div className="col-6">
+                                        <div className="col-7">
                                           <input
                                             type="file"
                                             name="did_id_view"
@@ -220,7 +221,7 @@ function ClickToCallSetup() {
                                           />
                                         </div>
                                       </div>
-                                      <div className="formRow col-xl-10 ">
+                                      <div className="formRow col-xl-12   ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Color Scheme
@@ -232,11 +233,11 @@ function ClickToCallSetup() {
                                             Choose your color scheme
                                           </label>
                                         </div>
-                                        <div className="col-6">
-                                          <div className="row">
-                                            <div className="col-6">
-                                              <div className="d-flex align-items-center justify-content-start">
-                                                <div className="tawk-colors-active d-xxl-block d-xl-none">
+                                        <div className="col-7">
+                                          <div className="d-flex align-items-center justify-content-between">
+                                            <div>
+                                              <div className="d-flex align-items-center justify-content-between">
+                                                <div className="tawk-colors-active ">
                                                   <div className="tawk-colors"
                                                     onClick={() => {
                                                       setValue("color", "#093579");
@@ -244,7 +245,7 @@ function ClickToCallSetup() {
                                                     <span />
                                                   </div>
                                                 </div>
-                                                <div className="tawk-colors-active ms-2 d-xxl-block d-xl-none">
+                                                <div className="tawk-colors-active ms-2 ">
                                                   <div className="tawk-colors-1"
                                                     onClick={() => {
                                                       setValue("color", "#50f712");
@@ -534,17 +535,19 @@ function ClickToCallSetup() {
                                                 </div>
                                               </div>
                                             </div>
-                                            <div className="col-6">
+                                            <div className="form-widths">
                                               <input
-                                                className="formItem"
+                                                className="formItem ms-1"
                                                 defaultValue={"#f42633"}
                                                 {...register("color")}
+                                                style={{ width: "100px" }}
                                               />
+
                                             </div>
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="formRow col-xl-10 ">
+                                      <div className="formRow col-xl-12 ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Company Name
@@ -556,14 +559,14 @@ function ClickToCallSetup() {
                                             Enter your company name
                                           </label>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-7">
                                           <input className="formItem" defaultValue="AnglePBX"  {...register("name")} />
                                           {errors.did_id && (
                                             <ErrorMessage text={errors.name} />
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xl-10 ">
+                                      <div className="formRow col-xl-12 ">
                                         <div className="formLabel">
                                           <label htmlFor="selectFormRow">
                                             Company Description
@@ -575,14 +578,14 @@ function ClickToCallSetup() {
                                             Enter your company description
                                           </label>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-7">
                                           <input className="formItem" defaultValue={"Business Phone System | Cloud Contact Center | Cloud PBX"}  {...register("description")} />
                                           {errors.did_id && (
                                             <ErrorMessage text={errors.description} />
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xl-10 ">
+                                      <div className="formRow col-xl-12 ">
                                         <div className="formLabel">
                                           <label htmlFor="">Usage</label>
                                           <label
@@ -592,7 +595,7 @@ function ClickToCallSetup() {
                                             Please choose the usage.
                                           </label>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-7">
                                           <select
                                             type="text"
                                             name="did_id_view"
@@ -623,7 +626,7 @@ function ClickToCallSetup() {
                                           )}
                                         </div>
                                       </div>
-                                      <div className="formRow col-xl-10 ">
+                                      <div className="formRow col-xl-12 ">
                                         <div className="formLabel">
                                           <label htmlFor="">Action</label>
                                           <label
@@ -633,7 +636,7 @@ function ClickToCallSetup() {
                                             Please choose the usage.
                                           </label>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-7">
                                           {watch().usages !== "pstn" &&
                                             watch().usages !== "" ? (
                                             <ActionList
@@ -671,10 +674,15 @@ function ClickToCallSetup() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-xxl-4 col-xl-5 col-lg-5 col-sm-12">
-                                <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
-                                  {true ?
-                                    <div className="clickToCallModule">
+                              <div className="col-xxl-5 col-xl-5 col-lg-6 col-sm-12">
+                                <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color }}>
+                                  <div className="clickToCallButton">
+                                    <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
+                                      <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
+                                    </button>
+                                  </div>
+                                  {widgetExpanded ?
+                                    <div className="clickToCallModule ms-auto">
                                       <div className="clickToCallHeader">
                                         <div className="wrapper">
                                           <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
@@ -682,9 +690,9 @@ function ClickToCallSetup() {
                                             <img src={selectedImage ? selectedImage : require("../../assets/images/logo_login.png")} alt=''></img>
                                           </div>
                                           <div className="text">
-                                            <h5>{watch().name}</h5>
+                                            <h5>{watch().name || "AngelPBX"}</h5>
                                             <p>
-                                              {watch().description}
+                                              {watch().description || "Business Phone System | Cloud Contact Center | Cloud PBX"}
                                             </p>
                                           </div>
                                         </div>

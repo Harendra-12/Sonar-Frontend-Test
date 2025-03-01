@@ -37,7 +37,7 @@ const Socket = () => {
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result,current_time } = message;
-          
+          // console.log("00000result",{key},{result})
           switch (key) {
             case "UserRegister":
               dispatch({
@@ -69,6 +69,8 @@ const Socket = () => {
               })) });
               break;
             case "Conference":
+              console.log("This is conference data",result);
+              
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
             case "screenShare":

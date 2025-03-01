@@ -335,7 +335,7 @@ function GetDid() {
                       <div className="col-3">
                         <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
-                            <div className="formRow col-12">
+                            <div className="formRow col-12 d-none">
                               <div className="formLabel">
                                 <label htmlFor="searchType">Search Type</label>
                               </div>
@@ -423,8 +423,8 @@ function GetDid() {
                                       })}
                                       defaultValue={"npa"}
                                     >
-                                      <option value="npa">NPA</option>
-                                      <option value="npanxx">NPANXX</option>
+                                      <option value="npa">First 3 Digit (Area Code)</option>
+                                      <option value="npanxx">First 6 Digits (Area + Exchange Code)</option>
                                       <option value="ratecenter">Rate Center</option>
                                     </select>
                                     {errors.searchBy && (
@@ -444,7 +444,7 @@ function GetDid() {
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="npa">NPA</label>
+                                    <label htmlFor="npa">First 3 Digits (Area Code)</label>
                                     {errors.npa && (
                                       <ErrorMessage text={errors.npa.message} />
                                     )}
@@ -461,7 +461,7 @@ function GetDid() {
                                       })}
                                     />
                                     <label htmlFor="data" className="formItemDesc text-start">
-                                      Input the NPA for the DID
+                                      Input the first 3 digits for the DID
                                     </label>
                                   </div>
                                 </div>
@@ -475,7 +475,7 @@ function GetDid() {
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="nxx">NXX</label>
+                                    <label htmlFor="nxx">Next 3 Digits (Exchange Code)</label>
                                     {errors.nxx && (
                                       <ErrorMessage text={errors.nxx.message} />
                                     )}
@@ -668,11 +668,11 @@ function GetDid() {
                           ) : (
                             <div className="col-3">
                               <div className="searchList cart shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                                <div className="heading mb-3 px-0 bg-transparent">
+                                <div className="heading mb-2 px-0 py-1 bg-transparent">
                                   <h5>Order Summary</h5>
                                 </div>
                                 <div className="wrapper">
-                                  <ul>
+                                  <ul style={{ maxHeight: '225px', overflowY: 'auto' }}>
                                     {selectedDid.map((item) => {
                                       return (
                                         <li>
@@ -681,7 +681,9 @@ function GetDid() {
                                         </li>
                                       );
                                     })}
-                                    <li className="border-black">
+                                  </ul>
+                                  <ul>
+                                    <li className="border-black text-dark" style={{ fontSize: 14, paddingTop: '3px', borderTop: '1px solid var(--border-color)' }}>
                                       <b>Total: </b>{" "}
                                       <span className="float-end">
                                         <b>
@@ -698,7 +700,7 @@ function GetDid() {
                               </div>
 
                               <div className="searchList checkout mt-3 shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                                <div className="heading mb-3 px-0 bg-transparent">
+                                <div className="heading mb-2 px-0 py-1 bg-transparent">
                                   <h5>Payment Method</h5>
                                 </div>
                                 <div className="wrapper">

@@ -111,7 +111,7 @@
 
 .itemWrapper .heading h5 {
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Open Sans';
     font-weight: 700;
 }
@@ -185,7 +185,7 @@
 }
 
 .itemWrapper .data-number2 ul li {
-    padding: 15px 0;
+    padding: 10px 0;
 }
 
 .itemWrapper .data-number2 ul li:first-child {
@@ -338,6 +338,33 @@
     box-shadow: none;
 }
 
+.itemWrapper.a.addNew {
+    min-height: 108px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid transparent;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.itemWrapper.a.addNew:hover {
+    border: 1px solid var(--color2);
+}
+
+.itemWrapper.a.addNew i {
+    color: var(--color2);
+    font-size: 24px;
+}
+
+.itemWrapper.a.addNew p {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 
 .itemWrapper.b .heading i,
 .itemWrapper.b i {
@@ -422,7 +449,7 @@
     background-color: var(--ele-color);
     border: 1px solid #c9c9c970;
     border-radius: 50%;
-    margin: 48px auto 0 auto;
+    margin: auto;
     height: 250px;
     width: 250px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -443,6 +470,8 @@
 
 .circularProgressContent p {
     margin-bottom: 0;
+    color: #7a7a7a;
+    font-weight: 500;
 }
 
 .circular-progress {

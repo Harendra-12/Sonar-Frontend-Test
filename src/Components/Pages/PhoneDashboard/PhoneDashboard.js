@@ -12,7 +12,6 @@ import Header from "../../CommonComponents/Header";
 
 function PhoneDashboard() {
   const navigate = useNavigate();
-  // const account = useSelector((state) => state.account)
   // const [extensionList, setExtensionList] = useState(0);
   const [userList, setUserList] = useState(0);
   const registerUser = useSelector((state) => state.registerUser);
@@ -240,18 +239,16 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{callCenter.length}</h5>
                           <p>
-                            {(callCenter &&
-                              callQueue &&
-                              callQueue.filter((data) =>
-                                callCenter.some(
-                                  (call) =>
-                                    data["Caller-Callee-ID-Number"] ===
-                                    call.extension &&
-                                    data["variable_DIALSTATUS"] === "SUCCESS"
-                                )
+                           { activeCall.length>0?activeCall
+                .filter((item) => item.application_state === "callcenter"&&( item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length:0}{" "}
+                              Active Calls
+                                {/* /{(ringGroupData &&
+                              ringGroupData.filter(
+                                (data) =>
+                                  data["variable_DIALSTATUS"] !== "SUCCESS"
                               ).length) ||
                               0}{" "}
-                            Inbound (Answered)
+                            Calls Missed */}
                           </p>
                         </div>
                         <div className="col-2">
@@ -286,7 +283,8 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{ringGroup.length || 0}</h5>
                           <p>
-                            {activeCall.length} Active Calls /{" "}
+                            { activeCall.length>0? activeCall
+                .filter((item) => item.application_state === "ringgroup"&&( item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length:0 } Active Calls /{" "}
                             {(ringGroupData &&
                               ringGroupData.filter(
                                 (data) =>
@@ -345,7 +343,7 @@ function PhoneDashboard() {
                         </div>
                       </div>
                     </div>
-                   </div>
+                  </div>
                 </div>
               </div>
             </div>

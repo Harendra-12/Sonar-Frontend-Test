@@ -5,7 +5,7 @@
     position: fixed;
     left: 0;
     overflow-y: auto;
-    z-index: 2;
+    z-index: 99;
     background: var(--nav-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

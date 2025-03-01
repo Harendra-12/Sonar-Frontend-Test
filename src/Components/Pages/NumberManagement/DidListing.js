@@ -4,6 +4,7 @@ import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -30,6 +31,8 @@ function DidListing({ page }) {
   const [addNew, setAddNew] = useState(false);
   const [confirmPopup, setConfirmPopup] = useState(false);
   const [previousUsages, setPreviousUsages] = useState('')
+  const account = useSelector((state) => state?.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
   useEffect(() => {
     if (didAll) {
       // setLoading(false);
@@ -205,7 +208,11 @@ function DidListing({ page }) {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        <button
+                     {  checkViewSidebar(
+                            'DidConfigure',
+                            slugPermissions,
+                            account?.permissions,"add"
+                          )&&   <button
                           type="button"
                           class="panelButton"
                           onClick={() => {
@@ -220,7 +227,7 @@ function DidListing({ page }) {
                           <span class="icon">
                             <i class="fa-solid fa-plus"></i>
                           </span>
-                        </button>
+                        </button>}
                       </div>
                     </div>
                   </div>
@@ -487,7 +494,7 @@ function DidListing({ page }) {
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
+              <div className="row content col-xxl-4 col-xl-5 col-md-6">
                 <div className="col-2 px-0">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-circle-exclamation"></i>

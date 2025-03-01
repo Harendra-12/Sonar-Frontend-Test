@@ -5,6 +5,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
@@ -18,6 +19,8 @@ function Agents({ type }) {
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [pageNumber, setPageNumber] = useState(1);
   const [userInput, setuserInput] = useState("");
+  const account = useSelector((state) => state?.account);
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -88,18 +91,21 @@ function Agents({ type }) {
                             </span>
                           </button>
 
-                          <button
-                            onClick={() => {
-                              navigate("/users-add");
-                              backToTop();
-                            }}
-                            className="panelButton"
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
-                            </span>
-                          </button>
+                        {checkViewSidebar(
+                                                    "CallCenterAgent",
+                                                    slugPermissions,
+                                                    account?.permissions,"add")&&  <button
+                                                    onClick={() => {
+                                                      navigate("/users-add");
+                                                      backToTop();
+                                                    }}
+                                                    className="panelButton"
+                                                  >
+                                                    <span className="text">Add</span>
+                                                    <span className="icon">
+                                                      <i class="fa-solid fa-plus"></i>
+                                                    </span>
+                                                  </button>}
                         </div>
                       </div>
                     </div>
@@ -143,12 +149,18 @@ function Agents({ type }) {
                               {/* <th>Role</th> */}
                               {/* <th>Domain</th> */}
                               <th>Online</th>
-                              <th>Edit</th>
+                              {checkViewSidebar(
+                            "CallCenterAgent",
+                              slugPermissions,
+                            account?.permissions,"edit")&&<th>Edit</th>}
                               {/* <th>Status</th> */}
                             </tr>
                           </thead>
                           <tbody className="">
-                            {agents?.data?.map((item, index) => {
+                            {checkViewSidebar(
+                            "CallCenterAgent",
+                            slugPermissions,
+                            account?.permissions,"read")&&agents?.data?.map((item, index) => {
                               return (
                                 <tr>
                                   <td>{item.name}</td>
@@ -163,18 +175,21 @@ function Agents({ type }) {
                                       }
                                     ></span>
                                   </td>
-                                  <td>
-                                    <button
-                                      className="tableButton edit"
-                                      onClick={() => {
-                                        navigate(`/agents-edit?id=${item.id}`, {
-                                          state: item,
-                                        });
-                                      }}
-                                    >
-                                      <i className="fa-solid fa-pencil"></i>
-                                    </button>
-                                  </td>
+                                 {checkViewSidebar(
+                            "CallCenterAgent",
+                              slugPermissions,
+                            account?.permissions,"edit")&& <td>
+                            <button
+                              className="tableButton edit"
+                              onClick={() => {
+                                navigate(`/agents-edit?id=${item.id}`, {
+                                  state: item,
+                                });
+                              }}
+                            >
+                              <i className="fa-solid fa-pencil"></i>
+                            </button>
+                          </td>}
                                   {/* <td>
                                   <div className="my-auto position-relative mx-1">
                                     <label className="switch">

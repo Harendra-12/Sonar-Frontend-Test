@@ -238,6 +238,41 @@ export const backToTop = () => {
   window.scrollTo(0, 0);
 };
 
+// show sidebar on the base of action
+export function checkViewSidebar(slug,permissions,userPermissions,action=undefined) {
+  const sidebar = [];
+  for (let key in permissions) {
+    if (Array.isArray(permissions[key])) {
+      permissions[key].forEach((item) => {
+        if(userPermissions?.includes(item.id)){
+          sidebar.push({
+            id: item?.id,
+            action: item?.action,
+            slug: item?.model,
+          });
+        }
+      });
+    }
+  }
+  const AllSlug = sidebar
+    .filter(
+      (item) =>
+        item.action === "edit" ||
+        item.action === "add" ||
+        item.action==="read"
+    )
+    .map((item) => item.slug);
+    // console.log("0000Model",{AllSlug},{sidebar})
+  if (AllSlug.includes(slug)&&!action) {
+    return true;
+  }else if(action){
+    const actionPresent=sidebar.find((item)=>item.slug===slug&& item.action===action)
+    if(actionPresent) return true;
+  }
+  return false;
+}
+
+
 export function featureUnderdevelopment() {
   let popup = document.getElementById("globalPopup");
 

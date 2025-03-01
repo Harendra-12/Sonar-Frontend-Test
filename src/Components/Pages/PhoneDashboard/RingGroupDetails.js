@@ -11,6 +11,7 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
+  console.log("000Ring",{ringGroup})
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -80,22 +81,18 @@ const RingGroup = () => {
               </div> */}
             </div>
           </div>
-          <div
-            className="col-12"
-            style={{ overflow: "auto", padding: "25px 20px 0px" }}
-          >
-           
-            <div className="tableContainer" style={{ height: "30vh" }}>
+          <div className="col-12" style={{ overflow: "auto", padding: "10px 10px 0px" }}>
+            <div className="tableContainer mt-0" style={{ height: "30vh" }}>
               <table>
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Total Calls</th>
-                    <th>Calls Completed</th>
-                    <th>Missed Calls</th>
                     <th>Active Calls</th>
-                    <th style={{ width: '100px' }}>Members</th>
+                    <th>Missed Calls</th>
+                    <th>Calls Completed</th>
+                    <th>Total Calls</th>
+                    <th>Members</th>
                     <th>Destination</th>
                   </tr>
                 </thead>
@@ -106,9 +103,16 @@ const RingGroup = () => {
                       <td>{call.name}</td>
                       <td>
                         {
+                          activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
+                            .length
+                        }
+                      </td>
+                      <td>
+                        {
                           ringGroupData.filter(
                             (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension
+                              data["Caller-Callee-ID-Number"] === call.extension &&
+                              data["variable_DIALSTATUS"] !== "SUCCESS"
                           ).length
                         }
                       </td>
@@ -125,15 +129,8 @@ const RingGroup = () => {
                         {
                           ringGroupData.filter(
                             (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension &&
-                              data["variable_DIALSTATUS"] !== "SUCCESS"
+                              data["Caller-Callee-ID-Number"] === call.extension
                           ).length
-                        }
-                      </td>
-                      <td>
-                        {
-                          activeCallData.filter((e) => e.dest === call.extension)
-                            .length
                         }
                       </td>
                       <td>
@@ -172,7 +169,7 @@ const RingGroup = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

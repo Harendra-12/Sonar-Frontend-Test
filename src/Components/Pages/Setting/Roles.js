@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalPostFunction,
   generalPutFunction,
@@ -243,7 +244,7 @@ function Roles() {
 
   const filteredPermission = filterPermissionById(
     defaultPermission,
-    account.permissions
+    account?.permissions
   );
   // Initialize parentChecked state
   useEffect(() => {
@@ -378,7 +379,11 @@ function Roles() {
                               <i class="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {account?.permissions?.includes(352) ? (
+                          {  checkViewSidebar(
+                            "Role",
+                            permissions,
+                            account?.permissions,"add"
+                          )? (
                             <button
                               onClick={() => {
                                 setAddRole(true);

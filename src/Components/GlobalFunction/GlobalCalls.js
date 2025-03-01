@@ -36,7 +36,7 @@ function GlobalCalls() {
   // );
   const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
-
+ 
   const dispatch = useDispatch();
   useEffect(() => {
     if (account && account?.account_id) {
@@ -306,7 +306,7 @@ function GlobalCalls() {
         });
       }
     }
-    if (permissionRefresh > 0) {
+    if (permissionRefresh > 0 &&localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);
@@ -395,6 +395,8 @@ function GlobalCalls() {
     }
   }, []);
 
+
+ 
   useEffect(() => {
     async function logOut() {
       const apiData = await generalGetFunction("/logout");

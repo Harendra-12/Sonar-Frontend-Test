@@ -193,7 +193,7 @@ const RingGroupEdit = () => {
         }
       }
       getData();
-    } 
+    }
   }, [account, navigate, value, getAllDataRefresh]);
 
   // Get all ringbacks music for dropdown
@@ -756,7 +756,7 @@ const RingGroupEdit = () => {
                               }`}
                           >
                             {showTimeoutDestinationToggle && <div className="formLabel">
-                              <label htmlFor="">Type</label>
+                              <label className="formItemDesc">Type</label>
                             </div>}
                             <select
                               className="formItem"
@@ -796,7 +796,7 @@ const RingGroupEdit = () => {
                             <>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Destination</label>
+                                  <label className="formItemDesc">Destination</label>
                                 </div>
                                 {showTimeoutDestinationToggle ? (
                                   timeoutDestPstnToggle ? (
@@ -828,7 +828,7 @@ const RingGroupEdit = () => {
                               </div>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Call Timeout</label>
+                                  <label className="formItemDesc">Call Timeout</label>
                                 </div>
                                 <input
                                   type="text"

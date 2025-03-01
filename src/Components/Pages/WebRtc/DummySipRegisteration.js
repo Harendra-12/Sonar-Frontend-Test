@@ -731,18 +731,33 @@ export const DummySipRegisteration = ({
                       style={{ height: "100vh" }}
                     >
                       <div className="row">
-                        {toggleMessages && (
-                          <div className="col-xl-4 col-xxl-3 col-12 my-auto">
-                            <ConferenceMessages
-                              sendMessage={sendMessage}
-                              conferenceId={locationState.state.room_id}
-                              userName={currentUser?.name}
-                              setToggleMessages={setToggleMessages}
-                            />
-                          </div>
-                        )}
+                        {/* {toggleMessages && ( */}
                         <div
-                          className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
+                          // className="col-xl-4 col-xxl-3 col-12 my-auto"
+                          className="col-auto my-auto position-relative"
+                        >
+                          {/* {toggleMessages &&
+                            <>
+                              <button className="clearButton2 xl position-absolute"
+                                style={{ right: '-30px', top: '50%', transform: 'translateY(-50%)', zIndex: '9' }}
+                                onClick={() => setToggleMessages(false)}
+                              >
+                                <i className="fa-regular fa-chevron-left"></i>
+                              </button>
+                            </>
+                          } */}
+                          <ConferenceMessages
+                            sendMessage={sendMessage}
+                            conferenceId={locationState.state.room_id}
+                            userName={currentUser?.name}
+                            toggleMessages={toggleMessages}
+                            setToggleMessages={setToggleMessages}
+                          />
+                        </div>
+                        {/* )} */}
+                        <div
+                          // className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
+                          className="col px-0"
                         >
                           <div
                             className="videoBody py-0"

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -35,6 +36,7 @@ const RingGroups = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Getting ringgroup data and also update user refresh to trigger user listing api call
   useEffect(() => {
@@ -190,13 +192,20 @@ const RingGroups = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Ring Group List
-                          <button className="clearButton" onClick={() => setRefreshState(refreshState + 1)} disabled={loading}>
-                            <i className={
-                              loading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5"
-                            }></i>
+                        <h4>
+                          Ring Group List
+                          <button
+                            className="clearButton"
+                            onClick={() => setRefreshState(refreshState + 1)}
+                            disabled={loading}
+                          >
+                            <i
+                              className={
+                                loading
+                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                  : "fa-regular fa-arrows-rotate fs-5"
+                              }
+                            ></i>
                           </button>
                         </h4>
                         <p>You can see all list of ring groups</p>
@@ -215,7 +224,12 @@ const RingGroups = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(346) ? (
+                        {checkViewSidebar(
+                          "Ringgroup",
+                          slugPermissions,
+                          account?.permissions,
+                          "add"
+                        ) ? (
                           <Link
                             // to="/ring-groups-add"
                             // onClick={backToTop}
@@ -292,7 +306,13 @@ const RingGroups = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {noPermissionToRead ? (
+                          {noPermissionToRead &&
+                          checkViewSidebar(
+                            "Ringgroup",
+                            slugPermissions,
+                            account?.permissions,
+                            "read"
+                          ) ? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -412,12 +432,12 @@ const RingGroups = () => {
                                               <i className="fa-solid fa-trash" />
                                             </button>
                                           </td>
-                                          <div className="utilPopup">
-                                          </div>
+                                          <div className="utilPopup"></div>
                                         </tr>
                                       );
                                     })}
-                                  {ringGroup && ringGroup?.data?.length === 0 ? (
+                                  {ringGroup &&
+                                  ringGroup?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Ring Group"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import ContentLoader from "../../Loader/ContentLoader";
 import {
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -12,6 +13,7 @@ import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
 
 const MailSettings = ({ style }) => {
+  const slugPermissions = useSelector((state) => state?.permissions);
   const [loading, setLoading] = useState(false);
   const [mailSettings, setMailSettings] = useState([]);
   const [openPopup, setOpenPopup] = useState(false);
@@ -111,7 +113,11 @@ const MailSettings = ({ style }) => {
                             </button> */}
                             {mailSettings && !mailSettings.length > 0 && (
                               <>
-                                {account?.permissions?.includes(250) ? (
+                                {  checkViewSidebar(
+                                                "MailSetting",
+                                                slugPermissions,
+                                                account?.permissions,"add"
+                                              ) ? (
                                   <button
                                     effect="ripple"
                                     className="panelButton"
