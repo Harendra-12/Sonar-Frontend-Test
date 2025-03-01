@@ -48,6 +48,57 @@
     color: var(--color-subtext);
 }
 
+.callListItem .source h5,
+.callListItem .destination h5 {
+    font-size: 12px !important;
+}
+
+.callListItem .callIconAdmin {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    position: relative;
+    margin: 0 10px;
+}
+
+.callListItem .callIconAdmin i {
+    background: var(--webBG);
+    position: relative;
+    width: 20px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.callListItem .callIconAdmin::before {
+    content: '';
+    width: 100%;
+    height: 0.5px;
+    background-color: #a3a3a3;
+
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+
+.callListItem .callIconAdmin::after {
+    content: '\f054';
+    font-family: 'Font Awesome 5 Pro';
+    color: #a3a3a3;
+    font-weight: 100;
+
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
 .callList .callListDiff {
     padding: 10px 0;
 }
