@@ -2,14 +2,14 @@ import EmojiPicker from 'emoji-picker-react';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
-function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMessages }) {
+function ConferenceMessages({ sendMessage, userName, conferenceId, toggleMessages, setToggleMessages }) {
     const [messageInput, setMessageInput] = useState("");
     const conferenceMessage = useSelector((state) => state.conferenceMessage);
     const [emojiOpen, setEmojiOpen] = useState(false);
     const handleEmojiClick = (emojiData) => {
-        
+
         // setMessageInput(messageInput + emojiData.emoji);
-        setMessageInput((prevMessage)=>{
+        setMessageInput((prevMessage) => {
             return prevMessage + emojiData.emoji
         })
     };
@@ -25,7 +25,7 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
         setMessageInput("");
     }
     return (
-        <div className="messageOverlay">
+        <div className={`messageOverlay ${toggleMessages ? "" : "hidden"}`}>
             <div className="contactHeader py-3">
                 <div>
                     <h4>Messages</h4>
@@ -54,9 +54,9 @@ function ConferenceMessages({ sendMessage, userName, conferenceId, setToggleMess
 
 
                 </div>
-                <div style={{position: "absolute", bottom: 180, left: 22, width: 'auto', height: 'auto'}}>
-                    <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen}/>
-                    <button className='clearButton2 xl' style={{position: 'absolute', bottom: 15, right: 10, zIndex: 9}} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>
+                <div style={{ position: "absolute", bottom: 180, left: 22, width: 'auto', height: 'auto' }}>
+                    <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen} />
+                    {emojiOpen && <button className='clearButton2 xl' style={{ position: 'absolute', bottom: 15, right: 10, zIndex: 9 }} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>}
                 </div>
                 <div className="messageInput">
                     <textarea

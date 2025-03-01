@@ -476,6 +476,17 @@
     background: rgba(51, 51, 51, 0.5);
 }
 
+.videoCallWrapper .messageOverlay {
+    max-width: 360px;
+    margin-left: 0;
+    transition: 1s ease-in-out;
+}
+
+.videoCallWrapper .messageOverlay.hidden {
+    /* max-width: 0px; */
+    margin-left: -1000px;
+}
+
 .noScrollbar::-webkit-scrollbar {
     display: none !important;
 }

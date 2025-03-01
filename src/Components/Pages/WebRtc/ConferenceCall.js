@@ -136,65 +136,65 @@ export const ConferenceCall = ({
   // First check weather user is registered with sip then call start conference and conference listing api
   useEffect(() => {
     // setTimeout(() => {
-      if (connectStatus === "WAIT_REQUEST_CONNECT") {
-        setLoading(true);
-      } else if (sipRegisterErrror) {
-        toast.error("Not connected with server please try again later.");
-        navigate(-1);
-      } else if (
-        connectStatus === "CONNECTED" &&
-        registerStatus === "REGISTERED"
-      ) {
-        async function startConference() {
-          const response = await generalPostFunction("/conference/start", {
-            user: `user/${extension_id}`,
-            name: name,
-            roomId: room_id,
-            is_guest: 0,
-            pin: pin,
-          });
+    if (connectStatus === "WAIT_REQUEST_CONNECT") {
+      setLoading(true);
+    } else if (sipRegisterErrror) {
+      toast.error("Not connected with server please try again later.");
+      navigate(-1);
+    } else if (
+      connectStatus === "CONNECTED" &&
+      registerStatus === "REGISTERED"
+    ) {
+      async function startConference() {
+        const response = await generalPostFunction("/conference/start", {
+          user: `user/${extension_id}`,
+          name: name,
+          roomId: room_id,
+          is_guest: 0,
+          pin: pin,
+        });
 
-          if (response.status) {
-            setLoading(false);
-            const confLists = await generalGetFunction(
-              `/conference/${room_id}/details`
+        if (response.status) {
+          setLoading(false);
+          const confLists = await generalGetFunction(
+            `/conference/${room_id}/details`
+          );
+
+          if (
+            confLists.status &&
+            confLists?.data !== `-ERR Conference ${room_id} not found\n`
+          ) {
+            setConfList(
+              JSON?.parse?.(confLists?.data)
+                ?.filter((item) => item.conference_name == room_id)?.[0]
+                ?.members.map((item) => {
+                  return {
+                    id: item.id,
+                    caller_id_number: item.caller_id_number,
+                    name: item.caller_id_name,
+                    uuid: item.uuid,
+                    talking: item.flags.talking,
+                    mute_detect: item.flags.mute_detect,
+                    hold: item.flags.hold,
+                    isYou: item.caller_id_name === name ? true : false,
+                    deaf: false,
+                    isModerator: item.flags.is_moderator,
+                  };
+                })
             );
-
-            if (
-              confLists.status &&
-              confLists?.data !== `-ERR Conference ${room_id} not found\n`
-            ) {
-              setConfList(
-                JSON?.parse?.(confLists?.data)
-                  ?.filter((item) => item.conference_name == room_id)?.[0]
-                  ?.members.map((item) => {
-                    return {
-                      id: item.id,
-                      caller_id_number: item.caller_id_number,
-                      name: item.caller_id_name,
-                      uuid: item.uuid,
-                      talking: item.flags.talking,
-                      mute_detect: item.flags.mute_detect,
-                      hold: item.flags.hold,
-                      isYou: item.caller_id_name === name ? true : false,
-                      deaf: false,
-                      isModerator: item.flags.is_moderator,
-                    };
-                  })
-              );
-            }
-          } else {
-            setLoading(false);
-            setConferenceToggle(false);
           }
+        } else {
+          setLoading(false);
+          setConferenceToggle(false);
         }
-        // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
-        startConference();
-        // }
-      } else {
-        toast.error("Not connected with server please try again later.");
-        navigate(-1);
       }
+      // if(numberOfTimeUserVisit === 0 && activePage === "conference"){
+      startConference();
+      // }
+    } else {
+      toast.error("Not connected with server please try again later.");
+      navigate(-1);
+    }
     // }, [3000]);
   }, [connectStatus, sipRegisterErrror]);
 
@@ -653,7 +653,7 @@ export const ConferenceCall = ({
                                   <span className="status">Available</span>
                                 </div>
                               </div>
-                              <ul class="dropdown-menu" onClick={()=>{dispatch({type:"SET_LOGOUT",logout:1});sessionManager.disconnect()}}>
+                              <ul class="dropdown-menu" onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
                                 <li>
                                   <div
                                     class="dropdown-item"
@@ -670,13 +670,17 @@ export const ConferenceCall = ({
                     </div>
                     <div className="videoCallWrapper">
                       <div className="row">
-                        {toggleMessages && (
-                          <div className="col-xl-4 col-xxl-3 col-12 my-auto">
-                            <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} setToggleMessages={setToggleMessages} />
-                          </div>
-                        )}
+                        {/* {toggleMessages && ( */}
                         <div
-                          className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
+                          // className="col-xl-4 col-xxl-3 col-12 my-auto"
+                          className="col-auto my-auto"
+                        >
+                          <ConferenceMessages sendMessage={sendMessage} conferenceId={conferenceId} userName={name} toggleMessages={toggleMessages} setToggleMessages={setToggleMessages} />
+                        </div>
+                        {/* )} */}
+                        <div
+                          // className={`col-xl-${toggleMessages ? '8' : '12'} col-xxl-${toggleMessages ? '9' : '12'} col-12 px-0`}
+                          className="col px-0"
                         >
                           <div className="videoBody py-0">
                             {notification && (
