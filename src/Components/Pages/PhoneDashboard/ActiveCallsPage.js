@@ -408,7 +408,7 @@ function ActiveCallsPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-xl-12 mt-3'>
+                            {/* <div className='col-xl-12 mt-3'>
                                 <div className='row gy-4'>
                                     {
                                         customModule?.map((item, index) => {
@@ -459,7 +459,7 @@ function ActiveCallsPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

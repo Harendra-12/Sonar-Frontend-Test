@@ -101,8 +101,8 @@ function CallDetails({
       setactivePage("messages");
     }
   };
-
-  const handlePlaying = async (audio) => {
+console.log('000set',{currentPlaying})
+  const handlePlaying = async (audio) => {  
     try {
       setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
@@ -478,8 +478,7 @@ function CallDetails({
                                 aria-expanded="false"
                                 onClick={() => {
                                   if (
-                                    currentPlaying ==
-                                    item["recording_path"]
+                                    currentPlaying == item["recording_path"]
                                   ) {
                                     setCurrentPlaying(null);
                                   } else {
@@ -596,42 +595,47 @@ function CallDetails({
                                   {formatDuration(item.variable_billsec)}
                                 </td>
                               </tr>
-                         {item?.recording_path&&     <tr
-                                className="collapse"
-                                id={`voiceMail${item.id}`}
-                              >
-                                <td colSpan={5}>
-                                  <div
-                                    class="audio-container collapse"
-                                    id={`voiceMail${item.id}`}
-                                  >
-                               <audio
-                                          controls={true}
-                                          ref={thisAudioRef}
-                                          autoPlay={true}
-                                          onEnded={() => {
-                                            setCurrentPlaying(null);
-                                          }}
-                                        >
-                                          <source
-                                            src={audioURL}
-                                            type="audio/mpeg"
-                                          />
-                                        </audio>
-                                    <button
-                                      class="audioCustomButton"
-                                      onClick={() =>
-                                        handleAudioDownload(item.recording_path)
-                                      }
+                              {item?.recording_path && (
+                                <tr
+                                  className="collapse"
+                                  id={`voiceMail${item.id}`}
+                                >
+                                  <td colSpan={5}>
+                                    <div
+                                      class="audio-container collapse"
+                                      id={`voiceMail${item.id}`}
                                     >
-                                      <i class="fa-sharp fa-solid fa-download"></i>
-                                    </button>
-                                    <button class="audioCustomButton ms-1">
-                                      <i class="fa-sharp fa-solid fa-box-archive"></i>
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>}
+                                      <audio
+                                        controls={true}
+                                        ref={thisAudioRef}
+                                        autoPlay={true}
+                                        onEnded={() => {
+                                          setCurrentPlaying(null);
+                                        }}
+                                      >
+                                        <source
+                                          src={audioURL}
+                                          type="audio/mpeg"
+                                        />
+                                      </audio>
+
+                                      <button
+                                        class="audioCustomButton"
+                                        onClick={() =>
+                                          handleAudioDownload(
+                                            item.recording_path
+                                          )
+                                        }
+                                      >
+                                        <i class="fa-sharp fa-solid fa-download"></i>
+                                      </button>
+                                      <button class="audioCustomButton ms-1">
+                                        <i class="fa-sharp fa-solid fa-box-archive"></i>
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
                             </>
                           ))}
                         </tbody>
