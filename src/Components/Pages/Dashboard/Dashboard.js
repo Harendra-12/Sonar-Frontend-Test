@@ -354,46 +354,46 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {  checkViewSidebar(
-                            "ChannelHangupComplete",
-                            slugPermissions,
-                            account?.permissions
-                          )&& (
-                    <button
-                      className="nav-link"
-                      id="nav-home-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-calls"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-calls"
-                      aria-selected="true"
-                    >
-                      Calls
-                    </button>
-                  )}
                   {checkViewSidebar(
-                                              "BillingAddress",
-                                              slugPermissions,
-                                              account?.permissions,"read"
-                                            ) &&  checkViewSidebar(
-                                              "WalletTransaction",
-                                              slugPermissions,
-                                              account?.permissions
-                                            )&& (
-                    <button
-                      className="nav-link"
-                      id="nav-contact-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-billing"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-billing"
-                      aria-selected="false"
-                    >
-                      Billing
-                    </button>
-                  )}
+                    "ChannelHangupComplete",
+                    slugPermissions,
+                    account?.permissions
+                  ) && (
+                      <button
+                        className="nav-link"
+                        id="nav-home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-calls"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-calls"
+                        aria-selected="true"
+                      >
+                        Calls
+                      </button>
+                    )}
+                  {checkViewSidebar(
+                    "BillingAddress",
+                    slugPermissions,
+                    account?.permissions, "read"
+                  ) && checkViewSidebar(
+                    "WalletTransaction",
+                    slugPermissions,
+                    account?.permissions
+                  ) && (
+                      <button
+                        className="nav-link"
+                        id="nav-contact-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-billing"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-billing"
+                        aria-selected="false"
+                      >
+                        Billing
+                      </button>
+                    )}
                   {/* <div className="ms-auto pb-2">
                     <Clock
                       value={time}
@@ -495,7 +495,7 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>{account?.name}</h5>
                               <p>Username: {account?.username}</p>
-                              <p>Email: {account?.email}</p>
+                              <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }}>Email: {account?.email}</p>
                             </div>
                             <div className="col-3">
                               <img
@@ -533,7 +533,7 @@ const Dashboard = () => {
                                 {accountDetails?.package?.regular_price} / Year
                               </p>
                               <p>
-                                {accountDetails?.extensions?.length} Purchased
+                                {accountDetails?.extensions?.length}{" "}
                                 Extensions / {accountDetails?.dids?.length} DIDs
                               </p>
                             </div>
@@ -722,7 +722,7 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )}
-                        {  checkViewSidebar("Extension", slugPermissions, account?.permissions,"read") && (
+                        {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
                             <div className="itemWrapper b">
                               <div className="heading">
@@ -820,7 +820,7 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {allCall?.totalCalls !== undefined ? (
                                   allCall?.totalCalls
@@ -855,7 +855,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-3">
                               {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -897,7 +897,7 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {!isNaN(
                                   allCall?.inbound?.duration +
@@ -936,7 +936,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-3">
                               <ModuleGraphDashboard
                                 fields={["In Duration", "Out Duration"]}
                                 percentage={[
@@ -976,7 +976,7 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {allCall?.missed !== undefined ? (
                                   allCall?.missed
@@ -1011,7 +1011,7 @@ const Dashboard = () => {
                                 outbound Missed
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-3">
                               <ModuleGraphDashboard
                                 fields={["In Missed", "Out Missed", "Total Missed"]}
                                 percentage={[
@@ -1049,22 +1049,22 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>{callCardData.abandonedCalls.count}</h5>
                             </div>
-                            <div className="col-3">
-                              <img
+                            <div className="col-xxl-3 col-lg-3">
+                              {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
-                              />
-                              {/* <ModuleGraphDashboard
-                                fields={["In Missed", "Out Missed"]}
+                              /> */}
+                              <ModuleGraphDashboard
+                                fields={["Internal", "External"]}
                                 percentage={[
-                                  allCall?.inbound?.missed,
-                                  allCall?.outbound?.missed
+                                  callCardData?.abandonedCalls?.internal,
+                                  callCardData?.abandonedCalls?.external
                                 ]}
                                 colors={['#ff004c', '#ff2365']}
-                              /> */}
+                              />
                             </div>
                           </div>
                         </div>

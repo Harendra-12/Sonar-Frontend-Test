@@ -306,4 +306,13 @@
     .formRow .formItemDesc {
         font-size: 9px;
     }
+
+    .mainContent .circularProgressWrapper {
+        width: 200px;
+        height: 200px;
+    }
+
+    .circular-progress {
+        --size: 200px;
+    }
 }
