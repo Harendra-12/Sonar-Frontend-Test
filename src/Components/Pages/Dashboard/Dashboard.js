@@ -819,7 +819,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between">
+                          <div className="d-flex flex-wrap justify-content-between" style={{ minHeight: '62px' }}>
                             <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {allCall?.totalCalls !== undefined ? (
@@ -855,7 +855,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-xxl-3 col-lg-3">
+                            <div className="col-xxl-3 col-lg-4">
                               {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -936,7 +936,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-xxl-3 col-lg-3">
+                            <div className="col-xxl-3 col-lg-4">
                               <ModuleGraphDashboard
                                 fields={["In Duration", "Out Duration"]}
                                 percentage={[
@@ -998,7 +998,7 @@ const Dashboard = () => {
                                     }
                                   ></i>
                                 )}{" "}
-                                inbound Missed/{" "}
+                                Inbound Missed /{" "}
                                 {allCall?.outbound?.missed !== undefined ? (
                                   allCall?.outbound?.missed
                                 ) : (
@@ -1008,10 +1008,10 @@ const Dashboard = () => {
                                     }
                                   ></i>
                                 )}{" "}
-                                outbound Missed
+                                Outbound Missed
                               </p>
                             </div>
-                            <div className="col-xxl-3 col-lg-3">
+                            <div className="col-xxl-3 col-lg-4">
                               <ModuleGraphDashboard
                                 fields={["In Missed", "Out Missed", "Total Missed"]}
                                 percentage={[
@@ -1051,8 +1051,9 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-xxl-9 col-lg-8">
                               <h5>{callCardData.abandonedCalls.count}</h5>
+                              <p>{callCardData?.abandonedCalls?.internal} Internal / {callCardData?.abandonedCalls?.external} External</p>
                             </div>
-                            <div className="col-xxl-3 col-lg-3">
+                            <div className="col-xxl-3 col-lg-4">
                               {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -1246,6 +1247,10 @@ const Dashboard = () => {
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
                               <h5>${accountDetails?.package?.regular_price}</h5>
+                              <p>
+                                End Date:{" "}
+                                {accountDetails?.subscription[0].end_date?.split(" ")[0]}
+                              </p>
                               <p>
                                 {accountDetails?.package?.subscription_type ===
                                   "annually"
