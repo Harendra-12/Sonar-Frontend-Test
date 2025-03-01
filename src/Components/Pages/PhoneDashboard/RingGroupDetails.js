@@ -11,6 +11,7 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
+  console.log("000Ring",{ringGroup})
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {

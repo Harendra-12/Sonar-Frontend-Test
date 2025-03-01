@@ -246,11 +246,11 @@ function CallCenterQueue() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        { checkViewSidebar(
-                                        "CallCenterQueue",
-                                        slugPermissions,
-                                        account?.permissions,"add"
-                                      )  ? (
+                        {checkViewSidebar(
+                          "CallCenterQueue",
+                          slugPermissions,
+                          account?.permissions, "add"
+                        ) ? (
                           <Link
                             // to="/cal-center-queue-add"
                             // onClick={backToTop}
@@ -325,11 +325,11 @@ function CallCenterQueue() {
                           </tr>
                         </thead>
                         <tbody>
-                          {noPermissionToRead &&  checkViewSidebar(
-                "CallCenterQueue",
-                slugPermissions,
-                account?.permissions,"read"
-              ) ? (
+                          {noPermissionToRead && checkViewSidebar(
+                            "CallCenterQueue",
+                            slugPermissions,
+                            account?.permissions, "read"
+                          ) ? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -344,7 +344,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {loading ? (
-                                <SkeletonTableLoader col={9} row={15} />
+                                <SkeletonTableLoader col={8} row={15} />
                               ) : (
                                 <>
                                   {callCenter &&

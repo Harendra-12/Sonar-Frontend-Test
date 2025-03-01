@@ -386,11 +386,12 @@
     background-color: var(--ele-color);
     border-radius: 15px;
     overflow: hidden;
-    /* position: absolute; */
+    position: relative;
     z-index: 9;
-    /* width: 400px; */
-    top: 15px;
-    left: 15px;
+
+    max-width: 360px;
+    margin-left: 0;
+    transition: 1s ease-in-out;
 }
 
 .videoCallWrapper .messageOverlay .messageContent {
@@ -399,6 +400,11 @@
 
 .videoCallWrapper .messageOverlay .contactHeader {
     padding: 10px 20px;
+}
+
+.videoCallWrapper .messageOverlay.hidden {
+    /* max-width: 0px; */
+    margin-left: -1000px;
 }
 
 .videoCallWrapper .heading {

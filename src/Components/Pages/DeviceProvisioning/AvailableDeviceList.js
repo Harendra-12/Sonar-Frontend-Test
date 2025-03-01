@@ -4,8 +4,6 @@ import { backToTop, generalDeleteFunction, generalGetFunction, generalPutFunctio
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
-import ContentLoader from '../../Loader/ContentLoader';
-import SkeletonFormLoader from '../../Loader/SkeletonFormLoader';
 
 function AvailableDeviceList() {
     const navigate = useNavigate();
@@ -30,7 +28,7 @@ function AvailableDeviceList() {
             try {
                 const [allDeviceData, provesionDeviceData] = await Promise.all([
                     generalGetFunction('/available-devices'),
-                    generalGetFunction(`/provision/all`)
+                    generalGetFunction(`/provision/all?address=${extension}`),
                 ])
                 if (allDeviceData.status) {
                     setAllDevices(allDeviceData.data);
