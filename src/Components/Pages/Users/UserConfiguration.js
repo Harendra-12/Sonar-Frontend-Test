@@ -294,7 +294,7 @@ function UserConfiguration() {
                                                     >
                                                       <div className="formLabel" style={{ maxWidth: '90%' }}>
                                                         <label htmlFor="" style={{ whiteSpace: 'break-spaces', wordBreak: 'break-word', textTransform: 'capitalize' }}>
-                                                          {item.column_name.replace(/_/g, " ")} - <span className="fw-bold">{item?.action}</span>
+                                                          {item.column_name.replace(/[_-]/g, " ")} - <span className="fw-bold">{item?.action}</span>
                                                         </label>
                                                       </div>
                                                       <div className="col-auto">
