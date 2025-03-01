@@ -94,7 +94,7 @@ const RingGroupAdd = () => {
           toast.error("No user found with assign extension");
         }
       }
-    } 
+    }
   }, [allUserArr]);
 
   // Get all ringbacks music for dropdown
@@ -128,7 +128,7 @@ const RingGroupAdd = () => {
 
   // Get all users with valid extension if extension or user is not present then trigger its api calling by refreshing its state using redux
   useEffect(() => {
-    if ( !loading) {
+    if (!loading) {
       const filterUser = allUserArr.filter(
         (item) => item.extension_id !== null
       );
@@ -137,7 +137,7 @@ const RingGroupAdd = () => {
       } else {
         toast.error("No user found with assign extension");
       }
-    } 
+    }
 
     if (extensionRefresh > 0) {
     } else {
@@ -613,7 +613,7 @@ const RingGroupAdd = () => {
                               }`}
                           >
                             {showTimeoutDestinationToggle && <div className="formLabel">
-                              <label htmlFor="">Type</label>
+                              <label className="formItemDesc">Type</label>
                             </div>}
                             <select
                               className="formItem"
@@ -653,7 +653,7 @@ const RingGroupAdd = () => {
                             <>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Destination</label>
+                                  <label className="formItemDesc">Destination</label>
                                 </div>
                                 {showTimeoutDestinationToggle ? (
                                   timeoutDestPstnToggle ? (
@@ -685,7 +685,7 @@ const RingGroupAdd = () => {
                               </div>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Call Timeout</label>
+                                  <label className="formItemDesc">Call Timeout</label>
                                 </div>
                                 <input
                                   type="text"

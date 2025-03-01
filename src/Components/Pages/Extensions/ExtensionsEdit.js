@@ -80,7 +80,7 @@ const ExtensionsEdit = ({ page }) => {
         );
         if (apidataUser?.status) {
           setUsers(apidataUser.data);
-        } 
+        }
       }
       getDomain();
     }
@@ -1357,7 +1357,7 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div class="formLabel">
-                                    <label>Status</label>
+                                    <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
                                     className="formItem me-0"
@@ -1376,7 +1376,7 @@ const ExtensionsEdit = ({ page }) => {
                                 ) : (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label htmlFor="">Destinations</label>
+                                      <label className="formItemDesc">Destinations</label>
 
                                       {errors.onbusyTo ? (
                                         <ErrorMessage
@@ -1415,7 +1415,7 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div class="formLabel">
-                                    <label>Status</label>
+                                    <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
                                     className="formItem me-0"
@@ -1434,7 +1434,7 @@ const ExtensionsEdit = ({ page }) => {
                                   <>
                                     <div className="col-3">
                                       <div className="formLabel">
-                                        <label htmlFor="">Destinations</label>
+                                        <label className="formItemDesc">Destinations</label>
 
                                         {errors.noanswerTo ? (
                                           <ErrorMessage
@@ -1478,7 +1478,7 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div class="formLabel">
-                                    <label>Status</label>
+                                    <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
                                     className="formItem me-0"
@@ -1496,7 +1496,7 @@ const ExtensionsEdit = ({ page }) => {
                                 ) : (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label htmlFor="">Destinations</label>
+                                      <label className="formItemDesc">Destinations</label>
                                       {errors.notregisteredTo ? (
                                         <ErrorMessage
                                           text={errors.notregisteredTo.message}
@@ -1528,7 +1528,7 @@ const ExtensionsEdit = ({ page }) => {
                                 </div>
                                 <div className="col-6">
                                   <div class="formLabel">
-                                    <label>Status</label>
+                                    <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
                                     className="formItem me-0"
@@ -1548,7 +1548,7 @@ const ExtensionsEdit = ({ page }) => {
                                   <div className="formRow col-xl-12 px-0 border-0">
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label htmlFor="">
+                                        <label className="formItemDesc">
                                           Destinations Type
                                         </label>
                                       </div>
@@ -1585,7 +1585,7 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label htmlFor="">Destination</label>
+                                        <label className="formItemDesc">Destination</label>
                                       </div>
                                       {callSetting.followMeDestinationType ? (
                                         <>
@@ -1765,7 +1765,7 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label htmlFor="">Timeout</label>
+                                        <label className="formItemDesc">Timeout</label>
                                       </div>
                                       <select
                                         className="formItem me-0"
@@ -1799,7 +1799,7 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label htmlFor="">Prompt</label>
+                                        <label className="formItemDesc">Prompt</label>
                                       </div>
 
                                       <select
@@ -1891,7 +1891,7 @@ const ExtensionsEdit = ({ page }) => {
                                 >
                                   {forwardStatus != "disabled" && (
                                     <div className="formLabel">
-                                      <label>Type</label>
+                                      <label className="formItemDesc">Type</label>
                                     </div>
                                   )}
                                   <select
@@ -1919,7 +1919,7 @@ const ExtensionsEdit = ({ page }) => {
                                   watch("forward") !== "disabled" && (
                                     <div className="col-3">
                                       <div className="formLabel">
-                                        <label>Extension</label>
+                                        <label className="formItemDesc">Extension</label>
                                       </div>
                                       <ActionList
                                         category={watch().forward}
@@ -1942,7 +1942,7 @@ const ExtensionsEdit = ({ page }) => {
                                 {watch("forward") === "pstn" && (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label>PSTN</label>
+                                      <label className="formItemDesc">PSTN</label>
                                     </div>
                                     <input
                                       type="number"

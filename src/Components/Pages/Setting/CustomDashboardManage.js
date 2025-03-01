@@ -19,7 +19,7 @@ function CustomDashboardManage() {
     const [customId, setCustomId] = useState('')
     const [customModule, setCustomModule] = useState([])
     const [refresh, setRefresh] = useState(0)
-    const [name,setName] = useState('')
+    const [name, setName] = useState('')
     // Checking if the callcenter, ringgroup and did details is already available or not if not available then get it by api calling
     useEffect(() => {
         async function getData() {
@@ -70,7 +70,7 @@ function CustomDashboardManage() {
 
     // Add new custom filter
     async function addNewCustomFilter() {
-        if(name === '') {
+        if (name === '') {
             toast.error("Please enter a name")
             return
         }
@@ -79,7 +79,7 @@ function CustomDashboardManage() {
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId,name:name })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, name: name })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
@@ -92,22 +92,22 @@ function CustomDashboardManage() {
 
     // Update custom filter
     async function updateCustomFilter() {
-        if(name === '') {
+        if (name === '') {
             toast.error("Please enter a name")
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId,name:name })
+        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId, name: name })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
             setRefresh(refresh + 1)
-        }else{
+        } else {
             setLoading(false)
         }
     }
 
-    
+
     // Remove custom filter
     async function removeCustomFilter() {
         setLoading(true)
@@ -169,7 +169,7 @@ function CustomDashboardManage() {
                                                         customModule?.map((item, index) => {
                                                             return (
                                                                 <div className='col-xl-4' key={index}>
-                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => { setSelectedModule(item?.id); setCustomType(item?.model_type); setCustomId(item?.model?.id); setAddNewMod(false);setName(item?.name) }}>
+                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => { setSelectedModule(item?.id); setCustomType(item?.model_type); setCustomId(item?.model?.id); setAddNewMod(false); setName(item?.name) }}>
                                                                         <div className="itemWrapper a">
                                                                             <div className="heading h-auto d-block">
                                                                                 <h5>{item.name}</h5>
@@ -207,7 +207,7 @@ function CustomDashboardManage() {
                                                         })
                                                     }
                                                     <div className='col-xl-4'>
-                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => { setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId("");setName("") }}>
+                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => { setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId(""); setName("") }}>
                                                             <div className="itemWrapper a addNew">
                                                                 <i className='fa-regular fa-plus'></i>
                                                                 <p>Add New Module</p>
@@ -218,7 +218,7 @@ function CustomDashboardManage() {
                                             </div>
                                             {(selectedModule != null || addNewMod) && < div className='col-xl-6'>
                                                 <form>
-                                                <div className="formRow">
+                                                    <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Module Name</label>
                                                             <label htmlFor="data" className="formItemDesc">
@@ -226,7 +226,7 @@ function CustomDashboardManage() {
                                                             </label>
                                                         </div>
                                                         <div className="col-6">
-                                                            <input className='formItem' value={name} onChange={(e) => { setName(e.target.value)}}/>
+                                                            <input className='formItem' value={name} onChange={(e) => { setName(e.target.value) }} />
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
@@ -291,7 +291,7 @@ function CustomDashboardManage() {
                                                     <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Select Info</label>
-                                                            <label htmlFor="data" className="formItemDesc">
+                                                            <label className="formItemDesc">
                                                                 Please select the info of the feature you want to display in the module.
                                                             </label>
                                                         </div>
@@ -299,7 +299,7 @@ function CustomDashboardManage() {
                                                             <div className='row'>
                                                                 <div className='col-6'>
                                                                     <div className='formLabel'>
-                                                                        <label>First Column</label>
+                                                                        <label className="formItemDesc">First Column</label>
                                                                     </div>
                                                                     <select className="formItem">
                                                                         <option>Active Calls</option>
@@ -310,7 +310,7 @@ function CustomDashboardManage() {
                                                                 </div>
                                                                 <div className='col-6'>
                                                                     <div className='formLabel'>
-                                                                        <label>Second Column</label>
+                                                                        <label className="formItemDesc">Second Column</label>
                                                                     </div>
                                                                     <select className="formItem">
                                                                         <option>Active Calls</option>
