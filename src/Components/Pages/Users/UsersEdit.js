@@ -57,7 +57,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState?.user_role == "Company"
   );
- console.log("0000",setUsersDetails)
+  console.log("0000", setUsersDetails)
   const {
     register,
     watch,
@@ -635,8 +635,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                            return item.permission_id;
-                                          })
+                                          return item.permission_id;
+                                        })
                                     );
                                   }}
                                 >
@@ -806,7 +806,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                               <div className="col-xl-12">
                                 <div className="headerCommon d-flex align-items-center">
-                                  <div className="col-5">
+                                  <div className="col">
                                     Permissions for Role{" "}
                                     <span
                                       style={{
@@ -986,9 +986,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               />
                             </div>
                             <div
-                              className={`${
-                                watch().extension_id ? "col-5" : "col-5"
-                              }`}
+                              className={`${watch().extension_id ? "col-5" : "col-5"
+                                }`}
                             >
                               <select
                                 className="formItem"
@@ -997,8 +996,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                                // value={watch().extension_id}
-                                // {...register("extension_id")}
+                              // value={watch().extension_id}
+                              // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>

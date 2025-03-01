@@ -379,11 +379,11 @@ function Roles() {
                               <i class="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {  checkViewSidebar(
+                          {checkViewSidebar(
                             "Role",
                             permissions,
-                            account?.permissions,"add"
-                          )? (
+                            account?.permissions, "add"
+                          ) ? (
                             <button
                               onClick={() => {
                                 setAddRole(true);
@@ -612,7 +612,7 @@ function Roles() {
                                 }}
                               >
                                 <div class="headerCommon d-flex justify-content-between align-items-center pe-0">
-                                  <div class="col-5">
+                                  <div class="col">
                                     Permissions for{" "}
                                     <span
                                       style={{
@@ -652,7 +652,7 @@ function Roles() {
                                     This will apper only for agents (Agents will
                                     only access webrtc)
                                   </span>
-                                  <div class="accordion permissionListWrapper h-auto">
+                                  <div class="accordion permissionListWrapper">
                                     {filteredPermission &&
                                       Object.keys(filteredPermission).map(
                                         (item, key) => (
