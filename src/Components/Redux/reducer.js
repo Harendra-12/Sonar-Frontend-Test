@@ -73,6 +73,8 @@ var allCallCenterIds = []
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
 var openCallCenterPopUp = false
 var logout = 0
+var dummyExtension = ""
+var dummyPassword = ""
 
 const initialState = {
   account,
@@ -149,6 +151,8 @@ const initialState = {
   callCenterPopUp,
   logout,
   accountRefresh,
+  dummyExtension,
+  dummyPassword
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -367,6 +371,16 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callCenterPopUp: action.callCenterPopUp,
       };
+    case "SET_DUMMYEXTENSION":
+      return {
+        ...state,
+        dummyExtension: action.dummyExtension
+      };
+    case "SET_DUMMYPASSWORD":
+      return {
+        ...state,
+        dummyPassword: action.dummyPassword
+      }
     case "RESET_STATE":
       return initialState;
     case "SET_LOGOUT":
