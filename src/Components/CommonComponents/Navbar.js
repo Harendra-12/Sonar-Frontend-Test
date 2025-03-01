@@ -946,7 +946,7 @@ function Navbar() {
                     </>
                   )}
                   {checkViewSidebar(
-                    permissions, account?.permissions) ? (
+                      "ChannelHangupComplete",permissions, account?.permissions) ? (
                     <li className="">
                       <button
                         data-bs-toggle="collapse"

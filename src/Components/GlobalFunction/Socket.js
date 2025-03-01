@@ -37,7 +37,7 @@ const Socket = () => {
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result,current_time } = message;
-          console.log("00000result",{key},{result})
+          // console.log("00000result",{key},{result})
           switch (key) {
             case "UserRegister":
               dispatch({
