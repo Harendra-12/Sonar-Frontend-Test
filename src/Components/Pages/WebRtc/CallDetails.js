@@ -56,8 +56,7 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -336,49 +335,47 @@ function CallDetails({
                     {!isCustomerAdmin ? (
                       <td
                         style={{ paddingLeft: "32px" }}
-                        className={`${
-                          callDetails?.["Caller-Callee-ID-Number"] ===
-                            extension && callDetails?.["variable_billsec"] > 0
-                            ? "incoming"
-                            : callDetails?.["Caller-Caller-ID-Number"] ===
-                              extension
+                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
+                          extension && callDetails?.["variable_billsec"] > 0
+                          ? "incoming"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            extension
                             ? "outgoing"
                             : callDetails?.["Caller-Callee-ID-Number"] ===
-                                extension &&
+                              extension &&
                               callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
+                              ? "missed"
+                              : callDetails?.["Call-Direction"] === "voicemail"
+                                ? "voicemail"
+                                : ""
+                          }`}
                       >
                         <span>
                           {callDetails &&
-                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                          callDetails?.["variable_billsec"] > 0
+                            callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                            ? "Outgoing"
-                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              ? "Outgoing"
+                              : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                              callDetails?.["variable_billsec"] === 0
-                            ? "Missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""}
+                                callDetails?.["variable_billsec"] === 0
+                                ? "Missed"
+                                : callDetails?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${
-                          callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
+                        className={`${callDetails?.["variable_billsec"] === 0
+                          ? "missed"
+                          : callDetails?.["Call-Direction"] === "voicemail"
                             ? "voicemail"
                             : ""
-                        }`}
+                          }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
@@ -429,10 +426,11 @@ function CallDetails({
                         </thead>
                         <tbody>
                           {callHistory?.map((item) => (
-                            <tr key={item.id}>
-                              <td>{formatDate(item.variable_start_stamp)}</td>
-                              <td>{formatTime(item.variable_start_stamp)}</td>
-                              {/* <td
+                            <>
+                              <tr key={item.id} data-bs-toggle="collapse" href={`#voiceMail${item.id}`} role="button" class="collapsed" aria-expanded="false">
+                                <td>{formatDate(item.variable_start_stamp)}</td>
+                                <td>{formatTime(item.variable_start_stamp)}</td>
+                                {/* <td
                         className={`${
                           item["Caller-Callee-ID-Number"] === extension &&
                           item["variable_billsec"] > 0
@@ -462,84 +460,100 @@ function CallDetails({
                             : ""}
                         </span>
                       </td> */}
-                              {!isCustomerAdmin ? (
-                                <td
-                                  style={{ paddingLeft: "32px" }}
-                                  className={`${
-                                    item?.["Caller-Callee-ID-Number"] ===
+                                {!isCustomerAdmin ? (
+                                  <td
+                                    style={{ paddingLeft: "32px" }}
+                                    className={`${item?.["Caller-Callee-ID-Number"] ===
                                       extension &&
-                                    item?.["variable_billsec"] > 0
+                                      item?.["variable_billsec"] > 0
                                       ? "incoming"
                                       : item?.["Caller-Caller-ID-Number"] ===
                                         extension
-                                      ? "outgoing"
-                                      : item?.["Caller-Callee-ID-Number"] ===
+                                        ? "outgoing"
+                                        : item?.["Caller-Callee-ID-Number"] ===
                                           extension &&
-                                        item?.["variable_billsec"] === 0
-                                      ? "missed"
-                                      : item?.["Call-Direction"] === "voicemail"
-                                      ? "voicemail"
-                                      : ""
-                                  }`}
-                                >
-                                  <span>
-                                    {item &&
-                                    item?.["Caller-Callee-ID-Number"] ===
-                                      extension &&
-                                    item?.["variable_billsec"] > 0
-                                      ? "Incoming"
-                                      : item?.["Caller-Caller-ID-Number"] ===
-                                        extension
-                                      ? "Outgoing"
-                                      : item?.["Caller-Callee-ID-Number"] ===
-                                          extension &&
-                                        item?.["variable_billsec"] === 0
-                                      ? "Missed"
-                                      : item?.["Call-Direction"] === "voicemail"
-                                      ? "voicemail"
-                                      : ""}
-                                  </span>
-                                </td>
-                              ) : (
-                                <td
-                                // className={`${item?.["variable_billsec"] === 0
-                                //   ? "missed"
-                                //   : item?.["Call-Direction"] === "voicemail"
-                                //     ? "voicemail"
-                                //     : ""
-                                //   }`}
-                                >
-                                  <span>
-                                    {item?.["Caller-Callee-ID-Number"]}
-                                    {item?.["variable_billsec"] > 0 ? (
-                                      <i
-                                        class="fa-solid fa-phone mx-2"
-                                        style={{ color: "var(--ui-accent)" }}
-                                      ></i>
-                                    ) : (
-                                      <i
-                                        class="fa-solid fa-phone-xmark mx-2"
-                                        style={{ color: "red" }}
-                                      ></i>
-                                    )}
-                                    {item?.["Caller-Caller-ID-Number"]}
-                                  </span>
-                                </td>
-                              )}
-                              {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
-                              {/* <td>
+                                          item?.["variable_billsec"] === 0
+                                          ? "missed"
+                                          : item?.["Call-Direction"] === "voicemail"
+                                            ? "voicemail"
+                                            : ""
+                                      }`}
+                                  >
+                                    <span>
+                                      {item &&
+                                        item?.["Caller-Callee-ID-Number"] ===
+                                        extension &&
+                                        item?.["variable_billsec"] > 0
+                                        ? "Incoming"
+                                        : item?.["Caller-Caller-ID-Number"] ===
+                                          extension
+                                          ? "Outgoing"
+                                          : item?.["Caller-Callee-ID-Number"] ===
+                                            extension &&
+                                            item?.["variable_billsec"] === 0
+                                            ? "Missed"
+                                            : item?.["Call-Direction"] === "voicemail"
+                                              ? "voicemail"
+                                              : ""}
+                                    </span>
+                                  </td>
+                                ) : (
+                                  <td
+                                  // className={`${item?.["variable_billsec"] === 0
+                                  //   ? "missed"
+                                  //   : item?.["Call-Direction"] === "voicemail"
+                                  //     ? "voicemail"
+                                  //     : ""
+                                  //   }`}
+                                  >
+                                    <span>
+                                      {item?.["Caller-Callee-ID-Number"]}
+                                      {item?.["variable_billsec"] > 0 ? (
+                                        <i
+                                          class="fa-solid fa-phone mx-2"
+                                          style={{ color: "var(--ui-accent)" }}
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          class="fa-solid fa-phone-xmark mx-2"
+                                          style={{ color: "red" }}
+                                        ></i>
+                                      )}
+                                      {item?.["Caller-Caller-ID-Number"]}
+                                    </span>
+                                  </td>
+                                )}
+                                {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
+                                {/* <td>
                         {item["Caller-Caller-ID-Number"] ===
                         extension
                           ? item["Caller-Caller-ID-Number"]
                           : item["Caller-Callee-ID-Number"]}
                       </td> */}
-                              <td style={{ color: "var(--color-subtext)" }}>
-                                {formatDuration(item.variable_billsec)}
-                              </td>
-                            </tr>
+                                <td style={{ color: "var(--color-subtext)" }}>
+                                  {formatDuration(item.variable_billsec)}
+                                </td>
+                              </tr>
+                              <tr className="collapse" id={`voiceMail${item.id}`}>
+                                <td colSpan={5}>
+                                  <div class="audio-container collapse" id={`voiceMail${item.id}`}>
+                                    <audio controls={true}>
+                                      <source src="" type="audio/ogg" />
+                                      <source src="" type="audio/mpeg" />
+                                    </audio>
+                                    <button class="audioCustomButton">
+                                      <i class="fa-sharp fa-solid fa-download"></i>
+                                    </button>
+                                    <button class="audioCustomButton ms-1">
+                                      <i class="fa-sharp fa-solid fa-box-archive"></i>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </>
                           ))}
                         </tbody>
-                      </table>
+                      </table >
                     </div>
                   </div>
                 </div>
