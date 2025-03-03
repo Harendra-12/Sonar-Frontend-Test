@@ -159,7 +159,7 @@
 
 }
 
-@media (min-width:1100px) and (max-width: 1300px) {
+@media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 15px;
     }
@@ -170,7 +170,7 @@
 
 }
 
-@media (max-width: 1366px) {
+@media (max-device-width: 1366px) {
     h3 {
         font-size: 22px;
     }
