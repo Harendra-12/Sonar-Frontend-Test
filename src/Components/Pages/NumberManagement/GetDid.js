@@ -283,7 +283,7 @@ function GetDid() {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Get DID</h4>
+                        <h4>Buy A Number</h4>
                         <p>You can purchase a DID here</p>
                       </div>
                       <div className="buttonGroup">
@@ -304,9 +304,31 @@ function GetDid() {
                     </div>
                   </div>
                 </div>
-                <div className="col-12" style={{ padding: "25px 23px" }}>
+                <div className="col-12" style={{ padding: "5px 23px 25px" }}>
                   <div className="row">
-                    <div className="col-xl-4  mx-auto">
+                    <div className={`formRow col-3`}>
+                      <div
+                        className="formLabel d-flex justify-content-between"
+                        style={{ width: "100%" }}
+                      >
+                        <label htmlFor="quantity">Country</label>
+                        {errors.quantity && (
+                          <ErrorMessage text={errors.quantity.message} />
+                        )}
+                      </div>
+                      <div className="col-12">
+                        <div className="formItem d-flex align-items-center">
+                          <img src='https://cdn-icons-png.flaticon.com/512/11105/11105310.png' style={{ width: 'auto', height: '100%', marginRight: '10px' }} />
+                          <label>(+1) United States - US</label>
+                        </div>
+                        <label htmlFor="data" className="formItemDesc text-start">
+                          Input your preferred country
+                        </label>
+                      </div>
+                    </div>
+                    <div />
+
+                    <div className="col-xl-4  mx-auto mt-2">
                       <div className={watch().searchType === "domestic" ? "itemWrapper local-calls a active" : "itemWrapper local-calls a"} onClick={() => setValue('searchType', "domestic")} style={{ cursor: 'pointer' }}>
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div className="float-none">
