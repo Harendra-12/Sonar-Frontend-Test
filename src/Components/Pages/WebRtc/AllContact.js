@@ -4,13 +4,13 @@ import {
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
-  // logout,
+  logout
 } from "../../GlobalFunction/globalFunction";
 import AddNewContactPopup from "./AddNewContactPopup";
 import { toast } from "react-toastify";
 import ContentLoader from "../../Loader/ContentLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-// import { useSIPProvider } from "modify-react-sipjs";
+import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
 
 function AllContact({
@@ -22,9 +22,10 @@ function AllContact({
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
-  // const { sessionManager } = useSIPProvider();
+  const { sessionManager } = useSIPProvider()
+  
   // const [contact, setContact] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [selectedDeleteId, setSelectedDeleteId] = useState(null);
   const [selectedEditContact, setSelectedEditContact] = useState(null);
   const [editContactToggle, setEditContactToggle] = useState(false);
@@ -102,20 +103,18 @@ function AllContact({
   };
   // Function to handle logout
   const handleLogOut = async () => {
-    debugger;
-    console.log("000000", { allCallCenterIds });
-    // setLoading(true);
+    setLoading(true);
     try {
-      // const apiResponses = await logout(
-      //   allCallCenterIds,
-      //   dispatch,
-      //   sessionManager
-      // );
+      const apiResponses =await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
     } catch (error) {
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
   return (
@@ -190,7 +189,7 @@ function AllContact({
                             />
                           </div>
                           <div class="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
@@ -233,7 +232,7 @@ function AllContact({
                     <span>
                       {account && extension ? (
                         <span>
-                          {account.username} - {account && extension}
+                          {account?.username} - {account && extension}
                         </span>
                       ) : (
                         <span className="text-danger">
@@ -842,7 +841,7 @@ function AllContact({
           editContactToggle={editContactToggle}
           setEditContactToggle={setEditContactToggle}
           selectedEditContact={selectedEditContact}
-          // setLoading={setAllContactLoading}
+          setLoading={setAllContactLoading}
           setSelectedEditContact={setSelectedEditContact}
           loading={allContactLoading}
         />

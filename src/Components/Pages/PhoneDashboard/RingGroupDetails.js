@@ -11,7 +11,7 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-  console.log("000Ring",{ringGroup})
+  
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -151,7 +151,7 @@ const RingGroup = () => {
                                 call.ring_group_destination.map((item, index) => (
                                   <li>
                                     <div className="dropdown-item">
-                                      {item.username}
+                                      {item?.username}
                                     </div>
                                   </li>
                                 ))

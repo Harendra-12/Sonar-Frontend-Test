@@ -101,28 +101,37 @@ function CallDetails({
       setactivePage("messages");
     }
   };
-console.log('000set',{currentPlaying})
-  const handlePlaying = async (audio) => {  
+
+  const handlePlaying = async (audio) => {
+    if (!audio) return;
+    if (currentPlaying === audio) {
+      if (thisAudioRef.current) {
+        thisAudioRef.current.pause();
+      }
+      setCurrentPlaying(null);
+      return;
+    }
+
+    setCurrentPlaying(audio);
+
     try {
-      setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
       const res = await generatePreSignedUrl(url);
 
       if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
-        // Wait for React state update before accessing ref
+        setAudioURL(res.url);
         setTimeout(() => {
           if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
+            thisAudioRef.current.load();
+            thisAudioRef.current
+              .play()
+              .catch((error) => console.error("Audio play error:", error));
           }
-        }, 100); // Reduced timeout to minimize delay
+        }, 100);
       }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
+      setCurrentPlaying(null);
     }
   };
 
@@ -477,12 +486,8 @@ console.log('000set',{currentPlaying})
                                 class="collapsed"
                                 aria-expanded="false"
                                 onClick={() => {
-                                  if (
-                                    currentPlaying == item["recording_path"]
-                                  ) {
-                                    setCurrentPlaying(null);
-                                  } else {
-                                    handlePlaying(item["recording_path"]);
+                                  if (item?.recording_path) {
+                                    handlePlaying(item?.recording_path);
                                   }
                                 }}
                               >
@@ -595,47 +600,45 @@ console.log('000set',{currentPlaying})
                                   {formatDuration(item.variable_billsec)}
                                 </td>
                               </tr>
-                              {item?.recording_path && (
-                                <tr
-                                  className="collapse"
-                                  id={`voiceMail${item.id}`}
-                                >
-                                  <td colSpan={5}>
-                                    <div
-                                      class="audio-container collapse"
-                                      id={`voiceMail${item.id}`}
-                                    >
-                                      <audio
-                                        controls={true}
-                                        ref={thisAudioRef}
-                                        autoPlay={true}
-                                        onEnded={() => {
-                                          setCurrentPlaying(null);
-                                        }}
-                                      >
-                                        <source
-                                          src={audioURL}
-                                          type="audio/mpeg"
-                                        />
-                                      </audio>
+                              {item?.recording_path &&
+                                currentPlaying === item?.recording_path && (
+                                  <tr
+                                    className="show"
+                                    id={`voiceMail${item?.id}`}
+                                  >
+                                    <td colSpan={5}>
+                                      <div className="audio-container">
+                                        <audio
+                                          controls={true}
+                                          ref={thisAudioRef}
+                                          autoPlay={true}
+                                          onEnded={() => {
+                                            setCurrentPlaying(null);
+                                          }}
+                                        >
+                                          <source
+                                            src={audioURL}
+                                            type="audio/mpeg"
+                                          />
+                                        </audio>
 
-                                      <button
-                                        class="audioCustomButton"
-                                        onClick={() =>
-                                          handleAudioDownload(
-                                            item.recording_path
-                                          )
-                                        }
-                                      >
-                                        <i class="fa-sharp fa-solid fa-download"></i>
-                                      </button>
-                                      <button class="audioCustomButton ms-1">
-                                        <i class="fa-sharp fa-solid fa-box-archive"></i>
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              )}
+                                        <button
+                                          className="audioCustomButton"
+                                          onClick={() =>
+                                            handleAudioDownload(
+                                              item.recording_path
+                                            )
+                                          }
+                                        >
+                                          <i className="fa-sharp fa-solid fa-download"></i>
+                                        </button>
+                                        <button className="audioCustomButton ms-1">
+                                          <i className="fa-sharp fa-solid fa-box-archive"></i>
+                                        </button>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                )}
                             </>
                           ))}
                         </tbody>
