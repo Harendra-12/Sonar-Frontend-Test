@@ -165,8 +165,8 @@ const Users = () => {
   // Deleting userand updating the global state
   const handleDelete = async (deleteId) => {
     setPopUp(false);
+    setLoading(true)
     const apiData = await generalDeleteFunction(`/user/${deleteId}`);
-
     if (apiData.status) {
       const updatedData = user.data.filter((item) => item.id !== deleteId);
       setUser({ ...user, data: updatedData });
@@ -176,6 +176,7 @@ const Users = () => {
         type: "SET_USERSBYACCOUNT",
         usersByAccount: { ...user, data: updatedData },
       });
+      toast.success(apiData.message)
     } else {
       toast.error(apiData.error);
     }

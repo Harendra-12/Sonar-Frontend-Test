@@ -836,13 +836,13 @@ function AllContact({
         </section>
       </main>
 
-      {addContactToggle && (
+      {addContactToggle && !allContactLoading && (
         <AddNewContactPopup
           setAddContactToggle={setAddContactToggle}
           editContactToggle={editContactToggle}
           setEditContactToggle={setEditContactToggle}
           selectedEditContact={selectedEditContact}
-          // setLoading={setAllContactLoading}
+          setLoading={setAllContactLoading}
           setSelectedEditContact={setSelectedEditContact}
           loading={allContactLoading}
         />

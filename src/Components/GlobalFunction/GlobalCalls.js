@@ -291,22 +291,16 @@ function GlobalCalls() {
   }, [rolesRefresh]);
   useEffect(() => {
     async function getData() {
-      // const apiData = await generalGetFunction(`/role/all`);
       const permissionData = await generalGetFunction("/permission");
-      // if (apiData?.status) {
-      //   dispatch({
-      //     type: "SET_ROLES",
-      //     roles: apiData.data,
-      //   });
-      // }
       if (permissionData?.status) {
         dispatch({
           type: "SET_PERMISSIONS",
           permissions: permissionData.data,
         });
+        localStorage.setItem("permissions",JSON.stringify(permissionData.data))
       }
     }
-    if (permissionRefresh > 0 &&localStorage.getItem("token")) {
+    if (permissionRefresh > 0 && localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);

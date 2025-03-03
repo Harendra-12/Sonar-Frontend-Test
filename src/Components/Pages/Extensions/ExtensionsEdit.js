@@ -54,6 +54,7 @@ const ExtensionsEdit = ({ page }) => {
   // React Hook Form for handling form in efficient way
   const {
     register,
+    unregister,
     watch,
     formState: { errors },
     handleSubmit,
@@ -90,7 +91,6 @@ const ExtensionsEdit = ({ page }) => {
         const apiData = await generalGetFunction(`/extension/${value}`);
         if (apiData?.status) {
           setLoading(false);
-          // console.log("99999999", { apiData });
           const resetInfo = {
             account_code: apiData.data.account_code,
             callgroup: apiData.data.callgroup,
@@ -228,6 +228,8 @@ const ExtensionsEdit = ({ page }) => {
   };
 
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
+  
+ 
   const handleFormSubmit = handleSubmit(async (data, title) => {
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
@@ -448,6 +450,19 @@ const ExtensionsEdit = ({ page }) => {
   const forwardToValueDestination = (value) => {
     setValue("destination_forward_to", value[0]);
   };
+
+  useEffect(()=>{
+    console.log(Object.keys(watch()).includes("destination_forward_to"),Object.keys(watch()),watch().followme == "0");
+    if(watch().followme == "0"){
+      if(Object.keys(watch()).includes("destination_forward_to")){
+        unregister("destination_forward_to");
+      }
+    }
+  },[watch()])
+
+  console.log("-----",watch());
+  
+
   return (
     <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
       <section id="phonePage">
@@ -1536,13 +1551,13 @@ const ExtensionsEdit = ({ page }) => {
                                     name="delay"
                                     id="selectFormRow"
                                     {...register("followme")}
-                                    defaultValue={0}
+                                    defaultValue={"0"}
                                   >
-                                    <option value={1}>Enabled</option>
-                                    <option value={0}>Disabled</option>
+                                    <option value={"1"}>Enabled</option>
+                                    <option value={"0"}>Disabled</option>
                                   </select>
                                 </div>
-                                {watch().followme == 0 ? (
+                                {watch().followme === "0" || watch().followme === 0 ? (
                                   ""
                                 ) : (
                                   <div className="formRow col-xl-12 px-0 border-0">
