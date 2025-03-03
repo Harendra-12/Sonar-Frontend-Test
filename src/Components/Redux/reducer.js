@@ -75,6 +75,7 @@ var openCallCenterPopUp = false
 var logout = 0
 var dummyExtension = ""
 var dummyPassword = ""
+var accountBalance = 0
 
 const initialState = {
   account,
@@ -152,7 +153,8 @@ const initialState = {
   logout,
   accountRefresh,
   dummyExtension,
-  dummyPassword
+  dummyPassword,
+  accountBalance
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -197,6 +199,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, extensionRefresh: action.extensionRefresh };
     case "SET_RINGGROUP":
       return { ...state, ringGroup: action.ringGroup };
+    case "SET_ACCOUNTBALANCE":
+      return { ...state, accountBalance: action.accountBalance };
     case "SET_OPEN_CALLCENTER_POPUP":
       return {
         ...state,
