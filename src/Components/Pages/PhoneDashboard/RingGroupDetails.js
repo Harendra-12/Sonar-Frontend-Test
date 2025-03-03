@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
 const RingGroup = () => {
   const dispatch = useDispatch();
   const ringGroup = useSelector((state) => state.ringGroup);
@@ -11,7 +10,8 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-  
+  const allCallDetails = useSelector((state) => state.allCallDetails);
+
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -81,7 +81,10 @@ const RingGroup = () => {
               </div> */}
             </div>
           </div>
-          <div className="col-12" style={{ overflow: "auto", padding: "10px 10px 0px" }}>
+          <div
+            className="col-12"
+            style={{ overflow: "auto", padding: "10px 10px 0px" }}
+          >
             <div className="tableContainer mt-0" style={{ height: "30vh" }}>
               <table>
                 <thead>
@@ -97,79 +100,90 @@ const RingGroup = () => {
                   </tr>
                 </thead>
                 <tbody className="">
-                  {ringGroupData && ringGroup && ringGroup.map((call, index) => (
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{call.name}</td>
-                      <td>
-                        {
-                          activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
-                            .length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension &&
-                              data["variable_DIALSTATUS"] !== "SUCCESS"
-                          ).length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension &&
-                              data["variable_DIALSTATUS"] === "SUCCESS"
-                          ).length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension
-                          ).length
-                        }
-                      </td>
-                      <td>
-
-                        <div className="dropdown">
-                          <div
-                            style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            {call.ring_group_destination.length}
-                          </div>
-                          <ul className="dropdown-menu light" >
-                            <li className="col-12"><div className="dropdown-item fw-bold disabled">Agents</div></li>
-                            <div style={{ columnCount: call.ring_group_destination.length > 6 ? 2 : 1 }}>
-                              {
-                                call.ring_group_destination.map((item, index) => (
-                                  <li>
-                                    <div className="dropdown-item">
-                                      {item?.username}
-                                    </div>
-                                  </li>
-                                ))
-                              }
+                  {ringGroupData &&
+                    ringGroup &&
+                    ringGroup.map((call, index) => (
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{call.name}</td>
+                        <td>
+                          {
+                            activeCallData.filter(
+                              (e) =>
+                                e.dest === call.extension &&
+                                (e.b_callstate === "ACTIVE" ||
+                                  e.b_callstate === "HELD")
+                            ).length
+                          }
+                        </td>
+                        <td>
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                                call?.extension &&
+                              item["Call-Direction"] == "missed" &&
+                              item.application_state == "ringgroup"
+                          )[0]?.filter_count || 0}
+                        </td>
+                        <td>
+                          {
+                           allCallDetails?.application_state_count?.find((item)=>item?.application_state== 'ringgroup')?.total_count
+                          }
+                        </td>
+                        <td>
+                          {
+                           allCallDetails?.completed_calls_count?.find((item)=>item?.application_state== 'ringgroup')?.total_count
+                          }
+                        </td>
+                        <td>
+                          <div className="dropdown">
+                            <div
+                              style={{
+                                color: "var(--ui-accent)",
+                                textDecoration: "underline",
+                              }}
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              {call.ring_group_destination.length}
                             </div>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>{call.extension}</td>
-                    </tr>)
-                  )}
+                            <ul className="dropdown-menu light">
+                              <li className="col-12">
+                                <div className="dropdown-item fw-bold disabled">
+                                  Agents
+                                </div>
+                              </li>
+                              <div
+                                style={{
+                                  columnCount:
+                                    call.ring_group_destination.length > 6
+                                      ? 2
+                                      : 1,
+                                }}
+                              >
+                                {call.ring_group_destination.map(
+                                  (item, index) => (
+                                    <li>
+                                      <div className="dropdown-item">
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  )
+                                )}
+                              </div>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>{call.extension}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 };

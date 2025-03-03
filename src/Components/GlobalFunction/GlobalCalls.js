@@ -47,6 +47,12 @@ function GlobalCalls() {
             type: "SET_ALLCALL",
             allCall: apiData.data,
           });
+          dispatch({
+            type: "SET_ALLCALLDETAILS",
+            allCallDetails: apiData?.cdr_filters
+            ,
+          });
+          
         }
       }
 

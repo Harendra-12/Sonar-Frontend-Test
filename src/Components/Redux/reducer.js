@@ -6,6 +6,7 @@ var loginUser = [];
 var callState = [];
 var channelHangupComplete = [];
 var allCall = [];
+var allcallDetails=[];
 var activeCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
 var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
@@ -171,6 +172,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, channelHangupComplete: action.channelHangupComplete };
     case "SET_ALLCALL":
       return { ...state, allCall: action.allCall };
+      case "SET_ALLCALLDETAILS":
+      return { ...state, allCallDetails: action.allCallDetails };
     case "SET_TEMPACCOUNT":
       return { ...state, tempAccount: action.tempAccount };
     case "SET_ACCOUNTDETAILS":
