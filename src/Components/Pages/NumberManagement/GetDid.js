@@ -333,7 +333,7 @@ function GetDid() {
                   {(watch().searchType === "tollfree" || watch().searchType === "domestic") && (
                     <div className="row mt-4">
                       <div className="col-3">
-                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                        <div className="itemWrapper a" style={{ border: '1px solid var(--border-color)', boxShadow: 'none' }}>
                           <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
                             <div className="formRow col-12 d-none">
                               <div className="formLabel">
