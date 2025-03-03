@@ -8,10 +8,10 @@
     overflow-y: auto;
 }
 
-.masterList {
+/* .masterList {
     height: calc(100vh - 252px);
     overflow-y: auto;
-}
+} */
 
 .masterList ul {
     margin-top: 10px;

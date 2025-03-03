@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
@@ -186,11 +186,27 @@ function GetDid() {
     setSelectedDid(selectedDid.filter((item1) => item1 !== item));
   }
 
-  const handleChangeUsage = (newValue) => {
-    const nonRemovable = { label: "Voice", value: "voice" };
+  // OLD LOGIC TO HANDLE SELECT BOX
+  // const handleChangeUsage = (newValue) => {
+  //   const nonRemovable = { label: "Voice", value: "voice" };
 
-    const updatedValue = newValue.filter((option) => option.value !== "voice");
-    setSelectedUsage([...updatedValue, nonRemovable]);
+  //   const updatedValue = newValue.filter((option) => option.value !== "voice");
+  //   setSelectedUsage([...updatedValue, nonRemovable]);
+  // };
+
+  // LOGIC TO HANDLE CHECKBOXES
+  const handleChangeUsage = (e) => {
+    const nonRemovable = { label: "Voice", value: "voice" };
+    const { name, checked } = e.target;
+    const updatedValue = { label: name, value: name.toLowerCase() }
+
+    setSelectedUsage((prev) => {
+      let newSelection = prev.filter((item) => item.value != updatedValue.value);
+      if (checked) {
+        newSelection = [...newSelection, updatedValue]
+      }
+      return [nonRemovable, ...newSelection.filter((item) => item.value !== "voice")];
+    })
   };
 
   // Handle payment
@@ -332,9 +348,9 @@ function GetDid() {
                   </div>
                   {(watch().searchType === "tollfree" || watch().searchType === "domestic") && (
                     <div className="row mt-4">
-                      <div className="col-3">
-                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
-                          <form onSubmit={handleSubmit(onSubmit)} className="mb-0">
+                      <div className={`col-${did ? '3' : '12'}`}>
+                        <div className="itemWrapper a" style={{ border: '1px solid var(--border-color)', boxShadow: 'none' }}>
+                          <form onSubmit={handleSubmit(onSubmit)} className={`mb-0 ${did ? '' : 'row'}`}>
                             <div className="formRow col-12 d-none">
                               <div className="formLabel">
                                 <label htmlFor="searchType">Search Type</label>
@@ -360,7 +376,7 @@ function GetDid() {
                                 </label>
                               </div>
                             </div>
-                            <div className="formRow col-12">
+                            <div className={`formRow col-${did ? '12' : 'xxl-1 col-lg-2'}`}>
                               <div
                                 className="formLabel d-flex justify-content-between"
                                 style={{ width: "100%" }}
@@ -388,12 +404,12 @@ function GetDid() {
                                 </label>
                               </div>
                             </div>
-                            <div className="formRow col-12">
+                            <div className={`formRow col-${did ? '12' : '3'}`}>
                               <div className="formLabel">
                                 <label htmlFor="">Usage</label>
                               </div>
                               <div className="col-12">
-                                <Select
+                                {/* <Select
                                   options={option}
                                   styles={customStyles}
                                   isMulti
@@ -401,15 +417,78 @@ function GetDid() {
                                   onChange={handleChangeUsage}
                                   classNamePrefix="select"
                                   placeholder="Select usage..."
-                                />
+                                /> */}
+                                <div className="d-flex justify-content-between">
+                                  <div class="checkbox-wrapper-4">
+                                    <input class="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
+                                    <label class="cbx" for="Voice">
+                                      <span>
+                                        <svg width="12px" height="10px">
+                                        </svg>
+                                      </span>
+                                      <span className="checkBoxLabel">Voice</span>
+                                    </label>
+                                    <svg class="inline-svg">
+                                      <symbol id="check-4" viewBox="0 0 12 10">
+                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                      </symbol>
+                                    </svg>
+                                  </div>
+                                  <div class="checkbox-wrapper-4">
+                                    <input class="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
+                                    <label class="cbx" for="Text">
+                                      <span>
+                                        <svg width="12px" height="10px">
+                                        </svg>
+                                      </span>
+                                      <span className="checkBoxLabel">Text</span>
+                                    </label>
+                                    <svg class="inline-svg">
+                                      <symbol id="check-4" viewBox="0 0 12 10">
+                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                      </symbol>
+                                    </svg>
+                                  </div>
+                                  <div class="checkbox-wrapper-4">
+                                    <input class="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
+                                    <label class="cbx" for="Fax">
+                                      <span>
+                                        <svg width="12px" height="10px">
+                                        </svg>
+                                      </span>
+                                      <span className="checkBoxLabel">Fax</span>
+                                    </label>
+                                    <svg class="inline-svg">
+                                      <symbol id="check-4" viewBox="0 0 12 10">
+                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                      </symbol>
+                                    </svg>
+                                  </div>
+                                  <div class="checkbox-wrapper-4">
+                                    <input class="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
+                                    <label class="cbx" for="Emergency">
+                                      <span>
+                                        <svg width="12px" height="10px">
+                                        </svg>
+                                      </span>
+                                      <span className="checkBoxLabel">Emergency</span>
+                                    </label>
+                                    <svg class="inline-svg">
+                                      <symbol id="check-4" viewBox="0 0 12 10">
+                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                      </symbol>
+                                    </svg>
+                                  </div>
+                                </div>
                                 <label htmlFor="data" className="formItemDesc text-start">
                                   Set how the Destination will be used
                                 </label>
                               </div>
                             </div>
+                            <div />
                             {
                               watch().searchType === "domestic" ? <>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '3'}`}>
                                   <div className="formLabel">
                                     <label htmlFor="searchBy">Search By</label>
                                   </div>
@@ -439,12 +518,12 @@ function GetDid() {
                             }
                             {
                               (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '3'}`}>
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="npa">First 3 Digits (Area Code)</label>
+                                    <label htmlFor="npa">First 3 Digits</label>
                                     {errors.npa && (
                                       <ErrorMessage text={errors.npa.message} />
                                     )}
@@ -461,7 +540,7 @@ function GetDid() {
                                       })}
                                     />
                                     <label htmlFor="data" className="formItemDesc text-start">
-                                      Input the first 3 digits for the DID
+                                      Input the first 3 digits (NPA - Area Code) of the DID
                                     </label>
                                   </div>
                                 </div>
@@ -470,12 +549,12 @@ function GetDid() {
 
                             {
                               (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '3'}`}>
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
                                   >
-                                    <label htmlFor="nxx">Next 3 Digits (Exchange Code)</label>
+                                    <label htmlFor="nxx">Next 3 Digits</label>
                                     {errors.nxx && (
                                       <ErrorMessage text={errors.nxx.message} />
                                     )}
@@ -492,7 +571,7 @@ function GetDid() {
                                       })}
                                     />
                                     <label htmlFor="data" className="formItemDesc text-start">
-                                      Input the nxx for the DID
+                                      Input the next 3 digits (NXX - Exchange Code) of a DID
                                     </label>
                                   </div>
                                 </div>
@@ -502,7 +581,7 @@ function GetDid() {
 
                             {
                               (watch().searchBy === "ratecenter" && watch().searchType === "domestic") && <>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '2'}`}>
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
@@ -522,11 +601,11 @@ function GetDid() {
                                       })}
                                     />
                                     <label htmlFor="data" className="formItemDesc text-start">
-                                      Input the rateCenter for the DID
+                                      Input the rate center for the DID
                                     </label>
                                   </div>
                                 </div>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '2'}`}>
                                   <div
                                     className="formLabel d-flex justify-content-between"
                                     style={{ width: "100%" }}
@@ -550,7 +629,7 @@ function GetDid() {
                                     </label>
                                   </div>
                                 </div>
-                                <div className="formRow col-12">
+                                <div className={`formRow col-${did ? '12' : '2'}`}>
                                   <div className="formLabel">
                                     <label htmlFor="contiguous">Contiguous</label>
                                   </div>
