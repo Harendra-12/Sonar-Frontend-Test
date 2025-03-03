@@ -23,7 +23,6 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
-  const updateBalance = useSelector((state) => state.updateBalance);
   const logout = useSelector((state) => state.logout);
 
   const navigate = useNavigate();
@@ -311,21 +310,6 @@ function GlobalCalls() {
     }
   }, [permissionRefresh]);
 
-  // Getting account balance
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction("/account-balance");
-      if (apiData?.status) {
-        dispatch({
-          type: "SET_BALANCE",
-          balance: apiData,
-        });
-      }
-    }
-    if (account) {
-      getData();
-    }
-  }, [updateBalance]);
 
   // Getting ivr details
   useEffect(() => {

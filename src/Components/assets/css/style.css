@@ -59,7 +59,7 @@
 
 
 :root {
-  --bg-color: #fafafa;
+  --bg-color: #f3f3f3;
   --bgdark-color: #111525;
   /* Dark Mode */
   /* --nav-color: #141718; */
@@ -337,16 +337,16 @@ ul {
   color: var(--form-input-text) !important;
 }
 
-.tableContainer .open-live{
+.tableContainer .open-live {
   height: 20px;
   width: 100px;
   /* border: 1px solid black; */
-  display:flex ;
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
   color: green;
-  
+
 
 
 }
