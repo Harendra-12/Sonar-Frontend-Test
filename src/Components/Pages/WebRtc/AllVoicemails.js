@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  generatePreSignedUrl,
   logout,
 } from "../../GlobalFunction/globalFunction";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -29,11 +30,43 @@ function AllVoicemails({ isCustomerAdmin }) {
   const { sessionManager, connectStatus } = useSIPProvider();
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  const audioRef = useRef(null);
-
+    const thisAudioRef = useRef(null);
+  const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioURL, setAudioURL] = useState("");
+  
+   
+  
+    useEffect(()=>{
+      const handlePlaying = async (audio) => {
+        try {
+          setCurrentPlaying(audio);
+          const url = audio.split(".com/").pop();
+          const res = await generatePreSignedUrl(url);
+    
+          if (res?.status && res?.url) {
+            setAudioURL(res.url); // Update audio URL state
+    
+            // Wait for React state update before accessing ref
+            setTimeout(() => {
+              if (thisAudioRef.current) {
+                thisAudioRef.current.load(); // Reload audio source
+                thisAudioRef.current.play().catch((error) => {
+                  console.error("Audio play error:", error);
+                });
+              }
+            }, 100); // Reduced timeout to minimize delay
+          }
+        } catch (error) {
+          console.error("Error in handlePlaying:", error);
+        }
+      };
+      if(clickedVoiceMail){
+        handlePlaying(clickedVoiceMail.recording_path)
+      }
+    },[clickedVoiceMail])
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.load(); // Reload the audio source
+    if (thisAudioRef.current) {
+      thisAudioRef.current.load(); // Reload the audio source
     }
   }, [clickedVoiceMail]);
 
@@ -685,7 +718,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
+                                      <tr >
                                         <td>
                                           {formatDate(
                                             clickedVoiceMail.created_at
@@ -733,17 +766,25 @@ function AllVoicemails({ isCustomerAdmin }) {
                                       </tr>
                                     </tbody>
                                   </table>
-                                  <div className="audio-container mx-2">
-                                    <audio ref={audioRef} controls={true}>
+                                  {clickedVoiceMail.recording_path&& <div className="audio-container mx-2">
+                                  <audio
+                                          controls={true}
+                                          ref={thisAudioRef}
+                                          autoPlay={true}
+                                          onEnded={() => {
+                                            setCurrentPlaying(null);
+                                          }}
+                                        >
+                                          <source
+                                            src={audioURL}
+                                            type="audio/mpeg"
+                                          />
+                                        </audio>
                                       {/* <source
                                 src="https://crmdata-test.s3.us-east-2.amazonaws.com/rout.8.webvio.in/2024/Oct/01/b78c0901-4cb1-4c3d-9f5f-2e0c0a61775c.wav"
                                 type="audio/ogg"
                               /> */}
-                                      <source
-                                        src={clickedVoiceMail.recording_path}
-                                        type="audio/mpeg"
-                                      />
-                                    </audio>
+                                     
 
                                     <button
                                       className="audioCustomButton"
@@ -758,7 +799,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                  </div>
+                                  </div>}
                                 </div>
                               </div>
                               <div

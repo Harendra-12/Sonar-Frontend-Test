@@ -3,6 +3,7 @@ import { generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ConferenceLoader from '../../Loader/ConferenceLoader';
+import { useDispatch } from 'react-redux';
 
 function ConferenceJoin() {
     // getting the value of querry type
@@ -12,6 +13,7 @@ function ConferenceJoin() {
     const [pin, setPin] = useState('')
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch();
     const [videoEnable, setVideoEnable] = useState(true)
     const videoRef = useRef(null);           // Reference to the video element
     const streamRef = useRef(null);          // Reference to store the media stream  
@@ -75,6 +77,14 @@ function ConferenceJoin() {
                         navigate("/conference-join", {
                             state: { state: apiData.data, pin: pin },
                         });
+                        dispatch({
+                            type: "SET_DUMMYEXTENSION",
+                            dummyExtension: apiData.data.extension
+                        })
+                        dispatch({
+                            type: "SET_DUMMYPASSWORD",
+                            dummyPassword: apiData.data.password
+                        })
                     } else {
                         setLoading(false);
                         toast.error("Failed to join the conference");

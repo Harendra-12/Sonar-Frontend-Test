@@ -3,24 +3,22 @@ import React, { useEffect, useState } from "react";
 import { SIPProvider } from "modify-react-sipjs";
 import { DummySipRegisteration } from "./DummySipRegisteration";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function DummyRegistration() {
   const ip = process.env.REACT_APP_BACKEND_IP;
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const location = useLocation();
   const locationState = location.state;
-  console.log("locationState", locationState);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const navigate = useNavigate();
-  const [extension, setExtension] = useState();
-  const [password, setPassword] = useState();
+  const extension = useSelector((state) => state.dummyExtension);
+  const password = useSelector((state) => state.dummyPassword);
   const [domain, setDomain] = useState();
   const [webSocketServer, setWebSocketServer] = useState();
   useEffect(() => {
-    if (locationState.state.extension && locationState.state.password) {
+    if (extension!=="" && password!=="") {
       setDomain(locationState.state.domainName);
-      setExtension(locationState.state.extension);
-      setPassword(locationState.state.password);
       setWebSocketServer(`wss://${ip}:${port}`);
     } else {
       navigate(-1);
