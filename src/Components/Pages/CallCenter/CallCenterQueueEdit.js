@@ -1545,7 +1545,7 @@ function CallCenterQueueEdit() {
                                     }`}
                                 >
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "6"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1589,7 +1589,7 @@ function CallCenterQueueEdit() {
                                                 value={userItem.id}
                                                 key={userItem.id}
                                               >
-                                                {userItem.alias
+                                                {/* {userItem.alias
                                                   ? `${truncateString(
                                                     userItem?.alias
                                                   )} - ${userItem.extension
@@ -1599,7 +1599,10 @@ function CallCenterQueueEdit() {
                                                     userItem?.name
                                                   )} - ${userItem.extension
                                                     ?.extension
-                                                  }`}
+                                                  }`} */}
+                                                {userItem.alias
+                                                  ? `${userItem?.alias} - ${userItem.extension?.extension}`
+                                                  : `${userItem?.name} - ${userItem.extension?.extension}`}
                                                 {/* {userItem.username} (
                                               {userItem.extension?.extension}) */}
                                               </option>
@@ -1615,7 +1618,7 @@ function CallCenterQueueEdit() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "2"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -2575,7 +2578,7 @@ function CallCenterQueueEdit() {
                 <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
               </div>
               <ul>
-                {selectedAgentToEdit.length>0&&selectedAgentToEdit
+                {selectedAgentToEdit.length > 0 && selectedAgentToEdit
                   .map((item) => user?.find((user) => item?.name == user?.id)).filter((item) => item?.name?.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
                   .map((items) => (
                     <li><i className="fa-regular fa-user me-2" />{items?.name}</li>

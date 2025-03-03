@@ -431,7 +431,7 @@ const RingGroupEdit = () => {
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      toast.success(apiData.message);
+      // toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
       dispatch({
@@ -1092,7 +1092,7 @@ const RingGroupEdit = () => {
                                             value={item.extension?.extension}
                                             key={item.id}
                                           >
-                                            {item.alias
+                                            {/* {item.alias
                                               ? `${truncateString(
                                                 item?.alias
                                               )} - ${item.extension?.extension
@@ -1100,7 +1100,10 @@ const RingGroupEdit = () => {
                                               : `${truncateString(
                                                 item?.name
                                               )} - ${item.extension?.extension
-                                              }`}
+                                              }`} */}
+                                            {item.alias
+                                              ? `${item?.alias} - ${item.extension?.extension}`
+                                              : `${item?.name} - ${item.extension?.extension}`}
                                           </option>
                                         );
                                       })}

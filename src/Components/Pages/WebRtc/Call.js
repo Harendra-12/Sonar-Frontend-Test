@@ -63,8 +63,6 @@ function Call({
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-
-  console.log(startDate, endDate);
   useEffect(() => {
     async function fetchData() {
       if (currentPage === 1) {

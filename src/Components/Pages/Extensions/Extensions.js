@@ -69,7 +69,7 @@ const Extensions = () => {
   const userWithExtension = userList
     .filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
     .map((user) => ({
-      name: user.username,
+      name: user?.username,
       extension: user.extension.extension, // Access the nested extension value
     }));
 

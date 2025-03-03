@@ -342,6 +342,8 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   }
   // Dispatch logout action and disconnect session
   dispatch({ type: "SET_LOGOUT", logout: 1 });
-  dispatch({type:"RESET_STATE"})
+  setTimeout(() => {
+    dispatch({type:"RESET_STATE"})
+  }, 100);
   sessionManager.disconnect();
 }

@@ -606,7 +606,7 @@ function DestinationEdit() {
                             users.map((item, key) => {
                               return (
                                 <option key={key} value={item.id}>
-                                  {item.username}
+                                  {item?.username}
                                 </option>
                               );
                             })}

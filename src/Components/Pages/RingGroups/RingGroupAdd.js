@@ -303,6 +303,7 @@ const RingGroupAdd = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
+      toast.error(apiData.error)
     }
   });
 
@@ -956,7 +957,7 @@ const RingGroupAdd = () => {
                                               value={item.extension?.extension}
                                               key={item.id}
                                             >
-                                              {item.alias
+                                              {/* {item.alias
                                                 ? `${truncateString(
                                                   item?.alias
                                                 )} - ${item.extension?.extension
@@ -964,7 +965,10 @@ const RingGroupAdd = () => {
                                                 : `${truncateString(
                                                   item?.name
                                                 )} - ${item.extension?.extension
-                                                }`}
+                                                }`} */}
+                                              {item.alias
+                                                ? `${item?.alias} - ${item.extension?.extension}`
+                                                : `${item?.name} - ${item.extension?.extension}`}
                                               {/* {item.name}(
                                             {item.extension?.extension}) */}
                                             </option>
