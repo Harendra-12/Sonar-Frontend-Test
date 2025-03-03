@@ -431,7 +431,7 @@ const RingGroupEdit = () => {
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      toast.success(apiData.message);
+      // toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
       dispatch({

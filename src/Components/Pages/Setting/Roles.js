@@ -153,6 +153,10 @@ function Roles() {
           setUpdateRole("");
           setLoading(false);
           setEditIndex();
+          dispatch({
+            type: "SET_ROLES_REFRESH",
+            rolesRefresh: rolesRefresh + 1,
+          });
         } else {
           setLoading(false);
           // const errorMessage = Object.keys(apiData.errors);
@@ -426,48 +430,6 @@ function Roles() {
                       >
                         <div className="masterSegment">
                           <ul>
-                            {/* {addRole ? (
-                              <li>
-                                <div className="col-xl-8 col-7">
-                                  <input
-                                    type="text"
-                                    value={newRole}
-                                    // onChange={(e) => setNewRole(e.target.value)}
-                                    onChange={handleChange}
-                                    placeholder="Add new Role"
-                                    //on enter press, add new role
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") {
-                                        setPopup(true);
-                                        setSaveClick(true);
-                                      }
-                                    }}
-                                  ></input>
-                                </div>
-                                <div className="col-auto d-flex justify-content-end">
-                                  <button className="tableButton edit">
-                                    <i
-                                      className="fa-solid fa-check"
-                                      onClick={() => {
-                                        setPopup(true);
-                                        setSaveClick(true);
-                                      }}
-                                    ></i>
-                                  </button>
-                                  <button className="tableButton delete ms-2">
-                                    <i
-                                      className="fa-solid fa-trash"
-                                      onClick={() => {
-                                        setAddRole(false);
-                                        setNewRole("");
-                                      }}
-                                    ></i>
-                                  </button>
-                                </div>
-                              </li>
-                            ) : (
-                              ""
-                            )} */}
                             {role &&
                               role.map((item, index) => {
                                 return (
@@ -489,7 +451,7 @@ function Roles() {
                                       selectedRoleId === item.id ? "active" : ""
                                     }
                                   >
-                                    <div className="col-xl-8 col-7">
+                                    <div className="col-xl-8 col-7" >
                                       <input
                                         type="text"
                                         placeholder={item.name}

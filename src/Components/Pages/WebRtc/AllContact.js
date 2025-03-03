@@ -835,7 +835,7 @@ function AllContact({
         </section>
       </main>
 
-      {addContactToggle && (
+      {addContactToggle && !allContactLoading && (
         <AddNewContactPopup
           setAddContactToggle={setAddContactToggle}
           editContactToggle={editContactToggle}
