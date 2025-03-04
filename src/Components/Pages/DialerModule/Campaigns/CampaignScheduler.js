@@ -48,7 +48,7 @@ function CampaignScheduler() {
                                             </div>
                                         </div>
                                         <div className="col-12" style={{ padding: '25px 23px' }}>
-                                            <div className='col-xl-6'>
+                                            <div className='col-xl-7'>
                                                 <div className="row">
                                                     <div className='col-xl-12'>
                                                         <div className='heading bg-transparent border-bottom-0'>
@@ -151,6 +151,162 @@ function CampaignScheduler() {
                                                                 <div className='col-12'>
                                                                     <h4>Hours</h4>
                                                                     <p>Set which hours you want to be active</p>
+                                                                </div>
+                                                                <div className='col-12'>
+                                                                    <div className='row align-items-center'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Monday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Tuesday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Wednesday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Thursday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Friday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Saturday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='row align-items-center mt-3'>
+                                                                        <div style={{ width: 100 }}>
+                                                                            <label className='fw-medium'>Sunday</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <div className='position-relative'>
+                                                                                <label className="switch">
+                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                    <span className="slider round" />
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <label>TO</label>
+                                                                        </div>
+                                                                        <div className='col-auto'>
+                                                                            <input type="time" className='formItem' />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
