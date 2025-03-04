@@ -387,14 +387,45 @@ function CallCenterQueue() {
                                           >
                                             {item.strategy}
                                           </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.agents.length}
+                                          <td >
+                                            <div className="dropdown">
+                                              <div
+                                                style={{
+                                                  color: "var(--ui-accent)",
+                                                  textDecoration: "underline",
+                                                }}
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                {item.agents.length}
+                                              </div>
+                                              <ul className="dropdown-menu light">
+                                                <li className="col-12">
+                                                  <div className="dropdown-item fw-bold disabled">
+                                                    Agents
+                                                  </div>
+                                                </li>
+                                                <div
+                                                  style={{
+                                                    columnCount:
+                                                      item.agents.length > 6
+                                                        ? 2
+                                                        : 1,
+                                                  }}
+                                                >
+                                                  {item.agents.map(
+                                                    (item, index) => (
+                                                      <li key={index}>
+                                                        <div className="dropdown-item">
+                                                          {item?.username}
+                                                        </div>
+                                                      </li>
+                                                    )
+                                                  )}
+                                                </div>
+                                              </ul>
+                                            </div>
                                           </td>
                                           <td>
                                             <div className="my-auto position-relative mx-1">

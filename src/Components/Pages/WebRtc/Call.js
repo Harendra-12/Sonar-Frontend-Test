@@ -13,6 +13,7 @@ import { useSIPProvider } from "modify-react-sipjs";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  generalPutFunction,
   logout,
 } from "../../GlobalFunction/globalFunction";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -59,6 +60,8 @@ function Call({
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
+  const [comment, setComment] = useState("");
+  const [commentId, setCommentId] = useState("");
   const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
@@ -386,63 +389,13 @@ function Call({
                     .replace(" AM", "am")
                     .replace(" PM", "pm")}
                 </p>
-                <button className="clearButton2 xl" type="button" >
+                <button className="clearButton2 xl" type="button" onClick={()=>{setCommentId(item?.id); setComment(item?.comment)}}>
                   <i className="fa-light fa-comment-dots" />
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div className="backdropContact ">
-          <div className="addNewContactPopup">
-            <div className="formRow px-0 row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-light fa-comment-dots" />
-                <h5>Agent Note</h5>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="formLabel">
-                  <label htmlFor="">Note</label>
-                </div>
-                <div className="col-12">
-                  <textarea
-                    rows={4}
-                    className="formItem h-auto"
-                    placeholder="Note Content"
-                    name="did"
-                    disabled={true}
-                  />
-                </div>
-              </div>
-              <div className="col-xl-12">
-                <div className="formLabel">
-                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
-                  <label>Some Name</label>
-                </div>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between align-items-center">
-                  <button className="panelButton gray mx-0">
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  <button className="tableButton delete">
-                    <i className="fa-solid fa-trash" />
-                  </button>
-                  <button className="panelButton mx-0">
-                    <span className="text">Save</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-floppy-disk" />
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </>
     );
   };
@@ -650,7 +603,7 @@ function Call({
       callProgress: mode === "video" ? false : true,
     });
   }
-  console.log("clickStatus", clickStatus);
+
   useEffect(() => {
     if (selectedModule === "onGoingCall") {
       if (videoCall) {
@@ -672,7 +625,24 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
-
+// Logic to handle comments for the call
+async function handleComments(remove){
+  if(comment==="" || !comment){
+    toast.error("Please enter a comment");
+    return;
+  }
+  setLoading(true);
+  const apiData = await generalPutFunction(`/update-cdr-comment/${commentId}`,{comment:remove?"":comment});
+  if(apiData.status){
+    toast.success(apiData.message);
+    setComment("");
+    setCommentId("");
+    setLoading(false);
+  }else{
+    setLoading(false);
+    toast.error(apiData.message);
+  }
+}
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -861,29 +831,6 @@ function Call({
                           </select>
                         </div>
                         <div className="d-flex">
-                          {/* <div className="col-6 pe-2">
-                          <input
-                            type="date"
-                            className="formItem"
-                            style={{
-                              background: "var(--searchBg)",
-                              borderColor: "var(--border-color)",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="date"
-                            className="formItem"
-                            style={{
-                              background: "var(--searchBg)",
-                              borderColor: "var(--border-color)",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </div> */}
-
                           {filterBy === "date" && (
                             <div className="ms-2">
                               <label className="formLabel text-start mb-0 w-100">
@@ -955,17 +902,7 @@ function Call({
                       </div>
                     </div>
                   </div>
-                  {/* <button
-                      className="ms-2 me-0 appPanelButton"
-                      effect="ripple"
-                      onClick={() => setAddContactToggle(true)}
-                    >
-                      <i className="fa-light fa-user-plus" />
-                    </button> */}
                 </div>
-                {/* <div>
-                        <SipRegister />
-                      </div> */}
 
                 <div className="col-12">
                   <nav className="mt-3">
@@ -973,63 +910,6 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      {/* <button
-                        onClick={() => setClickStatus("all")}
-                        className={
-                          clickStatus === "all" ? "tabLink active" : "tabLink"
-                        }
-                        data-category="all"
-                      >
-                        <i className="fa-light fa-phone" />
-                      </button> */}
-                      {/* <button
-                        onClick={() => setClickStatus("incoming")}
-                        className={
-                          clickStatus === "incoming"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="incoming"
-                      >
-                        <i className="fa-light fa-phone-arrow-down-left" />
-                      </button>
-                      <button
-                        onClick={() => setClickStatus("outgoing")}
-                        className={
-                          clickStatus === "outgoing"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        <i className="fa-light fa-phone-arrow-up-right" />
-                      </button>
-                      <button
-                        onClick={() => setClickStatus("missed")}
-                        className={
-                          clickStatus === "missed"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        <i className="fa-light fa-phone-missed" />
-                      </button> */}
-                      {/* <button
-                        onClick={() => setClickStatus("voicemail")}
-                        className={
-                          clickStatus === "voicemail"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="voicemail"
-                      >
-                        <i className="fa-light fa-microphone-lines" />
-                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -1111,50 +991,68 @@ function Call({
                   setExtensionFromCdrMessage={setExtensionFromCdrMessage}
                   allContact={allContact}
                 />
-                {/* {selectedModule == "onGoingCall" ? (
-                  callProgress ? (
-                    <OngoingCall
-                      setactivePage={setactivePage}
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                    />
-                  ) : (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      isVideoOn={isVideoOn}
-                      onCall={onCall}
-                      setactivePage={setactivePage}
-                    />
-                  )
-                ) : (
-                  clickedCall && (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      isVideoOn={isVideoOn}
-                      onCall={onCall}
-                      setactivePage={setactivePage}
-                    />
-                  )
-                )} */}
               </div>
             </div>
           </div>
         </section>
       </main>
-      {/* <IncomingCallPopup /> */}
-      {/* <IncomingCalls setSelectedModule={setSelectedModule} /> */}
+
+      {/* Comment section start */}
+      {commentId !== "" && !loading &&
+        <div className="backdropContact ">
+          <div className="addNewContactPopup">
+            <div className="formRow px-0 row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-comment-dots" />
+                <h5>Agent Note</h5>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="formLabel">
+                  <label htmlFor="">Note</label>
+                </div>
+                <div className="col-12">
+                  <textarea
+                    rows={4}
+                    className="formItem h-auto"
+                    placeholder="Note Content"
+                    name="did"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="col-xl-12">
+                <div className="formLabel">
+                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
+                  <label>Some Name</label>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between align-items-center">
+                  <button className="panelButton gray mx-0" onClick={()=>{setComment("");setCommentId("")}}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  {
+                    comment && comment!=="" &&   <button className="tableButton delete" onClick={()=>handleComments(true)}>
+                    <i className="fa-solid fa-trash" />
+                  </button>
+                  }
+                  <button className="panelButton mx-0" onClick={()=>handleComments(false)}>
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      {/* Comment section end */}
       {dialpadShow ? (
         <Dialpad
           hideDialpad={handleHideDialpad}

@@ -70,14 +70,6 @@ const CallQueueDetails = () => {
                 <h4>Call Queue</h4>
                 <p>You can see a brief analysis of all the call queues</p>
               </div>
-              {/* <div className="buttonGroup">
-                <button effect="ripple" className="panelButton">
-                  <span className="text">Export</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-file-csv" />
-                  </span>
-                </button>
-              </div> */}
             </div>
           </div>
           <div
@@ -134,32 +126,40 @@ const CallQueueDetails = () => {
                         <td>
                           <div className="dropdown">
                             <div
-                              style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
+                              style={{
+                                color: "var(--ui-accent)",
+                                textDecoration: "underline",
+                              }}
                               type="button"
                               data-bs-toggle="dropdown"
                               aria-expanded="false"
                             >
                               {call.agents.length}
                             </div>
-                            <ul className="dropdown-menu light" >
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Active:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status === "available"
-                                    ).length
-                                  }
+                            <ul className="dropdown-menu light">
+                              <li className="col-12">
+                                <div className="dropdown-item fw-bold disabled">
+                                  Agents
                                 </div>
                               </li>
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Offline:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status !== "available"
-                                    ).length
-                                  }
-                                </div>
-                              </li>
+                              <div
+                                style={{
+                                  columnCount:
+                                    call.agents.length > 6
+                                      ? 2
+                                      : 1,
+                                }}
+                              >
+                                {call.agents.map(
+                                  (item, index) => (
+                                    <li key={index}>
+                                      <div className="dropdown-item">
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  )
+                                )}
+                              </div>
                             </ul>
                           </div>
                         </td>
