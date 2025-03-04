@@ -10,6 +10,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
+    const allCallDetails = useSelector((state) => state.allCallDetails);
   // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -111,29 +112,23 @@ const CallQueueDetails = () => {
                           }
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] !== "SUCCESS"
-                            ).length
+                        {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                                call?.extension &&
+                              item["Call-Direction"] == "missed" &&
+                              item?.application_state == 'callcenter'
+                          )[0]?.filter_count || 0}
+                        </td>
+                        <td>
+                        {
+                           allCallDetails?.application_state_count.find((item)=>item?.application_state==  
+                           "callcenter")?.total_count||0
                           }
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] === "SUCCESS"
-                            ).length
-                          }
-                        </td>
-                        <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension
-                            ).length
+                        {
+                           allCallDetails?.completed_calls_count.find((item)=>item?.application_state== 'callcenter')?.total_count||0
                           }
                         </td>
                         <td>
