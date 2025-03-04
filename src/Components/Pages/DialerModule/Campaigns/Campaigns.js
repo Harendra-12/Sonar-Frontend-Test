@@ -113,7 +113,6 @@ function Campaigns() {
                               <th>Agents</th>
                               <th>Records</th>
                               <th>Options</th>
-                              <th />
                             </tr>
                           </thead>
                           <tbody>
@@ -258,9 +257,10 @@ function Campaigns() {
                                           <i className="fa-solid fa-ellipsis-vertical" />
                                         </div>
                                         <ul class="dropdown-menu actionBtnDropdowns">
-                                          <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-circle-pause me-2"></i> Stop</div></li>
+                                          <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
                                           <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-circle-play me-2"></i> Start</div></li>
                                           <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div class="clearButton text-align-start"><i class="fa-regular fa-pen me-2"></i> Edit</div></li>
+                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div class="clearButton text-align-start"><i class="fa-regular fa-clock me-2"></i> Schedule</div></li>
                                           <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-trash me-2"></i> Delete</div></li>
                                         </ul>
                                       </div>
