@@ -48,275 +48,277 @@ function CampaignScheduler() {
                                             </div>
                                         </div>
                                         <div className="col-12" style={{ padding: '25px 23px' }}>
-                                            <div className='col-xl-7'>
-                                                <div className="row">
-                                                    <div className='col-xl-12'>
-                                                        <div className='heading bg-transparent border-bottom-0 pt-0'>
-                                                            <div className='content'>
-                                                                <h4>Operational Hours</h4>
-                                                                <p>Choose the hours and days of the week you would like the service to be active in. You can choose a default strategy or customize one yourself.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='col-xl-12'>
-                                                        <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
-                                                            <div className='row gy-3'>
-                                                                <div className='col-12'>
-                                                                    <div className='heading bg-transparent border-bottom-0 p-0'>
-                                                                        <div className='content'>
-                                                                            <h4>Strategy</h4>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='col-xl-4'>
-                                                                    <div className="itemWrapper local-calls a active" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            {/* <i className="fa-solid fa-phone-flip" /> */}
-                                                                            <h5 className='mb-2'>Default</h5>
-                                                                            <p>Best suited for set and forget operators who want to maximise across all times</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='col-xl-4'>
-                                                                    <div className="itemWrapper local-calls a text-start" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            {/* <i className="fa-solid fa-phone-flip" /> */}
-                                                                            <h5 className='mb-2'>Custom</h5>
-                                                                            <p>Use for specific control and optimize for each unique window of time</p>
-                                                                        </div>
-                                                                    </div>
+                                            <div className='row'>
+                                                <div className='col-xl-7' style={{ borderRight: '1px solid var(--border-color)' }}>
+                                                    <div className="row">
+                                                        <div className='col-xl-12'>
+                                                            <div className='heading bg-transparent border-bottom-0 pt-0'>
+                                                                <div className='content'>
+                                                                    <h4>Operational Hours</h4>
+                                                                    <p>Choose the hours and days of the week you would like the service to be active in. You can choose a default strategy or customize one yourself.</p>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className='col-xl-12'>
-                                                        <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
-                                                            <div className='row'>
-                                                                <div className='col-12'>
-                                                                    <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
-                                                                        <div className='content'>
-                                                                            <h4>Eligible Times</h4>
-                                                                            <p>Select the days of the week to be active</p>
+                                                        <div className='col-xl-12'>
+                                                            <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
+                                                                <div className='row gy-3'>
+                                                                    <div className='col-12'>
+                                                                        <div className='heading bg-transparent border-bottom-0 p-0'>
+                                                                            <div className='content'>
+                                                                                <h4>Strategy</h4>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='col-xl-4'>
+                                                                        <div className="itemWrapper local-calls a active" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                {/* <i className="fa-solid fa-phone-flip" /> */}
+                                                                                <h5 className='mb-2'>Default</h5>
+                                                                                <p>Best suited for set and forget operators who want to maximise across all times</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='col-xl-4'>
+                                                                        <div className="itemWrapper local-calls a text-start" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                {/* <i className="fa-solid fa-phone-flip" /> */}
+                                                                                <h5 className='mb-2'>Custom</h5>
+                                                                                <p>Use for specific control and optimize for each unique window of time</p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Mon</h5>
+                                                            </div>
+                                                        </div>
+                                                        <div className='col-xl-12'>
+                                                            <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
+                                                                <div className='row'>
+                                                                    <div className='col-12'>
+                                                                        <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
+                                                                            <div className='content'>
+                                                                                <h4>Eligible Times</h4>
+                                                                                <p>Select the days of the week to be active</p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Tue</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Mon</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Wed</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Tue</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Thu</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Wed</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Fri</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Thu</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Sat</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Fri</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className='col-auto'>
-                                                                    <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
-                                                                        <div className="heading d-block text-start h-auto">
-                                                                            <h5 className='mb-0'>Sun</h5>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Sat</h5>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                    <div className='col-auto'>
+                                                                        <div className="itemWrapper local-calls a h-auto" style={{ cursor: "pointer" }}>
+                                                                            <div className="heading d-block text-start h-auto">
+                                                                                <h5 className='mb-0'>Sun</h5>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div className='col-xl-12'>
-                                                        <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
-                                                            <div className='row'>
-                                                                <div className='col-12'>
-                                                                    <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
-                                                                        <div className='content'>
-                                                                            <h4>Hours</h4>
-                                                                            <p>Set which hours you want to be active</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className='col-12'>
-                                                                    <div className='row align-items-center'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Monday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                        <div className='col-xl-12'>
+                                                            <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
+                                                                <div className='row'>
+                                                                    <div className='col-12'>
+                                                                        <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
+                                                                            <div className='content'>
+                                                                                <h4>Hours</h4>
+                                                                                <p>Set which hours you want to be active</p>
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
                                                                     </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Tuesday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                    <div className='col-12'>
+                                                                        <div className='row align-items-center'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Monday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Wednesday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Tuesday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Thursday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Wednesday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Friday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Thursday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Saturday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Friday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className='row align-items-center mt-3'>
-                                                                        <div style={{ width: 100 }}>
-                                                                            <label className='fw-medium'>Sunday</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <div className='position-relative'>
-                                                                                <label className="switch">
-                                                                                    <input type="checkbox" id="showAllCheck" defaultChecked="" />
-                                                                                    <span className="slider round" />
-                                                                                </label>
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Saturday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
                                                                             </div>
                                                                         </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <label>TO</label>
-                                                                        </div>
-                                                                        <div className='col-auto'>
-                                                                            <input type="time" className='formItem' />
+                                                                        <div className='row align-items-center mt-3'>
+                                                                            <div style={{ width: 100 }}>
+                                                                                <label className='fw-medium'>Sunday</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <div className='position-relative'>
+                                                                                    <label className="switch">
+                                                                                        <input type="checkbox" id="showAllCheck" defaultChecked="" />
+                                                                                        <span className="slider round" />
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <label>TO</label>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <input type="time" className='formItem' />
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -324,9 +326,23 @@ function CampaignScheduler() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className='col-xl-4' style={{ borderLeft: '1px solid var(--border-color)' }}>
-
+                                                <div className='col-xl-5' >
+                                                    <div className='formRow'>
+                                                        <div className='formLabel'>
+                                                            <label>
+                                                                Campain Name:
+                                                            </label>
+                                                            <label className='formItemDesc'>
+                                                                Enter the name of the campaign
+                                                            </label>
+                                                        </div>
+                                                        <div className='col'>
+                                                            <input type="text" name="name" class="formItem" value="Test Campaign"
+                                                                style={{ borderRight: 'none', borderLeft: 'none', borderTop: 'none' }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
