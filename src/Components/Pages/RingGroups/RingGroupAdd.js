@@ -303,6 +303,7 @@ const RingGroupAdd = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
+      toast.error(apiData.error)
     }
   });
 

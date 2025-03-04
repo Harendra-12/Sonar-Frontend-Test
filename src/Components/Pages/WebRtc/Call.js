@@ -63,8 +63,6 @@ function Call({
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-
-  console.log(startDate, endDate);
   useEffect(() => {
     async function fetchData() {
       if (currentPage === 1) {
@@ -306,16 +304,17 @@ function Call({
                 style={{ cursor: "pointer" }}
               >
                 <h4>
+                  {item["Caller-Callee-ID-Number"] === extension
+                    ? item["Caller-Caller-ID-Number"]
+                    : item["Caller-Callee-ID-Number"]}
+                </h4>
+                <h5 style={{ paddingLeft: 20 }}>
                   {displayName
                     ? displayName
                     : item.caller_user
                       ? item.caller_user.username
                       : "USER XYZ"}
-                </h4>
-                <h5 style={{ paddingLeft: 20 }}>
-                  {item["Caller-Callee-ID-Number"] === extension
-                    ? item["Caller-Caller-ID-Number"]
-                    : item["Caller-Callee-ID-Number"]}
+
                 </h5>
                 {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>

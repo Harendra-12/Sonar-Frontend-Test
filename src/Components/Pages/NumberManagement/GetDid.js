@@ -117,7 +117,6 @@ const customStyles = {
 function GetDid() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
-  const updateBalance = useSelector((state) => state.updateBalance);
   const accountDetails = useSelector((state) => state.accountDetails);
   const accountDetailsRefresh = useSelector(
     (state) => state.accountDetailsRefresh
@@ -134,6 +133,8 @@ function GetDid() {
       value: "voice",
     },
   ]);
+  console.log(selectedUsage);
+
   const [popUp, setPopUp] = useState(false);
   const {
     register,
@@ -249,10 +250,7 @@ function GetDid() {
           setDid();
           setSelectedDid([]);
           navigate("/did-listing");
-          dispatch({
-            type: "SET_UPDATEBALANCE",
-            updateBalance: updateBalance + 1,
-          });
+         
         } else {
           setLoading(false);
           // const errorMessage = Object.keys(apiData.errors);
@@ -730,10 +728,27 @@ function GetDid() {
                                               <td>{item.didSummary}</td>
                                               <td>
                                                 <div class="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
-                                                  <i class="fa-solid m-1 fa-phone"></i>
-                                                  <i class="fa-regular m-1 fa-comments"></i>
-                                                  <i class="fa-solid m-1 fa-fax"></i>
-                                                  <i class="fa-regular m-1 fa-light-emergency-on"></i>
+                                                  {
+                                                    selectedUsage.map((item, key) => {
+                                                      if (item.label === "Voice") {
+                                                        return (
+                                                          <i class="fa-solid m-1 fa-phone" key={key}></i>
+                                                        )
+                                                      } else if (item.label === "Text") {
+                                                        return (
+                                                          <i class="fa-regular m-1 fa-comments" key={key}></i>
+                                                        )
+                                                      } else if (item.label === "Fax") {
+                                                        return (
+                                                          <i class="fa-solid m-1 fa-fax" key={key}></i>
+                                                        )
+                                                      } else if (item.label === "Emergency") {
+                                                        return (
+                                                          <i class="fa-regular m-1 fa-light-emergency-on" key={key}></i>
+                                                        )
+                                                      }
+                                                    })
+                                                  }
                                                 </div>
                                               </td>
                                               <td>{item.price} - {item.currency}</td>
