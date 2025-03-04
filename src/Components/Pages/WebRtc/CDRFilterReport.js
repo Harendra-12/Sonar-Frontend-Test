@@ -54,6 +54,8 @@ function CdrFilterReport({ page }) {
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [comment, setComment] = useState("");
+  const [commentId, setCommentId] = useState("");
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -72,7 +74,7 @@ function CdrFilterReport({ page }) {
     "variable_DIALSTATUS",
     "start_date",
     "end_date",
-   "call_cost",
+    "call_cost",
   ]);
 
   const thisAudioRef = useRef(null);
@@ -192,10 +194,10 @@ function CdrFilterReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-            ? callType
-            : page,
+              ? "pstn"
+              : page === "callrecording"
+                ? callType
+                : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -230,7 +232,14 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
-        if (apiData?.status) {
+        console.log("apiData", apiData);
+        if (apiData?.status === 403) {
+          toast.error("You don't have permission to access this page.");
+          setLoading(false);
+          setContentLoader(false);
+          setCircularLoader(false);
+        }
+        if (apiData?.status === true) {
           setCircularLoader(false);
           setLoading(false);
           setContentLoader(false);
@@ -243,7 +252,6 @@ function CdrFilterReport({ page }) {
             ...apiData?.data,
             data: filteredData,
           });
-
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -251,12 +259,12 @@ function CdrFilterReport({ page }) {
             });
           }
         } else {
-          setLoading(true);
-          setContentLoader(true);
+          setLoading(false);
+          setContentLoader(false);
         }
       } else {
-        setLoading(true);
-        setContentLoader(true);
+        setLoading(false);
+        setContentLoader(false);
         navigate("/");
       }
     }
@@ -454,17 +462,16 @@ function CdrFilterReport({ page }) {
         <section id="phonePage">
           <div className="container-fluid px-0 position-relative">
             <Header
-              title={`${
-                page === "billing"
-                  ? "Billing Reports"
-                  : page === "callcenter"
+              title={`${page === "billing"
+                ? "Billing Reports"
+                : page === "callcenter"
                   ? "Call Center Reports"
                   : page === "ringgroup"
-                  ? "Ring Group Reports"
-                  : page === "callrecording"
-                  ? "Call Recordings"
-                  : "CDR Reports"
-              }`}
+                    ? "Ring Group Reports"
+                    : page === "callrecording"
+                      ? "Call Recordings"
+                      : "CDR Reports"
+                }`}
             />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -476,24 +483,24 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
                         </h4>
                         <p>
                           Here are all the{" "}
                           {page === "billing"
                             ? "Billing Reports"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -569,7 +576,7 @@ function CdrFilterReport({ page }) {
                         {filteredKeys.includes("created_at") && (
                           <>
                             {" "}
-                            <div className="formRow border-0 ps-xl-0">
+                            <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Date Filter
                               </label>
@@ -708,7 +715,7 @@ function CdrFilterReport({ page }) {
                         )}
 
                         {page === "all" &&
-                        filteredKeys.includes("variable_sip_to_user") ? (
+                          filteredKeys.includes("variable_sip_to_user") ? (
                           <>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
@@ -721,7 +728,7 @@ function CdrFilterReport({ page }) {
                                   setPageNumber(1);
                                 }}
                                 value={callDirection}
-                                // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                               >
                                 <option value={""}>All Calls</option>
                                 <option value={"inbound"}>Inbound Calls</option>
@@ -762,7 +769,7 @@ function CdrFilterReport({ page }) {
                           ""
                         )}
                         {page === "callrecording" &&
-                        !filteredKeys.includes("Hangup-Cause") ? (
+                          !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
                           <>
@@ -901,8 +908,8 @@ function CdrFilterReport({ page }) {
                                     } else if (key === "Hangup-Cause") {
                                       formattedKey = "Hangup Status";
                                     }
-                                    else if(key==="call_cost"){
-                                      formattedKey="Charge"
+                                    else if (key === "call_cost") {
+                                      formattedKey = "Charge"
                                     } else {
                                       formattedKey = key
                                         .replace(/[-_]/g, " ")
@@ -916,6 +923,7 @@ function CdrFilterReport({ page }) {
                                   return null;
                                 })}
                                 <th>Block</th>
+                                <th>Note</th>
                               </tr>
                             </thead>
 
@@ -964,13 +972,13 @@ function CdrFilterReport({ page }) {
                                                   <td key={key}>
                                                     {item["recording_path"] &&
                                                       item["variable_billsec"] >
-                                                        0 && (
+                                                      0 && (
                                                         <button
                                                           className="tableButton px-2 mx-0"
                                                           onClick={() => {
                                                             if (
                                                               item[
-                                                                "recording_path"
+                                                              "recording_path"
                                                               ] ===
                                                               currentPlaying
                                                             ) {
@@ -981,16 +989,16 @@ function CdrFilterReport({ page }) {
                                                             } else {
                                                               handlePlaying(
                                                                 item[
-                                                                  "recording_path"
+                                                                "recording_path"
                                                                 ]
                                                               );
                                                             }
                                                           }}
                                                         >
                                                           {currentPlaying ===
-                                                          item[
+                                                            item[
                                                             "recording_path"
-                                                          ] ? (
+                                                            ] ? (
                                                             <i className="fa-solid fa-stop"></i>
                                                           ) : (
                                                             <i className="fa-solid fa-play"></i>
@@ -1032,7 +1040,7 @@ function CdrFilterReport({ page }) {
 
                                                 const callType =
                                                   callIcons[
-                                                    item["Call-Direction"]
+                                                  item["Call-Direction"]
                                                   ] || callIcons.internal;
 
                                                 return (
@@ -1060,11 +1068,11 @@ function CdrFilterReport({ page }) {
                                                       item["application_state"]
                                                     )
                                                       ? item[
-                                                          "other_leg_destination_number"
-                                                        ]
+                                                      "other_leg_destination_number"
+                                                      ]
                                                       : item[
-                                                          "Caller-Callee-ID-Number"
-                                                        ]}{" "}
+                                                      "Caller-Callee-ID-Number"
+                                                      ]}{" "}
                                                     {item[
                                                       "application_state_name"
                                                     ] &&
@@ -1094,9 +1102,8 @@ function CdrFilterReport({ page }) {
                                             <button
                                               disabled={isBlocked}
                                               effect="ripple"
-                                              className={`tableButton ${
-                                                isBlocked ? "delete" : "warning"
-                                              } ms-0`}
+                                              className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                } ms-0`}
                                               style={{
                                                 height: "34px",
                                                 width: "34px",
@@ -1106,14 +1113,14 @@ function CdrFilterReport({ page }) {
                                                   item["Call-Direction"] ===
                                                     "inbound"
                                                     ? item[
-                                                        "Caller-Caller-ID-Number"
-                                                      ]
+                                                    "Caller-Caller-ID-Number"
+                                                    ]
                                                     : item["Call-Direction"] ===
                                                       "outbound"
-                                                    ? item[
-                                                        "Caller-Callee-ID-Number"
+                                                      ? item[
+                                                      "Caller-Callee-ID-Number"
                                                       ]
-                                                    : "N/A"
+                                                      : "N/A"
                                                 );
                                                 setPopUp(true);
                                               }}
@@ -1129,36 +1136,44 @@ function CdrFilterReport({ page }) {
                                               </Tippy>
                                             </button>
                                           </td>
+                                          <td>
+                                            <button className={`tableButton ms-0`} onClick={() => { setCommentId(item.id); setComment(item?.comment) }}>
+                                              <Tippy content={'View Note'}
+                                              >
+                                                <i class="fa-solid fa-comment-dots"></i>
+                                              </Tippy>
+                                            </button>
+                                          </td>
                                         </tr>
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
-                                          item["recording_path"] && (
-                                          <tr>
-                                            <td colSpan={showKeys.length + 1}>
-                                              <div className="audio-container mx-2">
-                                                <audio
-                                                  controls={true}
-                                                  ref={thisAudioRef}
-                                                  autoPlay={true}
-                                                  onEnded={() => {
-                                                    setCurrentPlaying(null);
-                                                    setAudioURL("");
-                                                  }}
-                                                >
-                                                  <source
-                                                    src={audioURL}
-                                                    type="audio/mpeg"
-                                                  />
-                                                </audio>
+                                          item["recording_path"] && item["recording_path"] && (
+                                            <tr>
+                                              <td colSpan={showKeys.length + 1}>
+                                                <div className="audio-container mx-2">
+                                                  <audio
+                                                    controls={true}
+                                                    ref={thisAudioRef}
+                                                    autoPlay={true}
+                                                    onEnded={() => {
+                                                      setCurrentPlaying(null);
+                                                      setAudioURL("");
+                                                    }}
+                                                  >
+                                                    <source
+                                                      src={audioURL}
+                                                      type="audio/mpeg"
+                                                    />
+                                                  </audio>
 
-                                                <button className="audioCustomButton">
-                                                  <i className="fa-sharp fa-solid fa-download" />
-                                                </button>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        )}
+                                                  <button className="audioCustomButton">
+                                                    <i className="fa-sharp fa-solid fa-download" />
+                                                  </button>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          )}
                                       </React.Fragment>
                                     );
                                   })}
@@ -1242,6 +1257,60 @@ function CdrFilterReport({ page }) {
           ""
         )}
       </main>
+      {/* Note Popup */}
+      {
+        commentId !== "" && !loading &&
+        <div className="backdropContact ">
+          <div className="addNewContactPopup">
+            <div className="formRow px-0 row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-comment-dots" />
+                <h5>Agent Note</h5>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="formLabel">
+                  <label htmlFor="">Note</label>
+                </div>
+                <div className="col-12">
+                  <textarea
+                    rows={4}
+                    className="formItem h-auto"
+                    placeholder="Note Content"
+                    name="did"
+                    disabled={true}
+                    value={comment}
+                  />
+                </div>
+              </div>
+              {/* <div className="col-xl-12">
+                <div className="formLabel">
+                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
+                  <label>Some Name</label>
+                </div>
+              </div> */}
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between align-items-center">
+                  <button className="panelButton gray mx-0" onClick={() => { setCommentId(""); setComment("") }}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  {/* <button className="tableButton delete">
+                    <i className="fa-solid fa-trash" />
+                  </button>
+                  <button className="panelButton mx-0">
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk" />
+                    </span>
+                  </button> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </>
   );
 }

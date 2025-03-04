@@ -256,7 +256,7 @@ function CallCenterQueueEdit() {
   };
 
   const validateAgents = () => {
-    const allFieldsFilled = agent.every(
+    const allFieldsFilled = agent?.every(
       (item) => item?.name?.trim() !== "" && item?.password?.trim() !== ""
     );
     return allFieldsFilled;
@@ -264,7 +264,7 @@ function CallCenterQueueEdit() {
 
   // Validate unique agents
   const validateUniqueAgents = () => {
-    const agentValues = agent.map((item) => item.name);
+    const agentValues = agent?.map((item) => item?.name);
     const uniqueValues = [...new Set(agentValues)];
     return agentValues.length == uniqueValues.length;
   };
@@ -321,7 +321,7 @@ function CallCenterQueueEdit() {
             // Call checkPrevDestination with the current item
             const hasId = checkPrevAgents(item.id);
 
-            if (item.name.length > 0) {
+            if (item?.name.length > 0) {
               // Return the object with or without 'id' based on hasId
               return {
                 agent_name: item.name,
@@ -451,9 +451,9 @@ function CallCenterQueueEdit() {
   console.log(user, agent);
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name == item.name)) {
+      if (prevSelected.some((agent) => agent?.name == item?.name)) {
         // If the item is already in the array, remove it
-        return prevSelected.filter((agent) => agent.name !== item.name);
+        return prevSelected.filter((agent) => agent?.name !== item?.name);
       } else {
         // Otherwise, add the item
         return [...prevSelected, item];
@@ -468,7 +468,7 @@ function CallCenterQueueEdit() {
 
     selectedAgents.forEach((selectedAgent) => {
       const existingAgentIndex = newAgents.findIndex(
-        (a) => a.name == selectedAgent.id
+        (a) => a?.name == selectedAgent.id
       );
 
       if (existingAgentIndex == -1) {
@@ -513,7 +513,7 @@ function CallCenterQueueEdit() {
   }
   const filteredUsers = user?.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (user?.extension?.extension || "")
         .toLowerCase()
         .includes(searchQuery.toLowerCase())
@@ -521,7 +521,7 @@ function CallCenterQueueEdit() {
 
   // Filter out agents already added
   const availableUsers = filteredUsers?.filter(
-    (user) => !agent.some((agent) => user.id == agent.name)
+    (user) => !agent.some((agent) => user.id == agent?.name)
   );
 
   // Handle Select All
@@ -533,7 +533,7 @@ function CallCenterQueueEdit() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent.name == item.name)
+          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)
         ) {
           handleCheckboxChange(item);
         }
@@ -541,7 +541,7 @@ function CallCenterQueueEdit() {
     } else {
       // Remove all visible users from bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
-        if (bulkUploadSelectedAgents.some((agent) => agent.name == item.name)) {
+        if (bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)) {
           handleCheckboxChange(item);
         }
       });
@@ -550,8 +550,8 @@ function CallCenterQueueEdit() {
 
   const handleSelectUserToEdit = (item) => {
     setSelectedAgentToEdit((prevSelected) => {
-      if (prevSelected.some((agent) => agent.name == item.name)) {
-        return prevSelected.filter((agent) => agent.name !== item.name);
+      if (prevSelected.some((agent) => agent?.name == item?.name)) {
+        return prevSelected.filter((agent) => agent?.name !== item?.name);
       } else {
         return [...prevSelected, item];
       }
@@ -580,7 +580,7 @@ function CallCenterQueueEdit() {
     const mergedAgents = agent.map((agent) => {
       // Check if the agent is in the selectedAgentToEdit array
       const updatedAgent = updatedAgents.find(
-        (updated) => updated.id === agent.id // Assuming `id` is the unique identifier
+        (updated) => updated.id === agent?.id // Assuming `id` is the unique identifier
       );
       return updatedAgent || agent; // Use the updated agent if found, otherwise keep the original
     });
@@ -842,7 +842,7 @@ function CallCenterQueueEdit() {
                                   greetingSound.map((item, index) => {
                                     return (
                                       <option key={index} value={item.id}>
-                                        {item.name}
+                                        {item?.name}
                                       </option>
                                     );
                                   })}
@@ -909,7 +909,7 @@ function CallCenterQueueEdit() {
                                   holdSound.map((item, index) => {
                                     return (
                                       <option key={index} value={item.id}>
-                                        {item.name}
+                                        {item?.name}
                                       </option>
                                     );
                                   })}
@@ -1234,7 +1234,7 @@ function CallCenterQueueEdit() {
                                   announcmentSound.map((item, index) => {
                                     return (
                                       <option key={index} value={item.id}>
-                                        {item.name}
+                                        {item?.name}
                                       </option>
                                     );
                                   })}
@@ -1455,7 +1455,7 @@ function CallCenterQueueEdit() {
                     </div>
                     <div class="buttonGroup">
                       {selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != agent.length ? (
+                        selectedAgentToEdit.length != agent?.length ? (
                         <button
                           type="button"
                           class="panelButton"
@@ -1471,7 +1471,7 @@ function CallCenterQueueEdit() {
                       ) : (
                         <button
                           type="button"
-                          class="panelButton"
+                          class="panelButton edit"
                           onClick={() => {
                             setSelectedAgentToEdit(agent);
                             setBulkEditPopup(true);
@@ -1488,7 +1488,7 @@ function CallCenterQueueEdit() {
                         type="button"
                         class="panelButton"
                         onClick={() => {
-                          if (user.length !== agent.length)
+                          if (user.length !== agent?.length)
                             setBulkAddPopUp(true);
                           else toast.warn("All agent selected");
                         }}
@@ -1532,20 +1532,20 @@ function CallCenterQueueEdit() {
                                         handleSelectUserToEdit(item)
                                       }
                                       checked={selectedAgentToEdit.some(
-                                        (agent) => agent.name == item.name
+                                        (agent) => agent?.name == item?.name
                                       )}
                                     ></input>
                                   </div>
                                   <label>{index + 1}.</label>
                                 </div>
                                 <div
-                                  className={`row col-${advance.includes(item.id)
+                                  className={`row col-${advance.includes(item?.id)
                                     ? "11"
                                     : "xxl-5 col-xl-6"
                                     }`}
                                 >
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "6"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1578,7 +1578,7 @@ function CallCenterQueueEdit() {
                                                 agent[index]?.name || // Keep the current agent for this index
                                                 !agent.some(
                                                   (agentItem, agentIndex) =>
-                                                    agentItem.name ==
+                                                    agentItem?.name ==
                                                     userItem.id &&
                                                     agentIndex != index
                                                 ) // Exclude agents selected in other rows
@@ -1589,7 +1589,7 @@ function CallCenterQueueEdit() {
                                                 value={userItem.id}
                                                 key={userItem.id}
                                               >
-                                                {userItem.alias
+                                                {/* {userItem.alias
                                                   ? `${truncateString(
                                                     userItem?.alias
                                                   )} - ${userItem.extension
@@ -1599,7 +1599,10 @@ function CallCenterQueueEdit() {
                                                     userItem?.name
                                                   )} - ${userItem.extension
                                                     ?.extension
-                                                  }`}
+                                                  }`} */}
+                                                {userItem.alias
+                                                  ? `${userItem?.alias} - ${userItem.extension?.extension}`
+                                                  : `${userItem?.name} - ${userItem.extension?.extension}`}
                                                 {/* {userItem.username} (
                                               {userItem.extension?.extension}) */}
                                               </option>
@@ -1615,7 +1618,7 @@ function CallCenterQueueEdit() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "2"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1993,7 +1996,7 @@ function CallCenterQueueEdit() {
                             );
                           })}
                         {errors.agent && (
-                          <ErrorMessage text={errors.agent.message} />
+                          <ErrorMessage text={errors.agent?.message} />
                         )}
                       </div>
                     </form>
@@ -2104,7 +2107,7 @@ function CallCenterQueueEdit() {
                         return bMatches - aMatches;
                       })
                       .filter(
-                        (user) => !agent.some((agent) => user.id == agent.name)
+                        (user) => !agent.some((agent) => user.id == agent?.name)
                       ) // Exclude agents already in `agent`
                       .map((item, index) => (
                         <tr key={item.id || index}>
@@ -2116,7 +2119,7 @@ function CallCenterQueueEdit() {
                               type="checkbox"
                               onChange={() => handleCheckboxChange(item)} // Call handler on change
                               checked={bulkUploadSelectedAgents.some(
-                                (agent) => agent.name == item.name
+                                (agent) => agent?.name == item.name
                               )}
                             />
                           </td>
@@ -2575,8 +2578,8 @@ function CallCenterQueueEdit() {
                 <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
               </div>
               <ul>
-                {selectedAgentToEdit
-                  .map((item) => user.find((user) => item?.name == user.id)).filter((item) => item.name.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
+                {selectedAgentToEdit.length > 0 && selectedAgentToEdit
+                  .map((item) => user?.find((user) => item?.name == user?.id)).filter((item) => item?.name?.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
                   .map((items) => (
                     <li><i className="fa-regular fa-user me-2" />{items?.name}</li>
                   ))}

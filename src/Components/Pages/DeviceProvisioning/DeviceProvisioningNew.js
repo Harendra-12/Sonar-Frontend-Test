@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../CommonComponents/ErrorMessage';
-import { lengthValidator, numberValidator, requiredValidator, restrictToMacAddress, restrictToNumbers } from '../../validations/validation';
+import { requiredValidator } from '../../validations/validation';
 import CircularLoader from '../../Loader/CircularLoader';
 
 function DeviceProvisioningNew() {
@@ -15,7 +15,9 @@ function DeviceProvisioningNew() {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch()
-
+    const [modelId, setModelId] = useState('')
+    const [brandId, setBrandId] = useState('')
+    const [allDevices, setAllDevices] = useState([])
     const deviceProvisioningRefresh = useSelector(
         (state) => state.deviceProvisioningRefresh
     );
@@ -35,15 +37,12 @@ function DeviceProvisioningNew() {
     const handleFormSubmit = handleSubmit(async (data) => {
         setLoading(true);
         data.address = extensionId;
+        data.brand_id = brandId;
+        data.model_id = modelId;
         const apiData = await generalPostFunction("/provision/store", data);
         if (apiData.status) {
             setLoading(false);
             toast.success(apiData.message);
-            // after succesfully adding data need to recall the global function to update the global state
-            dispatch({
-                type: "SET_DEVICE_PROVISIONINGREFRESH",
-                deviceProvisioningRefresh: deviceProvisioningRefresh + 1,
-            });
             reset();
             navigate(-1);
         } else {
@@ -53,8 +52,27 @@ function DeviceProvisioningNew() {
 
     useEffect(() => {
         setValue("address", extensionId);
-        setLoading(false);
+        async function getData() {
+            const apiData = await generalGetFunction("/available-devices")
+            if (apiData.status) {
+                setAllDevices(apiData.data)
+                setLoading(false)
+            } else {
+                toast.error(apiData.error)
+                setLoading(false)
+            }
+        }
+        getData()
     }, [extensionId]);
+
+    function handelModelSelect(id) {
+        if (modelId === "" || brandId !== id) {
+            toast.error("Please select a model")
+        } else {
+            setBrandId(id)
+            setIsDeviceChosen(true)
+        }
+    }
     return (
         <>
             <main className="mainContent">
@@ -116,72 +134,48 @@ function DeviceProvisioningNew() {
                                                 <div class="tab-content" id="nav-tabContent">
                                                     <div class="tab-pane fade show active" id="nav-desk" role="tabpanel" aria-labelledby="nav-desk-tab" tabindex="0">
                                                         <div className="row col-12 mx-auto mb-0">
-                                                            <div className="formRow col-xl-6 deviceProvision">
-                                                                <div className="col-4">
-                                                                    <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
-                                                                </div>
-                                                                <div className="formLabel ">
-                                                                    <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
-                                                                    <label><p>Brand: Cisco</p></label>
-                                                                    <div className='col-12'>
-                                                                        <label className=''>
-                                                                            Select Model:
-                                                                        </label>
-                                                                    </div>
-                                                                    <div className='row mt-2 align-items-center'>
-                                                                        <div className="col pe-0">
-                                                                            <select
-                                                                                className="formItem">
-                                                                                <option value="" disabled>
-                                                                                    Device
-                                                                                </option>
-                                                                                <option>Premium </option>
-                                                                                <option>Double</option>
-                                                                                <option>Signal</option>
-                                                                                <option>None</option>
-                                                                            </select>
+                                                            {
+                                                                allDevices.map((device, index) => {
+                                                                    return (
+                                                                        <div className="formRow col-xl-6 deviceProvision" key={index}>
+                                                                            <div className="col-4">
+                                                                                <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
+                                                                            </div>
+                                                                            <div className="formLabel ">
+                                                                                <label htmlFor=""><h5>{device.slug}</h5></label>
+                                                                                <p>Brand: {device.slug}</p>
+                                                                                <div className='col-12'>
+                                                                                    <label className=''>
+                                                                                        Select Model:
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div className='row mt-2 align-items-center'>
+                                                                                    <div className="col pe-0">
+                                                                                        <select
+                                                                                            className="formItem" defaultValue={""} onChange={(e) => { setModelId(e.target.value); setBrandId(device.id) }}>
+                                                                                            <option value="" disabled>
+                                                                                                Device
+                                                                                            </option>
+                                                                                            {
+                                                                                                device.models.map((model, index) => {
+                                                                                                    return (
+                                                                                                        <option key={index} value={model.id}>{model.name}</option>
+                                                                                                    )
+                                                                                                })
+                                                                                            }
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div className="col-auto" onClick={() => handelModelSelect(device.id)}>
+                                                                                        <button className='tableButton'>
+                                                                                            <i class="fa-solid fa-plus"></i>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="col-auto">
-                                                                            <button className='tableButton'>
-                                                                                <i class="fa-solid fa-plus"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="formRow col-xl-6 deviceProvision">
-                                                                <div className="col-4">
-                                                                    <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
-                                                                </div>
-                                                                <div className="formLabel ">
-                                                                    <label htmlFor=""><h5>Cisco Long Schlong</h5></label>
-                                                                    <label><p>Brand: Cisco</p></label>
-                                                                    <div className='col-12'>
-                                                                        <label className=''>
-                                                                            Select Model:
-                                                                        </label>
-                                                                    </div>
-                                                                    <div className='row mt-2 align-items-center'>
-                                                                        <div className="col pe-0">
-                                                                            <select
-                                                                                className="formItem">
-                                                                                <option value="" disabled>
-                                                                                    Device
-                                                                                </option>
-                                                                                <option>Premium </option>
-                                                                                <option>Double</option>
-                                                                                <option>Signal</option>
-                                                                                <option>None</option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div className="col-auto">
-                                                                            <button className='tableButton edit' onClick={()=>setIsDeviceChosen("hard")}>
-                                                                                <i class="fa-solid fa-check"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                                    )
+                                                                })
+                                                            }
                                                             {/* <div className='col-xl-12'>
                                                                 <div className='deviceProvisionDetails' data-id="1">
                                                                     <div className='title'>
@@ -230,10 +224,8 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>EyeBeam</h5></label>
                                                                     <br />
                                                                     <label><p>Brand: EyeBeam</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='row align-items-center mt-2'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -243,11 +235,14 @@ function DeviceProvisioningNew() {
                                                                                 <option>Double</option>
                                                                                 <option>Signal</option>
                                                                                 <option>None</option>
-
-
                                                                             </select>
                                                                         </div>
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton'>
+                                                                                <i class="fa-solid fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="formRow col-xl-6 deviceProvision">
@@ -258,10 +253,8 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>WebRTC</h5></label>
                                                                     <br />
                                                                     <label><p>Brand: UcaaS</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='row align-items-center mt-2'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -271,11 +264,14 @@ function DeviceProvisioningNew() {
                                                                                 <option>Double</option>
                                                                                 <option>Signal</option>
                                                                                 <option>None</option>
-
-
                                                                             </select>
                                                                         </div>
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton'>
+                                                                                <i class="fa-solid fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -284,30 +280,9 @@ function DeviceProvisioningNew() {
                                             </div>
                                         </div>
 
-                                        {isDeviceChosen === "hard" ? <div className='col-xl-6'>
+                                        {isDeviceChosen ? <div className='col-xl-6'>
                                             <form>
-                                                <div className="formRow">
-                                                    <div className="formLabel">
-                                                        <label className="text-dark">Address</label>
-                                                        <label htmlFor="data" className="formItemDesc">
-                                                            Select a address
-                                                        </label>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <input
-                                                            value={extension}
-                                                            disabled
-                                                            type="text"
-                                                            name="address"
-                                                            className="formItem"
-                                                        />
-                                                        {errors.address && (
-                                                            <ErrorMessage text={errors.address.message} />
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                <div className="formRow">
+                                                {/* <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Transport</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -338,9 +313,9 @@ function DeviceProvisioningNew() {
                                                             <ErrorMessage text={errors.transport.message} />
                                                         )}
                                                     </div>
-                                                </div>
+                                                </div> */}
 
-                                                <div className="formRow">
+                                                {/* <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Port</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -364,31 +339,9 @@ function DeviceProvisioningNew() {
                                                         />
                                                         {errors.port && <ErrorMessage text={errors.port.message} />}
                                                     </div>
-                                                </div>
+                                                </div> */}
 
-                                                <div className="formRow">
-                                                    <div className="formLabel">
-                                                        <label className="text-dark">Serial Number</label>
-                                                        <label htmlFor="data" className="formItemDesc">
-                                                            Enter serial number
-                                                        </label>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <input
-                                                            type="text"
-                                                            name="serial_number"
-                                                            className="formItem"
-                                                            placeholder="124abc"
-                                                            {...register("serial_number", {
-                                                                ...requiredValidator,
-                                                            })}
-                                                            onKeyDown={restrictToMacAddress}
-                                                        />
-                                                        {errors.serial_number && (
-                                                            <ErrorMessage text={errors.serial_number.message} />
-                                                        )}
-                                                    </div>
-                                                </div>
+
                                             </form>
 
                                             <form>
@@ -404,13 +357,15 @@ function DeviceProvisioningNew() {
                                                             type="text"
                                                             name="address"
                                                             className="formItem"
+                                                            value={allDevices.filter((device) => device.id === brandId)[0].slug}
+                                                            disabled
                                                         />
                                                         {/* {errors.address && (
                                                             <ErrorMessage text={errors.address.message} />
                                                         )} */}
                                                     </div>
                                                 </div>
-                                                <div className="formRow">
+                                                {/* <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Select UUID Type</label>
                                                         <label htmlFor="data" className="formItemDesc">
@@ -424,27 +379,30 @@ function DeviceProvisioningNew() {
                                                             <option>Serial Number</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="formRow">
                                                     <div className="formLabel">
-                                                        <label className="text-dark">Enter MAC Address</label>
+                                                        <label className="text-dark">Enter Serial Number</label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                            Please enter the MAC address of the selected device
+                                                            Please enter the Serial Number of the selected device
                                                         </label>
                                                     </div>
                                                     <div className="col-6">
                                                         <input
                                                             type="text"
-                                                            name="address"
+                                                            {...register("serial_number", {
+                                                                ...requiredValidator,
+                                                            })}
+                                                            name="serial_number"
                                                             className="formItem"
                                                         />
-                                                        {/* {errors.address && (
-                                                            <ErrorMessage text={errors.address.message} />
-                                                        )} */}
                                                     </div>
+                                                    {errors.serial_number && (
+                                                        <ErrorMessage text={errors.serial_number.message} />
+                                                    )}
                                                 </div>
                                                 <div className="formRow">
-                                                    <button className="panelButton ms-auto">
+                                                    <button className="panelButton ms-auto" type="button" onClick={handleFormSubmit}>
                                                         <span className="text" >Save</span>
                                                         <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
                                                     </button>
@@ -534,7 +492,7 @@ function DeviceProvisioningNew() {
                                                         <div className="col-6">
                                                             <input
                                                                 type="text"
-                                                                name="serial_number"
+                                                                name=""
                                                                 className="formItem"
                                                                 placeholder="124abc"
                                                             />
@@ -554,7 +512,7 @@ function DeviceProvisioningNew() {
                                                         <div className="col-6">
                                                             <input
                                                                 type="text"
-                                                                name="serial_number"
+                                                                name="serial_numbers"
                                                                 className="formItem"
                                                                 placeholder="124abc"
                                                             />
@@ -573,7 +531,7 @@ function DeviceProvisioningNew() {
                                                         <div className="col-6">
                                                             <input
                                                                 type="text"
-                                                                name="serial_number"
+                                                                name="serial_numbers"
                                                                 className="formItem"
                                                                 placeholder="124abc"
                                                             />

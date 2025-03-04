@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
@@ -34,6 +35,7 @@ function CallCenterQueue() {
   const [refreshState, setRefreshState] = useState(0);
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   useEffect(() => {
     const getCallCenterDashboardData = async () => {
@@ -244,7 +246,11 @@ function CallCenterQueue() {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(64) ? (
+                        {checkViewSidebar(
+                          "CallCenterQueue",
+                          slugPermissions,
+                          account?.permissions, "add"
+                        ) ? (
                           <Link
                             // to="/cal-center-queue-add"
                             // onClick={backToTop}
@@ -319,7 +325,11 @@ function CallCenterQueue() {
                           </tr>
                         </thead>
                         <tbody>
-                          {noPermissionToRead ? (
+                          {noPermissionToRead && checkViewSidebar(
+                            "CallCenterQueue",
+                            slugPermissions,
+                            account?.permissions, "read"
+                          ) ? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -334,7 +344,7 @@ function CallCenterQueue() {
                           ) : (
                             <>
                               {loading ? (
-                                <SkeletonTableLoader col={9} row={15} />
+                                <SkeletonTableLoader col={8} row={15} />
                               ) : (
                                 <>
                                   {callCenter &&
@@ -377,14 +387,45 @@ function CallCenterQueue() {
                                           >
                                             {item.strategy}
                                           </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.agents.length}
+                                          <td >
+                                            <div className="dropdown">
+                                              <div
+                                                style={{
+                                                  color: "var(--ui-accent)",
+                                                  textDecoration: "underline",
+                                                }}
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                {item.agents.length}
+                                              </div>
+                                              <ul className="dropdown-menu light">
+                                                <li className="col-12">
+                                                  <div className="dropdown-item fw-bold disabled">
+                                                    Agents
+                                                  </div>
+                                                </li>
+                                                <div
+                                                  style={{
+                                                    columnCount:
+                                                      item.agents.length > 6
+                                                        ? 2
+                                                        : 1,
+                                                  }}
+                                                >
+                                                  {item.agents.map(
+                                                    (item, index) => (
+                                                      <li key={index}>
+                                                        <div className="dropdown-item">
+                                                          {item?.username}
+                                                        </div>
+                                                      </li>
+                                                    )
+                                                  )}
+                                                </div>
+                                              </ul>
+                                            </div>
                                           </td>
                                           <td>
                                             <div className="my-auto position-relative mx-1">

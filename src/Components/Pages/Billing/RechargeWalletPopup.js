@@ -173,7 +173,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
         />
       ) : (
         <div className="row">
-          <div className="col-xxl-6 col-xl-5  mx-auto">
+          <div className="col-xxl-5 col-xl-5  mx-auto">
             <div className="profileView">
               <div className="profileDetailsHolder position-relative">
                 <div className="header d-flex align-items-center">
@@ -269,7 +269,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                 </div>
                 <div
                   className="row p-2"
-                 
+
                 >
 
                   <div className="col-12" style={{ padding: "5px", maxHeight: 191, overflowY: "auto" }}>

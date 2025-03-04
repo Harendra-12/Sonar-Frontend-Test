@@ -125,7 +125,6 @@ const UsersAdd = () => {
         label: extension.extension,
       }));
       setFilterExtensions([
-        { value: null, label: "Available Extensions" },
         { value: null, label: "None" },
         ...options,
       ]);
@@ -235,7 +234,7 @@ const UsersAdd = () => {
   };
   const filteredPermission = filterPermissionById(
     defaultPermission,
-    account.permissions
+    account?.permissions
   );
 
   // Initialize parentChecked state
@@ -683,7 +682,7 @@ const UsersAdd = () => {
                               options={filterExtensions}
                               placeholder="Available Extensions"
                               isClearable={false}
-                              defaultValue={{ value: "0", label: "0" }} // Default selected option
+                              defaultValue={{ value: "0", label: "Select Extension" }} // Default selected option
                               onInputChange={handleSelectInputChange}
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));

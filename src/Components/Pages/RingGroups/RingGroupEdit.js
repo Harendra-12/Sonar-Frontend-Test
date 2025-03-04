@@ -193,7 +193,7 @@ const RingGroupEdit = () => {
         }
       }
       getData();
-    } 
+    }
   }, [account, navigate, value, getAllDataRefresh]);
 
   // Get all ringbacks music for dropdown
@@ -431,7 +431,7 @@ const RingGroupEdit = () => {
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      toast.success(apiData.message);
+      // toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
       dispatch({
@@ -756,7 +756,7 @@ const RingGroupEdit = () => {
                               }`}
                           >
                             {showTimeoutDestinationToggle && <div className="formLabel">
-                              <label htmlFor="">Type</label>
+                              <label className="formItemDesc">Type</label>
                             </div>}
                             <select
                               className="formItem"
@@ -796,7 +796,7 @@ const RingGroupEdit = () => {
                             <>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Destination</label>
+                                  <label className="formItemDesc">Destination</label>
                                 </div>
                                 {showTimeoutDestinationToggle ? (
                                   timeoutDestPstnToggle ? (
@@ -828,7 +828,7 @@ const RingGroupEdit = () => {
                               </div>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label htmlFor="">Call Timeout</label>
+                                  <label className="formItemDesc">Call Timeout</label>
                                 </div>
                                 <input
                                   type="text"
@@ -990,7 +990,7 @@ const RingGroupEdit = () => {
                       ) : (
                         <button
                           type="button"
-                          class="panelButton ms-auto"
+                          class="panelButton edit ms-auto"
                           onClick={() => {
                             setSelectedAgentToEdit(destination);
                             setBulkEditPopup(true);
@@ -1092,7 +1092,7 @@ const RingGroupEdit = () => {
                                             value={item.extension?.extension}
                                             key={item.id}
                                           >
-                                            {item.alias
+                                            {/* {item.alias
                                               ? `${truncateString(
                                                 item?.alias
                                               )} - ${item.extension?.extension
@@ -1100,7 +1100,10 @@ const RingGroupEdit = () => {
                                               : `${truncateString(
                                                 item?.name
                                               )} - ${item.extension?.extension
-                                              }`}
+                                              }`} */}
+                                            {item.alias
+                                              ? `${item?.alias} - ${item.extension?.extension}`
+                                              : `${item?.name} - ${item.extension?.extension}`}
                                           </option>
                                         );
                                       })}

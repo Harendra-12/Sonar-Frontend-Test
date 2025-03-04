@@ -33,7 +33,7 @@ function UserConfiguration() {
         setUserPermission(response?.data);
         setUserPermissionData(response?.data[Object.keys(response?.data)[0]]);
         setActiveUserPermission(Object.keys(response?.data)[0]);
-        if(locationState.table_permissions.length>0){
+        if (locationState.table_permissions.length > 0) {
           setCheckedUserPermissionData([...locationState.table_permissions])
         }
       } catch (error) {
@@ -86,7 +86,7 @@ function UserConfiguration() {
                       <div className="buttonGroup">
                         <button
                           onClick={() => {
-                            navigate("-1");
+                            navigate(-1);
                             backToTop();
                           }}
                           type="button"
@@ -250,12 +250,11 @@ function UserConfiguration() {
                                               >
                                                 <div className="d-flex justify-content-center align-items-center">
                                                   <div
-                                                    className={`savedCardWrapper col ${
-                                                      activeUserPermission ===
+                                                    className={`savedCardWrapper col ${activeUserPermission ===
                                                       item
-                                                        ? "active"
-                                                        : ""
-                                                    }`}
+                                                      ? "active"
+                                                      : ""
+                                                      }`}
                                                   >
                                                     <div>
                                                       <label>{item}</label>
@@ -270,14 +269,10 @@ function UserConfiguration() {
                                     </div>
                                     <div
                                       className="col-xl-6"
-                                      style={{
-                                        borderLeft:
-                                          "1px solid var(--border-color)",
-                                      }}
                                     >
                                       {isEditable && (
                                         <>
-                                          <div className="header d-flex align-items-center justify-content-between">
+                                          <div className="header">
                                             <div
                                               className="col fw-bold"
                                               style={{
@@ -288,21 +283,21 @@ function UserConfiguration() {
                                             </div>
                                           </div>
                                           <div className="col-xl-12">
-                                            <div className="row">
-                                              {userPermissionData.map(
+                                            <div className="row" style={{ height: '400px', overflowY: 'scroll' }}>
+                                              {userPermissionData && userPermissionData.map(
                                                 (item) => {
                                                   return (
                                                     <div
-                                                      className="formRow col-xl-3"
+                                                      className="formRow col-6 pb-0"
                                                       key={item?.id}
+                                                      style={{ minHeight: '15px' }}
                                                     >
-                                                      <div className="formLabel">
-                                                        <label htmlFor="">
-                                                          {item.column_name}{" "}
-                                                          {item?.action}
+                                                      <div className="formLabel" style={{ maxWidth: '90%' }}>
+                                                        <label htmlFor="" style={{ whiteSpace: 'break-spaces', wordBreak: 'break-word', textTransform: 'capitalize' }}>
+                                                          {item.column_name.replace(/[_-]/g, " ")} - <span className="fw-bold">{item?.action}</span>
                                                         </label>
                                                       </div>
-                                                      <div className="col-xl-6 col-12">
+                                                      <div className="col-auto">
                                                         <input
                                                           type="checkbox"
                                                           checked={checkedUserPermissionData.includes(

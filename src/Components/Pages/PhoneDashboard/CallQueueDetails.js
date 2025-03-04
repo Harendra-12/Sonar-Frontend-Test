@@ -10,6 +10,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
+    const allCallDetails = useSelector((state) => state.allCallDetails);
   // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -69,14 +70,6 @@ const CallQueueDetails = () => {
                 <h4>Call Queue</h4>
                 <p>You can see a brief analysis of all the call queues</p>
               </div>
-              {/* <div className="buttonGroup">
-                <button effect="ripple" className="panelButton">
-                  <span className="text">Export</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-file-csv" />
-                  </span>
-                </button>
-              </div> */}
             </div>
           </div>
           <div
@@ -106,65 +99,67 @@ const CallQueueDetails = () => {
                         <td>{call.queue_name}</td>
                         <td>
                           {
-                            activeCallData.filter((e) => e.dest === call.extension)
+                            activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
                               .length
                           }
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] !== "SUCCESS"
-                            ).length
+                        {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                                call?.extension &&
+                              item["Call-Direction"] == "missed" &&
+                              item?.application_state == 'callcenter'
+                          )[0]?.filter_count || 0}
+                        </td>
+                        <td>
+                        {
+                           allCallDetails?.application_state_count.find((item)=>item?.application_state==  
+                           "callcenter")?.total_count||0
                           }
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] === "SUCCESS"
-                            ).length
-                          }
-                        </td>
-                        <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension
-                            ).length
+                        {
+                           allCallDetails?.completed_calls_count.find((item)=>item?.application_state== 'callcenter')?.total_count||0
                           }
                         </td>
                         <td>
                           <div className="dropdown">
                             <div
-                              style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
+                              style={{
+                                color: "var(--ui-accent)",
+                                textDecoration: "underline",
+                              }}
                               type="button"
                               data-bs-toggle="dropdown"
                               aria-expanded="false"
                             >
                               {call.agents.length}
                             </div>
-                            <ul className="dropdown-menu light" >
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Active:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status === "available"
-                                    ).length
-                                  }
+                            <ul className="dropdown-menu light">
+                              <li className="col-12">
+                                <div className="dropdown-item fw-bold disabled">
+                                  Agents
                                 </div>
                               </li>
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Offline:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status !== "available"
-                                    ).length
-                                  }
-                                </div>
-                              </li>
+                              <div
+                                style={{
+                                  columnCount:
+                                    call.agents.length > 6
+                                      ? 2
+                                      : 1,
+                                }}
+                              >
+                                {call.agents.map(
+                                  (item, index) => (
+                                    <li key={index}>
+                                      <div className="dropdown-item">
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  )
+                                )}
+                              </div>
                             </ul>
                           </div>
                         </td>

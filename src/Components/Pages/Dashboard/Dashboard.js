@@ -10,7 +10,7 @@ import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import LineChartDashboard from "./ModuleGraphDashboard";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
@@ -24,6 +24,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const extensionList = useSelector((state) => state.extension).length;
   const userList = useSelector((state) => state.allUser?.data?.length) || 0;
@@ -35,6 +36,7 @@ const Dashboard = () => {
   const [onlineExtension, setOnlineExtension] = useState([0]);
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
+  const slugPermissions = useSelector((state) => state?.permissions);
 
   // Setting clock for the selected timnezone
   useEffect(() => {
@@ -52,6 +54,10 @@ const Dashboard = () => {
       }
     };
     updateAccountDetails();
+    dispatch({
+      type: "SET_PERMISSION_REFRESH",
+      permissionRefresh: permissionRefresh + 1,
+    });
   }, []);
 
   useEffect(() => {
@@ -348,34 +354,58 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {account?.permissions?.includes(86) && (
-                    <button
-                      className="nav-link"
-                      id="nav-home-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-calls"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-calls"
-                      aria-selected="true"
-                    >
-                      Calls
-                    </button>
-                  )}
-                  {account?.permissions?.includes(470) && (
-                    <button
-                      className="nav-link"
-                      id="nav-contact-tab"
-                      data-bs-toggle="tab"
-                      data-bs-target="#nav-billing"
-                      type="button"
-                      role="tab"
-                      aria-controls="nav-billing"
-                      aria-selected="false"
-                    >
-                      Billing
-                    </button>
-                  )}
+                  {checkViewSidebar(
+                    "ChannelHangupComplete",
+                    slugPermissions,
+                    account?.permissions
+                  ) && (
+                      <button
+                        className="nav-link"
+                        id="nav-home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-calls"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-calls"
+                        aria-selected="true"
+                      >
+                        Calls
+                      </button>
+                    )}
+                  {checkViewSidebar(
+                    "BillingAddress",
+                    slugPermissions,
+                    account?.permissions, "read"
+                  ) && checkViewSidebar(
+                    "WalletTransaction",
+                    slugPermissions,
+                    account?.permissions
+                  ) && (
+                      <button
+                        className="nav-link"
+                        id="nav-contact-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-billing"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-billing"
+                        aria-selected="false"
+                      >
+                        Billing
+                      </button>
+                    )}
+                  {/* <div className="ms-auto pb-2">
+                    <Clock
+                      value={time}
+                      size={50}
+                      secondHandWidth={1}
+                      renderMinuteMarks={false}
+                      hourMarksWidth={1}
+                      hourMarksLength={15}
+                      hourHandWidth={2}
+                      minuteHandWidth={1}
+                    />
+                  </div> */}
                 </div>
               </nav>
               <div className="tab-content mt-3" id="nav-tabContent">
@@ -387,7 +417,7 @@ const Dashboard = () => {
                   tabIndex="0"
                 >
                   <div className="row">
-                    {/* <div className="col-xl-3 mb-3 mb-xl-0">
+                    <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
                           <div
@@ -441,7 +471,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
                       <div className="itemWrapper a">
                         <div className="heading">
@@ -465,7 +495,7 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>{account?.name}</h5>
                               <p>Username: {account?.username}</p>
-                              <p>Email: {account?.email}</p>
+                              <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }}>Email: {account?.email}</p>
                             </div>
                             <div className="col-3">
                               <img
@@ -503,7 +533,7 @@ const Dashboard = () => {
                                 {accountDetails?.package?.regular_price} / Year
                               </p>
                               <p>
-                                {accountDetails?.extensions?.length} Purchased
+                                {accountDetails?.extensions?.length}{" "}
                                 Extensions / {accountDetails?.dids?.length} DIDs
                               </p>
                             </div>
@@ -559,7 +589,7 @@ const Dashboard = () => {
                     <div className="col-xl-12 mt-xl-4">
                       <div className="row">
                         <div className="col-xl-4 mb-3 mb-xl-0">
-                          <div className="itemWrapper a">
+                          <div className="itemWrapper d">
                             <div className="heading">
                               <div
                                 className="d-flex flex-wrap justify-content-between"
@@ -692,9 +722,9 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )}
-                        {account?.permissions?.includes(176) && (
+                        {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
                           <div className="col-xl-4 mb-3 mb-xl-0">
-                            <div className="itemWrapper a">
+                            <div className="itemWrapper b">
                               <div className="heading">
                                 <div
                                   className="d-flex flex-wrap justify-content-between"
@@ -789,8 +819,8 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="data-number2">
-                          <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                          <div className="d-flex flex-wrap justify-content-between" style={{ minHeight: '62px' }}>
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {allCall?.totalCalls !== undefined ? (
                                   allCall?.totalCalls
@@ -825,7 +855,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-4">
                               {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
@@ -867,7 +897,7 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {!isNaN(
                                   allCall?.inbound?.duration +
@@ -906,7 +936,7 @@ const Dashboard = () => {
                                 Outbound
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-4">
                               <ModuleGraphDashboard
                                 fields={["In Duration", "Out Duration"]}
                                 percentage={[
@@ -946,7 +976,7 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>
                                 {allCall?.missed !== undefined ? (
                                   allCall?.missed
@@ -968,7 +998,7 @@ const Dashboard = () => {
                                     }
                                   ></i>
                                 )}{" "}
-                                inbound Missed/{" "}
+                                Inbound Missed /{" "}
                                 {allCall?.outbound?.missed !== undefined ? (
                                   allCall?.outbound?.missed
                                 ) : (
@@ -978,10 +1008,10 @@ const Dashboard = () => {
                                     }
                                   ></i>
                                 )}{" "}
-                                outbound Missed
+                                Outbound Missed
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-xxl-3 col-lg-4">
                               <ModuleGraphDashboard
                                 fields={["In Missed", "Out Missed", "Total Missed"]}
                                 percentage={[
@@ -1019,22 +1049,23 @@ const Dashboard = () => {
                         </div>
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
-                            <div className="col-9">
+                            <div className="col-xxl-9 col-lg-8">
                               <h5>{callCardData.abandonedCalls.count}</h5>
+                              <p>{callCardData?.abandonedCalls?.internal} Internal / {callCardData?.abandonedCalls?.external} External</p>
                             </div>
-                            <div className="col-3">
-                              <img
+                            <div className="col-xxl-3 col-lg-4">
+                              {/* <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
-                              />
-                              {/* <ModuleGraphDashboard
-                                fields={["In Missed", "Out Missed"]}
+                              /> */}
+                              <ModuleGraphDashboard
+                                fields={["Internal", "External"]}
                                 percentage={[
-                                  allCall?.inbound?.missed,
-                                  allCall?.outbound?.missed
+                                  callCardData?.abandonedCalls?.internal,
+                                  callCardData?.abandonedCalls?.external
                                 ]}
                                 colors={['#ff004c', '#ff2365']}
-                              /> */}
+                              />
                             </div>
                           </div>
                         </div>
@@ -1043,7 +1074,7 @@ const Dashboard = () => {
                     <div className="col-12 mt-xl-4 chartWrapper">
                       <div className="row">
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper">
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
                             {/* <DoughnutChart
                               fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
@@ -1057,24 +1088,19 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            {
-                              useEffect(() => {
-                                console.log('HELLO RIDDHEE: -------.', onlineExtension)
-                              }, [onlineExtension])
-                            }
                             <div className='circularProgressWrapper'>
                               <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                 <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f0130" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d0130" stroke-width="20"
                                 ></circle>
                                 <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f18f01" stroke-width="20"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d01" stroke-width="20"
                                   stroke-dasharray="361.25 361.25"
                                 ></circle>
                               </svg>
                               <div className='circularProgressContent'>
                                 <div className="data-number">
-                                  <label style={{ color: '#f18f01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                  <label style={{ color: '#f17d01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
                                 </div>
                                 <p>Online Agents</p>
                               </div>
@@ -1082,18 +1108,37 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper">
-                            <DoughnutChart
-                              fields={["Handled", "Missed", "Abandoned"]}
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                            {/* <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
                               percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
                                 callCardData.handled.count,
-                                callCardData.missedCalls.count,
-                                callCardData.abandonedCalls.count,
                               ]}
-                              centerTitle={`${userList}/${accountDetails?.package?.number_of_user}`}
-                              centerDesc="Total Users Available"
-                              colors={["#36A2EB70", "#f17d0170", "#FF638470"]}
-                            />
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            /> */}
+                            <div className='circularProgressWrapper'>
+                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((allCall?.inbound?.completed / allCall?.inbound?.total) * 100)}` }}>
+                                <circle className="bg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a30" stroke-width="20"
+                                ></circle>
+                                <circle className="fg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a" stroke-width="20"
+                                  stroke-dasharray="361.25 361.25"
+                                ></circle>
+                              </svg>
+                              <div className='circularProgressContent'>
+                                <div className="data-number">
+                                  <label style={{ color: '#a5d02a' }}>{allCall?.inbound?.completed}</label> <span>/ {allCall?.inbound?.total}</span>
+                                </div>
+                                <p>Inbound Calls Completed</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div className="col-xl-6 mb-3 mb-xl-0">
@@ -1174,7 +1219,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -1203,6 +1248,10 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>${accountDetails?.package?.regular_price}</h5>
                               <p>
+                                End Date:{" "}
+                                {accountDetails?.subscription[0].end_date?.split(" ")[0]}
+                              </p>
+                              <p>
                                 {accountDetails?.package?.subscription_type ===
                                   "annually"
                                   ? "Annually"
@@ -1221,7 +1270,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -1272,7 +1321,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper d">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -1384,7 +1433,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-4 mb-3 mb-xl-0">
-                          <div className="itemWrapper a">
+                          <div className="itemWrapper b">
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-9">
@@ -1478,7 +1527,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
-                          <div className="wrapper itemWrapper a">
+                          <div className="wrapper itemWrapper c">
                             <div class="heading">
                               <div class="d-flex flex-wrap justify-content-between">
                                 <div class="col-9">

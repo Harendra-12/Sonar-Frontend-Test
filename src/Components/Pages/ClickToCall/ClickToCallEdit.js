@@ -720,7 +720,7 @@ function ClickToCallEdit() {
                                                                         </button>
                                                                     </div>
                                                                     {widgetExpanded ?
-                                                                        <div className="clickToCallModule">
+                                                                        <div className="clickToCallModule ms-auto">
                                                                             <div className="clickToCallHeader">
                                                                                 <div className="wrapper">
                                                                                     <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>

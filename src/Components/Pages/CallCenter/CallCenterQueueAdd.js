@@ -1356,7 +1356,7 @@ function CallCenterQueueAdd() {
                         ) : (
                           <button
                             type="button"
-                            class="panelButton"
+                            class="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(agent);
                               setBulkEditPopup(true);
@@ -1364,7 +1364,7 @@ function CallCenterQueueAdd() {
                           >
                             <span class="text">Edit All</span>
                             <span class="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i class="fa-solid fa-pen"></i>
                             </span>
                           </button>
                         ))}
@@ -1428,7 +1428,7 @@ function CallCenterQueueAdd() {
                                     }`}
                                 >
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "6"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">
@@ -1473,7 +1473,7 @@ function CallCenterQueueAdd() {
                                               >
                                                 {/* {userItem.username} -
                                                 {userItem.extension?.extension} */}
-                                                {userItem.alias
+                                                {/* {userItem.alias
                                                   ? `${truncateString(
                                                     userItem?.alias
                                                   )} - ${userItem.extension
@@ -1483,7 +1483,10 @@ function CallCenterQueueAdd() {
                                                     userItem?.name
                                                   )} - ${userItem.extension
                                                     ?.extension
-                                                  }`}
+                                                  }`} */}
+                                                {userItem.alias
+                                                  ? `${userItem?.alias} - ${userItem.extension?.extension}`
+                                                  : `${userItem?.name} - ${userItem.extension?.extension}`}
                                               </option>
                                             ))}
                                         <option
@@ -1497,7 +1500,7 @@ function CallCenterQueueAdd() {
                                     </div>
                                   </div>
                                   <div
-                                    className={`col-${advance.includes(item.id) ? "2" : "4"
+                                    className={`col-${advance.includes(item.id) ? "2" : "2"
                                       } ps-0 pe-2`}
                                   >
                                     {index === 0 && <div className="formLabel">

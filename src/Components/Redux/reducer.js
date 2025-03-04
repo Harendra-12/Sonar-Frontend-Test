@@ -6,6 +6,7 @@ var loginUser = [];
 var callState = [];
 var channelHangupComplete = [];
 var allCall = [];
+var allcallDetails=[];
 var activeCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
 var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
@@ -32,7 +33,7 @@ var callProgressId = "";
 var callProgressDestination = "";
 var addContactRefresh = 0;
 var roles = [];
-var permissions = [];
+var permissions = JSON.parse(localStorage.getItem("permissions"));
 var rolesAndPermissionRefresh = 0;
 var domain = {};
 var domainRefresh = 0;
@@ -73,6 +74,9 @@ var allCallCenterIds = []
 var callCenterPopUp = localStorage.getItem("callCenterPopUp")
 var openCallCenterPopUp = false
 var logout = 0
+var dummyExtension = ""
+var dummyPassword = ""
+var accountBalance = 0
 
 const initialState = {
   account,
@@ -149,6 +153,9 @@ const initialState = {
   callCenterPopUp,
   logout,
   accountRefresh,
+  dummyExtension,
+  dummyPassword,
+  accountBalance
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -167,6 +174,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, channelHangupComplete: action.channelHangupComplete };
     case "SET_ALLCALL":
       return { ...state, allCall: action.allCall };
+      case "SET_ALLCALLDETAILS":
+      return { ...state, allCallDetails: action.allCallDetails };
     case "SET_TEMPACCOUNT":
       return { ...state, tempAccount: action.tempAccount };
     case "SET_ACCOUNTDETAILS":
@@ -193,6 +202,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, extensionRefresh: action.extensionRefresh };
     case "SET_RINGGROUP":
       return { ...state, ringGroup: action.ringGroup };
+    case "SET_ACCOUNTBALANCE":
+      return { ...state, accountBalance: action.accountBalance };
     case "SET_OPEN_CALLCENTER_POPUP":
       return {
         ...state,
@@ -367,6 +378,16 @@ const counterReducer = (state = initialState, action) => {
         ...state,
         callCenterPopUp: action.callCenterPopUp,
       };
+    case "SET_DUMMYEXTENSION":
+      return {
+        ...state,
+        dummyExtension: action.dummyExtension
+      };
+    case "SET_DUMMYPASSWORD":
+      return {
+        ...state,
+        dummyPassword: action.dummyPassword
+      }
     case "RESET_STATE":
       return initialState;
     case "SET_LOGOUT":
