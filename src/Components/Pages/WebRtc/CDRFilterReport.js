@@ -78,7 +78,6 @@ function CdrFilterReport({ page }) {
   ]);
 
   const thisAudioRef = useRef(null);
-  console.log("000000000cdr", cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -232,7 +231,6 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
-        console.log("apiData", apiData);
         if (apiData?.status === 403) {
           toast.error("You don't have permission to access this page.");
           setLoading(false);

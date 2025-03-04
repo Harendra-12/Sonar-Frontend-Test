@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import { backToTop } from '../../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 
 function CampaignScheduler() {
     const navigate = useNavigate();
+    const [strategy,setStrategy]=useState("daily")
     return (
         <>
             <main className="mainContent">
@@ -70,7 +71,7 @@ function CampaignScheduler() {
                                                                         </div>
                                                                     </div>
                                                                     <div className='col-xl-4'>
-                                                                        <div className="itemWrapper local-calls a active" style={{ cursor: "pointer" }}>
+                                                                        <div className={`itemWrapper local-calls ${strategy==="daily"?"active":""}`} style={{ cursor: "pointer" }} onClick={()=>setStrategy("daily")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
                                                                                 <h5 className='mb-2'>Daily</h5>
@@ -79,7 +80,7 @@ function CampaignScheduler() {
                                                                         </div>
                                                                     </div>
                                                                     <div className='col-xl-4'>
-                                                                        <div className="itemWrapper local-calls a text-start" style={{ cursor: "pointer" }}>
+                                                                        <div className={`itemWrapper local-calls text-start ${strategy==="date-range"?"active":""}`} style={{ cursor: "pointer" }} onClick={()=>setStrategy("date-range")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
                                                                                 <h5 className='mb-2'>Date Range</h5>
@@ -154,7 +155,7 @@ function CampaignScheduler() {
                                                                 </div>
                                                             </div>
                                                         </div> */}
-                                                        {true ? <div className='col-xl-12'>
+                                                        {strategy==="daily" ? <div className='col-xl-12'>
                                                             <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                                 <div className='row'>
                                                                     <div className='col-12'>
