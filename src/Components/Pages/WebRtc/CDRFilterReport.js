@@ -230,7 +230,14 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
-        if (apiData?.status) {
+        console.log("apiData", apiData);
+        if(apiData?.status===403){
+          toast.error("You don't have permission to access this page.");
+          setLoading(false);
+          setContentLoader(false);
+          setCircularLoader(false);
+        }
+        if (apiData?.status === true) {
           setCircularLoader(false);
           setLoading(false);
           setContentLoader(false);
@@ -243,7 +250,6 @@ function CdrFilterReport({ page }) {
             ...apiData?.data,
             data: filteredData,
           });
-
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -251,12 +257,12 @@ function CdrFilterReport({ page }) {
             });
           }
         } else {
-          setLoading(true);
-          setContentLoader(true);
+          setLoading(false);
+          setContentLoader(false);
         }
       } else {
-        setLoading(true);
-        setContentLoader(true);
+        setLoading(false);
+        setContentLoader(false);
         navigate("/");
       }
     }
