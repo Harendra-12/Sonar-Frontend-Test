@@ -73,7 +73,7 @@ function CampaignScheduler() {
                                                                         <div className="itemWrapper local-calls a active" style={{ cursor: "pointer" }}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
-                                                                                <h5 className='mb-2'>Default</h5>
+                                                                                <h5 className='mb-2'>Daily</h5>
                                                                                 <p>Best suited for set and forget operators who want to maximise across all times</p>
                                                                             </div>
                                                                         </div>
@@ -82,15 +82,15 @@ function CampaignScheduler() {
                                                                         <div className="itemWrapper local-calls a text-start" style={{ cursor: "pointer" }}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
-                                                                                <h5 className='mb-2'>Custom</h5>
-                                                                                <p>Use for specific control and optimize for each unique window of time</p>
+                                                                                <h5 className='mb-2'>Date Range</h5>
+                                                                                <p>Use for specific control and optimize for each unique window of date and time</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className='col-xl-12'>
+                                                        {/* <div className='col-xl-12'>
                                                             <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                                 <div className='row'>
                                                                     <div className='col-12'>
@@ -153,8 +153,8 @@ function CampaignScheduler() {
 
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div className='col-xl-12'>
+                                                        </div> */}
+                                                        {true ? <div className='col-xl-12'>
                                                             <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                                 <div className='row'>
                                                                     <div className='col-12'>
@@ -323,7 +323,43 @@ function CampaignScheduler() {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> :
+
+                                                            <div className='col-xl-12'>
+                                                                <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
+                                                                    <div className='row'>
+                                                                        <div className='col-12'>
+                                                                            <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
+                                                                                <div className='content'>
+                                                                                    <h4>Date Range</h4>
+                                                                                    <p>Select the date and time range for your campaign</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className='col-12'>
+                                                                            <div className='formRow'>
+                                                                                <div className='formLabel'>
+                                                                                    <label>Select Start Date</label>
+                                                                                    <label className='formItemDesc'>Enter the date and time from when the campaign will start</label>
+                                                                                </div>
+                                                                                <div className='col-6'>
+                                                                                    <input type="datetime-local" className='formItem' />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className='formRow'>
+                                                                                <div className='formLabel'>
+                                                                                    <label>Select End Date</label>
+                                                                                    <label className='formItemDesc'>Enter the date and time at which the campaign will end</label>
+                                                                                </div>
+                                                                                <div className='col-6'>
+                                                                                    <input type="datetime-local" className='formItem' />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
                                                     </div>
                                                 </div>
                                                 <div className='col-xl-5' >
