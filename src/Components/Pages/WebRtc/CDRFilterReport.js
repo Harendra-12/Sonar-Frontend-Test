@@ -55,7 +55,7 @@ function CdrFilterReport({ page }) {
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
-    const [commentId, setCommentId] = useState("");
+  const [commentId, setCommentId] = useState("");
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -576,7 +576,7 @@ function CdrFilterReport({ page }) {
                         {filteredKeys.includes("created_at") && (
                           <>
                             {" "}
-                            <div className="formRow border-0 ps-xl-0">
+                            <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Date Filter
                               </label>
@@ -1137,7 +1137,7 @@ function CdrFilterReport({ page }) {
                                             </button>
                                           </td>
                                           <td>
-                                            <button className={`tableButton ms-0`} onClick={()=>{setCommentId(item.id);setComment(item?.comment)}}>
+                                            <button className={`tableButton ms-0`} onClick={() => { setCommentId(item.id); setComment(item?.comment) }}>
                                               <Tippy content={'View Note'}
                                               >
                                                 <i class="fa-solid fa-comment-dots"></i>
@@ -1290,7 +1290,7 @@ function CdrFilterReport({ page }) {
               </div> */}
               <div className="col-xl-12 mt-2">
                 <div className="d-flex justify-content-between align-items-center">
-                  <button className="panelButton gray mx-0" onClick={()=>{setCommentId(""); setComment("")}}>
+                  <button className="panelButton gray mx-0" onClick={() => { setCommentId(""); setComment("") }}>
                     <span className="text">Close</span>
                     <span className="icon">
                       <i className="fa-solid fa-caret-left" />
