@@ -171,10 +171,10 @@ function CdrReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-            ? callType
-            : page,
+              ? "pstn"
+              : page === "callrecording"
+                ? callType
+                : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -399,17 +399,16 @@ function CdrReport({ page }) {
       <section id="phonePage">
         <div className="container-fluid px-0 position-relative">
           <Header
-            title={`${
-              page === "billing"
-                ? "Billing Reports"
-                : page === "callcenter"
+            title={`${page === "billing"
+              ? "Billing Reports"
+              : page === "callcenter"
                 ? "Call Center Reports"
                 : page === "ringgroup"
-                ? "Ring Group Reports"
-                : page === "callrecording"
-                ? "Call Recordings"
-                : "CDR Reports"
-            }`}
+                  ? "Ring Group Reports"
+                  : page === "callrecording"
+                    ? "Call Recordings"
+                    : "CDR Reports"
+              }`}
           />
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
@@ -421,24 +420,24 @@ function CdrReport({ page }) {
                         {page === "billing"
                           ? "Billing"
                           : page === "callcenter"
-                          ? "Call Center Reports"
-                          : page === "ringgroup"
-                          ? "Ring Group Reports"
-                          : page === "callrecording"
-                          ? "Call Recordings"
-                          : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                              ? "Ring Group Reports"
+                              : page === "callrecording"
+                                ? "Call Recordings"
+                                : "CDR Reports"}
                       </h4>
                       <p>
                         Here are all the{" "}
                         {page === "billing"
                           ? "Billing Reports"
                           : page === "callcenter"
-                          ? "Call Center Reports"
-                          : page === "ringgroup"
-                          ? "Ring Group Reports"
-                          : page === "callrecording"
-                          ? "Call Recordings"
-                          : "CDR Reports"}
+                            ? "Call Center Reports"
+                            : page === "ringgroup"
+                              ? "Ring Group Reports"
+                              : page === "callrecording"
+                                ? "Call Recordings"
+                                : "CDR Reports"}
                       </p>
                     </div>
                     <div className="buttonGroup">
@@ -651,7 +650,7 @@ function CdrReport({ page }) {
                                 setPageNumber(1);
                               }}
                               value={callDirection}
-                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                             >
                               <option value={""}>All Calls</option>
                               <option value={"inbound"}>Inbound Calls</option>
@@ -833,8 +832,8 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                ? 9
-                                : 17
+                                  ? 9
+                                  : 17
                             }
                             row={12}
                           />
@@ -867,7 +866,7 @@ function CdrReport({ page }) {
                                       </td>
                                       <td>
                                         {item["Call-Direction"] ===
-                                        "inbound" ? (
+                                          "inbound" ? (
                                           <span>
                                             <i
                                               class="fa-solid fa-phone-arrow-down-left me-1"
@@ -932,15 +931,15 @@ function CdrReport({ page }) {
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
-                                        item["application_state"] ===
+                                          item["application_state"] ===
                                           "eavesdrop" ||
-                                        item["application_state"] ===
+                                          item["application_state"] ===
                                           "whisper" ||
-                                        item["application_state"] === "barge"
+                                          item["application_state"] === "barge"
                                           ? item["other_leg_destination_number"]
                                           : item[
-                                              "Caller-Callee-ID-Number"
-                                            ]}{" "}
+                                          "Caller-Callee-ID-Number"
+                                          ]}{" "}
                                         {item["application_state_name"] &&
                                           `(${item["application_state_name"]})`}
                                       </td>
@@ -989,7 +988,7 @@ function CdrReport({ page }) {
                                               }}
                                             >
                                               {currentPlaying ===
-                                              item["recording_path"] ? (
+                                                item["recording_path"] ? (
                                                 <i className="fa-solid fa-stop"></i>
                                               ) : (
                                                 <i className="fa-solid fa-play"></i>
@@ -1011,7 +1010,7 @@ function CdrReport({ page }) {
                                         {formatTime(item["variable_billsec"])}
                                       </td>
                                       {page === "billing" ||
-                                      page === "callrecording" ? (
+                                        page === "callrecording" ? (
                                         ""
                                       ) : (
                                         <>
@@ -1033,7 +1032,7 @@ function CdrReport({ page }) {
                                         <td>{item["call_cost"]}</td>
                                       )}
                                       {page === "billing" ||
-                                      page === "callrecording" ? (
+                                        page === "callrecording" ? (
                                         ""
                                       ) : (
                                         <td>
@@ -1041,23 +1040,22 @@ function CdrReport({ page }) {
                                           <button
                                             disabled={isBlocked}
                                             effect="ripple"
-                                            className={`tableButton ${
-                                              isBlocked ? "delete" : "warning"
-                                            } ms-0`}
+                                            className={`tableButton ${isBlocked ? "delete" : "warning"
+                                              } ms-0`}
                                             // style={{ height: "34px" }}
                                             onClick={() => {
                                               setSelectedNumberToBlock(
                                                 item["Call-Direction"] ===
                                                   "inbound"
                                                   ? item[
-                                                      "Caller-Caller-ID-Number"
-                                                    ]
+                                                  "Caller-Caller-ID-Number"
+                                                  ]
                                                   : item["Call-Direction"] ===
                                                     "outbound"
-                                                  ? item[
-                                                      "Caller-Callee-ID-Number"
+                                                    ? item[
+                                                    "Caller-Callee-ID-Number"
                                                     ]
-                                                  : "N/A"
+                                                    : "N/A"
                                               );
                                               setPopUp(true);
                                             }}
@@ -1077,6 +1075,14 @@ function CdrReport({ page }) {
                                           </button>
                                         </td>
                                       )}
+                                      <td>
+                                        <button className={`tableButton ms-0`}>
+                                          <Tippy content={'View Note'}
+                                          >
+                                            <i class="fa-solid fa-comment-dots"></i>
+                                          </Tippy>
+                                        </button>
+                                      </td>
                                     </tr>
                                     {currentPlaying ===
                                       item["recording_path"] &&
@@ -1101,11 +1107,11 @@ function CdrReport({ page }) {
 
                                               <button
                                                 className="audioCustomButton"
-                                                // onClick={() =>
-                                                //   handleAudioDownload(
-                                                //     clickedVoiceMail.recording_path
-                                                //   )
-                                                // }
+                                              // onClick={() =>
+                                              //   handleAudioDownload(
+                                              //     clickedVoiceMail.recording_path
+                                              //   )
+                                              // }
                                               >
                                                 <i className="fa-sharp fa-solid fa-download" />
                                               </button>
