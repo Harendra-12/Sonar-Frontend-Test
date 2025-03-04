@@ -107,6 +107,10 @@
   background-color: #6c757d;
 }
 
+.panelButton.edit {
+  background-color: #00ab2b;
+}
+
 .panelButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;

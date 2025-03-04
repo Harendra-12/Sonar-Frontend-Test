@@ -1356,7 +1356,7 @@ function CallCenterQueueAdd() {
                         ) : (
                           <button
                             type="button"
-                            class="panelButton"
+                            class="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(agent);
                               setBulkEditPopup(true);
@@ -1364,7 +1364,7 @@ function CallCenterQueueAdd() {
                           >
                             <span class="text">Edit All</span>
                             <span class="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i class="fa-solid fa-pen"></i>
                             </span>
                           </button>
                         ))}
