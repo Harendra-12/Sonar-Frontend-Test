@@ -18,8 +18,8 @@ function CampaignScheduler() {
                                         <div className="col-12">
                                             <div className="heading">
                                                 <div className="content">
-                                                    <h4>Campaign Create</h4>
-                                                    <p>Create a new campaign</p>
+                                                    <h4>Campaign Schedule</h4>
+                                                    <p>Select a schedule for your campaign</p>
                                                 </div>
                                                 <div className="buttonGroup">
                                                     <button
@@ -51,7 +51,7 @@ function CampaignScheduler() {
                                             <div className='col-xl-7'>
                                                 <div className="row">
                                                     <div className='col-xl-12'>
-                                                        <div className='heading bg-transparent border-bottom-0'>
+                                                        <div className='heading bg-transparent border-bottom-0 pt-0'>
                                                             <div className='content'>
                                                                 <h4>Operational Hours</h4>
                                                                 <p>Choose the hours and days of the week you would like the service to be active in. You can choose a default strategy or customize one yourself.</p>
@@ -62,7 +62,11 @@ function CampaignScheduler() {
                                                         <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                             <div className='row gy-3'>
                                                                 <div className='col-12'>
-                                                                    <h4>Strategy</h4>
+                                                                    <div className='heading bg-transparent border-bottom-0 p-0'>
+                                                                        <div className='content'>
+                                                                            <h4>Strategy</h4>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div className='col-xl-4'>
                                                                     <div className="itemWrapper local-calls a active" style={{ cursor: "pointer" }}>
@@ -89,8 +93,12 @@ function CampaignScheduler() {
                                                         <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                             <div className='row'>
                                                                 <div className='col-12'>
-                                                                    <h4>Eligible Times</h4>
-                                                                    <p>Select the days of the week to be active</p>
+                                                                    <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
+                                                                        <div className='content'>
+                                                                            <h4>Eligible Times</h4>
+                                                                            <p>Select the days of the week to be active</p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div className='col-auto'>
                                                                     <div className="itemWrapper local-calls a active h-auto" style={{ cursor: "pointer" }}>
@@ -149,8 +157,12 @@ function CampaignScheduler() {
                                                         <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                             <div className='row'>
                                                                 <div className='col-12'>
-                                                                    <h4>Hours</h4>
-                                                                    <p>Set which hours you want to be active</p>
+                                                                    <div className='heading bg-transparent border-bottom-0 px-0 pt-0'>
+                                                                        <div className='content'>
+                                                                            <h4>Hours</h4>
+                                                                            <p>Set which hours you want to be active</p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div className='col-12'>
                                                                     <div className='row align-items-center'>
@@ -312,6 +324,9 @@ function CampaignScheduler() {
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div className='col-xl-4' style={{ borderLeft: '1px solid var(--border-color)' }}>
+
                                             </div>
                                         </div>
                                     </div>
