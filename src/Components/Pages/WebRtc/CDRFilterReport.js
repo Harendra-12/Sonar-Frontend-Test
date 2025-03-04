@@ -1139,7 +1139,7 @@ function CdrFilterReport({ page }) {
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
-                                          item["recording_path"] && (
+                                          item["recording_path"] && item["recording_path"] && (
                                           <tr>
                                             <td colSpan={showKeys.length + 1}>
                                               <div className="audio-container mx-2">

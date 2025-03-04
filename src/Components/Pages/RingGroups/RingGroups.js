@@ -307,12 +307,12 @@ const RingGroups = () => {
                         </thead>
                         <tbody>
                           {noPermissionToRead &&
-                          checkViewSidebar(
-                            "Ringgroup",
-                            slugPermissions,
-                            account?.permissions,
-                            "read"
-                          ) ? (
+                            checkViewSidebar(
+                              "Ringgroup",
+                              slugPermissions,
+                              account?.permissions,
+                              "read"
+                            ) ? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -360,24 +360,48 @@ const RingGroups = () => {
                                           >
                                             {item.strategy}
                                           </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/ring-groups-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.ring_group_destination.map(
-                                              (item, index, array) => (
-                                                <span>
-                                                  {item.username}
-                                                  {index < array.length - 1
-                                                    ? ", "
-                                                    : ""}
-                                                </span>
-                                              )
-                                            )}
+
+                                          <td>
+                                            <div className="dropdown">
+                                              <div
+                                                style={{
+                                                  color: "var(--ui-accent)",
+                                                  textDecoration: "underline",
+                                                }}
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                {item.ring_group_destination.length}
+                                              </div>
+                                              <ul className="dropdown-menu light">
+                                                <li className="col-12">
+                                                  <div className="dropdown-item fw-bold disabled">
+                                                    Agents
+                                                  </div>
+                                                </li>
+                                                <div
+                                                  style={{
+                                                    columnCount:
+                                                      item.ring_group_destination.length > 6
+                                                        ? 2
+                                                        : 1,
+                                                  }}
+                                                >
+                                                  {item.ring_group_destination.map(
+                                                    (item, index) => (
+                                                      <li>
+                                                        <div className="dropdown-item">
+                                                          {item?.username}
+                                                        </div>
+                                                      </li>
+                                                    )
+                                                  )}
+                                                </div>
+                                              </ul>
+                                            </div>
                                           </td>
+                                          
                                           {/* <td>(999) 999-9999, (999) 999-9999</td> */}
                                           <td>
                                             <div className="my-auto position-relative mx-1">
@@ -437,7 +461,7 @@ const RingGroups = () => {
                                       );
                                     })}
                                   {ringGroup &&
-                                  ringGroup?.data?.length === 0 ? (
+                                    ringGroup?.data?.length === 0 ? (
                                     <td colSpan={99}>
                                       <EmptyPrompt
                                         name="Ring Group"
