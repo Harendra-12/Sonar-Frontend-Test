@@ -846,7 +846,7 @@ const RingGroupAdd = () => {
                         ) : (
                           <button
                             type="button"
-                            class="panelButton"
+                            class="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(destination);
                               setBulkEditPopup(true);
