@@ -271,124 +271,179 @@ function Call({
       (contact) => contact.did === item["Caller-Caller-ID-Number"]
     )?.name;
     return (
-      <div
-        key={item.id}
-        onClick={() => handleCallItemClick(item)}
-        onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-          item["variable_billsec"] > 0 &&
-          !isCustomerAdmin
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-            ? "outgoing"
-            : item["Caller-Callee-ID-Number"] === extension &&
-              item["variable_billsec"] === 0 &&
-              !isCustomerAdmin
-              ? "missed"
-              : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                ? "voicemail"
-                : ""
-          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
-      >
-        <div className="row justify-content-between">
-          <div className="col-xl-12 d-flex">
-            <div
-              className="profileHolder"
-            // id={"profileOfflineNav"}
-            >
-              <i className="fa-light fa-user fs-5"></i>
-            </div>
-            {!isCustomerAdmin ? (
+      <>
+        <div
+          key={item.id}
+          onClick={() => handleCallItemClick(item)}
+          onDoubleClick={() => handleDoubleClickCall(item)}
+          className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+            item["variable_billsec"] > 0 &&
+            !isCustomerAdmin
+            ? "incoming"
+            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
+              ? "outgoing"
+              : item["Caller-Callee-ID-Number"] === extension &&
+                item["variable_billsec"] === 0 &&
+                !isCustomerAdmin
+                ? "missed"
+                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+                  ? "voicemail"
+                  : ""
+            } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+        >
+          <div className="row justify-content-between">
+            <div className="col-xl-12 d-flex">
               <div
-                className="col-4 my-auto ms-2 ms-xl-3"
-                style={{ cursor: "pointer" }}
+                className="profileHolder"
+              // id={"profileOfflineNav"}
               >
-                <h4>
-                  {item["Caller-Callee-ID-Number"] === extension
-                    ? item["Caller-Caller-ID-Number"]
-                    : item["Caller-Callee-ID-Number"]}
-                </h4>
-                <h5 style={{ paddingLeft: 20 }}>
-                  {displayName
-                    ? displayName
-                    : item.caller_user
-                      ? item.caller_user.username
-                      : "USER XYZ"}
+                <i className="fa-light fa-user fs-5"></i>
+              </div>
+              {!isCustomerAdmin ? (
+                <div
+                  className="col-4 my-auto ms-2 ms-xl-3"
+                  style={{ cursor: "pointer" }}
+                >
+                  <h4>
+                    {item["Caller-Callee-ID-Number"] === extension
+                      ? item["Caller-Caller-ID-Number"]
+                      : item["Caller-Callee-ID-Number"]}
+                  </h4>
+                  <h5 style={{ paddingLeft: 20 }}>
+                    {displayName
+                      ? displayName
+                      : item.caller_user
+                        ? item.caller_user.username
+                        : "USER XYZ"}
 
-                </h5>
-                {/* <div className="contactTags">
+                  </h5>
+                  {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-              </div>
-            ) : (
-              <div
-                className="col-5 my-auto ms-2 ms-xl-3"
-                style={{ cursor: "pointer" }}
-              >
-                <div className="d-flex">
-                  <div className="source">
-                    <h4>
-                      {matchingCalleeContactForAdmin
-                        ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                        : item["Caller-Callee-ID-Number"]}
-                    </h4>
-                    {/* <h5>Source</h5> */}
-                  </div>
-                  <div className="callIconAdmin">
-                    {item["variable_billsec"] > 0 ? (
-                      <i
-                        class="fa-solid fa-phone mx-2"
-                        style={{ color: "var(--ui-accent)" }}
-                      ></i>
-                    ) : (
-                      <i
-                        class="fa-solid fa-phone-xmark mx-2"
-                        style={{ color: "red" }}
-                      ></i>
-                    )}
-                  </div>
-                  <div className="destination">
-                    <h4>
-                      {matchingCallerContactForAdmin
-                        ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                        : item["Caller-Caller-ID-Number"]}
-                    </h4>
-                    {/* <h5>Destination</h5> */}
-                  </div>
                 </div>
-                {/* <div className="contactTags">
+              ) : (
+                <div
+                  className="col-5 my-auto ms-2 ms-xl-3"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="d-flex">
+                    <div className="source">
+                      <h4>
+                        {matchingCalleeContactForAdmin
+                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                          : item["Caller-Callee-ID-Number"]}
+                      </h4>
+                      {/* <h5>Source</h5> */}
+                    </div>
+                    <div className="callIconAdmin">
+                      {item["variable_billsec"] > 0 ? (
+                        <i
+                          class="fa-solid fa-phone mx-2"
+                          style={{ color: "var(--ui-accent)" }}
+                        ></i>
+                      ) : (
+                        <i
+                          class="fa-solid fa-phone-xmark mx-2"
+                          style={{ color: "red" }}
+                        ></i>
+                      )}
+                    </div>
+                    <div className="destination">
+                      <h4>
+                        {matchingCallerContactForAdmin
+                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                          : item["Caller-Caller-ID-Number"]}
+                      </h4>
+                      {/* <h5>Destination</h5> */}
+                    </div>
+                  </div>
+                  {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-              </div>
-            )}
-
-            {item["variable_billsec"] > 0 && (
-              <div
-                className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
-              >
-                <div className="contactTags">
-                  <span data-id="2" className="duration">
-                    Duration: {formatTime(item["variable_billsec"])}
-                  </span>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className="col-auto text-end ms-auto">
-              <p className="timeAgo">
-                {new Date(item.variable_start_stamp)
-                  .toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  })
-                  .replace(" AM", "am")
-                  .replace(" PM", "pm")}
-              </p>
+              {item["variable_billsec"] > 0 && (
+                <div
+                  className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
+                >
+                  <div className="contactTags">
+                    <span data-id="2" className="duration">
+                      Duration: {formatTime(item["variable_billsec"])}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="col-auto text-end ms-auto">
+                <p className="timeAgo mb-0">
+                  {new Date(item.variable_start_stamp)
+                    .toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })
+                    .replace(" AM", "am")
+                    .replace(" PM", "pm")}
+                </p>
+                <button className="clearButton2 xl" type="button" >
+                  <i className="fa-light fa-comment-dots" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div className="backdropContact ">
+          <div className="addNewContactPopup">
+            <div className="formRow px-0 row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-comment-dots" />
+                <h5>Agent Note</h5>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="formLabel">
+                  <label htmlFor="">Note</label>
+                </div>
+                <div className="col-12">
+                  <textarea
+                    rows={4}
+                    className="formItem h-auto"
+                    placeholder="Note Content"
+                    name="did"
+                    disabled={true}
+                  />
+                </div>
+              </div>
+              <div className="col-xl-12">
+                <div className="formLabel">
+                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
+                  <label>Some Name</label>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between align-items-center">
+                  <button className="panelButton gray mx-0">
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="tableButton delete">
+                    <i className="fa-solid fa-trash" />
+                  </button>
+                  <button className="panelButton mx-0">
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </>
     );
   };
 

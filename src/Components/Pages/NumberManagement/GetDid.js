@@ -250,7 +250,7 @@ function GetDid() {
           setDid();
           setSelectedDid([]);
           navigate("/did-listing");
-         
+
         } else {
           setLoading(false);
           // const errorMessage = Object.keys(apiData.errors);
@@ -396,7 +396,7 @@ function GetDid() {
                                 </label>
                               </div>
                             </div>
-                            <div className={`formRow col-${did ? '12' : 'xxl-1 col-lg-2'}`}>
+                            <div className={`formRow col-${did ? '12' : '2'}`}>
                               <div
                                 className="formLabel d-flex justify-content-between"
                                 style={{ width: "100%" }}
