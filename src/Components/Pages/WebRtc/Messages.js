@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
+import FileUpload from "./FileUpload";
 
 function Messages({
   setSelectedModule,
@@ -89,6 +90,8 @@ function Messages({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false)
+  const [fileUpload,setFileUpload] = useState(false)
+  const [fileType,setFileType] = useState("")
 console.log("groupSelecedAgents", groupSelecedAgents);
 
   // Function to handle logout
@@ -957,7 +960,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
   }
   const example = []
   const newExample = []
-  console.log(example === newExample)
+
   return (
     <>
       {allLogOut && (
@@ -2199,13 +2202,13 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => {setFileUpload(true);setFileType("image")}}
                                 >
                                   <i class="fa-regular fa-image"></i>
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => {setFileUpload(true);setFileType("all")}}
                                 >
                                   <i class="fa-solid fa-paperclip"></i>
                                 </button>
@@ -2644,6 +2647,9 @@ console.log("groupSelecedAgents", groupSelecedAgents);
         ) : (
           ""
         )}
+        {
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} />
+        }
       </main>
     </>
   );
