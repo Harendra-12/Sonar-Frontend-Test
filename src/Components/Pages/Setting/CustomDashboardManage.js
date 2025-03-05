@@ -238,17 +238,6 @@ function CustomDashboardManage() {
                                                     </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
-                                                            <label className="text-dark">Enter Name</label>
-                                                            <label htmlFor="data" className="formItemDesc">
-                                                                Please enter the name of the module.
-                                                            </label>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <input className='formItem' placeholder='Enter Module Name' />
-                                                        </div>
-                                                    </div>
-                                                    <div className="formRow">
-                                                        <div className="formLabel">
                                                             <label className="text-dark">Select Type</label>
                                                             <label htmlFor="data" className="formItemDesc">
                                                                 Please select the type for which you want to enable the module.
