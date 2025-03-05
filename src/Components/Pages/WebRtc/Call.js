@@ -13,11 +13,13 @@ import { useSIPProvider } from "modify-react-sipjs";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  generalPostFunction,
   generalPutFunction,
   logout,
 } from "../../GlobalFunction/globalFunction";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
+import Comments from "./Comments";
 
 function Call({
   selectedModule,
@@ -61,7 +63,8 @@ function Call({
   const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
   const [comment, setComment] = useState("");
-  const [commentId, setCommentId] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
+  const [commentData, setCommentData] = useState([]);
   const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
@@ -332,9 +335,10 @@ function Call({
                   <div className="d-flex">
                     <div className="source">
                       <h4>
-                        {matchingCalleeContactForAdmin
-                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                          : item["Caller-Callee-ID-Number"]}
+                        {matchingCallerContactForAdmin
+                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                          : item["Caller-Caller-ID-Number"]}
+
                       </h4>
                       {/* <h5>Source</h5> */}
                     </div>
@@ -353,9 +357,9 @@ function Call({
                     </div>
                     <div className="destination">
                       <h4>
-                        {matchingCallerContactForAdmin
-                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                          : item["Caller-Caller-ID-Number"]}
+                        {matchingCalleeContactForAdmin
+                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                          : item["Caller-Callee-ID-Number"]}
                       </h4>
                       {/* <h5>Destination</h5> */}
                     </div>
@@ -389,7 +393,7 @@ function Call({
                     .replace(" AM", "am")
                     .replace(" PM", "pm")}
                 </p>
-                <button className="clearButton2 xl" type="button" onClick={()=>{setCommentId(item?.id); setComment(item?.comment)}}>
+                <button className="clearButton2 xl" type="button" onClick={() => { setSelectedCdr(item?.id);setLoading(true); }}>
                   <i className="fa-light fa-comment-dots" />
                 </button>
               </div>
@@ -625,24 +629,6 @@ function Call({
     }
   }, [selectedModule, videoCall]);
 
-// Logic to handle comments for the call
-async function handleComments(remove){
-  if(comment==="" || !comment){
-    toast.error("Please enter a comment");
-    return;
-  }
-  setLoading(true);
-  const apiData = await generalPutFunction(`/update-cdr-comment/${commentId}`,{comment:remove?"":comment});
-  if(apiData.status){
-    toast.success(apiData.message);
-    setComment("");
-    setCommentId("");
-    setLoading(false);
-  }else{
-    setLoading(false);
-    toast.error(apiData.message);
-  }
-}
   return (
     <>
       {/* <SideNavbarApp /> */}
@@ -998,59 +984,13 @@ async function handleComments(remove){
       </main>
 
       {/* Comment section start */}
-      {commentId !== "" && !loading &&
-        <div className="backdropContact ">
-          <div className="addNewContactPopup">
-            <div className="formRow px-0 row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-light fa-comment-dots" />
-                <h5>Agent Note</h5>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="formLabel">
-                  <label htmlFor="">Note</label>
-                </div>
-                <div className="col-12">
-                  <textarea
-                    rows={4}
-                    className="formItem h-auto"
-                    placeholder="Note Content"
-                    name="did"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="col-xl-12">
-                <div className="formLabel">
-                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
-                  <label>Some Name</label>
-                </div>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between align-items-center">
-                  <button className="panelButton gray mx-0" onClick={()=>{setComment("");setCommentId("")}}>
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  {
-                    comment && comment!=="" &&   <button className="tableButton delete" onClick={()=>handleComments(true)}>
-                    <i className="fa-solid fa-trash" />
-                  </button>
-                  }
-                  <button className="panelButton mx-0" onClick={()=>handleComments(false)}>
-                    <span className="text">Save</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-floppy-disk" />
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {selectedCdr !== "" &&
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+          loading={loading}
+          setLoading={setLoading}
+        />
       }
       {/* Comment section end */}
       {dialpadShow ? (

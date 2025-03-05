@@ -308,7 +308,7 @@
 .profileView .baseDetails .content .assigned{
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
    /* border: 1px solid green; */
     border-radius: 5px;
     color: green;

@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
+import Comments from "./Comments";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function CdrFilterReport({ page }) {
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
@@ -55,7 +57,8 @@ function CdrFilterReport({ page }) {
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
-  const [commentId, setCommentId] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
+  
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -75,6 +78,7 @@ function CdrFilterReport({ page }) {
     "start_date",
     "end_date",
     "call_cost",
+    "id",
   ]);
 
   const thisAudioRef = useRef(null);
@@ -86,8 +90,9 @@ function CdrFilterReport({ page }) {
 
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
-      setStartDate(startDateFlag);
-      setEndDate(startDateFlag);
+      setCreatedAt(startDateFlag);
+      setStartDate("");
+      setEndDate("");
     } else if (
       filterBy === "date_range" &&
       endDateFlag !== "" &&
@@ -95,6 +100,7 @@ function CdrFilterReport({ page }) {
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);
+      setCreatedAt("");
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
@@ -204,6 +210,7 @@ function CdrFilterReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
+        created_at:createdAt
       }
     );
 
@@ -242,9 +249,9 @@ function CdrFilterReport({ page }) {
           setLoading(false);
           setContentLoader(false);
           const filteredData = apiData?.data?.data?.map((item) =>
-            filterObjectKeys(item, apiData.filteredKeys)
+            filterObjectKeys(item, [...apiData.filteredKeys,"id"])
           );
-          setFilteredKeys(apiData.filteredKeys);
+          setFilteredKeys([...apiData.filteredKeys,"id"]);
           // setCdr(apiData.data);
           setCdr({
             ...apiData?.data,
@@ -282,7 +289,9 @@ function CdrFilterReport({ page }) {
     refresh,
     itemsPerPage,
     page,
+    createdAt
   ]);
+  
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -571,7 +580,7 @@ function CdrFilterReport({ page }) {
                     </div>
                     <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
-                        {filteredKeys.includes("created_at") && (
+                        {filteredKeys.includes("variable_start_stamp") && (
                           <>
                             {" "}
                             <div className="formRow border-0">
@@ -1135,7 +1144,7 @@ function CdrFilterReport({ page }) {
                                             </button>
                                           </td>
                                           <td>
-                                            <button className={`tableButton ms-0`} onClick={() => { setCommentId(item.id); setComment(item?.comment) }}>
+                                            <button className={`tableButton ms-0`} onClick={() =>setSelectedCdr(item.id)}>
                                               <Tippy content={'View Note'}
                                               >
                                                 <i class="fa-solid fa-comment-dots"></i>
@@ -1256,58 +1265,13 @@ function CdrFilterReport({ page }) {
         )}
       </main>
       {/* Note Popup */}
-      {
-        commentId !== "" && !loading &&
-        <div className="backdropContact ">
-          <div className="addNewContactPopup">
-            <div className="formRow px-0 row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-light fa-comment-dots" />
-                <h5>Agent Note</h5>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="formLabel">
-                  <label htmlFor="">Note</label>
-                </div>
-                <div className="col-12">
-                  <textarea
-                    rows={4}
-                    className="formItem h-auto"
-                    placeholder="Note Content"
-                    name="did"
-                    disabled={true}
-                    value={comment}
-                  />
-                </div>
-              </div>
-              {/* <div className="col-xl-12">
-                <div className="formLabel">
-                  <label className="formItemDesc" style={{ fontSize: '12px' }}>Note Left By *</label>
-                  <label>Some Name</label>
-                </div>
-              </div> */}
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between align-items-center">
-                  <button className="panelButton gray mx-0" onClick={() => { setCommentId(""); setComment("") }}>
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  {/* <button className="tableButton delete">
-                    <i className="fa-solid fa-trash" />
-                  </button>
-                  <button className="panelButton mx-0">
-                    <span className="text">Save</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-floppy-disk" />
-                    </span>
-                  </button> */}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {selectedCdr !== "" &&
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+          loading={loading}
+          setLoading={setLoading}
+        />
       }
     </>
   );
