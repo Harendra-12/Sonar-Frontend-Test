@@ -79,7 +79,7 @@ function CustomDashboardManage() {
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, name: name })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, name: name,active:true,ringing:true })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
