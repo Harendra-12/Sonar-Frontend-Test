@@ -51,6 +51,41 @@
     -webkit-font-smoothing: antialiased;
 }
 
+
+
+.formLabels-width{
+    max-width: 400px !important;
+}
+
+
+.date-small{
+    font-size: 10px;
+    margin-left: 40px;
+}
+
+.name-comment{
+    /* margin-left: 35px; */
+    margin-top: 5px;
+
+    font-size: 13px;
+    font-weight: 500;
+    color: #2c2c2c;
+}
+.content-comment{
+    overflow: scroll;
+    max-height: 400px; 
+}
+
+.back-comment{
+    background-color: #d5d5d5;
+    padding: 6px 17px 2px 10px;
+    border-radius: 10px;
+}
+
+.back-comment .username-cmt{
+    font-size: 15px;
+}
+
 label.status {
     /* float: inline-end; */
     font-size: 12px;
@@ -483,4 +518,10 @@ form.tangoNavs .nav-tabs {
 
 .timeTableWrapper .item label {
     font-size: 14px;
+}
+
+.custom-font p{
+    font-size: 14px;
+    font-weight: 500;
+   
 }

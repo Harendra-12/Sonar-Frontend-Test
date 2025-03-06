@@ -55,14 +55,31 @@ function Comments({ id, setId, loading, setLoading }) {
                         <i className="fa-light fa-comment-dots" />
                         <h5>Agent Note</h5>
                     </div>
+                 
                     <div className="col-xl-12 mt-2">
+                    <div className='content-comment'>
+                      
                         {loading ? <i class="ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"></i> :
                             commentData.length > 0 ?
 
                                 commentData.map((item, index) => {
                                     return (
-                                        <div className="formLabel" key={index}>
-                                            <label htmlFor="">{index + 1}. {item?.commented?.username} {item.comment} {item.created_at.split("T")[0]}</label>
+                                        <div className=''>
+                                            <div className="formLabel formLabels-width" key={index}>
+                                            <label htmlFor="">
+                                                <span>
+                                                    <div className='back-comment'>
+                                                        <span>
+                                                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                                        </span>
+                                                        <span className='username-cmt'>  {item?.commented?.username}</span> <br />
+
+                                                        <span className='name-comment'>   {item.comment}</span>
+                                                        <span className='date-small'>  {item.created_at.split("T")[0]}</span>
+                                                    </div>
+                                                </span>
+                                            </label>
+                                        </div>
                                         </div>
                                     )
                                 })
@@ -71,7 +88,9 @@ function Comments({ id, setId, loading, setLoading }) {
                                 </div>
                         }
 
-                        <div className="col-12">
+                       
+                    </div>
+                    <div className="col-12 mt-3">
                             <input
                                 className="formItem h-auto"
                                 placeholder="Add new comment"
@@ -80,7 +99,6 @@ function Comments({ id, setId, loading, setLoading }) {
                                 onChange={(e) => setComment(e.target.value)}
                             />
                         </div>
-                    </div>
                     <div className="col-xl-12 mt-2">
                         <div className="d-flex justify-content-between align-items-center">
                             <button className="panelButton gray mx-0" onClick={() => { setComment(""); setId("") }}>
@@ -102,6 +120,7 @@ function Comments({ id, setId, loading, setLoading }) {
                             </button>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
