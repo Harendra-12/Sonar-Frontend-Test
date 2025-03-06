@@ -181,7 +181,8 @@ function CustomDashboardManage() {
                                                         customModule?.map((item, index) => {
                                                             return (
                                                                 <div className='col-xl-4' key={index}>
-                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => {setFeature([]);
+                                                                    <div className={`deviceProvision ${selectedModule === item?.id ? 'active' : ''}`} onClick={() => {
+                                                                        setFeature([]);
                                                                         setSelectedModule(item?.id); setCustomType(item?.model_type); setCustomId(item?.model?.id); setAddNewMod(false); setName(item?.name); if (item.missed) {
                                                                             setFeature((prev) => {
                                                                                 return [...prev, "missed"]
@@ -211,33 +212,38 @@ function CustomDashboardManage() {
                                                                             </div>
                                                                             <div className="data-number2  h-auto">
                                                                                 <div className="d-flex flex-wrap justify-content-between">
-                                                                                    <div className="col-4">
-
-                                                                                        <div className='add-active '>
-                                                                                            <p>Active</p>
-                                                                                        </div>
-
-                                                                                        {/* <h4>
-                                                                                        28{" "}
-                                                                                        <i
-                                                                                            className="fa-solid fa-phone-volume ms-1"
-                                                                                            style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                                        />
-                                                                                    </h4> */}
-                                                                                    </div>
-                                                                                    <div className="col-4 text-center">
-                                                                                        <div className='add-rings '>
-
-                                                                                            <p>Ringing</p>
-                                                                                        </div>
-                                                                                        {/* <h4>
-                                                                                        82{" "}
-                                                                                        <i
-                                                                                            className="fa-solid fa-bell-ring ms-1"
-                                                                                            style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                                        />
-                                                                                    </h4> */}
-                                                                                    </div>
+                                                                                    {
+                                                                                        item.active ? <div className="col-4">
+                                                                                            <div className='add-active '>
+                                                                                                <p>Active</p>
+                                                                                            </div>
+                                                                                        </div> : ""
+                                                                                    }
+                                                                                    {
+                                                                                        item.ringing ? <div className="col-4">
+                                                                                            <div className='add-active '>
+                                                                                                <p>Ringing</p>
+                                                                                            </div>
+                                                                                        </div> : ""
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="data-number2  h-auto">
+                                                                                <div className="d-flex flex-wrap justify-content-between">
+                                                                                    {
+                                                                                        item.total ? <div className="col-4">
+                                                                                            <div className='add-active '>
+                                                                                                <p>Total</p>
+                                                                                            </div>
+                                                                                        </div> : ""
+                                                                                    }
+                                                                                    {
+                                                                                        item.missed ? <div className="col-4">
+                                                                                            <div className='add-active '>
+                                                                                                <p>Missed</p>
+                                                                                            </div>
+                                                                                        </div> : ""
+                                                                                    }
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -247,7 +253,7 @@ function CustomDashboardManage() {
                                                         })
                                                     }
                                                     <div className='col-xl-4'>
-                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => {setFeature([]); setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId(""); setName("") }}>
+                                                        <div className={`deviceProvision ${addNewMod ? 'active' : ''}`} onClick={() => { setFeature([]); setSelectedModule(); setAddNewMod(true); setCustomType("CallCenterQueue"); setCustomId(""); setName("") }}>
                                                             <div className="itemWrapper a addNew">
                                                                 <i className='fa-regular fa-plus'></i>
                                                                 <p>Add New Module</p>

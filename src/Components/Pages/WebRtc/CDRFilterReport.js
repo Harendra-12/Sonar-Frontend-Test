@@ -1269,8 +1269,6 @@ function CdrFilterReport({ page }) {
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
-          loading={loading}
-          setLoading={setLoading}
         />
       }
     </>
