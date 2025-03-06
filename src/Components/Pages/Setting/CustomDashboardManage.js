@@ -109,7 +109,7 @@ function CustomDashboardManage() {
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId, name: name })
+        const apiData = await generalPutFunction(`/usage/${selectedModule}`, { model_type: customType, model_id: customId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)

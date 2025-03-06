@@ -145,24 +145,24 @@ function Meeting() {
                                                     ) : (
                                                         <>
                                                             {conference &&
-                                                                conference?.data?.map((item,key) => {
+                                                                conference?.data?.map((item, key) => {
                                                                     return (
                                                                         <tr key={key}>
                                                                             <td>{item.conf_name}</td>
                                                                             <td>{item.conf_max_members}</td>
                                                                             <td>{item.conf_ext}</td>
                                                                             <td><div className='d-flex align-items-center justify-content-start '>
-                                                                                
-                                                                            {moderatorPinId===item.id?item.moderator_pin:"******"}
-                                                                            <button onClick={()=>setModeratorPinId(moderatorPinId===item.id?"":item.id)} className="tableButton edit ms-3"><i className={`fa-solid ${moderatorPinId===item.id?"fa-eye":"fa-eye-slash"}`}></i></button>
-                                                                                </div>
-                                                                                </td>
+
+                                                                                {moderatorPinId === item.id ? item.moderator_pin : "******"}
+                                                                                <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="tableButton edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                            </div>
+                                                                            </td>
                                                                             <td>
-                                                                            <div className='d-flex align-items-center justify-content-start '>
-                                                                                {participantPinId===item.id?item.participate_pin:"******"}
-                                                                                <button onClick={()=>setParticipantPinId(participantPinId===item.id?"":item.id)} className="tableButton edit ms-3"><i className={`fa-solid ${participantPinId===item.id?"fa-eye":"fa-eye-slash"}`}></i></button>
+                                                                                <div className='d-flex align-items-center justify-content-start '>
+                                                                                    {participantPinId === item.id ? item.participate_pin : "******"}
+                                                                                    <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="tableButton edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
                                                                                 </div>
-                                                                                </td>
+                                                                            </td>
                                                                             <td>{item.conf_url}</td>
                                                                             <td>
                                                                                 <div
