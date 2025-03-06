@@ -181,9 +181,9 @@ function CustomDashboardManage() {
                                                                                     <div className="col-4">
 
                                                                                         <div className='add-active '>
-                                                                                        <p>Active</p>
+                                                                                            <p>Active</p>
                                                                                         </div>
-                                                                                      
+
                                                                                         {/* <h4>
                                                                                         28{" "}
                                                                                         <i
@@ -193,9 +193,9 @@ function CustomDashboardManage() {
                                                                                     </h4> */}
                                                                                     </div>
                                                                                     <div className="col-4 text-center">
-                                                                                    <div className='add-rings '>
+                                                                                        <div className='add-rings '>
 
-                                                                                        <p>Ringing</p>
+                                                                                            <p>Ringing</p>
                                                                                         </div>
                                                                                         {/* <h4>
                                                                                         82{" "}
@@ -314,6 +314,60 @@ function CustomDashboardManage() {
                                                                         <option>Missed Calls</option>
                                                                         <option>Total Calls</option>
                                                                     </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="formRow">
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Select Info</label>
+                                                            <label className="formItemDesc">
+                                                                Please select the info of the feature you want to display in the module.
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <div className='row'>
+                                                                <div className='col-6'>
+                                                                    <div className='d-flex align-items-center justify-content-between custom-font mt-1'>
+                                                                        <div>
+                                                                            <p className='m-0 p-0'> Active calls </p>
+                                                                        </div>
+                                                                        <div> <input type="checkbox" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='d-flex align-items-center justify-content-between custom-font mt-1'>
+                                                                        <div>
+                                                                            <p className='m-0 p-0'>Ringing Calls</p>
+                                                                        </div>
+                                                                        <div> <input type="checkbox" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {/* <div className='formLabel'>
+                                                                        <label className="formItemDesc">First Column</label>
+                                                                    </div>
+                                                                    <select className="formItem">
+                                                                        <option>Active Calls</option>
+                                                                        <option>Ringing Calls</option>
+                                                                        <option>Missed Calls</option>
+                                                                        <option>Total Calls</option>
+                                                                    </select> */}
+                                                                </div>
+                                                                <div className='col-6'>
+                                                                <div className='d-flex align-items-center justify-content-between custom-font mt-1'>
+                                                                        <div>
+                                                                            <p className='m-0 p-0'>Missed Calls </p>
+                                                                        </div>
+                                                                        <div> <input type="checkbox" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='d-flex align-items-center justify-content-between custom-font mt-1'>
+                                                                        <div>
+                                                                            <p className='m-0 p-0'>Total Calls</p>
+                                                                        </div>
+                                                                        <div> <input type="checkbox" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>

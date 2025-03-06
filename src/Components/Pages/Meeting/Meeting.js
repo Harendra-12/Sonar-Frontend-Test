@@ -149,8 +149,18 @@ function Meeting() {
                                                                             <td>{item.conf_name}</td>
                                                                             <td>{item.conf_max_members}</td>
                                                                             <td>{item.conf_ext}</td>
-                                                                            <td>{item.moderator_pin}</td>
-                                                                            <td>{item.participate_pin}</td>
+                                                                            <td><div className='d-flex align-items-center justify-content-start '>
+                                                                                
+                                                                            {item.moderator_pin}
+                                                                            <button class="tableButton edit ms-3"><i class="fa-solid fa-eye"></i></button>
+                                                                                </div>
+                                                                                </td>
+                                                                            <td>
+                                                                            <div className='d-flex align-items-center justify-content-start '>
+                                                                                {item.participate_pin}
+                                                                                <button class="tableButton edit ms-3"><i class="fa-solid fa-eye"></i></button>
+                                                                                </div>
+                                                                                </td>
                                                                             <td>{item.conf_url}</td>
                                                                             <td>
                                                                                 <div
