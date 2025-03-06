@@ -846,7 +846,7 @@ const RingGroupAdd = () => {
                         ) : (
                           <button
                             type="button"
-                            class="panelButton"
+                            class="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(destination);
                               setBulkEditPopup(true);
@@ -1187,7 +1187,7 @@ const RingGroupAdd = () => {
                           !destination.some(
                             (agent) =>
                               user.extension.extension == agent.destination
-                          )
+                          ) && user.usages==="pbx"
                       )
                       .map((item, index) => {
                         return (

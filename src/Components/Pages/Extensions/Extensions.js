@@ -364,7 +364,7 @@ const Extensions = () => {
                                                         cursor: "default",
                                                       }}
                                                     >
-                                                      {item.provisionings ? (
+                                                      {/* {item.provisionings ? (
                                                         <button
                                                           className="tableButton edit mx-auto"
                                                           onClick={() =>
@@ -383,7 +383,7 @@ const Extensions = () => {
                                                         >
                                                           <i class="fa-solid fa-phone-office"></i>
                                                         </button>
-                                                      ) : (
+                                                      ) : ( */}
                                                         <button
                                                           className="tableButton mx-auto"
                                                           onClick={() =>
@@ -401,7 +401,7 @@ const Extensions = () => {
                                                         >
                                                           <i class="fa-solid fa-plus"></i>
                                                         </button>
-                                                      )}
+                                                      {/* )} */}
                                                     </td>
                                                   </tr>
                                                 );

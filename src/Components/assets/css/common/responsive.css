@@ -93,7 +93,8 @@
     }
 
     table th {
-        text-wrap: nowrap;
+        /* text-wrap: nowrap; */
+        white-space: nowrap;
     }
 
     .tableHeader .showEntries {
@@ -151,15 +152,34 @@
     }
 }
 
-@media (min-width: 1500px) {
+@media (max-width: 1500px) {
 
     /* .formRow.col-xl-3 {
         width: 16.5%;
     } */
 
+    table th {
+        white-space: nowrap;
+        font-size: 12px;
+
+        padding: 10px 4px;
+    }
+
 }
 
-@media (min-width:1100px) and (max-width: 1300px) {
+@media (max-width: 1750px) {
+
+    /* .formRow.col-xl-3 {
+        width: 16.5%;
+    } */
+
+    table th {
+        white-space: nowrap;
+    }
+
+}
+
+@media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 15px;
     }
@@ -167,10 +187,12 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
-
+    /* table th {
+        text-wrap: nowrap;
+    } */
 }
 
-@media (max-width: 1366px) {
+@media (max-device-width: 1366px) {
     h3 {
         font-size: 22px;
     }
@@ -232,14 +254,15 @@
 
     table td,
     table th {
-        padding: 10px 5px;
+        padding: 9px 3px;
+        white-space: nowrap;
     }
 
     table tbody tr td,
     table th,
     .myProfileWidget .profileName span.status,
     .itemWrapper .heading p {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     #detailsHeader {
@@ -315,4 +338,9 @@
     .circular-progress {
         --size: 200px;
     }
+
+  
 }
+
+
+

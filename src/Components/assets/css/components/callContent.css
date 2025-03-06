@@ -396,16 +396,16 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.294);
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 9;
+    z-index: 10;
     /* backdrop-filter: blur(5px); */
 }
 
 .addNewContactPopup {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

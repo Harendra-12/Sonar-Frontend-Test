@@ -11,6 +11,7 @@ function ActiveCallsPage() {
     const [filter, setFilter] = useState("all");
     const [customModule, setCustomModule] = useState([]);
     const ringingState = activeCall.filter((item) => item.b_callstate === "");
+    const [cdrData, setCdrData] = useState([]);
     const outboundCalls = ringingState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const numberCount = outboundCalls.reduce((acc, call) => {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
@@ -27,8 +28,12 @@ function ActiveCallsPage() {
     useEffect(() => {
         async function getCustomModule() {
             const apiData = await generalGetFunction("/usage/all")
+            const filterData = await generalGetFunction("/call-details")
             if (apiData.status) {
                 setCustomModule(apiData.data)
+            }
+            if (filterData.status) {
+                setCdrData(filterData.cdr_filters.filter_count)
             }
         }
         getCustomModule()
@@ -104,6 +109,64 @@ function ActiveCallsPage() {
         }
     }
 
+    // Filter total calls of a perticular call based on callcenter, ringgroup and DID
+    function filterTotalCalls(type, value) {
+        if (type === "Ringgroup") {
+            const count = cdrData
+                .filter((item) => item.application_state === "ringgroup" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+
+        } else if (type === "CallCenterQueue") {
+            const count = cdrData
+                .filter((item) => item.application_state === "callcenter" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+        } else {
+            const count = cdrData
+                .filter((item) => item.application_state === "pstn" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+        }
+    }
+
+    // Filter total missed calls of a perticular call based on callcenter, ringgroup and DID
+    function filterMissedCalls(type, value) {
+        if (type === "Ringgroup") {
+            const count = cdrData
+                .filter((item) => item.application_state === "ringgroup" && item.variable_dialed_extension === value && item["Call-Direction"] === "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+        } else if (type === "CallCenterQueue") {
+            const count = cdrData
+                .filter((item) => item.application_state === "callcenter" && item.variable_dialed_extension === value && item["Call-Direction"] === "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+        } else {
+            const count = cdrData
+                .filter((item) => item.application_state === "pstn" && item.variable_dialed_extension === value && item["Call-Direction"] === "missed")[0]?.filter_count
+            if (count) {
+                return count;
+            } else {
+                return 0
+            }
+        }
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -126,26 +189,62 @@ function ActiveCallsPage() {
                                                             </div>
                                                             <div className="data-number2 h-auto">
                                                                 <div className="d-flex flex-wrap justify-content-between">
-                                                                    <div className="col-4">
-                                                                        <p>Active</p>
-                                                                        <h4>
-                                                                            {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                            <i
-                                                                                className="fa-solid fa-phone-volume ms-1"
-                                                                                style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                            />
-                                                                        </h4>
-                                                                    </div>
-                                                                    <div className="col-4 text-center">
-                                                                        <p>Ringing</p>
-                                                                        <h4>
-                                                                            {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                            <i
-                                                                                className="fa-solid fa-bell-ring ms-1"
-                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                            />
-                                                                        </h4>
-                                                                    </div>
+                                                                    {
+                                                                        item.active ?
+                                                                            <div className="col-4">
+                                                                                <p>Active</p>
+                                                                                <h4>
+                                                                                    {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                                    <i
+                                                                                        className="fa-solid fa-phone-volume ms-1"
+                                                                                        style={{ color: "var(--funky-boy4)", fontSize: 17 }}
+                                                                                    />
+                                                                                </h4>
+                                                                            </div> : ""
+                                                                    }
+                                                                    {
+                                                                        item?.ringing ?
+                                                                            <div className="col-4 text-center">
+                                                                                <p>Ringing</p>
+                                                                                <h4>
+                                                                                    {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                    <i
+                                                                                        className="fa-solid fa-bell-ring ms-1"
+                                                                                        style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                                    />
+                                                                                </h4>
+                                                                            </div> : ""
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="data-number2 h-auto">
+                                                                <div className="d-flex flex-wrap justify-content-between">
+                                                                    {
+                                                                        item?.total ?
+                                                                            <div className="col-4">
+                                                                                <p>Total</p>
+                                                                                <h4>
+                                                                                    {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                                    <i
+                                                                                        className="fa-solid fa-phone-volume ms-1"
+                                                                                        style={{ color: "var(--funky-boy4)", fontSize: 17 }}
+                                                                                    />
+                                                                                </h4>
+                                                                            </div> : ""
+                                                                    }
+                                                                    {
+                                                                        item?.missed ?
+                                                                            <div className="col-4 text-center">
+                                                                                <p>Missed</p>
+                                                                                <h4>
+                                                                                    {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                    <i
+                                                                                        className="fa-solid fa-bell-ring ms-1"
+                                                                                        style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
+                                                                                    />
+                                                                                </h4>
+                                                                            </div> : ""
+                                                                    }
                                                                 </div>
                                                             </div>
                                                         </div>

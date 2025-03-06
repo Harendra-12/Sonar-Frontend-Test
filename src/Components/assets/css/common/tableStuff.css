@@ -34,6 +34,7 @@ table tbody tr td {
     cursor: pointer;
     font-weight: 400;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 table tbody tr td a {
@@ -238,7 +239,7 @@ table td.incoming::after {
 
 }
 
- .inputWrappers .form-left {
+.inputWrappers .form-left {
     padding-left: 2.375rem;
 }
 

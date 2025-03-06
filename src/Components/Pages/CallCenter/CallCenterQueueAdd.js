@@ -1356,7 +1356,7 @@ function CallCenterQueueAdd() {
                         ) : (
                           <button
                             type="button"
-                            class="panelButton"
+                            class="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(agent);
                               setBulkEditPopup(true);
@@ -1364,7 +1364,7 @@ function CallCenterQueueAdd() {
                           >
                             <span class="text">Edit All</span>
                             <span class="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i class="fa-solid fa-pen"></i>
                             </span>
                           </button>
                         ))}
@@ -2015,7 +2015,7 @@ function CallCenterQueueAdd() {
                         return bMatches - aMatches;
                       })
                       .filter(
-                        (user) => !agent.some((agent) => user.id == agent.name)
+                        (user) => !agent.some((agent) => user.id == agent.name) && user.usages==="pbx"
                       ) // Exclude agents already in `agent`
                       .map((item, index) => (
                         <tr key={item.id || index}>

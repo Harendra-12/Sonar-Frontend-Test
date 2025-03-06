@@ -141,6 +141,7 @@ import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
 import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
+import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -447,15 +448,15 @@ function App() {
           />
           <Route
             path="/ring-group-report"
-            element={<CdrReport page="ringgroup" />}
+            element={<CdrFilterReport page="ringgroup" />}
           />
           <Route
             path="/call-center-report"
-            element={<CdrReport page="callcenter" />}
+            element={<CdrFilterReport page="callcenter" />}
           />
           <Route
             path="/billing-report"
-            element={<CdrReport page="billing" />}
+            element={<CdrFilterReport page="billing" />}
           />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
@@ -502,7 +503,7 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,"add"
+                account?.permissions, "add"
               ) ? (
                 <PortNumberAdd />
               ) : (
@@ -516,8 +517,8 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,"edit"
-              )  ? (
+                account?.permissions, "edit"
+              ) ? (
                 <PortNumberEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -557,8 +558,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,"edit"
-              )  ? (
+                account?.permissions, "edit"
+              ) ? (
                 <CallCenterQueueEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -571,8 +572,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,"add"
-              )  ? (
+                account?.permissions, "add"
+              ) ? (
                 <CallCenterQueueAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -612,11 +613,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-              checkViewSidebar(
-                "BillingAddress",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -663,7 +664,7 @@ function App() {
               checkViewSidebar(
                 "MailSetting",
                 slugPermissions,
-                account?.permissions,"edit"
+                account?.permissions, "edit"
               ) ? (
                 <MailSettingsEdit />
               ) : (
@@ -694,7 +695,7 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,"add"
+                account?.permissions, "add"
               ) ? (
                 <IvrAdd />
               ) : (
@@ -722,8 +723,8 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,"edit"
-              )? (
+                account?.permissions, "edit"
+              ) ? (
                 <IvrEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -785,6 +786,7 @@ function App() {
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
+          <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}

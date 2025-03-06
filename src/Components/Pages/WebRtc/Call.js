@@ -13,10 +13,13 @@ import { useSIPProvider } from "modify-react-sipjs";
 import {
   featureUnderdevelopment,
   generalGetFunction,
+  generalPostFunction,
+  generalPutFunction,
   logout,
 } from "../../GlobalFunction/globalFunction";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
+import Comments from "./Comments";
 
 function Call({
   selectedModule,
@@ -59,6 +62,9 @@ function Call({
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
+  const [comment, setComment] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
+  const [commentData, setCommentData] = useState([]);
   const [firstTimeClickedExtension, setFirstTimeClickedExtension] =
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
@@ -271,124 +277,130 @@ function Call({
       (contact) => contact.did === item["Caller-Caller-ID-Number"]
     )?.name;
     return (
-      <div
-        key={item.id}
-        onClick={() => handleCallItemClick(item)}
-        onDoubleClick={() => handleDoubleClickCall(item)}
-        className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-          item["variable_billsec"] > 0 &&
-          !isCustomerAdmin
-          ? "incoming"
-          : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-            ? "outgoing"
-            : item["Caller-Callee-ID-Number"] === extension &&
-              item["variable_billsec"] === 0 &&
-              !isCustomerAdmin
-              ? "missed"
-              : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                ? "voicemail"
-                : ""
-          } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
-      >
-        <div className="row justify-content-between">
-          <div className="col-xl-12 d-flex">
-            <div
-              className="profileHolder"
-            // id={"profileOfflineNav"}
-            >
-              <i className="fa-light fa-user fs-5"></i>
-            </div>
-            {!isCustomerAdmin ? (
+      <>
+        <div
+          key={item.id}
+          onClick={() => handleCallItemClick(item)}
+          onDoubleClick={() => handleDoubleClickCall(item)}
+          className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
+            item["variable_billsec"] > 0 &&
+            !isCustomerAdmin
+            ? "incoming"
+            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
+              ? "outgoing"
+              : item["Caller-Callee-ID-Number"] === extension &&
+                item["variable_billsec"] === 0 &&
+                !isCustomerAdmin
+                ? "missed"
+                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
+                  ? "voicemail"
+                  : ""
+            } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+        >
+          <div className="row justify-content-between">
+            <div className="col-xl-12 d-flex">
               <div
-                className="col-4 my-auto ms-2 ms-xl-3"
-                style={{ cursor: "pointer" }}
+                className="profileHolder"
+              // id={"profileOfflineNav"}
               >
-                <h4>
-                  {item["Caller-Callee-ID-Number"] === extension
-                    ? item["Caller-Caller-ID-Number"]
-                    : item["Caller-Callee-ID-Number"]}
-                </h4>
-                <h5 style={{ paddingLeft: 20 }}>
-                  {displayName
-                    ? displayName
-                    : item.caller_user
-                      ? item.caller_user.username
-                      : "USER XYZ"}
+                <i className="fa-light fa-user fs-5"></i>
+              </div>
+              {!isCustomerAdmin ? (
+                <div
+                  className="col-4 my-auto ms-2 ms-xl-3"
+                  style={{ cursor: "pointer" }}
+                >
+                  <h4>
+                    {item["Caller-Callee-ID-Number"] === extension
+                      ? item["Caller-Caller-ID-Number"]
+                      : item["Caller-Callee-ID-Number"]}
+                  </h4>
+                  <h5 style={{ paddingLeft: 20 }}>
+                    {displayName
+                      ? displayName
+                      : item.caller_user
+                        ? item.caller_user.username
+                        : "USER XYZ"}
 
-                </h5>
-                {/* <div className="contactTags">
+                  </h5>
+                  {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-              </div>
-            ) : (
-              <div
-                className="col-5 my-auto ms-2 ms-xl-3"
-                style={{ cursor: "pointer" }}
-              >
-                <div className="d-flex">
-                  <div className="source">
-                    <h4>
-                      {matchingCalleeContactForAdmin
-                        ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
-                        : item["Caller-Callee-ID-Number"]}
-                    </h4>
-                    {/* <h5>Source</h5> */}
-                  </div>
-                  <div className="callIconAdmin">
-                    {item["variable_billsec"] > 0 ? (
-                      <i
-                        class="fa-solid fa-phone mx-2"
-                        style={{ color: "var(--ui-accent)" }}
-                      ></i>
-                    ) : (
-                      <i
-                        class="fa-solid fa-phone-xmark mx-2"
-                        style={{ color: "red" }}
-                      ></i>
-                    )}
-                  </div>
-                  <div className="destination">
-                    <h4>
-                      {matchingCallerContactForAdmin
-                        ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
-                        : item["Caller-Caller-ID-Number"]}
-                    </h4>
-                    {/* <h5>Destination</h5> */}
-                  </div>
                 </div>
-                {/* <div className="contactTags">
+              ) : (
+                <div
+                  className="col-5 my-auto ms-2 ms-xl-3"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="d-flex">
+                    <div className="source">
+                      <h4>
+                        {matchingCallerContactForAdmin
+                          ? `${matchingCallerContactForAdmin} (${item["Caller-Caller-ID-Number"]})`
+                          : item["Caller-Caller-ID-Number"]}
+
+                      </h4>
+                      {/* <h5>Source</h5> */}
+                    </div>
+                    <div className="callIconAdmin">
+                      {item["variable_billsec"] > 0 ? (
+                        <i
+                          class="fa-solid fa-phone mx-2"
+                          style={{ color: "var(--ui-accent)" }}
+                        ></i>
+                      ) : (
+                        <i
+                          class="fa-solid fa-phone-xmark mx-2"
+                          style={{ color: "red" }}
+                        ></i>
+                      )}
+                    </div>
+                    <div className="destination">
+                      <h4>
+                        {matchingCalleeContactForAdmin
+                          ? `${matchingCalleeContactForAdmin} (${item["Caller-Callee-ID-Number"]})`
+                          : item["Caller-Callee-ID-Number"]}
+                      </h4>
+                      {/* <h5>Destination</h5> */}
+                    </div>
+                  </div>
+                  {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
-              </div>
-            )}
-
-            {item["variable_billsec"] > 0 && (
-              <div
-                className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
-              >
-                <div className="contactTags">
-                  <span data-id="2" className="duration">
-                    Duration: {formatTime(item["variable_billsec"])}
-                  </span>
                 </div>
-              </div>
-            )}
+              )}
 
-            <div className="col-auto text-end ms-auto">
-              <p className="timeAgo">
-                {new Date(item.variable_start_stamp)
-                  .toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  })
-                  .replace(" AM", "am")
-                  .replace(" PM", "pm")}
-              </p>
+              {item["variable_billsec"] > 0 && (
+                <div
+                  className={`col-3 mx-auto ${isCustomerAdmin ? "my-auto" : ""}`}
+                >
+                  <div className="contactTags">
+                    <span data-id="2" className="duration">
+                      Duration: {formatTime(item["variable_billsec"])}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="col-auto text-end ms-auto">
+                <p className="timeAgo mb-0">
+                  {new Date(item.variable_start_stamp)
+                    .toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })
+                    .replace(" AM", "am")
+                    .replace(" PM", "pm")}
+                </p>
+                <button className="clearButton2 xl" type="button" onClick={() => { setSelectedCdr(item?.id); }}>
+                  <i className="fa-light fa-comment-dots" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -595,7 +607,7 @@ function Call({
       callProgress: mode === "video" ? false : true,
     });
   }
-  console.log("clickStatus", clickStatus);
+
   useEffect(() => {
     if (selectedModule === "onGoingCall") {
       if (videoCall) {
@@ -616,7 +628,6 @@ function Call({
       });
     }
   }, [selectedModule, videoCall]);
-
 
   return (
     <>
@@ -806,29 +817,6 @@ function Call({
                           </select>
                         </div>
                         <div className="d-flex">
-                          {/* <div className="col-6 pe-2">
-                          <input
-                            type="date"
-                            className="formItem"
-                            style={{
-                              background: "var(--searchBg)",
-                              borderColor: "var(--border-color)",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </div>
-                        <div className="col-6">
-                          <input
-                            type="date"
-                            className="formItem"
-                            style={{
-                              background: "var(--searchBg)",
-                              borderColor: "var(--border-color)",
-                              borderRadius: "5px",
-                            }}
-                          />
-                        </div> */}
-
                           {filterBy === "date" && (
                             <div className="ms-2">
                               <label className="formLabel text-start mb-0 w-100">
@@ -900,17 +888,7 @@ function Call({
                       </div>
                     </div>
                   </div>
-                  {/* <button
-                      className="ms-2 me-0 appPanelButton"
-                      effect="ripple"
-                      onClick={() => setAddContactToggle(true)}
-                    >
-                      <i className="fa-light fa-user-plus" />
-                    </button> */}
                 </div>
-                {/* <div>
-                        <SipRegister />
-                      </div> */}
 
                 <div className="col-12">
                   <nav className="mt-3">
@@ -918,63 +896,6 @@ function Call({
                       className="nav nav-tabs"
                       style={{ borderBottom: "1px solid var(--border-color)" }}
                     >
-                      {/* <button
-                        onClick={() => setClickStatus("all")}
-                        className={
-                          clickStatus === "all" ? "tabLink active" : "tabLink"
-                        }
-                        data-category="all"
-                      >
-                        <i className="fa-light fa-phone" />
-                      </button> */}
-                      {/* <button
-                        onClick={() => setClickStatus("incoming")}
-                        className={
-                          clickStatus === "incoming"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="incoming"
-                      >
-                        <i className="fa-light fa-phone-arrow-down-left" />
-                      </button>
-                      <button
-                        onClick={() => setClickStatus("outgoing")}
-                        className={
-                          clickStatus === "outgoing"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        <i className="fa-light fa-phone-arrow-up-right" />
-                      </button>
-                      <button
-                        onClick={() => setClickStatus("missed")}
-                        className={
-                          clickStatus === "missed"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        <i className="fa-light fa-phone-missed" />
-                      </button> */}
-                      {/* <button
-                        onClick={() => setClickStatus("voicemail")}
-                        className={
-                          clickStatus === "voicemail"
-                            ? "tabLink active"
-                            : "tabLink"
-                        }
-                        effect="ripple"
-                        data-category="voicemail"
-                      >
-                        <i className="fa-light fa-microphone-lines" />
-                      </button> */}
                     </div>
                   </nav>
                   <div className="tab-content">
@@ -1056,50 +977,20 @@ function Call({
                   setExtensionFromCdrMessage={setExtensionFromCdrMessage}
                   allContact={allContact}
                 />
-                {/* {selectedModule == "onGoingCall" ? (
-                  callProgress ? (
-                    <OngoingCall
-                      setactivePage={setactivePage}
-                      key={callProgressId}
-                      id={callProgressId}
-                      destination={callProgressDestination}
-                      setHangupRefresh={setHangupRefresh}
-                      hangupRefresh={hangupRefresh}
-                      setSelectedModule={setSelectedModule}
-                    />
-                  ) : (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      isVideoOn={isVideoOn}
-                      onCall={onCall}
-                      setactivePage={setactivePage}
-                    />
-                  )
-                ) : (
-                  clickedCall && (
-                    <CallDetails
-                      clickedCall={clickedCall}
-                      callHistory={callHistory}
-                      isCustomerAdmin={isCustomerAdmin}
-                      setSelectedModule={setSelectedModule}
-                      isMicOn={isMicOn}
-                      isVideoOn={isVideoOn}
-                      onCall={onCall}
-                      setactivePage={setactivePage}
-                    />
-                  )
-                )} */}
               </div>
             </div>
           </div>
         </section>
       </main>
-      {/* <IncomingCallPopup /> */}
-      {/* <IncomingCalls setSelectedModule={setSelectedModule} /> */}
+
+      {/* Comment section start */}
+      {selectedCdr !== "" &&
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+        />
+      }
+      {/* Comment section end */}
       {dialpadShow ? (
         <Dialpad
           hideDialpad={handleHideDialpad}
