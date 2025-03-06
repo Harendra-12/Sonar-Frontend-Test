@@ -448,15 +448,15 @@ function App() {
           />
           <Route
             path="/ring-group-report"
-            element={<CdrReport page="ringgroup" />}
+            element={<CdrFilterReport page="ringgroup" />}
           />
           <Route
             path="/call-center-report"
-            element={<CdrReport page="callcenter" />}
+            element={<CdrFilterReport page="callcenter" />}
           />
           <Route
             path="/billing-report"
-            element={<CdrReport page="billing" />}
+            element={<CdrFilterReport page="billing" />}
           />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}

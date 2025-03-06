@@ -2015,7 +2015,7 @@ function CallCenterQueueAdd() {
                         return bMatches - aMatches;
                       })
                       .filter(
-                        (user) => !agent.some((agent) => user.id == agent.name)
+                        (user) => !agent.some((agent) => user.id == agent.name) && user.usages==="pbx"
                       ) // Exclude agents already in `agent`
                       .map((item, index) => (
                         <tr key={item.id || index}>

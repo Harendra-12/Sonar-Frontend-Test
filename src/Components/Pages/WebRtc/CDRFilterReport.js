@@ -890,7 +890,7 @@ function CdrFilterReport({ page }) {
                               <tr style={{ whiteSpace: "nowrap" }}>
                                 <th>#</th>
                                 {showKeys.map((key) => {
-                                  if (cdr?.data[0]?.hasOwnProperty(key)) {
+                                  if (cdr?.data[0]?.hasOwnProperty(key) && key !== "id") {
                                     let formattedKey = "";
                                     if (key === "variable_sip_from_user") {
                                       formattedKey = "Caller No.";
@@ -1269,8 +1269,6 @@ function CdrFilterReport({ page }) {
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
-          loading={loading}
-          setLoading={setLoading}
         />
       }
     </>
