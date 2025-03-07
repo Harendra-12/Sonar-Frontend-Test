@@ -2,28 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { AudioVisualizer } from 'react-audio-visualize';
 
 const AudioPlayer = ({ audioUrl }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [audioUrlBlob, setAudioUrlBlob] = useState(null);
+  const [audioSrc, setAudioSrc] = useState(null);
 
   useEffect(() => {
-    const fetchAudio = async () => {
+    const loadAudio = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const response = await fetch(audioUrl);
+        const corsProxy = 'https://corsproxy.io/?'; 
+        const proxiedUrl = audioUrl 
+        const response = await fetch(proxiedUrl);
+        
         if (!response.ok) {
-          throw new Error(
-            `Failed to fetch audio: ${response.status} ${response.statusText}`
-          );
+          throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
         }
+        
         const blob = await response.blob();
-        setAudioBlob(blob);
-        setAudioUrlBlob(URL.createObjectURL(blob));
-      } catch (error) {
-        console.error("Error fetching audio:", error);
+        const objectURL = URL.createObjectURL(blob);
+        
+        setAudioBlob(blob); 
+        setAudioSrc(objectURL);  
+      } catch (err) {
+        console.error('Error loading audio:', err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
-
-    if (audioUrl) fetchAudio();
+    
+    if (audioUrl) {
+      loadAudio();
+    }
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      if (audioSrc) {
+        URL.revokeObjectURL(audioSrc);
+      }
+    };
   }, [audioUrl]);
+  if (isLoading) {
+    return <div>Loading audio...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>
@@ -39,7 +66,8 @@ const AudioPlayer = ({ audioUrl }) => {
             barPlayedColor="#2ecc71"
           />
           <audio controls>
-            <source src={audioUrlBlob} type="audio/wav" />
+            <source src={audioSrc} type="audio/mpeg" />
+            Your browser does not support the audio element.
           </audio>
         </div>
       )}

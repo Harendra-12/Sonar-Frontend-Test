@@ -634,7 +634,12 @@ function CallDetails({
                                         </li>
 
                                         <li className="dropdown-item">
-                                          <div class="clearButton text-align-start"    onClick={() => featureUnderdevelopment()}>
+                                          <div
+                                            class="clearButton text-align-start"
+                                            onClick={() =>
+                                              featureUnderdevelopment()
+                                            }
+                                          >
                                             <i class="fa-regular fa-arrows-rotate me-2"></i>
                                             Transcript
                                           </div>
@@ -643,11 +648,14 @@ function CallDetails({
 
                                       <>
                                         <li className="dropdown-item">
-                                          <div class="clearButton text-align-start"   onClick={() =>
-                                            handleAudioDownload(
-                                              item.recording_path
-                                            )
-                                          }>
+                                          <div
+                                            class="clearButton text-align-start"
+                                            onClick={() =>
+                                              handleAudioDownload(
+                                                item.recording_path
+                                              )
+                                            }
+                                          >
                                             <i class="fa-regular fa-gear me-2"></i>{" "}
                                             Download
                                           </div>
@@ -666,7 +674,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                      <AudioPlayer audioUrl={audioURL} />        
+                                        <AudioPlayer audioUrl={ audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
