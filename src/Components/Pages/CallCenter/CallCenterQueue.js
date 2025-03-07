@@ -407,14 +407,9 @@ function CallCenterQueue() {
                                                   </div>
                                                 </li>
                                                 <div
-                                                  style={{
-                                                    columnCount:
-                                                      item.agents.length > 6
-                                                        ? 2
-                                                        : 1,
-                                                  }}
+                                                  style={{ columnCount: 1 }}
                                                 >
-                                                  {item.agents.map(
+                                                  {item.agents.slice(0, 6).map(
                                                     (item, index) => (
                                                       <li key={index}>
                                                         <div className="dropdown-item">
@@ -424,12 +419,11 @@ function CallCenterQueue() {
 
                                                     )
                                                   )}
-                                                  <li>
-                                                        <div>
-                                                         see more 
-                                                        </div>
-                                                      </li>
-
+                                                  {item.agents.length > 6 && <li className="col-12">
+                                                    <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                      See More
+                                                    </Link>
+                                                  </li>}
                                                 </div>
                                               </ul>
                                             </div>

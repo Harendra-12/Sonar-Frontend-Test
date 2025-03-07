@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const RingGroup = () => {
   const dispatch = useDispatch();
@@ -120,7 +121,7 @@ const RingGroup = () => {
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "missed" &&
                               item.application_state == "ringgroup"
                           )[0]?.filter_count || 0}
@@ -129,7 +130,7 @@ const RingGroup = () => {
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "inbound" &&
                               item.application_state == "ringgroup"
                           )[0]?.filter_count || 0}
@@ -139,7 +140,7 @@ const RingGroup = () => {
                             ?.filter((item) => {
                               return (
                                 item?.variable_dialed_extension ===
-                                  call?.extension &&
+                                call?.extension &&
                                 item.application_state === "ringgroup" &&
                                 (item["Call-Direction"] === "inbound" ||
                                   item["Call-Direction"] === "missed")
@@ -171,14 +172,9 @@ const RingGroup = () => {
                                 </div>
                               </li>
                               <div
-                                style={{
-                                  columnCount:
-                                    call.ring_group_destination.length > 6
-                                      ? 2
-                                      : 1,
-                                }}
+                                style={{ columnCount: 1 }}
                               >
-                                {call.ring_group_destination.map(
+                                {call.ring_group_destination.slice(0, 6).map(
                                   (item, index) => (
                                     <li>
                                       <div className="dropdown-item">
@@ -188,6 +184,11 @@ const RingGroup = () => {
                                   )
                                 )}
                               </div>
+                              <li className="col-12">
+                                {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
+                                  Show More
+                                </Link>}
+                              </li>
                             </ul>
                           </div>
                         </td>

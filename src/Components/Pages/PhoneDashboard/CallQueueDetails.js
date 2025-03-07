@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CallQueueDetails = () => {
   const dispatch = useDispatch();
@@ -10,7 +11,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-    const allCallDetails = useSelector((state) => state.allCallDetails);
+  const allCallDetails = useSelector((state) => state.allCallDetails);
   // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -99,34 +100,34 @@ const CallQueueDetails = () => {
                         <td>{call.queue_name}</td>
                         <td>
                           {
-                            activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
+                            activeCallData.filter((e) => e.dest === call.extension && (e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
                               .length
                           }
                         </td>
                         <td>
-                        {allCallDetails?.filter_count?.filter(
+                          {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "missed" &&
                               item?.application_state == 'callcenter'
                           )[0]?.filter_count || 0}
                         </td>
                         <td>
-                        {allCallDetails?.filter_count?.filter(
+                          {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "inbound" &&
-                              item.application_state ==  'callcenter'
+                              item.application_state == 'callcenter'
                           )[0]?.filter_count || 0}
                         </td>
                         <td>
-                        {allCallDetails?.filter_count
+                          {allCallDetails?.filter_count
                             ?.filter((item) => {
                               return (
                                 item?.variable_dialed_extension ===
-                                  call?.extension &&
+                                call?.extension &&
                                 item.application_state === 'callcenter' &&
                                 (item["Call-Direction"] === "inbound" ||
                                   item["Call-Direction"] === "missed")
@@ -158,14 +159,9 @@ const CallQueueDetails = () => {
                                 </div>
                               </li>
                               <div
-                                style={{
-                                  columnCount:
-                                    call.agents.length > 6
-                                      ? 2
-                                      : 1,
-                                }}
+                                style={{ columnCount: 1 }}
                               >
-                                {call.agents.map(
+                                {call.agents.slice(0, 6).map(
                                   (item, index) => (
                                     <li key={index}>
                                       <div className="dropdown-item">
@@ -175,6 +171,11 @@ const CallQueueDetails = () => {
                                   )
                                 )}
                               </div>
+                              {call.agents.length > 6 && <li className="col-12">
+                                <Link to="/agents" className="dropdown-item text-center text-primary">
+                                  Show More
+                                </Link>
+                              </li>}
                             </ul>
                           </div>
                         </td>
