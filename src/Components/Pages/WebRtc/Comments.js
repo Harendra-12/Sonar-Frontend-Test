@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 
-function Comments({ id, setId,  }) {
+function Comments({ id, setId, }) {
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
     const [commentData, setCommentData] = useState([]);
@@ -52,46 +52,51 @@ function Comments({ id, setId,  }) {
         <div className="backdropContact ">
             <div className="addNewContactPopup">
                 <div className="formRow px-0 row">
-                    <div className="col-12 heading mb-0">
+                    {/* <div className="col-12 heading mb-0">
                         <i className="fa-light fa-comment-dots" />
                         <h5>Agent Note</h5>
                     </div>
-                 
+                  */}
                     <div className="col-xl-12 mt-2">
-                    <div className='content-comment'>
-                      
-                        {loading ? <i class="ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"></i> :
-                            commentData.length > 0 ?
+                        <div className='content-comment'>
 
-                                commentData.map((item, index) => {
-                                    return (
-                                        <div className=''>
-                                            <div className="formLabel formLabels-width" key={index}>
-                                            <label htmlFor="">
-                                                <span>
-                                                    <div className='back-comment'>
-                                                        <span>
-                                                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
-                                                        </span>
-                                                        <span className='username-cmt'>  {item?.commented?.username}</span> <br />
+                            {loading ? <i class="ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"></i> :
+                                commentData.length > 0 ?
 
-                                                        <span className='name-comment'>   {item.comment}</span>
-                                                        <span className='date-small'>  {item.created_at.split("T")[0]}</span>
+                                    commentData.map((item, index) => {
+                                        return (
+                                            <div className=''>
+                                                <div className="formLabel formLabels-width" key={index}>
+                                                    <div htmlFor="" className='row'>
+                                                        <div className='col-12'>
+
+                                                            <div className='back-comment'>
+                                                                <span>
+                                                                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                                                </span>
+                                                                <span className='username-cmt'>  {item?.commented?.username}</span> <br />
+
+
+
+                                                                <div className='d-flex align-items-center justify-content-between '>
+                                                                    <span className='name-comment ms-4'>   {item.comment}</span>
+                                                                    <span className='date-small' >  {item.created_at.split("T")[0]}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </span>
-                                            </label>
-                                        </div>
-                                        </div>
-                                    )
-                                })
-                                : <div className="formLabel">
-                                    <label htmlFor="">No comment found</label>
-                                </div>
-                        }
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                    : <div className="formLabel">
+                                        <label htmlFor="">No comment found</label>
+                                    </div>
+                            }
 
-                       
-                    </div>
-                    <div className="col-12 mt-3">
+
+                        </div>
+                        <div className="col-12 mt-3">
                             <input
                                 className="formItem h-auto"
                                 placeholder="Add new comment"
@@ -100,28 +105,28 @@ function Comments({ id, setId,  }) {
                                 onChange={(e) => setComment(e.target.value)}
                             />
                         </div>
-                    <div className="col-xl-12 mt-2">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <button className="panelButton gray mx-0" onClick={() => { setComment(""); setId("") }}>
-                                <span className="text">Close</span>
-                                <span className="icon">
-                                    <i className="fa-solid fa-caret-left" />
-                                </span>
-                            </button>
-                            {/* {
+                        <div className="col-xl-12 mt-2">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <button className="panelButton gray mx-0" onClick={() => { setComment(""); setId("") }}>
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                        <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                </button>
+                                {/* {
               comment && comment !== "" && <button className="tableButton delete" onClick={() => handleComments("delete")}>
                 <i className="fa-solid fa-trash" />
               </button>
             } */}
-                            <button className="panelButton mx-0" onClick={() => handleComments("add")}>
-                                <span className="text">Send</span>
-                                <span className="icon">
-                                    <i className="fa-solid fa-floppy-disk" />
-                                </span>
-                            </button>
+                                <button className="panelButton mx-0" onClick={() => handleComments("add")}>
+                                    <span className="text">Send</span>
+                                    <span className="icon">
+                                        <i className="fa-solid fa-floppy-disk" />
+                                    </span>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
