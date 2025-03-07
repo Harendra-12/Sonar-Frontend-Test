@@ -58,80 +58,54 @@ function CustomModule() {
                                                     <span className="text">Back</span>
                                                     <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
                                                 </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setAddNewMod(true); setSelectedModule(""); setPopup(true)
+                                                    }}
+                                                    type="button"
+                                                    effect="ripple"
+                                                    className="panelButton"
+                                                >
+                                                    <span className="text">Add</span>
+                                                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className='col-xl-6' style={{ borderRight: '1px solid var(--border-color)' }}>
-                                    <div className='row gy-4'>
-                                        {
-                                            customModule?.map((item, index) => {
-                                                return (
-                                                    <div className='col-xl-4' key={index}>
-                                                        <div className={`deviceProvision ${selectedModule?.id === item?.id ? 'active' : ''}`}
-                                                            onClick={() => {
-                                                                setSelectedModule(item)
-                                                                setAddNewMod(false)
-                                                                setPopup(true)
-                                                            }}
-                                                        >
-                                                            <div className="itemWrapper a">
-                                                                <div className="heading h-auto d-block">
-                                                                    <h5>{item?.name}</h5>
-                                                                    <p>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}-${item?.model?.tag}`}</p>
-                                                                    <p>{item?.model_type}</p>
-                                                                </div>
-                                                                <div className="data-number2  h-auto">
-                                                                    <div className="d-flex flex-wrap justify-content-between">
-                                                                        {
-                                                                            item.active ? <div className="col-4">
-                                                                                <div className='add-active '>
-                                                                                    <p>Active</p>
-                                                                                </div>
-                                                                            </div> : ""
-                                                                        }
-                                                                        {
-                                                                            item.ringing ? <div className="col-4">
-                                                                                <div className='add-active '>
-                                                                                    <p>Ringing</p>
-                                                                                </div>
-                                                                            </div> : ""
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                                <div className="data-number2  h-auto">
-                                                                    <div className="d-flex flex-wrap justify-content-between">
-                                                                        {
-                                                                            item.total ? <div className="col-4">
-                                                                                <div className='add-active '>
-                                                                                    <p>Total</p>
-                                                                                </div>
-                                                                            </div> : ""
-                                                                        }
-                                                                        {
-                                                                            item.missed ? <div className="col-4">
-                                                                                <div className='add-active '>
-                                                                                    <p>Missed</p>
-                                                                                </div>
-                                                                            </div> : ""
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                        <div className='col-xl-4'>
-                                            <div className={`deviceProvision ${addNewMod ? 'active' : ''}`}
-                                                onClick={() => { setAddNewMod(true); setSelectedModule(""); setPopup(true) }}
-                                            >
-                                                <div className="itemWrapper a addNew">
-                                                    <i className='fa-regular fa-plus'></i>
-                                                    <p>Add New Module</p>
-                                                </div>
-                                            </div>
+                                    <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
+                                        <div className='tableContainer'>
+                                            <table>
+                                                <thead>
+                                                    <th>Module Name</th>
+                                                    <th>Category Name</th>
+                                                    <th>Category</th>
+                                                    <th>Tag</th>
+                                                    <th>Active</th>
+                                                    <th>Ringing</th>
+                                                    <th>Missed</th>
+                                                    <th>Total</th>
+                                                    <th>Edit</th>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        customModule?.map((item, index) => {
+                                                            return (
+                                                                <tr>
+                                                                    <td>{item?.name}</td>
+                                                                    <td>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</td>
+                                                                    <td>{item?.model_type}</td>
+                                                                    <td>{item?.model?.tag}</td>
+                                                                    <td><i className={`fa-solid fa-${item?.active ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                    <td><i className={`fa-solid fa-${item?.ringing ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                    <td><i className={`fa-solid fa-${item?.missed ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                    <td><i className={`fa-solid fa-${item?.total ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                    <td><button className='tableButton edit' onClick={() => { setSelectedModule(item); setAddNewMod(false); setPopup(true) }}><i className="fa-solid fa-pen-to-square" /></button></td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +115,7 @@ function CustomModule() {
                 </section>
             }
             {
-                popup ? <CustomDashboardManage addNewMod={addNewMod} setSelectedModule={setSelectedModule} setAddNewMod={setAddNewMod} selectedModule={selectedModule} setRefresh={setRefresh} refresh={refresh} setPopup={setPopup} /> : ""
+                popup ? <CustomDashboardManage addNewMod={addNewMod} setSelectedModule={setSelectedModule} setAddNewMod={setAddNewMod} selectedModule={selectedModule} setRefresh={setRefresh} refresh={refresh} popup={popup} setPopup={setPopup} /> : ""
             }
 
         </main>

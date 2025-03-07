@@ -152,7 +152,7 @@
     }
 }
 
-@media (max-width: 1500px) {
+@media (max-device-width: 1500px) {
 
     /* .formRow.col-xl-3 {
         width: 16.5%;
@@ -167,7 +167,7 @@
 
 }
 
-@media (max-width: 1750px) {
+@media (max-device-width: 1750px) {
 
     /* .formRow.col-xl-3 {
         width: 16.5%;
@@ -187,6 +187,7 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
+
     /* table th {
         text-wrap: nowrap;
     } */
@@ -339,8 +340,5 @@
         --size: 200px;
     }
 
-  
+
 }
-
-
-

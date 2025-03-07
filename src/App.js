@@ -142,6 +142,8 @@ import ViewMessages from "./Components/Pages/Support/ViewMessages";
 import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
+import EFax from "./Components/Pages/WebRtc/EFax";
+import CustomModule from "./Components/Pages/Setting/CustomModule";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -458,8 +460,8 @@ function App() {
             path="/billing-report"
             element={<CdrFilterReport page="billing" />}
           />
-          {/* <Route path="/efax" element={<EFax />} />
-          <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
+          <Route path="/efax" element={<EFax />} />
+          {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
           <Route path="/conference-config" element={<ConferenceConfig />} />
