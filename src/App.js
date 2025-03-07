@@ -143,6 +143,7 @@ import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardMan
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
 import EFax from "./Components/Pages/WebRtc/EFax";
+import CustomModule from "./Components/Pages/Setting/CustomModule";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -237,7 +238,7 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={<CustomDashboardManage />} />
+          <Route path="/custom-module" element={<CustomModule />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
