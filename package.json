@@ -19,6 +19,7 @@
     "firebase": "^10.12.1",
     "modify-react-sipjs": "^0.0.9",
     "react": "^18.3.0",
+    "react-audio-visualize": "^1.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-clock": "^5.0.0",
     "react-credit-cards-2": "^1.0.3",
