@@ -212,7 +212,7 @@
     }
 
     .mainContent .itemWrapper {
-        padding: 12px;
+        padding: 10px;
     }
 
     .itemWrapper .data-number2 ul li {
@@ -248,6 +248,10 @@
         font-size: 14px !important;
     }
 
+    .tangoNavs .nav-tabs .nav-link {
+        padding: 10px 10px;
+    }
+
     .formItem {
         padding: 5px 5px;
         font-size: 12px;
@@ -255,7 +259,7 @@
 
     table td,
     table th {
-        padding: 9px 3px;
+        padding: 5px 5px;
         white-space: nowrap;
     }
 

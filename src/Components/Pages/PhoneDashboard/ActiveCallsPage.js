@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { generalGetFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 
-function ActiveCallsPage() {
+function ActiveCallsPage({ isParentWebRtc }) {
     const activeCall = useSelector((state) => state.activeCall);
     const navigate = useNavigate()
     const [filter, setFilter] = useState("all");
@@ -169,11 +169,11 @@ function ActiveCallsPage() {
         }
     }
     return (
-        <main className="mainContent">
+        <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Active Calls" />
+                        {!isParentWebRtc && <Header title="Active Calls" />}
                         <div className="overviewTableWrapper">
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
@@ -190,7 +190,7 @@ function ActiveCallsPage() {
                                                                 <div className='d-flex align-items-center0 justify-content-between '>
                                                                     <div>
                                                                         <h5>{item?.name}</h5>
-                                                                        <p>Category: {item?.model_type}</p>
+                                                                        <p>Type: {item?.model_type}</p>
                                                                     </div>
                                                                     <div className='text-end'>
                                                                         <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
@@ -341,27 +341,24 @@ function ActiveCallsPage() {
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
-                                                    <div className='d-flex align-items-center justify-content-end'>
-
-                                                    </div>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
                                                 <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                                 <div className="tab-pane fade" id="nav-rgroup" role="tabpanel" aria-labelledby="nav-rgroup-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="tab-content" id="nav-tabContent">
                                                 <div className="tab-pane fade" id="nav-ccenter" role="tabpanel" aria-labelledby="nav-ccenter-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                             </div>
