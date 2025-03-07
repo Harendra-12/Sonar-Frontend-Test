@@ -11,9 +11,9 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ConferenceVideo from "./ConferenceVideo";
+import ConferenceVideo from "./Conference/ConferenceVideo";
 import ConferenceLoader from "../../Loader/ConferenceLoader";
-import ConferenceMessages from "./ConferenceMessages";
+import ConferenceMessages from "./Conference/ConferenceMessages";
 
 export const DummySipRegisteration = ({
   webSocketServer,

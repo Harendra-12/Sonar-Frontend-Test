@@ -9,7 +9,7 @@ function FileUpload({ type, setFileUpload }) {
 
     const handleFileChange = (file) => {
         if (!file) return;
-        
+
         const fileType = file.type;
         const fileSizeMB = file.size / (1024 * 1024);
 
@@ -60,7 +60,7 @@ function FileUpload({ type, setFileUpload }) {
                         </div>
                         <div className="card-body">
                             {selectedFile ? (
-                               <div className="audio-container mx-2" style={{ width: "300px", height: "200px"}}>
+                                <div className="audio-container mx-auto fileUploadBody">
 
                                     {loading ? (
                                         <p>Loading preview...</p>
@@ -78,7 +78,7 @@ function FileUpload({ type, setFileUpload }) {
                                             {selectedFile.type === "application/pdf" && (
                                                 <iframe title='pdf' src={preview} className="pdf-preview"></iframe>
                                             )}
-                                            <button className="audioCustomButton ms-2" onClick={() => setSelectedFile(null)}>Reset</button>
+                                            <button className="tableButton delete ms-2" onClick={() => setSelectedFile(null)}><i className='fa-solid fa-xmark' /></button>
                                         </>
                                     )}
                                 </div>
@@ -120,8 +120,14 @@ function FileUpload({ type, setFileUpload }) {
                         </div>
                         <div className="card-footer">
                             <div className="d-flex justify-content-between">
-                                <button className="panelButton m-0" disabled={!selectedFile}>Confirm</button>
-                                <button className="panelButton gray" onClick={() => {setSelectedFile(null); setFileUpload(false)}}>Cancel</button>
+                                <button className="panelButton m-0" disabled={!selectedFile}>
+                                    <span className='text'>Confirm</span>
+                                    <span className='icon'><i className="fa-solid fa-check" /></span>
+                                </button>
+                                <button className="panelButton gray" onClick={() => { setSelectedFile(null); setFileUpload(false) }}>
+                                    <span className='text'>Cancel</span>
+                                    <span className='icon'><i className="fa-solid fa-xmark" /></span>
+                                </button>
                             </div>
                         </div>
                     </div>

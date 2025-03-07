@@ -19,9 +19,9 @@ function AllCallsDetails() {
       {callDetails ? (
         <div class="accordion dashboard" id="accordionPanelsStayOpenExample">
           <div className="row">
-            <div className="col-4">
-              <div class="accordion-item itemWrapper a h-auto">
-                <h2 class="accordion-header">
+            <div className="col-4 ">
+              <div class="accordion-item itemWrapper a  ">
+                <h2 class="accordion-header ">
                   <button
                     class="accordion-button"
                     type="button"
@@ -30,13 +30,27 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse1"
                   >
-                    <div className="col-12 title text-start">
-                      <i className="fa-duotone fa-phone-volume" /> All Calls{" "}
+                    <div className="col-12 title text-start d-flex align-items-center justify-content-between">
+                     <div>
+                     <i className="fa-duotone fa-phone-volume" /> All Calls  {" "}
                       {extensionDataLoading && (
                         <i
                           class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                         ></i>
                       )}
+                     </div>
+
+                     <div>
+                      <div className="d-flex align-items-center justify-content-between me-5">
+                      <p className="p-0 m-0 me-2 ">Total Calls</p>
+                      <h4 style={{ fontWeight: 900 }}>
+                                  {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
+                                    <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
+                                </h4>
+                             
+                      </div>
+                    
+                     </div>
                     </div>
                   </button>
                 </h2>
@@ -126,7 +140,7 @@ function AllCallsDetails() {
               </div>
             </div>
             <div className="col-4 px-0">
-              <div class="accordion-item itemWrapper a h-auto">
+              <div class="accordion-item itemWrapper a ">
                 <h2 class="accordion-header">
                   <button
                     class="accordion-button"
@@ -136,8 +150,9 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse2"
                   >
-                    <div className="col-12 title text-start">
-                      <i
+                    <div className="col-12 title text-start  d-flex align-items-center justify-content-between">
+                     <div>
+                     <i
                         className="fa-duotone fa-phone-arrow-down-left"
                         style={{ color: "var(--funky-boy3)" }}
                       />{" "}
@@ -147,6 +162,19 @@ function AllCallsDetails() {
                           class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
                         ></i>
                       )}
+                     </div>
+                     <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center justify-content-center me-5">
+                      <p  className="p-0 m-0 me-2 ">Total Inbound Calls</p>
+                      <h4 style={{ fontWeight: 900 }}>
+                                  {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
+                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                  ></i>}
+                                </h4>
+                               
+                      </div>
+
+                     </div>
                     </div>
                   </button>
                 </h2>
@@ -241,7 +269,7 @@ function AllCallsDetails() {
               </div>
             </div>
             <div className="col-4">
-              <div className="accordion-item itemWrapper a h-auto">
+              <div className="accordion-item itemWrapper a ">
                 <h2 class="accordion-header">
                   <button
                     class="accordion-button"
@@ -251,8 +279,9 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse3"
                   >
-                    <div className="col-12 title text-start">
-                      <i
+                    <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
+                     <div>
+                     <i
                         className="fa-duotone fa-phone-arrow-up-right"
                         style={{ color: "var(--color3)" }}
                       />{" "}
@@ -262,6 +291,17 @@ function AllCallsDetails() {
                           class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                         ></i>
                       )}
+                     </div>
+                     <div className="  d-flex align-items-center justify-content-between me-5">
+                     <p   className="p-0 m-0 me-2 ">Total Outbound</p>
+                     <h4 style={{ fontWeight: 900 }}>
+                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                  ></i>}
+                                </h4>
+                               
+
+                     </div>
                     </div>
                   </button>
                 </h2>

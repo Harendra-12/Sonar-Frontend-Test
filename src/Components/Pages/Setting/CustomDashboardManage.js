@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import SkeletonFormLoader from '../../Loader/SkeletonFormLoader';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh, setSelectedModule, setAddNewMod, setPopup }) {
     const account = useSelector((state) => state.account);
@@ -150,15 +150,18 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     }
     return (
         <>
-            <main className="popup">
-                {loading ? <SkeletonFormLoader col={5} row={10} /> :
-                    <section id="phonePage">
-                        <div className='col-xl-12'>
+            {loading ? <CircularLoader /> :
+                <main className="popup">
+                    <section id="phonePage" className='d-flex align-items-center h-100'>
+                        <div className='col-xxl-4 col-lg-6 m-auto'>
                             <div className="overviewTableWrapper">
-                                <div className="overviewTableChild">
+                                <div className="overviewTableChild position-relative">
+                                    <button className='clearButton2 position-absolute top-0 end-0' onClick={() => setPopup(false)}>
+                                        <i className='fa-solid fa-xmark' />
+                                    </button>
                                     <div className="col-12" style={{ padding: '25px 23px' }}>
                                         <div className='row gx-5'>
-                                            {(selectedModule != null || addNewMod) && < div className='col-xl-6'>
+                                            {(selectedModule != null || addNewMod) && < div className='col-xl-12'>
                                                 <form>
                                                     <div className="formRow">
                                                         <div className="formLabel">
@@ -284,8 +287,8 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                             </div>
                         </div>
                     </section>
-                }
-            </main >
+                </main >
+            }
         </>
     )
 }

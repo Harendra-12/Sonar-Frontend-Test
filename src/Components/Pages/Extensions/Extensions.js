@@ -29,13 +29,13 @@ const Extensions = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
-  const [showKeys, setShowkeys] = useState([
+  const showKeys = [
     "extension",
     "user",
     "effectiveCallerIdName",
     "outbundCallerIdName",
     "description",
-  ]);
+  ];
   const slugPermissions = useSelector((state) => state?.permissions);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
