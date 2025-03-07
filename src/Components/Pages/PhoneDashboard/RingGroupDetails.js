@@ -120,7 +120,7 @@ const RingGroup = () => {
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "missed" &&
                               item.application_state == "ringgroup"
                           )[0]?.filter_count || 0}
@@ -129,7 +129,7 @@ const RingGroup = () => {
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
                               item?.variable_dialed_extension ==
-                                call?.extension &&
+                              call?.extension &&
                               item["Call-Direction"] == "inbound" &&
                               item.application_state == "ringgroup"
                           )[0]?.filter_count || 0}
@@ -139,7 +139,7 @@ const RingGroup = () => {
                             ?.filter((item) => {
                               return (
                                 item?.variable_dialed_extension ===
-                                  call?.extension &&
+                                call?.extension &&
                                 item.application_state === "ringgroup" &&
                                 (item["Call-Direction"] === "inbound" ||
                                   item["Call-Direction"] === "missed")
@@ -152,14 +152,14 @@ const RingGroup = () => {
                             ) || 0}
                         </td>
                         <td>
-                          <div className="dropdown">
+                          <div className="hover-dropdown">
                             <div
                               style={{
                                 color: "var(--ui-accent)",
                                 textDecoration: "underline",
                               }}
                               type="button"
-                              data-bs-toggle="dropdown"
+                              data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
                               {call.ring_group_destination.length}
@@ -185,8 +185,10 @@ const RingGroup = () => {
                                         {item?.username}
                                       </div>
                                     </li>
+
                                   )
                                 )}
+                             
                               </div>
                             </ul>
                           </div>

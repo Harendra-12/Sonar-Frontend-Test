@@ -424,11 +424,11 @@ function CallCenterQueue() {
 
                                                     )
                                                   )}
-                                                  <li>
-                                                        <div>
-                                                         see more 
+                                                  {/* <li>
+                                                        <div className="border-upper">
+                                                        <p className="p-0 m-0 "> see more</p> 
                                                         </div>
-                                                      </li>
+                                                      </li> */}
 
                                                 </div>
                                               </ul>
