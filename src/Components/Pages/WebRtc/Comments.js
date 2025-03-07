@@ -51,39 +51,40 @@ function Comments({ id, setId, }) {
     return (
         <div className="backdropContact ">
             <div className="addNewContactPopup">
-                <div className="formRow px-0 row">
+                <div className="formRow px-0 pb-0 row">
                     {/* <div className="col-12 heading mb-0">
                         <i className="fa-light fa-comment-dots" />
                         <h5>Agent Note</h5>
                     </div>
                   */}
-                    <div className="col-xl-12 mt-2">
+                    <div className="col-xl-12">
                         <div className='content-comment'>
-
-                            {loading ? <i class="ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"></i> :
+                            {loading ?
+                                <div>
+                                    <div className='back-comment'>
+                                        <div className='d-flex align-items-center'>
+                                            <span>
+                                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                            </span>
+                                            <span className='username-cmt skeleton skeleton-text ms-3' style={{ width: 100 }}></span>
+                                        </div>
+                                        <div className='name-comment skeleton skeleton-text'></div>
+                                        <div className='name-comment skeleton skeleton-text w-75'></div>
+                                    </div>
+                                </div>
+                                :
                                 commentData.length > 0 ?
-
                                     commentData.map((item, index) => {
                                         return (
-                                            <div className=''>
-                                                <div className="formLabel formLabels-width" key={index}>
-                                                    <div htmlFor="" className='row'>
-                                                        <div className='col-12'>
-
-                                                            <div className='back-comment'>
-                                                                <span>
-                                                                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
-                                                                </span>
-                                                                <span className='username-cmt'>  {item?.commented?.username}</span> <br />
-
-
-
-                                                                <div className='d-flex align-items-center justify-content-between '>
-                                                                    <span className='name-comment ms-4'>   {item.comment}</span>
-                                                                    <span className='date-small' >  {item.created_at.split("T")[0]}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                            <div key={index}>
+                                                <div className='back-comment'>
+                                                    <span>
+                                                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                                    </span>
+                                                    <span className='username-cmt ms-2'>  {item?.commented?.username}</span>
+                                                    <div className='d-flex align-items-end justify-content-between mt-1'>
+                                                        <span className='name-comment ms-1'>   {item.comment}</span>
+                                                        <span className='date-small' >  {item.created_at.split("T")[0]}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,10 +94,8 @@ function Comments({ id, setId, }) {
                                         <label htmlFor="">No comment found</label>
                                     </div>
                             }
-
-
                         </div>
-                        <div className="col-12 mt-3">
+                        <div className="col-12 mt-2">
                             <input
                                 className="formItem h-auto"
                                 placeholder="Add new comment"
