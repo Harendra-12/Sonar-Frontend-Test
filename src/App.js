@@ -95,7 +95,7 @@ import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceP
 import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
 import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
 import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
-import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
+import ConferenceConfig from "./Components/Pages/WebRtc/Conference/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
 import CallBlockingAdd from "./Components/Pages/SpamFilter/CallBlockingAdd";
 import Leads from "./Components/Pages/DialerModule/Leads/Leads";
@@ -104,7 +104,7 @@ import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
 import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
 import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
-import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
+import ConferenceJoin from "./Components/Pages/WebRtc/Conference/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
