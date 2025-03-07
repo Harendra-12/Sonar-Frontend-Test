@@ -81,7 +81,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.missed !== undefined ? callDetails?.missed : <i
+                                    callDetails?.missed !== undefined ? (callDetails?.inbound.missed+callDetails?.outbound.missed) : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -102,7 +102,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.success !== undefined ? callDetails?.success : <i
+                                    callDetails?.success !== undefined ? (callDetails?.inbound.completed+callDetails?.outbound.completed) : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -122,7 +122,7 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
+                                  {callDetails?.totalCalls !== undefined ? (callDetails?.inbound.total+callDetails?.outbound.total) :
                                     <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                                 </h3>
                                 <p>Total Calls</p>

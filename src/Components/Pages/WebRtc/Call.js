@@ -393,7 +393,7 @@ function Call({
                     .replace(" AM", "am")
                     .replace(" PM", "pm")}
                 </p>
-                <button className="clearButton2 xl" type="button" onClick={() => { setSelectedCdr(item?.id);setLoading(true); }}>
+                <button className="clearButton2 xl" type="button" onClick={() => { setSelectedCdr(item?.id); }}>
                   <i className="fa-light fa-comment-dots" />
                 </button>
               </div>
@@ -988,8 +988,6 @@ function Call({
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
-          loading={loading}
-          setLoading={setLoading}
         />
       }
       {/* Comment section end */}

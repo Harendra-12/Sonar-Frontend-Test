@@ -946,7 +946,7 @@ function Navbar() {
                     </>
                   )}
                   {checkViewSidebar(
-                      "ChannelHangupComplete",permissions, account?.permissions) ? (
+                    "ChannelHangupComplete", permissions, account?.permissions) ? (
                     <li className="">
                       <button
                         data-bs-toggle="collapse"
@@ -1060,7 +1060,7 @@ function Navbar() {
                                 to="/call-center-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/call-center-report"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1076,7 +1076,7 @@ function Navbar() {
                                 to="/ring-group-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/ring-group-report"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1235,7 +1235,11 @@ function Navbar() {
                               <div className="itemTitle">Rate Card</div>
                             </Link>
                           </li>
-                          {account?.permissions?.includes(86) && (
+                          {checkViewSidebar(
+                              "ChannelHangupComplete",
+                              permissions,
+                              account?.permissions
+                            ) && (
                             <li className="tabItem ">
                               <NavLink
                                 to="/billing-report"

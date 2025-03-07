@@ -126,14 +126,30 @@ const RingGroup = () => {
                           )[0]?.filter_count || 0}
                         </td>
                         <td>
-                          {
-                           allCallDetails?.application_state_count?.find((item)=>item?.application_state== 'ringgroup')?.total_count
-                          }
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                                call?.extension &&
+                              item["Call-Direction"] == "inbound" &&
+                              item.application_state == "ringgroup"
+                          )[0]?.filter_count || 0}
                         </td>
                         <td>
-                          {
-                           allCallDetails?.completed_calls_count?.find((item)=>item?.application_state== 'ringgroup')?.total_count
-                          }
+                          {allCallDetails?.filter_count
+                            ?.filter((item) => {
+                              return (
+                                item?.variable_dialed_extension ===
+                                  call?.extension &&
+                                item.application_state === "ringgroup" &&
+                                (item["Call-Direction"] === "inbound" ||
+                                  item["Call-Direction"] === "missed")
+                              );
+                            })
+                            .reduce(
+                              (acc, current) =>
+                                acc + (current?.filter_count || 0),
+                              0
+                            ) || 0}
                         </td>
                         <td>
                           <div className="dropdown">
