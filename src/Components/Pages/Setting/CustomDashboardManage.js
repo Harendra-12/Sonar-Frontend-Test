@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import SkeletonFormLoader from '../../Loader/SkeletonFormLoader';
 import CircularLoader from '../../Loader/CircularLoader';
-import { set } from 'react-hook-form';
 
 function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh, setSelectedModule, setAddNewMod, setPopup }) {
     const account = useSelector((state) => state.account);
