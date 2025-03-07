@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
@@ -115,7 +116,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "ringgroup" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count;
+                return count+filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -124,7 +125,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "callcenter" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count;
+                return count+filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -132,7 +133,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "pstn" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count;
+                return count+filterMissedCalls(type, value);
             } else {
                 return 0
             }
