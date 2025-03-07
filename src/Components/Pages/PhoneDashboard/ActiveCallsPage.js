@@ -180,70 +180,80 @@ function ActiveCallsPage() {
                                     {
                                         customModule?.map((item, index) => {
                                             return (
-                                                <div className='col-xl-2' key={index}>
-                                                    <div className={`deviceProvision `} >
+                                                <div className='col-xl-3' key={index}>
+                                                    <div className={`deviceProvision position-relative`} >
+                                                        <button className='clearButton2 editBtn'>
+                                                            <i className="fa-solid fa-pen" />
+                                                        </button>
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto d-block">
-                                                                <h5>{item?.name}</h5>
-                                                                <p>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}-${item?.model?.tag}`}</p>
-                                                                <p>{item?.model_type}</p>
+                                                                <div className='d-flex align-items-center0 justify-content-between '>
+                                                                    <div>
+                                                                        <h5>{item?.name}</h5>
+                                                                        <p>Category: {item?.model_type}</p>
+                                                                    </div>
+                                                                    <div className='text-end'>
+                                                                        <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
+                                                                        <p>{item?.model?.tag && `Tag: ${item?.model?.tag}`}</p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div className="data-number2 h-auto">
-                                                                <div className="d-flex flex-wrap justify-content-between">
+
+                                                            <div className="data-number3 h-auto mt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
+                                                                <div className="d-flex justify-content-center pt-2">
                                                                     {
                                                                         item.active ?
-                                                                            <div className="col-4">
-                                                                                <p>Active</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+                                                                                <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
                                                                                     {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
+                                                                                <p>Active</p>
                                                                             </div> : ""
                                                                     }
                                                                     {
                                                                         item?.ringing ?
-                                                                            <div className="col-4 text-center">
-                                                                                <p>Ringing</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
                                                                                     {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
-                                                                            </div> : ""
+                                                                                <p className='p-0 m-0'>Ringing</p>
+                                                                            </div> : " "
                                                                     }
-                                                                </div>
-                                                            </div>
-                                                            <div className="data-number2 h-auto">
-                                                                <div className="d-flex flex-wrap justify-content-between">
                                                                     {
                                                                         item?.total ?
-                                                                            <div className="col-4">
-                                                                                <p>Total</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
                                                                                     {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
+                                                                                <p>Total</p>
                                                                             </div> : ""
                                                                     }
                                                                     {
                                                                         item?.missed ?
-                                                                            <div className="col-4 text-center">
-                                                                                <p>Missed</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
                                                                                     {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
+                                                                                <p>Missed</p>
                                                                             </div> : ""
                                                                     }
                                                                 </div>
@@ -254,6 +264,36 @@ function ActiveCallsPage() {
                                             )
                                         })
                                     }
+                                    {/* <div className="itemWrapper a">
+                                        <div className="heading h-auto">
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-6">
+                                                    <h3 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>16</h3>
+                                                    <p>Missed Calls</p>
+                                                </div>
+                                                <div className="col-6 text-end">
+                                                    <h3 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>169</h3>
+                                                    <p>Answered Calls</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="heading h-auto pt-2 mt-2"
+                                            style={{ borderTop: "1px solid var(--border-color)" }}
+                                        >
+                                            <div className="d-flex flex-wrap justify-content-between">
+                                                <div className="col-6">
+                                                    <h3 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>24</h3>
+                                                    <p>Abandoned Calls</p>
+                                                </div>
+                                                <div className="col-6 text-end">
+                                                    <h3 style={{ color: "rgb(51, 136, 247)", fontWeight: 700 }}>785</h3>
+                                                    <p>Totals Calls</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div> */}
                                     <div className='col-xl-2' onClick={() => navigate("/custom-module")}>
                                         <div className={`deviceProvision h-100`} >
                                             <div className="itemWrapper a addNew h-100">

@@ -2,19 +2,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSIPProvider } from "modify-react-sipjs";
-import MediaPermissions from "./MediaPermissions ";
-import AutoAnswer from "./AutoAnswer";
+import MediaPermissions from "../MediaPermissions ";
+import AutoAnswer from "../AutoAnswer";
 import {
   generalGetFunction,
   generalPostFunction,
-} from "../../GlobalFunction/globalFunction";
+} from "../../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ConferenceVideo from "./ConferenceVideo";
-import ConferenceLoader from "../../Loader/ConferenceLoader";
+import ConferenceLoader from "../../../Loader/ConferenceLoader";
 import ConferenceMessages from "./ConferenceMessages";
-import Socket from "../../GlobalFunction/Socket";
+import Socket from "../../../GlobalFunction/Socket";
+import ConferenceAddNewPeople from "./ConferenceAddNewPeople";
 
 export const ConferenceCall = ({
   room_id,
@@ -79,6 +80,9 @@ export const ConferenceCall = ({
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [screenTogglehit, setScreenTogglehit] = useState(0);
   const { sessionManager } = useSIPProvider();
+  const [newPeople, setNewPeople] = useState(false);
+
+
   useEffect(() => {
     if (conferenceRawData["Conference-Name"] === room_id) {
       setConferenceData(conferenceRawData);
@@ -931,16 +935,25 @@ export const ConferenceCall = ({
                                 </button> */}
                                 </div>
                                 <div class="col-12 mt-3">
-                                  <input
-                                    type="search"
-                                    name="Search"
-                                    id="headerSearch"
-                                    placeholder="Search"
-                                    style={{
-                                      backgroundColor: "transparent",
-                                      color: "#f5f5f5",
-                                    }}
-                                  />
+                                  <div className="d-flex justify-content-between align-items-center">
+                                    <div className="col me-2">
+                                      <input
+                                        type="search"
+                                        name="Search"
+                                        id="headerSearch"
+                                        placeholder="Search"
+                                        style={{
+                                          backgroundColor: "transparent",
+                                          color: "#f5f5f5",
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="col-auto">
+                                      <button className="tableButton" onClick={() => setNewPeople(true)}>
+                                        <i className="fa-solid fa-user-plus" />
+                                      </button>
+                                    </div>
+                                  </div>
                                 </div>
                                 <ul className="noScrollbar">
                                   {confList.map((item, index) => {
@@ -1064,6 +1077,7 @@ export const ConferenceCall = ({
                     </div>
                   </div>
                 </div>
+                {newPeople && <ConferenceAddNewPeople setNewPeople={setNewPeople} />}
               </section>
             </main>
           </>
