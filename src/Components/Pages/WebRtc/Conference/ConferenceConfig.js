@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import {
   generalGetFunction,
-} from "../../GlobalFunction/globalFunction";
-import ContentLoader from "../../Loader/ContentLoader";
+} from "../../../GlobalFunction/globalFunction";
+import ContentLoader from "../../../Loader/ContentLoader";
 import { useDispatch, useSelector } from "react-redux";
 
 const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId, conferenceId, conferenceToggle, pin, setPin, isVideoOn }) => {
