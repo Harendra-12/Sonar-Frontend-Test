@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { backToTop, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../CommonComponents/ErrorMessage';
-import { requiredValidator} from '../../validations/validation';
+import { requiredValidator } from '../../validations/validation';
 import CircularLoader from '../../Loader/CircularLoader';
 
 function DeviceProvisioningNew() {
@@ -128,7 +128,7 @@ function DeviceProvisioningNew() {
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>
-                                                        <button class="nav-link" id="nav-soft-tab" data-bs-toggle="tab" data-bs-target="#nav-soft" type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
+                                                        <button onClick={featureUnderdevelopment} class="nav-link"  type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
@@ -224,10 +224,8 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>EyeBeam</h5></label>
                                                                     <br />
                                                                     <label><p>Brand: EyeBeam</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='row align-items-center mt-2'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -237,11 +235,14 @@ function DeviceProvisioningNew() {
                                                                                 <option>Double</option>
                                                                                 <option>Signal</option>
                                                                                 <option>None</option>
-
-
                                                                             </select>
                                                                         </div>
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton'>
+                                                                                <i class="fa-solid fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="formRow col-xl-6 deviceProvision">
@@ -252,10 +253,8 @@ function DeviceProvisioningNew() {
                                                                     <label htmlFor=""><h5>WebRTC</h5></label>
                                                                     <br />
                                                                     <label><p>Brand: UcaaS</p></label>
-                                                                    <br />
-                                                                    <label className='mt-2'>
-                                                                        {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        <div className="col-xl-12 col-12">
+                                                                    <div className='row align-items-center mt-2'>
+                                                                        <div className="col pe-0">
                                                                             <select
                                                                                 className="formItem">
                                                                                 <option value="" disabled>
@@ -265,11 +264,14 @@ function DeviceProvisioningNew() {
                                                                                 <option>Double</option>
                                                                                 <option>Signal</option>
                                                                                 <option>None</option>
-
-
                                                                             </select>
                                                                         </div>
-                                                                    </label>
+                                                                        <div className="col-auto">
+                                                                            <button className='tableButton'>
+                                                                                <i class="fa-solid fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -280,8 +282,6 @@ function DeviceProvisioningNew() {
 
                                         {isDeviceChosen ? <div className='col-xl-6'>
                                             <form>
-
-
                                                 {/* <div className="formRow">
                                                     <div className="formLabel">
                                                         <label className="text-dark">Transport</label>
@@ -341,7 +341,7 @@ function DeviceProvisioningNew() {
                                                     </div>
                                                 </div> */}
 
-                                              
+
                                             </form>
 
                                             <form>

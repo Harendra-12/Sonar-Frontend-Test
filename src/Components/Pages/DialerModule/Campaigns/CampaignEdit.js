@@ -214,6 +214,7 @@ function CampaignCreate() {
         requires_followup: editState.dialer.requires_followup,
         incorrect_number: editState.dialer.incorrect_number,
         left_voicemail: editState.dialer.left_voicemail,
+        type:editState.dialer.type
       };
       reset(result);
     } else if (stepSelector === 3) {
@@ -449,9 +450,6 @@ function CampaignCreate() {
     // If id is present then remove it if not add it
     setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
   }
-
-  console.log("111111", selectedDesposition);
-
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -1010,6 +1008,7 @@ function CampaignCreate() {
                                     {...register("type", {
                                       ...requiredValidator,
                                     })}
+                                    value={watch().type}
                                   >
                                     <option value="preview">Preview</option>
                                     <option value="progressive">

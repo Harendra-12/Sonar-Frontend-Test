@@ -95,7 +95,7 @@ import DeviceProvisioningAdd from "./Components/Pages/DeviceProvisioning/DeviceP
 import DeviceProvisioning from "./Components/Pages/DeviceProvisioning/DeviceProvisioning";
 import DeviceProvisioningEdit from "./Components/Pages/DeviceProvisioning/DeviceProvisioningEdit";
 import CallBlocking from "./Components/Pages/SpamFilter/CallBlocking";
-import ConferenceConfig from "./Components/Pages/WebRtc/ConferenceConfig";
+import ConferenceConfig from "./Components/Pages/WebRtc/Conference/ConferenceConfig";
 import ClickToCall from "./Components/Pages/ClickToCall/ClickToCall";
 import CallBlockingAdd from "./Components/Pages/SpamFilter/CallBlockingAdd";
 import Leads from "./Components/Pages/DialerModule/Leads/Leads";
@@ -104,7 +104,7 @@ import Campaigns from "./Components/Pages/DialerModule/Campaigns/Campaigns";
 import LeadAdd from "./Components/Pages/DialerModule/Leads/leadAdd";
 import CampaignAnalytics from "./Components/Pages/DialerModule/Campaigns/CampaignAnalytics";
 import DeviceProvisioningNew from "./Components/Pages/DeviceProvisioning/DeviceProvisioningNew";
-import ConferenceJoin from "./Components/Pages/WebRtc/ConferenceJoin";
+import ConferenceJoin from "./Components/Pages/WebRtc/Conference/ConferenceJoin";
 import CallDashboardNew from "./Components/Pages/WebRtc/CallDashboardNew";
 import DummyRegistration from "./Components/Pages/WebRtc/DummyRegistration";
 import ClickToCallSetup from "./Components/Pages/ClickToCall/ClickToCallSetup";
@@ -136,11 +136,12 @@ import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 import UserProfile from "./Components/Pages/Users/UserProfile";
-import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
-import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
+import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
+import EFax from "./Components/Pages/WebRtc/EFax";
+import CustomModule from "./Components/Pages/Setting/CustomModule";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -167,7 +168,6 @@ function App() {
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
-  const permission = account?.permissions;
   const slugPermissions = useSelector((state) => state?.permissions);
   Socket();
 
@@ -235,7 +235,8 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={<CustomDashboardManage />} />
+          <Route path="/custom-module" element={<CustomModule />} />
+          
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
@@ -447,18 +448,18 @@ function App() {
           />
           <Route
             path="/ring-group-report"
-            element={<CdrReport page="ringgroup" />}
+            element={<CdrFilterReport page="ringgroup" />}
           />
           <Route
             path="/call-center-report"
-            element={<CdrReport page="callcenter" />}
+            element={<CdrFilterReport page="callcenter" />}
           />
           <Route
             path="/billing-report"
-            element={<CdrReport page="billing" />}
+            element={<CdrFilterReport page="billing" />}
           />
-          {/* <Route path="/efax" element={<EFax />} />
-          <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
+          <Route path="/efax" element={<EFax />} />
+          {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
           <Route path="/conference-config" element={<ConferenceConfig />} />
@@ -502,7 +503,7 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,"add"
+                account?.permissions, "add"
               ) ? (
                 <PortNumberAdd />
               ) : (
@@ -516,8 +517,8 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,"edit"
-              )  ? (
+                account?.permissions, "edit"
+              ) ? (
                 <PortNumberEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -557,8 +558,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,"edit"
-              )  ? (
+                account?.permissions, "edit"
+              ) ? (
                 <CallCenterQueueEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -571,8 +572,8 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,"add"
-              )  ? (
+                account?.permissions, "add"
+              ) ? (
                 <CallCenterQueueAdd />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -612,11 +613,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-              checkViewSidebar(
-                "BillingAddress",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -663,7 +664,7 @@ function App() {
               checkViewSidebar(
                 "MailSetting",
                 slugPermissions,
-                account?.permissions,"edit"
+                account?.permissions, "edit"
               ) ? (
                 <MailSettingsEdit />
               ) : (
@@ -694,7 +695,7 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,"add"
+                account?.permissions, "add"
               ) ? (
                 <IvrAdd />
               ) : (
@@ -722,8 +723,8 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,"edit"
-              )? (
+                account?.permissions, "edit"
+              ) ? (
                 <IvrEdit />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -785,6 +786,7 @@ function App() {
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
+          <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}

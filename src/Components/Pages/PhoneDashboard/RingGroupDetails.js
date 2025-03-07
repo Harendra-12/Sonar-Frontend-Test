@@ -1,7 +1,8 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 
 const RingGroup = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,8 @@ const RingGroup = () => {
   const [ringGroupData, setRingGroupData] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
-  console.log("000Ring",{ringGroup})
+  const allCallDetails = useSelector((state) => state.allCallDetails);
+
   useEffect(() => {
     if (ringGroupRefresh > 0) {
       const filterRinggroup = () => {
@@ -81,7 +83,10 @@ const RingGroup = () => {
               </div> */}
             </div>
           </div>
-          <div className="col-12" style={{ overflow: "auto", padding: "10px 10px 0px" }}>
+          <div
+            className="col-12"
+            style={{ overflow: "auto", padding: "10px 10px 0px" }}
+          >
             <div className="tableContainer mt-0" style={{ height: "30vh" }}>
               <table>
                 <thead>
@@ -97,79 +102,108 @@ const RingGroup = () => {
                   </tr>
                 </thead>
                 <tbody className="">
-                  {ringGroupData && ringGroup && ringGroup.map((call, index) => (
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{call.name}</td>
-                      <td>
-                        {
-                          activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
-                            .length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension &&
-                              data["variable_DIALSTATUS"] !== "SUCCESS"
-                          ).length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension &&
-                              data["variable_DIALSTATUS"] === "SUCCESS"
-                          ).length
-                        }
-                      </td>
-                      <td>
-                        {
-                          ringGroupData.filter(
-                            (data) =>
-                              data["Caller-Callee-ID-Number"] === call.extension
-                          ).length
-                        }
-                      </td>
-                      <td>
-
-                        <div className="dropdown">
-                          <div
-                            style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            {call.ring_group_destination.length}
-                          </div>
-                          <ul className="dropdown-menu light" >
-                            <li className="col-12"><div className="dropdown-item fw-bold disabled">Agents</div></li>
-                            <div style={{ columnCount: call.ring_group_destination.length > 6 ? 2 : 1 }}>
-                              {
-                                call.ring_group_destination.map((item, index) => (
-                                  <li>
-                                    <div className="dropdown-item">
-                                      {item.username}
-                                    </div>
-                                  </li>
-                                ))
-                              }
+                  {ringGroupData &&
+                    ringGroup &&
+                    ringGroup.map((call, index) => (
+                      <tr>
+                        <td>{index + 1}</td>
+                        <td>{call.name}</td>
+                        <td>
+                          {
+                            activeCallData.filter(
+                              (e) =>
+                                e.dest === call.extension &&
+                                (e.b_callstate === "ACTIVE" ||
+                                  e.b_callstate === "HELD")
+                            ).length
+                          }
+                        </td>
+                        <td>
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                              call?.extension &&
+                              item["Call-Direction"] == "missed" &&
+                              item.application_state == "ringgroup"
+                          )[0]?.filter_count || 0}
+                        </td>
+                        <td>
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                              call?.extension &&
+                              item["Call-Direction"] == "inbound" &&
+                              item.application_state == "ringgroup"
+                          )[0]?.filter_count || 0}
+                        </td>
+                        <td>
+                          {allCallDetails?.filter_count
+                            ?.filter((item) => {
+                              return (
+                                item?.variable_dialed_extension ===
+                                call?.extension &&
+                                item.application_state === "ringgroup" &&
+                                (item["Call-Direction"] === "inbound" ||
+                                  item["Call-Direction"] === "missed")
+                              );
+                            })
+                            .reduce(
+                              (acc, current) =>
+                                acc + (current?.filter_count || 0),
+                              0
+                            ) || 0}
+                        </td>
+                        <td>
+                          <div className="hover-dropdown">
+                            <div
+                              style={{
+                                color: "var(--ui-accent)",
+                                textDecoration: "underline",
+                              }}
+                              type="button"
+                              data-bs-toggle="hover-dropdown"
+                              aria-expanded="false"
+                            >
+                              {call.ring_group_destination.length}
                             </div>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>{call.extension}</td>
-                    </tr>)
-                  )}
+                            <ul className="dropdown-menu light">
+                              <li className="col-12">
+                                <div className="dropdown-item fw-bold disabled">
+                                  Agents
+                                </div>
+                              </li>
+                              <div
+                                style={{ columnCount: 1 }}
+                              >
+                                {call.ring_group_destination.slice(0, 6).map(
+                                  (item, index) => (
+                                    <li>
+                                      <div className="dropdown-item">
+                                        {item?.username}
+                                      </div>
+                                    </li>
+
+                                  )
+                                )}
+                             
+                              </div>
+                              <li className="col-12">
+                                {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
+                                  Show More
+                                </Link>}
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                        <td>{call.extension}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 };

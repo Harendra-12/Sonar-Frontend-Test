@@ -31,13 +31,13 @@ const CallCenter = ({ initial }) => {
   const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
-  useEffect(() => {
-    setLoading(true);
-    dispatch({
-      type: "SET_CALLCENTERREFRESH",
-      callCenterRefresh: callCenterRefresh + 1,
-    });
-  }, [refreshCenter]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   dispatch({
+  //     type: "SET_CALLCENTERREFRESH",
+  //     callCenterRefresh: callCenterRefresh + 1,
+  //   });
+  // }, [refreshCenter]);
 
   useEffect(() => {
     const getData = async () => {

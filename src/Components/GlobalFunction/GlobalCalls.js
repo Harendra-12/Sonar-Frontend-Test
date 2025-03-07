@@ -23,7 +23,6 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
-  const updateBalance = useSelector((state) => state.updateBalance);
   const logout = useSelector((state) => state.logout);
 
   const navigate = useNavigate();
@@ -47,6 +46,12 @@ function GlobalCalls() {
             type: "SET_ALLCALL",
             allCall: apiData.data,
           });
+          dispatch({
+            type: "SET_ALLCALLDETAILS",
+            allCallDetails: apiData?.cdr_filters
+            ,
+          });
+          
         }
       }
 
@@ -291,41 +296,20 @@ function GlobalCalls() {
   }, [rolesRefresh]);
   useEffect(() => {
     async function getData() {
-      // const apiData = await generalGetFunction(`/role/all`);
       const permissionData = await generalGetFunction("/permission");
-      // if (apiData?.status) {
-      //   dispatch({
-      //     type: "SET_ROLES",
-      //     roles: apiData.data,
-      //   });
-      // }
       if (permissionData?.status) {
         dispatch({
           type: "SET_PERMISSIONS",
           permissions: permissionData.data,
         });
+        localStorage.setItem("permissions",JSON.stringify(permissionData.data))
       }
     }
-    if (permissionRefresh > 0 &&localStorage.getItem("token")) {
+    if (permissionRefresh > 0 && localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);
 
-  // Getting account balance
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction("/account-balance");
-      if (apiData?.status) {
-        dispatch({
-          type: "SET_BALANCE",
-          balance: apiData,
-        });
-      }
-    }
-    if (account) {
-      getData();
-    }
-  }, [updateBalance]);
 
   // Getting ivr details
   useEffect(() => {
@@ -400,7 +384,7 @@ function GlobalCalls() {
   useEffect(() => {
     async function logOut() {
       const apiData = await generalGetFunction("/logout");
-      localStorage.clear();
+      // localStorage.clear();
       navigate("/");
       if (apiData?.status) {
         localStorage.clear();

@@ -29,13 +29,13 @@ const Extensions = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchValue, setSearchValue] = useState("");
-  const [showKeys, setShowkeys] = useState([
+  const showKeys = [
     "extension",
     "user",
     "effectiveCallerIdName",
     "outbundCallerIdName",
     "description",
-  ]);
+  ];
   const slugPermissions = useSelector((state) => state?.permissions);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
@@ -69,7 +69,7 @@ const Extensions = () => {
   const userWithExtension = userList
     .filter((user) => user.extension && user.extension.extension) // Filter out null or undefined extensions
     .map((user) => ({
-      name: user.username,
+      name: user?.username,
       extension: user.extension.extension, // Access the nested extension value
     }));
 
@@ -357,7 +357,7 @@ const Extensions = () => {
                                                         cursor: "default",
                                                       }}
                                                     >
-                                                      {item.provisionings ? (
+                                                      {/* {item.provisionings ? (
                                                         <button
                                                           className="tableButton edit mx-auto"
                                                           onClick={() =>
@@ -376,7 +376,7 @@ const Extensions = () => {
                                                         >
                                                           <i class="fa-solid fa-phone-office"></i>
                                                         </button>
-                                                      ) : (
+                                                      ) : ( */}
                                                         <button
                                                           className="tableButton mx-auto"
                                                           onClick={() =>
@@ -394,7 +394,7 @@ const Extensions = () => {
                                                         >
                                                           <i class="fa-solid fa-plus"></i>
                                                         </button>
-                                                      )}
+                                                      {/* )} */}
                                                     </td>
                                                   </tr>
                                                 );

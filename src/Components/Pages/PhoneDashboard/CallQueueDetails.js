@@ -1,6 +1,8 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CallQueueDetails = () => {
   const dispatch = useDispatch();
@@ -10,6 +12,7 @@ const CallQueueDetails = () => {
   const [callQueue, setCallQueue] = useState([]);
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
+  const allCallDetails = useSelector((state) => state.allCallDetails);
   // const [callCenterLoading, setCallCenterLoading] = useState(true);
   useEffect(() => {
     if (callCenterRefresh > 0) {
@@ -69,14 +72,6 @@ const CallQueueDetails = () => {
                 <h4>Call Queue</h4>
                 <p>You can see a brief analysis of all the call queues</p>
               </div>
-              {/* <div className="buttonGroup">
-                <button effect="ripple" className="panelButton">
-                  <span className="text">Export</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-file-csv" />
-                  </span>
-                </button>
-              </div> */}
             </div>
           </div>
           <div
@@ -106,65 +101,82 @@ const CallQueueDetails = () => {
                         <td>{call.queue_name}</td>
                         <td>
                           {
-                            activeCallData.filter((e) => e.dest === call.extension&&( e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
+                            activeCallData.filter((e) => e.dest === call.extension && (e.b_callstate === "ACTIVE" || e.b_callstate === "HELD"))
                               .length
                           }
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] !== "SUCCESS"
-                            ).length
-                          }
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                              call?.extension &&
+                              item["Call-Direction"] == "missed" &&
+                              item?.application_state == 'callcenter'
+                          )[0]?.filter_count || 0}
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension &&
-                                data["variable_DIALSTATUS"] === "SUCCESS"
-                            ).length
-                          }
+                          {allCallDetails?.filter_count?.filter(
+                            (item) =>
+                              item?.variable_dialed_extension ==
+                              call?.extension &&
+                              item["Call-Direction"] == "inbound" &&
+                              item.application_state == 'callcenter'
+                          )[0]?.filter_count || 0}
                         </td>
                         <td>
-                          {
-                            callQueue.filter(
-                              (data) =>
-                                data["Caller-Callee-ID-Number"] === call.extension
-                            ).length
-                          }
+                          {allCallDetails?.filter_count
+                            ?.filter((item) => {
+                              return (
+                                item?.variable_dialed_extension ===
+                                call?.extension &&
+                                item.application_state === 'callcenter' &&
+                                (item["Call-Direction"] === "inbound" ||
+                                  item["Call-Direction"] === "missed")
+                              );
+                            })
+                            .reduce(
+                              (acc, current) =>
+                                acc + (current?.filter_count || 0),
+                              0
+                            ) || 0}
                         </td>
                         <td>
-                          <div className="dropdown">
+                          <div className="hover-dropdown">
                             <div
-                              style={{ color: 'var(--ui-accent)', textDecoration: 'underline' }}
+                              style={{
+                                color: "var(--ui-accent)",
+                                textDecoration: "underline",
+                              }}
                               type="button"
-                              data-bs-toggle="dropdown"
+                              data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
                               {call.agents.length}
                             </div>
-                            <ul className="dropdown-menu light" >
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Active:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status === "available"
-                                    ).length
-                                  }
+                            <ul className="dropdown-menu light">
+                              <li className="col-12">
+                                <div className="dropdown-item fw-bold disabled">
+                                  Agents
                                 </div>
                               </li>
-                              <li>
-                                <div className="dropdown-item">
-                                  <span className="fw-bold d-inline-block" style={{ width: '50px' }}>Offline:</span> {
-                                    call.agents.filter(
-                                      (agent) => agent.status !== "available"
-                                    ).length
-                                  }
-                                </div>
-                              </li>
+                              <div
+                                style={{ columnCount: 1 }}
+                              >
+                                {call.agents.slice(0, 6).map(
+                                  (item, index) => (
+                                    <li key={index}>
+                                      <div className="dropdown-item">
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  )
+                                )}
+                              </div>
+                              {call.agents.length > 6 && <li className="col-12">
+                                <Link to="/agents" className="dropdown-item text-center text-primary">
+                                  Show More
+                                </Link>
+                              </li>}
                             </ul>
                           </div>
                         </td>

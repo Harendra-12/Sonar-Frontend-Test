@@ -172,8 +172,7 @@ function CallDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="col-xl-7 px-0"
+              <div className="col-xl-8 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}
               >
 
@@ -197,8 +196,7 @@ function CallDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="col-xl-5 px-0"
+              <div className="col-xl-4 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}
               >
 

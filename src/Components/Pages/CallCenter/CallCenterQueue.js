@@ -387,14 +387,46 @@ function CallCenterQueue() {
                                           >
                                             {item.strategy}
                                           </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/cal-center-queue-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.agents.length}
+                                          <td >
+                                            <div className="hover-dropdown">
+                                              <div
+                                                style={{
+                                                  color: "var(--ui-accent)",
+                                                  textDecoration: "underline",
+                                                }}
+                                                type="button"
+                                                data-bs-toggle="hover-dropdown"
+                                                aria-expanded="false"
+                                              >
+                                                {item.agents.length}
+                                              </div>
+                                              <ul className="dropdown-menu light">
+                                                <li className="col-12">
+                                                  <div className="dropdown-item fw-bold disabled">
+                                                    Agents
+                                                  </div>
+                                                </li>
+                                                <div
+                                                  style={{ columnCount: 1 }}
+                                                >
+                                                  {item.agents.slice(0, 6).map(
+                                                    (item, index) => (
+                                                      <li key={index}>
+                                                        <div className="dropdown-item">
+                                                          {item?.username}
+                                                        </div>
+                                                      </li>
+
+                                                    )
+                                                  )}
+                                                  {item.agents.length > 6 && <li className="col-12">
+                                                    <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                      See More
+                                                    </Link>
+                                                  </li>}
+                                                </div>
+                                              </ul>
+                                            </div>
                                           </td>
                                           <td>
                                             <div className="my-auto position-relative mx-1">

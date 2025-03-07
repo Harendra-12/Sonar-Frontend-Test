@@ -495,10 +495,10 @@ const Profile = () => {
                             >
                               <img
                                 alt=""
-                                src={`https://flagsapi.com/${accountDetails?.billing_address[0].country}/flat/16.png`}
+                                src={`https://flagsapi.com/${accountDetails?.country}/flat/16.png`}
                               ></img>
                               &nbsp;&nbsp;
-                              {accountDetails?.billing_address[0].country}
+                              {accountDetails?.country}
                             </p>
                           </div>
                           <div

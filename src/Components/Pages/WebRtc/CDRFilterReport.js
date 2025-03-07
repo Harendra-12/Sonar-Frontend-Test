@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
+import Comments from "./Comments";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function CdrFilterReport({ page }) {
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
   const [contentLoader, setContentLoader] = useState(false);
@@ -54,6 +56,9 @@ function CdrFilterReport({ page }) {
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [comment, setComment] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
+  
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -72,11 +77,11 @@ function CdrFilterReport({ page }) {
     "variable_DIALSTATUS",
     "start_date",
     "end_date",
-   "call_cost",
+    "call_cost",
+    "id",
   ]);
 
   const thisAudioRef = useRef(null);
-  console.log("000000000cdr", cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -85,8 +90,9 @@ function CdrFilterReport({ page }) {
 
   useEffect(() => {
     if (filterBy === "date" && startDateFlag !== "") {
-      setStartDate(startDateFlag);
-      setEndDate(startDateFlag);
+      setCreatedAt(startDateFlag);
+      setStartDate("");
+      setEndDate("");
     } else if (
       filterBy === "date_range" &&
       endDateFlag !== "" &&
@@ -94,6 +100,7 @@ function CdrFilterReport({ page }) {
     ) {
       setStartDate(startDateFlag);
       setEndDate(endDateFlag);
+      setCreatedAt("");
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
@@ -192,10 +199,10 @@ function CdrFilterReport({ page }) {
           page === "all"
             ? callType
             : page === "billing"
-            ? "pstn"
-            : page === "callrecording"
-            ? callType
-            : page,
+              ? "pstn"
+              : page === "callrecording"
+                ? callType
+                : page,
         variable_sip_from_user: callOrigin,
         variable_sip_to_user: callDestination,
         start_date: startDate,
@@ -203,6 +210,7 @@ function CdrFilterReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
+        created_at:createdAt
       }
     );
 
@@ -230,20 +238,25 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
-        if (apiData?.status) {
+        if (apiData?.status === 403) {
+          toast.error("You don't have permission to access this page.");
+          setLoading(false);
+          setContentLoader(false);
+          setCircularLoader(false);
+        }
+        if (apiData?.status === true) {
           setCircularLoader(false);
           setLoading(false);
           setContentLoader(false);
           const filteredData = apiData?.data?.data?.map((item) =>
-            filterObjectKeys(item, apiData.filteredKeys)
+            filterObjectKeys(item, [...apiData.filteredKeys,"id"])
           );
-          setFilteredKeys(apiData.filteredKeys);
+          setFilteredKeys([...apiData.filteredKeys,"id"]);
           // setCdr(apiData.data);
           setCdr({
             ...apiData?.data,
             data: filteredData,
           });
-
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -251,12 +264,12 @@ function CdrFilterReport({ page }) {
             });
           }
         } else {
-          setLoading(true);
-          setContentLoader(true);
+          setLoading(false);
+          setContentLoader(false);
         }
       } else {
-        setLoading(true);
-        setContentLoader(true);
+        setLoading(false);
+        setContentLoader(false);
         navigate("/");
       }
     }
@@ -276,7 +289,9 @@ function CdrFilterReport({ page }) {
     refresh,
     itemsPerPage,
     page,
+    createdAt
   ]);
+  
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -454,17 +469,16 @@ function CdrFilterReport({ page }) {
         <section id="phonePage">
           <div className="container-fluid px-0 position-relative">
             <Header
-              title={`${
-                page === "billing"
-                  ? "Billing Reports"
-                  : page === "callcenter"
+              title={`${page === "billing"
+                ? "Billing Reports"
+                : page === "callcenter"
                   ? "Call Center Reports"
                   : page === "ringgroup"
-                  ? "Ring Group Reports"
-                  : page === "callrecording"
-                  ? "Call Recordings"
-                  : "CDR Reports"
-              }`}
+                    ? "Ring Group Reports"
+                    : page === "callrecording"
+                      ? "Call Recordings"
+                      : "CDR Reports"
+                }`}
             />
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
@@ -476,24 +490,24 @@ function CdrFilterReport({ page }) {
                           {page === "billing"
                             ? "Billing"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
                         </h4>
                         <p>
                           Here are all the{" "}
                           {page === "billing"
                             ? "Billing Reports"
                             : page === "callcenter"
-                            ? "Call Center Reports"
-                            : page === "ringgroup"
-                            ? "Ring Group Reports"
-                            : page === "callrecording"
-                            ? "Call Recordings"
-                            : "CDR Reports"}
+                              ? "Call Center Reports"
+                              : page === "ringgroup"
+                                ? "Ring Group Reports"
+                                : page === "callrecording"
+                                  ? "Call Recordings"
+                                  : "CDR Reports"}
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -566,10 +580,10 @@ function CdrFilterReport({ page }) {
                     </div>
                     <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
-                        {filteredKeys.includes("created_at") && (
+                        {filteredKeys.includes("variable_start_stamp") && (
                           <>
                             {" "}
-                            <div className="formRow border-0 ps-xl-0">
+                            <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
                                 Date Filter
                               </label>
@@ -708,7 +722,7 @@ function CdrFilterReport({ page }) {
                         )}
 
                         {page === "all" &&
-                        filteredKeys.includes("variable_sip_to_user") ? (
+                          filteredKeys.includes("variable_sip_to_user") ? (
                           <>
                             <div className="formRow border-0">
                               <label className="formLabel text-start mb-0 w-100">
@@ -721,7 +735,7 @@ function CdrFilterReport({ page }) {
                                   setPageNumber(1);
                                 }}
                                 value={callDirection}
-                                // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                              // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                               >
                                 <option value={""}>All Calls</option>
                                 <option value={"inbound"}>Inbound Calls</option>
@@ -762,13 +776,13 @@ function CdrFilterReport({ page }) {
                           ""
                         )}
                         {page === "callrecording" &&
-                        !filteredKeys.includes("Hangup-Cause") ? (
+                          !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
                           <>
                             <div className="formRow border-0 ">
                               <label className="formLabel text-start mb-0 w-100">
-                                Hangup Cause
+                                Hangup Status
                               </label>
                               <select
                                 className="formItem"
@@ -778,25 +792,17 @@ function CdrFilterReport({ page }) {
                                 }}
                               >
                                 <option value={""}>All</option>
-                                <option value={"SUCCESS"}>Success</option>
-                                <option value={"BUSY"}>Busy</option>
-                                <option value={"NOANSWER"}>No Answer</option>
-                                <option value={"NOT CONNECTED"}>
-                                  Not Connected
-                                </option>
-                                <option value={"USER_NOT_REGISTERED"}>
-                                  User Not Registered
-                                </option>
-                                <option value={"SUBSCRIBER_ABSENT"}>
-                                  Subscriber Absent
-                                </option>
-                                <option value={"CANCEL"}>Cancelled</option>
+                                <option value={"Answered"}>Answer</option>
+                                <option value={"Missed"}>Missed</option>
+                                <option value={"Voicemail"}>Voicemail</option>
+                                <option value={"Cancelled"}>Cancelled</option>
+                                <option value={"Failed"}>Failed</option>
                               </select>
                             </div>
                             {filteredKeys.includes("Hangup-Cause") && (
                               <div className="formRow border-0 pe-xl-0">
                                 <label className="formLabel text-start mb-0 w-100">
-                                  Hangup status
+                                  Hangup Cause
                                 </label>
                                 <select
                                   className="formItem"
@@ -806,12 +812,28 @@ function CdrFilterReport({ page }) {
                                   }}
                                 >
                                   <option value={""}>All</option>
-                                  <option value={"MEDIA_TIMEOUT"}>
-                                    Media Timeout
-                                  </option>
-                                  <option value={"NORMAL_CLEARING"}>
-                                    Normal Clearing
-                                  </option>
+                                  <option value={"NORMAL_CLEARING"}>Normal Clearing</option>
+                                  <option value={"ORIGINATOR_CANCEL"}>Originator Cancel</option>
+                                  <option value={"MANAGER_REQUEST"}>Manager Request</option>
+                                  <option value={"NO_ANSWER"}>No Answer</option>
+                                  <option value={"INVALID_GATEWAY"}>Invalid Gateway</option>
+                                  <option value={"SERVICE_UNAVAILABLE"}>Service Unavailable</option>
+                                  <option value={"INCOMPATIBLE_DESTINATION"}>Incompatible Destination</option>
+                                  <option value={"NO_USER_RESPONSE"}>No User Response</option>
+                                  <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
+                                  <option value={"LOSE_RACE"}>Lose Race</option>
+                                  <option value={"NORMAL_UNSPECIFIED"}>Normal Unspecified</option>
+                                  <option value={"USER_BUSY"}>User Busy</option>
+                                  <option value={"RECOVERY_ON_TIMER_EXPIRE"}>Recovery On Timer Expire</option>
+                                  <option value={"USER_NOT_REGISTERED"}>User Not Registered</option>
+                                  <option value={"CALL_REJECTED"}>Call Rejected</option>
+                                  <option value={"SUBSCRIBER_ABSENT"}>Subscriber Absent</option>
+                                  <option value={"CHAN_NOT_IMPLEMENTED"}>Chan Not Implemented</option>
+                                  <option value={"DESTINATION_OUT_OF_ORDER"}>Destination Out Of Order</option>
+                                  <option value={"NORMAL_TEMPORARY_FAILURE"}>Normal Temporary Failure</option>
+                                  <option value={"NO_ROUTE_DESTINATION"}>No Route Destination</option>
+                                  <option value={"ALLOTTED_TIMEOUT"}>Allotted Timeout</option>
+                                  <option value={"INVALID_NUMBER_FORMAT"}>Invalid Number Format</option>
                                 </select>
                               </div>
                             )}
@@ -876,7 +898,7 @@ function CdrFilterReport({ page }) {
                               <tr style={{ whiteSpace: "nowrap" }}>
                                 <th>#</th>
                                 {showKeys.map((key) => {
-                                  if (cdr?.data[0]?.hasOwnProperty(key)) {
+                                  if (cdr?.data[0]?.hasOwnProperty(key) && key !== "id") {
                                     let formattedKey = "";
                                     if (key === "variable_sip_from_user") {
                                       formattedKey = "Caller No.";
@@ -893,16 +915,16 @@ function CdrFilterReport({ page }) {
                                     } else if (
                                       key === "application_state_to_ext"
                                     ) {
-                                      formattedKey = "Extension";
+                                      formattedKey = "Ext/Dest";
                                     } else if (key === "e_name") {
                                       formattedKey = "User Name";
                                     } else if (key === "variable_DIALSTATUS") {
-                                      formattedKey = "Hangup Cause";
-                                    } else if (key === "Hangup-Cause") {
                                       formattedKey = "Hangup Status";
+                                    } else if (key === "Hangup-Cause") {
+                                      formattedKey = "Hangup Cause";
                                     }
-                                    else if(key==="call_cost"){
-                                      formattedKey="Charge"
+                                    else if (key === "call_cost") {
+                                      formattedKey = "Charge"
                                     } else {
                                       formattedKey = key
                                         .replace(/[-_]/g, " ")
@@ -916,6 +938,7 @@ function CdrFilterReport({ page }) {
                                   return null;
                                 })}
                                 <th>Block</th>
+                                <th>Note</th>
                               </tr>
                             </thead>
 
@@ -958,19 +981,19 @@ function CdrFilterReport({ page }) {
                                           </td>
 
                                           {showKeys.map((key) => {
-                                            if (item.hasOwnProperty(key)) {
+                                            if (item.hasOwnProperty(key) && key !== "id") {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
                                                     {item["recording_path"] &&
                                                       item["variable_billsec"] >
-                                                        0 && (
+                                                      0 && (
                                                         <button
                                                           className="tableButton px-2 mx-0"
                                                           onClick={() => {
                                                             if (
                                                               item[
-                                                                "recording_path"
+                                                              "recording_path"
                                                               ] ===
                                                               currentPlaying
                                                             ) {
@@ -981,16 +1004,16 @@ function CdrFilterReport({ page }) {
                                                             } else {
                                                               handlePlaying(
                                                                 item[
-                                                                  "recording_path"
+                                                                "recording_path"
                                                                 ]
                                                               );
                                                             }
                                                           }}
                                                         >
                                                           {currentPlaying ===
-                                                          item[
+                                                            item[
                                                             "recording_path"
-                                                          ] ? (
+                                                            ] ? (
                                                             <i className="fa-solid fa-stop"></i>
                                                           ) : (
                                                             <i className="fa-solid fa-play"></i>
@@ -1032,7 +1055,7 @@ function CdrFilterReport({ page }) {
 
                                                 const callType =
                                                   callIcons[
-                                                    item["Call-Direction"]
+                                                  item["Call-Direction"]
                                                   ] || callIcons.internal;
 
                                                 return (
@@ -1060,11 +1083,11 @@ function CdrFilterReport({ page }) {
                                                       item["application_state"]
                                                     )
                                                       ? item[
-                                                          "other_leg_destination_number"
-                                                        ]
+                                                      "other_leg_destination_number"
+                                                      ]
                                                       : item[
-                                                          "Caller-Callee-ID-Number"
-                                                        ]}{" "}
+                                                      "Caller-Callee-ID-Number"
+                                                      ]}{" "}
                                                     {item[
                                                       "application_state_name"
                                                     ] &&
@@ -1094,9 +1117,8 @@ function CdrFilterReport({ page }) {
                                             <button
                                               disabled={isBlocked}
                                               effect="ripple"
-                                              className={`tableButton ${
-                                                isBlocked ? "delete" : "warning"
-                                              } ms-0`}
+                                              className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                } ms-0`}
                                               style={{
                                                 height: "34px",
                                                 width: "34px",
@@ -1106,14 +1128,14 @@ function CdrFilterReport({ page }) {
                                                   item["Call-Direction"] ===
                                                     "inbound"
                                                     ? item[
-                                                        "Caller-Caller-ID-Number"
-                                                      ]
+                                                    "Caller-Caller-ID-Number"
+                                                    ]
                                                     : item["Call-Direction"] ===
                                                       "outbound"
-                                                    ? item[
-                                                        "Caller-Callee-ID-Number"
+                                                      ? item[
+                                                      "Caller-Callee-ID-Number"
                                                       ]
-                                                    : "N/A"
+                                                      : "N/A"
                                                 );
                                                 setPopUp(true);
                                               }}
@@ -1129,36 +1151,44 @@ function CdrFilterReport({ page }) {
                                               </Tippy>
                                             </button>
                                           </td>
+                                          <td>
+                                            <button className={`tableButton ms-0`} onClick={() =>setSelectedCdr(item.id)}>
+                                              <Tippy content={'View Note'}
+                                              >
+                                                <i class="fa-solid fa-comment-dots"></i>
+                                              </Tippy>
+                                            </button>
+                                          </td>
                                         </tr>
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
-                                          item["recording_path"] && (
-                                          <tr>
-                                            <td colSpan={showKeys.length + 1}>
-                                              <div className="audio-container mx-2">
-                                                <audio
-                                                  controls={true}
-                                                  ref={thisAudioRef}
-                                                  autoPlay={true}
-                                                  onEnded={() => {
-                                                    setCurrentPlaying(null);
-                                                    setAudioURL("");
-                                                  }}
-                                                >
-                                                  <source
-                                                    src={audioURL}
-                                                    type="audio/mpeg"
-                                                  />
-                                                </audio>
+                                          item["recording_path"] && item["recording_path"] && (
+                                            <tr>
+                                              <td colSpan={showKeys.length + 1}>
+                                                <div className="audio-container mx-2">
+                                                  <audio
+                                                    controls={true}
+                                                    ref={thisAudioRef}
+                                                    autoPlay={true}
+                                                    onEnded={() => {
+                                                      setCurrentPlaying(null);
+                                                      setAudioURL("");
+                                                    }}
+                                                  >
+                                                    <source
+                                                      src={audioURL}
+                                                      type="audio/mpeg"
+                                                    />
+                                                  </audio>
 
-                                                <button className="audioCustomButton">
-                                                  <i className="fa-sharp fa-solid fa-download" />
-                                                </button>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        )}
+                                                  <button className="audioCustomButton">
+                                                    <i className="fa-sharp fa-solid fa-download" />
+                                                  </button>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          )}
                                       </React.Fragment>
                                     );
                                   })}
@@ -1242,6 +1272,13 @@ function CdrFilterReport({ page }) {
           ""
         )}
       </main>
+      {/* Note Popup */}
+      {selectedCdr !== "" &&
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+        />
+      }
     </>
   );
 }
