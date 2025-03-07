@@ -129,7 +129,7 @@ const UsersAdd = () => {
         ...options,
       ]);
     }
-  }, [accountDetails, user]);
+  }, [accountDetails, user,extension]);
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {

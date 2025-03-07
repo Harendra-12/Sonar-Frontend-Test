@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { backToTop, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
 import { useDispatch, useSelector } from 'react-redux';
@@ -128,7 +128,7 @@ function DeviceProvisioningNew() {
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>
-                                                        <button class="nav-link" id="nav-soft-tab" data-bs-toggle="tab" data-bs-target="#nav-soft" type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
+                                                        <button onClick={featureUnderdevelopment} class="nav-link"  type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">

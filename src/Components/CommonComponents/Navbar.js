@@ -1235,7 +1235,11 @@ function Navbar() {
                               <div className="itemTitle">Rate Card</div>
                             </Link>
                           </li>
-                          {account?.permissions?.includes(86) && (
+                          {checkViewSidebar(
+                              "ChannelHangupComplete",
+                              permissions,
+                              account?.permissions
+                            ) && (
                             <li className="tabItem ">
                               <NavLink
                                 to="/billing-report"
