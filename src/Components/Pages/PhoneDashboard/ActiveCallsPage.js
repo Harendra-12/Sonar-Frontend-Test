@@ -116,7 +116,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "ringgroup" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -125,7 +125,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "callcenter" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -133,7 +133,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "pstn" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -263,10 +263,6 @@ function ActiveCallsPage() {
                                         </div>
                                     </div>
                                 </div>
-                        </div>
-                        <div className="overviewTableWrapper">
-                            <div className='col-xl-12 mb-3'>
-                                
                             </div>
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
@@ -566,8 +562,6 @@ function ActiveCallsPage() {
                             </div> */}
                         </div>
                     </div>
-                </div>
-
                 </div>
             </section>
         </main >
