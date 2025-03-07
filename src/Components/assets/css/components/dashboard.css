@@ -220,6 +220,14 @@
     margin-bottom: 0;
 }
 
+
+.itemWrapper .data-number3 p {
+    font-size: 13px;
+    color: var(--color-subtext);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
 .itemWrapper .data-number2 img {
     width: 50px;
     height: auto;
@@ -633,3 +641,16 @@
 .accordion.dashboard .accordion-body {
     margin-top: 15px;
 }
+
+
+.hover-dropdown { /* Changed class name */
+    /* Existing styles... */
+  }
+  
+  .hover-dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .hover-dropdown .dropdown-toggle::after {
+    display: none;
+  }

@@ -18,10 +18,10 @@ import { SipRegister } from "./SipRegister";
 import SideNavbarApp from "./SideNavbarApp";
 import Messages from "./Messages";
 import VideoCall from "./VideoCall";
-import { ConferenceCall } from "./ConferenceCall";
-import ConferenceTest from "./ConferenceTest";
+import { ConferenceCall } from "./Conference/ConferenceCall";
+import ConferenceTest from "./Conference/ConferenceTest";
 import { Rnd } from "react-rnd";
-import ConferenceConfig from "./ConferenceConfig";
+import ConferenceConfig from "./Conference/ConferenceConfig";
 import Email from "./Email";
 import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
@@ -35,7 +35,7 @@ const WebrtcWrapper = () => {
   const port = process.env.REACT_APP_FREESWITCH_PORT;
   const [size, setSize] = useState({ width: 300, height: 450 });
   const [position, setPosition] = useState({ x: 700, y: 300 });
-  const { sessions: sipSessions,sessionManager, connectStatus,registerStatus } = useSIPProvider();
+  const { sessions: sipSessions, sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const dispatch = useDispatch();
   const callCenterPopUp = useSelector((state) => state.callCenterPopUp);
   const sessions = useSelector((state) => state.sessions);
@@ -124,7 +124,7 @@ const WebrtcWrapper = () => {
   const options = {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
-    refVideoRemote:null,
+    refVideoRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
       console.log("SIP Registered!", ua);
@@ -174,7 +174,7 @@ const WebrtcWrapper = () => {
     }
   }, []);
 
-  
+
   useEffect(() => {
     if (
       selectedModule !== "onGoingCall" &&

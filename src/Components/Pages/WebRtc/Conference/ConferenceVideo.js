@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useSessionCall } from "modify-react-sipjs";
 import { toast } from "react-toastify";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { generalPostFunction } from "../../../GlobalFunction/globalFunction";
 
 function ConferenceVideo({
   id,
@@ -73,30 +73,30 @@ function ConferenceVideo({
         }
       });
       if (!isMounted) return;
-      try{
-      session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
-        if (!isMounted) return; // Check if the component is still mounted
+      try {
+        session.sessionDescriptionHandler.peerConnection.ontrack = (event) => {
+          if (!isMounted) return; // Check if the component is still mounted
 
-        const remoteStream =
-          remoteVideoRef.current?.srcObject || new MediaStream();
-        remoteStream?.addTrack(event.track);
+          const remoteStream =
+            remoteVideoRef.current?.srcObject || new MediaStream();
+          remoteStream?.addTrack(event.track);
 
-        if (event.track.kind === "video") {
-          remoteVideoRef.current.srcObject = remoteStream;
-          remoteVideoRef.current.onloadedmetadata = () => {
-            remoteVideoRef.current.play();
-          };
-        } else if (event.track.kind === "audio") {
-          const audioElement = new Audio();
-          audioElement.srcObject = remoteStream;
-          audioElement.play().catch((error) => {
-            console.error("Error playing audio:", error);
-          });
-        }
-      };
-    }catch(error){
-      console.log(error);
-    }
+          if (event.track.kind === "video") {
+            remoteVideoRef.current.srcObject = remoteStream;
+            remoteVideoRef.current.onloadedmetadata = () => {
+              remoteVideoRef.current.play();
+            };
+          } else if (event.track.kind === "audio") {
+            const audioElement = new Audio();
+            audioElement.srcObject = remoteStream;
+            audioElement.play().catch((error) => {
+              console.error("Error playing audio:", error);
+            });
+          }
+        };
+      } catch (error) {
+        console.log(error);
+      }
 
       const remoteDescription =
         session.sessionDescriptionHandler?.peerConnection
@@ -126,7 +126,7 @@ function ConferenceVideo({
             if (isVideoOn) {
               sender.track.stop();
               console.log("Inside track change");
-              
+
               sender.replaceTrack(localStream.getVideoTracks()[0]);
             } else {
               sender.track.stop();
@@ -218,19 +218,18 @@ function ConferenceVideo({
       // Only show the toast if the screen share status has changed
       const hasStatusChanged =
         prevConferenceScreenShareStatus.current?.room_id !==
-          conferenceScreenShareStatus.room_id ||
+        conferenceScreenShareStatus.room_id ||
         prevConferenceScreenShareStatus.current?.sharedMessage !==
-          conferenceScreenShareStatus.sharedMessage;
+        conferenceScreenShareStatus.sharedMessage;
 
       if (
         conferenceId === conferenceScreenShareStatus.room_id &&
         hasStatusChanged
       ) {
         toast.success(
-          `${conferenceScreenShareStatus.user} has ${
-            conferenceScreenShareStatus.sharedMessage === true
-              ? "shared"
-              : "stopped"
+          `${conferenceScreenShareStatus.user} has ${conferenceScreenShareStatus.sharedMessage === true
+            ? "shared"
+            : "stopped"
           } screen share.`
         );
 
