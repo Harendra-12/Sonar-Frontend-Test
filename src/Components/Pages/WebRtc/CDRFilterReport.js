@@ -981,7 +981,7 @@ function CdrFilterReport({ page }) {
                                           </td>
 
                                           {showKeys.map((key) => {
-                                            if (item.hasOwnProperty(key)) {
+                                            if (item.hasOwnProperty(key) && key !== "id") {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
