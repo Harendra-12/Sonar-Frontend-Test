@@ -381,14 +381,9 @@ const RingGroups = () => {
                                                   </div>
                                                 </li>
                                                 <div
-                                                  style={{
-                                                    columnCount:
-                                                      item.ring_group_destination.length > 6
-                                                        ? 2
-                                                        : 1,
-                                                  }}
+                                                  style={{ columnCount: 1 }}
                                                 >
-                                                  {item.ring_group_destination.map(
+                                                  {item.ring_group_destination.slice(0, 6).map(
                                                     (item, index) => (
                                                       <li>
                                                         <div className="dropdown-item">
@@ -398,10 +393,15 @@ const RingGroups = () => {
                                                     )
                                                   )}
                                                 </div>
+                                                {item.ring_group_destination.length > 6 && <li className="col-12">
+                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                    Show More
+                                                  </Link>
+                                                </li>}
                                               </ul>
                                             </div>
                                           </td>
-                                          
+
                                           {/* <td>(999) 999-9999, (999) 999-9999</td> */}
                                           <td>
                                             <div className="my-auto position-relative mx-1">

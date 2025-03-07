@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CallQueueDetails = () => {
   const dispatch = useDispatch();
@@ -158,14 +159,9 @@ const CallQueueDetails = () => {
                                 </div>
                               </li>
                               <div
-                                style={{
-                                  columnCount:
-                                    call.agents.length > 6
-                                      ? 2
-                                      : 1,
-                                }}
+                                style={{ columnCount: 1 }}
                               >
-                                {call.agents.map(
+                                {call.agents.slice(0, 6).map(
                                   (item, index) => (
                                     <li key={index}>
                                       <div className="dropdown-item">
@@ -175,11 +171,11 @@ const CallQueueDetails = () => {
                                   )
                                 )}
                               </div>
-                              {/* <li>
-                                <div className="border-upper">
-                                  <p className="p-0 m-0 "> see more</p>
-                                </div>
-                              </li> */}
+                              {call.agents.length > 6 && <li className="col-12">
+                                <Link to="/agents" className="dropdown-item text-center text-primary">
+                                  Show More
+                                </Link>
+                              </li>}
                             </ul>
                           </div>
                         </td>
