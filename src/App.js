@@ -142,6 +142,7 @@ import ViewMessages from "./Components/Pages/Support/ViewMessages";
 import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
+import CustomModule from "./Components/Pages/Setting/CustomModule";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -236,7 +237,7 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={<CustomDashboardManage />} />
+          <Route path="/custom-module" element={<CustomModule />} />
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
@@ -448,15 +449,15 @@ function App() {
           />
           <Route
             path="/ring-group-report"
-            element={<CdrReport page="ringgroup" />}
+            element={<CdrFilterReport page="ringgroup" />}
           />
           <Route
             path="/call-center-report"
-            element={<CdrReport page="callcenter" />}
+            element={<CdrFilterReport page="callcenter" />}
           />
           <Route
             path="/billing-report"
-            element={<CdrReport page="billing" />}
+            element={<CdrFilterReport page="billing" />}
           />
           {/* <Route path="/efax" element={<EFax />} />
           <Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
