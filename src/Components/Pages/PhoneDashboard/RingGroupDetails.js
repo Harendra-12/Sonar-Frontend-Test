@@ -153,14 +153,14 @@ const RingGroup = () => {
                             ) || 0}
                         </td>
                         <td>
-                          <div className="dropdown">
+                          <div className="hover-dropdown">
                             <div
                               style={{
                                 color: "var(--ui-accent)",
                                 textDecoration: "underline",
                               }}
                               type="button"
-                              data-bs-toggle="dropdown"
+                              data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
                               {call.ring_group_destination.length}
@@ -181,8 +181,10 @@ const RingGroup = () => {
                                         {item?.username}
                                       </div>
                                     </li>
+
                                   )
                                 )}
+                             
                               </div>
                               <li className="col-12">
                                 {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">

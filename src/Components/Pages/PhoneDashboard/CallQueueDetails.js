@@ -140,14 +140,14 @@ const CallQueueDetails = () => {
                             ) || 0}
                         </td>
                         <td>
-                          <div className="dropdown">
+                          <div className="hover-dropdown">
                             <div
                               style={{
                                 color: "var(--ui-accent)",
                                 textDecoration: "underline",
                               }}
                               type="button"
-                              data-bs-toggle="dropdown"
+                              data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
                               {call.agents.length}
