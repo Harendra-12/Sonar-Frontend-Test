@@ -30,13 +30,27 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse1"
                   >
-                    <div className="col-12 title text-start">
-                      <i className="fa-duotone fa-phone-volume" /> All Calls{" "}
+                    <div className="col-12 title text-start d-flex align-items-center justify-content-between">
+                     <div>
+                     <i className="fa-duotone fa-phone-volume" /> All Calls  {" "}
                       {extensionDataLoading && (
                         <i
                           class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                         ></i>
                       )}
+                     </div>
+
+                     <div>
+                      <div className="d-flex align-items-center justify-content-between me-5">
+                      <p className="p-0 m-0 me-2 ">Total Calls</p>
+                      <h4 style={{ fontWeight: 900 }}>
+                                  {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
+                                    <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
+                                </h4>
+                             
+                      </div>
+                    
+                     </div>
                     </div>
                   </button>
                 </h2>

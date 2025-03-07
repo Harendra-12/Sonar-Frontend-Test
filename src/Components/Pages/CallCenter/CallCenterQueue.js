@@ -388,14 +388,14 @@ function CallCenterQueue() {
                                             {item.strategy}
                                           </td>
                                           <td >
-                                            <div className="dropdown">
+                                            <div className="hover-dropdown">
                                               <div
                                                 style={{
                                                   color: "var(--ui-accent)",
                                                   textDecoration: "underline",
                                                 }}
                                                 type="button"
-                                                data-bs-toggle="dropdown"
+                                                data-bs-toggle="hover-dropdown"
                                                 aria-expanded="false"
                                               >
                                                 {item.agents.length}
@@ -421,8 +421,15 @@ function CallCenterQueue() {
                                                           {item?.username}
                                                         </div>
                                                       </li>
+
                                                     )
                                                   )}
+                                                  <li>
+                                                        <div>
+                                                         see more 
+                                                        </div>
+                                                      </li>
+
                                                 </div>
                                               </ul>
                                             </div>
