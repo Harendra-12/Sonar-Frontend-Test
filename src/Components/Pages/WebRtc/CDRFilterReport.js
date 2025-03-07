@@ -782,7 +782,7 @@ function CdrFilterReport({ page }) {
                           <>
                             <div className="formRow border-0 ">
                               <label className="formLabel text-start mb-0 w-100">
-                                Hangup Cause
+                                Hangup Status
                               </label>
                               <select
                                 className="formItem"
@@ -792,25 +792,17 @@ function CdrFilterReport({ page }) {
                                 }}
                               >
                                 <option value={""}>All</option>
-                                <option value={"SUCCESS"}>Success</option>
-                                <option value={"BUSY"}>Busy</option>
-                                <option value={"NOANSWER"}>No Answer</option>
-                                <option value={"NOT CONNECTED"}>
-                                  Not Connected
-                                </option>
-                                <option value={"USER_NOT_REGISTERED"}>
-                                  User Not Registered
-                                </option>
-                                <option value={"SUBSCRIBER_ABSENT"}>
-                                  Subscriber Absent
-                                </option>
-                                <option value={"CANCEL"}>Cancelled</option>
+                                <option value={"Answered"}>Answer</option>
+                                <option value={"Missed"}>Missed</option>
+                                <option value={"Voicemail"}>Voicemail</option>
+                                <option value={"Cancelled"}>Cancelled</option>
+                                <option value={"Failed"}>Failed</option>
                               </select>
                             </div>
                             {filteredKeys.includes("Hangup-Cause") && (
                               <div className="formRow border-0 pe-xl-0">
                                 <label className="formLabel text-start mb-0 w-100">
-                                  Hangup status
+                                  Hangup Cause
                                 </label>
                                 <select
                                   className="formItem"
@@ -820,12 +812,28 @@ function CdrFilterReport({ page }) {
                                   }}
                                 >
                                   <option value={""}>All</option>
-                                  <option value={"MEDIA_TIMEOUT"}>
-                                    Media Timeout
-                                  </option>
-                                  <option value={"NORMAL_CLEARING"}>
-                                    Normal Clearing
-                                  </option>
+                                  <option value={"NORMAL_CLEARING"}>Normal Clearing</option>
+                                  <option value={"ORIGINATOR_CANCEL"}>Originator Cancel</option>
+                                  <option value={"MANAGER_REQUEST"}>Manager Request</option>
+                                  <option value={"NO_ANSWER"}>No Answer</option>
+                                  <option value={"INVALID_GATEWAY"}>Invalid Gateway</option>
+                                  <option value={"SERVICE_UNAVAILABLE"}>Service Unavailable</option>
+                                  <option value={"INCOMPATIBLE_DESTINATION"}>Incompatible Destination</option>
+                                  <option value={"NO_USER_RESPONSE"}>No User Response</option>
+                                  <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
+                                  <option value={"LOSE_RACE"}>Lose Race</option>
+                                  <option value={"NORMAL_UNSPECIFIED"}>Normal Unspecified</option>
+                                  <option value={"USER_BUSY"}>User Busy</option>
+                                  <option value={"RECOVERY_ON_TIMER_EXPIRE"}>Recovery On Timer Expire</option>
+                                  <option value={"USER_NOT_REGISTERED"}>User Not Registered</option>
+                                  <option value={"CALL_REJECTED"}>Call Rejected</option>
+                                  <option value={"SUBSCRIBER_ABSENT"}>Subscriber Absent</option>
+                                  <option value={"CHAN_NOT_IMPLEMENTED"}>Chan Not Implemented</option>
+                                  <option value={"DESTINATION_OUT_OF_ORDER"}>Destination Out Of Order</option>
+                                  <option value={"NORMAL_TEMPORARY_FAILURE"}>Normal Temporary Failure</option>
+                                  <option value={"NO_ROUTE_DESTINATION"}>No Route Destination</option>
+                                  <option value={"ALLOTTED_TIMEOUT"}>Allotted Timeout</option>
+                                  <option value={"INVALID_NUMBER_FORMAT"}>Invalid Number Format</option>
                                 </select>
                               </div>
                             )}
@@ -907,13 +915,13 @@ function CdrFilterReport({ page }) {
                                     } else if (
                                       key === "application_state_to_ext"
                                     ) {
-                                      formattedKey = "Extension";
+                                      formattedKey = "Ext/Dest";
                                     } else if (key === "e_name") {
                                       formattedKey = "User Name";
                                     } else if (key === "variable_DIALSTATUS") {
-                                      formattedKey = "Hangup Cause";
-                                    } else if (key === "Hangup-Cause") {
                                       formattedKey = "Hangup Status";
+                                    } else if (key === "Hangup-Cause") {
+                                      formattedKey = "Hangup Cause";
                                     }
                                     else if (key === "call_cost") {
                                       formattedKey = "Charge"
