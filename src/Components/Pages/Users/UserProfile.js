@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 // import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import Tippy from '@tippyjs/react';
-import { backToTop } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,10 @@ function UserProfile() {
     const allTimeZone=useSelector((state)=>state.timeZone)
     const [selectedTimezone,setSelectedTimezone]=useState("")
     const [inputFirstName,setInputFirstName]=useState("");
+    const [inputLastName,setInputLastName]=useState("");
+    const [inputAlias,setInputAlias]=useState("");
+    const [loading,setLoading]=useState(false);
+    
     
     useEffect(()=>{
         dispatch({
@@ -28,14 +32,40 @@ function UserProfile() {
           const timezone=allTimeZone.find((item)=>{
            return item?.id==account?.timezone_id
           }) 
-          setSelectedTimezone(timezone?.name) 
+          setSelectedTimezone(account?.timezone_id) 
         }
     },[timeZoneRefresh])
 
-    const handleSave=()=>{
-        setIsEdit(!isEdit)
+    const handleSave = async () => {
+        setIsEdit(!isEdit);
+      if(isEdit){
+        const payload = {
+            name: `${inputFirstName} ${inputLastName}`,
+            // email: account.email,
+            // domain_id: domainId,
+            timezone_id: selectedTimezone,
+            status: account.status,
+            role_id:account?.user_role?.role_id,
+            account_id: account.id,
+            permissions: account.permissions,
+            extension_id: account.extension.id,
+            usages: account.usages,
+            alias: inputAlias,
+          };
         
-    }
+          setLoading(true);
+          try {
+            const addUser = await generalPutFunction(`user/${account.account_id}`, payload);
+          } catch (error) {
+            // Handle error
+            console.error("Error updating user:", error);
+            // Optionally, you can display the error to the user or perform other actions
+          } finally {
+            setLoading(false);
+          }
+      }
+      };
+      
 
     return (
         <main className="mainContent">
@@ -265,7 +295,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The First Name of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[0]}/> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[0]}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[0]} onChange={(e)=>setInputFirstName(e.target.value)}/> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[0]}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -274,7 +304,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The Last Name of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[1]} /> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[1]}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[1]} onChange={(e)=>setInputLastName(e.target.value)}/> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[1]}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -283,7 +313,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The Alias or Nickname of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder="RiDz" /> : <h5 className='mb-0 pb-2 border-bottom'>{account.alias}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" placeholder={account.alias} onChange={(e)=>setInputAlias(e.target.value)}/> : <h5 className='mb-0 pb-2 border-bottom'>{account.alias}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -292,7 +322,41 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The set timezone of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={selectedTimezone} /> : <h5 className='mb-0 pb-2 border-bottom'>{selectedTimezone}</h5>}
+                                                <div className="col-6">
+                                  <div className="row">
+                                    <div className="col-12">
+                                      <select
+                                        className="formItem me-0"
+                                        style={{ width: "100%" }}
+                                        name="delay"
+                                        id="selectFormRow"
+                                        value={selectedTimezone}
+                                        onChange={(e) => {
+                                          setSelectedTimezone(e.target.value);
+                                        }}
+                                      >
+                                        {allTimeZone?.map((item, index) => {
+                                          return (
+                                            <>
+                                              <option value={item.id}>
+                                                {item.name}
+                                              </option>
+                                            </>
+                                          );
+                                        })}
+                                      </select>
+                                    </div>
+                                    {/* <div className="col-4 ps-0">
+                                      <button
+                                        className="panelButton static ms-0 w-100"
+                                        style={{ height: "34px" }}
+                                        onClick={() => handleChangeTimeZone()}
+                                      >
+                                        <span className="text">Change</span>
+                                      </button>
+                                    </div> */}
+                                  </div>
+                                </div>
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
