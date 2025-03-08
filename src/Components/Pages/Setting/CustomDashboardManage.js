@@ -15,6 +15,9 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     const [customId, setCustomId] = useState('')
     const [name, setName] = useState('')
     const [feature, setFeature] = useState([])
+    const [allUser, setAllUser] = useState([]);
+    const [userId, setUserId] = useState("");
+    const [selectedUser,setSelecteduser]=useState("")
 
     // Handel fetaure change
     function handleFeatureChange(value) {
@@ -26,6 +29,23 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             })
         }
     }
+
+      // fetching api to get all user data
+  useEffect(() => {
+    async function getAllUser() {
+      try {
+        const res = await generalGetFunction("/agents?usages=pbx&allagents");
+        const data = res.data.map((item) => ({
+          name: item.name,
+          id: item.id,
+        }));
+        setAllUser(data);
+      } catch (error) {
+        console.error("Error fetching agents:", error);
+      }
+    }
+    getAllUser()
+  },[])
     // Checking if the callcenter, ringgroup and did details is already available or not if not available then get it by api calling
     useEffect(() => {
         async function getData() {
@@ -101,7 +121,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId,  user_id:userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
@@ -120,7 +140,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id:userId,name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
@@ -222,6 +242,34 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div className="formRow">
+                              <div className="formLabel">
+                                <label className="text-dark">Select User</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Please select the user for which you want to
+                                  enable the module.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  value={userId}
+                                  onChange={(e) => {
+                                    const selectedUserObject = allUser.find(user => user.id == e.target.value);
+                                    const selectedName = selectedUserObject ? selectedUserObject.name : '';
+                                    setSelecteduser(selectedName);
+                                    return setUserId(e.target.value);
+                                  }}
+                                >
+                                    <option>Select User</option>
+                                  {allUser.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Select Info</label>

@@ -51,7 +51,7 @@ const Socket = () => {
               dispatch({ type: "SET_LOGINUSER", loginUser: result });
               break;
             case "Balance":
-              dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result.amount });
+              dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
               break;
             case "CallState":
               dispatch({ type: "SET_CALLSTATE", callState: result });
