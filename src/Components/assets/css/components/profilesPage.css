@@ -29,15 +29,15 @@
     left: 127px; */
 }
 
-.profileicons span i {
+.profileicons i {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--ui-accent);
     background-color: #e7f2ff;
-    height: 20px;
-    width: 20px;
-    font-size: 10px;
+    height: 25px;
+    width: 25px;
+    font-size: 14px;
     border-radius: 50px
 }
 
@@ -71,7 +71,7 @@
 
 .profileView .baseDetails .content p {
     margin-bottom: 0;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--color-subtext);
 }
@@ -275,7 +275,7 @@
     border-top-color: #cb8a00;
 }
 
-    
+
 
 .float-end {
     text-align: end;
@@ -305,11 +305,11 @@
     /* top: 20px; */
 }
 
-.profileView .baseDetails .content .assigned{
+.profileView .baseDetails .content .assigned {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-   /* border: 1px solid green; */
+    /* border: 1px solid green; */
     border-radius: 5px;
     color: green;
     /* background-color: rgb(220, 221, 220); */
@@ -317,12 +317,12 @@
 }
 
 
-.profileView .baseDetails .content  h4{
-font-size: 12px !important ;
-text-wrap: nowrap;
+.profileView .baseDetails .content h4 {
+    font-size: 12px !important;
+    text-wrap: nowrap;
 }
 
-.profileView .baseDetails .content .assigned i{
+.profileView .baseDetails .content .assigned i {
 
     height: 20px;
     width: 20px;
@@ -331,7 +331,7 @@ text-wrap: nowrap;
     justify-content: center;
     border: 1px solid green;
     border-radius: 15px;
-    color:rgb(247, 247, 247);
+    color: rgb(247, 247, 247);
     background-color: green;
     font-size: 14px;
 }

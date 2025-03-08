@@ -924,7 +924,7 @@ function Navbar() {
                       aria-controls="collapse14"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-chart-waterfall"></i>
+                        <i class="fa-regular fa-microchip-ai"></i>
                       </div>
                       <div className="itemTitle">AI</div>
                     </button>
