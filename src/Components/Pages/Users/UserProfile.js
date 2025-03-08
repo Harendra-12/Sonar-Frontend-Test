@@ -130,10 +130,11 @@ function UserProfile() {
                             <div className="d-flex flex-wrap">
                                 <div className="col-12">
                                     <div className="heading">
-                                        <div className="content d-flex">
+                                        <div className="content">
                                             <h4>
                                                 My Profile{" "}
                                             </h4>
+                                            <p>Here you can view all the necessary information regarding your profile and can edit it.</p>
                                         </div>
                                         <div className="buttonGroup">
                                             <button
