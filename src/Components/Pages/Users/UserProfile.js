@@ -279,12 +279,12 @@ function UserProfile() {
                                             <h4>Account Information</h4>
                                         </div>
                                         <div class="buttonGroup">
-                                            <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
+                                            {/* <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
                                                 <span class="text">{isEdit ? 'Save' : 'Edit'}</span>
                                                 <span class="icon">
                                                     <i class={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
                                                 </span>
-                                            </button>
+                                            </button> */}
                                         </div>
                                     </div>
                                     <div className=' col-12'>
