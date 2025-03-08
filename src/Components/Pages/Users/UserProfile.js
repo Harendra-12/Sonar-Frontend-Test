@@ -268,6 +268,15 @@ function UserProfile() {
                                             </div>
                                             <div className='formRow col-xl-3'>
                                                 <div className='formLabel'>
+                                                    <label>Username</label>
+                                                    <label className='formItemDesc'>The username assigned to the User. Cannot be editable.</label>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <h5 className='mb-0 pb-2 border-bottom'>Username</h5>
+                                                </div>
+                                            </div>
+                                            <div className='formRow col-xl-3'>
+                                                <div className='formLabel'>
                                                     <label>Role</label>
                                                     <label className='formItemDesc'>The role assigned to the User. Cannot be editable.</label>
                                                 </div>
