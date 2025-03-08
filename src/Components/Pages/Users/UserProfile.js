@@ -9,32 +9,32 @@ import { useDispatch, useSelector } from 'react-redux';
 function UserProfile() {
     const navigate = useNavigate();
     const [isEdit, setIsEdit] = useState(false);
-    const dispatch=useDispatch();
-    const account=useSelector((state)=>state.account);
-    const timeZoneRefresh=useSelector((state)=>state.timeZoneRefresh)
-    const allTimeZone=useSelector((state)=>state.timeZone)
-    const [selectedTimezone,setSelectedTimezone]=useState("")
-    const [inputFirstName,setInputFirstName]=useState("");
-    
-    useEffect(()=>{
+    const dispatch = useDispatch();
+    const account = useSelector((state) => state.account);
+    const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh)
+    const allTimeZone = useSelector((state) => state.timeZone)
+    const [selectedTimezone, setSelectedTimezone] = useState("")
+    const [inputFirstName, setInputFirstName] = useState("");
+
+    useEffect(() => {
         dispatch({
             type: "SET_TIMEZONEREFRESH",
             timeZoneRefresh: timeZoneRefresh + 1,
-          });
+        });
 
-    },[])
-    useEffect(()=>{
-        if(timeZoneRefresh>0){
-          const timezone=allTimeZone.find((item)=>{
-           return item?.id==account?.timezone_id
-          }) 
-          setSelectedTimezone(timezone?.name) 
+    }, [])
+    useEffect(() => {
+        if (timeZoneRefresh > 0) {
+            const timezone = allTimeZone.find((item) => {
+                return item?.id == account?.timezone_id
+            })
+            setSelectedTimezone(timezone?.name)
         }
-    },[timeZoneRefresh])
+    }, [timeZoneRefresh])
 
-    const handleSave=()=>{
+    const handleSave = () => {
         setIsEdit(!isEdit)
-        
+
     }
 
     return (
@@ -208,7 +208,7 @@ function UserProfile() {
                                                                         <i class="fa-regular me-3 fa-envelope"></i>
                                                                     </div>
                                                                     <p className="mb-0">
-                                                                       {account?.usertype}
+                                                                        {account?.usertype}
                                                                     </p>
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
@@ -229,7 +229,7 @@ function UserProfile() {
                                                                 <h5>Status</h5>
                                                                 <div className='assigned'>
                                                                     <p className="">
-                                                                        {account.status=="E"?"Enabled":""}
+                                                                        {account.status == "E" ? "Enabled" : ""}
                                                                     </p>
                                                                     <div>
                                                                         <i className="fa-solid ms-1 fa-check"></i>
@@ -265,7 +265,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The First Name of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[0]}/> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[0]}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[0]} /> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[0]}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -283,7 +283,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The Alias or Nickname of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder="RiDz" /> : <h5 className='mb-0 pb-2 border-bottom'>{account.alias}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.alias} /> : <h5 className='mb-0 pb-2 border-bottom'>{account.alias}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -304,7 +304,7 @@ function UserProfile() {
                                                     <h5 className='mb-0 pb-2 border-bottom'>{account.name}</h5>
                                                 </div>
                                             </div>
-                                          {account.usertype=="Company"?<></>:  <div className='formRow col-xl-3'>
+                                            {account.usertype == "Company" ? <></> : <div className='formRow col-xl-3'>
                                                 <div className='formLabel'>
                                                     <label>Role</label>
                                                     <label className='formItemDesc'>The role assigned to the User. Cannot be editable.</label>
