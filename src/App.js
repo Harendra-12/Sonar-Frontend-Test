@@ -136,10 +136,8 @@ import TrackerDashboard from "./Components/Pages/CallTracker/TrackerDashboard";
 import AgentReports from "./Components/Pages/Reports/AgentReports";
 import UserConfiguration from "./Components/Pages/Users/UserConfiguration";
 import UserProfile from "./Components/Pages/Users/UserProfile";
-import LiveSupportChat from "./Components/Pages/Support/LiveSupportChat";
 import Ticket from "./Components/Pages/Support/Ticket";
 import ViewMessages from "./Components/Pages/Support/ViewMessages";
-import CustomDashboardManage from "./Components/Pages/Setting/CustomDashboardManage";
 import CdrFilterReport from "./Components/Pages/WebRtc/CDRFilterReport";
 import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/CampaignScheduler";
 import EFax from "./Components/Pages/WebRtc/EFax";
@@ -170,7 +168,6 @@ function App() {
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
-  const permission = account?.permissions;
   const slugPermissions = useSelector((state) => state?.permissions);
   Socket();
 
@@ -239,6 +236,7 @@ function App() {
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
           <Route path="/custom-module" element={<CustomModule />} />
+          
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
           {/* Ring Groups Path Start */}
