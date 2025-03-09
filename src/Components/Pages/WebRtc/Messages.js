@@ -1909,7 +1909,7 @@ function Messages({
                                       return (
                                         <div className="contactTagsAddEdit" style={{ width: '350px' }}>
                                           <div className="row align-items-center item">
-                                            <div className="col-3">
+                                            <div className="col-4">
                                               <h5>
                                                 <input
                                                   value={
@@ -1936,7 +1936,7 @@ function Messages({
                                                 }
                                               </span>
                                             </div>
-                                            <div className="col-6 d-flex ms-auto pe-0">
+                                            <div className="col-auto d-flex justify-content-end pe-0">
                                               <button
                                                 className="clearButton2 xl"
                                                 onClick={() =>
