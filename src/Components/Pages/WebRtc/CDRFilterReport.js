@@ -58,7 +58,7 @@ function CdrFilterReport({ page }) {
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
-  
+
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -210,7 +210,7 @@ function CdrFilterReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        created_at:createdAt
+        created_at: createdAt
       }
     );
 
@@ -249,9 +249,9 @@ function CdrFilterReport({ page }) {
           setLoading(false);
           setContentLoader(false);
           const filteredData = apiData?.data?.data?.map((item) =>
-            filterObjectKeys(item, [...apiData.filteredKeys,"id"])
+            filterObjectKeys(item, [...apiData.filteredKeys, "id"])
           );
-          setFilteredKeys([...apiData.filteredKeys,"id"]);
+          setFilteredKeys([...apiData.filteredKeys, "id"]);
           // setCdr(apiData.data);
           setCdr({
             ...apiData?.data,
@@ -291,7 +291,7 @@ function CdrFilterReport({ page }) {
     page,
     createdAt
   ]);
-  
+
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -1038,12 +1038,12 @@ function CdrFilterReport({ page }) {
                                                   },
                                                   missed: {
                                                     icon: "fa-phone-missed",
-                                                    color: "var(--funky-boy3)",
+                                                    color: "var(--funky-boy4)",
                                                     label: "Missed",
                                                   },
                                                   transfer: {
-                                                    icon: "fa-phone-missed",
-                                                    color: "var(--funky-boy3)",
+                                                    icon: "fa-exchange",
+                                                    color: "var(--funky-boy2)",
                                                     label: "Transfer",
                                                   },
                                                   internal: {
@@ -1152,7 +1152,7 @@ function CdrFilterReport({ page }) {
                                             </button>
                                           </td>
                                           <td>
-                                            <button className={`tableButton ms-0`} onClick={() =>setSelectedCdr(item.id)}>
+                                            <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
                                               <Tippy content={'View Note'}
                                               >
                                                 <i class="fa-solid fa-comment-dots"></i>

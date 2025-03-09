@@ -25,7 +25,7 @@ function UserProfile() {
         dispatch({
             type: "SET_TIMEZONEREFRESH",
             timeZoneRefresh: timeZoneRefresh + 1,
-          });
+        });
 
     },[])
     useEffect(()=>{
@@ -35,7 +35,7 @@ function UserProfile() {
           }) 
           setSelectedTimezone(account?.timezone_id) 
         }
-    },[timeZoneRefresh])
+    }, [timeZoneRefresh])
 
     const handleSave = async () => {
         setIsEdit(!isEdit);
@@ -248,7 +248,7 @@ function UserProfile() {
                                                                         <i class="fa-regular me-3 fa-envelope"></i>
                                                                     </div>
                                                                     <p className="mb-0">
-                                                                       {account?.usertype}
+                                                                        {account?.usertype}
                                                                     </p>
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
@@ -269,7 +269,7 @@ function UserProfile() {
                                                                 <h5>Status</h5>
                                                                 <div className='assigned'>
                                                                     <p className="">
-                                                                        {account.status=="E"?"Enabled":""}
+                                                                        {account.status == "E" ? "Enabled" : ""}
                                                                     </p>
                                                                     <div>
                                                                         <i className="fa-solid ms-1 fa-check"></i>
@@ -378,7 +378,7 @@ function UserProfile() {
                                                     <h5 className='mb-0 pb-2 border-bottom'>{account.name}</h5>
                                                 </div>
                                             </div>
-                                          {account.usertype=="Company"?<></>:  <div className='formRow col-xl-3'>
+                                            {account.usertype == "Company" ? <></> : <div className='formRow col-xl-3'>
                                                 <div className='formLabel'>
                                                     <label>Role</label>
                                                     <label className='formItemDesc'>The role assigned to the User. Cannot be editable.</label>
