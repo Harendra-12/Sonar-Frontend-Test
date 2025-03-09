@@ -970,17 +970,22 @@ function Messages({
       {addNewTagPopUp && <div className="addNewContactPopup">
         <div className="row">
           <div className="col-12 heading">
-            <p>
-              Please enter Tag Name
-            </p>
+            <i className="fa-light fa-tag"></i>
+            <h5>Please enter a Tag name</h5>
             <div className="border-bottom col-12" />
           </div>
-          <div class="col-xl-12">
-            <input type="text"
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              placeholder="Please enter tag name"
-            />
+          <div className="col-xl-12">
+            <div className="formLabel">
+              <label for="">Full Name</label>
+            </div>
+            <div className="col-12">
+              <input type="text"
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                placeholder="Please enter tag name"
+                className="formItem"
+              />
+            </div>
           </div>
 
           <div className="col-xl-12 mt-4">
@@ -1004,7 +1009,10 @@ function Messages({
                 }}
 
               >
-                Save
+                <span className="text">Save</span>
+                <span className="icon">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </span>
               </button>
             </div>
           </div>
