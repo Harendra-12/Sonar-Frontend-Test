@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 // import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import Tippy from '@tippyjs/react';
-import { backToTop, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function UserProfile() {
     const navigate = useNavigate();
@@ -55,7 +56,16 @@ function UserProfile() {
         
           setLoading(true);
           try {
-            const addUser = await generalPutFunction(`user/${account.account_id}`, payload);
+            const addUser = await generalPutFunction(`user/${account.id}`, payload);
+            const profile = await generalGetFunction("/user");
+                  if (profile?.status) {
+                    dispatch({
+                      type: "SET_ACCOUNT",
+                      account: profile.data,
+                    });
+            
+                    localStorage.setItem("account", JSON.stringify(profile.data));
+                  }
           } catch (error) {
             // Handle error
             console.error("Error updating user:", error);
@@ -273,18 +283,18 @@ function UserProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-12'>
+                              {loading?<><CircularLoader/></>:  <div className='col-12'>
                                     <div className='heading bg-transparent border-bottom-0'>
                                         <div class="content">
                                             <h4>Account Information</h4>
                                         </div>
                                         <div class="buttonGroup">
-                                            {/* <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
+                                            <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
                                                 <span class="text">{isEdit ? 'Save' : 'Edit'}</span>
                                                 <span class="icon">
                                                     <i class={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
                                                 </span>
-                                            </button> */}
+                                            </button>
                                         </div>
                                     </div>
                                     <div className=' col-12'>
@@ -397,7 +407,7 @@ function UserProfile() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>

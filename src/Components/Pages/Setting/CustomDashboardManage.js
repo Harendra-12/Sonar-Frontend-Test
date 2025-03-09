@@ -40,6 +40,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
           id: item.id,
         }));
         setAllUser(data);
+        setUserId(selectedModule?.user_id)
       } catch (error) {
         console.error("Error fetching agents:", error);
       }

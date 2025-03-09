@@ -12,7 +12,7 @@ function AllCallsDetails() {
       setExtensionDataLoading(false);
     }
   }, [callDetails]);
-  console.log("allCalls", callDetails);
+  // console.log("allCalls", callDetails);
 
   return (
     <>
