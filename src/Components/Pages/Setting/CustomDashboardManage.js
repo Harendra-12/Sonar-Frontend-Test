@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import SkeletonFormLoader from '../../Loader/SkeletonFormLoader';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh, setSelectedModule, setAddNewMod, setPopup }) {
     const account = useSelector((state) => state.account);
@@ -15,6 +15,9 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     const [customId, setCustomId] = useState('')
     const [name, setName] = useState('')
     const [feature, setFeature] = useState([])
+    const [allUser, setAllUser] = useState([]);
+    const [userId, setUserId] = useState("");
+    const [selectedUser,setSelecteduser]=useState("")
 
     // Handel fetaure change
     function handleFeatureChange(value) {
@@ -26,6 +29,23 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             })
         }
     }
+
+      // fetching api to get all user data
+  useEffect(() => {
+    async function getAllUser() {
+      try {
+        const res = await generalGetFunction("/agents?usages=pbx&allagents");
+        const data = res.data.map((item) => ({
+          name: item.name,
+          id: item.id,
+        }));
+        setAllUser(data);
+      } catch (error) {
+        console.error("Error fetching agents:", error);
+      }
+    }
+    getAllUser()
+  },[])
     // Checking if the callcenter, ringgroup and did details is already available or not if not available then get it by api calling
     useEffect(() => {
         async function getData() {
@@ -101,7 +121,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId,  user_id:userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
@@ -120,7 +140,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id:userId,name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
@@ -150,15 +170,18 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     }
     return (
         <>
-            <main className="popup">
-                {loading ? <SkeletonFormLoader col={5} row={10} /> :
-                    <section id="phonePage">
-                        <div className='col-xl-12'>
+            {loading ? <CircularLoader /> :
+                <main className="popup">
+                    <section id="phonePage" className='d-flex align-items-center h-100'>
+                        <div className='col-xxl-4 col-lg-6 m-auto'>
                             <div className="overviewTableWrapper">
-                                <div className="overviewTableChild">
+                                <div className="overviewTableChild position-relative">
+                                    <button className='clearButton2 position-absolute top-0 end-0' onClick={() => setPopup(false)}>
+                                        <i className='fa-solid fa-xmark' />
+                                    </button>
                                     <div className="col-12" style={{ padding: '25px 23px' }}>
                                         <div className='row gx-5'>
-                                            {(selectedModule != null || addNewMod) && < div className='col-xl-6'>
+                                            {(selectedModule != null || addNewMod) && < div className='col-xl-12'>
                                                 <form>
                                                     <div className="formRow">
                                                         <div className="formLabel">
@@ -219,6 +242,34 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div className="formRow">
+                              <div className="formLabel">
+                                <label className="text-dark">Select User</label>
+                                <label htmlFor="data" className="formItemDesc">
+                                  Please select the user for which you want to
+                                  enable the module.
+                                </label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                  value={userId}
+                                  onChange={(e) => {
+                                    const selectedUserObject = allUser.find(user => user.id == e.target.value);
+                                    const selectedName = selectedUserObject ? selectedUserObject.name : '';
+                                    setSelecteduser(selectedName);
+                                    return setUserId(e.target.value);
+                                  }}
+                                >
+                                    <option>Select User</option>
+                                  {allUser.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                      {item.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Select Info</label>
@@ -284,8 +335,8 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                             </div>
                         </div>
                     </section>
-                }
-            </main >
+                </main >
+            }
         </>
     )
 }

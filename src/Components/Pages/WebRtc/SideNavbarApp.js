@@ -6,17 +6,17 @@ import { useSIPProvider } from "modify-react-sipjs";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
-  const { sessionManager,connectStatus,registerStatus } = useSIPProvider();
+  const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
   const isCustomerAdmin = account?.email == accountDetails?.email;
-    useEffect(() => {
-      if(connectStatus === "CONNECTED"){
-        if(registerStatus === "UNREGISTERED"){
-          sessionManager.connect()
-        }
+  useEffect(() => {
+    if (connectStatus === "CONNECTED") {
+      if (registerStatus === "UNREGISTERED") {
+        sessionManager.connect()
       }
-    },[connectStatus,registerStatus])
+    }
+  }, [connectStatus, registerStatus])
   return (
     <section>
       <style>
@@ -65,7 +65,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                  <i className="fa-light fa-message" />
+                <i className="fa-regular fa-comment"></i>
                 </div>
                 <div className="itemTitle">Messages</div>
               </div>
@@ -83,6 +83,28 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <i className="fa-light fa-voicemail" />
                 </div>
                 <div className="itemTitle">Voicemails</div>
+              </div>
+            </li>
+            <li style={{ cursor: "pointer" }}>
+              <div
+               
+                className="navItem"
+              >
+                <div className="iconHolder">
+                <i className="fa-regular fa-paper-plane"></i>
+                </div>
+                <div className="itemTitle">Fax </div>
+              </div>
+            </li>
+            <li style={{ cursor: "pointer" }}>
+              <div
+              
+                className="navItem "
+              >
+                <div className="iconHolder">
+                <i className="fa-regular fa-envelope"></i>
+                </div>
+                <div className="itemTitle">Email</div>
               </div>
             </li>
             <li>
@@ -108,7 +130,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                    <i className="fa-light fa-sliders" />
+                  <i className="fa-solid fa-headset"></i>
                   </div>
                   <div className="itemTitle">Call Dashboard</div>
                 </div>
@@ -137,12 +159,25 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                    <i className="fa-sharp fa-light fa-people-group" />
+                  <i className="fa-solid fa-users-viewfinder"></i>
                   </div>
                   <div className="itemTitle">Conference</div>
                 </div>
               </li>
             }
+            <li style={{ cursor: "pointer" }}>
+              <div className="navItem d-block">
+                <div className="iconHolder0">
+                  <div className="itemTitle"> Switch Admin</div>
+                </div>
+                <div className="my-auto position-relative">
+                  <label className="switch">
+                    <input type="checkbox" />
+                    <span className="slider round" />
+                  </label>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>

@@ -4,11 +4,10 @@ import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
 import { generalGetFunction } from '../../GlobalFunction/globalFunction';
-import { useNavigate } from 'react-router-dom';
+import CustomDashboardManage from '../Setting/CustomDashboardManage';
 
-function ActiveCallsPage() {
+function ActiveCallsPage({ isParentWebRtc }) {
     const activeCall = useSelector((state) => state.activeCall);
-    const navigate = useNavigate()
     const [filter, setFilter] = useState("all");
     const [customModule, setCustomModule] = useState([]);
     const ringingState = activeCall.filter((item) => item.b_callstate === "");
@@ -18,6 +17,10 @@ function ActiveCallsPage() {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
+    const [customPopup, setCustomPopup] = useState(false);
+    const [refresh,setRefresh] = useState(0);
+    const [selectedModule,setSelectedModule] = useState('');
+    const [addNewMod,setAddNewMod] = useState(false);
     const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD");
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
@@ -38,7 +41,7 @@ function ActiveCallsPage() {
             }
         }
         getCustomModule()
-    }, [])
+    }, [refresh])
 
     // Filter ringing state of a perticular call based on callcenter, ringgroup and DID
     function filterRingingState(type, value) {
@@ -116,7 +119,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "ringgroup" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -125,7 +128,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "callcenter" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -133,7 +136,7 @@ function ActiveCallsPage() {
             const count = cdrData
                 .filter((item) => item.application_state === "pstn" && item.variable_dialed_extension === value && item["Call-Direction"] !== "missed")[0]?.filter_count
             if (count) {
-                return count+filterMissedCalls(type, value);
+                return count + filterMissedCalls(type, value);
             } else {
                 return 0
             }
@@ -169,81 +172,87 @@ function ActiveCallsPage() {
         }
     }
     return (
-        <main className="mainContent">
+        <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
-                        <Header title="Active Calls" />
+                        {!isParentWebRtc && <Header title="Active Calls" />}
                         <div className="overviewTableWrapper">
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
                                         customModule?.map((item, index) => {
                                             return (
-                                                <div className='col-xl-2' key={index}>
-                                                    <div className={`deviceProvision `} >
+                                                <div className='col-xl-3' key={index}>
+                                                    <div className={`deviceProvision position-relative`} >
+                                                        <button className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
+                                                            <i className="fa-solid fa-pen" />
+                                                        </button>
                                                         <div className="itemWrapper a">
                                                             <div className="heading h-auto d-block">
-                                                                <h5>{item?.name}</h5>
-                                                                <p>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}-${item?.model?.tag}`}</p>
-                                                                <p>{item?.model_type}</p>
+                                                                <div className='d-flex align-items-center0 justify-content-between '>
+                                                                    <div>
+                                                                        <h5>{item?.name}</h5>
+                                                                        <p>Type: {item?.model_type}</p>
+                                                                    </div>
+                                                                    <div className='text-end'>
+                                                                        <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
+                                                                        <p>{item?.model?.tag && `Tag: ${item?.model?.tag}`}</p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div className="data-number2 h-auto">
-                                                                <div className="d-flex flex-wrap justify-content-between">
+
+                                                            <div className="data-number3 h-auto mt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
+                                                                <div className="d-flex justify-content-center pt-2">
                                                                     {
                                                                         item.active ?
-                                                                            <div className="col-4">
-                                                                                <p>Active</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+                                                                                <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
                                                                                     {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
+                                                                                <p>Active</p>
                                                                             </div> : ""
                                                                     }
                                                                     {
                                                                         item?.ringing ?
-                                                                            <div className="col-4 text-center">
-                                                                                <p>Ringing</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
                                                                                     {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
-                                                                            </div> : ""
+                                                                                <p className='p-0 m-0'>Ringing</p>
+                                                                            </div> : " "
                                                                     }
-                                                                </div>
-                                                            </div>
-                                                            <div className="data-number2 h-auto">
-                                                                <div className="d-flex flex-wrap justify-content-between">
                                                                     {
                                                                         item?.total ?
-                                                                            <div className="col-4">
-                                                                                <p>Total</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
                                                                                     {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    <i
+                                                                                    {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                                    />
+                                                                                    /> */}
                                                                                 </h4>
+                                                                                <p>Total</p>
                                                                             </div> : ""
                                                                     }
                                                                     {
                                                                         item?.missed ?
-                                                                            <div className="col-4 text-center">
-                                                                                <p>Missed</p>
-                                                                                <h4>
+                                                                            <div className="col-3">
+
+                                                                                <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
                                                                                     {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                    <i
-                                                                                        className="fa-solid fa-bell-ring ms-1"
-                                                                                        style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                                    />
                                                                                 </h4>
+                                                                                <p>Missed</p>
                                                                             </div> : ""
                                                                     }
                                                                 </div>
@@ -254,7 +263,8 @@ function ActiveCallsPage() {
                                             )
                                         })
                                     }
-                                    <div className='col-xl-2' onClick={() => navigate("/custom-module")}>
+                                 
+                                    <div className='col-xl-2' onClick={() => {setAddNewMod(true);setSelectedModule();setCustomPopup(true)}}>
                                         <div className={`deviceProvision h-100`} >
                                             <div className="itemWrapper a addNew h-100">
                                                 <i className='fa-regular fa-plus'></i>
@@ -301,27 +311,24 @@ function ActiveCallsPage() {
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
-                                                    <div className='d-flex align-items-center justify-content-end'>
-
-                                                    </div>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
                                                 <div className="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                                 <div className="tab-pane fade" id="nav-rgroup" role="tabpanel" aria-labelledby="nav-rgroup-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="tab-content" id="nav-tabContent">
                                                 <div className="tab-pane fade" id="nav-ccenter" role="tabpanel" aria-labelledby="nav-ccenter-tab" tabindex="0">
                                                     <div className="tableContainer" style={{ height: '50vh' }}>
-                                                        <ActiveCalls isWebrtc={false} filter={filter} />
+                                                        <ActiveCalls isWebrtc={isParentWebRtc || false} filter={filter} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -508,62 +515,13 @@ function ActiveCallsPage() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className='col-xl-12 mt-3'>
-                                <div className='row gy-4'>
-                                    {
-                                        customModule?.map((item, index) => {
-                                            return (
-                                                <div className='col-xl-2' key={index}>
-                                                    <div className={`deviceProvision `} >
-                                                        <div className="itemWrapper a">
-                                                            <div className="heading h-auto d-block">
-                                                                <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : item?.model?.did}</h5>
-                                                                <p>{item.model_type}</p>
-                                                            </div>
-                                                            <div className="data-number2 h-auto">
-                                                                <div className="d-flex flex-wrap justify-content-between">
-                                                                    <div className="col-4">
-                                                                        <p>Active</p>
-                                                                        <h4>
-                                                                            {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                            <i
-                                                                                className="fa-solid fa-phone-volume ms-1"
-                                                                                style={{ color: "var(--funky-boy4)", fontSize: 17 }}
-                                                                            />
-                                                                        </h4>
-                                                                    </div>
-                                                                    <div className="col-4 text-center">
-                                                                        <p>Ringing</p>
-                                                                        <h4>
-                                                                            {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                            <i
-                                                                                className="fa-solid fa-phone-office ms-1"
-                                                                                style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
-                                                                            />
-                                                                        </h4>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    <div className='col-xl-2' onClick={() => navigate("/custom-module")}>
-                                        <div className={`deviceProvision h-100`} >
-                                            <div className="itemWrapper a addNew h-100">
-                                                <i className='fa-regular fa-plus'></i>
-                                                <p>Add New Module</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                 </div>
             </section>
+            {
+                customPopup ? <CustomDashboardManage addNewMod={addNewMod} setSelectedModule={setSelectedModule} setAddNewMod={setAddNewMod} selectedModule={selectedModule} setRefresh={setRefresh} refresh={refresh} popup={customPopup} setPopup={setCustomPopup} /> : ""
+            }
         </main >
     )
 }

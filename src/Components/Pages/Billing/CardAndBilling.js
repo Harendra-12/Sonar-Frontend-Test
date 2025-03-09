@@ -23,6 +23,7 @@ import Tippy from "@tippyjs/react";
 function CardAndBilling() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const accountBalance = useSelector((state)=>state.accountBalance)
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const account = useSelector((state) => state.account);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
@@ -501,20 +502,7 @@ function CardAndBilling() {
                             </div>
                             <div className="data-number2 ">
                               <h5>
-                                ${" "}
-                                {accountDetails?.balance?.amount?.split(".")[0]
-                                  ? accountDetails?.balance?.amount?.split(
-                                    "."
-                                  )[0]
-                                  : 0}
-                                .
-                                <sub style={{ fontSize: 14 }}>
-                                  {accountDetails?.balance?.amount?.split(".")[1]
-                                    ? accountDetails?.balance?.amount?.split(
-                                      "."
-                                    )[1]
-                                    : "00"}
-                                </sub>
+                               {accountBalance}
                               </h5>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="col-auto">

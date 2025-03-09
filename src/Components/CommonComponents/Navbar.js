@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect } from "react";
 import "../assets/css/style.css";
@@ -909,6 +910,110 @@ function Navbar() {
                     </li>
                   ) : null}
 
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse14"
+                      aria-expanded={
+                        isChildActive([
+                          "/ai-dashboard",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse14"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-microchip-ai"></i>
+                      </div>
+                      <div className="itemTitle">AI</div>
+                    </button>
+                    <div
+                      id="collapse14"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/ai-dashboard",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          <li className="tabItem ">
+                            <Link
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/did-listing-tracker"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">Dashboard</div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Number Configuration
+                              </div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Agents
+                              </div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Call Reports
+                              </div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Analytics
+                              </div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Billing
+                              </div>
+                            </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <Link
+                              onClick={() => featureUnderdevelopment()}
+                            >
+                              <div className="itemTitle">
+                                Knowledge Base
+                              </div>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
                   {isCustomerAdmin && (
                     <>
                       <li className="dashboard ">
@@ -946,7 +1051,7 @@ function Navbar() {
                     </>
                   )}
                   {checkViewSidebar(
-                      "ChannelHangupComplete",permissions, account?.permissions) ? (
+                    "ChannelHangupComplete", permissions, account?.permissions) ? (
                     <li className="">
                       <button
                         data-bs-toggle="collapse"
@@ -1060,7 +1165,7 @@ function Navbar() {
                                 to="/call-center-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/call-center-report"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1076,7 +1181,7 @@ function Navbar() {
                                 to="/ring-group-report"
                                 className={({ isActive }) =>
                                   isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
+                                    ["/ring-group-report"].some(
                                       (path) =>
                                         window.location.pathname.includes(path)
                                     )
@@ -1236,27 +1341,27 @@ function Navbar() {
                             </Link>
                           </li>
                           {checkViewSidebar(
-                              "ChannelHangupComplete",
-                              permissions,
-                              account?.permissions
-                            ) && (
-                            <li className="tabItem ">
-                              <NavLink
-                                to="/billing-report"
-                                className={({ isActive }) =>
-                                  isActive ||
-                                    ["/extensions-add", "/extensions-edit"].some(
-                                      (path) =>
-                                        window.location.pathname.includes(path)
-                                    )
-                                    ? "nav-link active"
-                                    : "nav-link"
-                                }
-                              >
-                                <div className="itemTitle">Reports</div>
-                              </NavLink>
-                            </li>
-                          )}
+                            "ChannelHangupComplete",
+                            permissions,
+                            account?.permissions
+                          ) && (
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/billing-report"
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/extensions-add", "/extensions-edit"].some(
+                                        (path) =>
+                                          window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">Reports</div>
+                                </NavLink>
+                              </li>
+                            )}
                         </ul>
                       </div>
                     </div>

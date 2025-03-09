@@ -531,8 +531,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
               </div>
               {clickedVoiceMail && (
-                <div
-                  className="col-xl-6 callDetails"
+                <div className="col-xl-6 callDetails"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >

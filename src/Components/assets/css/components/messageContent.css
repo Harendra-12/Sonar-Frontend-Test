@@ -855,3 +855,12 @@
 .mergeCallList button:hover {
     background-color: #383838;
 }
+
+
+.border-upper p {
+    text-align: center;
+    cursor: pointer;
+    background-color:#ededed ;
+
+
+}

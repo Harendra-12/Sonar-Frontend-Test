@@ -396,6 +396,9 @@ const RingGroupEdit = () => {
     //   toast.error("Please Mention call timeout for timeout destination");
     //   return;
     // }
+    if (data.ring_back === "" || data.ring_back === "null") {
+      delete data.ring_back;
+  }
     const payLoad = {
       ...data,
       ...{

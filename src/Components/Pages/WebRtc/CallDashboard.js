@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ActiveCalls from "../PhoneDashboard/ActiveCalls";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
+import ActiveCallsPage from "../PhoneDashboard/ActiveCallsPage";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -16,6 +17,7 @@ function CallDashboard() {
   const navigate = useNavigate();
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
+  const [isParkedCallsOpen, setIsParkedCallsOpen] = useState(false);
 
 
   // Function to handle logout
@@ -172,8 +174,7 @@ function CallDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="col-xl-7 px-0"
+              {/* <div className="col-xl-8 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}
               >
 
@@ -196,74 +197,10 @@ function CallDashboard() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                className="col-xl-5 px-0"
+              </div> */}
+              {/* <div className="col-xl-4 px-0"
                 style={{ borderRight: "1px solid var(--border-color)" }}
               >
-
-                <div className="overviewTableWrapper">
-                  <div className="overviewTableChild">
-                    <div className="d-flex flex-wrap">
-                      <div className="col-12">
-                        <div className="heading">
-                          <div className="content">
-                            <h4> Parked Calls</h4>
-                            <p>You can see all of the parked calls here</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-12" style={{ padding: '25px 20px 0px' }}>
-                        <div className="tableContainer mt-0" style={{ height: "auto", maxHeight: '45vh' }}>
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>Called ID</th>
-                                <th>Parked By</th>
-                                <th>Parked At</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {allParkedCall.length > 0 &&
-                                allParkedCall.map((call) => {
-                                  return (
-                                    <tr>
-                                      <td>{call.cid_num}</td>
-
-                                      <td>{extractLastNumber(call?.parked_by)}</td>
-                                      <td>
-                                        {call?.dest.includes("set:valet_ticket")
-                                          ? extractLastNumber(call?.accountcode)
-                                          : extractLastNumber(call?.dest)}
-                                      </td>
-                                      <td>
-                                        <button
-                                          onClick={() =>
-                                            handleUnPark(
-                                              call?.dest.includes(
-                                                "set:valet_ticket"
-                                              )
-                                                ? extractLastNumber(
-                                                  call?.accountcode
-                                                )
-                                                : extractLastNumber(call?.dest)
-                                            )
-                                          }
-                                        >
-                                          Unpark
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="overviewTableWrapper pt-2">
                   <div className="overviewTableChild">
                     <div className="d-flex flex-wrap">
@@ -306,6 +243,73 @@ function CallDashboard() {
                                 })
                               }
 
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+              <ActiveCallsPage isParentWebRtc={true} />
+              <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)}>
+                  <i className={`fa-solid fa-chevron-${isParkedCallsOpen ? "right" : "left"}`} />
+                </button>
+                <div className="overviewTableWrapper p-0">
+                  <div className="overviewTableChild">
+                    <div className="d-flex flex-wrap">
+                      <div className="col-12">
+                        <div className="heading">
+                          <div className="content">
+                            <h4> Parked Calls</h4>
+                            <p>You can see all of the parked calls here</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                        <div className="tableContainer mt-0">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th>Called ID</th>
+                                <th>Parked By</th>
+                                <th>Parked At</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {allParkedCall.length > 0 &&
+                                allParkedCall.map((call) => {
+                                  return (
+                                    <tr>
+                                      <td>{call.cid_num}</td>
+
+                                      <td>{extractLastNumber(call?.parked_by)}</td>
+                                      <td>
+                                        {call?.dest.includes("set:valet_ticket")
+                                          ? extractLastNumber(call?.accountcode)
+                                          : extractLastNumber(call?.dest)}
+                                      </td>
+                                      <td>
+                                        <button
+                                          onClick={() =>
+                                            handleUnPark(
+                                              call?.dest.includes(
+                                                "set:valet_ticket"
+                                              )
+                                                ? extractLastNumber(
+                                                  call?.accountcode
+                                                )
+                                                : extractLastNumber(call?.dest)
+                                            )
+                                          }
+                                        >
+                                          Unpark
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                })}
                             </tbody>
                           </table>
                         </div>
