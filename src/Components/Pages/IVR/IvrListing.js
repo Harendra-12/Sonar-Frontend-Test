@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -27,6 +28,7 @@ const IvrListing = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [userInput, setuserInput] = useState("");
+  const slugPermissions = useSelector((state) => state?.permissions);
   useEffect(() => {
     async function getData() {
       setLoading(true);
@@ -116,7 +118,11 @@ const IvrListing = () => {
                             <i class="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {account?.permissions?.includes(232) ? (
+                        {  checkViewSidebar(
+                                        "IvrMaster",
+                                        slugPermissions,
+                                        account?.permissions, "add"
+                                      ) ? (
                           <Link
                             to="/ivr-add"
                             onClick={backToTop}
