@@ -1907,9 +1907,9 @@ function Messages({
                                   <ul class="dropdown-menu">
                                     {allTags.map((item, key) => {
                                       return (
-                                        <div className="contactTagsAddEdit" style={{ width: '250px' }}>
+                                        <div className="contactTagsAddEdit" style={{ width: '350px' }}>
                                           <div className="row align-items-center item">
-                                            <div className="col-6">
+                                            <div className="col-3">
                                               <h5>
                                                 <input
                                                   value={
@@ -1923,10 +1923,19 @@ function Messages({
                                                   placeholder="Please enter tag name"
                                                   type="text"
                                                   disabled={selectedTag !== item.id}
+                                                  className="w-100"
                                                 />
                                               </h5>
                                             </div>
-
+                                            <div className="col-3">
+                                              <span data-id="0">
+                                                {
+                                                  selectedTag === item.id
+                                                    ? upDateTag
+                                                    : item.name
+                                                }
+                                              </span>
+                                            </div>
                                             <div className="col-6 d-flex ms-auto pe-0">
                                               <button
                                                 className="clearButton2 xl"
