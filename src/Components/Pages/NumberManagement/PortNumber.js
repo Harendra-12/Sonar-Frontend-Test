@@ -383,14 +383,18 @@ function PortNumber() {
                             <i class="fa-solid fa-check"></i>
                           </span>
                         </button>
+                      
                         <button
-                          className="panelButtonWhite m-0 float-end"
-                          onClick={() => {
-                            setPopup(false);
-                          }}
-                        >
-                          Cancel
-                        </button>
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setPopup(false);
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i class="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
                       </div>
                     </div>
                   </div>
