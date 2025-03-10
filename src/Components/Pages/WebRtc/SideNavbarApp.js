@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
+import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -65,7 +66,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-comment"></i>
+                  <i className="fa-regular fa-comment"></i>
                 </div>
                 <div className="itemTitle">Messages</div>
               </div>
@@ -87,22 +88,22 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-               
+
                 className="navItem"
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-paper-plane"></i>
+                  <i className="fa-regular fa-paper-plane"></i>
                 </div>
                 <div className="itemTitle">Fax </div>
               </div>
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-              
+
                 className="navItem "
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-envelope"></i>
+                  <i className="fa-regular fa-envelope"></i>
                 </div>
                 <div className="itemTitle">Email</div>
               </div>
@@ -130,7 +131,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                  <i className="fa-solid fa-headset"></i>
+                    <i className="fa-solid fa-headset"></i>
                   </div>
                   <div className="itemTitle">Call Dashboard</div>
                 </div>
@@ -159,23 +160,21 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                  <i className="fa-solid fa-users-viewfinder"></i>
+                    <i className="fa-solid fa-users-viewfinder"></i>
                   </div>
                   <div className="itemTitle">Conference</div>
                 </div>
               </li>
             }
             <li style={{ cursor: "pointer" }}>
-              <div className="navItem d-block">
-                <div className="iconHolder0">
-                  <div className="itemTitle"> Switch Admin</div>
+              <div
+                onClick={() => featureUnderdevelopment()}
+                className="navItem"
+              >
+                <div className="iconHolder">
+                  <i class="fa-light fa-screwdriver-wrench"></i>
                 </div>
-                <div className="my-auto position-relative">
-                  <label className="switch">
-                    <input type="checkbox" />
-                    <span className="slider round" />
-                  </label>
-                </div>
+                <div className="itemTitle">Switch Admin</div>
               </div>
             </li>
           </ul>

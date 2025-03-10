@@ -90,10 +90,10 @@ function Messages({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false)
-  const [fileUpload,setFileUpload] = useState(false)
-  const [fileType,setFileType] = useState("")
-console.log("groupSelecedAgents", groupSelecedAgents);
-const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
+  const [fileUpload, setFileUpload] = useState(false)
+  const [fileType, setFileType] = useState("")
+  console.log("groupSelecedAgents", groupSelecedAgents);
+  const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -173,9 +173,9 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
     getData();
   }, [contactRefresh]);
 
-  useEffect(()=>{
-    setContactRefresh(contactRefresh+1)
-  },[])
+  useEffect(() => {
+    setContactRefresh(contactRefresh + 1)
+  }, [])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -815,7 +815,7 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
     setNewGroupLoader(true);
     const parsedData = {
       group_name: groupname,
-      user_id: [...groupSelecedAgents.map((agent) => agent.id),account.id],
+      user_id: [...groupSelecedAgents.map((agent) => agent.id), account.id],
     };
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
@@ -931,19 +931,19 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
   }, [groupMessage])
 
   // Handle logic to make any user admin or remove any user from admin
-  async function manageAdmin(id,groupId,userId,isAdmin) {
+  async function manageAdmin(id, groupId, userId, isAdmin) {
     setLoading(true);
     const parsedData = {
-      'group_id' : groupId,
-      'user_id' : userId,
-      'is_admin' : isAdmin,
+      'group_id': groupId,
+      'user_id': userId,
+      'is_admin': isAdmin,
     }
-    const apiData = await generalPutFunction(`/group-users/update/${id}`,parsedData)
-    if(apiData.status){
+    const apiData = await generalPutFunction(`/group-users/update/${id}`, parsedData)
+    if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
       setGroupRefresh(groupRefresh + 1);
-    }else{
+    } else {
       setLoading(false);
       toast.error(apiData.message)
     }
@@ -953,11 +953,11 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
   async function handleDeleteGroup(id) {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
-    if(apiData.status){
+    if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
       setGroupRefresh(groupRefresh + 1);
-    }else{
+    } else {
       setLoading(false);
       toast.error(apiData.message)
     }
@@ -967,20 +967,25 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
 
   return (
     <>
- {addNewTagPopUp&&<div className="addNewContactPopup">
+      {addNewTagPopUp && <div className="addNewContactPopup">
         <div className="row">
           <div className="col-12 heading">
-            <p>
-             Please enter Tag Name
-            </p>
+            <i className="fa-light fa-tag"></i>
+            <h5>Please enter a Tag name</h5>
             <div className="border-bottom col-12" />
           </div>
-          <div class="col-xl-12">
-            <input type="text"
-             value={newTag}
-             onChange={(e) => setNewTag(e.target.value)}
-             placeholder="Please enter tag name"
-             />
+          <div className="col-xl-12">
+            <div className="formLabel">
+              <label for="">Full Name</label>
+            </div>
+            <div className="col-12">
+              <input type="text"
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                placeholder="Please enter tag name"
+                className="formItem"
+              />
+            </div>
           </div>
 
           <div className="col-xl-12 mt-4">
@@ -988,7 +993,7 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
               <button
                 disabled={loading}
                 className="panelButton gray ms-0"
-                onClick={()=>setAddNewTagPopUp(false)}
+                onClick={() => setAddNewTagPopUp(false)}
               >
                 <span className="text">Cancel</span>
                 <span className="icon">
@@ -998,13 +1003,16 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
               <button
                 disabled={loading}
                 className="panelButton me-0"
-                onClick={()=>{
+                onClick={() => {
                   handleNewTag();
                   setAddNewTagPopUp(false)
                 }}
-             
+
               >
-               Save
+                <span className="text">Save</span>
+                <span className="icon">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </span>
               </button>
             </div>
           </div>
@@ -1891,75 +1899,86 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
+                                    data-bs-auto-close="outside"
                                   >
                                     <i class="fa-solid fa-circle-plus me-1"></i>{" "}
                                     Add tag
                                   </span>
                                   <ul class="dropdown-menu">
-                                    {allTags.map((item,key) => {
+                                    {allTags.map((item, key) => {
                                       return (
-                                        <div className="contactTagsAddEdit">
-                                        <div className="row align-items-center item">
-                                          <div className="col-6">
-                                            <h5>
-                                              <input
-                                                value={
+                                        <div className="contactTagsAddEdit" style={{ width: '350px' }}>
+                                          <div className="row align-items-center item">
+                                            <div className="col-4">
+                                              <h5>
+                                                <input
+                                                  value={
+                                                    selectedTag === item.id
+                                                      ? upDateTag
+                                                      : item.name
+                                                  }
+                                                  onChange={(e) =>
+                                                    setUpDateTag(e.target.value)
+                                                  }
+                                                  placeholder="Please enter tag name"
+                                                  type="text"
+                                                  disabled={selectedTag !== item.id}
+                                                  className="w-100"
+                                                />
+                                              </h5>
+                                            </div>
+                                            <div className="col-3">
+                                              <span data-id="0">
+                                                {
                                                   selectedTag === item.id
                                                     ? upDateTag
                                                     : item.name
                                                 }
-                                                onChange={(e) =>
-                                                  setUpDateTag(e.target.value)
-                                                }
-                                                placeholder="Please enter tag name"
-                                                type="text"
-                                                disabled={selectedTag !== item.id}
-                                              />
-                                            </h5>
-                                          </div>
-                                         
-                                          <div className="col-auto d-flex ms-auto pe-0">"
-                                            <button 
-                                             onClick={() =>
+                                              </span>
+                                            </div>
+                                            <div className="col-auto d-flex justify-content-end pe-0">
+                                              <button
+                                                className="clearButton2 xl"
+                                                onClick={() =>
                                                   handleAssignTask(
                                                     item?.id,
                                                     recipient[0]
                                                   )
                                                 }
-                                            >Assign</button>
-                                            {selectedTag === item.id ? (
-                                              <button
-                                                className="clearButton2 xl"
-                                                onClick={handleUpdateTag}
-                                              >
-                                                <Tippy content="Click to save your tag!">
-                                                  <i class="fa-regular fa-circle-check"></i>
-                                                </Tippy>
-                                              </button>
-                                            ) : (
-                                              <button
-                                                className="clearButton2 xl"
-                                                onClick={() => {
-                                                  setSelectedTag(item.id);
-                                                  setUpDateTag(item.name);
-                                                }}
-                                              >
-                                                <Tippy content="You can edit the tag here!">
-                                                  <i class="fa-regular fa-pen-to-square"></i>
-                                                </Tippy>
-                                              </button>
-                                            )}
-                                            <Tippy content="Click to delete your tag!">
-                                              <button
-                                                className="clearButton2 xl"
-                                                onClick={() => handleDeleteTag(item.id)}
-                                              >
-                                                <i class="fa-regular fa-trash text-danger"></i>
-                                              </button>
-                                            </Tippy>
+                                              ><i className="fa-regular fa-check" /></button>
+                                              {selectedTag === item.id ? (
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={handleUpdateTag}
+                                                >
+                                                  <Tippy content="Click to save your tag!">
+                                                    <i class="fa-regular fa-circle-check"></i>
+                                                  </Tippy>
+                                                </button>
+                                              ) : (
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={() => {
+                                                    setSelectedTag(item.id);
+                                                    setUpDateTag(item.name);
+                                                  }}
+                                                >
+                                                  <Tippy content="You can edit the tag here!">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                  </Tippy>
+                                                </button>
+                                              )}
+                                              <Tippy content="Click to delete your tag!">
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={() => handleDeleteTag(item.id)}
+                                                >
+                                                  <i class="fa-regular fa-trash text-danger"></i>
+                                                </button>
+                                              </Tippy>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
                                         // <li
                                         //   className="dropdown-item"
                                         //   onClick={() =>
@@ -1973,7 +1992,11 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
                                         // </li>
                                       );
                                     })}
-                                    <li  onClick={() => setAddNewTagPopUp(true)}>Add New Tag</li>
+                                    <li className="p-2 pb-1">
+                                      <button onClick={() => setAddNewTagPopUp(true)} className="panelButton static">
+                                        <div className="text">Add New Tag</div>
+                                      </button>
+                                    </li>
                                   </ul>
                                 </div>
                               }
@@ -2313,13 +2336,13 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => {setFileUpload(true);setFileType("image")}}
+                                  onClick={() => { setFileUpload(true); setFileType("image") }}
                                 >
                                   <i class="fa-regular fa-image"></i>
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => {setFileUpload(true);setFileType("all")}}
+                                  onClick={() => { setFileUpload(true); setFileType("all") }}
                                 >
                                   <i class="fa-solid fa-paperclip"></i>
                                 </button>
@@ -2609,7 +2632,7 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
                                       agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
                                       is_admin: matchingAgent?.is_admin,
                                       userId: matchingAgent?.user_id,
-                                      group_id:matchingAgent?.group_id,
+                                      group_id: matchingAgent?.group_id,
                                     };
                                   }).map((item, index) => {
                                     return (
@@ -2642,13 +2665,13 @@ const [addNewTagPopUp,setAddNewTagPopUp]=useState(false)
                                                   {
                                                     item.is_admin ?
                                                       <li>
-                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                        <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
                                                           Dismiss Group Admin
                                                         </div>
                                                       </li>
                                                       :
                                                       <li>
-                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                        <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
                                                           Make Group Admin
                                                         </div>
                                                       </li>}

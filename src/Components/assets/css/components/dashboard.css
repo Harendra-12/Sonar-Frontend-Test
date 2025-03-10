@@ -54,6 +54,10 @@
     background-color: var(--color-subtext);
 }
 
+.mainContent .itemWrapper.accordion-item {
+    max-height: 350px;
+}
+
 .mainContent .title {
     font-size: 16px;
     font-weight: 600;
@@ -375,7 +379,7 @@
 }
 
 
-.itemWrapper.a .add-active0 P{
+.itemWrapper.a .add-active0 P {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -386,7 +390,8 @@
     color: #845adf;
     background: #eee6ff;
 }
-.itemWrapper.a .add-rings0 P{
+
+.itemWrapper.a .add-rings0 P {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -643,14 +648,15 @@
 }
 
 
-.hover-dropdown { /* Changed class name */
+.hover-dropdown {
+    /* Changed class name */
     /* Existing styles... */
-  }
-  
-  .hover-dropdown:hover .dropdown-menu {
+}
+
+.hover-dropdown:hover .dropdown-menu {
     display: block;
-  }
-  
-  .hover-dropdown .dropdown-toggle::after {
+}
+
+.hover-dropdown .dropdown-toggle::after {
     display: none;
-  }
+}
