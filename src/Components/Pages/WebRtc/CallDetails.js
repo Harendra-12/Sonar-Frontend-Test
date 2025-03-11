@@ -620,10 +620,11 @@ function CallDetails({
                                               }
                                             }}
                                           >
+                                            
                                             <i
-                                              class={`fa-regular fa-${
+                                              class={`fa-solid fa-${
                                                 item.configuration !== null
-                                                  ? "gear"
+                                                  ? "play"
                                                   : "triangle-exclamation"
                                               } me-2`}
                                             ></i>{" "}
@@ -640,7 +641,7 @@ function CallDetails({
                                               featureUnderdevelopment()
                                             }
                                           >
-                                            <i class="fa-regular fa-arrows-rotate me-2"></i>
+                                          <i class="fa-solid fa-bolt me-2"></i>
                                             Transcript
                                           </div>
                                         </li>
@@ -656,7 +657,7 @@ function CallDetails({
                                               )
                                             }
                                           >
-                                            <i class="fa-regular fa-gear me-2"></i>{" "}
+                                           <i class="fa-regular fa-download"></i>{" "}
                                             Download
                                           </div>
                                         </li>

@@ -86,7 +86,7 @@ function AddOns() {
                                                 <div className='product-cart'>
                                                     
                                                     <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
                                                         alt="Click to Call"
                                                         className="product-image" />
                                                     <div className="product-title mt-4">
@@ -124,7 +124,7 @@ function AddOns() {
                                                 <div className='product-cart'>
                                                     
                                                     <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                        src="https://cyclr.com/wp-content/uploads/2022/03/ext-477.png"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
@@ -164,7 +164,7 @@ function AddOns() {
 
                                                     
                                                     <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/60/Skype_logo_%282019%E2%80%93present%29.svg"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
@@ -202,7 +202,7 @@ function AddOns() {
                                                 <div className='product-cart'>
                                                     
                                                     <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                        src="https://5.imimg.com/data5/SELLER/Default/2023/6/318550307/WD/YP/AO/6017711/teamviewer-software-solution-500x500.png"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />
@@ -241,7 +241,7 @@ function AddOns() {
                                                 <div className='product-cart'>
                                                     
                                                     <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Cisco8861-png-rendition.webp"
+                                                        src="https://www.koolmetrix.gr/wp-content/uploads/2019/05/rtanalytics.png"
                                                         alt="Click to Call"
                                                         className="product-image"
                                                     />

@@ -782,7 +782,7 @@ function Call({
                 </div>
                 <div className="col-12" style={{ padding: "0 10px" }}>
                   <div className="d-flex">
-                    <div className="col-xl-6 col-12 pe-2 mt-auto">
+                    <div className="col-xl-5 col-12 pe-2 mt-auto">
                       <input
                         type="search"
                         name="Search"
@@ -792,7 +792,7 @@ function Call({
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <div className="col-xl-6 col-12">
+                    <div className="col-xl-7 col-12">
                       <div className="d-flex justify-content-between">
                         <div className="">
                           <label className="formLabel text-start mb-0 w-100">
