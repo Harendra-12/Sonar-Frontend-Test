@@ -79,7 +79,7 @@ const Extensions = () => {
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
       if (pageNumber === 1 && itemsPerPage === 10) {
-        setLoading(false);
+        // setLoading(false);
       }
       // setLoading(false);
       async function getData() {

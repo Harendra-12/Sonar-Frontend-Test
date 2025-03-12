@@ -2,9 +2,11 @@ import React from 'react'
 import Header from '../../CommonComponents/Header'
 import { backToTop } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function SubscriptionManagement() {
     const navigate = useNavigate();
+    const accountDetails = useSelector((state) => state.accountDetails);
     return (
         <>
             <main className="mainContent">
@@ -65,6 +67,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value= {accountDetails.package.name}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -76,6 +79,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value={`$${accountDetails.package.offer_price}`}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -87,6 +91,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value={accountDetails.package.subscription_type}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -98,6 +103,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value={accountDetails?.subscription?.[0].start_date}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -109,6 +115,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value={accountDetails?.subscription?.[0].end_date}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -120,6 +127,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
+                                                                            value={accountDetails?.payments[0].transaction_date}
                                                                         />
                                                                     </div>
                                                                 </div>

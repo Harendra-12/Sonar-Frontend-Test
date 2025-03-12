@@ -41,18 +41,22 @@ function UserProfile() {
         setIsEdit(!isEdit);
         if (isEdit) {
             const payload = {
-                name: `${inputFirstName} ${inputLastName}`,
                 // email: account.email,
                 // domain_id: domainId,
                 timezone_id: selectedTimezone,
                 status: account.status,
                 role_id: account?.user_role?.role_id,
-                account_id: account.id,
+                account_id: account.account_id,
                 permissions: account.permissions,
                 extension_id: account.extension.id,
                 usages: account.usages,
                 alias: inputAlias,
             };
+
+            // Only add name to payload if first and last name aren't empty
+            if (inputFirstName.trim() && inputLastName.trim()) {
+                payload.name = `${inputFirstName} ${inputLastName}`;
+            }
 
             setLoading(true);
             try {
@@ -75,7 +79,6 @@ function UserProfile() {
             }
         }
     };
-
 
     return (
         <main className="mainContent">
