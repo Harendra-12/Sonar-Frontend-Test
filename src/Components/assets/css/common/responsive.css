@@ -26,9 +26,9 @@
         width: 10px !important;
     }
 
-    .getApp {
+    /* .getApp {
         font-size: 14px;
-    }
+    } */
 
     .masterList ul li input {
         width: 82%;
@@ -160,7 +160,7 @@
 
     table th {
         white-space: nowrap;
-        font-size: 12px;
+        font-size: 0.75rem;
 
         padding: 10px 4px;
     }
@@ -197,32 +197,32 @@
 }
 
 @media (max-device-width: 1366px) {
-    h3 {
+    /* h3 {
         font-size: 22px;
-    }
+    } */
 
-    h4 {
+    /* h4 {
         font-size: 16px !important;
-    }
+    } */
 
     .formLabel {
-        font-size: 12px;
+        /* font-size: 12px; */
         max-width: 200px;
     }
 
-    .itemWrapperb .heading {
+    /* .itemWrapperb .heading {
         font-size: 10px;
-    }
+    } */
 
     .mainContent .itemWrapper {
         padding: 10px;
     }
 
-    .itemWrapper .heading h5,
+    /* .itemWrapper .heading h5,
     .profileView .profileDetailsHolder .header,
     .profileView .baseDetails .content h5 {
         font-size: 15px !important;
-    }
+    } */
 
     .itemWrapper .heading i {
         width: 35px;
@@ -231,21 +231,21 @@
     }
 
     .itemWrapper .data-number2 h5 {
-        font-size: 18px;
+        font-size: 1.125rem;
     }
 
-    .itemWrapperb .label2 {
+    /* .itemWrapperb .label2 {
         font-size: 11px;
-    }
+    } */
 
-    .tangoNavs .nav-tabs .nav-link,
+    /* .tangoNavs .nav-tabs .nav-link,
     .qLinkContent p,
     .accordion .accordion-button,
     .mainContentApp .tab-content .callListItem h4,
     .myProfileWidget .profileName,
     .mainContentApp .tab-content .contactListItem h4 {
         font-size: 14px !important;
-    }
+    } */
 
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 10px;
@@ -253,7 +253,7 @@
 
     .formItem {
         padding: 5px 5px;
-        font-size: 12px;
+        font-size: 0.75rem;
     }
 
     table td,
@@ -266,17 +266,17 @@
     table th,
     .myProfileWidget .profileName span.status,
     .itemWrapper .heading p {
-        font-size: 11px;
+        font-size: 0.6875rem;
     }
 
     #detailsHeader {
         padding: 5px 15px;
     }
 
-    #detailsHeader .profileName,
+    /* #detailsHeader .profileName,
     .clearColorButton {
         font-size: 14px;
-    }
+    } */
 
     .overviewTableWrapper {
         padding: 15px;
@@ -290,10 +290,10 @@
         height: calc(100vh - 320px)
     }
 
-    .viewingAs span,
+    /* .viewingAs span,
     .messageOverlay .contactHeader h4 {
         font-size: 16px !important;
-    }
+    } */
 
     .loginWrapper2 {
         height: auto;
@@ -318,7 +318,7 @@
     }
 
     .someTempDialerDesign ul li .textHolder h3 {
-        font-size: 16px;
+        font-size: 1rem;
     }
 
     .someTempDialerDesign ul li:not(:last-child)::after {
@@ -330,9 +330,9 @@
         height: 90px;
     }
 
-    .formRow .formItemDesc {
+    /* .formRow .formItemDesc {
         font-size: 9px;
-    }
+    } */
 
     .mainContent .circularProgressWrapper {
         width: 200px;
