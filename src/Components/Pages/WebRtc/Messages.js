@@ -1539,7 +1539,7 @@ function Messages({
                                       onClick={handleUpdateTag}
                                     >
                                       <Tippy content="Click to save your tag!">
-                                        <i class="fa-regular fa-circle-check"></i>
+                                        <i class="fa-regular fa-floppy-disk"></i>
                                       </Tippy>
                                     </button>
                                   ) : (
@@ -1952,7 +1952,7 @@ function Messages({
                                                   onClick={handleUpdateTag}
                                                 >
                                                   <Tippy content="Click to save your tag!">
-                                                    <i class="fa-regular fa-circle-check"></i>
+                                                    <i class="fa-regular fa-floppy-disk"></i>
                                                   </Tippy>
                                                 </button>
                                               ) : (
