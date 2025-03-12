@@ -737,7 +737,7 @@ function Messages({
     setLoading(true);
     const parsedData = {
       tag_id: tagId,
-      user_id: contact.find((contact) => contact.extension === userId)?.id,
+      user_id: userId
     };
     const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
     if (apiData.status) {
@@ -920,7 +920,6 @@ function Messages({
     }));
     setMessageInput("");
   }
-
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
@@ -1434,7 +1433,7 @@ function Messages({
                             aria-expanded="false"
                             aria-controls="collapse2"
                           >
-                            Online <i class="fa-solid fa-chevron-down"></i>
+                            Online<i class="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
                         <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
@@ -1942,7 +1941,7 @@ function Messages({
                                                 onClick={() =>
                                                   handleAssignTask(
                                                     item?.id,
-                                                    recipient[0]
+                                                    recipient[1]
                                                   )
                                                 }
                                               ><i className="fa-regular fa-check" /></button>

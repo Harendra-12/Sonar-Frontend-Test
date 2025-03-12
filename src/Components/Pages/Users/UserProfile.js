@@ -39,33 +39,37 @@ function UserProfile() {
 
     const handleSave = async () => {
         setIsEdit(!isEdit);
-      if(isEdit){
-        const payload = {
-            name: `${inputFirstName} ${inputLastName}`,
+        if(isEdit){
+          const payload = {
             // email: account.email,
             // domain_id: domainId,
             timezone_id: selectedTimezone,
             status: account.status,
-            role_id:account?.user_role?.role_id,
-            account_id: account.id,
+            role_id: account?.user_role?.role_id,
+            account_id: account.account_id,
             permissions: account.permissions,
             extension_id: account.extension.id,
             usages: account.usages,
             alias: inputAlias,
           };
-        
+          
+          // Only add name to payload if first and last name aren't empty
+          if (inputFirstName.trim() && inputLastName.trim()) {
+            payload.name = `${inputFirstName} ${inputLastName}`;
+          }
+          
           setLoading(true);
           try {
             const addUser = await generalPutFunction(`user/${account.id}`, payload);
-            const profile = await generalGetFunction("/user");
-                  if (profile?.status) {
-                    dispatch({
-                      type: "SET_ACCOUNT",
-                      account: profile.data,
-                    });
-            
-                    localStorage.setItem("account", JSON.stringify(profile.data));
-                  }
+            const profile = await generalGetFunction("/user");         
+            if (profile?.status) {
+              dispatch({
+                type: "SET_ACCOUNT",
+                account: profile.data,
+              });
+              
+              localStorage.setItem("account", JSON.stringify(profile.data));
+            }
           } catch (error) {
             // Handle error
             console.error("Error updating user:", error);
@@ -73,9 +77,8 @@ function UserProfile() {
           } finally {
             setLoading(false);
           }
-      }
+        }
       };
-      
 
     return (
         <main className="mainContent">
