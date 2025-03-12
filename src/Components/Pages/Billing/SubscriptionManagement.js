@@ -56,10 +56,10 @@ function SubscriptionManagement() {
                                                     <div className="profileView px-0">
                                                         <div className="profileDetailsHolder p-0 shadow-none">
                                                             <div className="row" style={{ padding: 5 }}>
-                                                                <div className="header">Account Details</div>
+                                                                <div className="header">Subscription Details</div>
                                                                 <div className="formRow col-xl-12">
                                                                     <div className="formLabel">
-                                                                        <label htmlFor="data">Profile Name</label>
+                                                                        <label htmlFor="data">Package Name</label>
                                                                     </div>
                                                                     <div className="col-6">
                                                                         <input
@@ -70,7 +70,7 @@ function SubscriptionManagement() {
                                                                 </div>
                                                                 <div className="formRow col-xl-12">
                                                                     <div className="formLabel">
-                                                                        <label htmlFor="data">Email</label>
+                                                                        <label htmlFor="data">Package Price</label>
                                                                     </div>
                                                                     <div className="col-6">
                                                                         <input
@@ -81,7 +81,40 @@ function SubscriptionManagement() {
                                                                 </div>
                                                                 <div className="formRow col-xl-12">
                                                                     <div className="formLabel">
-                                                                        <label htmlFor="data">Phone Number</label>
+                                                                        <label htmlFor="data">Package Type</label>
+                                                                    </div>
+                                                                    <div className="col-6">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="formItem"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="formRow col-xl-12">
+                                                                    <div className="formLabel">
+                                                                        <label htmlFor="data">Subscription Start</label>
+                                                                    </div>
+                                                                    <div className="col-6">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="formItem"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="formRow col-xl-12">
+                                                                    <div className="formLabel">
+                                                                        <label htmlFor="data">Subscription End</label>
+                                                                    </div>
+                                                                    <div className="col-6">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="formItem"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="formRow col-xl-12">
+                                                                    <div className="formLabel">
+                                                                        <label htmlFor="data">Time of Payment</label>
                                                                     </div>
                                                                     <div className="col-6">
                                                                         <input

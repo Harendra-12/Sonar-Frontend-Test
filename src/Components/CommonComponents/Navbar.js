@@ -1245,6 +1245,7 @@ function Navbar() {
                           "/card-transaction-list",
                           "/wallet-transaction-list",
                           "/billing-report",
+                          "/subscription-management"
                         ])
                           ? "true"
                           : "false"
@@ -1263,6 +1264,7 @@ function Navbar() {
                         "/card-transaction-list",
                         "/wallet-transaction-list",
                         "/billing-report",
+                        "/subscription-management"
                       ])
                         ? "show"
                         : ""
@@ -1339,6 +1341,14 @@ function Navbar() {
                             >
                               <div className="itemTitle">Rate Card</div>
                             </Link>
+                          </li>
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/subscription-management"
+                              onClick={() => backToTop()}
+                            >
+                              <div className="itemTitle">Subscription</div>
+                            </NavLink>
                           </li>
                           {checkViewSidebar(
                             "ChannelHangupComplete",
