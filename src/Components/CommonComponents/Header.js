@@ -131,7 +131,7 @@ function Header(props) {
               <Tippy content="Your available balance, click to know more!">
                 <div
                   onClick={() => navigate("/card-details")}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", minWidth: '140px' }}
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
