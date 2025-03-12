@@ -44,7 +44,7 @@
     position: absolute;
     top: 40%;
     right: 5px;
-    font-size: 22px;
+    font-size: 1.375rem;
     color: #afafaf;
 }
 
@@ -56,7 +56,7 @@
     color: #fff;
     font-family: Roboto;
     font-weight: 500;
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     padding: 20px 20px 5px 20px;
 }
 
@@ -81,7 +81,7 @@
     justify-content: center;
     color: #fff;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     overflow: hidden;
 }
 

@@ -26,7 +26,7 @@
 }
 
 #sidenNavApp .sidenavItems ul li i {
-    font-size: 17px;
+    font-size: 1.0625rem;
 }
 
 #sidenNavApp .sidenavItems .iconHolder {
@@ -61,7 +61,7 @@
 }
 
 #sidenNavApp .sidenavItems .itemTitle {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 300;
     color: #fff !important;
     margin-top: auto;
@@ -128,7 +128,7 @@
 }
 
 #sidenNavApp .sidenavItems .userTitle {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 400;
     /* color: var(--ui-accent) !important; */
     margin-top: auto;
@@ -144,7 +144,7 @@
 #sidenNavApp .sidenavItems .userTitle p {
     margin-bottom: 0;
     color: #fff;
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 /* -------- SideNav MainMenu Styles ------- */

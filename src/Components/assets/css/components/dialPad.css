@@ -16,7 +16,7 @@
 }
 
 .dialPadContainer h3 {
-    font-size: 20px;
+    font-size: 1.25rem;
     margin-bottom: 0;
     font-family: Outfit;
     /* color: #6a6a6a; */
@@ -24,7 +24,7 @@
 }
 
 .dialPadContainer span {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #505050;
     font-family: Outfit;
     font-weight: 500;
@@ -79,14 +79,14 @@
 }
 
 .dialPadContainer .dialerWrap h4 {
-    font-size: 26px !important;
+    font-size: 1.625rem !important;
     color: #fff;
     font-family: Outfit;
     margin-bottom: 0;
 }
 
 .dialPadContainer .dialerWrap h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #6a6a6a;
     font-family: Outfit;
 }

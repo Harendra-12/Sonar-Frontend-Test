@@ -47,7 +47,7 @@
 } */
 
 .phone-calls {
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 #control {
@@ -70,7 +70,7 @@
     background-color: #c5f83f;
     color: #202020;
     border-radius: 5px;
-    font-size: 10px;
+    font-size: 0.625rem;
 }
 
 .avatar {
@@ -216,7 +216,7 @@
 }
 
 .specialProgressText p {
-    font-size: 14px;
+    font-size: 0.875rem;
     margin-bottom: 0;
     font-weight: 500;
     color: var(--color-subtext);
@@ -226,7 +226,7 @@
 .specialProgressText span {
     color: var(--color-subtext);
     text-wrap: nowrap;
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 .specialProgressWrapDetails {

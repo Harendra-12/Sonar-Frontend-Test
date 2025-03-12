@@ -34,14 +34,14 @@
 }
 
 .callListItem h4 {
-    font-size: 16px !important;
+    font-size: 1rem !important;
     margin: 0;
     font-family: 'Roboto' !important;
 }
 
 .callListItem h5,
 .callList .callListDiff {
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     margin: 5px 0;
     /* font-family: Outfit; */
     font-weight: 500;
@@ -50,7 +50,7 @@
 
 .callListItem .source h5,
 .callListItem .destination h5 {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
 }
 
 .callListItem .callIconAdmin {
@@ -58,7 +58,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
+    font-size: 1rem;
     position: relative;
     margin: 0 10px;
 }
@@ -104,7 +104,7 @@
 }
 
 .callListItem h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
     margin: 0;
     font-family: Open sans;
     font-weight: 500;
@@ -112,7 +112,7 @@
 }
 
 .callListItem span {
-    font-size: 16px;
+    font-size: 1rem;
     margin: 0;
     font-family: Roboto;
     font-weight: 500;
@@ -133,13 +133,13 @@
 }
 
 .mainContentApp .contactListItem h4 {
-    font-size: 17px !important;
+    font-size: 1.0625rem !important;
     margin: 0;
     font-family: Roboto;
 }
 
 .mainContentApp .contactListItem h5 {
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     margin: 5px 0 0;
     font-family: Roboto;
     font-weight: 400;
@@ -152,7 +152,7 @@
 }
 
 .mainContentApp .contactListItem h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
     margin: 0;
     font-family: Outfit;
     font-weight: 500;
@@ -161,7 +161,7 @@
 
 .mainContentApp .contactListItem p.timeAgo,
 .callListItem p.timeAgo {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
     margin: 0px 0 5px;
     font-family: Roboto;
     font-weight: 400;
@@ -169,7 +169,7 @@
 }
 
 .mainContentApp .contactListItem span {
-    font-size: 17px;
+    font-size: 1.0625rem;
     margin: 0;
     /* font-family: Outfit !important; */
     font-weight: 500;
@@ -188,7 +188,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #fff;
 }
@@ -257,7 +257,7 @@
     /* width: 50px;
     height: 50px; */
     color: red;
-    font-size: 14px;
+    font-size: 0.875rem;
     transform: rotate(0deg);
     /* background: url(''); */
 }
@@ -271,7 +271,7 @@
     /* width: 50px;
     height: 50px; */
     color: green;
-    font-size: 18px;
+    font-size: 1.125rem;
     transform: rotate(130deg);
     /* background: url(''); */
 }
@@ -285,7 +285,7 @@
     /* width: 50px;
     height: 50px; */
     color: green;
-    font-size: 18px;
+    font-size: 1.125rem;
     transform: rotate(-45deg);
     /* background: url(''); */
 }
@@ -359,14 +359,14 @@
 .mainContentApp .profileInfoHolder h4 {
     color: #fff;
     /* font-family: Outfit; */
-    font-size: 20px !important;
+    font-size: 1.25rem !important;
     font-weight: 500;
 }
 
 .mainContentApp .profileInfoHolder h5 {
     color: #fff;
     /* font-family: Outfit; */
-    font-size: 15px !important;
+    font-size: 0.9375rem !important;
     font-weight: 400;
     margin-bottom: 5px;
 }
@@ -429,7 +429,7 @@
 
 .addNewContactPopup .heading i {
     color: #fff;
-    font-size: 20px;
+    font-size: 1.25rem;
     background-color: var(--ui-accent);
     border-radius: 50%;
     width: 55px;
@@ -448,13 +448,13 @@
 }
 
 .addNewContactPopup .heading p {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-subtext);
 }
 
 .addNewContactPopup .formLabel {
     font-weight: 600;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 .callListItem.selected {
@@ -526,11 +526,11 @@
 }
 
 .messageOverlay .profileHolder i {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .messageOverlay .contactListItem h4 {
-    font-size: 16px !important;
+    font-size: 1rem !important;
 }
 
 .addNewContactPopup ul {
@@ -550,7 +550,7 @@
 .addNewContactPopup ul li {
     width: 50%;
     padding-bottom: 5px;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .addNewContactPopup ul li i {
@@ -563,7 +563,7 @@
     padding: 0 20px 0 0px;
     outline: none;
     transition: 0.1s ease-in-out;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .addNewContactPopup .searchBar:focus-within {
@@ -577,7 +577,7 @@
 .addNewContactPopup .searchBoxWrapper::after {
     content: '\f002';
     color: var(--ui-accent);
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'FontAwesome';
     position: absolute;
     top: 0;

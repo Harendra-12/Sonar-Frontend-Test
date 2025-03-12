@@ -11,7 +11,7 @@
 
 .profileView .profileDetailsHolder .contentFinal p {
     font-family: Roboto;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #454545;
 }
 
@@ -47,7 +47,7 @@
 .profileView .profileDetailsHolder .configProgressWrapper p {
     margin-bottom: 0;
     font-family: Outfit;
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .profileView .profileDetailsHolder .configProgressText {
@@ -111,7 +111,7 @@
 }
 
 .profileView .profileDetailsHolder .configProgressText.did span {
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 500;
     margin-left: 10px;
 }
@@ -146,7 +146,7 @@
 
 .profileView .profileDetailsHolder .configProgressText.did button .selectDidOpt span {
     color: #000;
-    font-size: 16px;
+    font-size: 1rem;
     display: block;
     width: fit-content;
 }

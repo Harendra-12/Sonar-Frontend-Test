@@ -29,12 +29,12 @@
 
 .cardWrapper label {
     font-weight: 300;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #ffffffb5;
 }
 
 .cardWrapper h5 {
-    font-size: 18px !important;
+    font-size: 1.125rem !important;
 }
 
 .cardWrapper p,
@@ -70,7 +70,7 @@
 }
 
 .billingDetails li {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--immortalBlack);
     font-weight: 700;
     margin-bottom: 5px;

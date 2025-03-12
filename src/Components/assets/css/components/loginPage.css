@@ -27,7 +27,7 @@ main.login {
     margin-bottom: 30px;
     padding: 5px 15px 5px 40px;
     font-family: Outfit;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 200;
     outline: none;
 }
@@ -36,7 +36,7 @@ main.login {
     color: #fff;
     font-family: Outfit;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     letter-spacing: 1px;
 }
 
@@ -44,7 +44,7 @@ main.login {
     position: absolute;
     top: 10px;
     left: 13px;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #fff;
 }
 
@@ -53,7 +53,7 @@ main.login {
     color: var(--ui-accent);
     font-weight: 900;
     letter-spacing: 1px;
-    font-size: 14px;
+    font-size: 0.875rem;
     border: none;
     border-radius: 50px;
     width: 100%;
@@ -63,7 +63,7 @@ main.login {
 
 .loginLabel {
     color: #fff;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-family: Outfit;
 }
 
@@ -84,7 +84,7 @@ a.loginLabel {
 }
 
 .loginWrapper .iconWrapper i {
-    font-size: 52px;
+    font-size: 3.25rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -107,7 +107,7 @@ a.loginLabel {
 
 .login .someText p {
     color: #ffffff;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 200;
 }
 
@@ -137,7 +137,7 @@ a.loginLabel {
 
 .login .someLogo p {
     color: #ffffff;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 100;
 }
 
@@ -236,7 +236,7 @@ a.loginLabel {
 .loginWrapper2 .loginImgWrapper h3 {
     font-family: Outfit;
     font-weight: 300;
-    font-size: 28px;
+    font-size: 1.75rem;
 }
 
 .loginWrapper2 .content h3 {
@@ -256,7 +256,7 @@ a.loginLabel {
 .loginWrapper2 .loginImgWrapper p {
     font-family: Open sans;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .loginWrapper2 .content .loginFormItem {
@@ -281,7 +281,7 @@ a.loginLabel {
 .loginWrapper2 .content .loginForm label {
     font-weight: 400;
     font-family: 'Outfit';
-    font-size: 14px;
+    font-size: 0.875rem;
     margin-bottom: 5px;
     color: var(--immortalBlack);
 }
@@ -290,7 +290,7 @@ a.loginLabel {
     background-color: var(--ui-accent);
     /* Adjust the blue color as needed */
     color: white;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
     padding: 5px 40px;
     border: none;

@@ -168,6 +168,9 @@
 }
 
 @media (max-device-width: 1750px) {
+    html {
+        font-size: 14px !important;
+    }
 
     /* .formRow.col-xl-3 {
         width: 16.5%;
@@ -213,10 +216,6 @@
 
     .mainContent .itemWrapper {
         padding: 10px;
-    }
-
-    .itemWrapper .data-number2 ul li {
-        font-size: 14px;
     }
 
     .itemWrapper .heading h5,

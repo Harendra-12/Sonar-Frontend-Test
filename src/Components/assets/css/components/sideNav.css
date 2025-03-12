@@ -44,8 +44,8 @@
 }
 
 #sidenNav .sidenavItems ul li i {
-    /* font-size: 15px; */
-    font-size: 17px;
+    /* font-size: 0.9375rem; */
+    font-size: 1.0625rem;
 
     /* width: 23px;
     height: 23px;
@@ -98,7 +98,7 @@
     right: 10px;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 #sidenNav .sidenavItems ul li [aria-expanded="true"]::after {
@@ -109,11 +109,11 @@
     right: 10px;
     transform: translate(-50%, -50%);
     color: var(--ui-icon);
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 #sidenNav .sidenavItems .itemTitle {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
     color: #fff !important;
     padding-left: 0px;
@@ -165,7 +165,7 @@
 #sidenNav .sidenavItems .menuWrapper ul li a .itemTitle::after {
     content: '\e3d6';
     font-family: 'FontAwesome';
-    font-size: 16px;
+    font-size: 1rem;
     position: absolute;
     left: -32px;
     bottom: 0;

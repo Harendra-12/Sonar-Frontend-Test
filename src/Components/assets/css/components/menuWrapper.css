@@ -12,7 +12,7 @@
     right: 10px;
     content: '\f078';
     font-family: 'Font Awesome 5 Pro';
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 300;
     color: var(--immortalBlack);
     background: none;
@@ -32,7 +32,7 @@
 .accordion .accordion-button:not(.collapsed)::after {
     content: '\f078';
     font-family: 'Font Awesome 5 Pro';
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 300;
     color: var(--ui-accent);
     background: none;
@@ -73,7 +73,7 @@
     top: 12px; 
     right: 35px; 
     z-index: 10;
-    font-size: 22px;
+    font-size: 1.375rem;
 } */
 .menuWrapper ul .tabItem {
     margin: 0 !important;
@@ -84,7 +84,7 @@
 .menuWrapper ul .tabItem a {
     color: #fff;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 300;
 }
 
@@ -92,7 +92,7 @@
 
 /* --------- Tab Content Common Styles ---------- */
 .tab-content .title {
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 500;
 }
 
@@ -110,7 +110,7 @@
 
 /* SearchBox Icon */
 #phonePage .searchBox i {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--ui-accent);
 }
 

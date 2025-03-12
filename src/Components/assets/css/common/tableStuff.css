@@ -4,13 +4,13 @@ table {
 
 table td {
     padding: 10px 10px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--table-text);
 }
 
 table th {
     padding: 10px 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background-color: var(--table-head);
 }
 
@@ -33,7 +33,7 @@ table tbody tr:not(:last-child) {
 table tbody tr td {
     cursor: pointer;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     white-space: nowrap;
 }
 
@@ -110,7 +110,7 @@ table tr th:first-child {
     font-family: Roboto;
     color: var(--color-subtext);
     font-weight: 500;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .tableHeader .showEntries select {
@@ -148,7 +148,7 @@ table td.missed::after {
     left: 10px;
     top: 7px;
     color: red;
-    font-size: 14px;
+    font-size: 0.875rem;
     transform: rotate(0deg);
 }
 
@@ -159,7 +159,7 @@ table td.outgoing::after {
     left: 10px;
     top: 5px;
     color: green;
-    font-size: 18px;
+    font-size: 1.125rem;
     transform: rotate(-45deg);
 }
 
@@ -170,7 +170,7 @@ table td.incoming::after {
     left: 10px;
     top: 5px;
     color: green;
-    font-size: 18px;
+    font-size: 1.125rem;
     transform: rotate(130deg);
 }
 
@@ -187,7 +187,7 @@ table td.incoming::after {
     width: 90px;
     padding: 7px 0;
     text-overflow: ellipsis;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 500;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
     border-radius: 3px;
@@ -203,7 +203,7 @@ table td.incoming::after {
     background-color: transparent;
     border-left: 1px solid var(--border-color);
     border-radius: 0 50px 50px 0;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 700;
     color: var(--color-subtext);
 }
@@ -281,7 +281,7 @@ table td.incoming::after {
 
 .formCustomAutoComplete ul li {
     padding: 7px 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--color-subtext);
     font-weight: 500;
     border-bottom: 1px solid #ddd;
@@ -324,7 +324,7 @@ table td.incoming::after {
     position: absolute;
     top: -22px;
     right: 55px;
-    font-size: 28px;
+    font-size: 1.75rem;
 }
 
 .profileDropdown .dropdown-item,
@@ -343,7 +343,7 @@ table td.incoming::after {
 .actionBtnDropdowns a {
     text-decoration: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 400;
     padding: 5px 0px;
 }
@@ -352,7 +352,7 @@ table td.incoming::after {
     border: none;
     background-color: transparent;
     /* padding: 5px 10px; */
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #000;
     font-family: Roboto;

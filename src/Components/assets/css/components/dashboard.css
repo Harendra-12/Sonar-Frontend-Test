@@ -59,7 +59,7 @@
 }
 
 .mainContent .title {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
     font-family: Open sans;
     color: var(--immortalBlack);
@@ -72,14 +72,14 @@
 
 
 .itemWrapperb .heading {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     font-family: Roboto;
     color: var(--color-subtext);
 }
 
 .itemWrapperb .data-number {
-    font-size: 30px;
+    font-size: 1.875rem;
     font-family: Open sans !important;
     line-height: 45px !important;
     padding: 0 !important;
@@ -91,11 +91,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 17px;
+    font-size: 1.0625rem;
 }
 
 .itemWrapperb .label2 {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
     font-family: Roboto;
     color: var(--color-subtext);
@@ -115,13 +115,13 @@
 
 .itemWrapper .heading h5 {
     margin-bottom: 5px;
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'Open Sans';
     font-weight: 700;
 }
 
 .itemWrapper .heading p {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-subtext);
     font-weight: 500;
     margin-bottom: 0;
@@ -132,7 +132,7 @@
 
 .itemWrapper .heading i {
     /* margin-right: 5px; */
-    font-size: 16px;
+    font-size: 1rem;
     padding: 13px;
     border-radius: 10px;
     background-color: var(--color2-trans);
@@ -154,7 +154,7 @@
     height: 60px !important;
     padding: 10px;
     float: none;
-    font-size: 30px;
+    font-size: 1.875rem;
     margin: 0 auto 20px auto;
 
     display: flex;
@@ -190,6 +190,7 @@
 
 .itemWrapper .data-number2 ul li {
     padding: 10px 0;
+    font-size: 1rem;
 }
 
 .itemWrapper .data-number2 ul li:first-child {
@@ -208,7 +209,7 @@
 
 .itemWrapper .data-number2 h5 {
     margin-bottom: 5px;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: 600;
     font-family: Outfit;
 }
@@ -218,7 +219,7 @@
 }
 
 .itemWrapper .data-number2 p {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-subtext);
     font-weight: 500;
     margin-bottom: 0;
@@ -226,7 +227,7 @@
 
 
 .itemWrapper .data-number3 p {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-subtext);
     font-weight: 500;
     margin-bottom: 0;
@@ -241,7 +242,7 @@
 }
 
 .itemWrapper .label {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #454545;
     /* position: absolute;
@@ -256,7 +257,7 @@
 }
 
 .itemWrapper .moreInfo {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-subtext);
     display: flex;
@@ -281,7 +282,7 @@
 }
 
 .itemWrapper .moreInfo i {
-    font-size: 16px;
+    font-size: 1rem;
     margin-right: 5px;
 }
 
@@ -368,13 +369,13 @@
 
 .itemWrapper.a.addNew i {
     color: var(--color2);
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 .itemWrapper.a.addNew p {
     margin-top: 10px;
     margin-bottom: 0;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
@@ -427,7 +428,7 @@
 }
 
 .data-number {
-    font-size: 42px;
+    font-size: 2.625rem;
     font-weight: 600;
     font-family: Outfit;
     padding: 5px 0;
@@ -436,11 +437,11 @@
 
 .data-number span {
     color: #7c7c7c;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 .data-number p {
-    font-size: 16px;
+    font-size: 1rem;
     font-family: Roboto;
     font-weight: 400;
     margin: 5px 0 0 0;
@@ -470,7 +471,7 @@
     position: absolute;
     right: 5px;
     top: -5px;
-    font-size: 21px;
+    font-size: 1.3125rem;
 }
 
 #phonePage .tabGroupDetails {
@@ -505,7 +506,7 @@
 }
 
 .circularProgressContent h2 {
-    font-size: 40px;
+    font-size: 2.5rem;
 }
 
 .circularProgressContent p {
@@ -591,7 +592,7 @@
 
 .itemWrapper .invoiceList li {
     display: flex;
-    font-size: 14px;
+    font-size: 0.875rem;
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
@@ -608,7 +609,7 @@
 }
 
 .itemWrapper .invoiceList li span {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-subtext);
 }
 

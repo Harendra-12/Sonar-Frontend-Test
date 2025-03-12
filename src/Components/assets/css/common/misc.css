@@ -23,7 +23,7 @@
 }
 
 .popup .content .iconWrapper i {
-    font-size: 35px;
+    font-size: 2.1875rem;
     color: rgb(255, 102, 0);
 }
 
@@ -75,14 +75,14 @@
     font-family: Roboto;
     color: var(--ui-accent);
     font-weight: 600;
-    font-size: 23px;
+    font-size: 1.4375rem;
     padding: 30px 0px 0px 0px;
 }
 
 .pricing_section .pricing_box p {
     font-family: var(--paragraph);
     font-weight: 400;
-    font-size: 13px;
+    font-size: 0.8125rem;
     margin: 0px 0px 8px 0px;
 }
 
@@ -90,12 +90,12 @@
     font-family: Roboto;
     color: #8d8d8d;
     font-weight: 500;
-    font-size: 13px !important;
+    font-size: 0.8125rem !important;
     margin: 40px 0px 0px 0px;
 }
 
 .pricing_section .pricing_box h5 span {
-    font-size: 15px;
+    font-size: 0.9375rem;
     margin: 0px 0px 0px 6px;
     border-radius: 100px;
     background: #ebe4ff !important;
@@ -106,12 +106,12 @@
     font-family: Roboto;
     color: var(--ui-accent);
     font-weight: 700;
-    font-size: 36px;
+    font-size: 2.25rem;
     padding: 0px 0px 10px 0px;
 }
 
 .pricing_section .pricing_box h2 sub {
-    font-size: 16px;
+    font-size: 1rem;
     color: #212121;
     font-weight: 400;
 }
@@ -136,7 +136,7 @@
 .pricing_section .pricing_box .feture_list h4 {
     text-align: left;
     font-family: Roboto;
-    font-size: 18px !important;
+    font-size: 1.125rem !important;
     font-weight: 500;
 }
 
@@ -198,7 +198,7 @@
 .searchList.cart ul li {
     border: none;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-subtext);
     font-family: Open Sans;
     padding: 0px 0 3px 0;
@@ -207,7 +207,7 @@
 /* .searchList.cart ul li:last-child {
     border-top: 1px solid var(--border-color);
     padding-top: 3px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: inherit;
 } */
 
@@ -272,13 +272,13 @@
 
 .sidePannel .wrapper .label li {
     font-family: Roboto;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 500;
 }
 
 .sidePannel .wrapper ul li {
     font-family: Open Sans;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
 
     display: flex;
@@ -375,7 +375,7 @@
     border: 0;
     color: #000;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 0.875rem;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -431,7 +431,7 @@
 .rccs__number {
     clear: both;
     font-family: "Consolas", "Courier", monospace;
-    font-size: 18px !important;
+    font-size: 1.125rem !important;
     left: 10%;
     position: absolute;
     top: 45%;
@@ -563,7 +563,7 @@ input[type=number] {
 }
 
 .coolinput label.text {
-    font-size: 16px;
+    font-size: 1rem;
     color: #818CF8;
     font-weight: 700;
     position: relative;
@@ -576,7 +576,7 @@ input[type=number] {
 
 .coolinput input[type=text].input {
     padding: 11px 10px;
-    font-size: 18px;
+    font-size: 1.125rem;
     border: 2px #818CF8 solid;
     border-radius: 5px;
     background: #fff;
@@ -608,7 +608,7 @@ input[type=number] {
     background-color: #ddd;
     color: #000;
     padding: 2px 10px;
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
     font-weight: 400 !important;
     margin: 0px 10px 0 0 !important;
     cursor: pointer;
@@ -642,7 +642,7 @@ input[type=number] {
 .contactTags span.more {
     color: red !important;
     background-color: transparent;
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     font-weight: 500;
     padding: 0;
 }
@@ -681,7 +681,7 @@ input[type=number] {
 .contactTags span.removableTag:hover::before {
     content: '\f057';
     font-family: 'Font Awesome 5 Pro';
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 900;
     color: #fff;
     margin-right: 5px;
@@ -696,7 +696,7 @@ input[type=number] {
     border: 1px solid var(--border-color);
     border-radius: 50px;
     padding: 5px 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     background-color: transparent;
     color: inherit;
@@ -715,7 +715,7 @@ input[type=number] {
 }
 
 .newHeader .dropdown-menu .dropdown-item {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-subtext);
     padding: 5px 10px;
     font-weight: 400;
@@ -762,14 +762,14 @@ input[type=number] {
 }
 
 .myProfileWidget .profileName {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 500;
     font-family: Roboto;
 }
 
 .myProfileWidget .profileName span.status {
     display: block;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 400;
     color: var(--color-subtext);
 }
@@ -777,7 +777,7 @@ input[type=number] {
 .viewingAs {
     text-transform: uppercase;
     color: var(--webUtilGray);
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     font-weight: 500;
 }
 
@@ -785,7 +785,7 @@ input[type=number] {
     display: block;
     text-transform: capitalize;
     color: var(--immortalBlack);
-    font-size: 18px;
+    font-size: 1.125rem;
     margin-top: 5px;
 }
 
@@ -852,7 +852,7 @@ input[type=number] {
     border: none;
     color: var(--form-input-text);
     outline: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 700;
 }
 
@@ -886,7 +886,7 @@ input[type=number] {
 
 .popup.music .card .header .card-title {
     padding: 11px;
-    font-size: 16px;
+    font-size: 1rem;
     margin-bottom: 0;
     background: var(--ele-color);
     color: var(--immortalBlack);
@@ -901,13 +901,13 @@ input[type=number] {
 }
 
 .popup.music .card-body .popup-border p {
-    font-size: 14px;
+    font-size: 0.875rem;
     text-align: left;
 }
 
 .popup.music .test-user p span {
     color: var(--ui-accent);
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .popup.music .card-body .popup-border .report {
@@ -921,12 +921,12 @@ input[type=number] {
     border-radius: 40px;
     color: white;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 0.75rem;
     text-align: center;
 }
 
 .popup.music .card-body span {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--muted-text-color);
 }
 
@@ -982,7 +982,7 @@ input[type=number] {
     justify-content: center;
     color: #fff;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 1.25rem;
     margin-right: 15px;
 
     position: relative;
@@ -991,7 +991,7 @@ input[type=number] {
 .someTempDialerDesign ul li .numberHolder.completed::after {
     content: '\f00c';
     font-family: 'Font Awesome 6 Pro';
-    font-size: 12px;
+    font-size: 0.75rem;
     position: absolute;
     top: -7px;
     left: 23px;
@@ -1010,7 +1010,7 @@ input[type=number] {
 }
 
 .someTempDialerDesign ul li .textHolder h3 {
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 400;
     margin-bottom: 0;
     font-family: 'Roboto';
@@ -1139,7 +1139,7 @@ input[type=number] {
 
 .checkbox-wrapper-4 span.checkBoxLabel {
     color: var(--immortalBlack);
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .fileUploadBody {
