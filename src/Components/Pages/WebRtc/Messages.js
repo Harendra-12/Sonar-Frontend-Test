@@ -94,6 +94,7 @@ function Messages({
   const [fileType, setFileType] = useState("")
   console.log("groupSelecedAgents", groupSelecedAgents);
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
+  const tagDropdownRef = useRef();
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -1900,11 +1901,12 @@ function Messages({
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                     data-bs-auto-close="outside"
+                                    ref={tagDropdownRef}
                                   >
                                     <i class="fa-solid fa-circle-plus me-1"></i>{" "}
                                     Add tag
                                   </span>
-                                  <ul class="dropdown-menu">
+                                  <ul class="dropdown-menu" ref={tagDropdownRef}>
                                     {allTags.map((item, key) => {
                                       return (
                                         <div className="contactTagsAddEdit" style={{ width: '350px' }}>
@@ -1993,7 +1995,7 @@ function Messages({
                                       );
                                     })}
                                     <li className="p-2 pb-1">
-                                      <button onClick={() => setAddNewTagPopUp(true)} className="panelButton static">
+                                      <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton static">
                                         <div className="text">Add New Tag</div>
                                       </button>
                                     </li>
