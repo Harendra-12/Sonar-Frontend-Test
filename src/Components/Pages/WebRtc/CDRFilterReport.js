@@ -742,13 +742,13 @@ function CdrFilterReport({ page }) {
                                 <option value={"outbound"}>
                                   Outbound Calls
                                 </option>
-                                <option value={"missed"}>Missed Calls</option>
+                                {/* <option value={"missed"}>Missed Calls</option> */}
                                 <option value={"internal"}>
                                   Internal Calls
                                 </option>
-                                <option value={"transfer"}>
+                                {/* <option value={"transfer"}>
                                   Transfer Calls
-                                </option>
+                                </option> */}
                               </select>
                             </div>
                             <div className="formRow border-0">
@@ -1036,16 +1036,16 @@ function CdrFilterReport({ page }) {
                                                     color: "var(--color3)",
                                                     label: "Outbound",
                                                   },
-                                                  missed: {
-                                                    icon: "fa-phone-missed",
-                                                    color: "var(--funky-boy4)",
-                                                    label: "Missed",
-                                                  },
-                                                  transfer: {
-                                                    icon: "fa-exchange",
-                                                    color: "var(--funky-boy2)",
-                                                    label: "Transfer",
-                                                  },
+                                                  // missed: {
+                                                  //   icon: "fa-solid fa-phone-missed",
+                                                  //   color: "var(--funky-boy4)",
+                                                  //   label: "Missed",
+                                                  // },
+                                                  // transfer: {
+                                                  //   icon: "fa-exchange",
+                                                  //   color: "var(--funky-boy2)",
+                                                  //   label: "Transfer",
+                                                  // },
                                                   internal: {
                                                     icon: "fa-headset",
                                                     color: "var(--color2)",

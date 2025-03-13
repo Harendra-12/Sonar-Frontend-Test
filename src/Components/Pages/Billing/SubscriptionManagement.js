@@ -21,9 +21,11 @@ function SubscriptionManagement() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>
-                                                        Ring Group List
+                                                    Subscription Details
+
                                                     </h4>
-                                                    <p>You can see all list of ring groups</p>
+                                                    <p>You can check all Subscription Details
+                                                    </p>
                                                 </div>
                                                 <div className="buttonGroup">
                                                     <button
