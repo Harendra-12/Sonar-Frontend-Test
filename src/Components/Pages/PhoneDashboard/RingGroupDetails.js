@@ -98,7 +98,7 @@ const RingGroup = () => {
                     <th>Calls Completed</th>
                     <th>Total Calls</th>
                     <th>Members</th>
-                    <th>Destination</th>
+                    <th>Extension</th>
                   </tr>
                 </thead>
                 <tbody className="">
