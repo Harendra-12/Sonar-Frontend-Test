@@ -19,7 +19,7 @@ function AllCallsDetails() {
       {callDetails ? (
         <div class="accordion dashboard" id="accordionPanelsStayOpenExample">
           <div className="row">
-            <div className="col-4 ">
+            <div className="col-3 ">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header ">
                   <button
@@ -138,7 +138,7 @@ function AllCallsDetails() {
                 </div>
               </div>
             </div>
-            <div className="col-4 px-0">
+            <div className="col-3 px-0">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header">
                   <button
@@ -266,7 +266,7 @@ function AllCallsDetails() {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-3">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header">
                   <button
@@ -284,6 +284,130 @@ function AllCallsDetails() {
                           style={{ color: "var(--color3)" }}
                         />{" "}
                         Outbound Calls{" "}
+                        {extensionDataLoading && (
+                          <i
+                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                          ></i>
+                        )}
+                      </div>
+                      <div className="  d-flex align-items-center justify-content-between me-4">
+                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
+                          {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                          ></i>}
+                        </p>
+
+                      </div>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse show">
+                  <div className="accordion-body">
+                    <div className="row g-3">
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    activeCall.filter(
+                                      (call) => call.direction === "outbound"
+                                    ).length
+                                  }
+                                </h3>
+                                <p>Agents On Calls</p>
+                              </div>
+                              <Link to="/active-calls" className="col-3">
+                                <i className="fa-solid fa-phone-intercom"></i>
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper c shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
+                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    ></i>
+                                  }
+                                </h3>
+                                <p>Missed Outbound Calls</p>
+                              </div>
+                              <div className="col-3">
+                                <i className="fa-solid fa-phone-hangup"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper b shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {
+                                    callDetails?.outbound?.completed !== undefined ? callDetails?.outbound?.completed : <i
+                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    ></i>
+                                  }
+                                </h3>
+                                <p>Outbound Calls Completed</p>
+                              </div>
+                              <div className="col-3">
+                                <i className="fa-solid fa-circle-check"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xl-6 col-xxl-6">
+                        <div className="itemWrapper a shadow-none" style={{ border: '1px solid var(--border-color)' }}>
+                          <div className="heading h-auto">
+                            <div className="d-flex flex-wrap justify-content-between">
+                              <div className="col-9">
+                                <h3 style={{ fontWeight: 900 }}>
+                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                  ></i>}
+                                </h3>
+                                <p>Total Outbound Calls</p>
+                              </div>
+                              <div className="col-3">
+                                <i className="fa-solid fa-phone-arrow-up-right"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-3">
+              <div className="accordion-item itemWrapper a h-auto">
+                <h2 class="accordion-header">
+                  <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse0"
+                    aria-expanded="false"
+                    aria-controls="collapse0" >
+                    <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
+                      <div>
+                        <i
+                          className="fa-duotone fa-phone-arrow-up-right"
+                          style={{ color: "var(--color3)" }}
+                        />{" "}
+                        Internal Calls{" "}
                         {extensionDataLoading && (
                           <i
                             class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
