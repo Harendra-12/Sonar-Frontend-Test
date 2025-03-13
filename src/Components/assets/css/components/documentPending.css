@@ -1,5 +1,5 @@
 .documentPending .qLinkContent p {
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: #3e3e3e;
 }
 
@@ -7,7 +7,7 @@
     width: 20px;
     height: 20px;
     background-color: transparent;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: var(--ui-accent);
 }
 

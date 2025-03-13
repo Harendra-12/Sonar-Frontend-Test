@@ -31,7 +31,7 @@ function UserRegistrationProcessOverview() {
       }
 
       .wrapper ul label{
-        font-size: 14px;
+        font-size: 0.875rem;
         color: #5e5e5e;
         font-weight: 500;
         font-family: Roboto;
@@ -40,7 +40,7 @@ function UserRegistrationProcessOverview() {
       .wrapper ul .details{
         float: inline-end;
         color: #000;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 600;
         font-family: Roboto;
       }

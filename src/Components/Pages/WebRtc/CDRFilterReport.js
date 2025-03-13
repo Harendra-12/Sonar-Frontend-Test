@@ -930,7 +930,7 @@ function CdrFilterReport({ page }) {
 
                     <div className="tableContainer">
                       <table>
-                        {cdr?.data?.length > 0 && (
+                        {cdr?.data?.length > 0 ? (
                           <>
                             <thead>
                               <tr style={{ whiteSpace: "nowrap" }}>
@@ -1269,7 +1269,13 @@ function CdrFilterReport({ page }) {
                               )}
                             </tbody>
                           </>
-                        )}
+                        ) : cdr?.data?.length === 0 && !loading ? (
+                          <div>
+                            <EmptyPrompt
+                              type="generic"
+                            />
+                          </div>
+                        ) : ''}
                       </table>
                     </div>
                     <div className="tableHeader mb-3">

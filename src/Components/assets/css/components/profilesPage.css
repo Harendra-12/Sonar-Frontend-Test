@@ -37,7 +37,7 @@
     background-color: #e7f2ff;
     height: 25px;
     width: 25px;
-    font-size: 14px;
+    font-size: 0.875rem;
     border-radius: 50px
 }
 
@@ -65,13 +65,13 @@
 } */
 
 .profileView .baseDetails .content h5 {
-    font-size: 17px !important;
+    font-size: 1.0625rem !important;
     margin-bottom: 5px;
 }
 
 .profileView .baseDetails .content p {
     margin-bottom: 0;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 400;
     color: var(--color-subtext);
 }
@@ -117,7 +117,7 @@
 .qLinkContent ul li a {
     text-decoration: none;
     color: var(--color-subtext);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
 }
 
@@ -132,7 +132,7 @@
 .qLinkContent p {
     margin: 5px 0;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'Open Sans';
 }
 
@@ -141,8 +141,7 @@
     /* margin-left: -10px; */
     /* padding: 5px 10px; */
     font-weight: 600;
-
-
+    font-size: 1rem;
 }
 
 .profileView .profileDetailsHolder .header-left {
@@ -231,7 +230,7 @@
 
 .progressStepWrapper .step i {
     color: #fff;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 .progressStepWrapper label {
@@ -318,7 +317,7 @@
 
 
 .profileView .baseDetails .content h4 {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
     text-wrap: nowrap;
 }
 
@@ -333,5 +332,5 @@
     border-radius: 15px;
     color: rgb(247, 247, 247);
     background-color: green;
-    font-size: 14px;
+    font-size: 0.875rem;
 }

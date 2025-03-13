@@ -9,12 +9,12 @@
 
 .setup .content p {
     font-weight: 300;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #6a6a6a;
 }
 
 .setup .content .title {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 400;
 }
 
@@ -29,7 +29,7 @@
 
 .setup .content .iconWrapperX i {
     color: var(--color1);
-    font-size: 22px;
+    font-size: 1.375rem;
 }
 
 .setup .content .iconWrapperY {
@@ -39,7 +39,7 @@
 
 .setup .content .iconWrapperY i {
     color: var(--ui-accent);
-    font-size: 45px;
+    font-size: 2.8125rem;
 }
 
 .setup .content .imgWrapper {
@@ -55,7 +55,7 @@
 }
 
 .setup .content h5 {
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     color: #454545;
     font-weight: 400;
 }
