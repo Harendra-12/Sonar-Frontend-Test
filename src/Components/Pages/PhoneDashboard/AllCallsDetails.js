@@ -416,7 +416,7 @@ function AllCallsDetails() {
                       </div>
                       <div className="  d-flex align-items-center justify-content-between me-4">
                         <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
-                          {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                          {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
                             class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
                         </p>
@@ -437,7 +437,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     activeCall.filter(
-                                      (call) => call.direction === "outbound"
+                                      (call) => call.direction === "internal"
                                     ).length
                                   }
                                 </h3>
@@ -457,7 +457,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
+                                    callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -478,7 +478,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.outbound?.completed !== undefined ? callDetails?.outbound?.completed : <i
+                                    callDetails?.internal?.completed !== undefined ? callDetails?.internal?.completed : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -498,7 +498,7 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
+                                  {callDetails?.internal?.total!== undefined ? callDetails?.internal?.total : <i
                                     class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
