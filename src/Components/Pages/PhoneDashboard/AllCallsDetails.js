@@ -80,7 +80,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.missed !== undefined ? (callDetails?.inbound.missed + callDetails?.outbound.missed) : <i
+                                    callDetails?.missed !== undefined ? (callDetails?.missed) : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -101,7 +101,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
-                                    callDetails?.success !== undefined ? (callDetails?.inbound.completed + callDetails?.outbound.completed) : <i
+                                    callDetails?.success !== undefined ? (callDetails?.success) : <i
                                       class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
@@ -398,9 +398,9 @@ function AllCallsDetails() {
                     class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#collapse0"
+                    data-bs-target="#collapseinternal"
                     aria-expanded="false"
-                    aria-controls="collapse0" >
+                    aria-controls="collapseinternal" >
                     <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
                       <div>
                         <i
@@ -420,13 +420,11 @@ function AllCallsDetails() {
                             class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
                         </p>
-
-
                       </div>
                     </div>
                   </button>
                 </h2>
-                <div id="collapse3" class="accordion-collapse collapse show">
+                <div id="collapseinternal" class="accordion-collapse collapse show">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -462,7 +460,7 @@ function AllCallsDetails() {
                                     ></i>
                                   }
                                 </h3>
-                                <p>Missed Outbound Calls</p>
+                                <p>Missed Internal Calls</p>
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
@@ -483,7 +481,7 @@ function AllCallsDetails() {
                                     ></i>
                                   }
                                 </h3>
-                                <p>Outbound Calls Completed</p>
+                                <p>Internal Calls Completed</p>
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
@@ -498,11 +496,11 @@ function AllCallsDetails() {
                             <div className="d-flex flex-wrap justify-content-between">
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
-                                  {callDetails?.internal?.total!== undefined ? callDetails?.internal?.total : <i
+                                  {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
                                     class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
-                                <p>Total Outbound Calls</p>
+                                <p>Total Internal Calls</p>
                               </div>
                               <div className="col-3">
                                 <i className="fa-solid fa-phone-arrow-up-right"></i>

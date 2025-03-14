@@ -143,6 +143,7 @@ import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/Campaig
 import EFax from "./Components/Pages/WebRtc/EFax";
 import CustomModule from "./Components/Pages/Setting/CustomModule";
 import SubscriptionManagement from "./Components/Pages/Billing/SubscriptionManagement";
+import GoogleTranslate from "./Components/CommonComponents/GoogleTranslate";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -194,6 +195,7 @@ function App() {
   window.dynamicId = 10;
   return (
     <>
+      <GoogleTranslate />
       <Router>
         <NavigationSetter />
         <DispatchSetter />
