@@ -17,6 +17,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
+import Comments from "./Comments";
 
 
 function CdrReport({ page }) {
@@ -53,6 +54,8 @@ function CdrReport({ page }) {
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [comment, setComment] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -1076,7 +1079,7 @@ function CdrReport({ page }) {
                                         </td>
                                       )}
                                       <td>
-                                        <button className={`tableButton ms-0`}>
+                                        <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
                                           <Tippy content={'View Note'}
                                           >
                                             <i class="fa-solid fa-comment-dots"></i>
@@ -1210,6 +1213,12 @@ function CdrReport({ page }) {
       ) : (
         ""
       )}
+         {selectedCdr !== "" &&
+              <Comments
+                id={selectedCdr}
+                setId={setSelectedCdr}
+              />
+            }
     </main>
   );
 }

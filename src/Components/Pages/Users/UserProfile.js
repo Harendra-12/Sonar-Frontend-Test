@@ -6,7 +6,6 @@ import { backToTop, generalGetFunction, generalPutFunction } from '../../GlobalF
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../Loader/CircularLoader';
-import GoogleTranslate from '../../CommonComponents/GoogleTranslate';
 
 function UserProfile() {
     const navigate = useNavigate();
@@ -267,18 +266,7 @@ function UserProfile() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
-                                                        <div className="content mt-3">
-                                                            <div>
-                                                                <h5>Language</h5>
-                                                                <div className='assigned'>
-                                                                    <p className="">
-                                                                        <GoogleTranslate />
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                  
                                                     <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3">
                                                         <div className="content mt-3">
                                                             <div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { generalPostFunction } from '../../GlobalFunction/globalFunction';
+import axios from 'axios';
 
-function FileUpload({ type, setFileUpload }) {
-    const [selectedFile, setSelectedFile] = useState(null);
+const token = localStorage.getItem("token");
+function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile, setCircularLoading}) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const maxSizeMB = 2;
@@ -50,6 +52,39 @@ function FileUpload({ type, setFileUpload }) {
         return () => URL.revokeObjectURL(objectUrl); // Cleanup
     }, [selectedFile]);
 
+    async function handleConfirm() {
+        setCircularLoading(true)
+        try {
+            const formData = new FormData();
+            formData.append('sharedMessage', selectedFile);
+            
+            const res = await axios.post(
+                'https://testing.webvio.in/backend/api/upload-file',
+                formData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json'
+                    }
+                }
+            );
+            
+            if (res?.status) {
+                toast.success("File uploaded successfully");
+                setSelectedUrl(res?.data?.file_url);
+            } else {
+                toast.error(res?.data?.errors?.sharedMessage?.[0] || "Upload failed");
+            }
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            const errorMessage = error.response?.data?.errors?.sharedMessage?.[0] || "Error uploading file";
+            toast.error(errorMessage);
+        } finally {
+          setFileUpload(false)
+          setCircularLoading(false)
+        }
+    }
     return (
         <div className="popup music">
             <div className="container h-100">
@@ -120,7 +155,7 @@ function FileUpload({ type, setFileUpload }) {
                         </div>
                         <div className="card-footer">
                             <div className="d-flex justify-content-between">
-                                <button className="panelButton m-0" disabled={!selectedFile}>
+                                <button className="panelButton m-0" disabled={!selectedFile}  onClick={()=>handleConfirm()}>
                                     <span className='text'>Confirm</span>
                                     <span className='icon'><i className="fa-solid fa-check" /></span>
                                 </button>
