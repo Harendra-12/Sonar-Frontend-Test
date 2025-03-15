@@ -21,7 +21,7 @@ function SubscriptionManagement() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>
-                                                    Subscription Details
+                                                        Subscription Details
 
                                                     </h4>
                                                     <p>You can check all Subscription Details
@@ -39,16 +39,6 @@ function SubscriptionManagement() {
                                                         <span className="text">Back</span>
                                                         <span className="icon">
                                                             <i class="fa-solid fa-caret-left"></i>
-                                                        </span>
-                                                    </button>
-                                                    <button
-                                                        effect="ripple"
-                                                        className="panelButton"
-                                                        style={{ cursor: "not-allowed" }}
-                                                    >
-                                                        <span className="text">Add</span>
-                                                        <span className="icon">
-                                                            <i class="fa-solid fa-plus"></i>
                                                         </span>
                                                     </button>
                                                 </div>
@@ -69,7 +59,7 @@ function SubscriptionManagement() {
                                                                         <input
                                                                             type="text"
                                                                             className="formItem"
-                                                                            value= {accountDetails.package.name}
+                                                                            value={accountDetails.package.name}
                                                                         />
                                                                     </div>
                                                                 </div>

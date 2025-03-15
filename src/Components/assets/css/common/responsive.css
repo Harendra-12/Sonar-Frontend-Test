@@ -150,6 +150,10 @@
     #sidenNavApp .sidenavItems ul .itemTitle {
         display: none;
     }
+
+    .mainContent .itemWrapper.accordion-item {
+        max-height: max-content;
+    }
 }
 
 @media (max-device-width: 1500px) {

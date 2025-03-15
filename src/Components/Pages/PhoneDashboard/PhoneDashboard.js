@@ -177,7 +177,7 @@ function PhoneDashboard() {
             </div>
             <div className="col-12 mt-3 tangoNavs">
               <AllCallsDetails />
-              <div className="row my-3">
+              <div className="row my-3 gx-xxl-4 gx-lg-3">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
@@ -239,10 +239,10 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{callCenter.length}</h5>
                           <p>
-                           { activeCall.length>0?activeCall
-                .filter((item) => item.application_state === "callcenter"&&( item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length:0}{" "}
-                              Active Calls
-                                {/* /{(ringGroupData &&
+                            {activeCall.length > 0 ? activeCall
+                              .filter((item) => item.application_state === "callcenter" && (item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length : 0}{" "}
+                            Active Calls
+                            {/* /{(ringGroupData &&
                               ringGroupData.filter(
                                 (data) =>
                                   data["variable_DIALSTATUS"] !== "SUCCESS"
@@ -283,8 +283,8 @@ function PhoneDashboard() {
                         <div className="col-10">
                           <h5>{ringGroup.length || 0}</h5>
                           <p>
-                            { activeCall.length>0? activeCall
-                .filter((item) => item.application_state === "ringgroup"&&( item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length:0 } Active Calls /{" "}
+                            {activeCall.length > 0 ? activeCall
+                              .filter((item) => item.application_state === "ringgroup" && (item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length : 0} Active Calls /{" "}
                             {(ringGroupData &&
                               ringGroupData.filter(
                                 (data) =>
@@ -347,11 +347,15 @@ function PhoneDashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-6">
-              <RingGroup />
-            </div>
-            <div className="col-xl-6">
-              <CallQueueDetails />
+            <div className="col-xl-12">
+              <div className="row gx-xxl-4 gx-lg-3">
+                <div className="col-xl-6">
+                  <RingGroup />
+                </div>
+                <div className="col-xl-6">
+                  <CallQueueDetails />
+                </div>
+              </div>
             </div>
           </div>
         </div>
