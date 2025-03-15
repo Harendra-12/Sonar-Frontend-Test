@@ -59,7 +59,7 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             formData.append('sharedMessage', selectedFile);
             
             const res = await axios.post(
-                'https://testing.webvio.in/backend/api/upload-file',
+                'https://demo.webvio.in/backend/api/upload-file',
                 formData,
                 {
                     headers: {
