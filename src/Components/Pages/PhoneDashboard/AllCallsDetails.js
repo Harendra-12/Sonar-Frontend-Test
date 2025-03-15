@@ -18,8 +18,8 @@ function AllCallsDetails() {
     <>
       {callDetails ? (
         <div class="accordion dashboard" id="accordionPanelsStayOpenExample">
-          <div className="row">
-            <div className="col-3 ">
+          <div className="row gy-3 gx-xxl-4 gx-lg-3">
+            <div className="col-lg-3 ">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header ">
                   <button
@@ -138,7 +138,7 @@ function AllCallsDetails() {
                 </div>
               </div>
             </div>
-            <div className="col-3 px-0">
+            <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header">
                   <button
@@ -155,10 +155,10 @@ function AllCallsDetails() {
                           className="fa-duotone fa-phone-arrow-down-left"
                           style={{ color: "var(--funky-boy3)" }}
                         />{" "}
-                        Inbound Calls{" "}
+                        Inbound Calls
                         {extensionDataLoading && (
                           <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                           ></i>
                         )}
                       </div>
@@ -266,7 +266,7 @@ function AllCallsDetails() {
                 </div>
               </div>
             </div>
-            <div className="col-3">
+            <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header">
                   <button
@@ -391,7 +391,7 @@ function AllCallsDetails() {
                 </div>
               </div>
             </div>
-            <div className="col-3">
+            <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 class="accordion-header">
                   <button
@@ -404,8 +404,8 @@ function AllCallsDetails() {
                     <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
                       <div>
                         <i
-                          className="fa-duotone fa-phone-arrow-up-right"
-                          style={{ color: "var(--color3)" }}
+                          className="fa-duotone fa-right-left"
+                          style={{ color: "var(--funky-boy4)" }}
                         />{" "}
                         Internal Calls{" "}
                         {extensionDataLoading && (
