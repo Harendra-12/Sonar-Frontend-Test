@@ -195,7 +195,7 @@ function App() {
   window.dynamicId = 10;
   return (
     <>
-      <GoogleTranslate />
+      {/* <GoogleTranslate /> */}
       <Router>
         <NavigationSetter />
         <DispatchSetter />
