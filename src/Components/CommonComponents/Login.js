@@ -51,9 +51,11 @@ function Login() {
                 <div className="col-xl-6 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
-                      <h3>The simplest way to manage your workforce</h3>
+                      <h3>An Effective PBX Solution for all your Business Communication Needs</h3>
                       <p>Enter your credentials to access your control</p>
-                      <img src={require("../assets/images/logindash.png")} alt="logo" />
+                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <img src={require("../assets/images/pbx.webp")} alt="logo" style={{ marginLeft: '0', width: "85%" }} />
+                      </div>
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
