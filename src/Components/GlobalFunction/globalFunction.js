@@ -66,8 +66,12 @@ export async function generalGetFunction(endpoint) {
       });
       if (err.response?.status === 401) {
         handleNavigation("/");
-        return err.response.data;
-      } else if (err.response?.status >= 500) {
+        return err
+        ?.response?.data;
+      }else if(err?.response?.status === 429){
+       toast.error("Too many attempts. Please wait before trying again.")
+      }
+      else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
       } else {
         return err;

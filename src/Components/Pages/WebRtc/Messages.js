@@ -94,6 +94,8 @@ function Messages({
   const [fileType, setFileType] = useState("")
   console.log("groupSelecedAgents", groupSelecedAgents);
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
+  const [selectedUrl,setSelectedUrl]=useState(null)
+  const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
 
   // Function to handle logout
@@ -271,7 +273,7 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => {
+  const sendSingleMessage = () => { 
     if (messageInput.trim() === "") return;
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
@@ -326,6 +328,8 @@ function Messages({
             });
           }
           setMessageInput("");
+          setSelectedFile(null);
+          setSelectedUrl(null)
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -717,6 +721,10 @@ function Messages({
   }, [groupRefresh]);
 
   console.log("Is admin", isAdmin);
+
+  useEffect(()=>{
+    setMessageInput(selectedUrl)
+  },[selectedUrl])
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -2289,6 +2297,12 @@ function Messages({
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
+                                {selectedFile && (
+    <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
+      📎 {selectedFile.name}
+    </div>
+  )}
+
                                 <textarea
                                   type="text"
                                   name=""
@@ -2297,7 +2311,7 @@ function Messages({
                                   value={messageInput}
                                   onChange={(e) =>
                                     setMessageInput(e.target.value)
-                                  }
+                                    }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       if (recipient[2] === "groupChat") {
@@ -2783,7 +2797,7 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} />
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading}/>
         }
       </main>
     </>

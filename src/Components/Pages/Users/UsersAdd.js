@@ -214,6 +214,7 @@ const UsersAdd = () => {
       setLoading(false);
       // const errorMessage = Object.keys(addUser.errors);
       // toast.error(addUser.errors[errorMessage[0]][0]);
+      toast.error(addUser?.errors?.email[0]);
     }
   });
 

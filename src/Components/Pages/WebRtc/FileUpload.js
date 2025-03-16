@@ -73,6 +73,7 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             if (res?.status) {
                 toast.success("File uploaded successfully");
                 setSelectedUrl(res?.data?.file_url);
+                setFileUpload(null)
             } else {
                 toast.error(res?.data?.errors?.sharedMessage?.[0] || "Upload failed");
             }
