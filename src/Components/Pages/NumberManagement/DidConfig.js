@@ -45,7 +45,7 @@ const DidConfig = () => {
     setValue,
     watch,
   } = useForm();
-
+  
   useEffect(() => {
     if (locationData.configuration !== null) {
       // setDataAvailable(false);
@@ -131,10 +131,10 @@ const DidConfig = () => {
       );
     }
 
-    register("usages", {
-      validate: usagesValidator.validate,
-      ...requiredValidator,
-    });
+    // register("usages", {
+    //   validate: usagesValidator.validate,
+    //   ...requiredValidator,
+    // });
     register("did_id_view", { required: true });
   }, [register, setValue]);
 
@@ -211,6 +211,10 @@ const DidConfig = () => {
     }
     if (locationData.configuration) {
       setLoading(true);
+      if(payload.action=="" ){
+       delete payload.action;
+       delete payload.usages 
+      }
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
         payload
@@ -360,7 +364,8 @@ const DidConfig = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label htmlFor="">
-                              Usage <span className="text-danger">*</span>
+                              Usage 
+                              {/* <span className="text-danger">*</span> */}
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Set how the Destination will be used.
@@ -394,11 +399,11 @@ const DidConfig = () => {
                               label={null}
                               getDropdownValue={actionListValue}
                               value={watch().action}
-                              {...register("action", requiredValidator)}
+                              {...register("action")}
                             />
-                            {errors.action && (
+                            {/* {errors.action && (
                               <ErrorMessage text={errors.action.message} />
-                            )}
+                            )} */}
                           </div>
                         </div>
 

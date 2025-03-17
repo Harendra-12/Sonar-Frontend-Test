@@ -40,7 +40,7 @@
 
 /* SearchBox Icon */
 #headerTitle .searchBox i {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--ui-accent);
 }
 
@@ -112,7 +112,7 @@
 #domainNav .domainListBlock li {
     padding: 5px 10px;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.875rem;
     border-bottom: 1px solid #ffffff47;
 }
 
@@ -120,7 +120,7 @@
 #domainNav .domainListBlock .active {
     background-color: #1b4b726b;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 0.9375rem;
 }
 
 /* --------- Domain Changer SideNav Style --------- */
@@ -128,7 +128,7 @@
 #detailsHeader p {
     font-weight: 300;
     font-family: Outfit;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 #detailsHeader {
@@ -187,7 +187,7 @@
     /* color: #fff; */
     display: inline-block;
     align-items: center;
-    font-size: 16px;
+    font-size: 1rem;
     max-width: 110px;
     overflow: hidden;
     text-overflow: ellipsis;

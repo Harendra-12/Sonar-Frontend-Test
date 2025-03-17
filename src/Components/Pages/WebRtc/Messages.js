@@ -90,9 +90,13 @@ function Messages({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false)
-  const [fileUpload,setFileUpload] = useState(false)
-  const [fileType,setFileType] = useState("")
-console.log("groupSelecedAgents", groupSelecedAgents);
+  const [fileUpload, setFileUpload] = useState(false)
+  const [fileType, setFileType] = useState("")
+  console.log("groupSelecedAgents", groupSelecedAgents);
+  const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
+  const [selectedUrl,setSelectedUrl]=useState(null)
+  const [selectedFile, setSelectedFile] = useState(null);
+  const tagDropdownRef = useRef();
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -171,6 +175,10 @@ console.log("groupSelecedAgents", groupSelecedAgents);
     }
     getData();
   }, [contactRefresh]);
+
+  useEffect(() => {
+    setContactRefresh(contactRefresh + 1)
+  }, [])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -265,7 +273,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => {
+  const sendSingleMessage = () => { 
     if (messageInput.trim() === "") return;
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
@@ -320,6 +328,8 @@ console.log("groupSelecedAgents", groupSelecedAgents);
             });
           }
           setMessageInput("");
+          setSelectedFile(null);
+          setSelectedUrl(null)
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -712,6 +722,10 @@ console.log("groupSelecedAgents", groupSelecedAgents);
 
   console.log("Is admin", isAdmin);
 
+  useEffect(()=>{
+    setMessageInput(selectedUrl)
+  },[selectedUrl])
+
   // Delete tag
   async function handleDeleteTag(id) {
     setLoading(true);
@@ -732,7 +746,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
     setLoading(true);
     const parsedData = {
       tag_id: tagId,
-      user_id: contact.find((contact) => contact.extension === userId).id,
+      user_id: userId
     };
     const apiData = await generalPostFunction(`/tag-users/store`, parsedData);
     if (apiData.status) {
@@ -781,7 +795,6 @@ console.log("groupSelecedAgents", groupSelecedAgents);
     });
   };
 
-  console.log(allAgents, "groupSelecedAgents", groupSelecedAgents);
   const handleSelectAll = () => {
     const newSelectAllState = !selectAll; // Toggle Select All state
     setSelectAll(newSelectAllState);
@@ -811,7 +824,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
     setNewGroupLoader(true);
     const parsedData = {
       group_name: groupname,
-      user_id: [...groupSelecedAgents.map((agent) => agent.id),account.id],
+      user_id: [...groupSelecedAgents.map((agent) => agent.id), account.id],
     };
     const apiData = await generalPostFunction("/groups/store", parsedData);
     if (apiData.status) {
@@ -916,7 +929,6 @@ console.log("groupSelecedAgents", groupSelecedAgents);
     }));
     setMessageInput("");
   }
-
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
@@ -927,19 +939,19 @@ console.log("groupSelecedAgents", groupSelecedAgents);
   }, [groupMessage])
 
   // Handle logic to make any user admin or remove any user from admin
-  async function manageAdmin(id,groupId,userId,isAdmin) {
+  async function manageAdmin(id, groupId, userId, isAdmin) {
     setLoading(true);
     const parsedData = {
-      'group_id' : groupId,
-      'user_id' : userId,
-      'is_admin' : isAdmin,
+      'group_id': groupId,
+      'user_id': userId,
+      'is_admin': isAdmin,
     }
-    const apiData = await generalPutFunction(`/group-users/update/${id}`,parsedData)
-    if(apiData.status){
+    const apiData = await generalPutFunction(`/group-users/update/${id}`, parsedData)
+    if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
       setGroupRefresh(groupRefresh + 1);
-    }else{
+    } else {
       setLoading(false);
       toast.error(apiData.message)
     }
@@ -949,11 +961,11 @@ console.log("groupSelecedAgents", groupSelecedAgents);
   async function handleDeleteGroup(id) {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/groups/destroy/${id}`)
-    if(apiData.status){
+    if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message)
       setGroupRefresh(groupRefresh + 1);
-    }else{
+    } else {
       setLoading(false);
       toast.error(apiData.message)
     }
@@ -963,6 +975,58 @@ console.log("groupSelecedAgents", groupSelecedAgents);
 
   return (
     <>
+      {addNewTagPopUp && <div className="addNewContactPopup">
+        <div className="row">
+          <div className="col-12 heading">
+            <i className="fa-light fa-tag"></i>
+            <h5>Please enter a Tag name</h5>
+            <div className="border-bottom col-12" />
+          </div>
+          <div className="col-xl-12">
+            <div className="formLabel">
+              <label for="">Full Name</label>
+            </div>
+            <div className="col-12">
+              <input type="text"
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                placeholder="Please enter tag name"
+                className="formItem"
+              />
+            </div>
+          </div>
+
+          <div className="col-xl-12 mt-4">
+            <div className="d-flex justify-content-between">
+              <button
+                disabled={loading}
+                className="panelButton gray ms-0"
+                onClick={() => setAddNewTagPopUp(false)}
+              >
+                <span className="text">Cancel</span>
+                <span className="icon">
+                  <i class="fa-solid fa-caret-left"></i>
+                </span>
+              </button>
+              <button
+                disabled={loading}
+                className="panelButton me-0"
+                onClick={() => {
+                  handleNewTag();
+                  setAddNewTagPopUp(false)
+                }}
+
+              >
+                <span className="text">Save</span>
+                <span className="icon">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>}
+
       {allLogOut && (
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
       )}
@@ -1145,7 +1209,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                       >
                         Online
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setActiveTab("tags")}
                         className={
                           activeTab === "tags" ? "tabLink active" : "tabLink"
@@ -1154,7 +1218,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                         data-category="incoming"
                       >
                         Tags
-                      </button>
+                      </button> */}
                       <button
                         onClick={() => setActiveTab("group")}
                         className={
@@ -1378,7 +1442,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                             aria-expanded="false"
                             aria-controls="collapse2"
                           >
-                            Online <i class="fa-solid fa-chevron-down"></i>
+                            Online<i class="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
                         <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
@@ -1483,7 +1547,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                       onClick={handleUpdateTag}
                                     >
                                       <Tippy content="Click to save your tag!">
-                                        <i class="fa-regular fa-circle-check"></i>
+                                        <i class="fa-regular fa-floppy-disk"></i>
                                       </Tippy>
                                     </button>
                                   ) : (
@@ -1843,26 +1907,105 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
+                                    data-bs-auto-close="outside"
+                                    ref={tagDropdownRef}
                                   >
                                     <i class="fa-solid fa-circle-plus me-1"></i>{" "}
                                     Add tag
                                   </span>
-                                  <ul class="dropdown-menu">
-                                    {allTags.map((item) => {
+                                  <ul class="dropdown-menu" ref={tagDropdownRef}>
+                                    {allTags.map((item, key) => {
                                       return (
-                                        <li
-                                          className="dropdown-item"
-                                          onClick={() =>
-                                            handleAssignTask(
-                                              item.id,
-                                              recipient[0]
-                                            )
-                                          }
-                                        >
-                                          {item.name}
-                                        </li>
+                                        <div className="contactTagsAddEdit" style={{ width: '350px' }}>
+                                          <div className="row align-items-center item">
+                                            <div className="col-4">
+                                              <h5>
+                                                <input
+                                                  value={
+                                                    selectedTag === item.id
+                                                      ? upDateTag
+                                                      : item.name
+                                                  }
+                                                  onChange={(e) =>
+                                                    setUpDateTag(e.target.value)
+                                                  }
+                                                  placeholder="Please enter tag name"
+                                                  type="text"
+                                                  disabled={selectedTag !== item.id}
+                                                  className="w-100"
+                                                />
+                                              </h5>
+                                            </div>
+                                            <div className="col-3">
+                                              <span data-id="0">
+                                                {
+                                                  selectedTag === item.id
+                                                    ? upDateTag
+                                                    : item.name
+                                                }
+                                              </span>
+                                            </div>
+                                            <div className="col-auto d-flex justify-content-end pe-0">
+                                              <button
+                                                className="clearButton2 xl"
+                                                onClick={() =>
+                                                  handleAssignTask(
+                                                    item?.id,
+                                                    recipient[1]
+                                                  )
+                                                }
+                                              ><i className="fa-regular fa-check" /></button>
+                                              {selectedTag === item.id ? (
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={handleUpdateTag}
+                                                >
+                                                  <Tippy content="Click to save your tag!">
+                                                    <i class="fa-regular fa-floppy-disk"></i>
+                                                  </Tippy>
+                                                </button>
+                                              ) : (
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={() => {
+                                                    setSelectedTag(item.id);
+                                                    setUpDateTag(item.name);
+                                                  }}
+                                                >
+                                                  <Tippy content="You can edit the tag here!">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                  </Tippy>
+                                                </button>
+                                              )}
+                                              <Tippy content="Click to delete your tag!">
+                                                <button
+                                                  className="clearButton2 xl"
+                                                  onClick={() => handleDeleteTag(item.id)}
+                                                >
+                                                  <i class="fa-regular fa-trash text-danger"></i>
+                                                </button>
+                                              </Tippy>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        // <li
+                                        //   className="dropdown-item"
+                                        //   onClick={() =>
+                                        //     handleAssignTask(
+                                        //       item.id,
+                                        //       recipient[0]
+                                        //     )
+                                        //   }
+                                        // >
+                                        //   {item.name}
+                                        // </li>
                                       );
                                     })}
+                                    <li className="p-2 pb-1">
+                                      <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton static">
+                                        <div className="text">Add New Tag</div>
+                                      </button>
+                                    </li>
                                   </ul>
                                 </div>
                               }
@@ -2154,6 +2297,12 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
+                                {selectedFile && (
+    <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
+      📎 {selectedFile.name}
+    </div>
+  )}
+
                                 <textarea
                                   type="text"
                                   name=""
@@ -2162,7 +2311,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                   value={messageInput}
                                   onChange={(e) =>
                                     setMessageInput(e.target.value)
-                                  }
+                                    }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       if (recipient[2] === "groupChat") {
@@ -2202,13 +2351,13 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => {setFileUpload(true);setFileType("image")}}
+                                  onClick={() => { setFileUpload(true); setFileType("image") }}
                                 >
                                   <i class="fa-regular fa-image"></i>
                                 </button>
                                 <button
                                   className="clearButton2"
-                                  onClick={() => {setFileUpload(true);setFileType("all")}}
+                                  onClick={() => { setFileUpload(true); setFileType("all") }}
                                 >
                                   <i class="fa-solid fa-paperclip"></i>
                                 </button>
@@ -2498,7 +2647,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                       agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
                                       is_admin: matchingAgent?.is_admin,
                                       userId: matchingAgent?.user_id,
-                                      group_id:matchingAgent?.group_id,
+                                      group_id: matchingAgent?.group_id,
                                     };
                                   }).map((item, index) => {
                                     return (
@@ -2531,13 +2680,13 @@ console.log("groupSelecedAgents", groupSelecedAgents);
                                                   {
                                                     item.is_admin ?
                                                       <li>
-                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                        <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
                                                           Dismiss Group Admin
                                                         </div>
                                                       </li>
                                                       :
                                                       <li>
-                                                        <div className="dropdown-item" onClick={()=>manageAdmin(item.agentId,item.group_id,item.userId, !item.is_admin)}>
+                                                        <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
                                                           Make Group Admin
                                                         </div>
                                                       </li>}
@@ -2648,7 +2797,7 @@ console.log("groupSelecedAgents", groupSelecedAgents);
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} />
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading}/>
         }
       </main>
     </>

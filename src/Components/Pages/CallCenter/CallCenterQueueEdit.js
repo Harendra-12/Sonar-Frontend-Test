@@ -173,6 +173,79 @@ function CallCenterQueueEdit() {
     }
   }, []);
 
+  // function to get Updated Agent data
+  function getRefreshAgentData(){
+    if (account && account.id) {
+      async function getData() {
+        setLoading(true);
+        const userData = await generalGetFunction(`/user/search?account=${account.account_id}`);
+        const callCenterData = await generalGetFunction(
+          `call-center-queues/show/${value}`
+        );
+        if (userData?.status) {
+          setLoading(false);
+          if (userData.data.length === 0) {
+            toast.error("Please create user first");
+          } else {
+            const filterUser = userData.data.filter(
+              (item) => item.extension_id !== null
+            );
+
+            if (filterUser.length > 0) {
+              setUser(filterUser);
+            } else {
+              toast.error("No user found with assign extension");
+            }
+          }
+        } else {
+          setLoading(false);
+        }
+        if (callCenterData?.status) {
+          setLoading(false);
+          const { agents, recording_enabled } = callCenterData.data;
+          setPrevAgents(agents);
+          setAgent(
+            agents.map((item, index) => {
+              return {
+                id: item.id,
+                name: item.agent_name,
+                level: item.tier_level,
+                call_timeout: item.call_timeout,
+                reject_delay_time: item.reject_delay_time,
+                max_no_answer: item.max_no_answer,
+                no_answer_delay_time: item.no_answer_delay_time,
+                wrap_up_time: item.wrap_up_time,
+                reserve_agents: item.reserve_agents,
+                busy_delay_time: item.busy_delay_time,
+                position: item.tier_position,
+                type: item.type,
+                password: item?.password,
+                contact: item.contact,
+                "truncate-agents-on-load": item["truncate_agents_on_load"],
+                "truncate-tiers-on-load": item["truncate_tiers_on_load"],
+              };
+            })
+          );
+
+          const destructuredData = {
+            ...callCenterData.data,
+            ...{
+              recording_enabled: recording_enabled === 1 ? "true" : "false",
+            },
+          };
+
+          reset(destructuredData);
+        } else {
+          setLoading(false);
+          navigate(-1);
+        }
+      }
+      getData();
+    } else {
+      setLoading(false);
+    }
+  }
+
   // Calling user and sound api to get user and sound data at time of page render
   useEffect(() => {
     async function getData() {
@@ -369,6 +442,7 @@ function CallCenterQueueEdit() {
     };
     setLoading(true);
     // delete payload.record_template;
+    getRefreshAgentData();
     const apiData = await generalPutFunction(
       `/call-center-queues/update/${value}`,
       payload
@@ -380,6 +454,7 @@ function CallCenterQueueEdit() {
         type: "SET_CALLCENTERREFRESH",
         callCenterRefresh: callCenterRefresh + 1,
       });
+
       // navigate("/cal-center-queue");
     } else {
       setLoading(false);

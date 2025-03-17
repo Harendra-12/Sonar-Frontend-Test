@@ -133,7 +133,7 @@ function DocumentUpload() {
     width: 100%;
     height: 44px;
     font-family: 'Roboto';
-    font-size: 13px;
+    font-size: 0.8125rem;
     outline: none;
     padding-left: 10px;
     border: 1px solid #7ec9f4;

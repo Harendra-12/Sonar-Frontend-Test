@@ -78,7 +78,7 @@ const Users = () => {
         setLoading(false);
         setRefreshState(false);
         // console.log(apiData.response.status);
-        if (apiData.response.status === 403) {
+        if (apiData?.response?.status === 403) {
           setNoPermissionToRead(true);
         }
       }

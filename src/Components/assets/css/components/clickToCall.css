@@ -16,7 +16,7 @@
 
     position: static;
     right: 10px;
-    
+
     z-index: 9999;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .clickToCall .clickToCallButton button i {
-    font-size: 27px;
+    font-size: 1.6875rem;
     line-height: 60px;
     color: var(--text-color);
 }
@@ -60,6 +60,7 @@
     overflow: hidden;
     background-color: var(--text-color);
 }
+
 .clickToCall .clickToCallModule {
     margin-top: 15px;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2);
@@ -129,7 +130,7 @@
 
 .clickToCall .clickToCallModule .clickToCallHeader .wrapper .text h5 {
     margin-bottom: 0;
-    font-size: 22px !important;
+    font-size: 1.375rem !important;
     font-weight: 600;
     color: var(--text-color);
 }
@@ -139,7 +140,7 @@
     overflow: visible;
     word-break: inherit;
     white-space: break-spaces;
-    font-size: 14px;
+    font-size: 0.875rem;
     margin-bottom: 0;
 }
 

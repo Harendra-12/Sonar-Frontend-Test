@@ -679,7 +679,7 @@ function Document({
                                           <div className="col-auto ps-0 pe-2">
                                             <div className="iconWrapper2">
                                               {item.status === "1" ? (
-                                                <i className="fa-solid fa-check text-success"></i>
+                                                <i className="fa-solid fa-check "></i>
                                               ) : item.status === "2" ? (
                                                 <i className="fa-solid fa-xmark text-danger"></i>
                                               ) : (

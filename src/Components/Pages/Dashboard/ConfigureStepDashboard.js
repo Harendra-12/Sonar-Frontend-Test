@@ -126,8 +126,11 @@ function ConfigureStepDashboard({ account2 }) {
 
   return (
     <div>
-      <div className="profileView">
-        <div className="profileDetailsHolder position-relative">
+     <div className="container">
+     <div className="row">
+        <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+        <div className="profileView">
+        <div className="profileDetailsHolder shadow-none position-relative">
           <div className="contentFinal">
             <h2>
               Congratulations<span>!</span>
@@ -152,12 +155,19 @@ function ConfigureStepDashboard({ account2 }) {
               </div>
             )}
           </div>
+
+          <div className="row">
+            <div className="col-md-6"></div>
+            <div className="col-md-6"></div>
+
+      
           {configure ? (
+            
             <div className="configProgressWrapper">
               <ul>
                 <li>
                   <p className="text-center">
-                    Please write last 3 digits of the number which you want in
+                    Please write first 3 digits of the number which you want in
                     DID.
                   </p>
                 </li>
@@ -346,6 +356,7 @@ function ConfigureStepDashboard({ account2 }) {
                 ""
               )}
             </div>
+
           ) : (
             ""
           )}
@@ -364,8 +375,13 @@ function ConfigureStepDashboard({ account2 }) {
           ) : (
             ""
           )}
+
+</div>
         </div>
       </div>
+        </div>
+      </div>
+     </div>
       <ToastContainer
         position="bottom-right"
         autoClose={3000}

@@ -129,7 +129,7 @@ const UsersAdd = () => {
         ...options,
       ]);
     }
-  }, [accountDetails, user,extension]);
+  }, [accountDetails, user, extension]);
 
   //Calling useName api for availability check after user stop typing
   async function checkUserName() {
@@ -214,6 +214,7 @@ const UsersAdd = () => {
       setLoading(false);
       // const errorMessage = Object.keys(addUser.errors);
       // toast.error(addUser.errors[errorMessage[0]][0]);
+      toast.error(addUser?.errors?.email[0]);
     }
   });
 
@@ -410,7 +411,7 @@ const UsersAdd = () => {
                               Password <span className="text-danger">*</span>
                             </label>
                             <label htmlFor="data" className="formItemDesc">
-                              Required: At least 4 character
+                              Required: At least 6 character
                             </label>
                           </div>
                           <div className="col-6">

@@ -66,7 +66,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 }
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-comment"></i>
+                  <i className="fa-regular fa-comment"></i>
                 </div>
                 <div className="itemTitle">Messages</div>
               </div>
@@ -88,22 +88,22 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-               
+
                 className="navItem"
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-paper-plane"></i>
+                  <i className="fa-regular fa-paper-plane"></i>
                 </div>
                 <div className="itemTitle">Fax </div>
               </div>
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-              
+
                 className="navItem "
               >
                 <div className="iconHolder">
-                <i className="fa-regular fa-envelope"></i>
+                  <i className="fa-regular fa-envelope"></i>
                 </div>
                 <div className="itemTitle">Email</div>
               </div>
@@ -131,7 +131,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                  <i className="fa-solid fa-headset"></i>
+                    <i className="fa-solid fa-headset"></i>
                   </div>
                   <div className="itemTitle">Call Dashboard</div>
                 </div>
@@ -160,7 +160,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   }
                 >
                   <div className="iconHolder">
-                  <i className="fa-solid fa-users-viewfinder"></i>
+                    <i className="fa-solid fa-users-viewfinder"></i>
                   </div>
                   <div className="itemTitle">Conference</div>
                 </div>

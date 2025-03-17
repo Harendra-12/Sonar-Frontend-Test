@@ -79,7 +79,7 @@ const Extensions = () => {
     if (extensionByAccount.data) {
       setExtension(extensionByAccount);
       if (pageNumber === 1 && itemsPerPage === 10) {
-        setLoading(false);
+        // setLoading(false);
       }
       // setLoading(false);
       async function getData() {
@@ -173,14 +173,7 @@ const Extensions = () => {
                           </span>
                         </button>
                         <Link
-                          // to="/extensions-add"
-                          to="#"
-                          onClick={() =>
-                            window.open(
-                              "https://ucaas.webvio.in:3001/",
-                              "_blank"
-                            )
-                          }
+                          to="/store-extension"
                           effect="ripple"
                           className="panelButton"
                         >

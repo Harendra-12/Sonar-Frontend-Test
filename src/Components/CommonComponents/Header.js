@@ -14,7 +14,7 @@ function Header(props) {
   const account = useSelector((state) => state.account);
   // const accountDetails = useSelector((state) => state.accountDetails);
   const balance = useSelector((state) => state.balance);
-  const accountBalance = useSelector((state)=>state.accountBalance)
+  const accountBalance = useSelector((state) => state.accountBalance)
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
   const [popUp, setPopUp] = useState(false);
@@ -111,27 +111,27 @@ function Header(props) {
         <div className="col-auto">
           <div className="d-flex justify-content-end align-items-center">
             {account?.extension_id &&
-            <div className="my-auto mx-3">
-              <Tippy content="Click here to open dialer!">
-                <a
-                  href="/webrtc"
-                  target="_blank"
-                  style={{ cursor: "pointer" }}
-                  className="clearColorButton"
-                >
-                  <i className="fa-regular fa-phone-office" />{" "}
-                  <span className="d-none d-xl-inline-block">
-                    Go to Dialer
-                  </span>
-                </a>
-              </Tippy>
-            </div>
+              <div className="my-auto mx-3">
+                <Tippy content="Click here to open dialer!">
+                  <a
+                    href="/webrtc"
+                    target="_blank"
+                    style={{ cursor: "pointer" }}
+                    className="clearColorButton"
+                  >
+                    <i className="fa-regular fa-phone-office" />{" "}
+                    <span className="d-none d-xl-inline-block">
+                      Go to Dialer
+                    </span>
+                  </a>
+                </Tippy>
+              </div>
             }
             <div>
               <Tippy content="Your available balance, click to know more!">
                 <div
                   onClick={() => navigate("/card-details")}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", minWidth: '140px' }}
                   className="clearColorButton"
                 >
                   <i className="fa-regular fa-wallet" />{" "}
@@ -186,9 +186,9 @@ function Header(props) {
               </Link>
             </div>
             <div className="dropdown-item">
-              <Link to={"/my-profile"} className="clearButton">
+              <Link to={"/users-profile"} className="clearButton">
                 <i class="fa-regular fa-user me-2" aria-hidden="true"></i>
-                Profile
+                My Profile
               </Link>
             </div>
             <div

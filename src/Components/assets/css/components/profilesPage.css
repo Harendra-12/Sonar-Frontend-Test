@@ -29,15 +29,15 @@
     left: 127px; */
 }
 
-.profileicons span i {
+.profileicons i {
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--ui-accent);
     background-color: #e7f2ff;
-    height: 20px;
-    width: 20px;
-    font-size: 10px;
+    height: 25px;
+    width: 25px;
+    font-size: 0.875rem;
     border-radius: 50px
 }
 
@@ -65,13 +65,13 @@
 } */
 
 .profileView .baseDetails .content h5 {
-    font-size: 17px !important;
+    font-size: 1.0625rem !important;
     margin-bottom: 5px;
 }
 
 .profileView .baseDetails .content p {
     margin-bottom: 0;
-    font-size: 13px;
+    font-size: 0.875rem;
     font-weight: 400;
     color: var(--color-subtext);
 }
@@ -117,7 +117,7 @@
 .qLinkContent ul li a {
     text-decoration: none;
     color: var(--color-subtext);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
 }
 
@@ -132,7 +132,7 @@
 .qLinkContent p {
     margin: 5px 0;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1rem;
     font-family: 'Open Sans';
 }
 
@@ -141,8 +141,7 @@
     /* margin-left: -10px; */
     /* padding: 5px 10px; */
     font-weight: 600;
-
-
+    font-size: 1rem;
 }
 
 .profileView .profileDetailsHolder .header-left {
@@ -231,7 +230,7 @@
 
 .progressStepWrapper .step i {
     color: #fff;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 .progressStepWrapper label {
@@ -275,7 +274,7 @@
     border-top-color: #cb8a00;
 }
 
-    
+
 
 .float-end {
     text-align: end;
@@ -305,11 +304,11 @@
     /* top: 20px; */
 }
 
-.profileView .baseDetails .content .assigned{
+.profileView .baseDetails .content .assigned {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-   /* border: 1px solid green; */
+    /* border: 1px solid green; */
     border-radius: 5px;
     color: green;
     /* background-color: rgb(220, 221, 220); */
@@ -317,12 +316,12 @@
 }
 
 
-.profileView .baseDetails .content  h4{
-font-size: 12px !important ;
-text-wrap: nowrap;
+.profileView .baseDetails .content h4 {
+    font-size: 0.75rem !important;
+    text-wrap: nowrap;
 }
 
-.profileView .baseDetails .content .assigned i{
+.profileView .baseDetails .content .assigned i {
 
     height: 20px;
     width: 20px;
@@ -331,7 +330,7 @@ text-wrap: nowrap;
     justify-content: center;
     border: 1px solid green;
     border-radius: 15px;
-    color:rgb(247, 247, 247);
+    color: rgb(247, 247, 247);
     background-color: green;
-    font-size: 14px;
+    font-size: 0.875rem;
 }

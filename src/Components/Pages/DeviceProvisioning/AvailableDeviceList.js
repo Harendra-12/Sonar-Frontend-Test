@@ -4,6 +4,7 @@ import { backToTop, generalDeleteFunction, generalGetFunction, generalPutFunctio
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 function AvailableDeviceList() {
     const navigate = useNavigate();
@@ -67,6 +68,7 @@ function AvailableDeviceList() {
             setRefresh(refresh + 1)
             setLoading(false)
             setPopu(false)
+            setSelectDeviceEdit(false)
         } else {
             setLoading(false)
             setPopu(false)
@@ -145,23 +147,19 @@ function AvailableDeviceList() {
                                 </div>
                                 <div className="col-12" style={{ padding: '25px 23px', borderBottom: '1px solid #ddd' }}>
                                     <div className='row gx-5'>
-                                        <div className='col-xl-6' style={{ borderRight: '1px solid var(--border-color)' }}>
+                                        <div className={`col-xl-${provesionDevice.length > 0 ? '6' : '12'}`} style={{ borderRight: '1px solid var(--border-color)' }}>
                                             {
                                                 provesionDevice.length > 0 ? (
                                                     provesionDevice.map((item, index) => {
                                                         return (
-                                                            <div className={`deviceProvision row align-items-center ${selectedDdeviceIs === item.id ? 'active' : ""} `} key={index} onClick={() => { setSelectedDdeviceIs(item.id); setSelectedBrand(item.brand_id); setSelectedModel(item.model_id); setSerialNumber(item.serial_number); setStatus(item.status) }}>
-                                                                <div className="formRow col-xl-6">
+                                                            <div className={`deviceProvision row align-items-center ${item.status === "active" ? 'active' : ""} `} key={index} onClick={() => { setSelectedDdeviceIs(item.id); setSelectedBrand(item.brand_id); setSelectedModel(item.model_id); setSerialNumber(item.serial_number); setStatus(item.status) }}>
+                                                                <div className="formRow col justify-content-start">
                                                                     <div className="col-4">
                                                                         <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                                     </div>
                                                                     <div className="formLabel ">
                                                                         <label htmlFor=""><h5>{allDevices.filter((device) => device.id === item.brand_id)[0]?.name}</h5></label>
                                                                         <p>Brand: {allDevices.filter((device) => device.id === item.brand_id)[0]?.name}</p>
-                                                                        <br />
-                                                                        <label>
-                                                                            {/* <b style={{ fontSize: 12, color: "var(--formLabel)" }}>Available in account: 0</b> */}
-                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <div className='col-xl-6'>
@@ -175,13 +173,19 @@ function AvailableDeviceList() {
                                                                             </label>
                                                                         </div>
                                                                         <button className="tableButton edit mx-2" onClick={() => setSelectDeviceEdit(true)}><i className="fa-solid fa-pencil"></i></button>
-                                                                        <button className="tableButton delete" onClick={() => { setDeleteId(item.id); setPopu(true); setStatus("") }}><i className="fa-solid fa-trash"></i></button>
+                                                                        <button className="tableButton delete" onClick={() => { setDeleteId(item.id); setPopu(true); setStatus(""); setSelectDeviceEdit(false) }}><i className="fa-solid fa-trash"></i></button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         )
                                                     })
-                                                ) : "You do not configure any device yet"
+                                                ) : (
+                                                    <div>
+                                                        <EmptyPrompt
+                                                            name="Device"
+                                                        />
+                                                    </div>
+                                                )
                                             }
 
                                         </div>
@@ -248,6 +252,10 @@ function AvailableDeviceList() {
                                                     </div>
                                                 </div>
                                                 <div className="formRow">
+                                                    <button className="panelButton gray ms-0" onClick={() => setSelectDeviceEdit(false)} type='button'>
+                                                        <span className="text" >Close</span>
+                                                        <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                                                    </button>
                                                     <button className="panelButton ms-auto" onClick={() => updateDevice()} type='button'>
                                                         <span className="text" >Update</span>
                                                         <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>

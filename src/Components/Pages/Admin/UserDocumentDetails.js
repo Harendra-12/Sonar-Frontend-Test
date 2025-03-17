@@ -5,7 +5,7 @@ import {
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useLocation } from "react-router-dom";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import CircularLoader from "../../Loader/CircularLoader";
 
@@ -103,7 +103,7 @@ function UserDocumentDetails() {
         padding-bottom: 0;
       }
       .qLinkContent p{
-        font-size: 16px;
+        font-size: 1rem;
       }
       .wrapper{
         padding: 10px 15px 0 ;
@@ -118,7 +118,7 @@ function UserDocumentDetails() {
       }
 
       .wrapper ul label{
-        font-size: 14px;
+        font-size: 0.875rem;
         color: #5e5e5e;
         font-weight: 500;
         font-family: Roboto;
@@ -127,7 +127,7 @@ function UserDocumentDetails() {
       .wrapper ul .details{
         float: inline-end;
         color: #000;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 600;
         font-family: Roboto;
       }
@@ -159,7 +159,7 @@ function UserDocumentDetails() {
       }
 
       .qLinkContent .iconWrapper i{
-        font-size: 20px;
+        font-size: 1.25rem;
       }
      
     `}

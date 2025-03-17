@@ -47,34 +47,20 @@ function ExtensionStore() {
                       <p>Perfect for small teams</p>
                       <div className='d-flex align-items-center justify-content-start'>
                         <div className='total-discount'>
-
-                          <div>
-                            <span className='discount-price'>$30/month</span>
-                            <span className='discount'></span>
-                          </div>
-
+                          <span>$30 / month</span>
                         </div>
                         <div className='total-save ms-2'>
                           <p className='m-0 p-0'>
                             save 10%
                           </p>
-
                         </div>
                       </div>
-
-
-
-
                       <p className="price">$20 </p>
-
-
-
                       <div>
                         <p>
                           /user/month* <span>paid annually</span>
                         </p>
                       </div>
-
                       <ul>
                         <li>Unlimited domestic calling</li>
                         <li>Business SMS and MMS</li>
@@ -99,18 +85,12 @@ function ExtensionStore() {
                       <p>Great for growing teams</p>
                       <div className='d-flex align-items-center justify-content-start'>
                         <div className='total-discount'>
-
-                          <div>
-                            <span className='discount-price'>$30/month</span>
-                            <span className='discount'></span>
-                          </div>
-
+                          <span >$30 / month</span>
                         </div>
                         <div className='total-save ms-2'>
                           <p className='m-0 p-0'>
                             save 10%
                           </p>
-
                         </div>
                       </div>
                       <p className="price">$40 </p>
@@ -119,7 +99,6 @@ function ExtensionStore() {
                           /user/month* <span>paid annually</span>
                         </p>
                       </div>
-
                       <ul>
                         <li>Unlimited domestic calling</li>
                         <li>Business SMS and MMS</li>
@@ -127,10 +106,8 @@ function ExtensionStore() {
                         <li>HD video meetings (200 participants)</li>
                         <li>Single sign-on</li>
                       </ul>
-                      <div className="d-flex align-items-center justify-content-between ">
-                        {/* <button type='btn' className='btn btn-sm btn-outline-primary '>try now </button> */}
+                      <div className="storeBtnGroup">
                         <button type='btn' className='btn btn-sm btn-primary mt-2 btns-hover-after'>Buy Now</button>
-                        {/* <div className="try-add-btn2">Buy Now</div> */}
                       </div>
                     </div>
                   </div>
@@ -141,18 +118,12 @@ function ExtensionStore() {
                       <p>Ideal for large teams</p>
                       <div className='d-flex align-items-center justify-content-start'>
                         <div className='total-discount'>
-
-                          <div>
-                            <span className='discount-price'>$30/month</span>
-                            <span className='discount'></span>
-                          </div>
-
+                          <span>$30 / month</span>
                         </div>
                         <div className='total-save ms-2'>
                           <p className='m-0 p-0'>
                             save 10%
                           </p>
-
                         </div>
                       </div>
                       <p className="price">$60 </p>
@@ -161,7 +132,6 @@ function ExtensionStore() {
                           /user/month* <span>paid annually</span>
                         </p>
                       </div>
-
                       <ul>
                         <li>Unlimited domestic calling</li>
                         <li>Business SMS and MMS</li>
@@ -169,11 +139,8 @@ function ExtensionStore() {
                         <li>HD video meetings (500 participants)</li>
                         <li>Priority support</li>
                       </ul>
-                      <div className="d-flex align-items-center justify-content-between ">
-                        {/* <button type='btn' className='btn btn-sm btn-outline-primary '>try now </button> */}
-
+                      <div className="storeBtnGroup">
                         <button type='btn' className='btn btn-sm btn-primary  mt-2 btns-hover-after'>Buy Now</button>
-                        {/* <div className="try-add-btn2">Buy Now</div> */}
                       </div>
                     </div>
                   </div>
@@ -184,28 +151,20 @@ function ExtensionStore() {
                       <p>Tailored to your needs</p>
                       <div className='d-flex align-items-center justify-content-start'>
                         <div className='total-discount'>
-
-                          <div>
-                            <span className='discount-price'>$30/month</span>
-                            <span className='discount'></span>
-                          </div>
-
+                          <span>$30 / month</span>
                         </div>
                         <div className='total-save ms-2'>
                           <p className='m-0 p-0'>
                             save 10%
                           </p>
-
                         </div>
                       </div>
-                      <p className="price">Contact Us</p>
-
+                      <p className="price">Custom pricing</p>
                       <div>
                         <p>
                           /user/month* <span>paid annually</span>
                         </p>
                       </div>
-
                       <ul>
                         <li>All features included</li>
                         <li>Customizable integrations</li>
@@ -213,14 +172,11 @@ function ExtensionStore() {
                         <li>Unlimited scalability</li>
                         <li>API access</li>
                       </ul>
-                      <div className="d-flex align-items-center justify-content-between ">
-                        {/* <button type='btn' className='btn btn-sm btn-outline-primary '>try now </button> */}
-                        <button type='btn' className='btn btn-sm btn-primary  btns-hover-after'>Buy Now</button>
-                        {/* <div className="try-add-btn2">Buy Now</div> */}
+                      <div className='storeBtnGroup'>
+                        <button type='btn' className='btn btn-sm btn-primary btns-hover-after'>Buy Now</button>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>

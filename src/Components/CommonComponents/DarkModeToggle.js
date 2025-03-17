@@ -19,6 +19,10 @@ function DarkModeToggle({ marginLeft }) {
         }
     }, [isDark])
 
+
+
+    
+
     useEffect(() => {
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         const defaultDark = storedTheme === "dark" || (storedTheme === null & prefersDark);
@@ -27,6 +31,7 @@ function DarkModeToggle({ marginLeft }) {
             darkModeToggle.current.checked = true
         }
     }, [])
+
 
     const toggleTheme = (e) => {
         if (e.target.checked) {

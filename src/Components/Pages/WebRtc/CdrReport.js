@@ -17,6 +17,7 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
+import Comments from "./Comments";
 
 
 function CdrReport({ page }) {
@@ -53,6 +54,8 @@ function CdrReport({ page }) {
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [updatedQueryparams, setUpdatedQueryparams] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [comment, setComment] = useState("");
+  const [selectedCdr, setSelectedCdr] = useState("");
 
   const thisAudioRef = useRef(null);
   console.log(cdr, callBlock);
@@ -109,7 +112,7 @@ function CdrReport({ page }) {
   const handleCallOriginChange = (e) => {
     const newValue = e.target.value;
     // Allow only digits and validate length
-    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+    if (/^\d*$/.test(newValue) && newValue.length <= 15) {
       setDebounceCallOriginFlag(newValue);
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
@@ -122,7 +125,7 @@ function CdrReport({ page }) {
 
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
-    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+    if (/^\d*$/.test(newValue) && newValue.length <= 15) {
       setDebounceCallDestinationFlag(newValue);
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
@@ -660,7 +663,7 @@ function CdrReport({ page }) {
                               <option value={"transfer"}>Transfer Calls</option>
                             </select>
                           </div>
-                          <div className="formRow border-0">
+                          {/* <div className="formRow border-0">
                             <label className="formLabel text-start mb-0 w-100">
                               Call Type
                             </label>
@@ -677,7 +680,7 @@ function CdrReport({ page }) {
                               <option value={"callcenter"}>Call Center</option>
                               <option value={"ringgroup"}>Ring Group</option>
                             </select>
-                          </div>
+                          </div> */}
                         </>
                       ) : (
                         ""
@@ -792,7 +795,7 @@ function CdrReport({ page }) {
                         <tr>
                           <th>#</th>
                           <th>Direction</th>
-                          {page === "billing" ? "" : <th>Call Type</th>}
+                          {/* {page === "billing" ? "" : <th>Call Type</th>} */}
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
@@ -917,11 +920,11 @@ function CdrReport({ page }) {
                                           </span>
                                         )}
                                       </td>
-                                      {page === "billing" ? (
+                                      {/* {page === "billing" ? (
                                         ""
                                       ) : (
                                         <td>{item["application_state"]}</td>
-                                      )}
+                                      )} */}
                                       <td>
                                         {item["Caller-Orig-Caller-ID-Name"]}
                                       </td>
@@ -1076,7 +1079,7 @@ function CdrReport({ page }) {
                                         </td>
                                       )}
                                       <td>
-                                        <button className={`tableButton ms-0`}>
+                                        <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
                                           <Tippy content={'View Note'}
                                           >
                                             <i class="fa-solid fa-comment-dots"></i>
@@ -1210,6 +1213,12 @@ function CdrReport({ page }) {
       ) : (
         ""
       )}
+         {selectedCdr !== "" &&
+              <Comments
+                id={selectedCdr}
+                setId={setSelectedCdr}
+              />
+            }
     </main>
   );
 }

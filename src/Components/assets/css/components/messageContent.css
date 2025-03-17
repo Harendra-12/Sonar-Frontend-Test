@@ -15,7 +15,7 @@
 }
 
 .mainContentApp .tabLink i {
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .mainContentApp .tabLink.active {
@@ -27,7 +27,7 @@
 .unread {
     border-radius: 50px;
     background-color: var(--ui-accent);
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #fff;
     padding: 4px 8px;
     margin-left: 15px;
@@ -48,7 +48,7 @@
     padding: 0px 0 0 35px;
     width: 100%;
     color: var(--form-label);
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--searchBg) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
     outline: none;
     transition: 0.1s ease-in-out;
@@ -73,14 +73,14 @@
 }
 
 .messageOverlay .contactHeader h4 {
-    font-size: 18px !important;
+    font-size: 1.125rem !important;
     margin-bottom: 5px;
     font-family: Roboto;
 }
 
 .messageOverlay .contactHeader .status {
     color: #454545;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 400;
     position: relative;
     margin-left: 15px;
@@ -143,7 +143,7 @@
 .messageContent .messageInput .tabLink {
     padding: 5px 8px;
     margin-right: 5px;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .dateHeader {
@@ -183,7 +183,7 @@
     background-color: var(--ele-color);
     border: 1px solid var(--border-color);
     padding: 3px 20px;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-subtext);
     text-align: center;
@@ -246,7 +246,7 @@
     justify-content: center;
     align-items: center;
     color: #fff;
-    font-size: 14px;
+    font-size: 0.875rem;
 
 }
 
@@ -261,21 +261,21 @@
 }
 
 .messageList .messageItem h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
     margin-bottom: 2px;
     font-weight: 700;
     color: var(--color-subtext);
 }
 
 .messageList .messageItem h6 span {
-    font-size: 11px;
+    font-size: 0.6875rem;
     /* color: var(--webUtilGray); */
     margin-left: 6px;
     font-weight: 400;
 }
 
 .messageList .messageDetails p {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--form-label);
     margin-bottom: 0px;
     word-wrap: break-word;
@@ -287,11 +287,11 @@
 }
 
 .callList.messageList .callListItem h4 {
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
 }
 
 .callList.messageList .callListItem h5 {
-    font-size: 12px !important;
+    font-size: 0.75rem !important;
 }
 
 .mainContentApp .callList.messageList {
@@ -334,7 +334,7 @@
 
 .chatHeading h5 {
     margin-bottom: 0;
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 
@@ -363,7 +363,7 @@
     right: 35px;
     transform: translate(0, -50%);
 
-    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 .callList .collapse {
@@ -425,7 +425,7 @@
     background-color: #3a3c4a;
     color: #fff;
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
     line-height: 1;
     margin-left: 15px;
@@ -530,13 +530,13 @@
 
 .participantMemberList ul li span {
     color: #f5f5f5;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .participantMemberList ul li .profileHolder {
     width: 30px;
     height: 30px;
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .videoCallWrapper .videoBody .participant {
@@ -608,7 +608,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 0.75rem;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -627,7 +627,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 0.75rem;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -646,7 +646,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 0.75rem;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -685,7 +685,7 @@
 
 .contactHeader .dropdown-menu .dropdown-item,
 .dropdown-menu.light .dropdown-item {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-subtext);
     padding: 5px 10px;
     font-weight: 400;
@@ -749,7 +749,7 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .NotificationBell .content {
@@ -760,7 +760,7 @@
     overflow: hidden;
     animation: expandContent 0.5s ease-in-out 0.5s forwards;
     text-wrap: nowrap;
-    font-size: 14px;
+    font-size: 0.875rem;
     text-overflow: ellipsis;
 }
 
@@ -834,7 +834,7 @@
 }
 
 .mergeCallList ul li {
-    font-size: 12px;
+    font-size: 0.75rem;
     display: flex;
     justify-content: space-between;
     padding: 5px 10px;
@@ -848,7 +848,7 @@
     border: none;
     background-color: var(--ui-accent);
     color: #fff;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: 0.3s ease-in-out;
 }
 
@@ -860,7 +860,7 @@
 .border-upper p {
     text-align: center;
     cursor: pointer;
-    background-color:#ededed ;
+    background-color: #ededed;
 
 
 }

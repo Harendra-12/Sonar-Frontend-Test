@@ -396,6 +396,9 @@ const RingGroupEdit = () => {
     //   toast.error("Please Mention call timeout for timeout destination");
     //   return;
     // }
+    if (data.ring_back === "" || data.ring_back === "null") {
+      delete data.ring_back;
+  }
     const payLoad = {
       ...data,
       ...{
@@ -705,7 +708,7 @@ const RingGroupEdit = () => {
                       <div className="formLabel">
                         <label htmlFor="">Extension</label>
                         <label htmlFor="data" className="formItemDesc">
-                          Enter a name.
+                          Enter an extension.
                         </label>
                       </div>
                       <div className="col-6">
@@ -1318,7 +1321,7 @@ const RingGroupEdit = () => {
                           !destination.some(
                             (agent) =>
                               user?.extension?.extension == agent.destination
-                          ) && user.usages==="pbx"
+                          ) && user.usages === "pbx"
                       )
                       .map((item, index) => {
                         return (

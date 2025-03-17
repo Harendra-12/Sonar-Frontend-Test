@@ -15,7 +15,7 @@
 }
 
 .mainContentApp .tabLink i {
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .mainContentApp .tabLink.active {
@@ -118,14 +118,14 @@
 
 .eFaxCompose .newMessageWrapper label {
     color: var(--color-subtext);
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .eFaxCompose .newMessageWrapper input,
 .eFaxCompose .newMessageWrapper textarea {
     border: none;
     border-bottom: 1px solid var(--color-subtext);
-    font-size: 14px;
+    font-size: 0.875rem;
     padding: 5px 5px 5px 0;
     outline: none;
     width: 100%;
@@ -155,7 +155,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: var(--ui-accent)
 }
 

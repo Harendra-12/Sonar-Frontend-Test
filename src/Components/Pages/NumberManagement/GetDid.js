@@ -438,7 +438,7 @@ function GetDid() {
                                   classNamePrefix="select"
                                   placeholder="Select usage..."
                                 /> */}
-                                <div className="d-flex justify-content-between">
+                                <div className="d-flex justify-content-between flex-wrap">
                                   <div class="checkbox-wrapper-4">
                                     <input class="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
                                     <label class="cbx" for="Voice">

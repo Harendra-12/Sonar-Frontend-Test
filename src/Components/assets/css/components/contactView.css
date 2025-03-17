@@ -53,7 +53,7 @@
 
 .contactItem .content h5,
 .contactItem .content .contact-email-box {
-    font-size: 13px !important;
+    font-size: 0.8125rem !important;
     font-family: Outfit;
     font-weight: 500;
     color: #505050;
@@ -68,7 +68,7 @@
 
 
 .contactItem .content h6 {
-    font-size: 12px;
+    font-size: 0.75rem;
     margin: 0;
     font-family: Outfit;
     font-weight: 500;
@@ -76,7 +76,7 @@
 }
 
 .contactItem i {
-    font-size: 18px;
+    font-size: 1.125rem;
     color: var(--ui-accent);
     padding: 10px 0px 10px 0px;
 }

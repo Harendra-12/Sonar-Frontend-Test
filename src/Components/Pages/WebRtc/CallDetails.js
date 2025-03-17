@@ -7,6 +7,7 @@ import {
   featureUnderdevelopment,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
+import AudioPlayer from "./AudioWaveForm";
 
 function CallDetails({
   clickedCall,
@@ -473,6 +474,7 @@ function CallDetails({
                             <th>Time</th>
                             <th>Call Type</th>
                             <th>Duration</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -483,13 +485,7 @@ function CallDetails({
                                 data-bs-toggle="collapse"
                                 href={`#voiceMail${item.id}`}
                                 role="button"
-                                class="collapsed"
                                 aria-expanded="false"
-                                onClick={() => {
-                                  if (item?.recording_path) {
-                                    handlePlaying(item?.recording_path);
-                                  }
-                                }}
                               >
                                 <td>{formatDate(item.variable_start_stamp)}</td>
                                 <td>{formatTime(item.variable_start_stamp)}</td>
@@ -599,6 +595,77 @@ function CallDetails({
                                 <td style={{ color: "var(--color-subtext)" }}>
                                   {formatDuration(item.variable_billsec)}
                                 </td>
+
+                                <td>
+                                  <div class="dropdown">
+                                    <div
+                                      class={`tableButton`}
+                                      href="#"
+                                      role="button"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="fa-solid fa-ellipsis-vertical" />
+                                    </div>
+                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                      <>
+                                        <li className="dropdown-item">
+                                          <div
+                                            class="clearButton text-align-start"
+                                            onClick={() => {
+                                              if (item?.recording_path) {
+                                                handlePlaying(
+                                                  item?.recording_path
+                                                );
+                                              }
+                                            }}
+                                          >
+                                            
+                                            <i
+                                              class={`fa-solid fa-${
+                                                item.configuration !== null
+                                                  ? "play"
+                                                  : "triangle-exclamation"
+                                              } me-2`}
+                                            ></i>{" "}
+                                            {item.configuration !== null
+                                              ? "Play "
+                                              : "Configure"}
+                                          </div>
+                                        </li>
+
+                                        <li className="dropdown-item">
+                                          <div
+                                            class="clearButton text-align-start"
+                                            onClick={() =>
+                                              featureUnderdevelopment()
+                                            }
+                                          >
+                                          <i class="fa-solid fa-bolt me-2"></i>
+                                            Transcript
+                                          </div>
+                                        </li>
+                                      </>
+
+                                      <>
+                                        <li className="dropdown-item">
+                                          <div
+                                            class="clearButton text-align-start"
+                                            onClick={() =>
+                                              handleAudioDownload(
+                                                item.recording_path
+                                              )
+                                            }
+                                          >
+                                           <i class="fa-regular fa-download"></i>{" "}
+                                            Download
+                                          </div>
+                                        </li>
+                                      </>
+                                      <li className="dropdown-item"></li>
+                                    </ul>
+                                  </div>
+                                </td>
                               </tr>
                               {item?.recording_path &&
                                 currentPlaying === item?.recording_path && (
@@ -608,7 +675,8 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <audio
+                                        <AudioPlayer audioUrl={ audioURL} />
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -620,9 +688,9 @@ function CallDetails({
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
 
-                                        <button
+                                        {/* <button
                                           className="audioCustomButton"
                                           onClick={() =>
                                             handleAudioDownload(
@@ -631,10 +699,10 @@ function CallDetails({
                                           }
                                         >
                                           <i className="fa-sharp fa-solid fa-download"></i>
-                                        </button>
-                                        <button className="audioCustomButton ms-1">
+                                        </button> */}
+                                        {/* <button className="audioCustomButton ms-1">
                                           <i className="fa-sharp fa-solid fa-box-archive"></i>
-                                        </button>
+                                        </button> */}
                                       </div>
                                     </td>
                                   </tr>

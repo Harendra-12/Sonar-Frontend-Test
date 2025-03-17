@@ -18,7 +18,7 @@
     background-color: #00c4ff12;
     padding: 5px 10px;
     text-align: end;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: #000;
     font-weight: 600;
     margin-top: 54px;
@@ -74,7 +74,7 @@
 }
 
 .orderSummary table .totalDue td {
-    font-size: 16px;
+    font-size: 1rem;
     color: #000;
     padding: 10px 0;
 }
@@ -92,18 +92,18 @@
 .paymentMethod .content h6 {
     text-transform: uppercase;
     color: #454545;
-    font-size: 15px;
+    font-size: 0.9375rem;
     margin-bottom: 15px;
 }
 
 .paymentMethod .content p {
     margin-bottom: 3px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #454545;
 }
 
 .formWrapper .headingLabel {
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #000;
     font-weight: 500;
     padding: 0px 15px;
@@ -136,12 +136,12 @@
 
 .thankYou h6 {
     color: #6b6b6b;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 .thankYou p {
     color: #6b6b6b;
-    font-size: 13px;
+    font-size: 0.8125rem;
 }
 
 .thankYou .iconWrapper {
@@ -154,7 +154,7 @@
 }
 
 .thankYou .iconWrapper i {
-    font-size: 46px;
+    font-size: 2.875rem;
     color: var(--ui-accent);
 }
 

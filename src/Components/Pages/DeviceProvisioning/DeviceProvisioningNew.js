@@ -123,12 +123,12 @@ function DeviceProvisioningNew() {
                                 </div>
                                 <div className="col-12" style={{ padding: '25px 23px' }}>
                                     <div className='row gx-5'>
-                                        <div className='col-xl-6' style={{ borderRight: '1px solid var(--border-color)' }}>
+                                        <div className='col-xl-6 pe-0' style={{ borderRight: '1px solid var(--border-color)' }}>
                                             <div className="tangoNavs mb-0">
                                                 <nav>
                                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                                         <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>
-                                                        <button onClick={featureUnderdevelopment} class="nav-link"  type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
+                                                        <button onClick={featureUnderdevelopment} class="nav-link" type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
                                                     </div>
                                                 </nav>
                                                 <div class="tab-content" id="nav-tabContent">
@@ -137,38 +137,40 @@ function DeviceProvisioningNew() {
                                                             {
                                                                 allDevices.map((device, index) => {
                                                                     return (
-                                                                        <div className="formRow col-xl-6 deviceProvision" key={index}>
+                                                                        <div className="formRow col-xl-6 deviceProvision flex-nowrap" key={index}>
                                                                             <div className="col-4">
                                                                                 <img src={require('../../assets/images/cisco.jpg')} alt=""></img>
                                                                             </div>
-                                                                            <div className="formLabel ">
-                                                                                <label htmlFor=""><h5>{device.slug}</h5></label>
-                                                                                <p>Brand: {device.slug}</p>
-                                                                                <div className='col-12'>
-                                                                                    <label className=''>
-                                                                                        Select Model:
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className='row mt-2 align-items-center'>
-                                                                                    <div className="col pe-0">
-                                                                                        <select
-                                                                                            className="formItem" defaultValue={""} onChange={(e) => { setModelId(e.target.value); setBrandId(device.id) }}>
-                                                                                            <option value="" disabled>
-                                                                                                Device
-                                                                                            </option>
-                                                                                            {
-                                                                                                device.models.map((model, index) => {
-                                                                                                    return (
-                                                                                                        <option key={index} value={model.id}>{model.name}</option>
-                                                                                                    )
-                                                                                                })
-                                                                                            }
-                                                                                        </select>
+                                                                            <div className='col-8'>
+                                                                                <div className="formLabel ">
+                                                                                    <label htmlFor=""><h5>{device.slug}</h5></label>
+                                                                                    {/* <p>Brand: {device.slug}</p> */}
+                                                                                    <div className='col-12'>
+                                                                                        <label className=''>
+                                                                                            Select Model:
+                                                                                        </label>
                                                                                     </div>
-                                                                                    <div className="col-auto" onClick={() => handelModelSelect(device.id)}>
-                                                                                        <button className='tableButton'>
-                                                                                            <i class="fa-solid fa-plus"></i>
-                                                                                        </button>
+                                                                                    <div className='row mt-2 align-items-center'>
+                                                                                        <div className="col pe-0">
+                                                                                            <select
+                                                                                                className="formItem" defaultValue={""} onChange={(e) => { setModelId(e.target.value); setBrandId(device.id) }}>
+                                                                                                <option value="" disabled>
+                                                                                                    Device
+                                                                                                </option>
+                                                                                                {
+                                                                                                    device.models.map((model, index) => {
+                                                                                                        return (
+                                                                                                            <option key={index} value={model.id}>{model.name}</option>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div className="col-auto" onClick={() => { handelModelSelect(device.id); backToTop() }}>
+                                                                                            <button className='tableButton'>
+                                                                                                <i class="fa-solid fa-plus"></i>
+                                                                                            </button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

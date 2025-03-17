@@ -89,7 +89,7 @@ const CallQueueDetails = () => {
                     <th>Calls Completed</th>
                     <th>Total Calls</th>
                     <th>Agents</th>
-                    <th>Destination</th>
+                    <th>Extension</th>
                   </tr>
                 </thead>
                 <tbody className="">

@@ -31,7 +31,7 @@ function EmptyPrompt(props) {
                     <img src={require('../assets/images/empty-box.png')} alt="Empty" />
                 </div>
                 <div className='text-center mt-3'>
-                    <h5>Please add a <b>{props.name}</b> to continue <span style={{ color: 'var(--ui-accent)', cursor: "pointer" }} onClick={() => { navigate(`/${props.link}`); backToTop() }}>setting up the environment</span>.</h5>
+                    {props.generic ? <h5>Please add a <b>{props.name}</b> to continue <span style={{ color: 'var(--ui-accent)', cursor: "pointer" }} onClick={() => { if (props.link) { navigate(`/${props.link}`); backToTop() } }}>setting up the environment</span>.</h5> : <h5>There is <span style={{ color: 'var(--ui-accent)', fontWeight: '700' }}>no data</span> to be shown!</h5>}
                 </div>
             </div>
         </>
