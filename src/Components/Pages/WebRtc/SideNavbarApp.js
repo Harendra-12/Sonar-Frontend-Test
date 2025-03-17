@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
+import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const account = useSelector((state) => state.account);
@@ -166,17 +167,15 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </li>
             }
             <li style={{ cursor: "pointer" }}>
-              <div className="navItem d-block">
-                <div className="iconHolder0">
-                  <div className="itemTitle"> Switch Admin</div>
+            <div
+                  onClick={() => featureUnderdevelopment()}
+                  className="navItem"
+                >
+                  <div className="iconHolder">
+                  <i class="fa-light fa-screwdriver-wrench"></i>
+                  </div>
+                  <div className="itemTitle">Switch Admin</div>
                 </div>
-                <div className="my-auto position-relative">
-                  <label className="switch">
-                    <input type="checkbox" />
-                    <span className="slider round" />
-                  </label>
-                </div>
-              </div>
             </li>
           </ul>
         </div>
