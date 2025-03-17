@@ -25,6 +25,7 @@ import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
+import AudioPlayer from "./AudioWaveForm";
 
 function Messages({
   setSelectedModule,
@@ -97,6 +98,8 @@ function Messages({
   const [selectedUrl,setSelectedUrl]=useState(null)
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
+  const [selectFileExtension,setSelectFileExtension]=useState(null)
+  const thisAudioRef = useRef(null);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -123,6 +126,52 @@ function Messages({
     formState: { errors },
   } = useForm();
 
+//  function to extract extension
+  const extractFileExtension = (selectedUrl) => {
+    if (!selectedUrl) return null;
+  
+    // Step 1: Remove query parameters and get the base URL
+    const fileUrl = selectedUrl.split("?")[0];
+    const fileName = fileUrl.split("/").pop();
+  
+    if (fileName) {
+      // Step 2: Try extracting extension from the filename
+      const fileParts = fileName.split(".");
+      if (fileParts.length > 1) {
+        return fileParts.pop().toLowerCase(); // Standard case: return the extension
+      }
+  
+      // Step 3: Fallback - Check query parameters for extension hints
+      const queryParams = selectedUrl.split("?")[1];
+      if (queryParams) {
+        const params = new URLSearchParams(queryParams);
+        // Look for common extension indicators in query params (customize as needed)
+        for (const [, value] of params) {
+          const lowerValue = value.toLowerCase();
+          if (lowerValue.includes("png")) return "png";
+          if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
+          if (lowerValue.includes("pdf")) return "pdf";
+          // Add more extensions as needed
+        }
+      }
+  
+      // Step 4: Fallback - Decode URL-encoded filename and retry
+      const decodedFileName = decodeURIComponent(fileName);
+      const decodedParts = decodedFileName.split(".");
+      if (decodedParts.length > 1) {
+        return decodedParts.pop().toLowerCase();
+      }
+    }
+  
+    return null; // No extension found
+  };
+  useEffect(() => {
+    const extension=extractFileExtension(selectedUrl);
+    setSelectFileExtension(extension);
+  }, [selectedUrl]);
+
+  console.log("00selectExtension",{selectFileExtension})
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -274,7 +323,7 @@ function Messages({
 
   // Logic to send message
   const sendSingleMessage = () => { 
-    if (messageInput.trim() === "") return;
+    if (messageInput.trim() === ""&&selectedUrl=="") return;
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
@@ -282,8 +331,13 @@ function Messages({
       const target = UserAgent.makeURI(targetURI);
 
       if (target) {
+        let messager;
         try {
-          const messager = new Messager(userAgent, target, messageInput);
+         if(fileType=="image"){
+          messager = new Messager(userAgent, target, selectedUrl);
+         }else{
+          messager = new Messager(userAgent, target, messageInput);
+         }
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -330,6 +384,7 @@ function Messages({
           setMessageInput("");
           setSelectedFile(null);
           setSelectedUrl(null)
+          selectFileExtension(null)
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -339,7 +394,7 @@ function Messages({
         console.error("Invalid recipient address.");
       }
     } else {
-      console.error("UserAgent or session not ready.");
+      toast.error("UserAgent or session not ready.");
     }
   };
 
@@ -722,9 +777,6 @@ function Messages({
 
   console.log("Is admin", isAdmin);
 
-  useEffect(()=>{
-    setMessageInput(selectedUrl)
-  },[selectedUrl])
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -908,8 +960,60 @@ function Messages({
     }
   };
 
+  // console.log("000allMessage",allMessage?.[recipient[0]])
+
+  // function to add display logic in messages
+  function displayFile({ item, selectFileExtension }) {
+    // Default case: display item.body directly if selectFileExtension is null
+    const fileUrl=extractFileExtension(item)
+    const ext = selectFileExtension || fileUrl;
+    console.log("000select",{selectFileExtension},{item},{fileUrl})
+    if (!fileUrl && !selectFileExtension) {
+      return <p>{item}</p>;
+    }else{
+      if (ext== "jpg" || ext == "png" || ext == "jpeg") {
+        return <img src={item} alt="" />;
+      }
+      
+      // Handle PDF files
+      if (ext == "pdf") {
+        return (
+          <iframe 
+            src={item.body} 
+            width="100%" 
+            height="500px" 
+            style={{ border: 'none' }} 
+            title={`PDF Document - ${item}`} 
+          />
+        );
+      }
+      
+      // Handle audio files (mp3 and others)
+      if (ext == "mp3" ) {
+        return (
+          <div className="audio-container">
+      <audio
+            controls={true}
+            ref={thisAudioRef}
+            // autoPlay={true}
+          
+          >
+            <source
+              src={item}
+              type="audio/mpeg"
+            />
+          </audio>                                        
+  
+        </div>
+        );
+      }
+    }
+    
+    // Fallback case - return the content as tex
+  }
   // Logic to send group messages
   function sendGroupMessage() {
+    debugger
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
@@ -2174,11 +2278,12 @@ function Messages({
                                               </span>
                                             </h6>
                                             <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            {displayFile({item: item.body, selectFileExtension})}
                                             </div>
                                           </div>
                                         </div>
                                       ) : (
+                                        
                                         <div className="messageItem receiver">
                                           <div className="second">
                                             <h6>
@@ -2192,7 +2297,7 @@ function Messages({
                                               </span>
                                             </h6>
                                             <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            {displayFile({item: item.body, selectFileExtension})}
                                             </div>
                                           </div>
                                         </div>
