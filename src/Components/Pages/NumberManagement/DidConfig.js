@@ -161,9 +161,9 @@ const DidConfig = () => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     console.log(data, "-------------");
-    if(data.usages===""){
-      delete data.action
-      delete data.usages
+    if(data.usages==="" || data.usages===null){
+      data.action = null
+      data.usages = null
     }
     data.record = data.record === true || data.record === "true";
     data.sticky_agent_enable =
