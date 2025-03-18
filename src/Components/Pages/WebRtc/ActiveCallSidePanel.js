@@ -24,7 +24,6 @@ function ActiveCallSidePanel({
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
   const audioRef = useRef(null);
-  console.log("This is global session", globalSession, previewDialer, session._id);
   const [playMusic, setPlayMusic] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
