@@ -23,7 +23,7 @@ import Tippy from "@tippyjs/react";
 function CardAndBilling() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accountBalance = useSelector((state)=>state.accountBalance)
+  const accountBalance = useSelector((state) => state.accountBalance)
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const account = useSelector((state) => state.account);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
@@ -41,6 +41,7 @@ function CardAndBilling() {
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
   const [rechargePopUp, setRechargePopUp] = useState(false);
+  const [autoPayPopup, setAutoPayPopup] = useState(false);
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -502,7 +503,7 @@ function CardAndBilling() {
                             </div>
                             <div className="data-number2 ">
                               <h5>
-                               {accountBalance}
+                                {accountBalance}
                               </h5>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="col-auto">
@@ -1145,6 +1146,45 @@ function CardAndBilling() {
                           </div>
                         </div>
                       </div>
+                      <div className="col-xl-12 mt-3">
+                        <div
+                          className="itemWrapper a"
+                          style={{ backgroundColor: "var(--ele-color2)" }}
+                        >
+                          <div className="heading">
+                            <div className="col-10">
+                              <h5>Auto Pay Feature</h5>
+                              <p>Status: <span className="text-success"><b>Enabled</b></span></p>
+                            </div>
+                            <div className="col-2" style={{ cursor: "pointer" }}>
+                              <i
+                                className="fa-duotone fa-circle-dollar"
+                                style={{
+                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                  cursor: "default"
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="data-number2">
+                            <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="col-10">
+                                <h5>
+                                  $ 500.<sub style={{ fontSize: 14 }}>00</sub>
+                                </h5>
+                                <p>
+                                  <b>Minimum Threshold</b>: $ 500
+                                </p>
+                              </div>
+                              <div className="col-2" >
+                                <button className="tableButton edit" onClick={() => setAutoPayPopup(true)}>
+                                  <i className="fa-solid fa-pen-to-square" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1374,6 +1414,86 @@ function CardAndBilling() {
       ) : (
         ""
       )}
+
+      {autoPayPopup &&
+        <>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-regular fa-dollar-sign" />
+                <h5>Edit Autopay options for your account</h5>
+              </div>
+              <div className="mt-3">
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Min Threshold</label>
+                        <label className="formItemDesc">The minimum threshold that the user will hit before autopay</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <input className="formItem" />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Amount</label>
+                        <label className="formItemDesc">The amount of recharge to be commenced</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <input className="formItem" />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Status</label>
+                        <label className="formItemDesc">The status of the autopay feature</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <select
+                        className="formItem me-0"
+                        id="selectFormRow"
+                        name="status"
+                        style={{ width: "100%" }}
+                      >
+                        <option className="status" value="active">
+                          True
+                        </option>
+                        <option value="inactive">False</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button className="panelButton gray ms-0" onClick={() => setAutoPayPopup(false)}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="panelButton me-0">
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      }
 
       {loading ? <CircularLoader /> : ""}
       {/* <ToastContainer

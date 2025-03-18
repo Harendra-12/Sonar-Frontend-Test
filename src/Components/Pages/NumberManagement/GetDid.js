@@ -821,26 +821,34 @@ function GetDid() {
                                 </div>
                                 <div className="wrapper">
                                   <ul>
-                                    <li>
-                                      <i
-                                        class="fa-duotone fa-wallet me-2"
-                                        style={{ color: "var(--ui-accent)" }}
-                                      ></i>{" "}
-                                      Wallet{" "}
-                                      <input
-                                        type="radio"
-                                        checked={
-                                          paymentMethod === "wallet" ? true : false
-                                        }
-                                        name="fav_language"
-                                        onChange={(e) => {
-                                          if (e.target.checked) {
-                                            setPaymentMethod("wallet");
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                      <li className="me-2 col mb-0">
+                                        <i
+                                          class="fa-duotone fa-wallet me-2"
+                                          style={{ color: "var(--ui-accent)" }}
+                                        ></i>{" "}
+                                        Wallet{" "}
+                                        <span style={{ float: 'inline-end', fontSize: '14px' }}>$49878.00</span>
+                                        <input
+                                          type="radio"
+                                          checked={
+                                            paymentMethod === "wallet" ? true : false
                                           }
-                                        }}
-                                      ></input>{" "}
-                                      <span className="checkmark"></span>
-                                    </li>
+                                          name="fav_language"
+                                          onChange={(e) => {
+                                            if (e.target.checked) {
+                                              setPaymentMethod("wallet");
+                                            }
+                                          }}
+                                        ></input>{" "}
+                                        <span className="checkmark"></span>
+                                      </li>
+                                      <div className="col-auto">
+                                        <button className="tableButton edit">
+                                          <i class="fa-solid fa-dollar-sign" />
+                                        </button>
+                                      </div>
+                                    </div>
                                     <li>
                                       <i
                                         class="fa-duotone fa-credit-card me-2"
