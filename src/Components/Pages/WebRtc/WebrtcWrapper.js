@@ -27,6 +27,7 @@ import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
+import CloseTabWarning from "./CloseTabWarning";
 
 const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
@@ -243,6 +244,7 @@ const WebrtcWrapper = () => {
           }
       `}
       </style>
+      {/* <CloseTabWarning /> */}
       {agentDeposition && <AgentFeedback />}
       <SIPProvider options={options}>
         <SideNavbarApp

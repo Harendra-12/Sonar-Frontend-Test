@@ -346,7 +346,7 @@ function OngoingCall({
         // Call this function to play only inbound audio
         playInboundMixedAudio();
 
-        // **Function to mix audio streams for sending (Excludes a specific session's remote audio)**
+        // **Function to mix audio streams for sending (Excludes own session's remote audio)**
         function mixAudioStreams(excludeSessionId = null) {
             const destination = audioContext.createMediaStreamDestination();
 
