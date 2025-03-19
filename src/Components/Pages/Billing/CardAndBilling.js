@@ -47,6 +47,7 @@ function CardAndBilling() {
   const [autoPayThreshold, setAutoPayThreshold] = useState(0);
   const [autoPayAmount, setAutoPayAmount] = useState("");
   const [autoPayStatus, setAutoPayStatus] = useState("enable");
+  const [autoPaymentFetchData,setAutoPaymentFetchData]=useState(null)
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -77,6 +78,7 @@ function CardAndBilling() {
         setAutoPayAmount(apiData.data?.amount);
         setAutoPayStatus(apiData.data?.status)
         setLoading(false);
+        setAutoPaymentFetchData(apiData.data)
       } else {
         setLoading(false);
       }
@@ -396,6 +398,7 @@ function CardAndBilling() {
     if (apiData.status) {
       setLoading(false);
       toast.success(apiData.message);
+      setAutoPaymentFetchData(apiData.data)
     } else {
       setLoading(false);
       toast.error(apiData.message);
@@ -1187,7 +1190,7 @@ function CardAndBilling() {
                       </div>
                       <div className="col-xl-12 mt-3">
                         <div
-                          className={`itemWrapper a ${(autoPayStatus === "enable" && autoPayAmount!=="") ? "active" : ""}`}
+                          className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable" ) ? "active" : ""}`}
                           style={{ backgroundColor: "var(--ele-color2)" }}
                         >
                           <div className="heading">
@@ -1195,8 +1198,8 @@ function CardAndBilling() {
                             <div className="col-9">
                               <h5>Auto Pay Feature</h5>
                               {
-                                autoPayAmount === "" ? "" :
-                                  <p>Status: <span className="text-success" style={{ textTransform: 'capitalize' }}><b>{autoPayStatus}</b></span></p>
+                                !autoPaymentFetchData ? "" :
+                                  <p>Status: <span className="text-success" style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
                               }
                             </div>
 
@@ -1213,7 +1216,8 @@ function CardAndBilling() {
                           <div className="data-number2">
                             <div className="d-flex flex-wrap justify-content-between align-items-center">
                               {
-                                autoPayAmount === "" ? <div className="col-2" >
+                                !autoPaymentFetchData ? 
+                                <div className="col-2" >
                                   <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
                                     <span className="text">Add</span>
                                     <span className="icon"><i className="fa-solid fa-edit" /></span>
@@ -1222,10 +1226,10 @@ function CardAndBilling() {
                                   <>
                                     <div className="col-10">
                                       <h5>
-                                        $ {autoPayAmount}
+                                        $ {autoPaymentFetchData.amount}
                                       </h5>
                                       <p>
-                                        <b>Minimum Threshold</b>: $ {autoPayThreshold}
+                                        <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
                                       </p>
                                     </div>
                                     <div className="col-2" >
@@ -1490,7 +1494,7 @@ function CardAndBilling() {
                       </div>
                     </div>
                     <div className="col-6">
-                      <input className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
+                      <input type="number" className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -1503,7 +1507,7 @@ function CardAndBilling() {
                       </div>
                     </div>
                     <div className="col-6">
-                      <input className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
+                      <input type="number" className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
                     </div>
                   </div>
                 </div>
