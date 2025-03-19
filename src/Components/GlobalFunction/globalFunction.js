@@ -91,10 +91,10 @@ export async function generalPostFunction(endpoint, data) {
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
-        const errorMessage = Object.keys(err.response.data.errors);
+        // const errorMessage = Object.keys(err.response.data.errors);
         // toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
-        const errorMessage = Object.keys(err.response.data.error);
+        // const errorMessage = Object.keys(err.response.data.error);
         // toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(
@@ -216,10 +216,10 @@ export async function generatePreSignedUrl(name) {
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
-        const errorMessage = Object.keys(err.response.data.errors);
+        // const errorMessage = Object.keys(err.response.data.errors);
         // toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
-        const errorMessage = Object.keys(err.response.data.error);
+        // const errorMessage = Object.keys(err.response.data.error);
         // toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(
@@ -244,33 +244,25 @@ export const backToTop = () => {
 
 // show sidebar on the base of action
 export function checkViewSidebar(slug,permissions,userPermissions,action=undefined) {
-  const sidebar = [];
+  const allPermission = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
       permissions[key].forEach((item) => {
         if(userPermissions?.includes(item.id)){
-          sidebar.push({
+          allPermission.push({
             id: item?.id,
             action: item?.action,
-            slug: item?.model,
+            model: item?.model,
           });
         }
       });
     }
   }
-  const AllSlug = sidebar
-    .filter(
-      (item) =>
-        item.action === "edit" ||
-        item.action === "add" ||
-        item.action==="read"
-    )
-    .map((item) => item.slug);
-    // console.log("0000Model",{AllSlug},{sidebar})
-  if (AllSlug.includes(slug)&&!action) {
-    return true;
+  if (!action) {
+    const actionPresent=allPermission.find((item)=>item.model===slug)
+    if(actionPresent) return true;
   }else if(action){
-    const actionPresent=sidebar.find((item)=>item.slug===slug&& item.action===action)
+    const actionPresent=allPermission.find((item)=>item.model===slug&& item.action===action)
     if(actionPresent) return true;
   }
   return false;

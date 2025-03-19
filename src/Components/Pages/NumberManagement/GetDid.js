@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
@@ -11,14 +13,12 @@ import RechargeWalletPopup from "../Billing/RechargeWalletPopup";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
-import Select from "react-select";
 import {
   lengthValidator,
   noSpecialCharactersValidator,
   requiredValidator,
   restrictToNumbers,
 } from "../../validations/validation";
-import { number } from "card-validator";
 
 const option = [
   {
@@ -38,107 +38,25 @@ const option = [
     value: "emergency",
   },
 ];
-// Custom styles for react-select
-const customStyles = {
-  control: (provided, state) => ({
-    ...provided,
-    // border: '1px solid var(--color4)',
-    border: "1px solid var(--color4)",
-    backgroundColor: "var(--ele-color)",
-    borderRadius: "3px",
-    outline: "none",
-    fontSize: "14px",
-    width: "100%",
-    minHeight: "34px",
-    height: "32px",
-    boxShadow: state.isFocused ? "none" : provided.boxShadow,
-    "&:hover": {
-      borderColor: "var(--ui-accent)",
-    },
-  }),
-  valueContainer: (provided) => ({
-    ...provided,
-    height: "auto",
-    padding: "0 3px",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "var(--form-input-text)",
-  }),
-  multiValue: (provided) => ({
-    ...provided,
-    backgroundColor: "var(--border-color)",
-  }),
-  multiValueLabel: (provided) => ({
-    ...provided,
-    color: "var(--form-input-text)",
-  }),
-
-  input: (provided) => ({
-    ...provided,
-    margin: "0",
-  }),
-  indicatorSeparator: (provided) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    height: "30px",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: "var(--form-input-text)",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    paddingLeft: "15px",
-    paddingTop: 0,
-    paddingBottom: 0,
-    backgroundColor: state.isSelected ? "var(--ele-color)" : "var(--ele-color)",
-    "&:hover": {
-      backgroundColor: "#0055cc",
-      color: "#fff",
-    },
-    fontSize: "14px",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    margin: 0,
-    padding: 0,
-  }),
-  menuList: (provided) => ({
-    ...provided,
-    padding: 0,
-    margin: 0,
-    maxHeight: "150px",
-    overflowY: "auto",
-    backgroundColor: "var(--ele-color)",
-  }),
-};
 function GetDid() {
   const accountBalance = useSelector((state) => state.accountBalance)
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
-  const accountDetailsRefresh = useSelector(
-    (state) => state.accountDetailsRefresh
-  );
+  const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
   const dispatch = useDispatch();
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
-  console.log(selectedDid);
-
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);
+  const [rechargePopUp, setRechargePopUp] = useState(false);
   const [selectedUsage, setSelectedUsage] = useState([
     {
       label: "Voice",
       value: "voice",
     },
   ]);
-  console.log(selectedUsage);
-
   const [popUp, setPopUp] = useState(false);
   const {
     register,
@@ -271,11 +189,15 @@ function GetDid() {
   function handleBuyPopUp(value) {
     setDidBuyPopUp(value);
   }
-  console.log(watch());
+
+  // Handle callBack for buying pop up
+  function handleRechargePopup(value) {
+    setRechargePopUp(value);
+  }
   const totalPrice = selectedDid.reduce((total, item) => {
     const price = parseFloat(item.price) || 0; // Convert price string to a number
     return total + price;
-}, 0);
+  }, 0);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -324,7 +246,7 @@ function GetDid() {
                       </div>
                       <div className="col-12">
                         <div className="formItem d-flex align-items-center">
-                          <img src='https://cdn-icons-png.flaticon.com/512/11105/11105310.png' style={{ width: 'auto', height: '100%', marginRight: '10px' }} />
+                          <img src='https://cdn-icons-png.flaticon.com/512/11105/11105310.png' style={{ width: 'auto', height: '100%', marginRight: '10px' }} alt="" />
                           <label>(+1) United States - US</label>
                         </div>
                         <label htmlFor="data" className="formItemDesc text-start">
@@ -848,11 +770,11 @@ function GetDid() {
                                         ></input>{" "}
                                         <span className="checkmark"></span>
                                       </li>
-                                      {totalPrice> Number(accountBalance) ? <div className="col-auto">
-                                          <button className="tableButton edit">
-                                            <i class="fa-solid fa-dollar-sign" />
-                                          </button>
-                                        </div> : ""
+                                      {totalPrice > Number(accountBalance) ? <div className="col-auto">
+                                        <button className="tableButton edit" onClick={()=>setRechargePopUp(true)}>
+                                          <i class="fa-solid fa-dollar-sign" />
+                                        </button>
+                                      </div> : ""
                                       }
 
                                     </div>
@@ -893,200 +815,6 @@ function GetDid() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="mx-2">
-              <div className="row mt-3 col-xl-12 px-3">
-                {did && (
-                  <div className="col-xl-5 mb-3 mb-xl-0">
-                    <div className="searchList">
-                      <div className="heading">
-                        <h5>Available DID</h5>
-                      </div>
-
-                      <div className="wrapper">
-                        {did.length === 0 ? (
-                          <ul>
-                            <li>No TFN Available</li>
-                          </ul>
-                        ) : (
-                          <>
-                            <ul>
-                              {did.map((item) => {
-                                return (
-                                  <li>
-                                    {item.didSummary}{" "}
-                                    <button
-                                      style={{ cursor: "pointer" }}
-                                      onClick={() => addSelect(item)}
-                                      className={
-                                        selectedDid.includes(item)
-                                          ? "tableButton edit float-end"
-                                          : "tableButton float-end"
-                                      }
-                                    >
-                                      {selectedDid.includes(item) ? (
-                                        <i class="fa-solid fa-check text-info"></i>
-                                      ) : (
-                                        <i class="fa-solid fa-plus"></i>
-                                      )}{" "}
-                                    </button>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {selectedDid.length === 0 ? (
-                  ""
-                ) : (
-                  <div className="col-xl-4 mb-3 mb-xl-0">
-                    <div className="searchList">
-                      <div className="heading">
-                        <h5>Added DID</h5>
-                      </div>
-                      <div className="wrapper">
-                        <ul>
-                          {selectedDid.map((item) => {
-                            return (
-                              <li>
-                                {item.didSummary}{" "}
-                                <span
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() => removeDid(item)}
-                                  className="float-end tableButton delete"
-                                >
-                                  <i class="fa-solid fa-trash"></i>
-                                </span>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {selectedDid.length === 0 ? (
-                  ""
-                ) : (
-                  <div className="col-xl-3">
-                    <div className="searchList cart">
-                      <div className="heading">
-                        <h5>Order Summary</h5>
-                      </div>
-                      <div className="wrapper">
-                        <ul>
-                          {selectedDid.map((item) => {
-                            return (
-                              <li>
-                                {item.didSummary}{" "}
-                                <span className="float-end">${item.price}</span>
-                              </li>
-                            );
-                          })}
-                          <li className="border-black">
-                            <b>Total: </b>{" "}
-                            <span className="float-end">
-                              <b>
-                                $
-                                {selectedDid.reduce((total, item) => {
-                                  const price = parseFloat(item.price) || 0;
-                                  return total + price;
-                                }, 0)}
-                              </b>
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className="searchList checkout mt-3">
-                      <div className="heading">
-                        <h5>Payment Method</h5>
-                      </div>
-                      <div className="wrapper">
-                        <ul>
-                          <li>
-                            <i
-                              class="fa-duotone fa-wallet me-2"
-                              style={{ color: "var(--ui-accent)" }}
-                            ></i>{" "}
-                            Wallet{" "}
-                            <input
-                              type="radio"
-                              checked={
-                                paymentMethod === "wallet" ? true : false
-                              }
-                              name="fav_language"
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setPaymentMethod("wallet");
-                                }
-                              }}
-                            ></input>{" "}
-                            <span className="checkmark"></span>
-                          </li>
-                          <li>
-                            <i
-                              class="fa-duotone fa-credit-card me-2"
-                              style={{ color: "var(--ui-accent)" }}
-                            ></i>{" "}
-                            Credit Card{" "}
-                            <input
-                              type="radio"
-                              checked={paymentMethod === "card" ? true : false}
-                              name="fav_language"
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setPaymentMethod("card");
-                                }
-                              }}
-                            ></input>{" "}
-                            <span className="checkmark"></span>
-                          </li>
-                        </ul>
-                        <button
-                          className="panelButton static"
-                          // onClick={handlePayment}
-                          onClick={() => setPopUp(true)}
-                        >
-                          <span class="text">Pay Now</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div> */}
-
-            {/* <div
-              className="d-flex flex-wrap justify-content-end px-xl-3 py-2 position-relative"
-              style={{ zIndex: 1 }}
-              id="detailsHeader"
-            >
-              <div className="col-xl-8 pt-3 pt-xl-0">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                  </button>
-                </div>
-              </div>
-            </div> */}
-            <div className="col-xl-12 px-0">
-              {/* {loading ?
-                  <div colSpan={99}><CircularLoader /></div> : ""} */}
-            </div>
           </div>
         </div>
       </section>
@@ -1098,6 +826,20 @@ function GetDid() {
                 closePopup={handleBuyPopUp}
                 rechargeType={"buyDid"}
                 selectedDid={selectedDid}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {rechargePopUp ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <RechargeWalletPopup
+                closePopup={handleRechargePopup}
+                rechargeType={"rechargeWallet"}
               />
             </div>
           </div>
@@ -1148,18 +890,6 @@ function GetDid() {
       ) : (
         ""
       )}
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }

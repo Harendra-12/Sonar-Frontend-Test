@@ -238,7 +238,9 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={<CustomModule />} />
+          <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
+            <Navigate to="/dashboard" replace />
+          )} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
