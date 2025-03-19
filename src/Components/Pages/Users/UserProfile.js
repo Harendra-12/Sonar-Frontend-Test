@@ -230,7 +230,7 @@ function UserProfile() {
                                         <div className="profileDetailsHolder p-0 shadow-none">
                                             <div className="baseDetails d-block">
                                                 <div className='row'>
-                                                    <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-4">
+                                                    <div className="col-xxl-6 col-xl-7 col-lg-9 col-md-7">
                                                         <div className='d-flex align-items-center'>
                                                             <div className="profilePicHolders position-static">
                                                                 <img
