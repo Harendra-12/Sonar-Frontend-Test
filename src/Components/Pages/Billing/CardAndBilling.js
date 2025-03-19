@@ -11,6 +11,7 @@ import AddNewAddress from "./AddNewAddress";
 import {
   backToTop,
   generalDeleteFunction,
+  generalGetFunction,
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -30,8 +31,7 @@ function CardAndBilling() {
   const [cardPopUp, setCardPopUp] = useState(false);
   const [billingPopUp, setBillingPopUp] = useState(false);
   const [cardConfirmationPopUp, setCardConfirmationPopUp] = useState(false);
-  const [billingConfirmationPopUp, setBillingConfirmationPopUp] =
-    useState(false);
+  const [billingConfirmationPopUp, setBillingConfirmationPopUp] = useState(false);
   const [selectedCardID, setSelectedCardId] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedBillingId, setSelecetedBillingId] = useState();
@@ -42,6 +42,11 @@ function CardAndBilling() {
   const billingList = useSelector((state) => state.billingList);
   const [rechargePopUp, setRechargePopUp] = useState(false);
   const [autoPayPopup, setAutoPayPopup] = useState(false);
+  const [cardDelPopUp, setCardDelPopUp] = useState(false);
+  const [cardDelId, setCardDelId] = useState();
+  const [autoPayThreshold, setAutoPayThreshold] = useState(0);
+  const [autoPayAmount, setAutoPayAmount] = useState("");
+  const [autoPayStatus, setAutoPayStatus] = useState("enable");
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -63,6 +68,20 @@ function CardAndBilling() {
         cardListRefresh: cardListRefresh + 1,
       });
     }
+    // Getting auto pay details
+    async function getAutopayData() {
+      setLoading(true);
+      const apiData = await generalGetFunction("/auto-balance")
+      if (apiData.status && apiData.data) {
+        setAutoPayThreshold(apiData.data?.threshold);
+        setAutoPayAmount(apiData.data?.amount);
+        setAutoPayStatus(apiData.data?.status)
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    }
+    getAutopayData()
   }, [])
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -342,8 +361,6 @@ function CardAndBilling() {
   }
 
   // Handle Card Delete
-  const [cardDelPopUp, setCardDelPopUp] = useState(false);
-  const [cardDelId, setCardDelId] = useState();
   async function handleCardDelete() {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`);
@@ -360,6 +377,28 @@ function CardAndBilling() {
       setLoading(false);
       // const errorMessage = Object.keys(apiData.errors);
       // toast.error(apiData.errors[errorMessage[0]][0]);
+    }
+  }
+
+  // Handle auto payment change
+  async function handleAutoPaymentChange() {
+    if (autoPayAmount === "" || Number(autoPayAmount) < 20) {
+      toast.error("Please enter amount greater than 20");
+      return;
+    }
+    setAutoPayPopup(false);
+    setLoading(true);
+    const apiData = await generalPostFunction("/auto-balance", {
+      threshold: autoPayThreshold,
+      amount: autoPayAmount,
+      status: autoPayStatus
+    })
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
     }
   }
   return (
@@ -1148,15 +1187,20 @@ function CardAndBilling() {
                       </div>
                       <div className="col-xl-12 mt-3">
                         <div
-                          className="itemWrapper a"
+                          className={`itemWrapper a ${(autoPayStatus === "enable" && autoPayAmount!=="") ? "active" : ""}`}
                           style={{ backgroundColor: "var(--ele-color2)" }}
                         >
                           <div className="heading">
-                            <div className="col-10">
+
+                            <div className="col-9">
                               <h5>Auto Pay Feature</h5>
-                              <p>Status: <span className="text-success"><b>Enabled</b></span></p>
+                              {
+                                autoPayAmount === "" ? "" :
+                                  <p>Status: <span className="text-success" style={{ textTransform: 'capitalize' }}><b>{autoPayStatus}</b></span></p>
+                              }
                             </div>
-                            <div className="col-2" style={{ cursor: "pointer" }}>
+
+                            <div className="col-3" style={{ cursor: "pointer" }}>
                               <i
                                 className="fa-duotone fa-circle-dollar"
                                 style={{
@@ -1168,19 +1212,32 @@ function CardAndBilling() {
                           </div>
                           <div className="data-number2">
                             <div className="d-flex flex-wrap justify-content-between align-items-center">
-                              <div className="col-10">
-                                <h5>
-                                  $ 500.<sub style={{ fontSize: 14 }}>00</sub>
-                                </h5>
-                                <p>
-                                  <b>Minimum Threshold</b>: $ 500
-                                </p>
-                              </div>
-                              <div className="col-2" >
-                                <button className="tableButton edit" onClick={() => setAutoPayPopup(true)}>
-                                  <i className="fa-solid fa-pen-to-square" />
-                                </button>
-                              </div>
+                              {
+                                autoPayAmount === "" ? <div className="col-2" >
+                                  <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
+                                    <span className="text">Add</span>
+                                    <span className="icon"><i className="fa-solid fa-edit" /></span>
+                                  </button>
+                                </div> :
+                                  <>
+                                    <div className="col-10">
+                                      <h5>
+                                        $ {autoPayAmount}
+                                      </h5>
+                                      <p>
+                                        <b>Minimum Threshold</b>: $ {autoPayThreshold}
+                                      </p>
+                                    </div>
+                                    <div className="col-2" >
+                                      <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
+                                        <span className="text">Edit</span>
+                                        <span className="icon"><i className="fa-solid fa-pen" /></span>
+                                      </button>
+                                    </div>
+                                  </>
+                              }
+
+
                             </div>
                           </div>
                         </div>
@@ -1433,7 +1490,7 @@ function CardAndBilling() {
                       </div>
                     </div>
                     <div className="col-6">
-                      <input className="formItem" />
+                      <input className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -1446,7 +1503,7 @@ function CardAndBilling() {
                       </div>
                     </div>
                     <div className="col-6">
-                      <input className="formItem" />
+                      <input className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -1464,11 +1521,13 @@ function CardAndBilling() {
                         id="selectFormRow"
                         name="status"
                         style={{ width: "100%" }}
+                        value={autoPayStatus}
+                        onChange={(e) => setAutoPayStatus(e.target.value)}
                       >
-                        <option className="status" value="active">
-                          True
+                        <option className="status" value="enable">
+                          Enable
                         </option>
-                        <option value="inactive">False</option>
+                        <option value="disable">Disable</option>
                       </select>
                     </div>
                   </div>
@@ -1482,7 +1541,7 @@ function CardAndBilling() {
                       <i className="fa-solid fa-caret-left" />
                     </span>
                   </button>
-                  <button className="panelButton me-0">
+                  <button className="panelButton me-0" onClick={handleAutoPaymentChange}>
                     <span className="text">Save</span>
                     <span className="icon">
                       <i className="fa-solid fa-floppy-disk" />
@@ -1494,20 +1553,7 @@ function CardAndBilling() {
           </div>
         </>
       }
-
       {loading ? <CircularLoader /> : ""}
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }

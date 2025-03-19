@@ -908,13 +908,13 @@ function Call({
                       {loading ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
-                        sortKeys(Object.keys(groupedCalls)).map((date) => (
-                          <>
-                            <div key={date} className="dateHeader">
+                        sortKeys(Object.keys(groupedCalls)).map((date,key) => (
+                          <div key={key}>
+                            <div key={date} className="dateHeader" >
                               <p>{date}</p>
                             </div>
                             {sortedGroupedCalls[date].map(renderCallItem)}
-                          </>
+                          </div>
                         ))
                       ) : (
                         <div className="startAJob">

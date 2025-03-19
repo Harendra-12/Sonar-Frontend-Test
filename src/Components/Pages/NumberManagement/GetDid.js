@@ -18,6 +18,7 @@ import {
   requiredValidator,
   restrictToNumbers,
 } from "../../validations/validation";
+import { number } from "card-validator";
 
 const option = [
   {
@@ -115,6 +116,7 @@ const customStyles = {
   }),
 };
 function GetDid() {
+  const accountBalance = useSelector((state) => state.accountBalance)
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -124,6 +126,8 @@ function GetDid() {
   const dispatch = useDispatch();
   const [did, setDid] = useState();
   const [selectedDid, setSelectedDid] = useState([]);
+  console.log(selectedDid);
+
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);
@@ -268,6 +272,10 @@ function GetDid() {
     setDidBuyPopUp(value);
   }
   console.log(watch());
+  const totalPrice = selectedDid.reduce((total, item) => {
+    const price = parseFloat(item.price) || 0; // Convert price string to a number
+    return total + price;
+}, 0);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -804,10 +812,7 @@ function GetDid() {
                                       <span className="float-end">
                                         <b>
                                           $
-                                          {selectedDid.reduce((total, item) => {
-                                            const price = parseFloat(item.price) || 0;
-                                            return total + price;
-                                          }, 0)}
+                                          {totalPrice}
                                         </b>
                                       </span>
                                     </li>
@@ -828,7 +833,7 @@ function GetDid() {
                                           style={{ color: "var(--ui-accent)" }}
                                         ></i>{" "}
                                         Wallet{" "}
-                                        <span style={{ float: 'inline-end', fontSize: '14px' }}>$49878.00</span>
+                                        <span style={{ float: 'inline-end', fontSize: '14px' }}>${accountBalance}</span>
                                         <input
                                           type="radio"
                                           checked={
@@ -843,11 +848,13 @@ function GetDid() {
                                         ></input>{" "}
                                         <span className="checkmark"></span>
                                       </li>
-                                      <div className="col-auto">
-                                        <button className="tableButton edit">
-                                          <i class="fa-solid fa-dollar-sign" />
-                                        </button>
-                                      </div>
+                                      {totalPrice> Number(accountBalance) ? <div className="col-auto">
+                                          <button className="tableButton edit">
+                                            <i class="fa-solid fa-dollar-sign" />
+                                          </button>
+                                        </div> : ""
+                                      }
+
                                     </div>
                                     <li>
                                       <i
