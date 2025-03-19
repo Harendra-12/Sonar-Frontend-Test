@@ -292,19 +292,25 @@ export function LoginComponent() {
                   <h4>Warning!</h4>
                   <p>
                     You are already login on different device !<br />
-                    Do you want to ?
+                    {/* Do you want to Logout from all device ? */}
                   </p>
                   <div className="d-flex justify-content-between">
+                   <div>
+                   <p className="p-0 mt-1 ">Log out from all device</p>
                     <button
                       disabled={loading}
                       className="panelButton m-0"
                       onClick={handleLogoutAll}
                     >
-                      <span className="text">Log out from all device</span>
+                      <span className="text">Logout</span>
                       <span className="icon">
                         <i class="fa-solid fa-check"></i>
                       </span>
                     </button>
+                   </div>
+
+                   <div>
+                    <p className="p-0 mt-1">Stay log in</p>
                     <button
                       className="panelButton gray m-0 float-end"
                       onClick={() => {
@@ -313,11 +319,13 @@ export function LoginComponent() {
                         handleLogin()
                       }}
                     >
-                      <span className="text">Stay log in</span>
+                      <span className="text">Login</span>
                       <span className="icon">
                         <i class="fa-solid fa-xmark"></i>
                       </span>
                     </button>
+                   </div>
+                    
                   </div>
                 </div>
               </div>
