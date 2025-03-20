@@ -20,7 +20,7 @@ function CampaignAnalytics() {
 
                                         </div>
                                         <div className="col-2">
-                                            <i class="fa-solid fa-user-plus"></i>
+                                            <i className="fa-solid fa-user-plus"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +32,7 @@ function CampaignAnalytics() {
                                         </div>
                                         <div className="col-2">
                                             <div className='online-cls'>
-                                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
                                             </div>
 
                                         </div>
@@ -49,7 +49,7 @@ function CampaignAnalytics() {
 
                                         </div>
                                         <div className="col-2">
-                                            <i class="fa-solid fa-phone-volume"></i>
+                                            <i className="fa-solid fa-phone-volume"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@ function CampaignAnalytics() {
                                         </div>
                                         <div className="col-2">
                                             <div className='online-cls'>
-                                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
                                             </div>
 
                                         </div>
@@ -79,7 +79,7 @@ function CampaignAnalytics() {
 
                                         </div>
                                         <div className="col-2">
-                                            <i class="fa-solid fa-stopwatch"></i>
+                                            <i className="fa-solid fa-stopwatch"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@ function CampaignAnalytics() {
                                         </div>
                                         <div className="col-2">
                                             <div className='online-cls'>
-                                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
                                             </div>
 
                                         </div>
@@ -109,7 +109,7 @@ function CampaignAnalytics() {
 
                                         </div>
                                         <div className="col-2">
-                                            <i class="fa-solid fa-pause"></i>
+                                            <i className="fa-solid fa-pause"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@ function CampaignAnalytics() {
                                         </div>
                                         <div className="col-2">
                                             <div className='online-cls'>
-                                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
                                             </div>
 
                                         </div>
@@ -139,7 +139,7 @@ function CampaignAnalytics() {
 
                                         </div>
                                         <div className="col-2">
-                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <i className="fa-solid fa-pen-to-square"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +151,7 @@ function CampaignAnalytics() {
                                         </div>
                                         <div className="col-2">
                                             <div className='online-cls-red'>
-                                                <i class="fa-solid fa-arrow-trend-up"></i>
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
                                             </div>
 
                                         </div>
@@ -199,7 +199,7 @@ function CampaignAnalytics() {
                                                 >
                                                     <span className="text">COPY</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-copy"></i>
+                                                        <i className="fa-solid fa-copy"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -212,7 +212,7 @@ function CampaignAnalytics() {
                                                 >
                                                     <span className="text">CSV</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                                                        <i className="fa-solid fa-cloud-arrow-down"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -225,7 +225,7 @@ function CampaignAnalytics() {
                                                 >
                                                     <span className="text">EXCEL</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-sheet-plastic"></i>
+                                                        <i className="fa-solid fa-sheet-plastic"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -238,7 +238,7 @@ function CampaignAnalytics() {
                                                 >
                                                     <span className="text">PDF</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-file-pdf"></i>
+                                                        <i className="fa-solid fa-file-pdf"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -247,7 +247,7 @@ function CampaignAnalytics() {
                                                 >
                                                     <span className="text">PRINT</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-print"></i>
+                                                        <i className="fa-solid fa-print"></i>
                                                     </span>
                                                 </button>
                                             </div>
@@ -299,14 +299,14 @@ function CampaignAnalytics() {
                                                                     <button
                                                                         className="tableButton edit mx-auto"
                                                                     >
-                                                                        <i class="fa-solid fa-pen"></i>
+                                                                        <i className="fa-solid fa-pen"></i>
                                                                     </button>
                                                                 </td>
                                                                 <td>
                                                                     <button
                                                                         className="tableButton delete mx-auto"
                                                                     >
-                                                                        <i class="fa-solid fa-trash"></i>
+                                                                        <i className="fa-solid fa-trash"></i>
                                                                     </button>
                                                                 </td>
                                                             </tr>

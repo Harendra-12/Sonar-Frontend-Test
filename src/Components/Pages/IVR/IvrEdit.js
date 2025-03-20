@@ -60,7 +60,6 @@ function IvrEdit() {
         }
         if (apiData.data.length > 0 && uploadedMusicExit) {
           setValue("exit_sound", `${uploadedMusicExit.id}`);
-          console.log("uploadedExit", uploadedMusicExit);
         }
         setLoading(false);
       }
@@ -137,7 +136,7 @@ function IvrEdit() {
                   }}
                 >
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
@@ -145,7 +144,7 @@ function IvrEdit() {
                   onClick={handleFormSubmit}
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -179,7 +178,7 @@ function IvrEdit() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -189,7 +188,7 @@ function IvrEdit() {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>

@@ -171,7 +171,6 @@ const RingGroupAdd = () => {
     const allowedCharacters = /^[A-Za-z0-9\s]*$/;
 
     if (name === "destination" && !allowedCharacters.test(value)) {
-      console.log("Invalid characters detected");
       return;
     }
     const newDestination = [...destination];
@@ -317,17 +316,8 @@ const RingGroupAdd = () => {
     setShowMusic(true);
   };
 
-  // Validating the string
-  function truncateString(str) {
-    if (str.length > 8) {
-      return str.substring(0, 8) + "...";
-    }
-    return str; // Return the string as is if it's 8 characters or less
-  }
-
   // Handle chek box for bulk edit 
   const handleCheckboxChange = (item) => {
-    console.log(item, bulkUploadSelectedAgents);
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
         prevSelected.some(
@@ -529,7 +519,7 @@ const RingGroupAdd = () => {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           <button
@@ -540,7 +530,7 @@ const RingGroupAdd = () => {
                           >
                             <span className="text">Save</span>
                             <span className="icon">
-                              <i class="fa-solid fa-floppy-disk"></i>
+                              <i className="fa-solid fa-floppy-disk"></i>
                             </span>
                           </button>
                         </div>
@@ -836,43 +826,43 @@ const RingGroupAdd = () => {
                           selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
-                            class="panelButton"
+                            className="panelButton"
                             onClick={() => {
                               setBulkEditPopup(true);
                             }}
                           >
-                            <span class="text">Edit</span>
-                            <span class="icon">
-                              <i class="fa-solid fa-pen"></i>
+                            <span className="text">Edit</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
                             </span>
                           </button>
                         ) : (
                           <button
                             type="button"
-                            class="panelButton edit"
+                            className="panelButton edit"
                             onClick={() => {
                               setSelectedAgentToEdit(destination);
                               setBulkEditPopup(true);
                             }}
                           >
-                            <span class="text">Edit All</span>
-                            <span class="icon">
-                              <i class="fa-solid fa-pen"></i>
+                            <span className="text">Edit All</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-pen"></i>
                             </span>
                           </button>
                         ))}
                       <button
                         type="button"
-                        class="panelButton"
+                        className="panelButton"
                         onClick={() => {
                           if (user.length !== destination.length)
                             setBulkAddPopUp(true);
                           else toast.warn("All agent selected");
                         }}
                       >
-                        <span class="text">Add</span>
-                        <span class="icon">
-                          <i class="fa-solid fa-plus"></i>
+                        <span className="text">Add</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-plus"></i>
                         </span>
                       </button>
                     </div>
@@ -960,15 +950,6 @@ const RingGroupAdd = () => {
                                               value={item.extension?.extension}
                                               key={item.id}
                                             >
-                                              {/* {item.alias
-                                                ? `${truncateString(
-                                                  item?.alias
-                                                )} - ${item.extension?.extension
-                                                }`
-                                                : `${truncateString(
-                                                  item?.name
-                                                )} - ${item.extension?.extension
-                                                }`} */}
                                               {item.alias
                                                 ? `${item?.alias} - ${item.extension?.extension}`
                                                 : `${item?.name} - ${item.extension?.extension}`}
@@ -1226,7 +1207,7 @@ const RingGroupAdd = () => {
                 >
                   <span className="text">Close</span>
                   <span className="icon">
-                    <i class="fa-light fa-xmark"></i>
+                    <i className="fa-light fa-xmark"></i>
                   </span>
                 </button>
                 <button

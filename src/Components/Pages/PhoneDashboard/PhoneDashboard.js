@@ -24,14 +24,12 @@ function PhoneDashboard() {
   const allCall = useSelector((state) => state.allCall);
   const extension = useSelector((state) => state.extension || []);
   const extensionRefresh = useSelector((state) => state.extensionRefresh);
-  const [onlineExtension, setOnlineExtension] = useState([0]);
   const allUser = useSelector((state) => state.allUser);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const [onlineUser, setOnlineUSer] = useState([0]);
   const logonUser = useSelector((state) => state.loginUser);
   const callCenter = useSelector((state) => state.callCenter);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-  const [callQueue, setCallQueue] = useState([]);
   const account = useSelector((state) => state.account);
   const assignedExtension = extension.filter((item) => item.user);
   useEffect(() => {
@@ -60,13 +58,8 @@ function PhoneDashboard() {
 
   useEffect(() => {
     if (registerUser.length > 0) {
-      setOnlineExtension(
-        registerUser.map((item) => {
-          return item.extension;
-        })
-      );
+     
     } else {
-      setOnlineExtension([0]);
     }
     if (extensionRefresh > 0) {
       // setExtensionList(extension.length);
@@ -143,11 +136,6 @@ function PhoneDashboard() {
             }
           });
         }
-        setCallQueue(
-          filteredData.filter(
-            (data) => data && data["Call-Direction"] === "inbound"
-          )
-        );
       };
       filterCallQueue();
     } else {
@@ -181,16 +169,16 @@ function PhoneDashboard() {
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
-                      <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="col-10">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
                           <h5>Extensions</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
                         <div
-                          class="col-2"
+                          className="col-2"
                           onClick={() => navigate("/extensions")}
                         >
-                          <i class="fa-duotone fa-phone-office"></i>
+                          <i className="fa-duotone fa-phone-office"></i>
                         </div>
                       </div>
                     </div>
@@ -221,16 +209,16 @@ function PhoneDashboard() {
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
-                      <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="col-10">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
                           <h5>Call Center Queue</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
                         <div
-                          class="col-2"
+                          className="col-2"
                           onClick={() => navigate("/cal-center-queue")}
                         >
-                          <i class="fa-duotone fa-clock"></i>
+                          <i className="fa-duotone fa-clock"></i>
                         </div>
                       </div>
                     </div>
@@ -264,16 +252,16 @@ function PhoneDashboard() {
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
-                      <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="col-10">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
                           <h5>Ring Group</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
                         <div
-                          class="col-2"
+                          className="col-2"
                           onClick={() => navigate("/ring-groups")}
                         >
-                          <i class="fa-duotone fa-solid fa-bell-ring"></i>
+                          <i className="fa-duotone fa-solid fa-bell-ring"></i>
                         </div>
                       </div>
                     </div>
@@ -307,13 +295,13 @@ function PhoneDashboard() {
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
-                      <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <div class="col-10">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
                           <h5>Users</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
-                        <div class="col-2" onClick={() => navigate("/users")}>
-                          <i class="fa-duotone fa-users"></i>
+                        <div className="col-2" onClick={() => navigate("/users")}>
+                          <i className="fa-duotone fa-users"></i>
                         </div>
                       </div>
                     </div>

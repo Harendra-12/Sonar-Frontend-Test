@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header'
-import { Navigate, useNavigate } from 'react-router-dom'
-import PaginationComponent from '../../CommonComponents/PaginationComponent';
+import { useNavigate } from 'react-router-dom'
 
 
 function Ticket() {
@@ -16,16 +15,7 @@ function Ticket() {
 
   const closePopupAndPage = () => {
     setIsOpen(false);
-    setTimeout(() => {
-      // window.close();
-    }, 300);
   };
-
-  // const closePopup = () => {
-  //   setIsOpen(false);
-  // };
-
-  console.log(openPopup, "working")
 
 
   return (
@@ -38,29 +28,29 @@ function Ticket() {
               <div className='overviewTableWrapper'>
                 <div className='overviewTableChild'>
                   <div className='d-flex flex-wrap'>
-                    <div class="col-12">
-                      <div class="heading">
-                        <div class="content">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
                           <h4>Ticket</h4>
                           <p>You can Create ticket of users </p>
                         </div>
-                        <div class="buttonGroup">
-                          <button class="panelButton gray" >
-                            <span class="text">Back</span>
-                            <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        <div className="buttonGroup">
+                          <button className="panelButton gray" >
+                            <span className="text">Back</span>
+                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                           </button>
-                          <button class="panelButton" onClick={openPopup}>
-                            <span class="text">Create</span>
-                            <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                          <button className="panelButton" onClick={openPopup}>
+                            <span className="text">Create</span>
+                            <span className="icon"><i className="fa-solid fa-plus"></i></span>
                           </button>
                         </div>
                       </div>
                     </div>
                     <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
                       <nav className="tangoNavs">
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
                           <button
-                            class="nav-link active"
+                            className="nav-link active"
                             id="nav-user-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-user"
@@ -72,7 +62,7 @@ function Ticket() {
                             Open Ticket
                           </button>
                           <button
-                            class="nav-link"
+                            className="nav-link"
                             id="nav-exten-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-exten"
@@ -86,7 +76,7 @@ function Ticket() {
                         </div>
                       </nav>
                       <div
-                        class="tab-content"
+                        className="tab-content"
                         id="nav-tabContent"
                         style={{
                           border: "1px solid var(--border-color)",
@@ -95,7 +85,7 @@ function Ticket() {
                         }} >
 
                         <div
-                          class="tab-pane fade show active"
+                          className="tab-pane fade show active"
                           id="nav-user"
                           role="tabpanel"
                           aria-labelledby="nav-user-tab"
@@ -170,7 +160,7 @@ function Ticket() {
                                           className="tableButton edit" onClick={handleSubmit}
 
                                         >
-                                          <i class="fa-regular fa-eye"></i>
+                                          <i className="fa-regular fa-eye"></i>
                                         </button>
                                       </div></td>
                                       <td>
@@ -204,7 +194,7 @@ function Ticket() {
 
                         </div>
                         <div
-                          class="tab-pane fade"
+                          className="tab-pane fade"
                           id="nav-exten"
                           role="tabpanel"
                           aria-labelledby="nav-exten-tab"
@@ -275,7 +265,7 @@ function Ticket() {
                                           className="tableButton edit" onClick={handleSubmit}
 
                                         >
-                                          <i class="fa-regular fa-eye"></i>
+                                          <i className="fa-regular fa-eye"></i>
                                         </button>
                                       </div></td>
                                       {/* <td>
@@ -334,7 +324,7 @@ function Ticket() {
                             <div
                               className="tableContainer0"
                               style={{ maxHeight: "calc(100vh - 100px)" }}>
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label for="">Subject : </label>
                               </div>
                               <div className="col-12">
@@ -345,7 +335,7 @@ function Ticket() {
                                   <option></option>
                                 </select>
                               </div>
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label for="">Department : </label>
 
                               </div>
@@ -360,7 +350,7 @@ function Ticket() {
                                   <option>Support</option>
                                 </select>
                               </div>
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label for="">Query Type: </label>
                               </div>
                               <div className="col-12">
@@ -374,7 +364,7 @@ function Ticket() {
                                   <option>Fatal</option>
                                 </select>
                               </div>
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label for="">Massage </label>
                               </div>
                               <div className="col-12">

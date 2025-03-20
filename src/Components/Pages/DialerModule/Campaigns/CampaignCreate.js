@@ -133,7 +133,6 @@ function CampaignCreate() {
     if (newFile) {
       const maxSizeInKB = 2048;
       const fileSizeInKB = newFile.size / 1024;
-      console.log("This is file size", fileSizeInKB);
       if (fileSizeInKB > maxSizeInKB) {
         toast.error("Please choose a file less than 2048 kilobytes.");
       } else {
@@ -190,7 +189,6 @@ function CampaignCreate() {
     // If id is present then remove it if not add it
     setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
   }
-  console.log("SelectedDesposition", selectedDesposition);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -233,7 +231,7 @@ function CampaignCreate() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -386,8 +384,8 @@ function CampaignCreate() {
 
                             </div>
                             <div className='col-12 my-2'>
-                              <div class="searchBox position-relative">
-                                <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
+                              <div className="searchBox position-relative">
+                                <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
                               </div>
                             </div>
                             <ul className="invoiceList list-unstyled">
@@ -801,8 +799,8 @@ function CampaignCreate() {
                               </div>
                             </div>
                             {/* <div className='col-12 my-2'>
-                                                            <div class="searchBox position-relative">
-                                                                <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
+                                                            <div className="searchBox position-relative">
+                                                                <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
                                                             </div>
                                                         </div> */}
                             <div className="tableHeader mt-2">
@@ -861,7 +859,7 @@ function CampaignCreate() {
                                           )}
                                         </div>
                                         {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                                    <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
+                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
                                                                                 </div> */}
                                       </div>
                                     </div>

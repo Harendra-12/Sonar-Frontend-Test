@@ -59,7 +59,6 @@ function VoiceMailReport() {
       } else {
         setLoading(false);
       }
-      console.log("api_data:", apiData);
     }
     if (searchValue.trim().length === 0) {
       getData();
@@ -101,7 +100,7 @@ function VoiceMailReport() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button

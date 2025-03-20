@@ -42,20 +42,16 @@ function CallBlockingAdd() {
     useState("");
   const [selectedCdrToBlock, setSelectedCdrToBlock] = useState([]);
   const [selectedExtensionType, setSelectedExtensionType] = useState([]);
-  // const [selectedExtensions, setSelectedExtensions] = useState([]);
   const [filterBy, setFilterBy] = useState("");
   const [startDate, setStartDate] = useState("");
 
   const [endDate, setEndDate] = useState("");
   const actionListValue = (value) => {
-    // console.log(value);
     setValue(
       "extension",
       value.map((item) => item[0])
     );
-    // setSelectedExtensions(value);
   };
-  console.log(watch());
 
   const handleBlock = handleSubmit(async (data) => {
     if (data.type === "") {
@@ -304,7 +300,7 @@ function CallBlockingAdd() {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -314,7 +310,7 @@ function CallBlockingAdd() {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>
@@ -528,7 +524,7 @@ function CallBlockingAdd() {
                     <div className="col-xl-6 col-12">
                       <input
                         type="text"
-                        class="formItem"
+                        className="formItem"
                         placeholder="DID/PSTN..."
                         // value={type}
                         // onChange={(e) => setType(e.target.value)}
@@ -631,7 +627,7 @@ function CallBlockingAdd() {
                     >
                       <span className="text">Block</span>
                       <span className="icon">
-                        <i class="fa-solid fa-ban"></i>
+                        <i className="fa-solid fa-ban"></i>
                       </span>
                     </button>
                   </div>

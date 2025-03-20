@@ -36,11 +36,9 @@ function InboundRouteAdd() {
       );
       if (extensionData?.status) {
         setExtension(extensionData.data);
-        // console.log("This data comming from extensio0n",extensionData.data);
       }
       if (apidata?.status) {
         setRingGroup(apidata.data);
-        // console.log("This data is cooming from group",apidata);
       } else {
         navigate("/");
       }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { generalPostFunction } from '../../GlobalFunction/globalFunction';
 import axios from 'axios';
 
 const token = localStorage.getItem("token");

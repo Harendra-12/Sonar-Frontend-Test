@@ -322,12 +322,12 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                                 disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete"))}
                                                             >
                                                                 <span className="text" >Delete</span>
-                                                                <span className="icon"><i class="fa-solid fa-trash"></i></span>
+                                                                <span className="icon"><i className="fa-solid fa-trash"></i></span>
                                                             </button>
                                                         }
                                                         <button type='button' className="panelButton ms-auto" onClick={() => { addNewMod ? addNewCustomFilter() : updateCustomFilter() }}>
                                                             <span className="text" >{addNewCustomFilter ? "Save" : "Update"}</span>
-                                                            <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                            <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                                         </button>
                                                     </div>
                                                 </form>

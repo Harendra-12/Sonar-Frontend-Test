@@ -12,18 +12,16 @@ function AllCallsDetails() {
       setExtensionDataLoading(false);
     }
   }, [callDetails]);
-  // console.log("allCalls", callDetails);
-
   return (
     <>
       {callDetails ? (
-        <div class="accordion dashboard" id="accordionPanelsStayOpenExample">
+        <div className="accordion dashboard" id="accordionPanelsStayOpenExample">
           <div className="row gy-3 gx-xxl-4 gx-lg-3">
             <div className="col-lg-3 ">
               <div className="accordion-item itemWrapper a h-auto">
-                <h2 class="accordion-header ">
+                <h2 className="accordion-header ">
                   <button
-                    class="accordion-button"
+                    className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse1"
@@ -35,7 +33,7 @@ function AllCallsDetails() {
                         <i className="fa-duotone fa-phone-volume" /> All Calls  {" "}
                         {extensionDataLoading && (
                           <i
-                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            className={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                           ></i>
                         )}
                       </div>
@@ -53,9 +51,9 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse1" class="accordion-collapse collapse show">
+                <div id="collapse1" className="accordion-collapse collapse show">
                   <div className="accordion-body">
-                    <div class="row g-3">
+                    <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
                         <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
                           <div className="heading h-auto">
@@ -81,7 +79,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.missed !== undefined ? (callDetails?.missed) : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -102,7 +100,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.success !== undefined ? (callDetails?.success) : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -140,9 +138,9 @@ function AllCallsDetails() {
             </div>
             <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
-                <h2 class="accordion-header">
+                <h2 className="accordion-header">
                   <button
-                    class="accordion-button"
+                    className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse2"
@@ -158,7 +156,7 @@ function AllCallsDetails() {
                         Inbound Calls
                         {extensionDataLoading && (
                           <i
-                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            className={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                           ></i>
                         )}
                       </div>
@@ -166,7 +164,7 @@ function AllCallsDetails() {
                         <div className="d-flex align-items-center justify-content-center me-4">
                           <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
                             {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
-                              class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                              className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                             ></i>}
                           </p>
 
@@ -176,8 +174,8 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse2" class="accordion-collapse collapse show">
-                  <div class="accordion-body">
+                <div id="collapse2" className="accordion-collapse collapse show">
+                  <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
                         <div className="itemWrapper d shadow-none" style={{ border: '1px solid var(--border-color)' }}>
@@ -208,7 +206,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -229,7 +227,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.inbound?.completed !== undefined ? callDetails?.inbound?.completed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -249,7 +247,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
                                 <p>Total Inbound Calls</p>
@@ -268,9 +266,9 @@ function AllCallsDetails() {
             </div>
             <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
-                <h2 class="accordion-header">
+                <h2 className="accordion-header">
                   <button
-                    class="accordion-button"
+                    className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse3"
@@ -286,14 +284,14 @@ function AllCallsDetails() {
                         Outbound Calls{" "}
                         {extensionDataLoading && (
                           <i
-                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            className={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                           ></i>
                         )}
                       </div>
                       <div className="  d-flex align-items-center justify-content-between me-4">
                         <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
                           {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
                         </p>
 
@@ -301,7 +299,7 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse3" class="accordion-collapse collapse show">
+                <div id="collapse3" className="accordion-collapse collapse show">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -333,7 +331,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.outbound?.missed !== undefined ? callDetails?.outbound?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -354,7 +352,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.outbound?.completed !== undefined ? callDetails?.outbound?.completed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -374,7 +372,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
                                 <p>Total Outbound Calls</p>
@@ -393,9 +391,9 @@ function AllCallsDetails() {
             </div>
             <div className="col-lg-3">
               <div className="accordion-item itemWrapper a h-auto">
-                <h2 class="accordion-header">
+                <h2 className="accordion-header">
                   <button
-                    class="accordion-button"
+                    className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapseinternal"
@@ -410,21 +408,21 @@ function AllCallsDetails() {
                         Internal Calls{" "}
                         {extensionDataLoading && (
                           <i
-                            class={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
+                            className={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
                           ></i>
                         )}
                       </div>
                       <div className="  d-flex align-items-center justify-content-between me-4">
                         <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
                           {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
-                            class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
                         </p>
                       </div>
                     </div>
                   </button>
                 </h2>
-                <div id="collapseinternal" class="accordion-collapse collapse show">
+                <div id="collapseinternal" className="accordion-collapse collapse show">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -456,7 +454,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -477,7 +475,7 @@ function AllCallsDetails() {
                                 <h3 style={{ fontWeight: 900 }}>
                                   {
                                     callDetails?.internal?.completed !== undefined ? callDetails?.internal?.completed : <i
-                                      class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                      className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                     ></i>
                                   }
                                 </h3>
@@ -497,7 +495,7 @@ function AllCallsDetails() {
                               <div className="col-9">
                                 <h3 style={{ fontWeight: 900 }}>
                                   {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
-                                    class={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                                    className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                                   ></i>}
                                 </h3>
                                 <p>Total Internal Calls</p>

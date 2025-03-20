@@ -10,14 +10,9 @@ const GoogleTranslate = () => {
             script.async = true;
             document.body.appendChild(script);
 
-            const savedLanguage = localStorage.getItem("selected_language");
-
             // Initialize Google Translate
             window.googleTranslateElementInit = () => {
-                const translator = new window.google.translate.TranslateElement(
-                    { pageLanguage: savedLanguage ? savedLanguage : "en" },
-                    "google_translate_element"
-                );
+                
 
                 // Function to listen for language change and save to localStorage
                 const listenForLanguageChange = () => {

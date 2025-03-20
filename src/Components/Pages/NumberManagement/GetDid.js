@@ -225,7 +225,7 @@ function GetDid() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                       </div>
@@ -369,61 +369,61 @@ function GetDid() {
                                   placeholder="Select usage..."
                                 /> */}
                                 <div className="d-flex justify-content-between flex-wrap">
-                                  <div class="checkbox-wrapper-4">
-                                    <input class="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
-                                    <label class="cbx" for="Voice">
+                                  <div className="checkbox-wrapper-4">
+                                    <input className="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
+                                    <label className="cbx" for="Voice">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
                                       </span>
                                       <span className="checkBoxLabel">Voice</span>
                                     </label>
-                                    <svg class="inline-svg">
+                                    <svg className="inline-svg">
                                       <symbol id="check-4" viewBox="0 0 12 10">
                                         <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                                       </symbol>
                                     </svg>
                                   </div>
-                                  <div class="checkbox-wrapper-4">
-                                    <input class="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
-                                    <label class="cbx" for="Text">
+                                  <div className="checkbox-wrapper-4">
+                                    <input className="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
+                                    <label className="cbx" for="Text">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
                                       </span>
                                       <span className="checkBoxLabel">Text</span>
                                     </label>
-                                    <svg class="inline-svg">
+                                    <svg className="inline-svg">
                                       <symbol id="check-4" viewBox="0 0 12 10">
                                         <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                                       </symbol>
                                     </svg>
                                   </div>
-                                  <div class="checkbox-wrapper-4">
-                                    <input class="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
-                                    <label class="cbx" for="Fax">
+                                  <div className="checkbox-wrapper-4">
+                                    <input className="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
+                                    <label className="cbx" for="Fax">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
                                       </span>
                                       <span className="checkBoxLabel">Fax</span>
                                     </label>
-                                    <svg class="inline-svg">
+                                    <svg className="inline-svg">
                                       <symbol id="check-4" viewBox="0 0 12 10">
                                         <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                                       </symbol>
                                     </svg>
                                   </div>
-                                  <div class="checkbox-wrapper-4">
-                                    <input class="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
-                                    <label class="cbx" for="Emergency">
+                                  <div className="checkbox-wrapper-4">
+                                    <input className="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
+                                    <label className="cbx" for="Emergency">
                                       <span>
                                         <svg width="12px" height="10px">
                                         </svg>
                                       </span>
                                       <span className="checkBoxLabel">Emergency</span>
                                     </label>
-                                    <svg class="inline-svg">
+                                    <svg className="inline-svg">
                                       <symbol id="check-4" viewBox="0 0 12 10">
                                         <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                                       </symbol>
@@ -619,7 +619,7 @@ function GetDid() {
                                 >
                                   <span className="text">Search</span>
                                   <span className="icon">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <i className="fa-solid fa-magnifying-glass"></i>
                                   </span>
                                 </button>
                                 <label
@@ -657,24 +657,24 @@ function GetDid() {
                                             <tr>
                                               <td>{item.didSummary}</td>
                                               <td>
-                                                <div class="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
+                                                <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
                                                   {
                                                     selectedUsage.map((item, key) => {
                                                       if (item.label === "Voice") {
                                                         return (
-                                                          <i class="fa-solid m-1 fa-phone" key={key}></i>
+                                                          <i className="fa-solid m-1 fa-phone" key={key}></i>
                                                         )
                                                       } else if (item.label === "Text") {
                                                         return (
-                                                          <i class="fa-regular m-1 fa-comments" key={key}></i>
+                                                          <i className="fa-regular m-1 fa-comments" key={key}></i>
                                                         )
                                                       } else if (item.label === "Fax") {
                                                         return (
-                                                          <i class="fa-solid m-1 fa-fax" key={key}></i>
+                                                          <i className="fa-solid m-1 fa-fax" key={key}></i>
                                                         )
                                                       } else if (item.label === "Emergency") {
                                                         return (
-                                                          <i class="fa-regular m-1 fa-light-emergency-on" key={key}></i>
+                                                          <i className="fa-regular m-1 fa-light-emergency-on" key={key}></i>
                                                         )
                                                       }
                                                     })
@@ -693,9 +693,9 @@ function GetDid() {
                                                   }
                                                 >
                                                   {selectedDid.includes(item) ? (
-                                                    <i class="fa-solid fa-xmark"></i>
+                                                    <i className="fa-solid fa-xmark"></i>
                                                   ) : (
-                                                    <i class="fa-solid fa-plus"></i>
+                                                    <i className="fa-solid fa-plus"></i>
                                                   )}{" "}
                                                 </button>
                                               </td>
@@ -751,7 +751,7 @@ function GetDid() {
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                       <li className="me-2 col mb-0">
                                         <i
-                                          class="fa-duotone fa-wallet me-2"
+                                          className="fa-duotone fa-wallet me-2"
                                           style={{ color: "var(--ui-accent)" }}
                                         ></i>{" "}
                                         Wallet{" "}
@@ -772,7 +772,7 @@ function GetDid() {
                                       </li>
                                       {totalPrice > Number(accountBalance) ? <div className="col-auto">
                                         <button className="tableButton edit" onClick={()=>setRechargePopUp(true)}>
-                                          <i class="fa-solid fa-dollar-sign" />
+                                          <i className="fa-solid fa-dollar-sign" />
                                         </button>
                                       </div> : ""
                                       }
@@ -780,7 +780,7 @@ function GetDid() {
                                     </div>
                                     <li>
                                       <i
-                                        class="fa-duotone fa-credit-card me-2"
+                                        className="fa-duotone fa-credit-card me-2"
                                         style={{ color: "var(--ui-accent)" }}
                                       ></i>{" "}
                                       Credit Card{" "}
@@ -802,7 +802,7 @@ function GetDid() {
                                     // onClick={handlePayment}
                                     onClick={() => setPopUp(true)}
                                   >
-                                    <span class="text">Pay Now</span>
+                                    <span className="text">Pay Now</span>
                                   </button>
                                 </div>
                               </div>
@@ -869,8 +869,8 @@ function GetDid() {
                       className="panelButton m-0 float-end"
                       onClick={() => handlePayment()}
                     >
-                      <span class="text">Confirm</span>
-                      <span class="icon"><i className="fa-solid fa-check" /></span>
+                      <span className="text">Confirm</span>
+                      <span className="icon"><i className="fa-solid fa-check" /></span>
                     </button>
                     <button
                       className="panelButton gray m-0 float-end"
@@ -878,8 +878,8 @@ function GetDid() {
                         setPopUp(false);
                       }}
                     >
-                      <span class="text">Cancel</span>
-                      <span class="icon"><i className="fa-solid fa-xmark" /></span>
+                      <span className="text">Cancel</span>
+                      <span className="icon"><i className="fa-solid fa-xmark" /></span>
                     </button>
                   </div>
                 </div>

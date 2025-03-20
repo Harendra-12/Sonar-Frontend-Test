@@ -75,7 +75,6 @@ function SofiaEditSetting() {
         description: sofia.desc,
         enabled: sofia.status === "false" ? false : true,
       };
-      console.log("This is parsed data", parsedData);
       const apiData = await generalPutFunction(
         `/sofia-global-settings/${value}`,
         parsedData

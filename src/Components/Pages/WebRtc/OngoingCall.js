@@ -166,14 +166,10 @@ function OngoingCall({
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
             onAccept: () => {
-              console.log("Transfer accepted.");
             },
             onReject: () => {
-              console.log("Transfer rejected.");
             },
           };
-
-          console.log("Refer request sent. Awaiting response...");
         } else {
           console.error("Invalid transfer address.");
         }
@@ -216,14 +212,10 @@ function OngoingCall({
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
             onAccept: () => {
-              console.log("Transfer accepted.");
             },
             onReject: () => {
-              console.log("Transfer rejected.");
             },
           };
-
-          console.log("Refer request sent. Awaiting response...");
         } else {
           console.error("Invalid transfer address.");
         }
@@ -237,7 +229,6 @@ function OngoingCall({
 
   // Function to merge two sessions
   const handleMergeCall = async (sessionIds) => {
-    console.log("handleMergeCall Started for sessions:", sessionIds);
     setShowActiveSessions(!showActiveSessions)
     const activeSessions = sessionIds.map(id => sessions[id]).filter(Boolean);
     if (activeSessions.length < 2) {
@@ -258,7 +249,6 @@ function OngoingCall({
 
     // Unhold each session before merging
     await Promise.all(activeSessions.map(async (session) => {
-        console.log(`Unholding session ${session.id}...`);
         let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
         sessionDescriptionHandlerOptions.hold = false;
         session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
@@ -277,7 +267,6 @@ function OngoingCall({
                         // Restore outbound streams
                         pc.getSenders().forEach(sender => {
                             if (sender.track) {
-                                console.log(`Unmuting ${sender.track.kind} track: ${sender.track.label}`);
                                 sender.track.enabled = true;
                             }
                         });
@@ -299,12 +288,10 @@ function OngoingCall({
     }));
 
     try {
-        console.log("Requesting user audio...");
         const myAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
         // Retrieve remote audio streams for each session
         activeSessions.forEach((session) => {
-          console.log("---------------------",session);
           
             let remoteStream = new MediaStream();
             session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
@@ -327,8 +314,6 @@ function OngoingCall({
                 const sourceRemote = audioContext.createMediaStreamSource(stream);
                 sourceRemote.connect(destination);
             });
-
-            console.log("Inbound mixed stream created (only remote audio):", destination.stream);
             return destination.stream;
         }
 
@@ -338,9 +323,7 @@ function OngoingCall({
             const inboundAudioElement = new Audio();
             inboundAudioElement.srcObject = mixedInboundStream;
             inboundAudioElement.autoplay = true;
-            inboundAudioElement.play()
-                .then(() => console.log("Inbound mixed audio playing"))
-                .catch(err => console.error("Error playing inbound mixed audio:", err));
+            inboundAudioElement.play();
         }
 
         // Call this function to play only inbound audio
@@ -361,8 +344,6 @@ function OngoingCall({
                     sourceRemote.connect(destination);
                 }
             });
-
-            console.log(`Mixed stream created (excluding session: ${excludeSessionId}):`, destination.stream);
             return destination.stream;
         }
 
@@ -378,13 +359,10 @@ function OngoingCall({
 
             session.sessionDescriptionHandler.peerConnection.getSenders().forEach((sender) => {
                 if (sender.track && sender.track.kind === "audio") {
-                    console.log(`Replacing audio track in Session ${session.id}`);
                     sender.replaceTrack(mixedAudioTrack);
                 }
             });
         });
-
-        console.log("All selected sessions have been merged.");
     } catch (err) {
         console.error("Error during call merging:", err);
     }
@@ -428,15 +406,11 @@ function OngoingCall({
           // Add event listeners for accepted and rejected states
           referRequest.delegate = {
             onAccept: () => {
-              console.log("Transfer accepted.");
               hangup();
             },
             onReject: () => {
-              console.log("Transfer rejected.");
             },
           };
-
-          console.log("Refer request sent. Awaiting response...");
         } else {
           console.error("Invalid transfer address.");
         }
@@ -451,9 +425,9 @@ function OngoingCall({
     <>
       <div className="audioCall position-relative">
         <div className="container-fluid">
-          <div class="row header">
-            <div class="col-4"></div>
-            <div class="col-4 text-center my-auto">
+          <div className="row header">
+            <div className="col-4"></div>
+            <div className="col-4 text-center my-auto">
               <h5 className="duration">
                 {timer?.answeredAt && (
                   <CallTimer
@@ -463,12 +437,12 @@ function OngoingCall({
                 )}
               </h5>
             </div>
-            <div class="col-4 d-none d-xl-flex justify-content-end">
+            <div className="col-4 d-none d-xl-flex justify-content-end">
               <button
-                class="clearButton"
+                className="clearButton"
                 onClick={() => setSelectedModule("callDetails")}
               >
-                <i class="fa-regular fa-horizontal-rule text-white"></i>
+                <i className="fa-regular fa-horizontal-rule text-white"></i>
               </button>
             </div>
             <div className="user">
@@ -512,7 +486,7 @@ function OngoingCall({
             {showActiveSessions && (
               <div className="parkList">
                 <button className="formItem d-flex justify-content-between align-items-center" onClick={() => setShowActiveSessions(!showActiveSessions)}>
-                  Select to Merge call <i class="fa-solid fa-xmark text-danger"></i>
+                  Select to Merge call <i className="fa-solid fa-xmark text-danger"></i>
                 </button>
                 <div className="mergeCallList">
                   <ul>
@@ -529,7 +503,7 @@ function OngoingCall({
                       )
                     })}
                   </ul>
-                  <button onClick={() => handleMergeCall([...selectedSessions, session.id])} ><i class="fa-solid fa-merge me-2"></i> Merge</button>
+                  <button onClick={() => handleMergeCall([...selectedSessions, session.id])} ><i className="fa-solid fa-merge me-2"></i> Merge</button>
                 </div>
 
 
@@ -619,7 +593,7 @@ function OngoingCall({
                         } `}
                       effect="ripple"
                     >
-                      <i class="fa-solid fa-merge"></i>
+                      <i className="fa-solid fa-merge"></i>
                     </button>
                   </Tippy>
                   <Tippy content="Toggle Dialpad">
@@ -647,7 +621,7 @@ function OngoingCall({
                       onClick={() => { setDialpadShow(true); setAttendShow(false); setShowActiveSessions(false); setShowParkList(false); }}
                     >
                       {/* <i className="fa-solid fa-user-plus" /> */}
-                      <i class="fa fa-exchange" aria-hidden="true"></i>
+                      <i className="fa fa-exchange" aria-hidden="true"></i>
                     </button>
                   </Tippy>
                   <Tippy content="Blind Transfer">
@@ -730,7 +704,7 @@ function OngoingCall({
                         } `}
                       effect="ripple"
                     >
-                      <i class="fa-solid fa-merge"></i>
+                      <i className="fa-solid fa-merge"></i>
                     </button>
                   </Tippy> */}
                   <Tippy content="Hang Up">
@@ -957,7 +931,7 @@ function OngoingCall({
                         )
                       }
                     >
-                      <i class="fa-light fa-delete-left"></i>
+                      <i className="fa-light fa-delete-left"></i>
                     </buton>
                   </div>
 

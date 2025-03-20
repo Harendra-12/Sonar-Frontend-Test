@@ -18,7 +18,7 @@ function Payment({ account, nextPage, companyStatus }) {
                 onClick={() => { nextPage("account"); }}
               >
                 <span className="text">Back</span>
-                <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
               </button>
               <button
                 type="button"
@@ -32,7 +32,7 @@ function Payment({ account, nextPage, companyStatus }) {
                 disabled={Number(companyStatus) >= 2 ? false : true}
               >
                 <span className="text">Next</span>
-                <span className="icon"><i class="fa-solid fa-caret-right"></i></span>
+                <span className="icon"><i className="fa-solid fa-caret-right"></i></span>
               </button>
             </div>
           </div>

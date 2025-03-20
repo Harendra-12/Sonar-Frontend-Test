@@ -243,7 +243,7 @@ function CallCenterQueue() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         {checkViewSidebar(
@@ -260,7 +260,7 @@ function CallCenterQueue() {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </Link>
                         ) : (
@@ -465,7 +465,7 @@ function CallCenterQueue() {
                                                 )
                                               }
                                             >
-                                              <i class="fa-solid fa-pencil"></i>
+                                              <i className="fa-solid fa-pencil"></i>
                                             </button>
                                           </td>
                                           <td>
@@ -477,7 +477,7 @@ function CallCenterQueue() {
                                                 setDeleteId(item.id);
                                               }}
                                             >
-                                              <i class="fa-solid fa-trash"></i>
+                                              <i className="fa-solid fa-trash"></i>
                                             </button>
                                           </td>
                                         </tr>
@@ -559,7 +559,7 @@ function CallCenterQueue() {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     ) : (
@@ -569,7 +569,7 @@ function CallCenterQueue() {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     )}
@@ -584,7 +584,7 @@ function CallCenterQueue() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

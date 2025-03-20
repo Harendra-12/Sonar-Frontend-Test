@@ -169,7 +169,7 @@ const Extensions = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <Link
@@ -179,7 +179,7 @@ const Extensions = () => {
                         >
                           <span className="text">Buy</span>
                           <span className="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <i className="fa-solid fa-cart-shopping"></i>
                           </span>
                         </Link>
                       </div>
@@ -348,7 +348,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-pencil"></i>
+                                                          <i className="fa-solid fa-pencil"></i>
                                                         </button>
                                                       </td>
                                                     )}
@@ -374,7 +374,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-phone-office"></i>
+                                                          <i className="fa-solid fa-phone-office"></i>
                                                         </button>
                                                       ) : ( */}
                                                         <button
@@ -392,7 +392,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-plus"></i>
+                                                          <i className="fa-solid fa-plus"></i>
                                                         </button>
                                                       {/* )} */}
                                                     </td>

@@ -38,7 +38,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       : "profileOfflineNav"
                   }
                 >
-                  <i class="fa-light fa-user"></i>
+                  <i className="fa-light fa-user"></i>
                   {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
@@ -174,7 +174,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   className="navItem"
                 >
                   <div className="iconHolder">
-                  <i class="fa-light fa-screwdriver-wrench"></i>
+                  <i className="fa-light fa-screwdriver-wrench"></i>
                   </div>
                   <div className="itemTitle">Switch Admin</div>
                 </div>

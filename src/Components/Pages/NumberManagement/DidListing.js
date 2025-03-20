@@ -163,8 +163,6 @@ function DidListing({ page }) {
     }
   }
 
-  console.log("Usagesssss", previousUsages, usages)
-
   async function handleDelete(id) {
     setLoading(true)
     const apiData = await generalDeleteFunction(`/did/destroy/${id}`)
@@ -205,7 +203,7 @@ function DidListing({ page }) {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                      {  checkViewSidebar(
@@ -214,7 +212,7 @@ function DidListing({ page }) {
                             account?.permissions,"add"
                           )&&   <button
                           type="button"
-                          class="panelButton"
+                          className="panelButton"
                           onClick={() => {
                             if (page === "number") {
                               navigate("/did-add")
@@ -223,9 +221,9 @@ function DidListing({ page }) {
                             }
                           }}
                         >
-                          <span class="text">Add</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-plus"></i>
+                          <span className="text">Add</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-plus"></i>
                           </span>
                         </button>}
                       </div>
@@ -275,7 +273,7 @@ function DidListing({ page }) {
                                                   )
                                                 }
                                               >
-                                                <i class="fa-solid fa-plus"></i>
+                                                <i className="fa-solid fa-plus"></i>
                                               </button> */}
                                         <div className="mt-1">
                                           <button
@@ -285,7 +283,7 @@ function DidListing({ page }) {
                                             }}
                                           >
 
-                                            <i class="fa-solid fa-plus"></i>
+                                            <i className="fa-solid fa-plus"></i>
                                           </button>
                                         </div>
                                       </tr>
@@ -403,17 +401,17 @@ function DidListing({ page }) {
                                                 }
                                               }}
                                             >
-                                              <i class="fa-solid fa-headset"></i>
+                                              <i className="fa-solid fa-headset"></i>
                                             </button>
                                           </Tippy>
                                         </td>
                                       </> : ""}
                                       <td className="text-center">
-                                        <div class="dropdown">
-                                          <div class={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div className="dropdown">
+                                          <div className={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="fa-solid fa-ellipsis-vertical" />
                                           </div>
-                                          <ul class="dropdown-menu actionBtnDropdowns">
+                                          <ul className="dropdown-menu actionBtnDropdowns">
                                             {page === "pbx" ?
                                               <>
                                                 <li className='dropdown-item'>
@@ -424,26 +422,26 @@ function DidListing({ page }) {
                                                         : "Not Configured! Click to configure"
                                                     }
                                                   >
-                                                    <div class="clearButton text-align-start"
+                                                    <div className="clearButton text-align-start"
                                                       onClick={() =>
                                                         navigate(`/did-config`, {
                                                           state: item,
                                                         })
                                                       }>
-                                                      <i class={`fa-regular fa-${item.configuration !== null ? "gear" : "triangle-exclamation"} me-2`}></i> {item.configuration !== null ? "Update" : "Configure"}
+                                                      <i className={`fa-regular fa-${item.configuration !== null ? "gear" : "triangle-exclamation"} me-2`}></i> {item.configuration !== null ? "Update" : "Configure"}
                                                     </div>
                                                   </Tippy>
                                                 </li>
                                                 {item.configuration !== null && (
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Reset configuration of this DID">
-                                                      <div class="clearButton text-align-start"
+                                                      <div className="clearButton text-align-start"
                                                         onClick={() =>
                                                           handleClick(
                                                             item.configuration.id
                                                           )
                                                         }
-                                                      ><i class="fa-regular fa-arrows-rotate me-2"></i> Reset
+                                                      ><i className="fa-regular fa-arrows-rotate me-2"></i> Reset
                                                       </div>
                                                     </Tippy>
                                                   </li>
@@ -453,10 +451,10 @@ function DidListing({ page }) {
                                                 <>
                                                   <li className='dropdown-item'>
                                                     <Tippy content="Select the usage of this DID">
-                                                      <div class="clearButton text-align-start"
+                                                      <div className="clearButton text-align-start"
                                                         onClick={() => { setPreviousUsages(item.usages); setUsagesPopup(true); setId(item.id); setUsages(item.usages) }
                                                         }
-                                                      ><i class="fa-regular fa-gear me-2"></i> Set Usage
+                                                      ><i className="fa-regular fa-gear me-2"></i> Set Usage
                                                       </div>
                                                     </Tippy>
                                                   </li>
@@ -465,10 +463,10 @@ function DidListing({ page }) {
                                               <Tippy
                                                 content={"Delete the DID"}
                                               >
-                                                <div class="clearButton text-align-start"
+                                                <div className="clearButton text-align-start"
                                                   onClick={() => { setDeletePopup(true); setDeleteId(item.id) }
                                                   }>
-                                                  <i class={`fa-regular fa-trash me-2`}></i> Delete
+                                                  <i className={`fa-regular fa-trash me-2`}></i> Delete
                                                 </div>
                                               </Tippy>
                                             </li>
@@ -528,7 +526,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Lets Go!</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -540,7 +538,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>
@@ -579,7 +577,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Delete</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -591,7 +589,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>
@@ -630,7 +628,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Let's Go!</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -643,7 +641,7 @@ function DidListing({ page }) {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

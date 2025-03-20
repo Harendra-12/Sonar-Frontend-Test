@@ -18,7 +18,7 @@ function Account({ account, nextPage, companyStatus }) {
                 onClick={() => { nextPage("payment") }}
               >
                 <span className="text">Next</span>
-                <span className="icon"><i class="fa-solid fa-caret-right"></i></span>
+                <span className="icon"><i className="fa-solid fa-caret-right"></i></span>
               </button>
             </div>
           </div>

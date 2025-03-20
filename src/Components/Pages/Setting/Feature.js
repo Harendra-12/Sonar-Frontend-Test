@@ -104,7 +104,6 @@ function Feature() {
       }
     }
   }
-  console.log("This is edit name", editName);
   return (
     <>
       <main className="mainContent">

@@ -95,9 +95,6 @@ const DidConfig = () => {
       );
     } else {
       setValue("usages", "extension" || []);
-      console.log("Inside else cond");
-      
-      // setDataAvailable(true);
     }
   }, [locationData]);
   useEffect(() => {
@@ -109,7 +106,6 @@ const DidConfig = () => {
         if (holdMusic?.status) {
           setHoldMusic(holdMusic.data);
           if (holdMusic.data.length > 0 && uploadedMusic) {
-            console.log(holdMusic.data, uploadedMusic);
             setValue("hold_music", uploadedMusic.id);
           }
         } else {
@@ -122,7 +118,6 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
-  console.log(watch());
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
@@ -160,7 +155,6 @@ const DidConfig = () => {
   const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    console.log(data, "-------------");
     if(data.usages==="" || data.usages===null){
       data.action = null
       data.usages = null
@@ -248,15 +242,6 @@ const DidConfig = () => {
       });
     }
   }, [newAddDid]);
-
-  console.log(watch().usages);
-  if(watch().usages){
-    console.log("This is success",watch());
-    
-  }else{
-    console.log("this is fail");
-    
-  }
   return (
     <>
       <main className="mainContent">
@@ -281,7 +266,7 @@ const DidConfig = () => {
                     }}
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
@@ -289,7 +274,7 @@ const DidConfig = () => {
                     onClick={handleFormSubmit}
                   >
                     <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>
@@ -325,7 +310,7 @@ const DidConfig = () => {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           <button
@@ -337,7 +322,7 @@ const DidConfig = () => {
                               {locationData.configuration ? "Update" : "Save"}
                             </span>
                             <span className="icon">
-                              <i class="fa-solid fa-floppy-disk"></i>
+                              <i className="fa-solid fa-floppy-disk"></i>
                             </span>
                           </button>
                         </div>
@@ -712,7 +697,7 @@ const DidConfig = () => {
                           >
                             {watch().sticky_agent_enable === "true" ||
                               watch().sticky_agent_enable === 1 ? (
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label className="formItemDesc">Status</label>
                               </div>
                             ) : (
@@ -736,7 +721,7 @@ const DidConfig = () => {
                                 className="col-2 pe-2"
                                 style={{ width: "12%" }}
                               >
-                                <div class="formLabel">
+                                <div className="formLabel">
                                   <Tippy content="Input in Days, Max 99">
                                     <label className="formItemDesc">
                                       Duration{" "}
@@ -796,7 +781,7 @@ const DidConfig = () => {
                               <div
                                 className={`col-${watch().spam_filter_type === "3" ? "4 pe-1 ms-auto" : "12"}`}>
                                 {watch().spam_filter_type != "1" && (
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label>Type</label>
                                   </div>
                                 )}
@@ -832,7 +817,7 @@ const DidConfig = () => {
                                     </select>
                                   </div>
                                   <div className="col-4 ps-1">
-                                    <div class="formLabel">
+                                    <div className="formLabel">
                                       <Tippy content="Input in Days, Max 5">
                                         <label>
                                           Length{" "}
@@ -859,7 +844,7 @@ const DidConfig = () => {
                                     </select>
                                   </div>
                                   <div className="col-6 pe-1">
-                                    <div class="formLabel">
+                                    <div className="formLabel">
                                       <label>
                                         DTMF type{" "}
                                         <span

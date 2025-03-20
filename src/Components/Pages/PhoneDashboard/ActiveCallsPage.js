@@ -68,7 +68,6 @@ function ActiveCallsPage({ isParentWebRtc }) {
                 }, 0);
             return count;
         } else {
-            console.log(type, value);
             const count = ringingState
                 .reduce((acc, call) => {
                     if (call.did_num == value) {
@@ -103,7 +102,6 @@ function ActiveCallsPage({ isParentWebRtc }) {
                 }, 0);
             return count;
         } else {
-            console.log(type, value);
             const count = activeState
                 .reduce((acc, call) => {
                     if (call.did_num == value) {

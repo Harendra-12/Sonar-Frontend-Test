@@ -452,16 +452,12 @@ const ExtensionsEdit = ({ page }) => {
   };
 
   useEffect(()=>{
-    console.log(Object.keys(watch()).includes("destination_forward_to"),Object.keys(watch()),watch().followme == "0");
     if(watch().followme == "0"){
       if(Object.keys(watch()).includes("destination_forward_to")){
         unregister("destination_forward_to");
       }
     }
   },[watch()])
-
-  console.log("-----",watch());
-  
 
   return (
     <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
@@ -501,7 +497,7 @@ const ExtensionsEdit = ({ page }) => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -512,7 +508,7 @@ const ExtensionsEdit = ({ page }) => {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -526,9 +522,9 @@ const ExtensionsEdit = ({ page }) => {
                   >
                     <form action="#" className="tangoNavs">
                       <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
                           <button
-                            class="nav-link active"
+                            className="nav-link active"
                             id="nav-gen-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-gen"
@@ -541,13 +537,13 @@ const ExtensionsEdit = ({ page }) => {
                             {(errors?.password?.message ||
                               errors?.extension?.message) && (
                                 <i
-                                  class="fa fa-exclamation-circle text-danger"
+                                  className="fa fa-exclamation-circle text-danger"
                                   aria-hidden="true"
                                 ></i>
                               )}
                           </button>
                           <button
-                            class="nav-link"
+                            className="nav-link"
                             id="nav-voicemail-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-voicemail"
@@ -559,7 +555,7 @@ const ExtensionsEdit = ({ page }) => {
                             Voicemail
                           </button>
                           <button
-                            class="nav-link"
+                            className="nav-link"
                             id="nav-adv-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-adv"
@@ -571,7 +567,7 @@ const ExtensionsEdit = ({ page }) => {
                             Advanced
                           </button>
                           <button
-                            class="nav-link"
+                            className="nav-link"
                             id="nav-call-setting-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#nav-call-setting"
@@ -584,9 +580,9 @@ const ExtensionsEdit = ({ page }) => {
                           </button>
                         </div>
                       </nav>
-                      <div class="tab-content" id="nav-tabContent">
+                      <div className="tab-content" id="nav-tabContent">
                         <div
-                          class="tab-pane fade show active"
+                          className="tab-pane fade show active"
                           id="nav-gen"
                           role="tabpanel"
                           aria-labelledby="nav-gen-tab"
@@ -917,7 +913,7 @@ const ExtensionsEdit = ({ page }) => {
                           </form>
                         </div>
                         <div
-                          class="tab-pane fade"
+                          className="tab-pane fade"
                           id="nav-voicemail"
                           role="tabpanel"
                           aria-labelledby="nav-voicemail-tab"
@@ -1079,7 +1075,7 @@ const ExtensionsEdit = ({ page }) => {
                           </form>
                         </div>
                         <div
-                          class="tab-pane fade"
+                          className="tab-pane fade"
                           id="nav-device"
                           role="tabpanel"
                           aria-labelledby="nav-device-tab"
@@ -1119,7 +1115,7 @@ const ExtensionsEdit = ({ page }) => {
                           </form>
                         </div>
                         <div
-                          class="tab-pane fade"
+                          className="tab-pane fade"
                           id="nav-adv"
                           role="tabpanel"
                           aria-labelledby="nav-adv-tab"
@@ -1342,7 +1338,7 @@ const ExtensionsEdit = ({ page }) => {
                           </form>
                         </div>
                         <div
-                          class="tab-pane fade show "
+                          className="tab-pane fade show "
                           id="nav-call-setting"
                           role="tabpanel"
                           aria-labelledby="nav-call-setting-tab"
@@ -1371,7 +1367,7 @@ const ExtensionsEdit = ({ page }) => {
                                       : "col-3 pe-2 ms-auto"
                                   }
                                 >
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
@@ -1429,7 +1425,7 @@ const ExtensionsEdit = ({ page }) => {
                                       : "col-6"
                                   }
                                 >
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
@@ -1492,7 +1488,7 @@ const ExtensionsEdit = ({ page }) => {
                                       : "col-3 pe-2 ms-auto"
                                   }
                                 >
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label className="formItemDesc">Status</label>
                                   </div>
                                   <select
@@ -1542,7 +1538,7 @@ const ExtensionsEdit = ({ page }) => {
                                   </label>
                                 </div>
                                 <div className="col-6">
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label className="formItemDesc">Status</label>
                                   </div>
                                   <select

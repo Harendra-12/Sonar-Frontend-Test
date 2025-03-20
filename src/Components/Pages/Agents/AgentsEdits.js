@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "../../CommonComponents/Header";
-import { useLocation } from "react-router-dom";
 import UsersEdit from "../Users/UsersEdit";
 import ExtensionsEdit from "../Extensions/ExtensionsEdit";
 
 function AgentsEdits() {
-  const [usersDetails,setUsersDetails]=useState([]);
-  const location = useLocation();
-  const locationState = location.state;
-  console.log("0000location",locationState);
 
   return (
     <>
@@ -39,7 +34,7 @@ function AgentsEdits() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -49,7 +44,7 @@ function AgentsEdits() {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div> */}
@@ -61,9 +56,9 @@ function AgentsEdits() {
                   style={{ padding: "25px 23px" }}
                 >
                   <nav className="tangoNavs">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
-                        class="nav-link active"
+                        className="nav-link active"
                         id="nav-user-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-user"
@@ -75,7 +70,7 @@ function AgentsEdits() {
                         User Configuration
                       </button>
                       <button
-                        class="nav-link"
+                        className="nav-link"
                         id="nav-exten-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-exten"
@@ -89,7 +84,7 @@ function AgentsEdits() {
                     </div>
                   </nav>
                   <div
-                    class="tab-content"
+                    className="tab-content"
                     id="nav-tabContent"
                     style={{
                       border: "1px solid var(--border-color)",
@@ -98,16 +93,16 @@ function AgentsEdits() {
                     }}
                   >
                     <div
-                      class="tab-pane fade show active"
+                      className="tab-pane fade show active"
                       id="nav-user"
                       role="tabpanel"
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit page="marginleftAdjust" setUsersDetails={setUsersDetails}/>
+                      <UsersEdit page="marginleftAdjust"/>
                     </div>
                     <div
-                      class="tab-pane fade"
+                      className="tab-pane fade"
                       id="nav-exten"
                       role="tabpanel"
                       aria-labelledby="nav-exten-tab"

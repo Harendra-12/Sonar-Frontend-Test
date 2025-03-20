@@ -75,7 +75,6 @@ function ClickToCallSetup() {
     parsedData.append("action", watch().action);
     parsedData.append("usages", watch().usages);
     parsedData.append("primary_color", watch().color);
-    console.log("-------------", newFile);
     // parsedData.append("embed_code", watch().embed_code);
     const apiData = await fileUploadFunction("/click-to-call/store", parsedData);
     if (apiData?.status) {
@@ -141,7 +140,7 @@ function ClickToCallSetup() {
                       </div>
                     </div>
                   </div>
-                  <div class="wizard-form">
+                  <div className="wizard-form">
                     <div className="tawk-margin-auto tawk-width-100">
                       <div className="tawk-wizard-chat-form">
                         <div className="tawk-flex tawk-flex-wrap tawk-flex-large-gap tawk-margin-xlarge-top">
@@ -178,9 +177,9 @@ function ClickToCallSetup() {
                             </nav>
                             <div className="row">
                               <div className=" col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
-                                <div class="tab-content" id="nav-tabContent">
+                                <div className="tab-content" id="nav-tabContent">
                                   <div
-                                    class="tab-pane fade show active"
+                                    className="tab-pane fade show active"
                                     id="nav-gen"
                                     role="tabpanel"
                                     aria-labelledby="nav-gen-tab"
@@ -759,7 +758,7 @@ function ClickToCallSetup() {
                 <div className="row content col-xl-4">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
-                      <i class="fa-regular fa-circle-check"></i>
+                      <i className="fa-regular fa-circle-check"></i>
                     </div>
                   </div>
                   <div className="col-10 ps-0">
@@ -777,7 +776,7 @@ function ClickToCallSetup() {
                           Confirm
                         </span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     </div>

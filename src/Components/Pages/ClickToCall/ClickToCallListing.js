@@ -23,7 +23,6 @@ const ClickToCallListing = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  console.log(callBlock);
   useEffect(() => {
     setLoading(true);
     const getRingGroupDashboardData = async () => {
@@ -31,7 +30,6 @@ const ClickToCallListing = () => {
         const apidata = await generalGetFunction(
           `/click-to-call/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
-        console.log(apidata);
         if (apidata?.status) {
           setCallBlock(apidata.data);
           setLoading(false);
@@ -51,9 +49,7 @@ const ClickToCallListing = () => {
     const apidata = await generalDeleteFunction(`/click-to-call/destroy/${id}`);
     if (apidata.status) {
       setLoading(false);
-      console.log(callBlock);
       const newList = callBlock.data.filter((item) => item.id !== id);
-      console.log(newList);
       setCallBlock({ ...callBlock, data: newList });
       setDeleteId("");
       toast.success("Number removed from block list");
@@ -88,7 +84,7 @@ const ClickToCallListing = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <div
@@ -99,7 +95,7 @@ const ClickToCallListing = () => {
                         >
                           <span className="text">Add</span>
                           <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i className="fa-solid fa-plus"></i>
                           </span>
                         </div>
                       </div>
@@ -229,7 +225,7 @@ const ClickToCallListing = () => {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
 
@@ -242,7 +238,7 @@ const ClickToCallListing = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

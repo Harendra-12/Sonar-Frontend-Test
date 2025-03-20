@@ -26,9 +26,6 @@ const CallCenterSettings = () => {
       try {
         const userData = await generalGetFunction(`/call-center-queue/${id}`);
         setLoading(false);
-
-        console.log("API Response:", userData);
-
         if (userData?.status) {
           const data = userData.data;
           setValue("greeting", data.greeting);
@@ -68,8 +65,6 @@ const CallCenterSettings = () => {
       extension: data.extension,
     };
 
-    console.log("Payload:", payload);
-
     setLoading(true);
     const apiData = await generalPutFunction(
       `/call-center-queue/update/${id}`,
@@ -97,7 +92,7 @@ const CallCenterSettings = () => {
               <div className="d-flex justify-content-end">
                 <button className="panelButton" onClick={() => navigate(-1)}>
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   type="button"
@@ -105,7 +100,7 @@ const CallCenterSettings = () => {
                   onClick={handleFormSubmit}
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -131,7 +126,7 @@ const CallCenterSettings = () => {
                         className="panelButton gray"
                       >
                         <span className="text">Back</span>
-                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                       </button>
                       <button
                         effect="ripple"
@@ -139,7 +134,7 @@ const CallCenterSettings = () => {
                         onClick={handleFormSubmit}
                       >
                         <span className="text">Save</span>
-                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
                   </div>

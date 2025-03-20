@@ -38,7 +38,7 @@ function SubscriptionManagement() {
                                                     >
                                                         <span className="text">Back</span>
                                                         <span className="icon">
-                                                            <i class="fa-solid fa-caret-left"></i>
+                                                            <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
                                                 </div>

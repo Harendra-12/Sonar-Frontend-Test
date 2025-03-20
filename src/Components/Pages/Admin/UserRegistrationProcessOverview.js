@@ -60,17 +60,17 @@ function UserRegistrationProcessOverview() {
       <div className="mainContent">
         <div className="col-12">
           <Header title="New User Details" />
-          <div class="d-flex flex-wrap">
+          <div className="d-flex flex-wrap">
             <div className="col-xl-12">
               <div className="profileView">
                 <div className="profileDetailsHolder position-relative">
                   <div
-                    class="baseDetails row align-items-center mt-3"
+                    className="baseDetails row align-items-center mt-3"
                     style={{ padding: "30px 10px 55px" }}
                   >
                     <div className="col-xl-8 px-0 mx-auto position-relative">
                       <div
-                        class="progress"
+                        className="progress"
                         role="progressbar"
                         aria-label="Animated striped example"
                         aria-valuenow="50"
@@ -78,32 +78,32 @@ function UserRegistrationProcessOverview() {
                         aria-valuemax="100"
                       >
                         <div
-                          class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                          className="progress-bar progress-bar-striped progress-bar-animated bg-success"
                           style={{ width: "50%" }}
                         ></div>
                       </div>
                       <div className="progressStepWrapper">
                         <div className="stepWrapper col-3 success">
-                          <div class="step">
-                            <i class="fa-solid fa-thumbs-up"></i>
+                          <div className="step">
+                            <i className="fa-solid fa-thumbs-up"></i>
                           </div>
                           <label>Accounts</label>
                         </div>
                         <div className="stepWrapper col-3 success">
-                          <div class="step">
-                            <i class="fa-sharp fa-solid fa-credit-card"></i>
+                          <div className="step">
+                            <i className="fa-sharp fa-solid fa-credit-card"></i>
                           </div>
                           <label>Payment</label>
                         </div>
                         <div className="stepWrapper col-3">
-                          <div class="step ">
-                            <i class="fa-sharp fa-solid fa-file"></i>
+                          <div className="step ">
+                            <i className="fa-sharp fa-solid fa-file"></i>
                           </div>
                           <label>Documents</label>
                         </div>
                         <div className="stepWrapper col-3">
-                          <div class="step" style={{ cursor: "pointer" }}>
-                            <i class="fa-sharp fa-solid fa-file-invoice"></i>
+                          <div className="step" style={{ cursor: "pointer" }}>
+                            <i className="fa-sharp fa-solid fa-file-invoice"></i>
                           </div>
                           <label>Download Invoice</label>
                         </div>
@@ -522,20 +522,20 @@ function UserRegistrationProcessOverview() {
                       <div className="header d-flex align-items-center">
                         <div className="col-12">Selected Package</div>
                       </div>
-                      <div class="row" style={{ padding: "5px" }}>
-                        <div class="wrapper">
+                      <div className="row" style={{ padding: "5px" }}>
+                        <div className="wrapper">
                           <ul>
                             <li>
                               <label>Package Name</label>{" "}
-                              <label class="details">Advanced</label>
+                              <label className="details">Advanced</label>
                             </li>
                             <li>
                               <label>Package Price</label>{" "}
-                              <label class="details">$25000.00</label>
+                              <label className="details">$25000.00</label>
                             </li>
                             <li>
                               <label>Package Type</label>{" "}
-                              <label class="details">annually</label>
+                              <label className="details">annually</label>
                             </li>
                           </ul>
                         </div>
@@ -549,28 +549,28 @@ function UserRegistrationProcessOverview() {
                       <div className="header d-flex align-items-center">
                         <div className="col-12">Pricing Details</div>
                       </div>
-                      <div class="row" style={{ padding: "5px" }}>
-                        <div class="wrapper">
+                      <div className="row" style={{ padding: "5px" }}>
+                        <div className="wrapper">
                           <ul>
                             <li>
                               <label>Amount Paid</label>{" "}
-                              <label class="details">$123.00</label>
+                              <label className="details">$123.00</label>
                             </li>
                             <li>
                               <label>Time of Payment</label>{" "}
-                              <label class="details">16-01-2001</label>
+                              <label className="details">16-01-2001</label>
                             </li>
                             <li>
                               <label>Package Chosen</label>{" "}
-                              <label class="details">Starter</label>
+                              <label className="details">Starter</label>
                             </li>
                             <li>
                               <label>Payment Status</label>{" "}
-                              <label class="details">Success</label>
+                              <label className="details">Success</label>
                             </li>
                             <li>
                               <label>Transaction Id</label>{" "}
-                              <label class="details">321654987</label>
+                              <label className="details">321654987</label>
                             </li>
                           </ul>
                         </div>
@@ -584,40 +584,40 @@ function UserRegistrationProcessOverview() {
                       <div className="header d-flex align-items-center">
                         <div className="col-12">Billing Details</div>
                       </div>
-                      <div class="row" style={{ padding: "5px" }}>
-                        <div class="wrapper">
+                      <div className="row" style={{ padding: "5px" }}>
+                        <div className="wrapper">
                           <ul>
                             <li>
                               <label>Full Name</label>{" "}
-                              <label class="details">John Doe</label>
+                              <label className="details">John Doe</label>
                             </li>
                             <li>
                               <label>Email</label>{" "}
-                              <label class="details">john.doe@webvio.com</label>
+                              <label className="details">john.doe@webvio.com</label>
                             </li>
                             <li>
                               <label>Phone Number</label>{" "}
-                              <label class="details">6942061942</label>
+                              <label className="details">6942061942</label>
                             </li>
                             <li>
                               <label>Address</label>{" "}
-                              <label class="details">8/1/2 Greenfield Park</label>
+                              <label className="details">8/1/2 Greenfield Park</label>
                             </li>
                             <li>
                               <label>Zip Code</label>{" "}
-                              <label class="details">123456</label>
+                              <label className="details">123456</label>
                             </li>
                             <li>
                               <label>City</label>{" "}
-                              <label class="details">Utopia</label>
+                              <label className="details">Utopia</label>
                             </li>
                             <li>
                               <label>State</label>{" "}
-                              <label class="details">Prometheus</label>
+                              <label className="details">Prometheus</label>
                             </li>
                             <li>
                               <label>Country</label>{" "}
-                              <label class="details">Interstellar</label>
+                              <label className="details">Interstellar</label>
                             </li>
                           </ul>
                         </div>
@@ -638,7 +638,7 @@ function UserRegistrationProcessOverview() {
                       <div className="col-auto ps-0 pe-2">
                         <div className="iconWrapper2">
                           <i
-                            class="fa-solid fa-image"
+                            className="fa-solid fa-image"
                           ></i>
                         </div>
                       </div>
@@ -647,7 +647,7 @@ function UserRegistrationProcessOverview() {
                       </div>
                       <div className="col-auto px-0 my-auto ms-auto">
                         <div className="iconWrapper">
-                          <i class="fa-solid fa-ellipsis"></i>
+                          <i className="fa-solid fa-ellipsis"></i>
                         </div>
                       </div>
                       <div className="buttonPopup" style={{ display: 'none' }}>
@@ -655,7 +655,7 @@ function UserRegistrationProcessOverview() {
                           style={{ cursor: "pointer" }}
                         >
                           <div className="clearButton">
-                            <i class="fa-solid fa-file-arrow-down"></i>{" "}
+                            <i className="fa-solid fa-file-arrow-down"></i>{" "}
                             Download
                           </div>
                         </div>
@@ -665,7 +665,7 @@ function UserRegistrationProcessOverview() {
                               target="_blank"
                               rel="noreferrer"
                             >
-                              <i class="fa-sharp fa-solid fa-eye"></i> View
+                              <i className="fa-sharp fa-solid fa-eye"></i> View
                             </div>
                           </div>
                         </div>

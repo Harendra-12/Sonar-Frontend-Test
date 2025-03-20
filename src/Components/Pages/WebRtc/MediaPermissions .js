@@ -23,9 +23,7 @@ function MediaPermissions() {
   function requestSoundPermission() {
     const audioContext = new AudioContext();
     audioContext.resume().then(() => {
-      console.log('Sound permission granted');
     }).catch((error) => {
-      console.log('Sound permission denied');
     });
   }
 
@@ -42,9 +40,7 @@ function MediaPermissions() {
       requestSoundPermission();
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
-          console.log('Audio auto-play permission granted');
         } else {
-          console.log('Audio auto-play permission denied');
           // Provide a fallback, such as displaying an error message or playing a different audio file
         }
       });

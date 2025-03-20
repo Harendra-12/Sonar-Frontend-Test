@@ -259,7 +259,6 @@ function GlobalCalls() {
     async function getData() {
       const apiData = await generalGetFunction(`/user/all`);
       if (apiData?.status) {
-        // console.log(apiData);
         dispatch({
           type: "SET_ALLUSER",
           allUser: apiData.data,

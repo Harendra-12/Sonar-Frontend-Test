@@ -19,7 +19,6 @@ export const SipRegister = ({ options }) => {
 
         // When the WebSocket connection is opened successfully
         ws.onopen = () => {
-          console.log("WebSocket connection successful.");
           ws.close(); // Close the socket after the check
           resolve(true);
         };
@@ -33,11 +32,8 @@ export const SipRegister = ({ options }) => {
     };
 
     const registerUser = async () => {
-      console.log("testing1111");
       try {
-        console.log("testing11112");
         const isWebSocketWorking = await checkWebSocket(); // Check WebSocket connection
-        console.log("testing11113", isWebSocketWorking);
         if (isWebSocketWorking) {
           connectAndRegister({
             username: extension,

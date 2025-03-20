@@ -501,7 +501,6 @@ function CallCenterQueueEdit() {
       clearErrors("agent");
     }
   }
-  // console.log(user);
   // Handle advance click
   function handleAdvance(id) {
     if (advance.includes(id)) {
@@ -523,7 +522,6 @@ function CallCenterQueueEdit() {
     setShowMusicHold(true);
   };
 
-  console.log(user, agent);
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (prevSelected.some((agent) => agent?.name == item?.name)) {
@@ -535,10 +533,8 @@ function CallCenterQueueEdit() {
       }
     });
   };
-  console.log(user, agent);
 
   const handleBulkUpload = (selectedAgents) => {
-    console.log(selectedAgents);
     const newAgents = [...agent]; // Copy the current agent array
 
     selectedAgents.forEach((selectedAgent) => {
@@ -580,12 +576,6 @@ function CallCenterQueueEdit() {
     setAgent(newAgents); // Update the agent state
     setBulkAddPopUp(false);
   };
-  function truncateString(str) {
-    if (str.length > 8) {
-      return str.substring(0, 8) + "...";
-    }
-    return str; // Return the string as is if it's 8 characters or less
-  }
   const filteredUsers = user?.filter(
     (user) =>
       user?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -663,7 +653,6 @@ function CallCenterQueueEdit() {
     setAgent(mergedAgents);
     setBulkEditPopup(false);
   };
-  console.log('selectedAgentToEdit', selectedAgentToEdit);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -699,7 +688,7 @@ function CallCenterQueueEdit() {
                   }}
                 >
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
@@ -707,7 +696,7 @@ function CallCenterQueueEdit() {
                   onClick={handleFormSubmit}
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -759,7 +748,7 @@ function CallCenterQueueEdit() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -769,7 +758,7 @@ function CallCenterQueueEdit() {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -785,9 +774,9 @@ function CallCenterQueueEdit() {
                 >
                   <form action="#" className="tangoNavs mb-0">
                     <nav>
-                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <button
-                          class="nav-link active"
+                          className="nav-link active"
                           id="nav-gen-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-gen"
@@ -799,13 +788,13 @@ function CallCenterQueueEdit() {
                           General{" "}
                           {errors?.queue_name?.message && (
                             <i
-                              class="fa fa-exclamation-circle text-danger"
+                              className="fa fa-exclamation-circle text-danger"
                               aria-hidden="true"
                             ></i>
                           )}
                         </button>
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-tier-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-tier"
@@ -817,7 +806,7 @@ function CallCenterQueueEdit() {
                           Tier Rules
                         </button>
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-max-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-max"
@@ -829,7 +818,7 @@ function CallCenterQueueEdit() {
                           Max Wait Time
                         </button>
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-queue-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-queue"
@@ -841,7 +830,7 @@ function CallCenterQueueEdit() {
                           Queue Announcement
                         </button>
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-adv-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-adv"
@@ -854,9 +843,9 @@ function CallCenterQueueEdit() {
                         </button>
                       </div>
                     </nav>
-                    <div class="tab-content" id="nav-tabContent">
+                    <div className="tab-content" id="nav-tabContent">
                       <div
-                        class="tab-pane fade show active"
+                        className="tab-pane fade show active"
                         id="nav-gen"
                         role="tabpanel"
                         aria-labelledby="nav-gen-tab"
@@ -1094,7 +1083,7 @@ function CallCenterQueueEdit() {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-tier"
                         role="tabpanel"
                         aria-labelledby="nav-tier-tab"
@@ -1176,7 +1165,7 @@ function CallCenterQueueEdit() {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-max"
                         role="tabpanel"
                         aria-labelledby="nav-max-tab"
@@ -1277,7 +1266,7 @@ function CallCenterQueueEdit() {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-queue"
                         role="tabpanel"
                         aria-labelledby="nav-queue-tab"
@@ -1397,7 +1386,7 @@ function CallCenterQueueEdit() {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-adv"
                         role="tabpanel"
                         aria-labelledby="nav-adv-tab"
@@ -1523,54 +1512,54 @@ function CallCenterQueueEdit() {
                 </div>
 
                 <div className="col-12">
-                  <div class="heading bg-transparent border-bottom-0">
-                    <div class="content">
+                  <div className="heading bg-transparent border-bottom-0">
+                    <div className="content">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
-                    <div class="buttonGroup">
+                    <div className="buttonGroup">
                       {selectedAgentToEdit.length > 0 &&
                         selectedAgentToEdit.length != agent?.length ? (
                         <button
                           type="button"
-                          class="panelButton"
+                          className="panelButton"
                           onClick={() => {
                             setBulkEditPopup(true);
                           }}
                         >
-                          <span class="text">Edit</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
+                          <span className="text">Edit</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       ) : (
                         <button
                           type="button"
-                          class="panelButton edit"
+                          className="panelButton edit"
                           onClick={() => {
                             setSelectedAgentToEdit(agent);
                             setBulkEditPopup(true);
                           }}
                         >
-                          <span class="text">Edit All</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
+                          <span className="text">Edit All</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       )}
 
                       <button
                         type="button"
-                        class="panelButton"
+                        className="panelButton"
                         onClick={() => {
                           if (user.length !== agent?.length)
                             setBulkAddPopUp(true);
                           else toast.warn("All agent selected");
                         }}
                       >
-                        <span class="text">Add</span>
-                        <span class="icon">
-                          <i class="fa-solid fa-plus"></i>
+                        <span className="text">Add</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-plus"></i>
                         </span>
                       </button>
                     </div>
@@ -2059,7 +2048,7 @@ function CallCenterQueueEdit() {
                                     >
                                       <span className="text">Add</span>
                                       <span className="icon">
-                                        <i class="fa-solid fa-plus"></i>
+                                        <i className="fa-solid fa-plus"></i>
                                       </span>
                                     </button>
                                   </div>

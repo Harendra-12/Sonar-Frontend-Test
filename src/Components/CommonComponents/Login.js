@@ -304,7 +304,7 @@ export function LoginComponent() {
                     >
                       <span className="text">Logout</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                    </div>
@@ -321,7 +321,7 @@ export function LoginComponent() {
                     >
                       <span className="text">Login</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                    </div>

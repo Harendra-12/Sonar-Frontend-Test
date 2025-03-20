@@ -332,7 +332,7 @@ const UsersAdd = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -343,7 +343,7 @@ const UsersAdd = () => {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -784,17 +784,17 @@ const UsersAdd = () => {
                               </div>
                             </div>
                           </div>
-                          <div class="accordion permissionListWrapper">
+                          <div className="accordion permissionListWrapper">
                             {filteredPermission &&
                               Object.keys(filteredPermission).map(
                                 (item, key) => (
                                   <div className="accordion-item" key={key}>
                                     <h2
-                                      class="accordion-header"
+                                      className="accordion-header"
                                       id={`collapseHeading${key}`}
                                     >
                                       <button
-                                        class="accordion-button collapsed"
+                                        className="accordion-button collapsed"
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target={`#collapseRole${key}`}
@@ -814,10 +814,10 @@ const UsersAdd = () => {
                                     </h2>
                                     <div
                                       id={`collapseRole${key}`}
-                                      class="accordion-collapse collapse"
+                                      className="accordion-collapse collapse"
                                       aria-labelledby={`collapseHeading${key}`}
                                     >
-                                      <div class="accordion-body">
+                                      <div className="accordion-body">
                                         {filteredPermission[item].map(
                                           (innerItem, key) => (
                                             <div

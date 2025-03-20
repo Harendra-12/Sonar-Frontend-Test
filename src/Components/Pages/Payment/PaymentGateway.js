@@ -33,8 +33,6 @@ function PaymentGateway() {
     }
     getData();
   }, [changeState]);
-
-  // console.log("This is active vendor",activeVendor);
   //   Status change
   async function handleStatusChange(id, status) {
     setLoading(true);

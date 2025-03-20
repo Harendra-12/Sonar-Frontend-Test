@@ -108,7 +108,7 @@ function UserProfile() {
                                             >
                                                 <span className="text">Back</span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-caret-left"></i>
+                                                    <i className="fa-solid fa-caret-left"></i>
                                                 </span>
                                             </button>
                                         </div>
@@ -130,7 +130,7 @@ function UserProfile() {
                                                             <div className='ms-5'>
                                                                 <div className="content mt-1 d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-user"></i>
+                                                                        <i className="fa-regular me-3 fa-user"></i>
                                                                     </div>
                                                                     <h5 className="mb-0">
                                                                         {account?.name}
@@ -138,7 +138,7 @@ function UserProfile() {
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-id-card"></i>
+                                                                        <i className="fa-regular me-3 fa-id-card"></i>
                                                                     </div>
                                                                     <p className="mb-0">
                                                                         {account?.usertype}
@@ -146,7 +146,7 @@ function UserProfile() {
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-envelope"></i>
+                                                                        <i className="fa-regular me-3 fa-envelope"></i>
                                                                     </div>
                                                                     <p className="mb-0">
                                                                         {" "}
@@ -179,14 +179,14 @@ function UserProfile() {
                                 </div>
                                 {loading ? <><CircularLoader /></> : <div className='col-12'>
                                     <div className='heading bg-transparent border-bottom-0'>
-                                        <div class="content">
+                                        <div className="content">
                                             <h4>Account Information</h4>
                                         </div>
-                                        <div class="buttonGroup">
-                                            <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
-                                                <span class="text">{isEdit ? 'Save' : 'Edit'}</span>
-                                                <span class="icon">
-                                                    <i class={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
+                                        <div className="buttonGroup">
+                                            <button type="button" className={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
+                                                <span className="text">{isEdit ? 'Save' : 'Edit'}</span>
+                                                <span className="icon">
+                                                    <i className={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
                                                 </span>
                                             </button>
                                         </div>

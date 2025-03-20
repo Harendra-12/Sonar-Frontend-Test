@@ -205,7 +205,6 @@ function CardAndBilling() {
           parsedData
         );
         if (apiData?.status) {
-          console.log("Inside billing set");
           setBillingConfirmationPopUp(false);
           dispatch({
             type: "SET_BILLINGLISTREFRESH",
@@ -272,7 +271,6 @@ function CardAndBilling() {
           [item]: true,
         }));
       } else if (item === "phone") {
-        // console.log(billing[item].length,"This is loop",item);
         if (billing[item].length > 15 || billing[item].length < 8) {
           setErrorBilling((prevData) => ({
             ...prevData,
@@ -319,7 +317,6 @@ function CardAndBilling() {
         state: billing.state,
         country: billing.country,
       };
-      console.log(editBillId, "Parsed data", parsedData);
       const apiData = await generalPutFunction(
         `/billing-address/update/${editBillId}`,
         parsedData
@@ -431,7 +428,7 @@ function CardAndBilling() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                       </div>
@@ -462,7 +459,7 @@ function CardAndBilling() {
                         <div className="col-xl-4">
                           <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading">
-                              <div class="col-10">
+                              <div className="col-10">
                                 <h5>Upcoming Transaction</h5>
                                 {/* <p>16-01-2024</p> */}
                                 <p>On:{" "}
@@ -471,7 +468,7 @@ function CardAndBilling() {
                                     : ""}
                                 </p>
                               </div>
-                              <div class="col-2">
+                              <div className="col-2">
                                 <i
                                   className="fa-duotone fa-ballot"
                                   style={{
@@ -481,8 +478,8 @@ function CardAndBilling() {
                               </div>
                             </div>
                             <div className="data-number2">
-                              <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="col-10">
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className="col-10">
                                   {/* <h5>
                                 $200.<sub style={{ fontSize: "14px" }}>00</sub>
                               </h5> */}
@@ -517,7 +514,7 @@ function CardAndBilling() {
                                       : "Monthly Basis"}
                                   </p>
                                 </div>
-                                <div class="col-2">
+                                <div className="col-2">
                                   {/* <img
                                 src={require("../../assets/images/icons/diagram.png")}
                               /> */}
@@ -529,11 +526,11 @@ function CardAndBilling() {
                         <div className="col-xl-4">
                           <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
                             <div className="heading">
-                              <div class="col-10">
+                              <div className="col-10">
                                 <h5>Wallet Balance</h5>
                                 <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
                               </div>
-                              <div class="col-2">
+                              <div className="col-2">
                                 <i
                                   className="fa-duotone fa-credit-card"
                                   style={{
@@ -592,7 +589,7 @@ function CardAndBilling() {
                                     >
                                       <span className="text">Add</span>
                                       <span className="icon">
-                                        <i class="fa-solid fa-plus"></i>
+                                        <i className="fa-solid fa-plus"></i>
                                       </span>
                                     </button>
                                   </div>
@@ -677,7 +674,7 @@ function CardAndBilling() {
                                   >
                                     <span className="text">Add</span>
                                     <span className="icon">
-                                      <i class="fa-solid fa-plus"></i>
+                                      <i className="fa-solid fa-plus"></i>
                                     </span>
                                   </button>
                                 </div>
@@ -1086,7 +1083,7 @@ function CardAndBilling() {
                               onClick={() => navigate("/card-transaction-list")}
                             >
                               <i
-                                class="fa-solid fa-eye"
+                                className="fa-solid fa-eye"
                                 style={{
                                   boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
                                 }}
@@ -1160,8 +1157,8 @@ function CardAndBilling() {
                             </div>
                           </div>
                           <div className="data-number2">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center">
-                              <div class="col-10">
+                            <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              <div className="col-10">
                                 <h5>
                                   ${" "}
                                   {
@@ -1183,7 +1180,7 @@ function CardAndBilling() {
                                   {accountDetails?.payments[0].transaction_id}
                                 </p>
                               </div>
-                              <div class="col-2"></div>
+                              <div className="col-2"></div>
                             </div>
                           </div>
                         </div>
@@ -1314,7 +1311,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -1326,7 +1323,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>
@@ -1360,7 +1357,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -1372,7 +1369,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>
@@ -1406,7 +1403,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -1418,7 +1415,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>
@@ -1451,7 +1448,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -1463,7 +1460,7 @@ function CardAndBilling() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

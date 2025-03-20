@@ -291,7 +291,7 @@ const CallSettings = (props) => {
                     className="panelButton"
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     type="button"
@@ -300,7 +300,7 @@ const CallSettings = (props) => {
                     onClick={handleSubmit}
                   >
                     <span className="text">Save</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>
@@ -339,7 +339,7 @@ const CallSettings = (props) => {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -350,7 +350,7 @@ const CallSettings = (props) => {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>
@@ -379,7 +379,7 @@ const CallSettings = (props) => {
                             : "col-2 pe-2 ms-auto"
                         }
                       >
-                        <div class="formLabel">
+                        <div className="formLabel">
                           <label>Status</label>
                         </div>
                         <select
@@ -449,7 +449,7 @@ const CallSettings = (props) => {
                             : "col-6"
                         }
                       >
-                        <div class="formLabel">
+                        <div className="formLabel">
                           <label>Status</label>
                         </div>
                         <select
@@ -547,7 +547,7 @@ const CallSettings = (props) => {
                             : "col-2 pe-2 ms-auto"
                         }
                       >
-                        <div class="formLabel">
+                        <div className="formLabel">
                           <label>Status</label>
                         </div>
                         <select
@@ -611,7 +611,7 @@ const CallSettings = (props) => {
                         </label>
                       </div>
                       <div className="col-6">
-                        <div class="formLabel">
+                        <div className="formLabel">
                           <label>Status</label>
                         </div>
                         <select

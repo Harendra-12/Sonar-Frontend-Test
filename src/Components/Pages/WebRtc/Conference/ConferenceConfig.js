@@ -194,7 +194,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                   >
                     <form action="#" className="tangoNavs">
                       <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         </div>
                       </nav>
                       {loading ? (
@@ -202,7 +202,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                           <ContentLoader />
                         </div>
                       ) : (
-                        <div class="tab-content" id="nav-tabContent">
+                        <div className="tab-content" id="nav-tabContent">
                           <div
                             className={`tab-pane fade ${selectedTab == "nav-all-tab"
                               ? "show active"
@@ -248,7 +248,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                                   // setDeleteId(item.id);
                                                 }}
                                               >
-                                                <i class="fa-solid fa-trash"></i>
+                                                <i className="fa-solid fa-trash"></i>
                                               </div>
                                             </td>
                                           </tr>
@@ -497,7 +497,7 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                             />
                                           </div>
                                           <div>
-                                            <button type="button" class="formSubmit" onClick={() =>
+                                            <button type="button" className="formSubmit" onClick={() =>
                                               validateAndSetConferenceId(conferenceId)
                                             }>
                                               <i className="fa-solid fa-right-to-bracket position-static text-white"></i> Join
@@ -523,10 +523,10 @@ const ConferenceConfig = ({ setactivePage, setConferenceToggle, setConferenceId,
                                         ></video>
                                         <div className='buttonGroup' >
                                           <button className='clearButton2 xl white'>
-                                            <i class="fa-light fa-microphone"></i>
+                                            <i className="fa-light fa-microphone"></i>
                                           </button>
                                           <button className='clearButton2 xl white ms-3' onClick={() => { if (isVideoOn) { toggleVideo() } }}>
-                                            <i class={videoEnable && isVideoOn ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
+                                            <i className={videoEnable && isVideoOn ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
                                           </button>
                                         </div>
                                       </div>

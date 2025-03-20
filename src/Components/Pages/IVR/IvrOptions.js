@@ -139,7 +139,7 @@ function IvrOptions() {
                   }}
                 >
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   onClick={handleSubmit}
@@ -147,7 +147,7 @@ function IvrOptions() {
                   className="panelButton"
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -176,7 +176,7 @@ function IvrOptions() {
                         className="panelButton gray"
                       >
                         <span className="text">Back</span>
-                        <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                       </button>
                       <button
                         onClick={handleSubmit}
@@ -184,7 +184,7 @@ function IvrOptions() {
                         className="panelButton"
                       >
                         <span className="text">Save</span>
-                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                        <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                       </button>
                     </div>
                   </div>
@@ -362,7 +362,7 @@ function IvrOptions() {
                             type="button"
                           >
                             <span className="text">{editId === item.id ? "Save" : "Update"}</span>
-                            <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                            <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                           </button>
                         </div>
                         {/* {index === 0 ? <div className="col-12 mb-2"></div> : ""} */}
@@ -462,7 +462,7 @@ function IvrOptions() {
                         type="button"
                       >
                         <span className="text">Add</span>
-                        <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                        <span className="icon"><i className="fa-solid fa-plus"></i></span>
                       </button>
                     </div>
                   </div>

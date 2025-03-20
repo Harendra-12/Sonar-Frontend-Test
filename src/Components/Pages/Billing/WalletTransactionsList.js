@@ -71,7 +71,6 @@ function WalletTransactionsList() {
       console.error("Error downloading the image:", error);
     }
   };
-  console.log("This is transition details", transaction);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -102,7 +101,7 @@ function WalletTransactionsList() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -114,7 +113,7 @@ function WalletTransactionsList() {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={`${loading
+                              className={`${loading
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                 : "fa-regular fa-arrows-rotate fs-5 "
                                 } `}
@@ -177,7 +176,7 @@ function WalletTransactionsList() {
                                       </td>
                                       <td>
                                         <button
-                                          class="tableButton"
+                                          className="tableButton"
                                           onClick={() =>
                                             downloadImage(
                                               item.invoice_url,

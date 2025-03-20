@@ -57,7 +57,6 @@ export const DummySipRegisteration = ({
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data)); // Send JSON data
-      console.log("Message sent:", data);
     } else {
       console.warn("WebSocket is not open. Unable to send message.");
     }
@@ -125,28 +124,9 @@ export const DummySipRegisteration = ({
         const ws = new WebSocket(wsUrl);
 
         ws.onopen = () => {
-          // console.log("WebSocket connection successful.");
           ws.close();
           resolve(true);
         };
-        // ws.onmessage = (event) => {
-        //   console.log("Message received:", event);
-        //   const data = JSON.parse(event.data); // Assuming server sends a JSON string
-        //   // setReceivedMessage(data); // Store the received message in state
-        //   // const parsedData = JSON.parse(event.data);
-        //   if (typeof data === "string") {
-        //     const message = JSON.parse(data);
-        //     const { key, result } = message;
-        //     console.log(key, result);
-        //     // Handle specific message types if necessary
-        //     if (key === "screenShare") {
-        //       dispatch({
-        //         type: "SET_CONFERENCESCREENSHARESTATUS",
-        //         conferenceScreenShareStatus: result,
-        //       });
-        //     }
-        //   }
-        // };
 
         ws.onerror = (error) => {
           console.error("WebSocket connection failed:", error);
@@ -201,7 +181,6 @@ export const DummySipRegisteration = ({
             const confLists = await generalGetFunction(
               `/conference/${locationState.state.room_id}/details`
             );
-            // console.log(locationState, "confListsss", JSON?.parse?.(confLists?.data));
 
             if (
               confLists.status &&
@@ -264,13 +243,10 @@ export const DummySipRegisteration = ({
       const socket = new WebSocket(`wss://${ip}:${port}?type=admin`);
 
       socket.onopen = () => {
-        // console.log("WebSocket connection successful.");
       };
       socket.onmessage = (event) => {
-        // console.log(JSON.parse(event.data));
         if (typeof JSON.parse(event.data) === "string") {
           if (JSON.parse(JSON.parse(event.data))["key"] === "Conference") {
-            // console.log("Conference Data", JSON.parse(JSON.parse(event.data))["result"]);
 
             setConferenceData(
               JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] ==
@@ -297,7 +273,6 @@ export const DummySipRegisteration = ({
                 conferenceMessage: JSON.parse(JSON.parse(event.data))["result"]
               })
             }
-            console.log("Conference Message", JSON.parse(JSON.parse(event.data))["result"]["room_id"], locationState.state.room_id);
 
           }
         } else {
@@ -308,7 +283,6 @@ export const DummySipRegisteration = ({
         console.error("WebSocket error:", error);
       };
       socket.onclose = () => {
-        // console.log("WebSocket connection closed. Reconnecting...");
         if (reconnectValue < 5) {
           reconnectValue = reconnectValue + 1;
           setTimeout(connectWebSocket, 5000); // Retry after 3 seconds
@@ -348,7 +322,6 @@ export const DummySipRegisteration = ({
         setTimeout(() => {
           setNotification(false);
         }, [3000]);
-        console.log("conferenceData", conferenceData);
 
         setConfList((prevList) => [
           ...prevList,
@@ -631,7 +604,6 @@ export const DummySipRegisteration = ({
           return prevList; // Return the original list if no match is found
         });
       } else {
-        // console.log("conferenceData", conferenceData);
       }
     }
   }, [conferenceData]);
@@ -686,7 +658,6 @@ export const DummySipRegisteration = ({
     if (localStorage.getItem("memberId")) {
       generalPostFunction(`conference/action`, parsedData);
     }
-    // console.log("local data", localStorage.getItem("memberId"));
   }, []);
 
   // Handle moderator action
@@ -698,7 +669,6 @@ export const DummySipRegisteration = ({
     };
     generalPostFunction(`conference/action`, parsedData);
   }
-  // console.log("Current User", currentUser);
 
   // Set name of current user when he joins the conference
   useEffect(() => {
@@ -781,7 +751,7 @@ export const DummySipRegisteration = ({
                                   </span>
                                 </h4>
                                 {/* <button className="clearButton">
-                                                            <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
+                                                            <i className="fa-sharp fa-solid fa-circle-plus"></i> Add
                                                             Participant
                                                         </button> */}
                               </div>
@@ -856,9 +826,9 @@ export const DummySipRegisteration = ({
                                     }}
                                   >
                                     {currentUser?.deaf ? (
-                                      <i class="fa-sharp fa-solid fa-volume-slash"></i>
+                                      <i className="fa-sharp fa-solid fa-volume-slash"></i>
                                     ) : (
-                                      <i class="fa-sharp fa-solid fa-volume"></i>
+                                      <i className="fa-sharp fa-solid fa-volume"></i>
                                     )}
                                   </div>
                                 </div>
@@ -874,13 +844,13 @@ export const DummySipRegisteration = ({
                                     }}
                                   >
                                     {currentUser?.mute_detect ? (
-                                      <i class="fa-light fa-microphone-slash"></i>
+                                      <i className="fa-light fa-microphone-slash"></i>
                                     ) : (
-                                      <i class="fa-light fa-microphone"></i>
+                                      <i className="fa-light fa-microphone"></i>
                                     )}
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-video"></i>
+                                    <i className="fa-light fa-video"></i>
                                   </button>
                                   {/* <button
                                     className="appPanelButtonCallerRect"
@@ -888,7 +858,7 @@ export const DummySipRegisteration = ({
                                       setScreenTogglehit(screenTogglehit + 1)
                                     }
                                   >
-                                    <i class="fa-sharp fa-light fa-screencast"></i>
+                                    <i className="fa-sharp fa-light fa-screencast"></i>
                                   </button> */}
                                   {isScreenSharing ? (
                                     <button
@@ -897,7 +867,7 @@ export const DummySipRegisteration = ({
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }
                                     >
-                                      <i class="fa-sharp fa-light fa-screencast"></i>
+                                      <i className="fa-sharp fa-light fa-screencast"></i>
 
                                       <i className="text-danger fas fa-dot-circle"></i>
                                     </button>
@@ -908,7 +878,7 @@ export const DummySipRegisteration = ({
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }
                                     >
-                                      <i class="fa-sharp fa-light fa-screencast"></i>
+                                      <i className="fa-sharp fa-light fa-screencast"></i>
                                     </button>
                                   )}
                                   <button
@@ -934,7 +904,7 @@ export const DummySipRegisteration = ({
                                     }
                                     }
                                   >
-                                    <i class="fa-light fa-messages"></i>
+                                    <i className="fa-light fa-messages"></i>
                                   </button>
                                   <button
                                     className={
@@ -946,10 +916,10 @@ export const DummySipRegisteration = ({
                                       setParticipantList(!participantList)
                                     }
                                   >
-                                    <i class="fa-light fa-users"></i>
+                                    <i className="fa-light fa-users"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-hand"></i>
+                                    <i className="fa-light fa-hand"></i>
                                   </button>
                                 </div>
                                 {/* <CallController id={dummySession} memberInfo={confList.filter((item) => item.isYou)} /> */}
@@ -974,7 +944,7 @@ export const DummySipRegisteration = ({
                                   }}
                                 >
                                   <i
-                                    class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
+                                    className={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
                                       }`}
                                   ></i>
                                 </button>
@@ -1002,7 +972,7 @@ export const DummySipRegisteration = ({
                                     className="clearButton2 xl ms-auto"
                                     onClick={() => setParticipantList(false)}
                                   >
-                                    <i class={`fa-regular fa-xmark`}></i>
+                                    <i className={`fa-regular fa-xmark`}></i>
                                   </button>
                                 </div>
                                 <div>
@@ -1018,12 +988,12 @@ export const DummySipRegisteration = ({
                                   </div>
                                   {/* <button className="panelButton static">
                                     <span className="text">
-                                      <i class="fa-solid fa-circle-plus"></i>{" "}
+                                      <i className="fa-solid fa-circle-plus"></i>{" "}
                                       Add Participant
                                     </span>
                                   </button> */}
                                 </div>
-                                <div class="col-12 mt-3">
+                                <div className="col-12 mt-3">
                                   <input
                                     type="search"
                                     name="Search"
@@ -1042,7 +1012,7 @@ export const DummySipRegisteration = ({
                                         <div className="d-flex align-items-center">
                                           <div className="profileHolder">
                                             {/* {getInitials(item.name)} */}
-                                            <i class="fa-light fa-user"></i>
+                                            <i className="fa-light fa-user"></i>
                                           </div>
                                           <span className="ms-2">
                                             {item.name}
@@ -1067,7 +1037,7 @@ export const DummySipRegisteration = ({
                                             }}
                                           >
                                             <i
-                                              class={
+                                              className={
                                                 !item.mute_detect
                                                   ? "fa-light fa-microphone"
                                                   : "fa-light fa-microphone-slash"
@@ -1091,7 +1061,7 @@ export const DummySipRegisteration = ({
                                               fontSize: "16px",
                                             }}
                                           >
-                                            <i class="fa-light fa-user-minus"></i>
+                                            <i className="fa-light fa-user-minus"></i>
                                           </button>
                                         </div>
                                       </li>
@@ -1112,7 +1082,7 @@ export const DummySipRegisteration = ({
                                     aria-expanded="true"
                                   >
                                     <button className="ms-3 toggleButton">
-                                      <i class="fa-solid fa-ellipsis"></i>
+                                      <i className="fa-solid fa-ellipsis"></i>
                                     </button>
                                     <ul
                                       className="dropdown-menu"
@@ -1177,8 +1147,6 @@ const ConferenceUserTab = ({
 }) => {
   const [videoCallToggle] = useState(false);
 
-  // console.log("itemaaaa", item);
-
   const truncateString = (str, threshold) => {
     if (typeof str !== "string" || typeof threshold !== "number") {
       throw new Error(
@@ -1210,7 +1178,7 @@ const ConferenceUserTab = ({
             <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
               <div className="profileHolder">
                 {/* {getInitials(item.name)} */}
-                <i class="fa-light fa-user"></i>
+                <i className="fa-light fa-user"></i>
               </div>
             </div>
             <div>

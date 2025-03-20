@@ -185,7 +185,7 @@ function Header(props) {
             </div>
             <div className="dropdown-item">
               <Link to={"/users-profile"} className="clearButton">
-                <i class="fa-regular fa-user me-2" aria-hidden="true"></i>
+                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
                 My Profile
               </Link>
             </div>

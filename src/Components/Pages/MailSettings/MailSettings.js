@@ -108,7 +108,7 @@ const MailSettings = ({ style }) => {
                             >
                               <span className="text">Back</span>
                               <span className="icon">
-                                <i class="fa-solid fa-caret-left"></i>
+                                <i className="fa-solid fa-caret-left"></i>
                               </span>
                             </button> */}
                             {mailSettings && !mailSettings.length > 0 && (
@@ -127,7 +127,7 @@ const MailSettings = ({ style }) => {
                                   >
                                     <span className="text">Add</span>
                                     <span className="icon">
-                                      <i class="fa-solid fa-plus"></i>
+                                      <i className="fa-solid fa-plus"></i>
                                     </span>
                                   </button>
                                 ) : (
@@ -139,7 +139,7 @@ const MailSettings = ({ style }) => {
                                   >
                                     <span className="text">Add</span>
                                     <span className="icon">
-                                      <i class="fa-solid fa-plus"></i>
+                                      <i className="fa-solid fa-plus"></i>
                                     </span>
                                   </button>
                                 )}
@@ -223,7 +223,7 @@ const MailSettings = ({ style }) => {
                                                   )
                                                 }
                                               >
-                                                <i class="fa-solid fa-pencil"></i>
+                                                <i className="fa-solid fa-pencil"></i>
                                               </button>
                                             </td>
                                             <td style={{ cursor: "default" }}>
@@ -234,7 +234,7 @@ const MailSettings = ({ style }) => {
                                                   setDeleteSetingsId(data.id);
                                                 }}
                                               >
-                                                <i class="fa-solid fa-trash"></i>
+                                                <i className="fa-solid fa-trash"></i>
                                               </button>
                                             </td>
                                           </tr>
@@ -285,7 +285,7 @@ const MailSettings = ({ style }) => {
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
                         <button

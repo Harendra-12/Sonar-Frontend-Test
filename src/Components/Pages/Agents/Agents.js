@@ -31,7 +31,6 @@ function Agents({ type }) {
       );
     }
   }, [logonUser]);
-  console.log(logonUser);
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
@@ -39,7 +38,6 @@ function Agents({ type }) {
         `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}&search=${userInput}`
       );
       if (apiData?.status) {
-        console.log(apiData);
         setAgents(apiData.data);
         setLoading(false);
       } else {
@@ -87,7 +85,7 @@ function Agents({ type }) {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
 
@@ -103,7 +101,7 @@ function Agents({ type }) {
                                                   >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
-                                                      <i class="fa-solid fa-plus"></i>
+                                                      <i className="fa-solid fa-plus"></i>
                                                     </span>
                                                   </button>}
                         </div>
@@ -255,7 +253,7 @@ function Agents({ type }) {
                                                
                                             </span>
                                             <span className="icon">
-                                                <i class="fa-solid fa-check"></i>
+                                                <i className="fa-solid fa-check"></i>
                                             </span>
                                         </button>
                                         <button
@@ -264,7 +262,7 @@ function Agents({ type }) {
                                         >
                                             <span className="text">Cancel</span>
                                             <span className="icon">
-                                                <i class="fa-solid fa-xmark"></i>
+                                                <i className="fa-solid fa-xmark"></i>
                                             </span>
                                         </button>
                                     </div>

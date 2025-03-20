@@ -27,7 +27,6 @@ const CallBlocking = () => {
   const [number, setNumber] = useState("");
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  console.log(callBlock);
   useEffect(() => {
     setLoading(true);
     const getRingGroupDashboardData = async () => {
@@ -35,7 +34,6 @@ const CallBlocking = () => {
         const apidata = await generalGetFunction(
           `/spam/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
-        console.log(apidata);
         if (apidata?.status) {
           setCallBlock(apidata.data);
           setLoading(false);
@@ -83,10 +81,7 @@ const CallBlocking = () => {
     const apidata = await generalDeleteFunction(`/spam/destroy/${id}`);
     if (apidata.status) {
       setLoading(false);
-      console.log(callBlock);
-      //   const newList = callBlock.data?.filter((item) => item.id != id);
       const newList = callBlock.data.filter((item) => item.id !== id);
-      console.log(newList);
       setCallBlock({ ...callBlock, data: newList });
       setDeleteId("");
       toast.success("Number removed from block list");
@@ -121,7 +116,7 @@ const CallBlocking = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <div
@@ -132,7 +127,7 @@ const CallBlocking = () => {
                         >
                           <span className="text">Add</span>
                           <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i className="fa-solid fa-plus"></i>
                           </span>
                         </div>
                       </div>
@@ -244,35 +239,35 @@ const CallBlocking = () => {
           <div className="addNewContactPopup">
             <div className="row">
               <div className="col-12 heading">
-                <i class="fa-light fa-user-plus"></i>
+                <i className="fa-light fa-user-plus"></i>
                 <h5>Add number to block Lists</h5>
                 <p>
                   Add number to block Lists so that it will not able to call you
                 </p>
                 <div className="border-bottom col-12" />
               </div>
-              <div class="col-xl-12">
-                <div class="formLabel">
+              <div className="col-xl-12">
+                <div className="formLabel">
                   <label for="">Type</label>
                 </div>
-                <div class="col-12">
+                <div className="col-12">
                   <input
                     type="text"
-                    class="formItem"
+                    className="formItem"
                     placeholder="DID/PSTN..."
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                   />
                 </div>
               </div>
-              <div class="col-xl-12 mt-3">
-                <div class="formLabel">
+              <div className="col-xl-12 mt-3">
+                <div className="formLabel">
                   <label for="">Number</label>
                 </div>
-                <div class="col-12">
+                <div className="col-12">
                   <input
                     type="number"
-                    class="formItem"
+                    className="formItem"
                     placeholder="Number"
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
@@ -289,13 +284,13 @@ const CallBlocking = () => {
                   >
                     <span className="text">Cancel</span>
                     <span className="icon">
-                      <i class="fa-solid fa-caret-left"></i>
+                      <i className="fa-solid fa-caret-left"></i>
                     </span>
                   </button>
                   <button className="panelButton me-0" onClick={addBlock}>
                     <span className="text">Save</span>
                     <span className="icon">
-                      <i class="fa-solid fa-check"></i>
+                      <i className="fa-solid fa-check"></i>
                     </span>
                   </button>
                 </div>
@@ -329,7 +324,7 @@ const CallBlocking = () => {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
 
@@ -342,7 +337,7 @@ const CallBlocking = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

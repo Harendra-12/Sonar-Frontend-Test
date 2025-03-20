@@ -76,7 +76,6 @@ export async function generalGetFunction(endpoint) {
       } else {
         return err;
       }
-      // console.log("This is error log",err.response.status);
     });
 }
 
@@ -149,7 +148,6 @@ export async function generalDeleteFunction(endpoint) {
       return res.data;
     })
     .catch((err) => {
-      console.log("delete error:", err);
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
@@ -276,26 +274,26 @@ export function featureUnderdevelopment() {
     popup = document.createElement("div");
     popup.id = "globalPopup";
     popup.innerHTML = `
-    <div class="popup">
-      <div class="container h-100">
-        <div class="row h-100 justify-content-center align-items-center">
-          <div class="row content col-xxl-3 col-xl-4">
-            <div class="col-2 px-0">
-              <div class="iconWrapper">
-                <i class="fa-duotone fa-clock  text-info"></i>
+    <div className="popup">
+      <div className="container h-100">
+        <div className="row h-100 justify-content-center align-items-center">
+          <div className="row content col-xxl-3 col-xl-4">
+            <div className="col-2 px-0">
+              <div className="iconWrapper">
+                <i className="fa-duotone fa-clock  text-info"></i>
               </div>
             </div>
-            <div class="col-10 ps-0">
+            <div className="col-10 ps-0">
               <h4>Sorry!</h4>
               <p>This feature is under development!</p>
-              <div class="d-flex justify-content-start">
+              <div className="d-flex justify-content-start">
                 <button
-                  class="panelButton gray m-0"
+                  className="panelButton gray m-0"
                   onclick="document.getElementById('globalPopup').remove()"
                 >
-                  <span class="text">Ok</span>
-                  <span class="icon">
-                    <i class="fa-solid fa-xmark"></i>
+                  <span className="text">Ok</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-xmark"></i>
                   </span>
                 </button>
               </div>

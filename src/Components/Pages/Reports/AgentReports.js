@@ -174,14 +174,14 @@ function AgentReports() {
                                                                         className="panelButton gray">
                                                                         <span className="text">Back</span>
                                                                         <span className="icon">
-                                                                            <i class="fa-solid fa-caret-left"></i>
+                                                                            <i className="fa-solid fa-caret-left"></i>
                                                                         </span>
                                                                     </button>
                                                                     <button
                                                                         className="panelButton" >
                                                                         <span className="text">Refresh</span>
                                                                         <span className="icon">
-                                                                            <i class="fa-solid fa-arrows-rotate"></i>
+                                                                            <i className="fa-solid fa-arrows-rotate"></i>
                                                                         </span>
                                                                     </button>
                                                                 </div>
@@ -300,7 +300,7 @@ function AgentReports() {
                                                     <p>Marcus</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus online me-2" />
+                                                    <span className="extensionStatus online me-2" />
                                                     <p style={{ width: '60px' }}>Available</p>
                                                 </div>
                                             </li>
@@ -309,7 +309,7 @@ function AgentReports() {
                                                     <p>Marcus</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus online me-2" />
+                                                    <span className="extensionStatus online me-2" />
                                                     <p style={{ width: '60px' }}>Available</p>
                                                 </div>
                                             </li>
@@ -318,7 +318,7 @@ function AgentReports() {
                                                     <p>Marcus</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus online me-2" />
+                                                    <span className="extensionStatus online me-2" />
                                                     <p style={{ width: '60px' }}>Available</p>
                                                 </div>
                                             </li>
@@ -327,7 +327,7 @@ function AgentReports() {
                                                     <p>Marcus</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus online me-2" />
+                                                    <span className="extensionStatus online me-2" />
                                                     <p style={{ width: '60px' }}>Available</p>
                                                 </div>
                                             </li>
@@ -336,7 +336,7 @@ function AgentReports() {
                                                     <p>West</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus onCall me-2" />
+                                                    <span className="extensionStatus onCall me-2" />
                                                     <p style={{ width: '60px' }}>Engaged</p>
                                                 </div>
                                             </li>
@@ -345,7 +345,7 @@ function AgentReports() {
                                                     <p>Kanye</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus offline me-2" />
+                                                    <span className="extensionStatus offline me-2" />
                                                     <p style={{ width: '60px' }}>Offline</p>
                                                 </div>
                                             </li>
@@ -354,7 +354,7 @@ function AgentReports() {
                                                     <p>Gomez</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus onCall me-2" />
+                                                    <span className="extensionStatus onCall me-2" />
                                                     <p style={{ width: '60px' }}>Engaged</p>
                                                 </div>
                                             </li>
@@ -363,7 +363,7 @@ function AgentReports() {
                                                     <p>Selena</p>
                                                 </div>
                                                 <div className='d-flex align-items-center'>
-                                                    <span class="extensionStatus offline me-2" />
+                                                    <span className="extensionStatus offline me-2" />
                                                     <p style={{ width: '60px' }}>Offline</p>
                                                 </div>
                                             </li>

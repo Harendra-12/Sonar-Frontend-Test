@@ -6,7 +6,6 @@ import { useSessionCall } from "modify-react-sipjs";
 // Conference component
 function ConferenceTest() {
     const callProgressId = useSelector((state) => state.callProgressId);
-    console.log("callProgressId", callProgressId);
     
     const {
         session,
@@ -56,8 +55,6 @@ function ConferenceTest() {
         };
       }, [session]);
       const audioAnalyserRefs = useRef({}); // Track audio analysers by participant
-        console.log("participants",participants)
-      console.log("activeSpeaker",activeSpeaker)
       useEffect(() => {
         if (session && session.sessionDescriptionHandler) {
           const { peerConnection } = session.sessionDescriptionHandler;

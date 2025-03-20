@@ -19,11 +19,9 @@ function TempDashboard() {
   const [account, setAccount] = useState(
     useSelector((state) => state.tempAccount)
   );
-  console.log("Temporary account:", account);
   function handleRefresh(value) {
     setRefreshDetails(value);
   }
-  console.log("This is refresh data", refreshDetails);
   useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction(`/account/${account.id}`);

@@ -61,7 +61,7 @@ function Navbar() {
                       type="button"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user"></i>
+                        <i className="fa-regular fa-user"></i>
                       </div>
                       <div className="itemTitle">Dashboard</div>
                     </NavLink>
@@ -90,7 +90,7 @@ function Navbar() {
                   <li className="dashboard ">
                     <NavLink to="/dashboard" onClick={backToTop} type="button">
                       <div className="iconHolder">
-                        <i class="fa-regular fa-house"></i>
+                        <i className="fa-regular fa-house"></i>
                       </div>
                       <div className="itemTitle">Dashboard</div>
                     </NavLink>
@@ -121,7 +121,7 @@ function Navbar() {
                       aria-controls="collapse5"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-user"></i>
+                        <i className="fa-regular fa-user"></i>
                       </div>
                       <div className="itemTitle">Accounts</div>
                     </button>
@@ -162,7 +162,7 @@ function Navbar() {
                                   className="nav-link"
                                 >
                                   {/* <div className="iconHolder">
-                                  <i class="fa-regular fa-user"></i>
+                                  <i className="fa-regular fa-user"></i>
                                 </div> */}
                                   <div className="itemTitle">Company Details</div>
                                 </NavLink>
@@ -287,7 +287,7 @@ function Navbar() {
                       aria-controls="collapse10"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-hashtag"></i>
+                        <i className="fa-regular fa-hashtag"></i>
                       </div>
                       <div className="itemTitle">Number Management</div>
                     </button>
@@ -401,7 +401,7 @@ function Navbar() {
                       aria-controls="collapseOne"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-phone-intercom"></i>
+                        <i className="fa-regular fa-phone-intercom"></i>
                       </div>
                       <div className="itemTitle">PBX</div>
                     </button>
@@ -622,7 +622,7 @@ function Navbar() {
                           aria-controls="collapse6"
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-grid"></i>
+                            <i className="fa-regular fa-grid"></i>
                           </div>
                           <div className="itemTitle">Dialer</div>
                         </button>
@@ -774,7 +774,7 @@ function Navbar() {
                           aria-controls="collapse7"
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-chart-waterfall"></i>
+                            <i className="fa-regular fa-chart-waterfall"></i>
                           </div>
                           <div className="itemTitle">Call Tracker</div>
                         </button>
@@ -901,7 +901,7 @@ function Navbar() {
                         }
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-microphone-stand"></i>
+                          <i className="fa-regular fa-microphone-stand"></i>
                         </div>
                         <div className="itemTitle">
                           Interactive Voice Response
@@ -924,7 +924,7 @@ function Navbar() {
                       aria-controls="collapse14"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-microchip-ai"></i>
+                        <i className="fa-regular fa-microchip-ai"></i>
                       </div>
                       <div className="itemTitle">AI</div>
                     </button>
@@ -1031,7 +1031,7 @@ function Navbar() {
                           }
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-screen-users"></i>
+                            <i className="fa-regular fa-screen-users"></i>
                           </div>
                           <div className="itemTitle">Meeting Rooms</div>
                         </NavLink>
@@ -1043,7 +1043,7 @@ function Navbar() {
                           type="button"
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-bullseye-pointer"></i>
+                            <i className="fa-regular fa-bullseye-pointer"></i>
                           </div>
                           <div className="itemTitle">Click To Call</div>
                         </NavLink>
@@ -1071,7 +1071,7 @@ function Navbar() {
                         aria-controls="collapse4"
                       >
                         <div className="iconHolder">
-                          <i class="fa-regular fa-chart-line-up"></i>
+                          <i className="fa-regular fa-chart-line-up"></i>
                         </div>
                         <div className="itemTitle">Reports</div>
                       </button>
@@ -1253,7 +1253,7 @@ function Navbar() {
                       aria-controls="collapse9"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-file-invoice-dollar"></i>
+                        <i className="fa-regular fa-file-invoice-dollar"></i>
                       </div>
                       <div className="itemTitle">Billings</div>
                     </button>
@@ -1394,7 +1394,7 @@ function Navbar() {
                       aria-controls="collapse5"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-sliders"></i>
+                        <i className="fa-regular fa-sliders"></i>
                       </div>
                       <div className="itemTitle">Setting</div>
                     </button>
@@ -1533,7 +1533,7 @@ function Navbar() {
                           aria-controls="collapse11"
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-store"></i>
+                            <i className="fa-regular fa-store"></i>
                           </div>
                           <div className="itemTitle">Store</div>
                         </button>
@@ -1634,7 +1634,7 @@ function Navbar() {
                           aria-controls="collapse12"
                         >
                           <div className="iconHolder">
-                            <i class="fa-regular fa-circle-info"></i>
+                            <i className="fa-regular fa-circle-info"></i>
                           </div>
                           <div className="itemTitle">Support</div>
                         </button>
@@ -1716,7 +1716,7 @@ function Navbar() {
                       type="button"
                     >
                       <div className="iconHolder">
-                        <i class="fa-regular fa-power-off"></i>
+                        <i className="fa-regular fa-power-off"></i>
                       </div>
                       <div className="itemTitle">Log Out</div>
                     </NavLink>

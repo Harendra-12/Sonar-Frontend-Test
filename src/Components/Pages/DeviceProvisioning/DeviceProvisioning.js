@@ -89,7 +89,7 @@ const DeviceProvisioning = () => {
                   >
                     <span className="text">Add</span>
                     <span className="icon">
-                      <i class="fa-solid fa-plus"></i>
+                      <i className="fa-solid fa-plus"></i>
                     </span>
                   </Link>
                 </div>
@@ -176,7 +176,7 @@ const DeviceProvisioning = () => {
                                   })
                                 }
                               >
-                                <i class="fa-solid fa-pencil"></i>
+                                <i className="fa-solid fa-pencil"></i>
                               </button>
                             </td>
                             <td>
@@ -232,7 +232,7 @@ const DeviceProvisioning = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     ) : (
@@ -244,7 +244,7 @@ const DeviceProvisioning = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     )}

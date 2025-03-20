@@ -35,7 +35,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [preassignedExtension, setPreassignedExtension] = useState(false);
-  const profileName = account.name;
   const acount = useSelector((state) => state.account);
   const isCustomerAdmin = account?.email == accountDetails?.email;
 
@@ -46,12 +45,7 @@ const Profile = () => {
           type: "SET_ALLUSERREFRESH",
           allUserRefresh: allUserRefresh + 1,
         });
-      } else {
-        const result = allUser?.data?.find((item) => {
-          return item.name == profileName;
-        });
-        // setSelectedExtension(result?.extension?.extension);
-      }
+      } 
     }
   }, [allUser]);
 
@@ -87,7 +81,6 @@ const Profile = () => {
           setTimeZoneVal(selectedTimeZone);
         }
       } catch (error) {
-        console.log(error);
       }
     };
     updateAccountDetails();
@@ -217,7 +210,7 @@ const Profile = () => {
                       <div>
                         <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>
-                            <i class="fa-regular me-3 fa-user"></i>
+                            <i className="fa-regular me-3 fa-user"></i>
                           </span>
                           <h5 className="mb-0">
                             {account?.name ? account?.name : "User Name"}
@@ -225,7 +218,7 @@ const Profile = () => {
                         </div>
                         <div className="content profileicons mt-1  d-flex align-items-center justify-content-start">
                           <span>
-                            <i class="fa-regular me-3 fa-envelope"></i>
+                            <i className="fa-regular me-3 fa-envelope"></i>
                           </span>
                           <p className="mb-0">
                             {" "}
@@ -243,7 +236,7 @@ const Profile = () => {
 
                         <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>
-                            <i class="fa-solid me-3 fa-location-dot"></i>
+                            <i className="fa-solid me-3 fa-location-dot"></i>
                           </span>
                           <p className="mb-0">
                             {accountDetails?.billing_address &&
@@ -444,7 +437,7 @@ const Profile = () => {
                                 >
                                   <span className="text">Save</span>
                                   <span className="icon">
-                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <i className="fa-solid fa-floppy-disk"></i>
                                   </span>
                                 </button>
                               </div>
@@ -638,7 +631,7 @@ const Profile = () => {
                       <li>
                         <Link to="/extensions" onClick={backToTop}>
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Buy Extensions
                           </div>
                         </Link>
@@ -646,7 +639,7 @@ const Profile = () => {
                       <li>
                         <Link to="/users" onClick={backToTop}>
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Increase Users
                           </div>
                         </Link>
@@ -654,7 +647,7 @@ const Profile = () => {
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Explore Modules
                           </div>
                         </Link>
@@ -665,7 +658,7 @@ const Profile = () => {
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Setup Guide
                           </div>
                         </Link>
@@ -673,7 +666,7 @@ const Profile = () => {
                       <li>
                         <Link onClick={() => featureUnderdevelopment()}>
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Documentation
                           </div>
                         </Link>
@@ -686,7 +679,7 @@ const Profile = () => {
                           onClick={() => navigate(process.env.NEXT_APP_URL)}
                         >
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Know about us!
                           </div>
                         </Link> */}
@@ -708,7 +701,7 @@ const Profile = () => {
                           }
                         >
                           <div className="arrowicon me-1">
-                            <i class="fa-solid me-1 fa-arrow-right"></i>
+                            <i className="fa-solid me-1 fa-arrow-right"></i>
                             Connect with us!
                           </div>
                         </Link> */}
@@ -761,7 +754,7 @@ const Profile = () => {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button

@@ -196,7 +196,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                     <>
                       <br />
                       <span style={{ color: "red", fontSize: 12 }}>
-                        <i class="fa-solid fa-triangle-exclamation"></i> File
+                        <i className="fa-solid fa-triangle-exclamation"></i> File
                         should be less than 1 MB
                       </span>
                     </>
@@ -221,7 +221,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                         }}
                         onClick={() => setEnlargeImage(true)}
                       >
-                        <i class="fa-solid fa-expand"></i>
+                        <i className="fa-solid fa-expand"></i>
                       </div>
                     </div>
                   )}
@@ -231,7 +231,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                       onClick={handleUploadDocument}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i class="fa-solid fa-check"></i></span>
+                      <span className="icon"><i className="fa-solid fa-check"></i></span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

@@ -77,7 +77,6 @@ const Users = () => {
         // toast.error(apiData.message);
         setLoading(false);
         setRefreshState(false);
-        // console.log(apiData.response.status);
         if (apiData?.response?.status === 403) {
           setNoPermissionToRead(true);
         }
@@ -221,7 +220,7 @@ const Users = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         {  checkViewSidebar("User", slugPermissions, account?.permissions,"add")? (
@@ -234,7 +233,7 @@ const Users = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </Link>
                         ) : (
@@ -247,7 +246,7 @@ const Users = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </button>
                         )}
@@ -377,7 +376,7 @@ const Users = () => {
                                             })
                                           }
                                         >
-                                          <i class="fa-solid fa-pencil"></i>
+                                          <i className="fa-solid fa-pencil"></i>
                                         </button>
                                       </td>}
                                       <td
@@ -494,7 +493,7 @@ const Users = () => {
                         {selectedUser?.id ? "Confirm" : "Lets Go!"}
                       </span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -506,7 +505,7 @@ const Users = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

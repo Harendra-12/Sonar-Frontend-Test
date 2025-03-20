@@ -20,7 +20,6 @@ function CardTransactionsList() {
   const [refreshState, setRefreshState] = useState(false);
 
   useEffect(() => {
-    console.log("allCardTransactions", allCardTransactions);
     if (allCardTransactions && !refreshState) {
       setTransaction(allCardTransactions);
       setLoading(false);
@@ -71,7 +70,6 @@ function CardTransactionsList() {
       console.error("Error downloading the image:", error);
     }
   };
-  console.log("This is transition details", transaction);
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -102,7 +100,7 @@ function CardTransactionsList() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -114,7 +112,7 @@ function CardTransactionsList() {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={`${loading
+                              className={`${loading
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                 : "fa-regular fa-arrows-rotate fs-5 "
                                 } `}

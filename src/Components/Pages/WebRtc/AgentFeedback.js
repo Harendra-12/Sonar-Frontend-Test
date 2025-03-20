@@ -9,7 +9,7 @@ function AgentFeedback() {
             <div className="addNewContactPopup">
                 <div className="row">
                     <div className="col-12 heading mb-0">
-                        <i class="fa-light fa-comments"></i>
+                        <i className="fa-light fa-comments"></i>
                         <h5>Agent Feedback!</h5>
                         <p>
                             {`Your call with ${desposiTionOptions.first_name} with number ${desposiTionOptions.phone_number} has ended, provide your valuable feedback in the form below.`}
@@ -96,7 +96,7 @@ function AgentFeedback() {
                             }}>
                                 <span className="text">Close</span>
                                 <span className="icon">
-                                    <i class="fa-light fa-xmark"></i>
+                                    <i className="fa-light fa-xmark"></i>
                                 </span>
                             </button>
                             <button className="panelButton" >

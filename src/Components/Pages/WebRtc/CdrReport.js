@@ -58,7 +58,6 @@ function CdrReport({ page }) {
   const [selectedCdr, setSelectedCdr] = useState("");
 
   const thisAudioRef = useRef(null);
-  console.log(cdr, callBlock);
   useEffect(() => {
     if (selectedCdrFilter == "missed-calls") {
       setCallDirection("local");
@@ -139,7 +138,6 @@ function CdrReport({ page }) {
     const getRingGroupDashboardData = async () => {
       if (account && account.id) {
         const apidata = await generalGetFunction(`/spam/all?all`);
-        // console.log(apidata);
         if (apidata?.status) {
           setCallBlock(apidata.data);
           // setLoading(false);
@@ -454,7 +452,7 @@ function CdrReport({ page }) {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -466,7 +464,7 @@ function CdrReport({ page }) {
                         <span className="text">Refresh</span>
                         <span className="icon">
                           <i
-                            class={
+                            className={
                               contentLoader
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                 : "fa-regular fa-arrows-rotate fs-5"
@@ -482,7 +480,7 @@ function CdrReport({ page }) {
                       >
                         <span className="text">Export</span>
                         <span className="icon">
-                          <i class="fa-solid fa-file-export"></i>
+                          <i className="fa-solid fa-file-export"></i>
                         </span>
                       </button>
                     </div>
@@ -872,7 +870,7 @@ function CdrReport({ page }) {
                                           "inbound" ? (
                                           <span>
                                             <i
-                                              class="fa-solid fa-phone-arrow-down-left me-1"
+                                              className="fa-solid fa-phone-arrow-down-left me-1"
                                               style={{
                                                 color: "var(--funky-boy3)",
                                               }}
@@ -883,7 +881,7 @@ function CdrReport({ page }) {
                                           "outbound" ? (
                                           <span>
                                             <i
-                                              class="fa-solid fa-phone-arrow-up-right me-1"
+                                              className="fa-solid fa-phone-arrow-up-right me-1"
                                               style={{ color: "var(--color3)" }}
                                             ></i>{" "}
                                             Outbound
@@ -892,7 +890,7 @@ function CdrReport({ page }) {
                                           "missed" ? (
                                           <span>
                                             <i
-                                              class="fa-solid fa-phone-missed me-1"
+                                              className="fa-solid fa-phone-missed me-1"
                                               style={{
                                                 color: "var(--funky-boy3)",
                                               }}
@@ -903,7 +901,7 @@ function CdrReport({ page }) {
                                           "transfer" ? (
                                           <span>
                                             <i
-                                              class="fa-solid fa-phone-missed me-1"
+                                              className="fa-solid fa-phone-missed me-1"
                                               style={{
                                                 color: "var(--funky-boy3)",
                                               }}
@@ -913,7 +911,7 @@ function CdrReport({ page }) {
                                         ) : (
                                           <span>
                                             <i
-                                              class="fa-solid fa-headset me-1"
+                                              className="fa-solid fa-headset me-1"
                                               style={{ color: "var(--color2)" }}
                                             ></i>{" "}
                                             Internal
@@ -1072,7 +1070,7 @@ function CdrReport({ page }) {
                                                 isBlocked ? "Blocked" : "Block"
                                               }
                                             >
-                                              <i class="fa-solid fa-ban"></i>
+                                              <i className="fa-solid fa-ban"></i>
                                             </Tippy>
                                             {/* </span> */}
                                           </button>
@@ -1082,7 +1080,7 @@ function CdrReport({ page }) {
                                         <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
                                           <Tippy content={'View Note'}
                                           >
-                                            <i class="fa-solid fa-comment-dots"></i>
+                                            <i className="fa-solid fa-comment-dots"></i>
                                           </Tippy>
                                         </button>
                                       </td>
@@ -1185,7 +1183,7 @@ function CdrReport({ page }) {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     {/* ) : ( */}
@@ -1201,7 +1199,7 @@ function CdrReport({ page }) {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

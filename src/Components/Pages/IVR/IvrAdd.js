@@ -76,7 +76,6 @@ function IvrAdd() {
 
     getData();
   }, [musicRefreshExit, musicRefreshGreet, musicRefreshInvalid]);
-  console.log(watch());
   const handleFormSubmit = handleSubmit(async (data) => {
     const payload = {
       ...data,
@@ -135,7 +134,7 @@ function IvrAdd() {
                   }}
                 >
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
@@ -143,7 +142,7 @@ function IvrAdd() {
                   onClick={handleFormSubmit}
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -177,7 +176,7 @@ function IvrAdd() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -187,7 +186,7 @@ function IvrAdd() {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -224,7 +223,7 @@ function IvrAdd() {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -234,7 +233,7 @@ function IvrAdd() {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>

@@ -29,45 +29,15 @@ function VideoCall({
   // Safeguard for sessionCallData properties
   const {
     hangup = () => {},
-    // hold = () => {},
-    // unhold = () => {},
   } = sessionCallData;
 
   useEffect(() => {
     if (callProgressId === "") {
-      // handleHangup()
-      console.log("callProgressId is empty");
       setCloseVideoCall(true);
     }
   }, [callProgressId]);
 
   const includeVideo = true;
-  // const canHold = session && session._state === SessionState.Established;
-
-  // const holdCall = (type) => {
-  //   if (canHold) {
-  //     if (type === "hold") {
-  //       hold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "OnHold" } : item
-  //         ),
-  //       });
-  //     } else if (type === "unhold") {
-  //       unhold();
-  //       dispatch({
-  //         type: "SET_SESSIONS",
-  //         sessions: globalSession.map((item) =>
-  //           item.id === session.id ? { ...item, state: "Established" } : item
-  //         ),
-  //       });
-  //     }
-  //   } else {
-  //     toast.warn("Call has not been established");
-  //   }
-  // };
-
   const getLocalStream = async () => {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
@@ -135,12 +105,6 @@ function VideoCall({
           });
         }
       };
-
-      const remoteDescription =
-        session.sessionDescriptionHandler.peerConnection
-          .currentRemoteDescription;
-      console.log("Remote SDP:", remoteDescription);
-
       return () => {
         isMounted = false; // Mark component as unmounted
         if (localVideoRef.current) {
@@ -152,7 +116,6 @@ function VideoCall({
       };
     }
   }, [session]);
-  console.log(remoteVideoRef.current);
   const toggleVideo = () => {
     if (localVideoRef.current) {
       const localStream = localVideoRef.current.srcObject;
@@ -279,8 +242,6 @@ function VideoCall({
 
   useEffect(() => {
     if (callProgressId === "") {
-      // handleHangup()
-      console.log("callProgressId is empty");
       setCloseVideoCall(true);
     }
   }, [callProgressId]);
@@ -299,8 +260,6 @@ function VideoCall({
       console.error("No active session found");
     }
   };
-
-  // console.log("sessionssss", session);
   return (
     <main className="mainContentA videoCall">
       <div className={minimize ? "caller minimize mt-0" : "caller mt-0"}>
