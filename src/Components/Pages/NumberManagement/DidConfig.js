@@ -16,7 +16,6 @@ import {
   noSpecialCharactersValidator,
   rangeValidator,
   requiredValidator,
-  usagesValidator,
 } from "../../validations/validation";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +44,7 @@ const DidConfig = () => {
     setValue,
     watch,
   } = useForm();
-  
+
   useEffect(() => {
     if (locationData.configuration !== null) {
       // setDataAvailable(false);
@@ -96,6 +95,8 @@ const DidConfig = () => {
       );
     } else {
       setValue("usages", "extension" || []);
+      console.log("Inside else cond");
+      
       // setDataAvailable(true);
     }
   }, [locationData]);
@@ -160,7 +161,10 @@ const DidConfig = () => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     console.log(data, "-------------");
-
+    if(data.usages==="" || data.usages===null){
+      data.action = null
+      data.usages = null
+    }
     data.record = data.record === true || data.record === "true";
     data.sticky_agent_enable =
       data.sticky_agent_enable === true || data.sticky_agent_enable === "true";
@@ -206,14 +210,15 @@ const DidConfig = () => {
         navigate(-1)
       } else {
         setLoading(false);
+        toast.error(apiData?.errors[Object.keys(apiData?.errors)[0]][0])
         // toast.error(apiData.message);
       }
     }
     if (locationData.configuration) {
       setLoading(true);
-      if(payload.action=="" ){
-       delete payload.action;
-       delete payload.usages 
+      if (payload.action == "") {
+        delete payload.action;
+        delete payload.usages
       }
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
@@ -224,6 +229,7 @@ const DidConfig = () => {
         toast.success(apiData.message);
       } else {
         setLoading(false);
+        toast.error(apiData?.errors[Object.keys(apiData?.errors)[0]])
         // toast.error(apiData.message);
       }
     }
@@ -243,6 +249,14 @@ const DidConfig = () => {
     }
   }, [newAddDid]);
 
+  console.log(watch().usages);
+  if(watch().usages){
+    console.log("This is success",watch());
+    
+  }else{
+    console.log("this is fail");
+    
+  }
   return (
     <>
       <main className="mainContent">
@@ -364,7 +378,7 @@ const DidConfig = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label htmlFor="">
-                              Usage 
+                              Usage
                               {/* <span className="text-danger">*</span> */}
                             </label>
                             <label htmlFor="data" className="formItemDesc">
@@ -386,25 +400,28 @@ const DidConfig = () => {
                                 setValue("action", "");
                               }}
                             >
+                              <option value={null}>None</option>
                               <option value="extension">Extension</option>
                               <option value="call center">Call Center</option>
                               <option value="ring group">Ring Group</option>
                               <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          <div className="col-3">
-                            <ActionList
-                              category={watch().usages}
-                              title={null}
-                              label={null}
-                              getDropdownValue={actionListValue}
-                              value={watch().action}
-                              {...register("action")}
-                            />
-                            {/* {errors.action && (
+                          {(watch().usages && watch().usages?.length!==0) &&
+                            <div className="col-3">
+                              <ActionList
+                                category={watch().usages}
+                                title={null}
+                                label={null}
+                                getDropdownValue={actionListValue}
+                                value={watch().action}
+                                {...register("action")}
+                              />
+                              {/* {errors.action && (
                               <ErrorMessage text={errors.action.message} />
                             )} */}
-                          </div>
+                            </div>
+                          }
                         </div>
 
                         {/* <div className="formRow col-xl-3">

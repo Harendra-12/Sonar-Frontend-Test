@@ -1376,48 +1376,45 @@ function Navbar() {
                       </div>
                     </div>
                   </li>
-
-                  {isCustomerAdmin && (
-                    <>
-                      <li className="">
-                        <button
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse5"
-                          aria-expanded={
-                            isChildActive([
-                              "/mail-settings",
-                              "/fax-settings",
-                              "/call-recording-settings",
-                              "/voice-music",
-                              "/custom-module",
-                            ])
-                              ? "true"
-                              : "false"
-                          }
-                          aria-controls="collapse5"
-                        >
-                          <div className="iconHolder">
-                            <i class="fa-regular fa-sliders"></i>
-                          </div>
-                          <div className="itemTitle">Setting</div>
-                        </button>
-                        <div
-                          id="collapse5"
-                          className={`accordion-collapse collapse ${isChildActive([
-                            "/mail-settings",
-                            "/fax-settings",
-                            "/call-recording-settings",
-                            "/voice-music",
-                            "/custom-module",
-                          ])
-                            ? "show"
-                            : ""
-                            }`}
-                          data-bs-parent="#sidenNav"
-                        >
-                          <div className="menuWrapper">
-                            <ul className="tabMenu">
-                              {/* <li className="tabItem ">
+                  <li className="">
+                    <button
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse5"
+                      aria-expanded={
+                        isChildActive([
+                          "/mail-settings",
+                          "/fax-settings",
+                          "/call-recording-settings",
+                          "/voice-music",
+                          "/custom-module",
+                        ])
+                          ? "true"
+                          : "false"
+                      }
+                      aria-controls="collapse5"
+                    >
+                      <div className="iconHolder">
+                        <i class="fa-regular fa-sliders"></i>
+                      </div>
+                      <div className="itemTitle">Setting</div>
+                    </button>
+                    <div
+                      id="collapse5"
+                      className={`accordion-collapse collapse ${isChildActive([
+                        "/mail-settings",
+                        "/fax-settings",
+                        "/call-recording-settings",
+                        "/voice-music",
+                        "/custom-module",
+                      ])
+                        ? "show"
+                        : ""
+                        }`}
+                      data-bs-parent="#sidenNav"
+                    >
+                      <div className="menuWrapper">
+                        <ul className="tabMenu">
+                          {/* <li className="tabItem ">
                               <Link
                                 // to="/extensions"
                                 onClick={() => featureUnderdevelopment()}
@@ -1434,20 +1431,20 @@ function Navbar() {
                                 <div className="itemTitle">General</div>
                               </Link>
                             </li> */}
-                              {checkViewSidebar(
-                                "Sound",
-                                permissions,
-                                account?.permissions
-                              ) ? (
-                                <li className="tabItem ">
-                                  <NavLink to="/voice-music">
-                                    <div className="itemTitle">Voice Music</div>
-                                  </NavLink>
-                                </li>
-                              ) : (
-                                ""
-                              )}
-                              {/* <li className="tabItem">
+                          {checkViewSidebar(
+                            "Sound",
+                            permissions,
+                            account?.permissions
+                          ) ? (
+                            <li className="tabItem ">
+                              <NavLink to="/voice-music">
+                                <div className="itemTitle">Voice Music</div>
+                              </NavLink>
+                            </li>
+                          ) : (
+                            ""
+                          )}
+                          {/* <li className="tabItem">
                               <NavLink
                                 to="/fax-settings"
                                 onClick={() => backToTop()}
@@ -1463,43 +1460,46 @@ function Navbar() {
                                 <div className="itemTitle">Fax</div>
                               </NavLink>
                             </li> */}
-                              {checkViewSidebar(
-                                "MailSetting",
-                                permissions,
-                                account?.permissions
-                              ) ? (
-                                <li className="tabItem ">
-                                  <NavLink
-                                    to="/mail-settings"
-                                    onClick={backToTop}
-                                    type="button"
-                                    className={({ isActive }) =>
-                                      isActive ||
-                                        [
-                                          "/mail-settings-add",
-                                          "/mail-settings-edit",
-                                        ].some((path) =>
-                                          window.location.pathname.includes(path)
-                                        )
-                                        ? "nav-link active"
-                                        : "nav-link"
-                                    }
-                                  >
-                                    <div className="itemTitle">Email</div>
-                                  </NavLink>
-                                </li>
-                              ) : null}
-                              <li className="tabItem ">
-                                <NavLink
-                                  to="/custom-module"
-                                  onClick={() => backToTop()}
-                                >
-                                  <div className="itemTitle">
-                                    Custom Module Integration
-                                  </div>
-                                </NavLink>
-                              </li>
-                              {/* <li className="tabItem ">
+                          {checkViewSidebar(
+                            "MailSetting",
+                            permissions,
+                            account?.permissions
+                          ) ? (
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/mail-settings"
+                                onClick={backToTop}
+                                type="button"
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/mail-settings-add",
+                                      "/mail-settings-edit",
+                                    ].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Email</div>
+                              </NavLink>
+                            </li>
+                          ) : null}
+                          {
+                            checkViewSidebar("Usage", permissions, account?.permissions) &&
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/custom-module"
+                                onClick={() => backToTop()}
+                              >
+                                <div className="itemTitle">
+                                  Custom Module Integration
+                                </div>
+                              </NavLink>
+                            </li>
+                          }
+                          {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
                                 onClick={() => backToTop()}
@@ -1515,11 +1515,12 @@ function Navbar() {
                                 <div className="itemTitle">Call Recording</div>
                               </NavLink>
                             </li> */}
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                  {isCustomerAdmin && (
+                    <>
                       <li className="">
                         <button
                           data-bs-toggle="collapse"

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import SkeletonFormLoader from '../../Loader/SkeletonFormLoader';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import Header from '../../CommonComponents/Header';
 import CustomDashboardManage from './CustomDashboardManage';
+import { useSelector } from 'react-redux';
 
 function CustomModule() {
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [customModule, setCustomModule] = useState([])
@@ -65,6 +68,7 @@ function CustomModule() {
                                                     type="button"
                                                     effect="ripple"
                                                     className="panelButton"
+                                                    disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "add"))}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon"><i class="fa-solid fa-plus"></i></span>
@@ -84,7 +88,10 @@ function CustomModule() {
                                                     <th>Ringing</th>
                                                     <th>Missed</th>
                                                     <th>Total</th>
-                                                    <th>Edit</th>
+                                                    {
+                                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
+                                                            <th>Edit</th> : ""
+                                                    }
                                                 </thead>
                                                 <tbody>
                                                     {
@@ -99,7 +106,10 @@ function CustomModule() {
                                                                     <td><i className={`fa-solid fa-${item?.ringing ? "check text-success" : "xmark text-danger"}`} /></td>
                                                                     <td><i className={`fa-solid fa-${item?.missed ? "check text-success" : "xmark text-danger"}`} /></td>
                                                                     <td><i className={`fa-solid fa-${item?.total ? "check text-success" : "xmark text-danger"}`} /></td>
-                                                                    <td><button className='tableButton edit' onClick={() => { setSelectedModule(item); setAddNewMod(false); setPopup(true) }}><i className="fa-solid fa-pen-to-square" /></button></td>
+                                                                    {
+                                                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
+                                                                            <td><button className='tableButton edit' onClick={() => { setSelectedModule(item); setAddNewMod(false); setPopup(true) }}><i className="fa-solid fa-pen-to-square" /></button></td> : ""
+                                                                    }
                                                                 </tr>
                                                             )
                                                         })

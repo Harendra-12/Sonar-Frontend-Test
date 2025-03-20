@@ -11,6 +11,7 @@ import AddNewAddress from "./AddNewAddress";
 import {
   backToTop,
   generalDeleteFunction,
+  generalGetFunction,
   generalPostFunction,
   generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -23,15 +24,14 @@ import Tippy from "@tippyjs/react";
 function CardAndBilling() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const accountBalance = useSelector((state)=>state.accountBalance)
+  const accountBalance = useSelector((state) => state.accountBalance)
   const billingListRefresh = useSelector((state) => state.billingListRefresh);
   const account = useSelector((state) => state.account);
   const cardListRefresh = useSelector((state) => state.cardListRefresh);
   const [cardPopUp, setCardPopUp] = useState(false);
   const [billingPopUp, setBillingPopUp] = useState(false);
   const [cardConfirmationPopUp, setCardConfirmationPopUp] = useState(false);
-  const [billingConfirmationPopUp, setBillingConfirmationPopUp] =
-    useState(false);
+  const [billingConfirmationPopUp, setBillingConfirmationPopUp] = useState(false);
   const [selectedCardID, setSelectedCardId] = useState();
   const [loading, setLoading] = useState(false);
   const [selectedBillingId, setSelecetedBillingId] = useState();
@@ -41,6 +41,13 @@ function CardAndBilling() {
   const cardList = useSelector((state) => state.cardList);
   const billingList = useSelector((state) => state.billingList);
   const [rechargePopUp, setRechargePopUp] = useState(false);
+  const [autoPayPopup, setAutoPayPopup] = useState(false);
+  const [cardDelPopUp, setCardDelPopUp] = useState(false);
+  const [cardDelId, setCardDelId] = useState();
+  const [autoPayThreshold, setAutoPayThreshold] = useState(0);
+  const [autoPayAmount, setAutoPayAmount] = useState("");
+  const [autoPayStatus, setAutoPayStatus] = useState("enable");
+  const [autoPaymentFetchData,setAutoPaymentFetchData]=useState(null)
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -62,6 +69,21 @@ function CardAndBilling() {
         cardListRefresh: cardListRefresh + 1,
       });
     }
+    // Getting auto pay details
+    async function getAutopayData() {
+      setLoading(true);
+      const apiData = await generalGetFunction("/auto-balance")
+      if (apiData.status && apiData.data) {
+        setAutoPayThreshold(apiData.data?.threshold);
+        setAutoPayAmount(apiData.data?.amount);
+        setAutoPayStatus(apiData.data?.status)
+        setLoading(false);
+        setAutoPaymentFetchData(apiData.data)
+      } else {
+        setLoading(false);
+      }
+    }
+    getAutopayData()
   }, [])
   const downloadImage = async (imageUrl, fileName) => {
     try {
@@ -341,8 +363,6 @@ function CardAndBilling() {
   }
 
   // Handle Card Delete
-  const [cardDelPopUp, setCardDelPopUp] = useState(false);
-  const [cardDelId, setCardDelId] = useState();
   async function handleCardDelete() {
     setLoading(true);
     const apiData = await generalDeleteFunction(`/card/destroy/${cardDelId}`);
@@ -359,6 +379,29 @@ function CardAndBilling() {
       setLoading(false);
       // const errorMessage = Object.keys(apiData.errors);
       // toast.error(apiData.errors[errorMessage[0]][0]);
+    }
+  }
+
+  // Handle auto payment change
+  async function handleAutoPaymentChange() {
+    if (autoPayAmount === "" || Number(autoPayAmount) < 20) {
+      toast.error("Please enter amount greater than 20");
+      return;
+    }
+    setAutoPayPopup(false);
+    setLoading(true);
+    const apiData = await generalPostFunction("/auto-balance", {
+      threshold: autoPayThreshold,
+      amount: autoPayAmount,
+      status: autoPayStatus
+    })
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+      setAutoPaymentFetchData(apiData.data)
+    } else {
+      setLoading(false);
+      toast.error(apiData.message);
     }
   }
   return (
@@ -502,7 +545,7 @@ function CardAndBilling() {
                             </div>
                             <div className="data-number2 ">
                               <h5>
-                               {accountBalance}
+                                {accountBalance}
                               </h5>
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="col-auto">
@@ -1145,6 +1188,64 @@ function CardAndBilling() {
                           </div>
                         </div>
                       </div>
+                      <div className="col-xl-12 mt-3">
+                        <div
+                          className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable" ) ? "active" : ""}`}
+                          style={{ backgroundColor: "var(--ele-color2)" }}
+                        >
+                          <div className="heading">
+
+                            <div className="col-9">
+                              <h5>Auto Pay Feature</h5>
+                              {
+                                !autoPaymentFetchData ? "" :
+                                  <p>Status: <span className="text-success" style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
+                              }
+                            </div>
+
+                            <div className="col-3" style={{ cursor: "pointer" }}>
+                              <i
+                                className="fa-duotone fa-circle-dollar"
+                                style={{
+                                  boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 5px",
+                                  cursor: "default"
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="data-number2">
+                            <div className="d-flex flex-wrap justify-content-between align-items-center">
+                              {
+                                !autoPaymentFetchData ? 
+                                <div className="col-2" >
+                                  <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
+                                    <span className="text">Add</span>
+                                    <span className="icon"><i className="fa-solid fa-edit" /></span>
+                                  </button>
+                                </div> :
+                                  <>
+                                    <div className="col-10">
+                                      <h5>
+                                        $ {autoPaymentFetchData.amount}
+                                      </h5>
+                                      <p>
+                                        <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
+                                      </p>
+                                    </div>
+                                    <div className="col-2" >
+                                      <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
+                                        <span className="text">Edit</span>
+                                        <span className="icon"><i className="fa-solid fa-pen" /></span>
+                                      </button>
+                                    </div>
+                                  </>
+                              }
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1375,19 +1476,88 @@ function CardAndBilling() {
         ""
       )}
 
+      {autoPayPopup &&
+        <>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-regular fa-dollar-sign" />
+                <h5>Edit Autopay options for your account</h5>
+              </div>
+              <div className="mt-3">
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Min Threshold</label>
+                        <label className="formItemDesc">The minimum threshold that the user will hit before autopay</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <input type="number" className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Amount</label>
+                        <label className="formItemDesc">The amount of recharge to be commenced</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <input type="number" className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="formRow">
+                    <div className="col-6">
+                      <div className="formLabel">
+                        <label htmlFor="">Status</label>
+                        <label className="formItemDesc">The status of the autopay feature</label>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <select
+                        className="formItem me-0"
+                        id="selectFormRow"
+                        name="status"
+                        style={{ width: "100%" }}
+                        value={autoPayStatus}
+                        onChange={(e) => setAutoPayStatus(e.target.value)}
+                      >
+                        <option className="status" value="enable">
+                          Enable
+                        </option>
+                        <option value="disable">Disable</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button className="panelButton gray ms-0" onClick={() => setAutoPayPopup(false)}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="panelButton me-0" onClick={handleAutoPaymentChange}>
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      }
       {loading ? <CircularLoader /> : ""}
-      {/* <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
     </main>
   );
 }

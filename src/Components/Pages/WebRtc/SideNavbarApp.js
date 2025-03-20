@@ -167,15 +167,15 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </li>
             }
             <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => featureUnderdevelopment()}
-                className="navItem"
-              >
-                <div className="iconHolder">
+            <div
+                  onClick={() => featureUnderdevelopment()}
+                  className="navItem"
+                >
+                  <div className="iconHolder">
                   <i class="fa-light fa-screwdriver-wrench"></i>
+                  </div>
+                  <div className="itemTitle">Switch Admin</div>
                 </div>
-                <div className="itemTitle">Switch Admin</div>
-              </div>
             </li>
           </ul>
         </div>
