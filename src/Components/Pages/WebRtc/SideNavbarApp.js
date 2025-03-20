@@ -88,8 +88,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-
-                className="navItem"
+                 onClick={() => setactivePage("e-fax")}
+                 className={
+                   activePage === "e-fax" ? "navItem active" : "navItem"
+                 }
               >
                 <div className="iconHolder">
                   <i className="fa-regular fa-paper-plane"></i>

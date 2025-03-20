@@ -18,39 +18,40 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
     eFaxFileLoadingState(loading);
   }, [loading]);
 
+  // Handle previe image for upladed file
   const handleUploadDoc = (e) => {
     const selectedFile = e.target.files[0];
-
     if (selectedFile && selectedFile.size <= 1024 * 1024) {
       setUploadError(false);
-
-      const imagePreviewUrl = URL.createObjectURL(selectedFile);
-
       setFile(selectedFile);
-      setImagePreview(imagePreviewUrl); // Assuming you have a state for the image preview
+
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+      if (["png", "jpeg", "jpg"].includes(fileExtension)) {
+        setImagePreview(URL.createObjectURL(selectedFile));
+      } else {
+        setImagePreview(null); // No preview for PDFs or DOCX
+      }
     } else {
       setUploadError("File size must be less than 1MB.");
     }
   };
 
-  function isValidImageFile(file) {
-    if (!file || !(file instanceof File)) {
-      return false;
-    }
+  // Validation the proper file upload by checking its ectension
+  function isValidFile(file) {
+    if (!file || !(file instanceof File)) return false;
 
-    const allowedExtensions = ["png", "jpeg", "jpg"];
+    const allowedExtensions = ["png", "jpeg", "jpg", "pdf", "docx"];
     const fileExtension = file.name.split(".").pop().toLowerCase();
 
     return allowedExtensions.includes(fileExtension);
   }
 
-  const downloadImage = async (imageUrl, fileName) => {
+  // Download the uploaded file
+  const downloadFile = async (fileUrl, fileName) => {
     try {
-      const response = await fetch(imageUrl);
-      console.log("response:", response);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const response = await fetch(fileUrl);
+      if (!response.ok) throw new Error("Network response was not ok");
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
@@ -64,23 +65,27 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading the image:", error);
+      console.error("Error downloading the file:", error);
     }
   };
 
+  // Upload the selected file on server
   const handleUploadDocument = async () => {
     if (!file) {
       toast.error("Please select a file");
       return;
     }
 
-    if (!isValidImageFile(file)) {
-      toast.error("Only JPEG, JPG and PNG formats are allowed");
+    if (!isValidFile(file)) {
+      toast.error("Only JPEG, JPG, PNG, PDF, and DOCX formats are allowed");
       return;
     }
+
     setUploadPopup(false);
     setLoading(true);
+
     const apiData = await fileUploadFunction("/fax/store", { file_path: file });
+
     if (apiData.status) {
       setUploadedFile(apiData.data);
       toast.success(apiData.message);
@@ -88,15 +93,14 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
       setUploadPopup(false);
       setImagePreview(null);
       newFileUpload(apiData.data);
-      //   refreshCallback(refresh + 1);
     } else {
       setImagePreview(null);
       setLoading(false);
       toast.error(apiData.message);
-      setLoading(false);
     }
   };
 
+  // After zoom any image if user click outside then closing the zoomed state
   function handleClickOutside(event) {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setOpenPopup(false);
@@ -105,35 +109,16 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
   document.addEventListener("mousedown", handleClickOutside);
 
   return (
-    <div
-      className="col-12 col-xl-6 callDetails eFaxCompose"
-      style={{ height: "100%" }}
-      id="callDetails"
-    >
+    <div className="col-12 col-xl-6 callDetails eFaxCompose" style={{ height: "100%" }} id="callDetails">
       <div className="profileView">
         <div className="profileDetailsHolder">
           <div className="header d-flex align-items-center pe-0">
             <div className="col-12">Upload eFax Document</div>
           </div>
           <div className="mt-2">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "5px",
-              }}
-            >
-              <div className="">
-                <label>Choose a document to upload</label>
-              </div>
-              <div
-                onClick={() => {
-                  setUploadPopup(true);
-                }}
-                style={{ cursor: "pointer" }}
-                className=" clearButton fw-bold float-end col-auto"
-              >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+              <label>Choose a document to upload</label>
+              <div onClick={() => setUploadPopup(true)} style={{ cursor: "pointer" }} className="clearButton fw-bold">
                 Upload <i className="fa-duotone fa-upload"></i>
               </div>
             </div>
@@ -148,63 +133,37 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
               <div className="col-12">Uploaded Documents</div>
             </div>
             <div className="qLinkContent" ref={wrapperRef}>
-              <div class="accordion-body">
-                <div className="row position-relative align-items-center">
-                  <div className="col-auto ps-0 pe-2">
-                    <div className="iconWrapper2">
-                      <i className="fa-solid fa-image"></i>
-                    </div>
+              <div className="row position-relative align-items-center">
+                <div className="col-auto ps-0 pe-2">
+                  <div className="iconWrapper2">
+                    <i className="fa-solid fa-file"></i>
                   </div>
-                  <div className="col-8 my-auto ps-1">
-                    <p>{uploadedFile?.file_name}</p>
-                  </div>
-                  <div
-                    className="col-auto px-0 my-auto ms-auto"
-                    onClick={() => {
-                      setOpenPopup(!openPopup);
-                      // setOpenNumber(key);
-                    }}
-                  >
-                    <div className="iconWrapper">
-                      <i className="fa-solid fa-ellipsis"></i>
-                    </div>
-                  </div>
-                  {openPopup && (
-                    <div className="buttonPopup">
-                      <div style={{ cursor: "pointer" }}>
-                        <div
-                          className="clearButton"
-                          onClick={() =>
-                            downloadImage(
-                              uploadedFile?.file_path,
-                              uploadedFile?.file_name
-                            )
-                          }
-                        >
-                          <i className="fa-solid fa-file-arrow-down"></i>{" "}
-                          Download
-                        </div>
-                      </div>
-                      <div style={{ cursor: "pointer" }}>
-                        <div className="clearButton">
-                          <a
-                            href={uploadedFile?.file_path}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-sharp fa-solid fa-eye"></i> View
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
+                <div className="col-8 my-auto ps-1">
+                  <p>{uploadedFile?.file_name}</p>
+                </div>
+                <div className="col-auto px-0 my-auto ms-auto" onClick={() => setOpenPopup(!openPopup)}>
+                  <div className="iconWrapper">
+                    <i className="fa-solid fa-ellipsis"></i>
+                  </div>
+                </div>
+                {openPopup && (
+                  <div className="buttonPopup">
+                    <div className="clearButton" onClick={() => downloadFile(uploadedFile?.file_path, uploadedFile?.file_name)}>
+                      <i className="fa-solid fa-file-arrow-down"></i> Download
+                    </div>
+                    <div className="clearButton">
+                      <a href={uploadedFile?.file_path} target="_blank" rel="noreferrer">
+                        <i className="fa-sharp fa-solid fa-eye"></i> View
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
-
       {uploadPopup ? (
         <div className="popup">
           <div className="container h-100">
@@ -227,17 +186,17 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                     name="reg"
                     className="formItem mt-2"
                     type="file"
-                    accept="image/*"
-                    onChange={(e) => handleUploadDoc(e)}
+                    accept=".png,.jpeg,.jpg,.pdf,.docx"
+                    onChange={handleUploadDoc}
                   />
                   <span style={{ fontSize: 10 }}>
-                    Only JPEG/JPG/PNG files are accepted.
+                    Only JPEG/JPG/PNG/PDF/DOCX files are accepted.
                   </span>
                   {uploadError ? (
                     <>
                       <br />
                       <span style={{ color: "red", fontSize: 12 }}>
-                        <i class="fa-solid fa-triangle-exclamation"></i> Image
+                        <i class="fa-solid fa-triangle-exclamation"></i> File
                         should be less than 1 MB
                       </span>
                     </>
@@ -294,6 +253,7 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
       ) : (
         ""
       )}
+
       {enlargeImage ? (
         <div className="popup" onClick={() => setEnlargeImage(false)}>
           <div className="container h-100">

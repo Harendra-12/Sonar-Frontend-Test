@@ -286,8 +286,8 @@ function EFax() {
                         All
                       </button>
                       <button
-                        // onClick={() => setClickStatus("file")}
-                        onClick={() => featureUnderdevelopment()}
+                        onClick={() => setClickStatus("file")}
+                        // onClick={() => featureUnderdevelopment()}
                         className={
                           clickStatus === "file" ? "tabLink active" : "tabLink"
                         }
