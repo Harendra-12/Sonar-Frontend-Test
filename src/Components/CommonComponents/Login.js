@@ -289,43 +289,41 @@ export function LoginComponent() {
                   </div>
                 </div>
                 <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
+                  <h4 className="mb-2">Warning!</h4>
+                  <p className="mb-2">
+                    You are already logged in from a different device!
+                  </p>
                   <p>
-                    You are already login on different device !<br />
-                    {/* Do you want to Logout from all device ? */}
+                    You may log out of all devices or log in from this device.
                   </p>
                   <div className="d-flex justify-content-between">
-                   <div>
-                   <p className="p-0 mt-1 ">Log out from all device</p>
-                    <button
-                      disabled={loading}
-                      className="panelButton m-0"
-                      onClick={handleLogoutAll}
-                    >
-                      <span className="text">Logout</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                   </div>
-
-                   <div>
-                    <p className="p-0 mt-1">Stay log in</p>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                        setLoading(true)
-                        handleLogin()
-                      }}
-                    >
-                      <span className="text">Login</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </button>
-                   </div>
-                    
+                    <div>
+                      <button
+                        className="panelButton m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                          setLoading(true)
+                          handleLogin()
+                        }}
+                      >
+                        <span className="text">Login</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        disabled={loading}
+                        className="panelButton m-0 delete"
+                        onClick={handleLogoutAll}
+                      >
+                        <span className="text">Logout</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-power-off"></i>
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
