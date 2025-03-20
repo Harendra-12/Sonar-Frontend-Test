@@ -37,6 +37,7 @@ const Users = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [refreshData, setRefreshData] = useState(0);
+  const [onlineFilter,setonlineFilter]=useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
   // Setting up online users to display when user is logged in
   useEffect(() => {
@@ -62,7 +63,7 @@ const Users = () => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter==="online"?"&online":""}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -98,6 +99,7 @@ const Users = () => {
     itemsPerPage,
     userInput,
     refreshData,
+    onlineFilter,
   ]);
 
   // Checking if role is created and the current user have permsiion to create user
@@ -294,7 +296,12 @@ const Users = () => {
                             <th>Usage</th>
                             <th>Online</th>
                             {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
-                            <th>Status</th>
+                            <th>Status <span>
+                              <select value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                              <option value="all">All</option>
+                              <option value="online">Online</option>
+                              </select>
+                              </span></th>
                             <th>Delete</th>
                           </tr>
                         </thead>
