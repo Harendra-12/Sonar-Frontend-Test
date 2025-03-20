@@ -128,6 +128,7 @@ function Messages({
 
 //  function to extract extension
   const extractFileExtension = (selectedUrl) => {
+    // debugger
     if (!selectedUrl) return null;
   
     // Step 1: Remove query parameters and get the base URL
@@ -166,11 +167,12 @@ function Messages({
     return null; // No extension found
   };
   useEffect(() => {
+   if(selectedUrl){
     const extension=extractFileExtension(selectedUrl);
     setSelectFileExtension(extension);
+   }
   }, [selectedUrl]);
 
-  console.log("00selectExtension",{selectFileExtension})
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -322,22 +324,26 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => { 
-    if (messageInput.trim() === ""&&selectedUrl=="") return;
+  const sendSingleMessage = () => {
+    // Only proceed if there's either a URL or message text
+    debugger
+    if(!selectedUrl && messageInput.trim() === "") {
+      return;
+    }
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
-
+      
       const target = UserAgent.makeURI(targetURI);
-
       if (target) {
         let messager;
         try {
-         if(fileType=="image"){
-          messager = new Messager(userAgent, target, selectedUrl);
-         }else{
-          messager = new Messager(userAgent, target, messageInput);
-         }
+          if(selectedUrl) {
+            //  message if any file is selected
+            messager = new Messager(userAgent,target, selectedUrl);
+          } else {
+            messager = new Messager(userAgent, target, messageInput);
+          }
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -347,27 +353,26 @@ function Messages({
               ...(prevState[recipient[0]] || []),
               { from: extension, body: messageInput, time },
             ],
-          }));
+          }));     
           // Update contact last message
           const contactIndex = contact.findIndex(
             (contact) => contact.extension === recipient[0]
           );
           if (contactIndex !== -1) {
             const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text =
-              messageInput;
+            newContact[contactIndex].last_message_data.message_text = messageInput;
             newContact[contactIndex].last_message_data.created_at = time;
             setContact(newContact);
           }
           setActiveTab("all");
-
+          
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
           );
           const agentDetails = agents.find(
             (agent) => agent.extension.extension === recipient[0]
           );
-
+          
           if (!extensionExists) {
             contact.unshift({
               name: agentDetails.username,
@@ -383,8 +388,8 @@ function Messages({
           }
           setMessageInput("");
           setSelectedFile(null);
-          setSelectedUrl(null)
-          selectFileExtension(null)
+          setSelectedUrl(null);
+          setSelectFileExtension(null);
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -397,7 +402,6 @@ function Messages({
       toast.error("UserAgent or session not ready.");
     }
   };
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -963,23 +967,28 @@ function Messages({
   // console.log("000allMessage",allMessage?.[recipient[0]])
 
   // function to add display logic in messages
-  function displayFile({ item, selectFileExtension }) {
+  function displayFile({ item}) {
     // Default case: display item.body directly if selectFileExtension is null
-    const fileUrl=extractFileExtension(item)
-    const ext = selectFileExtension || fileUrl;
-    console.log("000select",{selectFileExtension},{item},{fileUrl})
-    if (!fileUrl && !selectFileExtension) {
+    // debugger
+   if(item){
+    const fileUrl=item?.startsWith('http://') || item?.startsWith('https://')?extractFileExtension(item):""
+    const ext =fileUrl;
+    console.log("000select",{item},{fileUrl})
+    // !fileUrl && !selectFileExtension
+    if (!ext) {
       return <p>{item}</p>;
-    }else{
+    }
+    else{
       if (ext== "jpg" || ext == "png" || ext == "jpeg") {
         return <img src={item} alt="" />;
       }
       
       // Handle PDF files
       if (ext == "pdf") {
+        // debugger
         return (
           <iframe 
-            src={item.body} 
+            src={item} 
             width="100%" 
             height="500px" 
             style={{ border: 'none' }} 
@@ -990,24 +999,46 @@ function Messages({
       
       // Handle audio files (mp3 and others)
       if (ext == "mp3" ) {
+        const correctedAudioUrl = item.replace(
+          'response-content-encoding=audio%2Fmpeg',
+          'response-content-type=audio%2Fmpeg'
+        );
         return (
-          <div className="audio-container">
-      <audio
-            controls={true}
-            ref={thisAudioRef}
-            // autoPlay={true}
-          
-          >
-            <source
-              src={item}
-              type="audio/mpeg"
-            />
-          </audio>                                        
-  
-        </div>
+             <div className="audio-container mx-2">
+                              <audio controls autoPlay="true" >
+                                          <source src="https://ucaas-angelpbx.s3.us-east-2.amazonaws.com/ca1e7005-d36b-4fa7-9e99-3fb1c507da0f.wav" type="audio/mpeg"/>
+                                        </audio>
+                            <button
+                              className="audioCustomButton"
+                              onClick={() => {
+                                // const link = document.createElement("a");
+                                // link.href = URL.createObjectURL(newMusic);
+                                // link.download = newMusic.name;
+                                // link.click();
+                              }}
+                            >
+                              <i className="fa-sharp fa-solid fa-download" />
+                            </button>
+                           
+                          </div>
         );
       }
+      if(ext=="mp4"){
+        return (
+          <div >
+              <video 
+                  controls
+                  width="100%"
+                  height="auto"
+              >
+                  <source src={item} type="video/mp4" />
+                  Your browser does not support the video element.
+              </video>
+          </div>
+      );
+      }
     }
+   }
     
     // Fallback case - return the content as tex
   }
@@ -2278,7 +2309,8 @@ function Messages({
                                               </span>
                                             </h6>
                                             <div className="messageDetails">
-                                            {displayFile({item: item.body, selectFileExtension})}
+                                              {/* function to display the message */}
+                                            {displayFile({item: item.body})}
                                             </div>
                                           </div>
                                         </div>
