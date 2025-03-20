@@ -279,7 +279,7 @@ export function LoginComponent() {
         </div>
       </form>
       {popUp ? (
-        <div className="popup">
+        <div className="popupopen ">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
