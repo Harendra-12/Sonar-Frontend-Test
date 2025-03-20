@@ -74,8 +74,11 @@ const ActionList = ({
     // Set default value if provided
     if (value) {
       if (category === "ivr") {
-        labelValue = ivrArr.find((item) => item.id == value)?.ivr_name;
-      } else {
+        labelValue = ivrArr.find((item) => `ivr_${item.id}` == value)?.ivr_name;
+      } else if(value.includes("ivr_")) {
+        labelValue = ivrArr.find((item) => `ivr_${item.id}` == value)?.ivr_name;
+      }
+      else {
         labelValue = value;
       }
       const defaultOption = { value: value, label: labelValue };
@@ -110,7 +113,7 @@ const ActionList = ({
     {
       label: "IVR",
       options: ivr?.map((item) => ({
-        value: [ String(item.id), "ivr"],
+        value: [`ivr_${String(item.id)}`, "ivr"],
         label: item.ivr_name,
       })),
     },
