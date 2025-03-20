@@ -294,13 +294,13 @@ const Users = () => {
                             {/* <th>Account ID</th> */}
                             <th>Role</th>
                             <th>Usage</th>
-                            <th>Online</th>
+                            <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                              <option value="all" disabled>Status</option>
+                              <option value="online">Online</option>
+                              </select></th>
                             {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
                             <th>Status <span>
-                              <select value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
-                              <option value="all">All</option>
-                              <option value="online">Online</option>
-                              </select>
+                            
                               </span></th>
                             <th>Delete</th>
                           </tr>

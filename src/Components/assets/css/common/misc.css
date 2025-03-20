@@ -1240,3 +1240,10 @@ input[type=number] {
     font-size: 2.1875rem;
     color: rgb(255, 102, 0);
 }
+
+.f-select-width{
+    width: 65px !important;
+    height: 28px;
+    border-color: transparent;
+    background-color: #f4f7f9 !important;
+}

@@ -281,10 +281,10 @@ const Extensions = () => {
                                                 );
                                               })}
                                               <th className="text-center">
-                                                Status
+                                            
                                                 <span>
-                                                  <select value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
-                                                    <option value="all">All</option>
+                                                  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                                                    <option value="all" disabled>Status</option>
                                                     <option value="online">Online</option>
                                                   </select>
                                                 </span>
