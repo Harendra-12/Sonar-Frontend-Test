@@ -282,6 +282,60 @@ function UserConfiguration() {
                                               Choose what should be visible
                                             </div>
                                           </div>
+
+                                          <div className="accordion permissionListWrapper">
+                                            <div className="accordion-item">
+                                              <h2
+                                                className="accordion-header"
+                                                id={`collapseHeading`}
+                                              >
+                                                <button
+                                                  className="accordion-button collapsed"
+                                                  type="button"
+                                                  data-bs-toggle="collapse"
+                                                  data-bs-target={`#collapseRole`}
+                                                  aria-expanded="true"
+                                                  aria-controls={`collapse`}
+                                                >
+                                                  <input
+
+                                                    type="checkbox"
+                                                  // checked={parentChecked[item]}
+
+                                                  />
+
+                                                  <label>id</label>
+                                                </button>
+                                              </h2>
+                                              <div
+                                                id={`collapseRole`}
+                                                className="accordion-collapse collapse"
+                                                aria-labelledby={`collapseHeading`}
+                                              >
+                                                <div className="accordion-body">
+
+                                                  <div className="col-auto">
+                                                    <input
+                                                      type="checkbox"
+
+
+
+                                                    />
+                                                  </div>
+
+
+                                                </div>
+                                              </div>
+                                            </div>
+
+
+                                          </div>
+
+                                          
+
+
+
+
                                           <div className="col-xl-12">
                                             <div className="row" style={{ height: '400px', overflowY: 'scroll' }}>
                                               {userPermissionData && userPermissionData.map(

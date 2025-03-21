@@ -259,7 +259,15 @@
     padding: 8px 12px;
     border: 1px solid var(--border-color);
 }
-
+.messageList .messageDetailss {
+    /* min-width: max-content; */
+    display: inline-block;
+    max-width: 500px;
+    min-width: 390px;
+    min-height: 30px;
+    /* padding: 8px 12px; */
+    /* border: 1px solid var(--border-color); */
+}
 .messageList .messageItem h6 {
     font-size: 0.75rem;
     margin-bottom: 2px;

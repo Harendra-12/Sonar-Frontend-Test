@@ -957,7 +957,8 @@ function Messages({
     }
     else{
       if (ext== "jpg" || ext == "png" || ext == "jpeg") {
-        return <img src={item} alt="" />;
+        return <img  width="400PX" 
+        height="160px"  src={item} alt="" />;
       }
       
       // Handle PDF files
@@ -966,8 +967,8 @@ function Messages({
         return (
           <iframe 
             src={item} 
-            width="100%" 
-            height="400px" 
+            width="250PX" 
+            height="160px" 
             style={{ border: 'none' }} 
             title={`PDF Document - ${item}`} 
             className="documents-pdf"
