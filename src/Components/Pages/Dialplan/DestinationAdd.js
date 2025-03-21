@@ -22,7 +22,6 @@ import Header from "../../CommonComponents/Header";
 function DestinationAdd() {
   const location = useLocation();
   const locationData = location.state;
-  console.log("This is location data", locationData);
   const navigate = useNavigate();
   // const [domains, setDomains] = useState();
   const [users, setUsers] = useState();

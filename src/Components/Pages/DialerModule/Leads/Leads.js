@@ -41,7 +41,7 @@ function Leads() {
                                                 >
                                                     <span className="text">Back</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
+                                                        <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -123,7 +123,7 @@ function Leads() {
                                                             <button
                                                                 className="tableButton mx-auto"
                                                             >
-                                                                <i class="fa-solid fa-download"></i>
+                                                                <i className="fa-solid fa-download"></i>
                                                             </button>
                                                         </td>
                                                         <td>
@@ -131,14 +131,14 @@ function Leads() {
                                                                 className="tableButton edit mx-auto"
                                                                 onClick={() => navigate('/lead-edit')}
                                                             >
-                                                                <i class="fa-solid fa-pen"></i>
+                                                                <i className="fa-solid fa-pen"></i>
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button
                                                                 className="tableButton delete mx-auto"
                                                             >
-                                                                <i class="fa-solid fa-trash"></i>
+                                                                <i className="fa-solid fa-trash"></i>
                                                             </button>
                                                         </td>
                                                     </tr>

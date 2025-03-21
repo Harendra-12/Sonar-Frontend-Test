@@ -46,8 +46,6 @@
     const scriptSrc = currentScript.src;
     const params = new URLSearchParams(new URL(scriptSrc).search);
     const dynamicId = params.get('id') || '10'; // Default fallback
-    console.log("This is id", dynamicId);
-
     // Update iframe src to include the dynamic ID
     iframe.src = `https://testing.webvio.in/click-to-call?id=${dynamicId}`;
     iframe.style.position = 'fixed';

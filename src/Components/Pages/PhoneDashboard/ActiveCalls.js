@@ -8,8 +8,6 @@ import CircularLoader from "../../Loader/CircularLoader";
 
 function ActiveCalls({ isWebrtc,filter }) {
   const activeCall = useSelector((state) => state.activeCall);
-  console.log(activeCall);
-  
   const [filterCalls,setFilterCalls] = useState([]);
   useEffect(()=>{
     if(filter==="all"){
@@ -46,13 +44,10 @@ function ActiveCalls({ isWebrtc,filter }) {
   async function bargeCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-barge/${id}`);
-    console.log(apiData);
     if (apiData?.status) {
       setLoading(false);
-      console.log(apiData);
       toast.success(apiData.message);
     } else {
-      console.log(apiData);
       setLoading(false);
       toast.error(apiData.message);
     }
@@ -126,7 +121,6 @@ function ActiveCalls({ isWebrtc,filter }) {
     if (match) {
       return match[1]; // Return the matched number
     } else {
-      console.log("No number found after the last space.");
       return null;
     }
   }
@@ -224,7 +218,7 @@ function ActiveCalls({ isWebrtc,filter }) {
                           cursor: "pointer",
                         }}
                       >
-                        <i class=" fa-solid fa-phone-slash"></i>{" "}
+                        <i className=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
                     </td>}
                   </tr>

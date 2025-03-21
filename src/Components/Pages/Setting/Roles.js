@@ -380,7 +380,7 @@ function Roles() {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           {checkViewSidebar(
@@ -401,7 +401,7 @@ function Roles() {
                             >
                               <span className="text">Add</span>
                               <span className="icon">
-                                <i class="fa-solid fa-plus"></i>
+                                <i className="fa-solid fa-plus"></i>
                               </span>
                             </button>
                           ) : (
@@ -414,7 +414,7 @@ function Roles() {
                             >
                               <span className="text">Add</span>
                               <span className="icon">
-                                <i class="fa-solid fa-plus"></i>
+                                <i className="fa-solid fa-plus"></i>
                               </span>
                             </button>
                           )}
@@ -538,7 +538,7 @@ function Roles() {
                                       )}
                                       <button className="tableButton">
                                         <i
-                                          class="fa-solid fa-sliders"
+                                          className="fa-solid fa-sliders"
                                           onClick={() => {
                                             setSelectedRoleId(item.id);
                                             setSelectedRole(item.name);
@@ -573,8 +573,8 @@ function Roles() {
                                   zIndex: 9,
                                 }}
                               >
-                                <div class="headerCommon d-flex justify-content-between align-items-center pe-0">
-                                  <div class="col">
+                                <div className="headerCommon d-flex justify-content-between align-items-center pe-0">
+                                  <div className="col">
                                     Permissions for{" "}
                                     <span
                                       style={{
@@ -600,7 +600,7 @@ function Roles() {
                                         >
                                           <span className="text">Confirm</span>
                                           <span className="icon">
-                                            <i class="fa-solid fa-check"></i>
+                                            <i className="fa-solid fa-check"></i>
                                           </span>
                                         </button>
                                       </div>
@@ -614,7 +614,7 @@ function Roles() {
                                     This will apper only for agents (Agents will
                                     only access webrtc)
                                   </span>
-                                  <div class="accordion permissionListWrapper">
+                                  <div className="accordion permissionListWrapper">
                                     {filteredPermission &&
                                       Object.keys(filteredPermission).map(
                                         (item, key) => (
@@ -623,11 +623,11 @@ function Roles() {
                                             key={key}
                                           >
                                             <h2
-                                              class="accordion-header"
+                                              className="accordion-header"
                                               id={`collapseHeading${key}`}
                                             >
                                               <button
-                                                class="accordion-button collapsed"
+                                                className="accordion-button collapsed"
                                                 type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target={`#collapseRole${key}`}
@@ -649,10 +649,10 @@ function Roles() {
                                             </h2>
                                             <div
                                               id={`collapseRole${key}`}
-                                              class="accordion-collapse collapse"
+                                              className="accordion-collapse collapse"
                                               aria-labelledby={`collapseHeading${key}`}
                                             >
-                                              <div class="accordion-body">
+                                              <div className="accordion-body">
                                                 {filteredPermission[item].map(
                                                   (innerItem, key) => (
                                                     <div
@@ -685,7 +685,7 @@ function Roles() {
                                   </div>
                                 </div>
                               ) : (
-                                <div class="accordion permissionListWrapper">
+                                <div className="accordion permissionListWrapper">
                                   {filteredPermission &&
                                     Object.keys(filteredPermission).map(
                                       (item, key) => (
@@ -694,11 +694,11 @@ function Roles() {
                                           key={key}
                                         >
                                           <h2
-                                            class="accordion-header"
+                                            className="accordion-header"
                                             id={`collapseHeading${key}`}
                                           >
                                             <button
-                                              class="accordion-button collapsed"
+                                              className="accordion-button collapsed"
                                               type="button"
                                               data-bs-toggle="collapse"
                                               data-bs-target={`#collapseRole${key}`}
@@ -720,10 +720,10 @@ function Roles() {
                                           </h2>
                                           <div
                                             id={`collapseRole${key}`}
-                                            class="accordion-collapse collapse"
+                                            className="accordion-collapse collapse"
                                             aria-labelledby={`collapseHeading${key}`}
                                           >
-                                            <div class="accordion-body">
+                                            <div className="accordion-body">
                                               {filteredPermission[item].map(
                                                 (innerItem, key) => (
                                                   <div
@@ -858,7 +858,7 @@ function Roles() {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
@@ -872,7 +872,7 @@ function Roles() {
                       >
                         <span className="text">Cancel</span>
                         <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
+                          <i className="fa-solid fa-xmark"></i>
                         </span>
                       </button>
                     </div>
@@ -893,24 +893,24 @@ function Roles() {
                 <h5>Select Permissions for this Role</h5>
               </div>
               <div>
-                <div class="accordion permissionListWrapper ">
+                <div className="accordion permissionListWrapper ">
                   {selectedRole === "Agent" ? (
                     <div className="d-flex flex-column">
                       <span>
                         This will apper only for agents (Agents will only
                         access webrtc)
                       </span>
-                      <div class="accordion permissionListWrapper ">
+                      <div className="accordion permissionListWrapper ">
                         {filteredPermission &&
                           Object.keys(filteredPermission).map(
                             (item, key) => (
                               <div className="accordion-item" key={key}>
                                 <h2
-                                  class="accordion-header"
+                                  className="accordion-header"
                                   id={`collapseHeading${key}`}
                                 >
                                   <button
-                                    class="accordion-button collapsed"
+                                    className="accordion-button collapsed"
                                     type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target={`#collapseRole${key}`}
@@ -934,10 +934,10 @@ function Roles() {
                                 </h2>
                                 <div
                                   id={`collapseRole${key}`}
-                                  class="accordion-collapse collapse"
+                                  className="accordion-collapse collapse"
                                   aria-labelledby={`collapseHeading${key}`}
                                 >
-                                  <div class="accordion-body">
+                                  <div className="accordion-body">
                                     {filteredPermission[item].map(
                                       (innerItem, key) => (
                                         <div
@@ -970,16 +970,16 @@ function Roles() {
                       </div>
                     </div>
                   ) : (
-                    <div class="accordion permissionListWrapper h-auto">
+                    <div className="accordion permissionListWrapper h-auto">
                       {filteredPermission &&
                         Object.keys(filteredPermission).map((item, key) => (
                           <div className="accordion-item" key={key}>
                             <h2
-                              class="accordion-header"
+                              className="accordion-header"
                               id={`collapseHeading${key}`}
                             >
                               <button
-                                class="accordion-button collapsed"
+                                className="accordion-button collapsed"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target={`#collapseRole${key}`}
@@ -999,10 +999,10 @@ function Roles() {
                             </h2>
                             <div
                               id={`collapseRole${key}`}
-                              class="accordion-collapse collapse"
+                              className="accordion-collapse collapse"
                               aria-labelledby={`collapseHeading${key}`}
                             >
-                              <div class="accordion-body">
+                              <div className="accordion-body">
                                 {filteredPermission[item].map(
                                   (innerItem, key) => (
                                     <div
@@ -1043,7 +1043,7 @@ function Roles() {
                   >
                     <span className="text">Confirm</span>
                     <span className="icon">
-                      <i class="fa-solid fa-check"></i>
+                      <i className="fa-solid fa-check"></i>
                     </span>
                   </button>
                   <button
@@ -1054,7 +1054,7 @@ function Roles() {
                   >
                     <span className="text">Cancel</span>
                     <span className="icon">
-                      <i class="fa-solid fa-xmark"></i>
+                      <i className="fa-solid fa-xmark"></i>
                     </span>
                   </button>
                 </div>
@@ -1111,7 +1111,7 @@ function Roles() {
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
                         <button
@@ -1123,7 +1123,7 @@ function Roles() {
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                         </button>
                       </div>

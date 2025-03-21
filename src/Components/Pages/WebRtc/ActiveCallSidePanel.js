@@ -313,13 +313,13 @@ function ActiveCallSidePanel({
               className="appPanelButtonCaller bg-warning"
               // onClick={() => holdCall("unhold")}
             >
-              <i class="fa-solid fa-pause"></i>
+              <i className="fa-solid fa-pause"></i>
             </button>
             <button
               className="appPanelButtonCaller bg-danger me-0"
               onClick={hangup}
             >
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>
@@ -339,13 +339,13 @@ function ActiveCallSidePanel({
               style={{ background: "#1ac444" }}
               onClick={(e) => handleAnswerCall(e, "audio")}
             >
-              <i class="fa-solid fa-phone"></i>
+              <i className="fa-solid fa-phone"></i>
             </button>
             <button
               className="appPanelButtonCaller bg-danger me-0"
               onClick={decline}
             >
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>
@@ -363,7 +363,7 @@ function ActiveCallSidePanel({
           </div>
           <div className="callBtnGrp my-auto ms-auto">
             <button className="appPanelButtonCaller bg-danger" onClick={hangup}>
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>

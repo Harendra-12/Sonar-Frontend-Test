@@ -75,7 +75,6 @@ function ClickToCallEdit() {
 
     // Handle form submit
     async function handleWidgetSubmit(data) {
-        console.log(watch());
         // if (!newFile) {
         //     toast.error("Please upload logo")
         //     return
@@ -111,7 +110,6 @@ function ClickToCallEdit() {
         parsedData.append("usages", watch().usages);
         parsedData.append("primary_color", watch().color);
         parsedData.append("id", value)
-        console.log("-------------", newFile);
         // parsedData.append("embed_code", watch().embed_code);
         const apiData = await fileUploadFunction(`/click-to-call/update`, parsedData);
         if (apiData?.status) {
@@ -179,7 +177,7 @@ function ClickToCallEdit() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="wizard-form">
+                                    <div className="wizard-form">
                                         <div className="tawk-margin-auto tawk-width-100">
                                             <div className="tawk-wizard-chat-form">
                                                 <div className="tawk-flex tawk-flex-wrap tawk-flex-large-gap tawk-margin-xlarge-top">
@@ -205,9 +203,9 @@ function ClickToCallEdit() {
                                                         </nav>
                                                         <div className="row">
                                                             <div className="col-8">
-                                                                <div class="tab-content" id="nav-tabContent">
+                                                                <div className="tab-content" id="nav-tabContent">
                                                                     <div
-                                                                        class="tab-pane fade show active"
+                                                                        className="tab-pane fade show active"
                                                                         id="nav-gen"
                                                                         role="tabpanel"
                                                                         aria-labelledby="nav-gen-tab"

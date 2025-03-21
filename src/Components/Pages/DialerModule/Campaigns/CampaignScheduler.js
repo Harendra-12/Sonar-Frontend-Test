@@ -33,7 +33,7 @@ function CampaignScheduler() {
                                                     >
                                                         <span className="text">Back</span>
                                                         <span className="icon">
-                                                            <i class="fa-solid fa-caret-left"></i>
+                                                            <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
                                                     <button
@@ -374,7 +374,7 @@ function CampaignScheduler() {
                                                             </label>
                                                         </div>
                                                         <div className='col'>
-                                                            <input type="text" name="name" class="formItem" value="Test Campaign"
+                                                            <input type="text" name="name" className="formItem" value="Test Campaign"
                                                                 style={{ borderRight: 'none', borderLeft: 'none', borderTop: 'none' }}
                                                             />
                                                         </div>

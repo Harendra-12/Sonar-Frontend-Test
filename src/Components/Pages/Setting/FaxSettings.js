@@ -31,7 +31,7 @@ function FaxSettings() {
                                                 >
                                                     <span className="text">Back</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
+                                                        <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -41,7 +41,7 @@ function FaxSettings() {
                                                 >
                                                     <span className="text">Save</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </span>
                                                 </button>
                                             </div>

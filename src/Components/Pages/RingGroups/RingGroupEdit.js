@@ -124,10 +124,6 @@ const RingGroupEdit = () => {
       });
     }
   }, [allUserArr]);
-
-  console.log("aaaaaaaa", user);
-
-
   // Checking validation for the extension if extension not present then show message please create extension first and getting data of selcetdc ring group
   useEffect(() => {
     if (account && account.id) {
@@ -270,7 +266,6 @@ const RingGroupEdit = () => {
     const allowedCharacters = /^[A-Za-z0-9\s]*$/;
 
     if (name === "destination" && !allowedCharacters.test(value)) {
-      console.log("Invalid characters detected");
       return;
     }
     const newDestination = [...destination];
@@ -453,14 +448,6 @@ const RingGroupEdit = () => {
     setValue("ring_back", "");
     setShowMusic(true);
   };
-
-  // Validating the string
-  function truncateString(str) {
-    if (str.length > 8) {
-      return str.substring(0, 8) + "...";
-    }
-    return str; // Return the string as is if it's 8 characters or less
-  }
 
   // Handle chek box for bulk edit 
   const handleCheckboxChange = (item) => {
@@ -652,7 +639,7 @@ const RingGroupEdit = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -663,7 +650,7 @@ const RingGroupEdit = () => {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -971,7 +958,7 @@ const RingGroupEdit = () => {
                 </div>
                 <div className="col-12">
                   <div className="heading bg-transparent border-bottom-0">
-                    <div class="content">
+                    <div className="content">
                       <h4>List of Agents</h4>
                       <p>You can see the list of agents in this ring group.</p>
                     </div>
@@ -980,28 +967,28 @@ const RingGroupEdit = () => {
                         selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
-                          class="panelButton ms-auto"
+                          className="panelButton ms-auto"
                           onClick={() => {
                             setBulkEditPopup(true);
                           }}
                         >
-                          <span class="text">Edit</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
+                          <span className="text">Edit</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       ) : (
                         <button
                           type="button"
-                          class="panelButton edit ms-auto"
+                          className="panelButton edit ms-auto"
                           onClick={() => {
                             setSelectedAgentToEdit(destination);
                             setBulkEditPopup(true);
                           }}
                         >
-                          <span class="text">Edit All</span>
-                          <span class="icon">
-                            <i class="fa-solid fa-pen"></i>
+                          <span className="text">Edit All</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-pen"></i>
                           </span>
                         </button>
                       )}
@@ -1011,7 +998,7 @@ const RingGroupEdit = () => {
                       >
                         <span className="text">Add</span>
                         <span className="icon">
-                          <i class="fa-solid fa-plus"></i>
+                          <i className="fa-solid fa-plus"></i>
                         </span>
                       </button>
                     </div>
@@ -1357,7 +1344,7 @@ const RingGroupEdit = () => {
                 >
                   <span className="text">Close</span>
                   <span className="icon">
-                    <i class="fa-light fa-xmark"></i>
+                    <i className="fa-light fa-xmark"></i>
                   </span>
                 </button>
                 <button

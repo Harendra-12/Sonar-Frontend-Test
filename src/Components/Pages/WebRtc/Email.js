@@ -32,13 +32,13 @@ function Email() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      <button className="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                        <i className="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       E-Mail{" "}
-                      <button class="clearButton2">
+                      <button className="clearButton2">
                         <i
-                          class="fa-regular fa-arrows-rotate fs-5"
+                          className="fa-regular fa-arrows-rotate fs-5"
                           style={{ color: "var(--webUtilGray)" }}
                           onClick={() => featureUnderdevelopment()}
                         ></i>
@@ -51,7 +51,7 @@ function Email() {
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                         onChange={() => featureUnderdevelopment()}
                       />
@@ -67,28 +67,28 @@ function Email() {
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -96,7 +96,7 @@ function Email() {
                           </li>
                           <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
@@ -196,7 +196,7 @@ function Email() {
                             </div>
 
                             <div
-                              class="col-4 my-auto ms-2 ms-xl-3"
+                              className="col-4 my-auto ms-2 ms-xl-3"
                               style={{ cursor: "pointer" }}
                             >
                               <h4>AUSER XYZ</h4>
@@ -210,7 +210,7 @@ function Email() {
                                 <span data-id="1">Received</span>
                               </div>
                               <h5 style={{ fontWeight: "400" }}>
-                                <i class="fa-light fa-paperclip"></i> 1
+                                <i className="fa-light fa-paperclip"></i> 1
                                 Attachment
                               </h5>
                             </div>
@@ -228,7 +228,7 @@ function Email() {
                             </div>
 
                             <div
-                              class="col-4 my-auto ms-2 ms-xl-3"
+                              className="col-4 my-auto ms-2 ms-xl-3"
                               style={{ cursor: "pointer" }}
                             >
                               <h4>AUSER XYZ</h4>
@@ -242,7 +242,7 @@ function Email() {
                                 <span data-id="0">Sent</span>
                               </div>
                               <h5 style={{ fontWeight: "400" }}>
-                                <i class="fa-light fa-paperclip"></i> 1
+                                <i className="fa-light fa-paperclip"></i> 1
                                 Attachment
                               </h5>
                             </div>
@@ -264,9 +264,9 @@ function Email() {
                 <div className="overviewTableWrapper p-2 mt-2">
                   <div className="overviewTableChild">
                     <div className="d-flex flex-wrap">
-                      <div class="col-12">
-                        <div class="heading">
-                          <div class="content">
+                      <div className="col-12">
+                        <div className="heading">
+                          <div className="content">
                             <h4>New Email</h4>
                             <p>You can send a new email from here</p>
                           </div>
@@ -313,7 +313,7 @@ function Email() {
                               <button className="panelButton">
                                 <span className="text">Send</span>
                                 <span className="icon">
-                                  <i class="fa-solid fa-paper-plane-top"></i>
+                                  <i className="fa-solid fa-paper-plane-top"></i>
                                 </span>
                               </button>
                             </div>

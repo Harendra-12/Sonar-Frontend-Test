@@ -521,7 +521,7 @@ function CdrFilterReport({ page }) {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -533,7 +533,7 @@ function CdrFilterReport({ page }) {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={
+                              className={
                                 contentLoader
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
@@ -549,7 +549,7 @@ function CdrFilterReport({ page }) {
                         >
                           <span className="text">Export</span>
                           <span className="icon">
-                            <i class="fa-solid fa-file-export"></i>
+                            <i className="fa-solid fa-file-export"></i>
                           </span>
                         </button>
                       </div>
@@ -1227,7 +1227,7 @@ function CdrFilterReport({ page }) {
                                               }
                                             >
                                               <Tippy content={"View Note"}>
-                                                <i class="fa-solid fa-comment-dots"></i>
+                                                <i className="fa-solid fa-comment-dots"></i>
                                               </Tippy>
                                             </button>
                                           </td>
@@ -1322,7 +1322,7 @@ function CdrFilterReport({ page }) {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       {/* ) : ( */}
@@ -1338,7 +1338,7 @@ function CdrFilterReport({ page }) {
                       >
                         <span className="text">Cancel</span>
                         <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
+                          <i className="fa-solid fa-xmark"></i>
                         </span>
                       </button>
                     </div>

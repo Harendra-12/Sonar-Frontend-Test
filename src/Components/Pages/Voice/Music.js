@@ -95,7 +95,6 @@ function Music() {
     if (newMusic) {
       const maxSizeInKB = 2048;
       const fileSizeInKB = newMusic.size / 1024;
-      console.log("This is file size", fileSizeInKB);
       if (fileSizeInKB > maxSizeInKB) {
         toast.error("Please choose a file less than 2048 kilobytes.");
       } else {
@@ -125,7 +124,6 @@ function Music() {
 
   // Handle edit music
   async function handleEditMusic() {
-    console.log("Hit music updat e");
 
     const parsedData = {
       name: selectedMusicName,
@@ -193,7 +191,7 @@ function Music() {
                     }}
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
@@ -201,7 +199,7 @@ function Music() {
                     onClick={() => setNewMusicPopup(!newMusicPopup)}
                   >
                     <span className="text">Add</span>
-                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
                   </button>
                 </div>
               </div>
@@ -227,7 +225,7 @@ function Music() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -239,7 +237,7 @@ function Music() {
                         >
                           <span className="text">Add</span>
                           <span className="icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i className="fa-solid fa-plus"></i>
                           </span>
                         </button>
                       </div>
@@ -646,7 +644,7 @@ function Music() {
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
                         <button
@@ -657,7 +655,7 @@ function Music() {
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                         </button>
                       </div>
@@ -720,7 +718,7 @@ function Music() {
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
                         <button
@@ -731,7 +729,7 @@ function Music() {
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                         </button>
                       </div>

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { backToTop, featureUnderdevelopment, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
-import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import ErrorMessage from '../../CommonComponents/ErrorMessage';
@@ -14,22 +13,16 @@ function DeviceProvisioningNew() {
     const [isDeviceChosen, setIsDeviceChosen] = useState(false)
     const navigate = useNavigate();
     const location = useLocation();
-    const dispatch = useDispatch()
     const [modelId, setModelId] = useState('')
     const [brandId, setBrandId] = useState('')
     const [allDevices, setAllDevices] = useState([])
-    const deviceProvisioningRefresh = useSelector(
-        (state) => state.deviceProvisioningRefresh
-    );
     const extensionId = location.state.id;
-    const extension = location.state.extension
 
     const [loading, setLoading] = useState(true);
     const {
         register,
         formState: { errors },
         handleSubmit,
-        watch,
         reset,
         setValue,
     } = useForm();
@@ -107,7 +100,7 @@ function DeviceProvisioningNew() {
                                                     className="panelButton gray"
                                                 >
                                                     <span className="text">Back</span>
-                                                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                                                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                                 </button>
                                                 <button
                                                     effect="ripple"
@@ -115,7 +108,7 @@ function DeviceProvisioningNew() {
                                                     onClick={handleFormSubmit}
                                                 >
                                                     <span className="text" >Save</span>
-                                                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                                 </button>
                                             </div>
                                         </div>
@@ -126,13 +119,13 @@ function DeviceProvisioningNew() {
                                         <div className='col-xl-6 pe-0' style={{ borderRight: '1px solid var(--border-color)' }}>
                                             <div className="tangoNavs mb-0">
                                                 <nav>
-                                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                        <button class="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>
-                                                        <button onClick={featureUnderdevelopment} class="nav-link" type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
+                                                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                                        <button className="nav-link active" id="nav-desk-tab" data-bs-toggle="tab" data-bs-target="#nav-desk" type="button" role="tab" aria-controls="nav-desk" aria-selected="true">Desktop Phones</button>
+                                                        <button onClick={featureUnderdevelopment} className="nav-link" type="button" role="tab" aria-controls="nav-soft" aria-selected="false">Soft Phone</button>
                                                     </div>
                                                 </nav>
-                                                <div class="tab-content" id="nav-tabContent">
-                                                    <div class="tab-pane fade show active" id="nav-desk" role="tabpanel" aria-labelledby="nav-desk-tab" tabindex="0">
+                                                <div className="tab-content" id="nav-tabContent">
+                                                    <div className="tab-pane fade show active" id="nav-desk" role="tabpanel" aria-labelledby="nav-desk-tab" tabindex="0">
                                                         <div className="row col-12 mx-auto mb-0">
                                                             {
                                                                 allDevices.map((device, index) => {
@@ -168,7 +161,7 @@ function DeviceProvisioningNew() {
                                                                                         </div>
                                                                                         <div className="col-auto" onClick={() => { handelModelSelect(device.id); backToTop() }}>
                                                                                             <button className='tableButton'>
-                                                                                                <i class="fa-solid fa-plus"></i>
+                                                                                                <i className="fa-solid fa-plus"></i>
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
@@ -193,7 +186,7 @@ function DeviceProvisioningNew() {
                                                                             <li>Deserunt anim officia aliquip enim aliqua.</li>
                                                                             <li>Et labore voluptate dolore enim eu aliquip occaecat amet est esse laborum deserunt incididunt eiusmod.</li>
                                                                         </ul>
-                                                                        <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i class="ms-2 fa-solid fa-download"></i></div>
+                                                                        <div className='clearColorButton' style={{ width: 'max-content' }}>Download Datasheet <i className="ms-2 fa-solid fa-download"></i></div>
                                                                     </div>
                                                                     <div className='content' style={{ borderTop: '1px solid var(--border-color)' }}>
                                                                         <div className='row align-items-center'>
@@ -204,10 +197,10 @@ function DeviceProvisioningNew() {
 
                                                                             </div>
                                                                             <div className='col-5'>
-                                                                                <div class="addButtonGroup ms-auto">
-                                                                                    <button onClick={() => setIsDeviceChosen(null)}><i class="fa-light fa-minus"></i></button>
+                                                                                <div className="addButtonGroup ms-auto">
+                                                                                    <button onClick={() => setIsDeviceChosen(null)}><i className="fa-light fa-minus"></i></button>
                                                                                     <div className='number'>0</div>
-                                                                                    <button onClick={() => setIsDeviceChosen("hard")}><i class="fa-light fa-plus"></i></button>
+                                                                                    <button onClick={() => setIsDeviceChosen("hard")}><i className="fa-light fa-plus"></i></button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -216,7 +209,7 @@ function DeviceProvisioningNew() {
                                                             </div> */}
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="nav-soft" role="tabpanel" aria-labelledby="nav-soft-tab" tabindex="0">
+                                                    <div className="tab-pane fade" id="nav-soft" role="tabpanel" aria-labelledby="nav-soft-tab" tabindex="0">
                                                         <div className="row col-12 mx-auto mb-0">
                                                             <div className="formRow col-xl-6 deviceProvision">
                                                                 <div className="col-4">
@@ -241,7 +234,7 @@ function DeviceProvisioningNew() {
                                                                         </div>
                                                                         <div className="col-auto">
                                                                             <button className='tableButton'>
-                                                                                <i class="fa-solid fa-plus"></i>
+                                                                                <i className="fa-solid fa-plus"></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -270,7 +263,7 @@ function DeviceProvisioningNew() {
                                                                         </div>
                                                                         <div className="col-auto">
                                                                             <button className='tableButton'>
-                                                                                <i class="fa-solid fa-plus"></i>
+                                                                                <i className="fa-solid fa-plus"></i>
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -406,7 +399,7 @@ function DeviceProvisioningNew() {
                                                 <div className="formRow">
                                                     <button className="panelButton ms-auto" type="button" onClick={handleFormSubmit}>
                                                         <span className="text" >Save</span>
-                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                        <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                                     </button>
                                                 </div>
                                             </form>

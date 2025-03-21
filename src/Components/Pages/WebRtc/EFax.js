@@ -67,7 +67,6 @@ function EFax() {
   const downloadImage = async (imageUrl, fileName) => {
     try {
       const response = await fetch(imageUrl);
-      console.log("response:", response);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -107,7 +106,6 @@ function EFax() {
   };
 
   async function sendFax() {
-    console.log("api hit");
 
     if (destinationId === "") {
       toast.error("Please enter destination id");
@@ -158,13 +156,13 @@ function EFax() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button class="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                        <i class="fa-solid fa-chevron-left fs-4"></i>
+                      <button className="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                        <i className="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       E-Fax{" "}
-                      <button class="clearButton2">
+                      <button className="clearButton2">
                         <i
-                          class="fa-regular fa-arrows-rotate fs-5"
+                          className="fa-regular fa-arrows-rotate fs-5"
                           style={{ color: "var(--webUtilGray)" }}
                           onClick={() => featureUnderdevelopment()}
                         ></i>
@@ -177,7 +175,7 @@ function EFax() {
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                         onChange={() => featureUnderdevelopment()}
                       />
@@ -193,28 +191,28 @@ function EFax() {
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -222,7 +220,7 @@ function EFax() {
                           </li>
                           <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
@@ -286,8 +284,8 @@ function EFax() {
                         All
                       </button>
                       <button
-                        // onClick={() => setClickStatus("file")}
-                        onClick={() => featureUnderdevelopment()}
+                        onClick={() => setClickStatus("file")}
+                        // onClick={() => featureUnderdevelopment()}
                         className={
                           clickStatus === "file" ? "tabLink active" : "tabLink"
                         }
@@ -337,7 +335,7 @@ function EFax() {
                               </div>
 
                               <div
-                                class="col-4 my-auto ms-2 ms-xl-3"
+                                className="col-4 my-auto ms-2 ms-xl-3"
                                 style={{ cursor: "pointer" }}
                               >
                                 <h4>AUSER XYZ</h4>
@@ -351,7 +349,7 @@ function EFax() {
                                   <span data-id="1">Received</span>
                                 </div>
                                 <h5 style={{ fontWeight: "400" }}>
-                                  <i class="fa-light fa-paperclip"></i> 1
+                                  <i className="fa-light fa-paperclip"></i> 1
                                   Attachment
                                 </h5>
                               </div>
@@ -369,7 +367,7 @@ function EFax() {
                               </div>
 
                               <div
-                                class="col-4 my-auto ms-2 ms-xl-3"
+                                className="col-4 my-auto ms-2 ms-xl-3"
                                 style={{ cursor: "pointer" }}
                               >
                                 <h4>AUSER XYZ</h4>
@@ -383,7 +381,7 @@ function EFax() {
                                   <span data-id="0">Sent</span>
                                 </div>
                                 <h5 style={{ fontWeight: "400" }}>
-                                  <i class="fa-light fa-paperclip"></i> 1
+                                  <i className="fa-light fa-paperclip"></i> 1
                                   Attachment
                                 </h5>
                               </div>
@@ -455,7 +453,7 @@ function EFax() {
                                     setDeleteFile(file);
                                   }}
                                 >
-                                  <i class="fa-solid fa-trash text-danger"></i>
+                                  <i className="fa-solid fa-trash text-danger"></i>
                                 </button>
                               </div>
                             </div>
@@ -476,9 +474,9 @@ function EFax() {
                   <div className="overviewTableWrapper p-2 mt-2">
                     <div className="overviewTableChild">
                       <div className="d-flex flex-wrap">
-                        <div class="col-12">
-                          <div class="heading">
-                            <div class="content">
+                        <div className="col-12">
+                          <div className="heading">
+                            <div className="content">
                               <h4>New Fax</h4>
                               <p>You can send a new fax from here</p>
                             </div>
@@ -499,21 +497,21 @@ function EFax() {
                                   {/* Map This in Loop */}
                                   {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
-                                    <button class="receipentButton">
+                                    <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
                                   {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
-                                    <button class="receipentButton">
+                                    <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
                                   {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
-                                    <button class="receipentButton">
+                                    <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
@@ -600,7 +598,7 @@ function EFax() {
                                 >
                                   <span className="text">Send</span>
                                   <span className="icon">
-                                    <i class="fa-solid fa-paper-plane-top"></i>
+                                    <i className="fa-solid fa-paper-plane-top"></i>
                                   </span>
                                 </button>
                               </div>
@@ -665,19 +663,19 @@ function EFax() {
                         >
                           <i className="fa-regular fa-video" />
                         </button>
-                        <div class="dropdown">
+                        <div className="dropdown">
                           <button
-                            class="clearButton2 xl"
+                            className="clearButton2 xl"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                            <i className="fa-solid fa-ellipsis-vertical"></i>
                           </button>
-                          <ul class="dropdown-menu">
+                          <ul className="dropdown-menu">
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
@@ -686,7 +684,7 @@ function EFax() {
                             </li>
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
@@ -695,7 +693,7 @@ function EFax() {
                             </li>
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
@@ -711,9 +709,9 @@ function EFax() {
                   <div className="overviewTableWrapper p-2 mt-2">
                     <div className="overviewTableChild">
                       <div className="d-flex flex-wrap">
-                        <div class="col-12">
-                          <div class="heading">
-                            <div class="content">
+                        <div className="col-12">
+                          <div className="heading">
+                            <div className="content">
                               <h4>E-Fax</h4>
                               <p>You can see all of the eFax logs here</p>
                             </div>
@@ -890,7 +888,7 @@ function EFax() {
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button

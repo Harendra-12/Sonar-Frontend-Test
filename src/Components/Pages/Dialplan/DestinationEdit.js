@@ -14,8 +14,6 @@ import Header from "../../CommonComponents/Header";
 
 function DestinationEdit() {
   const location = useLocation();
-  console.log("location", location);
-
   const locationData = location.state.state;
   const locationDid = location.state.did;
   const navigate = useNavigate();
@@ -61,7 +59,6 @@ function DestinationEdit() {
     xml: "",
     did: "",
   });
-  console.log(locationData);
   useEffect(() => {
     if (account === null) {
       navigate("/");
@@ -93,7 +90,6 @@ function DestinationEdit() {
       getDomain();
       if (locationData) {
         setLoading(false);
-        console.log("This is dest", locationData);
         setDestination((prevState) => ({
           ...prevState,
           type: locationData.type,

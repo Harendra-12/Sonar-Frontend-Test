@@ -31,7 +31,7 @@ function Campaigns() {
                                                 >
                                                     <span className="text">Back</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
+                                                        <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
                                                 <button
@@ -107,7 +107,7 @@ function Campaigns() {
                                                         </div>
                                                         </td>
                                                         <td>
-                                                            <div><select name="" id="" class="formItem ">
+                                                            <div><select name="" id="" className="formItem ">
                                                                 <option value="">Auto Dial</option>
 
                                                             </select>
@@ -155,14 +155,14 @@ function Campaigns() {
                                                             <button
                                                                 className="tableButton edit mx-auto"
                                                             >
-                                                                <i class="fa-solid fa-pen"></i>
+                                                                <i className="fa-solid fa-pen"></i>
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button
                                                                 className="tableButton delete mx-auto"
                                                             >
-                                                                <i class="fa-solid fa-trash"></i>
+                                                                <i className="fa-solid fa-trash"></i>
                                                             </button>
                                                         </td>
                                                     </tr>

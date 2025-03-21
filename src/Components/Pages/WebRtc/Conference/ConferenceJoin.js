@@ -173,10 +173,10 @@ function ConferenceJoin() {
                                                 ></video>
                                                 <div className='buttonGroup' >
                                                     <button className='clearButton2 xl white'>
-                                                        <i class="fa-light fa-microphone"></i>
+                                                        <i className="fa-light fa-microphone"></i>
                                                     </button>
                                                     <button className='clearButton2 xl white ms-3' onClick={toggleVideo}>
-                                                        <i class={videoEnable ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
+                                                        <i className={videoEnable ? "fa-light fa-camera" : "fa-light fa-camera-slash"}></i>
                                                     </button>
                                                 </div>
                                             </div>

@@ -46,7 +46,6 @@ const RingGroups = () => {
         const apidata = await generalGetFunction(
           `/ringgroup-dashboard?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
         );
-        console.log(apidata);
         if (apidata?.status) {
           setRingGroup(apidata.data);
           setLoading(false);
@@ -221,7 +220,7 @@ const RingGroups = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         {checkViewSidebar(
@@ -239,7 +238,7 @@ const RingGroups = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </Link>
                         ) : (
@@ -252,7 +251,7 @@ const RingGroups = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </button>
                         )}
@@ -538,7 +537,7 @@ const RingGroups = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     ) : (
@@ -552,7 +551,7 @@ const RingGroups = () => {
                       >
                         <span className="text">Lets Go!</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     )}
@@ -568,7 +567,7 @@ const RingGroups = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

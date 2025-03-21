@@ -6,8 +6,6 @@ function AutoAnswer({ id,isVideoOn }) {
   const dispatch = useDispatch();
   const { session } = useSessionCall(id);
   const memeber_id = useSelector((state) => state.memberId);
-  console.log("Autoanswersession", session);
-  
   if (session && session.state === "Initial" && !memeber_id) {
     session.accept({
       sessionDescriptionHandlerOptions: {

@@ -46,9 +46,9 @@ function DarkModeToggle({ marginLeft }) {
 
     return (
         <>
-            <div class="col-auto mx-2">
-                <button class="clearButton2 xl" effect="ripple">
-                    <i class={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
+            <div className="col-auto mx-2">
+                <button className="clearButton2 xl" effect="ripple">
+                    <i className={`fa-light fa-${isDark ? "moon" : "sun"}`}></i>
                     <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: '0' }} />
                 </button>
             </div>
@@ -59,9 +59,9 @@ function DarkModeToggle({ marginLeft }) {
             </div>
             <div className="itemTitle customTogle d-flex align-items-center">
                 Dark Mode
-                <label class={`switch ms-${marginLeft}`}>
+                <label className={`switch ms-${marginLeft}`}>
                     <input type="checkbox" onChange={toggleTheme} ref={darkModeToggle} />
-                    <span class="slider my-auto"></span>
+                    <span className="slider my-auto"></span>
                 </label>
             </div> */}
         </>

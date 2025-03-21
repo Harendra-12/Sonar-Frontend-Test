@@ -1,47 +1,13 @@
-import { borderColor, color, display } from '@mui/system';
+
 import { Chart as ChartJS, ArcElement, CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip, BarElement, PolarAreaController, RadialLinearScale } from 'chart.js';
 import React from 'react'
-import { Bar, Doughnut, Line, PolarArea } from 'react-chartjs-2';
+import {  Doughnut } from 'react-chartjs-2';
 
 
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, PolarAreaController, RadialLinearScale);
 function ModuleGraphDashboard({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, height }) {
 
-    // Define the data for the chart
-    // const data = {
-    //     labels: fields,
-    //     datasets: [
-    //         {
-    //             label: 'Dataset 1',
-    //             data: percentage,
-    //             backgroundColor: 'transparent',
-    //             hoverBackgroundColor: colors,
-    //             borderColor: colors,
-    //         },
-    //     ],
-    // };
-
-    const shadowPlugin = {
-        id: "shadowLine",
-        beforeDatasetsDraw(chart) {
-            const ctx = chart.ctx;
-            chart.data.datasets.forEach((dataset, i) => {
-                const meta = chart.getDatasetMeta(i);
-                if (!meta.hidden) {
-                    ctx.save();
-                    ctx.shadowColor = "rgba(62, 142, 247, 1)"; // Shadow color
-                    ctx.shadowBlur = 10; // Blur level
-                    ctx.shadowOffsetX = 0; // X offset
-                    ctx.shadowOffsetY = 0; // Y offset
-
-                    // Draw shadowed line
-                    meta.dataset.draw(ctx);
-                    ctx.restore();
-                }
-            });
-        },
-    };
 
     const data = {
         labels: fields,

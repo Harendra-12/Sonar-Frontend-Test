@@ -167,7 +167,7 @@ function UserDocumentDetails() {
       <div className="mainContent">
         <div className="col-12">
           <Header title="User Details" />
-          <div class="d-flex flex-wrap">
+          <div className="d-flex flex-wrap">
             <div className="col-xl-12">
               <div className="profileView mt-3">
                 <div className="profileDetailsHolder position-relative">
@@ -177,7 +177,7 @@ function UserDocumentDetails() {
                       <div className="approvalButton">
                         {" "}
                         <button className="float-end btn btn-danger btn-sm">
-                          <i class="fa-light fa-triangle-exclamation"></i>{" "}
+                          <i className="fa-light fa-triangle-exclamation"></i>{" "}
                           Document Not Uploaded
                         </button>{" "}
                       </div>
@@ -185,7 +185,7 @@ function UserDocumentDetails() {
                       <div className="approvalButton">
                         {" "}
                         <button className="float-end btn btn-success btn-sm">
-                          <i class="fa-duotone fa-check-double"></i> Approved
+                          <i className="fa-duotone fa-check-double"></i> Approved
                         </button>{" "}
                       </div>
                     ) : (
@@ -194,10 +194,10 @@ function UserDocumentDetails() {
                           className="float-end btn btn-outline-success btn-sm"
                           onClick={handleApprove}
                         >
-                          <i class="fa-duotone fa-check"></i> Approve
+                          <i className="fa-duotone fa-check"></i> Approve
                         </button>{" "}
                         {/* <button className="float-end btn btn-danger mx-2 btn-sm">
-                    <i class="fa-regular fa-xmark"></i> Refuse
+                    <i className="fa-regular fa-xmark"></i> Refuse
                   </button> */}
                       </div>
                     )}
@@ -378,7 +378,7 @@ function UserDocumentDetails() {
                         <div className="col-auto ps-0">
                           <div className="iconWrapper">
                             <i
-                              class="fa-solid fa-image"
+                              className="fa-solid fa-image"
                               style={{ color: "var(--ui-accent)" }}
                             ></i>
                             {/* <img
@@ -398,7 +398,7 @@ function UserDocumentDetails() {
                               setPopupNumber(1);
                             }}
                           >
-                            <i class="fa-solid fa-ellipsis"></i>
+                            <i className="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>
                         {openPopup && propupNumber === 1 ? (
@@ -413,7 +413,7 @@ function UserDocumentDetails() {
                               }
                             >
                               <div className="clearButton">
-                                <i class="fa-solid fa-file-arrow-down"></i>{" "}
+                                <i className="fa-solid fa-file-arrow-down"></i>{" "}
                                 Download
                               </div>
                             </div>
@@ -426,7 +426,7 @@ function UserDocumentDetails() {
                                   target="_blank"
                                   rel="noreferrer"
                                 >
-                                  <i class="fa-sharp fa-solid fa-eye"></i> View
+                                  <i className="fa-sharp fa-solid fa-eye"></i> View
                                 </a>
                               </div>
                             </div>
@@ -440,8 +440,8 @@ function UserDocumentDetails() {
                         <div className="col-auto ps-0">
                           <div className="iconWrapper">
                             <i
-                              // class="fa-solid fa-file-pdf"
-                              class="fa-solid fa-image"
+                              // className="fa-solid fa-file-pdf"
+                              className="fa-solid fa-image"
                               style={{ color: "var(--ui-accent)" }}
                             ></i>
                             {/* <img
@@ -461,7 +461,7 @@ function UserDocumentDetails() {
                               setPopupNumber(2);
                             }}
                           >
-                            <i class="fa-solid fa-ellipsis"></i>
+                            <i className="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>
                         {openPopup && propupNumber === 2 ? (
@@ -476,7 +476,7 @@ function UserDocumentDetails() {
                               }
                             >
                               <div className="clearButton">
-                                <i class="fa-solid fa-file-arrow-down"></i>{" "}
+                                <i className="fa-solid fa-file-arrow-down"></i>{" "}
                                 Download
                               </div>
                             </div>
@@ -487,7 +487,7 @@ function UserDocumentDetails() {
                                   target="_blank"
                                   rel="noreferrer"
                                 >
-                                  <i class="fa-sharp fa-solid fa-eye"></i> View
+                                  <i className="fa-sharp fa-solid fa-eye"></i> View
                                 </a>
                               </div>
                             </div>
@@ -501,8 +501,8 @@ function UserDocumentDetails() {
                         <div className="col-auto ps-0">
                           <div className="iconWrapper">
                             <i
-                              // class="fa-solid fa-file-pdf"
-                              class="fa-solid fa-image"
+                              // className="fa-solid fa-file-pdf"
+                              className="fa-solid fa-image"
                               style={{ color: "var(--ui-accent)" }}
                             ></i>
                             {/* <img
@@ -522,7 +522,7 @@ function UserDocumentDetails() {
                               setPopupNumber(3);
                             }}
                           >
-                            <i class="fa-solid fa-ellipsis"></i>
+                            <i className="fa-solid fa-ellipsis"></i>
                           </div>
                         </div>
                         {openPopup && propupNumber === 3 ? (
@@ -537,7 +537,7 @@ function UserDocumentDetails() {
                               }
                             >
                               <div className="clearButton">
-                                <i class="fa-solid fa-file-arrow-down"></i>{" "}
+                                <i className="fa-solid fa-file-arrow-down"></i>{" "}
                                 Download
                               </div>
                             </div>
@@ -548,7 +548,7 @@ function UserDocumentDetails() {
                                   target="_blank"
                                   rel="noreferrer"
                                 >
-                                  <i class="fa-sharp fa-solid fa-eye"></i> View
+                                  <i className="fa-sharp fa-solid fa-eye"></i> View
                                 </a>
                               </div>
                             </div>

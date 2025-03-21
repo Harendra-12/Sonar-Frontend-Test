@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { AudioVisualizer } from 'react-audio-visualize';
-import { set } from 'react-hook-form';
 
 const AudioPlayer = ({ audioUrl }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,8 +33,6 @@ const AudioPlayer = ({ audioUrl }) => {
       setError(null);
 
       try {
-
-        const corsProxy = 'https://corsproxy.io/?';
         const proxiedUrl =  audioUrl;
         const response = await fetch(proxiedUrl);
 

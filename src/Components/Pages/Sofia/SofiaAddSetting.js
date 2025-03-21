@@ -54,7 +54,6 @@ function SofiaAddSetting() {
         enabled: sofia.status === "false" ? false : true,
         created_by: account.id,
       };
-      console.log("This is parsed data", parsedData);
       const apiData = await generalPostFunction(
         "/sofia-global-settings/store",
         parsedData

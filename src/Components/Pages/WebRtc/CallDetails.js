@@ -157,7 +157,6 @@ function CallDetails({
       }
     }
   }, [callDetails]);
-  // console.log(callDetails);
 
   const handleSavedContactName = (callerName) => {
     if (!isCustomerAdmin) {
@@ -168,8 +167,6 @@ function CallDetails({
       const matchingContact = allContact.find(
         (contact) => contact.did === counterPartyExtension
       );
-
-      // console.log(matchingContact);
       if (matchingContact) {
         return `${matchingContact.title} - ${matchingContact.name}`;
       } else {
@@ -181,8 +178,6 @@ function CallDetails({
       const matchingContact = allContact.find(
         (contact) => contact.did === counterPartyExtension
       );
-
-      // console.log(matchingContact);
       if (matchingContact) {
         return `${matchingContact.title} - ${matchingContact.name}`;
       } else {
@@ -244,19 +239,19 @@ function CallDetails({
                 <i className="fa-regular fa-video" />
               </button>
             )}
-            <div class="dropdown">
+            <div className="dropdown">
               <button
-                class="clearButton2 xl"
+                className="clearButton2 xl"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <i className="fa-solid fa-ellipsis-vertical"></i>
               </button>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -265,7 +260,7 @@ function CallDetails({
                 </li>
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -274,7 +269,7 @@ function CallDetails({
                 </li>
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -431,7 +426,7 @@ function CallDetails({
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
-                          <i class="fa-solid fa-angles-right"></i>
+                          <i className="fa-solid fa-angles-right"></i>
                           {callDetails?.["Caller-Caller-ID-Number"]}
                         </span>
                       </td>
@@ -457,9 +452,9 @@ function CallDetails({
             <div className="overviewTableWrapper p-2">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
-                  <div class="col-12">
-                    <div class="heading">
-                      <div class="content">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
                         <h4>Call Logs</h4>
                         <p>You can see all of the call logs here</p>
                       </div>
@@ -572,12 +567,12 @@ function CallDetails({
                                       {item?.["Caller-Callee-ID-Number"]}
                                       {item?.["variable_billsec"] > 0 ? (
                                         <i
-                                          class="fa-solid fa-phone mx-2"
+                                          className="fa-solid fa-phone mx-2"
                                           style={{ color: "var(--ui-accent)" }}
                                         ></i>
                                       ) : (
                                         <i
-                                          class="fa-solid fa-phone-xmark mx-2"
+                                          className="fa-solid fa-phone-xmark mx-2"
                                           style={{ color: "red" }}
                                         ></i>
                                       )}
@@ -597,9 +592,9 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <div class="dropdown">
+                                  <div className="dropdown">
                                     <div
-                                      class={`tableButton`}
+                                      className={`tableButton`}
                                       href="#"
                                       role="button"
                                       data-bs-toggle="dropdown"
@@ -607,11 +602,11 @@ function CallDetails({
                                     >
                                       <i className="fa-solid fa-ellipsis-vertical" />
                                     </div>
-                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                    <ul className="dropdown-menu actionBtnDropdowns">
                                       <>
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() => {
                                               if (item?.recording_path) {
                                                 handlePlaying(
@@ -622,7 +617,7 @@ function CallDetails({
                                           >
                                             
                                             <i
-                                              class={`fa-solid fa-${
+                                              className={`fa-solid fa-${
                                                 item.configuration !== null
                                                   ? "play"
                                                   : "triangle-exclamation"
@@ -636,12 +631,12 @@ function CallDetails({
 
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() =>
                                               featureUnderdevelopment()
                                             }
                                           >
-                                          <i class="fa-solid fa-bolt me-2"></i>
+                                          <i className="fa-solid fa-bolt me-2"></i>
                                             Transcript
                                           </div>
                                         </li>
@@ -650,14 +645,14 @@ function CallDetails({
                                       <>
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() =>
                                               handleAudioDownload(
                                                 item.recording_path
                                               )
                                             }
                                           >
-                                           <i class="fa-regular fa-download"></i>{" "}
+                                           <i className="fa-regular fa-download"></i>{" "}
                                             Download
                                           </div>
                                         </li>

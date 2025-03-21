@@ -95,14 +95,7 @@ function ConferenceVideo({
           }
         };
       } catch (error) {
-        console.log(error);
       }
-
-      const remoteDescription =
-        session.sessionDescriptionHandler?.peerConnection
-          ?.currentRemoteDescription;
-      console.log("Remote SDP:", remoteDescription);
-
       return () => {
         isMounted = false; // Mark component as unmounted
         if (localVideoRef.current) {
@@ -125,8 +118,6 @@ function ConferenceVideo({
           if (sender.track.kind === "video") {
             if (isVideoOn) {
               sender.track.stop();
-              console.log("Inside track change");
-
               sender.replaceTrack(localStream.getVideoTracks()[0]);
             } else {
               sender.track.stop();
@@ -153,7 +144,6 @@ function ConferenceVideo({
         session.sessionDescriptionHandler?.peerConnection
           ?.getSenders()
           .forEach((sender) => {
-            console.log("sender", sender);
             if (isVideoOn) {
               if (sender.track.kind === "video") {
                 sender.replaceTrack(screenStream.getVideoTracks()[0]);
@@ -169,12 +159,6 @@ function ConferenceVideo({
           member: `${currentUser?.id} force`,
         };
         generalPostFunction(`conference/action`, parsedData)
-          .then((res) => {
-            console.log("res", res);
-          })
-          .catch((err) => {
-            console.log("err", err);
-          });
         sendMessage({
           action: "screenShare",
           user: userName || "dummy",
@@ -196,25 +180,8 @@ function ConferenceVideo({
     }
   }, [screenTogglehit]);
 
-  // useEffect(() => {
-  //   if (conferenceScreenShareStatus) {
-  //     console.log("conferenceScreenShareStatus", conferenceScreenShareStatus);
-  //     if (conferenceId == conferenceScreenShareStatus.room_id) {
-  //       toast.success(
-  //         `${conferenceScreenShareStatus.user} has ${
-  //           conferenceScreenShareStatus.sharedMessage == true
-  //             ? "shared"
-  //             : "stopped"
-  //         } screen share.`
-  //       );
-  //     }
-  //   }
-  // }, [conferenceScreenShareStatus]);
-
   useEffect(() => {
     if (conferenceScreenShareStatus) {
-      console.log("conferenceScreenShareStatus", conferenceScreenShareStatus);
-
       // Only show the toast if the screen share status has changed
       const hasStatusChanged =
         prevConferenceScreenShareStatus.current?.room_id !==

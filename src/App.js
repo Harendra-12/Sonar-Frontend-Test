@@ -177,11 +177,9 @@ function App() {
   // useEffect(()=>{
   //   const token = generateToken().then((res)=>console.log("This is from response",res))
   //   if(token){
-  //     console.log(account,"This is token from app",token);
   //   }
 
   //   onMessage(messaging,(payload)=>{
-  //     console.log(payload);
   //   })
   // },[account])
   // useEffect(() => {

@@ -11,7 +11,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 function ConfigureStepDashboard({ account2 }) {
-  console.log("This is account", account2);
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const [configure, setConfigure] = useState(false);
@@ -172,16 +171,16 @@ function ConfigureStepDashboard({ account2 }) {
                   </p>
                 </li>
                 <li>
-                  <div class="coolinput">
+                  <div className="coolinput">
                     <div className="coolSearch">
-                      <label for="input" class="text">
+                      <label for="input" className="text">
                         NPX:
                       </label>
                       <input
                         type="text"
                         placeholder="Write here..."
                         name="input"
-                        class="input"
+                        className="input"
                         onChange={(e) => setNpx(e.target.value)}
                         maxLength={3}
                         value={npx}
@@ -193,7 +192,7 @@ function ConfigureStepDashboard({ account2 }) {
                         setDid("");
                       }}
                     >
-                      <i class="fa-solid fa-magnifying-glass"></i>
+                      <i className="fa-solid fa-magnifying-glass"></i>
                     </button>
                   </div>
                 </li>
@@ -238,7 +237,7 @@ function ConfigureStepDashboard({ account2 }) {
                             Your DID is: <span>{did}</span>
                           </p>
                           <button onClick={takeDid}>
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                             {/* {false ? <div className="selectDidOpt">
                           <div className="d-flex">
                             <input type="checkbox" defaultChecked={'checked'} /> <span>Voice</span>
@@ -261,7 +260,7 @@ function ConfigureStepDashboard({ account2 }) {
                               setDid("");
                             }}
                           >
-                            <i class="fa-solid fa-rotate-reverse"></i>
+                            <i className="fa-solid fa-rotate-reverse"></i>
                           </button>
                         </div>
                       )}

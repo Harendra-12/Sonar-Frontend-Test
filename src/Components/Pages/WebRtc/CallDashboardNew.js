@@ -339,21 +339,21 @@ function CallDashboardNew() {
                                                 <span>Today</span>
                                                 <div className="flex-text-1 text-paragraph">
                                                     <p>03</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This week </span>
                                                 <div className="flex-text-1">
                                                     <p>09</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This month</span>
                                                 <div className="flex-text-1 text-paragraph">
                                                     <p>23</p>
-                                                    {/* <div class="icons-1 ms-2"><i class="fa-solid fa-arrow-trend-down"></i></div> */}
+                                                    {/* <div className="icons-1 ms-2"><i className="fa-solid fa-arrow-trend-down"></i></div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -367,21 +367,21 @@ function CallDashboardNew() {
                                                 <span>Today</span>
                                                 <div className="flex-text-1 text-paragraph">
                                                     <p>00</p>
-                                                    {/* <div class="icons-1 ms-2"><i class="fa-solid fa-arrow-trend-down"></i></div> */}
+                                                    {/* <div className="icons-1 ms-2"><i className="fa-solid fa-arrow-trend-down"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This week </span>
                                                 <div className="flex-text-1 text-paragraph">
                                                     <p>45</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This month</span>
                                                 <div className="d-flex text-paragraph">
                                                     <p>09</p>
-                                                    {/* <div class="icons-1 ms-2"><i class="fa-solid fa-arrow-trend-down"></i></div> */}
+                                                    {/* <div className="icons-1 ms-2"><i className="fa-solid fa-arrow-trend-down"></i></div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -397,21 +397,21 @@ function CallDashboardNew() {
                                                 <span>Today</span>
                                                 <div className="flex-text-1  text-paragraph">
                                                     <p>18</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This week </span>
                                                 <div className="d-flex  text-paragraph">
                                                     <p>43</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This month</span>
                                                 <div className="flex-text-1  text-paragraph">
                                                     <p>965</p>
-                                                    {/* <div class="icons-1 ms-2"><i class="fa-solid fa-arrow-trend-down"></i></div> */}
+                                                    {/* <div className="icons-1 ms-2"><i className="fa-solid fa-arrow-trend-down"></i></div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -425,21 +425,21 @@ function CallDashboardNew() {
                                                 <span>Today</span>
                                                 <div className="flex-text-1  text-paragraph">
                                                     <p>00:02</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This week </span>
                                                 <div className="flex-text-1  text-paragraph">
                                                     <p>00:45:00</p>
-                                                    {/* <div class="icons ms-2"><i class="fa-solid fa-arrow-trend-up"></i></div> */}
+                                                    {/* <div className="icons ms-2"><i className="fa-solid fa-arrow-trend-up"></i></div> */}
                                                 </div>
                                             </div>
                                             <div>
                                                 <span>This month</span>
                                                 <div className="flex-text-1  text-paragraph">
                                                     <p>3:50</p>
-                                                    {/* <div class="icons-1 ms-2"><i class="fa-solid fa-arrow-trend-down"></i></div> */}
+                                                    {/* <div className="icons-1 ms-2"><i className="fa-solid fa-arrow-trend-down"></i></div> */}
                                                 </div>
                                             </div>
                                         </div>

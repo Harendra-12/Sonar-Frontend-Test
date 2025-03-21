@@ -116,7 +116,7 @@ const DeviceProvisioningEdit = () => {
                 >
                   <span className="text">Back</span>
                   <span className="icon">
-                    <i class="fa-solid fa-caret-left"></i>
+                    <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
                 <button
@@ -126,7 +126,7 @@ const DeviceProvisioningEdit = () => {
                 >
                   <span className="text">Update</span>
                   <span className="icon">
-                    <i class="fa-solid fa-floppy-disk"></i>
+                    <i className="fa-solid fa-floppy-disk"></i>
                   </span>
                 </button>
                 <button
@@ -139,7 +139,7 @@ const DeviceProvisioningEdit = () => {
                 >
                   <span className="text">Delete</span>
                   <span className="icon">
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </button>
               </div>
@@ -178,7 +178,7 @@ const DeviceProvisioningEdit = () => {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -191,7 +191,7 @@ const DeviceProvisioningEdit = () => {
                       >
                         <span className="text">Delete</span>
                         <span className="icon">
-                          <i class="fa-solid fa-trash"></i>
+                          <i className="fa-solid fa-trash"></i>
                         </span>
                       </button>
                       <button
@@ -204,7 +204,7 @@ const DeviceProvisioningEdit = () => {
                       >
                         <span className="text">Update</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>
@@ -349,7 +349,7 @@ const DeviceProvisioningEdit = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     ) : (
@@ -361,7 +361,7 @@ const DeviceProvisioningEdit = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     )}
@@ -376,7 +376,7 @@ const DeviceProvisioningEdit = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

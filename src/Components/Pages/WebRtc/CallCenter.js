@@ -6,21 +6,16 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
-  logout,
-  // logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
-// import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
-import { useSIPProvider } from "modify-react-sipjs";
 
 const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
-  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
@@ -28,16 +23,7 @@ const CallCenter = ({ initial }) => {
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   dispatch({
-  //     type: "SET_CALLCENTERREFRESH",
-  //     callCenterRefresh: callCenterRefresh + 1,
-  //   });
-  // }, [refreshCenter]);
 
   useEffect(() => {
     const getData = async () => {
@@ -45,7 +31,6 @@ const CallCenter = ({ initial }) => {
       if (apiData?.status) {
         setCallCenterDetailData(apiData.data);
       } else {
-        console.log(apiData);
       }
     };
     getData();
@@ -80,18 +65,6 @@ const CallCenter = ({ initial }) => {
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
-    try {
-      const apiResponses = await logout(
-        allCallCenterIds,
-        dispatch,
-        sessionManager
-      );
-    } catch (error) {
-      console.error("Unexpected error in handleLogOut:", error);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -127,10 +100,10 @@ const CallCenter = ({ initial }) => {
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                     <button
-                      class="clearButton2 text-dark"
+                      className="clearButton2 text-dark"
                       onClick={() => featureUnderdevelopment()}
                     >
-                      <i class="fa-solid fa-chevron-left fs-4"></i>
+                      <i className="fa-solid fa-chevron-left fs-4"></i>
                     </button>{" "}
                     Call Center{" "}
                   </h3>
@@ -141,7 +114,7 @@ const CallCenter = ({ initial }) => {
                       type="search"
                       name="Search"
                       placeholder="Search users, groups or chat"
-                      class="formItem fw-normal"
+                      className="formItem fw-normal"
                       style={{ backgroundColor: "var(--searchBg)" }}
                     />
                   </div>
@@ -152,25 +125,25 @@ const CallCenter = ({ initial }) => {
                   </div>
                   <DarkModeToggle marginLeft={"2"} />
                   <div className="col-auto">
-                    <div class="dropdown">
+                    <div className="dropdown">
                       <div
                         className="myProfileWidget"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        <div class="profileHolder" id="profileOnlineNav">
+                        <div className="profileHolder" id="profileOnlineNav">
                           <img
                             src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                             alt="profile"
                           />
                         </div>
-                        <div class="profileName">
+                        <div className="profileName">
                           {account.username}{" "}
                           <span className="status">Available</span>
                         </div>
                       </div>
-                      <ul class="dropdown-menu">
+                      <ul className="dropdown-menu">
                         <li
                           onClick={() => {
                             if (allCallCenterIds.length > 0) {
@@ -181,7 +154,7 @@ const CallCenter = ({ initial }) => {
                           }}
                         >
                           <div
-                            class="dropdown-item"
+                            className="dropdown-item"
                             style={{ cursor: "pointer" }}
                           >
                             Logout
@@ -189,7 +162,7 @@ const CallCenter = ({ initial }) => {
                         </li>
                         {/* <li onClick={() => navigate("/my-profile")}>
                           <div
-                            class="dropdown-item"
+                            className="dropdown-item"
                             style={{ cursor: "pointer" }}
                           >
                             Profile
@@ -215,10 +188,10 @@ const CallCenter = ({ initial }) => {
                               onClick={() =>
                                 setRefreshCenter(refreshCenter + 1)
                               }
-                              class="clearButton2"
+                              className="clearButton2"
                             >
                               <i
-                                class={
+                                className={
                                   loading
                                     ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     : "fa-regular fa-arrows-rotate fs-5"

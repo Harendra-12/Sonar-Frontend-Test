@@ -142,12 +142,12 @@ function AllContact({
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                       Contact{" "}
                       <button
-                        class="clearButton2"
+                        className="clearButton2"
                         onClick={() => handleContactRefresh()}
                         disabled={allContactLoading}
                       >
                         <i
-                          class={
+                          className={
                             allContactLoading
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5"
@@ -163,7 +163,7 @@ function AllContact({
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                         onChange={() => featureUnderdevelopment()}
                       />
@@ -175,25 +175,25 @@ function AllContact({
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li
                             onClick={() => {
                               if (allCallCenterIds.length > 0) {
@@ -204,7 +204,7 @@ function AllContact({
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -212,7 +212,7 @@ function AllContact({
                           </li>
                           {/* <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
@@ -866,7 +866,7 @@ function AllContact({
                     >
                       <span className="text">Confirm</span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
 
@@ -879,7 +879,7 @@ function AllContact({
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

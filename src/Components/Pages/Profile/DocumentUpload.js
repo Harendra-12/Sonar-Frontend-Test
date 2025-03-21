@@ -167,13 +167,13 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Reg </label>
-                      <label for="file-upload1" class="custom-file-upload">
+                      <label for="file-upload1" className="custom-file-upload">
                         {formData.reg ? (
                           formData.reg.name
                         ) : (
                           <>
                             {" "}
-                            <i class="fa-solid fa-upload me-1"></i> Upload your
+                            <i className="fa-solid fa-upload me-1"></i> Upload your
                             Document
                           </>
                         )}
@@ -187,7 +187,7 @@ function DocumentUpload() {
                       />
                       {formDataError.reg ? (
                         <span style={{ color: "red", fontSize: 12 }}>
-                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          <i className="fa-solid fa-triangle-exclamation"></i> Image
                           should be less than 1 MB
                         </span>
                       ) : (
@@ -206,13 +206,13 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Tin</label>
-                      <label for="file-upload2" class="custom-file-upload">
+                      <label for="file-upload2" className="custom-file-upload">
                         {formData.tin ? (
                           formData.tin.name
                         ) : (
                           <>
                             {" "}
-                            <i class="fa-solid fa-upload me-1"></i> Upload your
+                            <i className="fa-solid fa-upload me-1"></i> Upload your
                             Document
                           </>
                         )}
@@ -226,7 +226,7 @@ function DocumentUpload() {
                       />
                       {formDataError.tin ? (
                         <span style={{ color: "red", fontSize: 12 }}>
-                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          <i className="fa-solid fa-triangle-exclamation"></i> Image
                           should be less than 1 MB
                         </span>
                       ) : (
@@ -246,13 +246,13 @@ function DocumentUpload() {
                   <div className="formItem d-flex">
                     <div className="col-12 me-2">
                       <label htmlFor="">Moa</label>
-                      <label for="file-upload3" class="custom-file-upload">
+                      <label for="file-upload3" className="custom-file-upload">
                         {formData.moa ? (
                           formData.moa.name
                         ) : (
                           <>
                             {" "}
-                            <i class="fa-solid fa-upload me-1"></i> Upload your
+                            <i className="fa-solid fa-upload me-1"></i> Upload your
                             Document
                           </>
                         )}
@@ -266,7 +266,7 @@ function DocumentUpload() {
                       />
                       {formDataError.moa ? (
                         <span style={{ color: "red", fontSize: 12 }}>
-                          <i class="fa-solid fa-triangle-exclamation"></i> Image
+                          <i className="fa-solid fa-triangle-exclamation"></i> Image
                           should be less than 1 MB
                         </span>
                       ) : (

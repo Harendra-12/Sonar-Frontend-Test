@@ -173,7 +173,6 @@ function NewCardPaymentMethod({
             [item]: true,
           }));
         } else if (item === "phone") {
-          // console.log(billing[item]?.length,"This is loop",item);
           if (billing[item]?.length > 15 || billing[item]?.length < 8) {
             setErrorBilling((prevData) => ({
               ...prevData,
@@ -316,7 +315,6 @@ function NewCardPaymentMethod({
             setLoading(false);
             const errorMessage = Object.keys(apiData.errors);
             toast.error(apiData.errors[errorMessage[0]][0]);
-            console.log("Old address error", apiData);
           }
         }
       }
@@ -332,7 +330,6 @@ function NewCardPaymentMethod({
         !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
       ) {
-        console.log("This is card number", cardDetails.cardNumber);
         setLoading(true);
         if (rechargeType === "buyDid") {
           const year = new Date().getFullYear();
@@ -772,7 +769,7 @@ function NewCardPaymentMethod({
                       onClick={() => setNewBilling(true)}
                     >
                       Choose a new Billing Address{" "}
-                      <i class="fa-sharp fa-solid fa-arrow-right"></i>
+                      <i className="fa-sharp fa-solid fa-arrow-right"></i>
                     </button>
                   </div>
                 </>
@@ -793,7 +790,7 @@ function NewCardPaymentMethod({
                     className="float-end clearButton text-danger fs-4"
                     style={{ cursor: "pointer" }}
                   >
-                    <i class="fa-sharp fa-solid fa-xmark"></i>
+                    <i className="fa-sharp fa-solid fa-xmark"></i>
                   </span>
                 </h5>
               </div>
@@ -996,7 +993,7 @@ function NewCardPaymentMethod({
                         checked={saveCard}
                         onChange={(e) => setSaveCard(e.target.checked)}
                       />
-                      <label class="formLabel ms-2">
+                      <label className="formLabel ms-2">
                         Save this card for future use
                       </label>
                     </div>

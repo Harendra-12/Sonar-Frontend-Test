@@ -27,7 +27,7 @@ function KnowledgeBase() {
                                                     className="panelButton gray">
                                                     <span className="text">Back</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
+                                                        <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
                                                 <Link
@@ -38,7 +38,7 @@ function KnowledgeBase() {
                                                     className="panelButton" >
                                                     <span className="text">Buy</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-cart-shopping"></i>
+                                                        <i className="fa-solid fa-cart-shopping"></i>
                                                     </span>
                                                 </Link>
                                             </div> */}
@@ -83,7 +83,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center justify-content-between ">
                                                                     <h6>How do I manage my incoming call settings?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -96,7 +96,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <h6>How do I send fax ?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -109,7 +109,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <h6>How do I setup my deskphone?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -122,7 +122,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <h6>What do I need to do to register my business SMS with TCR?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -135,7 +135,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <h6>Why can't I sign in to the Admin Portal or the RingCentral app?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,7 +148,7 @@ function KnowledgeBase() {
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <h6>How do I create custom call rules for holidays or after hours?</h6>
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -176,7 +176,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Call Dashboard Provider</h4>
                                                                             <p>Customize how you want your main company number to ring.</p></div>
                                                                     </div>
@@ -194,7 +194,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Company call handling</h4>
                                                                             <p>Use the Admin Portal to set up phone settings for users within your account.</p></div>
                                                                     </div>
@@ -212,7 +212,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Personal call handling</h4>
                                                                             <p>Set up where calls ring, when greetings play, and what happens to missed calls.</p></div>
                                                                     </div>
@@ -230,7 +230,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Active Call Management</h4>
                                                                             <p>Mute, record, transfer, and park active calls.</p></div>
                                                                     </div>
@@ -248,7 +248,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Call forwarding</h4>
                                                                             <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
                                                                     </div>
@@ -266,7 +266,7 @@ function KnowledgeBase() {
                                                                             <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
                                                                             Your browser does not support the video tag.
                                                                         </video>
-                                                                        <div class="heading">
+                                                                        <div className="heading">
                                                                             <h4>Voice mail setup</h4>
                                                                             <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
                                                                     </div>
@@ -289,7 +289,7 @@ function KnowledgeBase() {
                                                             <div className="heading ">
                                                                 <div className="d-flex align-items-center justify-content-between ">
                                                                     <div className="col-3">
-                                                                        <i class="fa-solid fa-computer float-start"></i>
+                                                                        <i className="fa-solid fa-computer float-start"></i>
                                                                     </div>
                                                                     <div>
                                                                         <h6>Check System status</h6>
@@ -308,7 +308,7 @@ function KnowledgeBase() {
                                                             <div className="heading ">
                                                                 <div className="d-flex align-items-center  justify-content-between ">
                                                                     <div className="col-3 text-end">
-                                                                        <i class="fa-solid fa-users float-start"></i>
+                                                                        <i className="fa-solid fa-users float-start"></i>
                                                                     </div>
                                                                     <div>
                                                                         <h6>Learn community</h6>
@@ -325,7 +325,7 @@ function KnowledgeBase() {
                                                             <div className="heading">
                                                                 <div className="d-flex align-items-center  justify-content-space-between ">
                                                                     <div className="col-3 text-start0">
-                                                                        <i class="fa-solid fa-file-lines float-start"></i>
+                                                                        <i className="fa-solid fa-file-lines float-start"></i>
                                                                     </div>
                                                                     <div>
                                                                         <h6>Explore release notes</h6>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { backToTop, generalDeleteFunction, generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
@@ -123,7 +124,7 @@ function AvailableDeviceList() {
                                                     className="panelButton gray"
                                                 >
                                                     <span className="text">Back</span>
-                                                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                                                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                                 </button>
                                                 <button
                                                     effect="ripple"
@@ -139,7 +140,7 @@ function AvailableDeviceList() {
                                                     }}
                                                 >
                                                     <span className="text" >Add</span>
-                                                    <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                                                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
                                                 </button>
                                             </div>
                                         </div>
@@ -164,12 +165,12 @@ function AvailableDeviceList() {
                                                                 </div>
                                                                 <div className='col-xl-6'>
                                                                     <div className='d-flex justify-content-end'>
-                                                                        <div class="my-auto position-relative mx-1">
-                                                                            <label class="switch">
+                                                                        <div className="my-auto position-relative mx-1">
+                                                                            <label className="switch">
                                                                                 <input type="checkbox" id="showAllCheck" checked={item.status === "active" ? true : false} onChange={() => {
                                                                                     setStatus(item.status === "active" ? "inactive" : "active"); setDeleteId(""); setPopu(true)
                                                                                 }} />
-                                                                                <span class="slider round" />
+                                                                                <span className="slider round" />
                                                                             </label>
                                                                         </div>
                                                                         <button className="tableButton edit mx-2" onClick={() => setSelectDeviceEdit(true)}><i className="fa-solid fa-pencil"></i></button>
@@ -254,11 +255,11 @@ function AvailableDeviceList() {
                                                 <div className="formRow">
                                                     <button className="panelButton gray ms-0" onClick={() => setSelectDeviceEdit(false)} type='button'>
                                                         <span className="text" >Close</span>
-                                                        <span className="icon"><i class="fa-solid fa-xmark"></i></span>
+                                                        <span className="icon"><i className="fa-solid fa-xmark"></i></span>
                                                     </button>
                                                     <button className="panelButton ms-auto" onClick={() => updateDevice()} type='button'>
                                                         <span className="text" >Update</span>
-                                                        <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                        <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                                     </button>
                                                 </div>
                                             </form>
@@ -302,7 +303,7 @@ function AvailableDeviceList() {
                                                     Confirm
                                                 </span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-check"></i>
+                                                    <i className="fa-solid fa-check"></i>
                                                 </span>
                                             </button>
                                             <button
@@ -315,7 +316,7 @@ function AvailableDeviceList() {
                                             >
                                                 <span className="text">Cancel</span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-xmark"></i>
+                                                    <i className="fa-solid fa-xmark"></i>
                                                 </span>
                                             </button>
                                         </div>
