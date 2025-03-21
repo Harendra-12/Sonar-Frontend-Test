@@ -99,7 +99,8 @@ function Messages({
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
   const [selectFileExtension,setSelectFileExtension]=useState(null)
-  const thisAudioRef = useRef(null);
+  const thisAudioRef = useRef(null); 
+  // const [currentPlaying, setCurrentPlaying] = useState("");
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -326,7 +327,6 @@ function Messages({
   // Logic to send message
   const sendSingleMessage = () => {
     // Only proceed if there's either a URL or message text
-    debugger
     if(!selectedUrl && messageInput.trim() === "") {
       return;
     }
@@ -338,12 +338,10 @@ function Messages({
       if (target) {
         let messager;
         try {
-          if(selectedUrl) {
+          const messageContent = messageInput.trim() || selectedUrl;
             //  message if any file is selected
-            messager = new Messager(userAgent,target, selectedUrl);
-          } else {
-            messager = new Messager(userAgent, target, messageInput);
-          }
+          messager = new Messager(userAgent, target, messageContent);
+        
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -402,6 +400,7 @@ function Messages({
       toast.error("UserAgent or session not ready.");
     }
   };
+  console.log("000message",allMessage)
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -976,7 +975,7 @@ function Messages({
     console.log("000select",{item},{fileUrl})
     // !fileUrl && !selectFileExtension
     if (!ext) {
-      return <p>{item}</p>;
+      return <p className="messageDetails">{item}</p>;
     }
     else{
       if (ext== "jpg" || ext == "png" || ext == "jpeg") {
@@ -990,37 +989,43 @@ function Messages({
           <iframe 
             src={item} 
             width="100%" 
-            height="500px" 
+            height="400px" 
             style={{ border: 'none' }} 
             title={`PDF Document - ${item}`} 
+            className="documents-pdf"
+            
           />
         );
       }
       
       // Handle audio files (mp3 and others)
       if (ext == "mp3" ) {
-        const correctedAudioUrl = item.replace(
-          'response-content-encoding=audio%2Fmpeg',
-          'response-content-type=audio%2Fmpeg'
-        );
+         const handlePlaying = async (audio) => {
+          if (thisAudioRef.current) {
+            thisAudioRef.current.load();
+            thisAudioRef.current.play().catch((error) => {
+                         console.error("Audio play error:", error);
+                       }); // Reload the audio source
+          }
+             };
+             
+              handlePlaying(item)
+             
         return (
-             <div className="audio-container mx-2">
-                              <audio controls autoPlay="true" >
-                                          <source src="https://ucaas-angelpbx.s3.us-east-2.amazonaws.com/ca1e7005-d36b-4fa7-9e99-3fb1c507da0f.wav" type="audio/mpeg"/>
+             <div className="messageDetailss">
+              <div className="audio-container mx-2">
+                              <audio
+                            controls={true}
+                            ref={thisAudioRef}
+                          autoPlay={true}
+                                        >
+                                          <source
+                                            src={item}
+                                            type="audio/mpeg"
+                                          />
                                         </audio>
-                            <button
-                              className="audioCustomButton"
-                              onClick={() => {
-                                // const link = document.createElement("a");
-                                // link.href = URL.createObjectURL(newMusic);
-                                // link.download = newMusic.name;
-                                // link.click();
-                              }}
-                            >
-                              <i className="fa-sharp fa-solid fa-download" />
-                            </button>
-                           
                           </div>
+             </div>
         );
       }
       if(ext=="mp4"){
@@ -1045,25 +1050,38 @@ function Messages({
   // Logic to send group messages
   function sendGroupMessage() {
     debugger
+    const messageContent = messageInput.trim() || selectedUrl;
+  
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
-      "sharedMessage": messageInput.trim(),
+      "sharedMessage": messageContent,
       "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
+    
     const time = formatDateTime(new Date());
+    
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[0]]: [
         ...(prevState[recipient[0]] || []),
-        { from: account.name, body: messageInput, time },
+        { 
+          from: account.name, 
+          body: messageContent , // Show appropriate text in the message history
+          time 
+        },
       ],
     }));
+    
+    // Clear both message input and selected file
     setMessageInput("");
+    setSelectedUrl(null);
+  
   }
+
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
@@ -2308,7 +2326,7 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
+                                            <div className="">
                                               {/* function to display the message */}
                                             {displayFile({item: item.body})}
                                             </div>
@@ -2328,8 +2346,8 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
-                                            {displayFile({item: item.body, selectFileExtension})}
+                                            <div className="">
+                                            {displayFile({item: item.body})}
                                             </div>
                                           </div>
                                         </div>
