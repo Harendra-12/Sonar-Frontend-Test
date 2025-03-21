@@ -951,7 +951,6 @@ function Messages({
    if(item){
     const fileUrl=item?.startsWith('http://') || item?.startsWith('https://')?extractFileExtension(item):""
     const ext =fileUrl;
-    console.log("000select",{item},{fileUrl})
     // !fileUrl && !selectFileExtension
     if (!ext) {
       return <p className="messageDetails">{item}</p>;
