@@ -380,8 +380,8 @@ export function LoginComponent() {
                     <ul className="mb-3">
                       <p>You are logged in from the specific devices: </p>
                       {logInDetails?.map((item) => {
-                        return <li className="d-flex align-items-center">{item.platform}
-                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item.token)}><i className="fa-solid fa-power-off" /></button>
+                        return <li className="d-flex align-items-center">{item?.platform}   {item?.browser}
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off" /></button>
                         </li>
                       })}
                     </ul>
