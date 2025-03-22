@@ -362,7 +362,60 @@ export function LoginComponent() {
         </div>
       </form>
       {popUp ? (
-        <div className="popupopen ">
+        <>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                <h5>Warning!</h5>
+              </div>
+              <p>
+                You are already login on different device!
+              </p>
+
+              {logInDetails?.length > 0 &&
+                <ul className="mb-3">
+                  <p>You are logged in from the specific devices: </p>
+                  {logInDetails?.map((item) => {
+                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser}
+                      <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                    </li>
+                  })}
+                </ul>
+              }
+              <div className="d-flex justify-content-between px-0">
+                <button
+                  className="panelButton m-0 float-end"
+                  onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }}
+                >
+                  <span className="text">Login</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check"></i>
+                  </span>
+                </button>
+
+                <div>
+                  <button
+                    disabled={loading}
+                    className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
+                    onClick={handleLogoutAll}
+                  >
+                    <span className="text text-danger">Logout All Devices</span>
+                    {/* <span className="icon">
+                        <i className="fa-solid fa-power-off"></i>
+                      </span> */}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          {/* <div className="popupopen ">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
@@ -408,9 +461,6 @@ export function LoginComponent() {
                         onClick={handleLogoutAll}
                       >
                         <span className="text text-danger">Logout All Devices</span>
-                        {/* <span className="icon">
-                        <i className="fa-solid fa-power-off"></i>
-                      </span> */}
                       </button>
                     </div>
                   </div>
@@ -418,7 +468,8 @@ export function LoginComponent() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        </>
       ) : (
         ""
       )}
