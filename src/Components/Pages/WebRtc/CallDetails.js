@@ -29,6 +29,7 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [transcript,setTranscript]=useState("")
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -101,6 +102,11 @@ function CallDetails({
       setactivePage("messages");
     }
   };
+
+  const handleTranscript=()=>{
+
+
+  }
 
   const handlePlaying = async (audio) => {
     if (!audio) return;
@@ -474,7 +480,7 @@ function CallDetails({
                             <>
                               <tr
                                 key={item.id}
-                                data-bs-toggle="collapse"
+                                // data-bs-toggle="collapse"
                                 href={`#voiceMail${item.id}`}
                                 role="button"
                                 aria-expanded="false"
@@ -628,7 +634,7 @@ function CallDetails({
                                           <div
                                             className="clearButton text-align-start"
                                             onClick={() =>
-                                              featureUnderdevelopment()
+                                              handleTranscript()
                                             }
                                           >
                                             <i className="fa-solid fa-bolt me-2"></i>
@@ -697,7 +703,7 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
-                              <tr
+                              {/* <tr
                                 className="show"
                                 id={`voiceMail${item?.id}`}
                               >
@@ -718,7 +724,7 @@ function CallDetails({
                                     </div>
                                   </div>
                                 </td>
-                              </tr>
+                              </tr> */}
                             </>
                           ))}
                         </tbody>

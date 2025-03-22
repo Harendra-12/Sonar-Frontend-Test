@@ -283,7 +283,7 @@ function UserConfiguration() {
                                             </div>
                                           </div>
 
-                                          <div className="accordion permissionListWrapper">
+                                          {/* <div className="accordion permissionListWrapper">
                                             <div className="accordion-item">
                                               <h2
                                                 className="accordion-header"
@@ -329,12 +329,7 @@ function UserConfiguration() {
                                             </div>
 
 
-                                          </div>
-
-                                          
-
-
-
+                                          </div> */}
 
                                           <div className="col-xl-12">
                                             <div className="row" style={{ height: '400px', overflowY: 'scroll' }}>

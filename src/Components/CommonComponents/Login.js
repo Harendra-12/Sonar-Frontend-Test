@@ -176,8 +176,9 @@ export function LoginComponent() {
           Authorization: `Bearer ${token}`
         }
       });
-      if (logOut.response.data.status) {
-        toast.success(logOut?.response.data?.message)
+      console.log(logOut)
+      if (logOut?.data?.status) {
+        toast.success(logOut?.data?.message)
       }
     } catch (error) {
       // console.log("00err",error)
