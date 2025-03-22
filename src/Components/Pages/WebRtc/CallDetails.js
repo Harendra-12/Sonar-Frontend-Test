@@ -64,8 +64,7 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -380,49 +379,47 @@ function CallDetails({
                     {!isCustomerAdmin ? (
                       <td
                         style={{ paddingLeft: "32px" }}
-                        className={`${
-                          callDetails?.["Caller-Callee-ID-Number"] ===
-                            extension && callDetails?.["variable_billsec"] > 0
-                            ? "incoming"
-                            : callDetails?.["Caller-Caller-ID-Number"] ===
-                              extension
+                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
+                          extension && callDetails?.["variable_billsec"] > 0
+                          ? "incoming"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            extension
                             ? "outgoing"
                             : callDetails?.["Caller-Callee-ID-Number"] ===
-                                extension &&
+                              extension &&
                               callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
+                              ? "missed"
+                              : callDetails?.["Call-Direction"] === "voicemail"
+                                ? "voicemail"
+                                : ""
+                          }`}
                       >
                         <span>
                           {callDetails &&
-                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                          callDetails?.["variable_billsec"] > 0
+                            callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                            ? "Outgoing"
-                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              ? "Outgoing"
+                              : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                              callDetails?.["variable_billsec"] === 0
-                            ? "Missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""}
+                                callDetails?.["variable_billsec"] === 0
+                                ? "Missed"
+                                : callDetails?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${
-                          callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
+                        className={`${callDetails?.["variable_billsec"] === 0
+                          ? "missed"
+                          : callDetails?.["Call-Direction"] === "voicemail"
                             ? "voicemail"
                             : ""
-                        }`}
+                          }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
@@ -517,41 +514,40 @@ function CallDetails({
                                 {!isCustomerAdmin ? (
                                   <td
                                     style={{ paddingLeft: "32px" }}
-                                    className={`${
-                                      item?.["Caller-Callee-ID-Number"] ===
-                                        extension &&
+                                    className={`${item?.["Caller-Callee-ID-Number"] ===
+                                      extension &&
                                       item?.["variable_billsec"] > 0
-                                        ? "incoming"
-                                        : item?.["Caller-Caller-ID-Number"] ===
-                                          extension
+                                      ? "incoming"
+                                      : item?.["Caller-Caller-ID-Number"] ===
+                                        extension
                                         ? "outgoing"
                                         : item?.["Caller-Callee-ID-Number"] ===
-                                            extension &&
+                                          extension &&
                                           item?.["variable_billsec"] === 0
-                                        ? "missed"
-                                        : item?.["Call-Direction"] ===
-                                          "voicemail"
-                                        ? "voicemail"
-                                        : ""
-                                    }`}
+                                          ? "missed"
+                                          : item?.["Call-Direction"] ===
+                                            "voicemail"
+                                            ? "voicemail"
+                                            : ""
+                                      }`}
                                   >
                                     <span>
                                       {item &&
-                                      item?.["Caller-Callee-ID-Number"] ===
+                                        item?.["Caller-Callee-ID-Number"] ===
                                         extension &&
-                                      item?.["variable_billsec"] > 0
+                                        item?.["variable_billsec"] > 0
                                         ? "Incoming"
                                         : item?.["Caller-Caller-ID-Number"] ===
                                           extension
-                                        ? "Outgoing"
-                                        : item?.["Caller-Callee-ID-Number"] ===
+                                          ? "Outgoing"
+                                          : item?.["Caller-Callee-ID-Number"] ===
                                             extension &&
-                                          item?.["variable_billsec"] === 0
-                                        ? "Missed"
-                                        : item?.["Call-Direction"] ===
-                                          "voicemail"
-                                        ? "voicemail"
-                                        : ""}
+                                            item?.["variable_billsec"] === 0
+                                            ? "Missed"
+                                            : item?.["Call-Direction"] ===
+                                              "voicemail"
+                                              ? "voicemail"
+                                              : ""}
                                     </span>
                                   </td>
                                 ) : (
@@ -615,13 +611,12 @@ function CallDetails({
                                               }
                                             }}
                                           >
-                                            
+
                                             <i
-                                              className={`fa-solid fa-${
-                                                item.configuration !== null
-                                                  ? "play"
-                                                  : "triangle-exclamation"
-                                              } me-2`}
+                                              className={`fa-solid fa-${item.configuration !== null
+                                                ? "play"
+                                                : "triangle-exclamation"
+                                                } me-2`}
                                             ></i>{" "}
                                             {item.configuration !== null
                                               ? "Play "
@@ -636,7 +631,7 @@ function CallDetails({
                                               featureUnderdevelopment()
                                             }
                                           >
-                                          <i className="fa-solid fa-bolt me-2"></i>
+                                            <i className="fa-solid fa-bolt me-2"></i>
                                             Transcript
                                           </div>
                                         </li>
@@ -652,7 +647,7 @@ function CallDetails({
                                               )
                                             }
                                           >
-                                           <i className="fa-regular fa-download"></i>{" "}
+                                            <i className="fa-regular fa-download"></i>{" "}
                                             Download
                                           </div>
                                         </li>
@@ -670,7 +665,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <AudioPlayer audioUrl={ audioURL} />
+                                        <AudioPlayer audioUrl={audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
@@ -702,6 +697,28 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
+                              <tr
+                                className="show"
+                                id={`voiceMail${item?.id}`}
+                              >
+                                <td colSpan={5}>
+                                  <div className="audio-container">
+                                    <div className="transcriptWrap">
+                                      <div className="textContent col">
+                                        <p>Consectetur cupidatat adipisicing eiusmod officia eiusmod culpa minim eiusmod aliqua sunt duis consectetur. Aliqua cupidatat do amet aliqua amet aute cupidatat ex ullamco enim occaecat.</p>
+                                      </div>
+                                      <div className="btnWrap col-auto">
+                                        <button className="clearButton2">
+                                          <i className="fa-sharp fa-chevron-left"></i>
+                                        </button>
+                                        <button className="clearButton2 ms-1">
+                                          <i className="fa-sharp fa-chevron-right"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
                             </>
                           ))}
                         </tbody>

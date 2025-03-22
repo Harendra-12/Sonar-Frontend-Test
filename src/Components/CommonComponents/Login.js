@@ -84,7 +84,7 @@ export function LoginComponent() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
-  const [logInDetails,setLoginDetails]=useState([])
+  const [logInDetails, setLoginDetails] = useState([])
 
   // Handle login function
   async function handleLogin() {
@@ -169,20 +169,20 @@ export function LoginComponent() {
   }
 
   // function to logout from specific device
-  async function handleLogoutFromSpecificDevice(token){
-  try {
-   const logOut=await axios.post(`${baseName}/logout-specific-device`, {token:token}, {
-      headers: {
-        Authorization: `Bearer ${token}`
+  async function handleLogoutFromSpecificDevice(token) {
+    try {
+      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (logOut.response.data.status) {
+        toast.success(logOut?.response.data?.message)
       }
-    });
-   if(logOut.response.data.status){
-    toast.success(logOut?.response.data?.message)
-   }
-  } catch (error) {
-    // console.log("00err",error)
-    toast.error(error?.response?.data?.message)
-  }
+    } catch (error) {
+      // console.log("00err",error)
+      toast.error(error?.response?.data?.message)
+    }
   }
 
   // Function to handle login
@@ -194,7 +194,7 @@ export function LoginComponent() {
     } else {
       setLoading(true);
       const checkLogin = await login(userName, password);
-      if (checkLogin?.status ) {
+      if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
         if (profile?.status) {
           dispatch({
@@ -264,8 +264,8 @@ export function LoginComponent() {
           setLoading(false);
           toast.error("unauthorized access!");
         }
-      
-      
+
+
       } else {
         setLoading(false)
         setPopUp(true)
@@ -372,33 +372,22 @@ export function LoginComponent() {
                 </div>
                 <div className="col-10 ps-0">
                   <h4>Warning!</h4>
-                  <p>
-                    You are already login on different device !<br />
-                    {/* Do you want to Logout from all device ? */}
+                  <p className="my-2">
+                    You are already login on different device!
                   </p>
+                  {logInDetails?.length > 0 &&
+                    <ul className="mb-3">
+                      <p>You are logged in from the specific devices: </p>
+                      {logInDetails?.map((item) => {
+                        return <li className="d-flex align-items-center">{item.platform}
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item.token)}><i className="fa-solid fa-power-off" /></button>
+                        </li>
+                      })}
+                    </ul>
+                  }
                   <div className="d-flex justify-content-between">
-                   <div>
-                   <p className="p-0 mt-1 ">Log out from all device</p>
                     <button
-                      disabled={loading}
-                      className="panelButton m-0"
-                      onClick={handleLogoutAll}
-                    >
-                      <span className="text">Logout</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-                   </div>
-
-                   <div>
-                    <p className="p-0 mt-1">log out from specific device</p>
-                    {logInDetails?.map((item)=>{
-                      return <div>{item.platform} <button onClick={()=>handleLogoutFromSpecificDevice(item.token)}>Log out from {item.platform}</button></div>
-                    })}
-                    
-                    <button
-                      className="panelButton gray m-0 float-end"
+                      className="panelButton m-0 float-end"
                       onClick={() => {
                         setPopUp(false);
                         setLoading(true)
@@ -407,11 +396,22 @@ export function LoginComponent() {
                     >
                       <span className="text">Login</span>
                       <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
-                   </div>
-                    
+
+                    <div>
+                      <button
+                        disabled={loading}
+                        className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
+                        onClick={handleLogoutAll}
+                      >
+                        <span className="text text-danger">Logout All Devices</span>
+                        {/* <span className="icon">
+                        <i className="fa-solid fa-power-off"></i>
+                      </span> */}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

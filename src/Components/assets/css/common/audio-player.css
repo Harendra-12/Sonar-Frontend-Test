@@ -36,3 +36,22 @@ audio {
   background-color: #89898930;
 
 }
+
+.audio-container .transcriptWrap {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.audio-container .transcriptWrap .textContent {
+  white-space: break-spaces;
+}
+
+.audio-container .transcriptWrap .textContent>* {
+  margin-bottom: 0;
+}
+
+.audio-container .transcriptWrap .btnWrap {
+  display: flex;
+  align-items: center;
+}
