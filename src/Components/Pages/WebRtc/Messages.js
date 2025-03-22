@@ -26,6 +26,7 @@ import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
 import AudioPlayer from "./AudioWaveForm";
+import DisplayFile from "./DisplayFile";
 
 function Messages({
   setSelectedModule,
@@ -100,6 +101,7 @@ function Messages({
   const [selectFileExtension,setSelectFileExtension]=useState(null)
   const thisAudioRef = useRef(null); 
   // const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioUrl,setAudioURL]=useState("")
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -945,87 +947,7 @@ function Messages({
   // console.log("000allMessage",allMessage?.[recipient[0]])
 
   // function to add display logic in messages
-  function displayFile({ item}) {
-    // Default case: display item.body directly if selectFileExtension is null
-    // debugger
-   if(item){
-    const fileUrl=item?.startsWith('http://') || item?.startsWith('https://')?extractFileExtension(item):""
-    const ext =fileUrl;
-    // !fileUrl && !selectFileExtension
-    if (!ext) {
-      return <p className="messageDetails">{item}</p>;
-    }
-    else{
-      if (ext== "jpg" || ext == "png" || ext == "jpeg") {
-        return <img  width="400PX" 
-        height="160px"  src={item} alt="" />;
-      }
-      
-      // Handle PDF files
-      if (ext == "pdf") {
-        // debugger
-        return (
-          <iframe 
-            src={item} 
-            width="250PX" 
-            height="160px" 
-            style={{ border: 'none' }} 
-            title={`PDF Document - ${item}`} 
-            className="documents-pdf"
-            
-          />
-        );
-      }
-      
-      // Handle audio files (mp3 and others)
-      if (ext == "mp3" ) {
-         const handlePlaying = async (audio) => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load();
-            thisAudioRef.current.play().catch((error) => {
-                         console.error("Audio play error:", error);
-                       }); // Reload the audio source
-          }
-             };
-             
-              handlePlaying(item)
-             
-        return (
-             <div className="messageDetailss">
-              <div className="audio-container mx-2">
-                              <audio
-                            controls={true}
-                            ref={thisAudioRef}
-                          autoPlay={true}
-                                        >
-                                          <source
-                                            src={item}
-                                            type="audio/mpeg"
-                                          />
-                                        </audio>
-                          </div>
-             </div>
-        );
-      }
-      if(ext=="mp4"){
-        return (
-          <div >
-              <video 
-                  controls
-                  width="100%"
-                  height="auto"
-              >
-                  <source src={item} type="video/mp4" />
-                  Your browser does not support the video element.
-              </video>
-          </div>
-      );
-      }
-    }
-   }
-    
-    // Fallback case - return the content as tex
-  }
+ 
   // Logic to send group messages
   function sendGroupMessage() {
     debugger
@@ -2304,7 +2226,7 @@ function Messages({
                                             </h6>
                                             <div className="">
                                               {/* function to display the message */}
-                                            {displayFile({item: item.body})}
+                                       <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>
@@ -2323,7 +2245,7 @@ function Messages({
                                               </span>
                                             </h6>
                                             <div className="">
-                                            {displayFile({item: item.body})}
+                                            <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>

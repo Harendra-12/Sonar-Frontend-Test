@@ -3,14 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
-  generalPostFunction,
   login,
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import axios from "axios";
+const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
     <>
@@ -84,6 +84,7 @@ export function LoginComponent() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
+  const [logInDetails,setLoginDetails]=useState([])
 
   // Handle login function
   async function handleLogin() {
@@ -161,11 +162,27 @@ export function LoginComponent() {
         }
       } else {
         setLoading(false);
-
         // const errorMessage = Object.keys(data.error);
         toast.error(data.response.data.message);
       }
     }
+  }
+
+  // function to logout from specific device
+  async function handleLogoutFromSpecificDevice(token){
+  try {
+   const logOut=await axios.post(`${baseName}/logout-specific-device`, {token:token}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+   if(logOut.response.data.status){
+    toast.success(logOut?.response.data?.message)
+   }
+  } catch (error) {
+    // console.log("00err",error)
+    toast.error(error?.response?.data?.message)
+  }
   }
 
   // Function to handle login
@@ -176,18 +193,83 @@ export function LoginComponent() {
       toast.error("Password is required!");
     } else {
       setLoading(true);
-      const checkLogin = await generalPostFunction("/auth/check-exist-login", { email: userName, password: password })
-      if (checkLogin.message === "User is already logged in.") {
-        setLoading(false)
-        setPopUp(true)
-      } else if (checkLogin.status) {
-        handleLogin()
+      const checkLogin = await login(userName, password);
+      if (checkLogin?.status ) {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+
+          localStorage.setItem("account", JSON.stringify(profile.data));
+          const accountData = await generalGetFunction(
+            `/account/${profile.data.account_id}`
+          );
+          if (accountData?.status) {
+            dispatch({
+              type: "SET_ACCOUNTDETAILS",
+              accountDetails: accountData.data,
+            });
+            localStorage.setItem(
+              "accountDetails",
+              JSON.stringify(accountData.data)
+            );
+            if (Number(accountData.data.company_status) < 6) {
+              dispatch({
+                type: "SET_BILLINGLISTREFRESH",
+                billingListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_CARDLISTREFRESH",
+                cardListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: accountData.data,
+              });
+              localStorage.setItem(
+                "tempAccount",
+                JSON.stringify(accountData.data)
+              );
+              setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/temporary-dashboard");
+            } else {
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: null,
+              });
+              // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+              if (profile.data.user_role?.roles?.name === "Agent") {
+                if (profile.data.extension_id === null) {
+                  toast.error("You are not assigned to any extension");
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/webrtc");
+                }
+              } else {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
+              }
+            }
+          } else {
+            setLoading(false);
+            toast.error("Server error !");
+          }
+        } else {
+          setLoading(false);
+          toast.error("unauthorized access!");
+        }
+      
+      
       } else {
         setLoading(false)
-        if (checkLogin.errors) {
-          toast.error(checkLogin?.errors[Object.keys(checkLogin?.errors)[0]][0])
-        }
-
+        setPopUp(true)
+        setLoginDetails(checkLogin?.response?.data?.data)
       }
 
     }
@@ -217,7 +299,7 @@ export function LoginComponent() {
   async function handleLogoutAll() {
     setLoading(true)
     setPopUp(false)
-    const logoutAll = await generalPostFunction("/auth/check-exist-login?logouts", { email: userName, password: password })
+    const logoutAll = await generalGetFunction("logout?all")
     if (logoutAll.status) {
       handleLogin()
     } else {
@@ -310,7 +392,11 @@ export function LoginComponent() {
                    </div>
 
                    <div>
-                    <p className="p-0 mt-1">Stay log in</p>
+                    <p className="p-0 mt-1">log out from specific device</p>
+                    {logInDetails?.map((item)=>{
+                      return <div>{item.platform} <button onClick={()=>handleLogoutFromSpecificDevice(item.token)}>Log out from {item.platform}</button></div>
+                    })}
+                    
                     <button
                       className="panelButton gray m-0 float-end"
                       onClick={() => {
