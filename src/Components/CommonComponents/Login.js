@@ -179,6 +179,8 @@ export function LoginComponent() {
       console.log(logOut)
       if (logOut?.data?.status) {
         toast.success(logOut?.data?.message)
+        setLoading(true)
+        userLogin()
       }
     } catch (error) {
       // console.log("00err",error)
