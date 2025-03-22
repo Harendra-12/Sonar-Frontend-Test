@@ -28,6 +28,7 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [onlineFilter,setonlineFilter]=useState("all")
   const [searchValue, setSearchValue] = useState("");
   const showKeys = [
     "extension",
@@ -85,7 +86,7 @@ const Extensions = () => {
       async function getData() {
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
           );
           if (apiData?.status) {
             setExtension(apiData.data);
@@ -112,7 +113,7 @@ const Extensions = () => {
         setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
           );
           if (apiData?.status) {
             setLoading(false);
@@ -141,7 +142,7 @@ const Extensions = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [navigate, pageNumber, account, itemsPerPage, searchValue]);
+  }, [navigate, pageNumber, account, itemsPerPage, searchValue,onlineFilter]);
 
   return (
     <main className="mainContent">
@@ -280,7 +281,13 @@ const Extensions = () => {
                                                 );
                                               })}
                                               <th className="text-center">
-                                                Status
+                                            
+                                                <span>
+                                                  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                                                    <option value="all" disabled>Status</option>
+                                                    <option value="online">Online</option>
+                                                  </select>
+                                                </span>
                                               </th>
                                               {checkViewSidebar(
                                                 "Extension",
