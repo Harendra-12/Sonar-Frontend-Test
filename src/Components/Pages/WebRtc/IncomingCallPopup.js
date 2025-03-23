@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";

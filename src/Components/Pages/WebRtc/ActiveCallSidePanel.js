@@ -138,7 +138,7 @@ function ActiveCallSidePanel({
     globalSession.filter((item) => {
       if (item.id === session._id) {
         previewDialer.map((item2) => {
-          if ((item2.phone_number === item.destination.slice(2)) && (item.state === "Established")) {
+          if ((item2.lead_id === item.destination) && (item.state === "Established")) {
             dispatch({
               type: "SET_AGENT_DEPOSITION",
               agentDeposition: true

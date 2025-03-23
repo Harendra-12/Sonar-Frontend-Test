@@ -82,8 +82,7 @@ function Messages({
   const [selectAll, setSelectAll] = useState(false);
   const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
   const [groupNameEdit, setGroupNameEdit] = useState("");
-  const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] =
-    useState(false);
+  const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] = useState(false);
   const [addMember, setAddMember] = useState(false);
   const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
   const [groupLeavePopUp, setGroupLeavePopUp] = useState(false)
@@ -277,13 +276,14 @@ function Messages({
     }
   }
 
+  console.log(recipient,loadMore);
+  
   // Getting messages based on pagination
   useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
         recipient[2] === "singleChat" ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}` : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
       );
-
       apiData.data.data.map((item) => {
         setAllMessage((prevState) => ({
           ...prevState,
@@ -316,10 +316,14 @@ function Messages({
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
+          console.log("from first");
+          
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
+        console.log("from second");
+        
       }
     }
   }, [recipient, loadMore]);
@@ -400,7 +404,6 @@ function Messages({
       toast.error("UserAgent or session not ready.");
     }
   };
-  console.log("000message",allMessage)
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -771,8 +774,6 @@ function Messages({
     getGroups();
   }, [groupRefresh]);
 
-  console.log("Is admin", isAdmin);
-
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -940,7 +941,6 @@ function Messages({
       setNewGroupLoader(false);
     } else {
       setNewGroupLoader(false);
-      console.log(apiData);
     }
   };
 
