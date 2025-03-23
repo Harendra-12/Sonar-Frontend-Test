@@ -325,7 +325,7 @@ console.log("Session",session);
         >
           {/* Preview dialer */}
           {previewDialer.map((item) => {
-            if (item.lead_id == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
+            if ((item.phone_code+item.phone_number) == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
               return (
                 <div className="campaignInfoWrapper">
                   <div className="campaignContent">
