@@ -29,7 +29,7 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  const [transcript,setTranscript]=useState("")
+  // const [transcript,setTranscript]=useState("")
 
   useEffect(() => {
     setCallDetails(clickedCall);
