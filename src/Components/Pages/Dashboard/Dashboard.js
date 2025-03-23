@@ -85,7 +85,7 @@ const Dashboard = () => {
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, [timeZone, account.timezone_id]);
+  }, [timeZone, account?.timezone_id]);
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {

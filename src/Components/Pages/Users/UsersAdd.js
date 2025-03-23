@@ -567,8 +567,8 @@ const UsersAdd = () => {
                                   );
                                 })}
                             </select>
-                            {errors.timezone_id && (
-                              <ErrorMessage text={errors.timezone_id.message} />
+                            {errors&& (
+                              <ErrorMessage text={errors?.timezone_id.message} />
                             )}
                           </div>
                         </div>

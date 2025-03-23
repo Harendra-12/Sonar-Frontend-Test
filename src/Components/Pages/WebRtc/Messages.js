@@ -25,6 +25,8 @@ import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
+import AudioPlayer from "./AudioWaveForm";
+import DisplayFile from "./DisplayFile";
 
 function Messages({
   setSelectedModule,
@@ -96,6 +98,10 @@ function Messages({
   const [selectedUrl,setSelectedUrl]=useState(null)
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
+  const [selectFileExtension,setSelectFileExtension]=useState(null)
+  const thisAudioRef = useRef(null); 
+  // const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioUrl,setAudioURL]=useState("")
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -122,6 +128,54 @@ function Messages({
     formState: { errors },
   } = useForm();
 
+//  function to extract extension
+  const extractFileExtension = (selectedUrl) => {
+    // debugger
+    if (!selectedUrl) return null;
+  
+    // Step 1: Remove query parameters and get the base URL
+    const fileUrl = selectedUrl.split("?")[0];
+    const fileName = fileUrl.split("/").pop();
+  
+    if (fileName) {
+      // Step 2: Try extracting extension from the filename
+      const fileParts = fileName.split(".");
+      if (fileParts.length > 1) {
+        return fileParts.pop().toLowerCase(); // Standard case: return the extension
+      }
+  
+      // Step 3: Fallback - Check query parameters for extension hints
+      const queryParams = selectedUrl.split("?")[1];
+      if (queryParams) {
+        const params = new URLSearchParams(queryParams);
+        // Look for common extension indicators in query params (customize as needed)
+        for (const [, value] of params) {
+          const lowerValue = value.toLowerCase();
+          if (lowerValue.includes("png")) return "png";
+          if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
+          if (lowerValue.includes("pdf")) return "pdf";
+          // Add more extensions as needed
+        }
+      }
+  
+      // Step 4: Fallback - Decode URL-encoded filename and retry
+      const decodedFileName = decodeURIComponent(fileName);
+      const decodedParts = decodedFileName.split(".");
+      if (decodedParts.length > 1) {
+        return decodedParts.pop().toLowerCase();
+      }
+    }
+  
+    return null; // No extension found
+  };
+  useEffect(() => {
+   if(selectedUrl){
+    const extension=extractFileExtension(selectedUrl);
+    setSelectFileExtension(extension);
+   }
+  }, [selectedUrl]);
+
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -271,17 +325,23 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => { 
-    if (messageInput.trim() === "") return;
+  const sendSingleMessage = () => {
+    // Only proceed if there's either a URL or message text
+    if(!selectedUrl && messageInput.trim() === "") {
+      return;
+    }
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
-
+      
       const target = UserAgent.makeURI(targetURI);
-
       if (target) {
+        let messager;
         try {
-          const messager = new Messager(userAgent, target, messageInput);
+          const messageContent = messageInput.trim() || selectedUrl;
+            //  message if any file is selected
+          messager = new Messager(userAgent, target, messageContent);
+        
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -291,27 +351,26 @@ function Messages({
               ...(prevState[recipient[0]] || []),
               { from: extension, body: messageInput, time },
             ],
-          }));
+          }));     
           // Update contact last message
           const contactIndex = contact.findIndex(
             (contact) => contact.extension === recipient[0]
           );
           if (contactIndex !== -1) {
             const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text =
-              messageInput;
+            newContact[contactIndex].last_message_data.message_text = messageInput;
             newContact[contactIndex].last_message_data.created_at = time;
             setContact(newContact);
           }
           setActiveTab("all");
-
+          
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
           );
           const agentDetails = agents.find(
             (agent) => agent.extension.extension === recipient[0]
           );
-
+          
           if (!extensionExists) {
             contact.unshift({
               name: agentDetails.username,
@@ -327,7 +386,8 @@ function Messages({
           }
           setMessageInput("");
           setSelectedFile(null);
-          setSelectedUrl(null)
+          setSelectedUrl(null);
+          setSelectFileExtension(null);
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -337,10 +397,10 @@ function Messages({
         console.error("Invalid recipient address.");
       }
     } else {
-      console.error("UserAgent or session not ready.");
+      toast.error("UserAgent or session not ready.");
     }
   };
-
+  console.log("000message",allMessage)
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -711,9 +771,8 @@ function Messages({
     getGroups();
   }, [groupRefresh]);
 
-  useEffect(()=>{
-    setMessageInput(selectedUrl)
-  },[selectedUrl])
+  console.log("Is admin", isAdmin);
+
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -881,30 +940,49 @@ function Messages({
       setNewGroupLoader(false);
     } else {
       setNewGroupLoader(false);
+      console.log(apiData);
     }
   };
 
+  // console.log("000allMessage",allMessage?.[recipient[0]])
+
+  // function to add display logic in messages
+ 
   // Logic to send group messages
   function sendGroupMessage() {
+    debugger
+    const messageContent = messageInput.trim() || selectedUrl;
+  
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
-      "sharedMessage": messageInput.trim(),
+      "sharedMessage": messageContent,
       "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
+    
     const time = formatDateTime(new Date());
+    
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[0]]: [
         ...(prevState[recipient[0]] || []),
-        { from: account.name, body: messageInput, time },
+        { 
+          from: account.name, 
+          body: messageContent , // Show appropriate text in the message history
+          time 
+        },
       ],
     }));
+    
+    // Clear both message input and selected file
     setMessageInput("");
+    setSelectedUrl(null);
+  
   }
+
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
@@ -2146,12 +2224,14 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            <div className="">
+                                              {/* function to display the message */}
+                                       <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>
                                       ) : (
+                                        
                                         <div className="messageItem receiver">
                                           <div className="second">
                                             <h6>
@@ -2164,8 +2244,8 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            <div className="">
+                                            <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>
