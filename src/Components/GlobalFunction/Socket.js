@@ -95,7 +95,7 @@ const Socket = () => {
                 })
               }
               break;
-            case "PreviewDialer":
+            case "progressive":
               dispatch({
                 type: "SET_PREVIEWDIALER",
                 previewDialer: result,

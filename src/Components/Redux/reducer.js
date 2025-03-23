@@ -354,7 +354,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_PREVIEWDIALER":
       return {
         ...state,
-        previewDialer: [...state.previewDialer, action.previewDialer]
+        previewDialer:action.previewDialer
       };
     case "REMOVE_PREVIEWDIALER":
       return {

@@ -101,7 +101,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-
+                onClick={featureUnderdevelopment}
                 className="navItem "
               >
                 <div className="iconHolder">
