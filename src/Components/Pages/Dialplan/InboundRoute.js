@@ -90,7 +90,7 @@ function InboundRoute() {
                                       navigate(`/users-edit?id=${item.id}`)
                                     }
                                   >
-                                    {item.username} ({item.extension?.extension}
+                                    {item?.username} ({item?.extension?.extension}
                                     )
                                   </td>
                                   <td
