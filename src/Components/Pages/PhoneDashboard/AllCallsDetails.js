@@ -21,7 +21,7 @@ function AllCallsDetails() {
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 className="accordion-header ">
                   <button
-                    className="accordion-button"
+                    className="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse1"
@@ -40,7 +40,7 @@ function AllCallsDetails() {
 
                       <div>
                         <div className="d-flex align-items-center justify-content-between me-4">
-                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
+                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
                             {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
                               <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                           </p>
@@ -51,7 +51,7 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse1" className="accordion-collapse collapse show">
+                <div id="collapse1" className="accordion-collapse collapse">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -140,7 +140,7 @@ function AllCallsDetails() {
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 className="accordion-header">
                   <button
-                    className="accordion-button"
+                    className="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse2"
@@ -162,7 +162,7 @@ function AllCallsDetails() {
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center justify-content-center me-4">
-                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
+                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
                             {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
                               className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                             ></i>}
@@ -174,7 +174,7 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse2" className="accordion-collapse collapse show">
+                <div id="collapse2" className="accordion-collapse collapse">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -268,7 +268,7 @@ function AllCallsDetails() {
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 className="accordion-header">
                   <button
-                    className="accordion-button"
+                    className="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapse3"
@@ -289,7 +289,7 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="  d-flex align-items-center justify-content-between me-4">
-                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
+                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
                           {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
@@ -299,7 +299,7 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapse3" className="accordion-collapse collapse show">
+                <div id="collapse3" className="accordion-collapse collapse">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
@@ -393,7 +393,7 @@ function AllCallsDetails() {
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 className="accordion-header">
                   <button
-                    className="accordion-button"
+                    className="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#collapseinternal"
@@ -413,7 +413,7 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="  d-flex align-items-center justify-content-between me-4">
-                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Total:&nbsp;
+                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
                           {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
@@ -422,7 +422,7 @@ function AllCallsDetails() {
                     </div>
                   </button>
                 </h2>
-                <div id="collapseinternal" className="accordion-collapse collapse show">
+                <div id="collapseinternal" className="accordion-collapse collapse">
                   <div className="accordion-body">
                     <div className="row g-3">
                       <div className="col-xl-6 col-xxl-6">
