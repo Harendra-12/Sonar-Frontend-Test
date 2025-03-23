@@ -33,7 +33,7 @@ function UserConfiguration() {
       try {
         const response = await generalGetFunction("/table-permission-all");
         setUserPermission(response?.data);
-        const permissionData=permissionDataForAccordian(response?.data[Object.keys(response?.data)[0]])
+        const permissionData = permissionDataForAccordian(response?.data[Object.keys(response?.data)[0]])
         setUserPermissionData(permissionData);
         setActiveUserPermission(Object.keys(response?.data)[0]);
         if (locationState.table_permissions.length > 0) {
@@ -67,10 +67,10 @@ function UserConfiguration() {
   //  function to add permission data for Accordian
   function permissionDataForAccordian(data) {
     const resultMap = new Map();
-   
+
     data.forEach(item => {
       const key = `${item.tb_model}-${item.tb_name}-${item.column_name}`;
-   
+
       if (!resultMap.has(key)) {
         resultMap.set(key, {
           column_name: item.column_name,
@@ -79,20 +79,20 @@ function UserConfiguration() {
           all_action: []
         });
       }
-   
+
       const existingItem = resultMap.get(key);
-   
+
       // Add all actions (including view) to all_action array
       existingItem.all_action.push({
         action: item.action,
         id: item.id,
-        createdAt : item.created_at,
-        updatedAt : item.updated_at
+        createdAt: item.created_at,
+        updatedAt: item.updated_at
       });
-      
-   
+
+
     });
-   
+
     return Array.from(resultMap.values());
   }
   return (
@@ -323,7 +323,7 @@ function UserConfiguration() {
                                               </div>
                                               <div className="accordion permissionListWrapper">
                                                 {userPermissionData && userPermissionData.map(
-                                                  (item,key) => (
+                                                  (item, key) => (
                                                     <div className="accordion-item">
                                                       <h2
                                                         className="accordion-header"
@@ -339,7 +339,7 @@ function UserConfiguration() {
                                                         >
                                                           <input
                                                             type="checkbox"
-                                                            checked={item?.all_action?.every(action => 
+                                                            checked={item?.all_action?.every(action =>
                                                               checkedUserPermissionData.includes(action?.id)
                                                             )}
                                                             onChange={(e) => {
@@ -353,7 +353,7 @@ function UserConfiguration() {
                                                                   ]
                                                                 );
                                                               } else {
-                                                                setCheckedUserPermissionData(prev => 
+                                                                setCheckedUserPermissionData(prev =>
                                                                   prev.filter(id => !item?.all_action.some(action => action?.id === id))
                                                                 );
                                                               }
@@ -368,45 +368,47 @@ function UserConfiguration() {
                                                         className="accordion-collapse collapse"
                                                         aria-labelledby={`collapseHeading${key}`}
                                                       >
-                                                      {item?.all_action?.map((action)=>{
-                                                        return   <div className="accordion-body">
-                                                        <div
-                                                          className="col-xxl col-auto col-md-4 col-6"
-                                                        >
-                                                          <input
-                                                            type="checkbox"
-                                                            checked={checkedUserPermissionData.includes(
-                                                              action?.id
-                                                            )}
-                                                            onChange={(e) => {
-                                                              if (
-                                                                e.target.checked
-                                                              ) {
-                                                                setCheckedUserPermissionData(
-                                                                  (pre) => [
-                                                                    ...pre,
-                                                                    action?.id,
-                                                                  ]
-                                                                );
-                                                              } else {
-                                                                const newCheck =
-                                                                  checkedUserPermissionData.filter(
-                                                                    (id) =>
-                                                                      id !==
-                                                                      action?.id
-                                                                  );
-                                                                setCheckedUserPermissionData(
-                                                                  newCheck
-                                                                );
-                                                              }
-                                                            }}
-                                                          />
-                                                          <label className="formLabel ms-2 text-capitalize">
-                                                            {action?.action}
-                                                          </label>
+                                                        <div className="accordion-body justify-content-start">
+                                                          {item?.all_action?.map((action) => {
+                                                            return (
+                                                              <div
+                                                                className="col-xl-2 col-md-4 col-6"
+                                                              >
+                                                                <input
+                                                                  type="checkbox"
+                                                                  checked={checkedUserPermissionData.includes(
+                                                                    action?.id
+                                                                  )}
+                                                                  onChange={(e) => {
+                                                                    if (
+                                                                      e.target.checked
+                                                                    ) {
+                                                                      setCheckedUserPermissionData(
+                                                                        (pre) => [
+                                                                          ...pre,
+                                                                          action?.id,
+                                                                        ]
+                                                                      );
+                                                                    } else {
+                                                                      const newCheck =
+                                                                        checkedUserPermissionData.filter(
+                                                                          (id) =>
+                                                                            id !==
+                                                                            action?.id
+                                                                        );
+                                                                      setCheckedUserPermissionData(
+                                                                        newCheck
+                                                                      );
+                                                                    }
+                                                                  }}
+                                                                />
+                                                                <label className="formLabel ms-2 text-capitalize">
+                                                                  {action?.action}
+                                                                </label>
+                                                              </div>
+                                                            )
+                                                          })}
                                                         </div>
-                                                      </div>
-                                                      })}
                                                       </div>
                                                     </div>
                                                   )
