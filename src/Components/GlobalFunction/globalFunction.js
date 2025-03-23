@@ -67,9 +67,9 @@ export async function generalGetFunction(endpoint) {
       if (err.response?.status === 401) {
         handleNavigation("/");
         return err
-        ?.response?.data;
-      }else if(err?.response?.status === 429){
-       toast.error("Too many attempts. Please wait before trying again.")
+          ?.response?.data;
+      } else if (err?.response?.status === 429) {
+        toast.error("Too many attempts. Please wait before trying again.")
       }
       else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
@@ -206,7 +206,7 @@ export async function fileUploadPutFunction(endpoint, data) {
 // Generate presigned url function
 export async function generatePreSignedUrl(name) {
   return axiosInstance
-    .post("/s3/presigned-url", {src: name})
+    .post("/s3/presigned-url", { src: name })
     .then((res) => {
       return res.data;
     })
@@ -241,12 +241,12 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
-export function checkViewSidebar(slug,permissions,userPermissions,action=undefined) {
+export function checkViewSidebar(slug, permissions, userPermissions, action = undefined) {
   const allPermission = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
       permissions[key].forEach((item) => {
-        if(userPermissions?.includes(item.id)){
+        if (userPermissions?.includes(item.id)) {
           allPermission.push({
             id: item?.id,
             action: item?.action,
@@ -257,11 +257,11 @@ export function checkViewSidebar(slug,permissions,userPermissions,action=undefin
     }
   }
   if (!action) {
-    const actionPresent=allPermission.find((item)=>item.model===slug)
-    if(actionPresent) return true;
-  }else if(action){
-    const actionPresent=allPermission.find((item)=>item.model===slug&& item.action===action)
-    if(actionPresent) return true;
+    const actionPresent = allPermission.find((item) => item.model === slug)
+    if (actionPresent) return true;
+  } else if (action) {
+    const actionPresent = allPermission.find((item) => item.model === slug && item.action === action)
+    if (actionPresent) return true;
   }
   return false;
 }
@@ -274,26 +274,26 @@ export function featureUnderdevelopment() {
     popup = document.createElement("div");
     popup.id = "globalPopup";
     popup.innerHTML = `
-    <div className="popup">
-      <div className="container h-100">
-        <div className="row h-100 justify-content-center align-items-center">
-          <div className="row content col-xxl-3 col-xl-4">
-            <div className="col-2 px-0">
-              <div className="iconWrapper">
-                <i className="fa-duotone fa-clock  text-info"></i>
+    <div class="popup">
+      <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+          <div class="row content col-xxl-3 col-xl-4">
+            <div class="col-2 px-0">
+              <div class="iconWrapper">
+                <i class="fa-duotone fa-clock  text-info"></i>
               </div>
             </div>
-            <div className="col-10 ps-0">
+            <div class="col-10 ps-0">
               <h4>Sorry!</h4>
               <p>This feature is under development!</p>
-              <div className="d-flex justify-content-start">
+              <div class="d-flex justify-content-start">
                 <button
-                  className="panelButton gray m-0"
+                  class="panelButton gray m-0"
                   onclick="document.getElementById('globalPopup').remove()"
                 >
-                  <span className="text">Ok</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-xmark"></i>
+                  <span class="text">Ok</span>
+                  <span class="icon">
+                    <i class="fa-solid fa-xmark"></i>
                   </span>
                 </button>
               </div>
@@ -337,7 +337,7 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   // Dispatch logout action and disconnect session
   dispatch({ type: "SET_LOGOUT", logout: 1 });
   setTimeout(() => {
-    dispatch({type:"RESET_STATE"})
+    dispatch({ type: "RESET_STATE" })
   }, 100);
   sessionManager.disconnect();
 }
