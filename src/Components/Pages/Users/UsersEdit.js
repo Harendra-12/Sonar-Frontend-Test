@@ -567,9 +567,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     );
                                   })}
                               </select>
-                              {errors.timezone_id && (
+                              {errors?.timezone_id && (
                                 <ErrorMessage
-                                  text={errors.timezone_id.message}
+                                  text={errors?.timezone_id.message}
                                 />
                               )}
                             </div>

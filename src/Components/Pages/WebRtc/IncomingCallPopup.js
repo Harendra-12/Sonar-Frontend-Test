@@ -15,6 +15,8 @@ function IncomingCallPopup({
   isVideoOn,
 }) {
   const previewDialer = useSelector((state) => state.previewDialer);
+  console.log("preview ",previewDialer);
+  
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -25,6 +27,7 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
+console.log("Session",session);
 
   useEffect(() => {
     const audio = new Audio(ringtone);
@@ -321,7 +324,7 @@ function IncomingCallPopup({
         >
           {/* Preview dialer */}
           {previewDialer.map((item) => {
-            if (item.phone_number === session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2)) {
+            if (item.lead_id == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
               return (
                 <div className="campaignInfoWrapper">
                   <div className="campaignContent">

@@ -3,14 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
-  generalPostFunction,
   login,
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import axios from "axios";
+const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
     <>
@@ -84,6 +84,7 @@ export function LoginComponent() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
+  const [logInDetails, setLoginDetails] = useState([])
 
   // Handle login function
   async function handleLogin() {
@@ -161,10 +162,27 @@ export function LoginComponent() {
         }
       } else {
         setLoading(false);
-
         // const errorMessage = Object.keys(data.error);
         toast.error(data.response.data.message);
       }
+    }
+  }
+
+  // function to logout from specific device
+  async function handleLogoutFromSpecificDevice(token) {
+    try {
+      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log(logOut)
+      if (logOut?.data?.status) {
+        toast.success(logOut?.data?.message)
+      }
+    } catch (error) {
+      // console.log("00err",error)
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -176,18 +194,83 @@ export function LoginComponent() {
       toast.error("Password is required!");
     } else {
       setLoading(true);
-      const checkLogin = await generalPostFunction("/auth/check-exist-login", { email: userName, password: password })
-      if (checkLogin.message === "User is already logged in.") {
-        setLoading(false)
-        setPopUp(true)
-      } else if (checkLogin.status) {
-        handleLogin()
-      } else {
-        setLoading(false)
-        if (checkLogin.errors) {
-          toast.error(checkLogin?.errors[Object.keys(checkLogin?.errors)[0]][0])
+      const checkLogin = await login(userName, password);
+      if (checkLogin?.status) {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+
+          localStorage.setItem("account", JSON.stringify(profile.data));
+          const accountData = await generalGetFunction(
+            `/account/${profile.data.account_id}`
+          );
+          if (accountData?.status) {
+            dispatch({
+              type: "SET_ACCOUNTDETAILS",
+              accountDetails: accountData.data,
+            });
+            localStorage.setItem(
+              "accountDetails",
+              JSON.stringify(accountData.data)
+            );
+            if (Number(accountData.data.company_status) < 6) {
+              dispatch({
+                type: "SET_BILLINGLISTREFRESH",
+                billingListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_CARDLISTREFRESH",
+                cardListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: accountData.data,
+              });
+              localStorage.setItem(
+                "tempAccount",
+                JSON.stringify(accountData.data)
+              );
+              setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/temporary-dashboard");
+            } else {
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: null,
+              });
+              // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+              if (profile.data.user_role?.roles?.name === "Agent") {
+                if (profile.data.extension_id === null) {
+                  toast.error("You are not assigned to any extension");
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/webrtc");
+                }
+              } else {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
+              }
+            }
+          } else {
+            setLoading(false);
+            toast.error("Server error !");
+          }
+        } else {
+          setLoading(false);
+          toast.error("unauthorized access!");
         }
 
+
+      } else {
+        setLoading(false)
+        setPopUp(true)
+        setLoginDetails(checkLogin?.response?.data?.data)
       }
 
     }
@@ -217,7 +300,7 @@ export function LoginComponent() {
   async function handleLogoutAll() {
     setLoading(true)
     setPopUp(false)
-    const logoutAll = await generalPostFunction("/auth/check-exist-login?logouts", { email: userName, password: password })
+    const logoutAll = await generalGetFunction("logout?all")
     if (logoutAll.status) {
       handleLogin()
     } else {
@@ -279,7 +362,60 @@ export function LoginComponent() {
         </div>
       </form>
       {popUp ? (
-        <div className="popupopen ">
+        <>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                <h5>Warning!</h5>
+              </div>
+              <p>
+                You are already login on different device!
+              </p>
+
+              {logInDetails?.length > 0 &&
+                <ul className="mb-3">
+                  <p>You are logged in from the specific devices: </p>
+                  {logInDetails?.map((item) => {
+                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser}
+                      <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                    </li>
+                  })}
+                </ul>
+              }
+              <div className="d-flex justify-content-between px-0">
+                <button
+                  className="panelButton m-0 float-end"
+                  onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }}
+                >
+                  <span className="text">Login</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check"></i>
+                  </span>
+                </button>
+
+                <div>
+                  <button
+                    disabled={loading}
+                    className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
+                    onClick={handleLogoutAll}
+                  >
+                    <span className="text text-danger">Logout All Devices</span>
+                    {/* <span className="icon">
+                        <i className="fa-solid fa-power-off"></i>
+                      </span> */}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          {/* <div className="popupopen ">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
@@ -289,39 +425,42 @@ export function LoginComponent() {
                   </div>
                 </div>
                 <div className="col-10 ps-0">
-                  <h4 className="mb-2">Warning!</h4>
-                  <p className="mb-2">
-                    You are already logged in from a different device!
+                  <h4>Warning!</h4>
+                  <p className="my-2">
+                    You are already login on different device!
                   </p>
-                  <p>
-                    You may log out of all devices or log in from this device.
-                  </p>
+                  {logInDetails?.length > 0 &&
+                    <ul className="mb-3">
+                      <p>You are logged in from the specific devices: </p>
+                      {logInDetails?.map((item) => {
+                        return <li className="d-flex align-items-center">{item?.platform}   {item?.browser}
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off" /></button>
+                        </li>
+                      })}
+                    </ul>
+                  }
                   <div className="d-flex justify-content-between">
-                    <div>
-                      <button
-                        className="panelButton m-0 float-end"
-                        onClick={() => {
-                          setPopUp(false);
-                          setLoading(true)
-                          handleLogin()
-                        }}
-                      >
-                        <span className="text">Login</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                    </div>
+                    <button
+                      className="panelButton m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setLoading(true)
+                        handleLogin()
+                      }}
+                    >
+                      <span className="text">Login</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
                     <div>
                       <button
                         disabled={loading}
-                        className="panelButton m-0 delete"
+                        className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
                         onClick={handleLogoutAll}
                       >
-                        <span className="text">Logout</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-power-off"></i>
-                        </span>
+                        <span className="text text-danger">Logout All Devices</span>
                       </button>
                     </div>
                   </div>
@@ -329,7 +468,8 @@ export function LoginComponent() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        </>
       ) : (
         ""
       )}
