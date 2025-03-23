@@ -47,7 +47,7 @@ function CardAndBilling() {
   const [autoPayThreshold, setAutoPayThreshold] = useState(0);
   const [autoPayAmount, setAutoPayAmount] = useState("");
   const [autoPayStatus, setAutoPayStatus] = useState("enable");
-  const [autoPaymentFetchData,setAutoPaymentFetchData]=useState(null)
+  const [autoPaymentFetchData, setAutoPaymentFetchData] = useState(null)
   const handleCardPopup = (value) => {
     setCardPopUp(value);
   };
@@ -1187,7 +1187,7 @@ function CardAndBilling() {
                       </div>
                       <div className="col-xl-12 mt-3">
                         <div
-                          className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable" ) ? "active" : ""}`}
+                          className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
                           style={{ backgroundColor: "var(--ele-color2)" }}
                         >
                           <div className="heading">
@@ -1196,7 +1196,7 @@ function CardAndBilling() {
                               <h5>Auto Pay Feature</h5>
                               {
                                 !autoPaymentFetchData ? "" :
-                                  <p>Status: <span className="text-success" style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
+                                  <p>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
                               }
                             </div>
 
@@ -1213,13 +1213,13 @@ function CardAndBilling() {
                           <div className="data-number2">
                             <div className="d-flex flex-wrap justify-content-between align-items-center">
                               {
-                                !autoPaymentFetchData ? 
-                                <div className="col-2" >
-                                  <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
-                                    <span className="text">Add</span>
-                                    <span className="icon"><i className="fa-solid fa-edit" /></span>
-                                  </button>
-                                </div> :
+                                !autoPaymentFetchData ?
+                                  <div className="col-2" >
+                                    <button className="panelButton" onClick={() => setAutoPayPopup(true)}>
+                                      <span className="text">Add</span>
+                                      <span className="icon"><i className="fa-solid fa-edit" /></span>
+                                    </button>
+                                  </div> :
                                   <>
                                     <div className="col-10">
                                       <h5>
