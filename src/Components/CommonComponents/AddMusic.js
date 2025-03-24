@@ -21,7 +21,6 @@ const AddMusic = ({
     if (newMusic) {
       const maxSizeInKB = 2048;
       const fileSizeInKB = newMusic.size / 1024;
-      console.log("This is file size", fileSizeInKB);
       if (fileSizeInKB > maxSizeInKB) {
         toast.error("Please choose a file less than 2048 kilobytes.");
       } else {

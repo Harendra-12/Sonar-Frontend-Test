@@ -26,7 +26,7 @@ function CallDesposition() {
                                                     className="panelButton gray">
                                                     <span className="text">Back</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-caret-left"></i>
+                                                        <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
                                                 <Link
@@ -37,7 +37,7 @@ function CallDesposition() {
                                                     className="panelButton" >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
-                                                        <i class="fa-solid fa-plus"></i>
+                                                        <i className="fa-solid fa-plus"></i>
                                                     </span>
                                                 </Link>
                                             </div>
@@ -97,22 +97,22 @@ function CallDesposition() {
                                                         <td>12:45</td>
                                                         <td>Test</td>
                                                         <td>
-                                                            <div class="dropdown">
-                                                                <div class={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <div className="dropdown">
+                                                                <div className={`tableButton $`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i className="fa-solid fa-ellipsis-vertical" />
                                                                 </div>
-                                                                <ul class="dropdown-menu actionBtnDropdowns">
+                                                                <ul className="dropdown-menu actionBtnDropdowns">
                                                                     <li className='dropdown-item'>
                                                                         <Tippy content="Reset configuration of this DID">
-                                                                            <div class="clearButton text-align-start">
-                                                                                <i class="fa-regular fa-pen me-2"></i>Update
+                                                                            <div className="clearButton text-align-start">
+                                                                                <i className="fa-regular fa-pen me-2"></i>Update
                                                                             </div>
                                                                         </Tippy>
                                                                     </li>
                                                                     <li className='dropdown-item'>
                                                                         <Tippy content="Reset configuration of this DID">
-                                                                            <div class="clearButton text-align-start">
-                                                                                <i class="fa-regular fa-trash me-2"></i>Delete
+                                                                            <div className="clearButton text-align-start">
+                                                                                <i className="fa-regular fa-trash me-2"></i>Delete
                                                                             </div>
                                                                         </Tippy>
                                                                     </li>

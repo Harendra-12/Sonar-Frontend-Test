@@ -92,7 +92,6 @@ function Call({
         const apiData = await generalGetFunction(url);
 
         if (apiData.status) {
-          console.log(apiData);
           setAllApiData(apiData.data.data?.reverse());
           const result = apiData.data.data?.reverse() || [];
           setRawData(apiData.data);
@@ -112,7 +111,6 @@ function Call({
   const handleScroll = () => {
     const div = callListRef.current;
     if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
-      console.log(rawData.current_page, rawData?.last_page, rawData);
       if (!isLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }
@@ -226,7 +224,6 @@ function Call({
       })
     );
   }, [data, clickStatus]);
-  console.log(clickedExtension);
   const formatTime = (duration) => {
     const sec = Math.floor(duration % 60);
     const min = Math.floor((duration / 60) % 60);
@@ -345,12 +342,12 @@ function Call({
                     <div className="callIconAdmin">
                       {item["variable_billsec"] > 0 ? (
                         <i
-                          class="fa-solid fa-phone mx-2"
+                          className="fa-solid fa-phone mx-2"
                           style={{ color: "var(--ui-accent)" }}
                         ></i>
                       ) : (
                         <i
-                          class="fa-solid fa-phone-xmark mx-2"
+                          className="fa-solid fa-phone-xmark mx-2"
                           style={{ color: "red" }}
                         ></i>
                       )}
@@ -408,12 +405,6 @@ function Call({
     if (clickedExtension) {
       const filteredHistory = data.filter((item) => {
         if (!isCustomerAdmin) {
-          console.log(
-            extension,
-            clickedExtension,
-            item["Caller-Callee-ID-Number"],
-            item["Caller-Caller-ID-Number"]
-          );
           return (
             (item["Caller-Callee-ID-Number"] === extension &&
               item["Caller-Caller-ID-Number"] === clickedExtension) ||
@@ -423,8 +414,6 @@ function Call({
         }
         return item["Caller-Callee-ID-Number"] === clickedExtension;
       });
-
-      console.log("filteredHistory", filteredHistory);
       setCallHistory(filteredHistory);
     }
   }, [clickedExtension, allApiData, extension]);
@@ -552,16 +541,11 @@ function Call({
 
       // Listen for tracks being added to the remote stream
       remoteStream.onaddtrack = () => {
-        console.log("Remote track added:", remoteStream);
         playRemoteStream(remoteStream);
       };
 
       // If tracks are already present, attach immediately
       if (remoteStream.getTracks().length > 0) {
-        console.log(
-          "Remote stream tracks available immediately:",
-          remoteStream
-        );
         playRemoteStream(remoteStream);
       }
     }
@@ -653,7 +637,7 @@ function Call({
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                       Calls{" "}
                       <button
-                        class="clearButton2"
+                        className="clearButton2"
                         onClick={() => {
                           if (!loading) {
                             setRefreshCalls(refreshCalls + 1);
@@ -661,7 +645,7 @@ function Call({
                         }}
                       >
                         <i
-                          class={
+                          className={
                             loading
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5 "
@@ -677,7 +661,7 @@ function Call({
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         onChange={() => featureUnderdevelopment()}
                         style={{ backgroundColor: "var(--searchBg)" }}
                       />
@@ -693,25 +677,25 @@ function Call({
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li
                             onClick={() => {
                               if (allCallCenterIds.length > 0) {
@@ -722,7 +706,7 @@ function Call({
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -734,7 +718,7 @@ function Call({
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Disconnect
@@ -746,7 +730,7 @@ function Call({
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Reconnect
@@ -908,17 +892,17 @@ function Call({
                       {loading ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
-                        sortKeys(Object.keys(groupedCalls)).map((date) => (
-                          <>
-                            <div key={date} className="dateHeader">
+                        sortKeys(Object.keys(groupedCalls)).map((date,key) => (
+                          <div key={key}>
+                            <div key={date} className="dateHeader" >
                               <p>{date}</p>
                             </div>
                             {sortedGroupedCalls[date].map(renderCallItem)}
-                          </>
+                          </div>
                         ))
                       ) : (
                         <div className="startAJob">
-                          <div class="text-center mt-3">
+                          <div className="text-center mt-3">
                             <img
                               src={require("../../assets/images/empty-box.png")}
                               alt="Empty"
@@ -945,7 +929,7 @@ function Call({
                       {isLoading ? (
                         <div className="text-center">
                           <i
-                            class={
+                            className={
                               isLoading
                                 ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                 : "fa-regular fa-arrows-rotate fs-5 "

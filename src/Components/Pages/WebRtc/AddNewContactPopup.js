@@ -96,7 +96,7 @@ function AddNewContactPopup({
       <div className="addNewContactPopup">
         <div className="row">
           <div className="col-12 heading">
-            <i class="fa-light fa-user-plus"></i>
+            <i className="fa-light fa-user-plus"></i>
             <h5>
               {editContactToggle
                 ? "Edit People in Contact Lists"
@@ -108,14 +108,14 @@ function AddNewContactPopup({
             </p>
             <div className="border-bottom col-12" />
           </div>
-          <div class="col-xl-12">
-            <div class="formLabel">
+          <div className="col-xl-12">
+            <div className="formLabel">
               <label for="">Full Name</label>
             </div>
-            <div class="col-12">
+            <div className="col-12">
               <input
                 type="text"
-                class="formItem"
+                className="formItem"
                 placeholder="Full Name"
                 {...register("name", {
                   ...requiredValidator,
@@ -126,14 +126,14 @@ function AddNewContactPopup({
               {errors.name && <ErrorMessage text={errors.name.message} />}
             </div>
           </div>
-          <div class="col-xl-12 mt-3">
-            <div class="formLabel">
+          <div className="col-xl-12 mt-3">
+            <div className="formLabel">
               <label for="">DID / Extension</label>
             </div>
-            <div class="col-12">
+            <div className="col-12">
               <input
                 type="text"
-                class="formItem"
+                className="formItem"
                 placeholder="DID"
                 {...register("did", {
                   ...requiredValidator,
@@ -157,7 +157,7 @@ function AddNewContactPopup({
               >
                 <span className="text">Cancel</span>
                 <span className="icon">
-                  <i class="fa-solid fa-caret-left"></i>
+                  <i className="fa-solid fa-caret-left"></i>
                 </span>
               </button>
               <button
@@ -176,7 +176,7 @@ function AddNewContactPopup({
                 </span>
                 <span className="icon">
                   <i
-                    class={`fa-solid fa-${
+                    className={`fa-solid fa-${
                       editContactToggle ? "floppy-disk" : "check"
                     }`}
                   ></i>

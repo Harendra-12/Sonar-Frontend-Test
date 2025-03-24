@@ -115,7 +115,7 @@ const IvrListing = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         {  checkViewSidebar(
@@ -273,7 +273,7 @@ const IvrListing = () => {
                                             })
                                           }
                                         >
-                                          <i class="fa-solid fa-pencil"></i>
+                                          <i className="fa-solid fa-pencil"></i>
                                         </button>
                                       </td>
                                       <td>
@@ -343,7 +343,7 @@ const IvrListing = () => {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                     ) : (
@@ -356,7 +356,7 @@ const IvrListing = () => {
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                       </button>
                     )}
@@ -370,7 +370,7 @@ const IvrListing = () => {
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                       </button>
                    

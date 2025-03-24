@@ -29,6 +29,7 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  // const [transcript,setTranscript]=useState("")
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -64,8 +65,7 @@ function CallDetails({
     const min = Math.floor((duration / 60) % 60);
     const hour = Math.floor(duration / 3600);
     return (
-      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${
-        sec ? sec + " sec" : ""
+      `${hour ? hour + " hr" : ""}${min ? min + " min" : ""} ${sec ? sec + " sec" : ""
       }` || "0 sec"
     );
   };
@@ -102,6 +102,11 @@ function CallDetails({
       setactivePage("messages");
     }
   };
+
+  const handleTranscript=()=>{
+
+
+  }
 
   const handlePlaying = async (audio) => {
     if (!audio) return;
@@ -157,7 +162,6 @@ function CallDetails({
       }
     }
   }, [callDetails]);
-  // console.log(callDetails);
 
   const handleSavedContactName = (callerName) => {
     if (!isCustomerAdmin) {
@@ -168,8 +172,6 @@ function CallDetails({
       const matchingContact = allContact.find(
         (contact) => contact.did === counterPartyExtension
       );
-
-      // console.log(matchingContact);
       if (matchingContact) {
         return `${matchingContact.title} - ${matchingContact.name}`;
       } else {
@@ -181,8 +183,6 @@ function CallDetails({
       const matchingContact = allContact.find(
         (contact) => contact.did === counterPartyExtension
       );
-
-      // console.log(matchingContact);
       if (matchingContact) {
         return `${matchingContact.title} - ${matchingContact.name}`;
       } else {
@@ -244,19 +244,19 @@ function CallDetails({
                 <i className="fa-regular fa-video" />
               </button>
             )}
-            <div class="dropdown">
+            <div className="dropdown">
               <button
-                class="clearButton2 xl"
+                className="clearButton2 xl"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <i className="fa-solid fa-ellipsis-vertical"></i>
               </button>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -265,7 +265,7 @@ function CallDetails({
                 </li>
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -274,7 +274,7 @@ function CallDetails({
                 </li>
                 <li>
                   <a
-                    class="dropdown-item"
+                    className="dropdown-item"
                     href="/"
                     onClick={() => featureUnderdevelopment()}
                   >
@@ -385,53 +385,51 @@ function CallDetails({
                     {!isCustomerAdmin ? (
                       <td
                         style={{ paddingLeft: "32px" }}
-                        className={`${
-                          callDetails?.["Caller-Callee-ID-Number"] ===
-                            extension && callDetails?.["variable_billsec"] > 0
-                            ? "incoming"
-                            : callDetails?.["Caller-Caller-ID-Number"] ===
-                              extension
+                        className={`${callDetails?.["Caller-Callee-ID-Number"] ===
+                          extension && callDetails?.["variable_billsec"] > 0
+                          ? "incoming"
+                          : callDetails?.["Caller-Caller-ID-Number"] ===
+                            extension
                             ? "outgoing"
                             : callDetails?.["Caller-Callee-ID-Number"] ===
-                                extension &&
+                              extension &&
                               callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
+                              ? "missed"
+                              : callDetails?.["Call-Direction"] === "voicemail"
+                                ? "voicemail"
+                                : ""
+                          }`}
                       >
                         <span>
                           {callDetails &&
-                          callDetails?.["Caller-Callee-ID-Number"] ===
+                            callDetails?.["Caller-Callee-ID-Number"] ===
                             extension &&
-                          callDetails?.["variable_billsec"] > 0
+                            callDetails?.["variable_billsec"] > 0
                             ? "Incoming"
                             : callDetails?.["Caller-Caller-ID-Number"] ===
                               extension
-                            ? "Outgoing"
-                            : callDetails?.["Caller-Callee-ID-Number"] ===
+                              ? "Outgoing"
+                              : callDetails?.["Caller-Callee-ID-Number"] ===
                                 extension &&
-                              callDetails?.["variable_billsec"] === 0
-                            ? "Missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""}
+                                callDetails?.["variable_billsec"] === 0
+                                ? "Missed"
+                                : callDetails?.["Call-Direction"] === "voicemail"
+                                  ? "voicemail"
+                                  : ""}
                         </span>
                       </td>
                     ) : (
                       <td
-                        className={`${
-                          callDetails?.["variable_billsec"] === 0
-                            ? "missed"
-                            : callDetails?.["Call-Direction"] === "voicemail"
+                        className={`${callDetails?.["variable_billsec"] === 0
+                          ? "missed"
+                          : callDetails?.["Call-Direction"] === "voicemail"
                             ? "voicemail"
                             : ""
-                        }`}
+                          }`}
                       >
                         <span>
                           {callDetails?.["Caller-Callee-ID-Number"]}==
-                          <i class="fa-solid fa-angles-right"></i>
+                          <i className="fa-solid fa-angles-right"></i>
                           {callDetails?.["Caller-Caller-ID-Number"]}
                         </span>
                       </td>
@@ -457,9 +455,9 @@ function CallDetails({
             <div className="overviewTableWrapper p-2">
               <div className="overviewTableChild">
                 <div className="d-flex flex-wrap">
-                  <div class="col-12">
-                    <div class="heading">
-                      <div class="content">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
                         <h4>Call Logs</h4>
                         <p>You can see all of the call logs here</p>
                       </div>
@@ -482,7 +480,7 @@ function CallDetails({
                             <>
                               <tr
                                 key={item.id}
-                                data-bs-toggle="collapse"
+                                // data-bs-toggle="collapse"
                                 href={`#voiceMail${item.id}`}
                                 role="button"
                                 aria-expanded="false"
@@ -522,41 +520,40 @@ function CallDetails({
                                 {!isCustomerAdmin ? (
                                   <td
                                     style={{ paddingLeft: "32px" }}
-                                    className={`${
-                                      item?.["Caller-Callee-ID-Number"] ===
-                                        extension &&
+                                    className={`${item?.["Caller-Callee-ID-Number"] ===
+                                      extension &&
                                       item?.["variable_billsec"] > 0
-                                        ? "incoming"
-                                        : item?.["Caller-Caller-ID-Number"] ===
-                                          extension
+                                      ? "incoming"
+                                      : item?.["Caller-Caller-ID-Number"] ===
+                                        extension
                                         ? "outgoing"
                                         : item?.["Caller-Callee-ID-Number"] ===
-                                            extension &&
+                                          extension &&
                                           item?.["variable_billsec"] === 0
-                                        ? "missed"
-                                        : item?.["Call-Direction"] ===
-                                          "voicemail"
-                                        ? "voicemail"
-                                        : ""
-                                    }`}
+                                          ? "missed"
+                                          : item?.["Call-Direction"] ===
+                                            "voicemail"
+                                            ? "voicemail"
+                                            : ""
+                                      }`}
                                   >
                                     <span>
                                       {item &&
-                                      item?.["Caller-Callee-ID-Number"] ===
+                                        item?.["Caller-Callee-ID-Number"] ===
                                         extension &&
-                                      item?.["variable_billsec"] > 0
+                                        item?.["variable_billsec"] > 0
                                         ? "Incoming"
                                         : item?.["Caller-Caller-ID-Number"] ===
                                           extension
-                                        ? "Outgoing"
-                                        : item?.["Caller-Callee-ID-Number"] ===
+                                          ? "Outgoing"
+                                          : item?.["Caller-Callee-ID-Number"] ===
                                             extension &&
-                                          item?.["variable_billsec"] === 0
-                                        ? "Missed"
-                                        : item?.["Call-Direction"] ===
-                                          "voicemail"
-                                        ? "voicemail"
-                                        : ""}
+                                            item?.["variable_billsec"] === 0
+                                            ? "Missed"
+                                            : item?.["Call-Direction"] ===
+                                              "voicemail"
+                                              ? "voicemail"
+                                              : ""}
                                     </span>
                                   </td>
                                 ) : (
@@ -572,12 +569,12 @@ function CallDetails({
                                       {item?.["Caller-Callee-ID-Number"]}
                                       {item?.["variable_billsec"] > 0 ? (
                                         <i
-                                          class="fa-solid fa-phone mx-2"
+                                          className="fa-solid fa-phone mx-2"
                                           style={{ color: "var(--ui-accent)" }}
                                         ></i>
                                       ) : (
                                         <i
-                                          class="fa-solid fa-phone-xmark mx-2"
+                                          className="fa-solid fa-phone-xmark mx-2"
                                           style={{ color: "red" }}
                                         ></i>
                                       )}
@@ -597,9 +594,9 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <div class="dropdown">
+                                  <div className="dropdown">
                                     <div
-                                      class={`tableButton`}
+                                      className={`tableButton`}
                                       href="#"
                                       role="button"
                                       data-bs-toggle="dropdown"
@@ -607,11 +604,11 @@ function CallDetails({
                                     >
                                       <i className="fa-solid fa-ellipsis-vertical" />
                                     </div>
-                                    <ul class="dropdown-menu actionBtnDropdowns">
+                                    <ul className="dropdown-menu actionBtnDropdowns">
                                       <>
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() => {
                                               if (item?.recording_path) {
                                                 handlePlaying(
@@ -620,13 +617,12 @@ function CallDetails({
                                               }
                                             }}
                                           >
-                                            
+
                                             <i
-                                              class={`fa-solid fa-${
-                                                item.configuration !== null
-                                                  ? "play"
-                                                  : "triangle-exclamation"
-                                              } me-2`}
+                                              className={`fa-solid fa-${item.configuration !== null
+                                                ? "play"
+                                                : "triangle-exclamation"
+                                                } me-2`}
                                             ></i>{" "}
                                             {item.configuration !== null
                                               ? "Play "
@@ -636,12 +632,12 @@ function CallDetails({
 
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() =>
-                                              featureUnderdevelopment()
+                                              handleTranscript()
                                             }
                                           >
-                                          <i class="fa-solid fa-bolt me-2"></i>
+                                            <i className="fa-solid fa-bolt me-2"></i>
                                             Transcript
                                           </div>
                                         </li>
@@ -650,14 +646,14 @@ function CallDetails({
                                       <>
                                         <li className="dropdown-item">
                                           <div
-                                            class="clearButton text-align-start"
+                                            className="clearButton text-align-start"
                                             onClick={() =>
                                               handleAudioDownload(
                                                 item.recording_path
                                               )
                                             }
                                           >
-                                           <i class="fa-regular fa-download"></i>{" "}
+                                            <i className="fa-regular fa-download"></i>{" "}
                                             Download
                                           </div>
                                         </li>
@@ -675,7 +671,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <AudioPlayer audioUrl={ audioURL} />
+                                        <AudioPlayer audioUrl={audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
@@ -707,6 +703,28 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
+                              {/* <tr
+                                className="show"
+                                id={`voiceMail${item?.id}`}
+                              >
+                                <td colSpan={5}>
+                                  <div className="audio-container">
+                                    <div className="transcriptWrap">
+                                      <div className="textContent col">
+                                        <p>Consectetur cupidatat adipisicing eiusmod officia eiusmod culpa minim eiusmod aliqua sunt duis consectetur. Aliqua cupidatat do amet aliqua amet aute cupidatat ex ullamco enim occaecat.</p>
+                                      </div>
+                                      <div className="btnWrap col-auto">
+                                        <button className="clearButton2">
+                                          <i className="fa-sharp fa-chevron-left"></i>
+                                        </button>
+                                        <button className="clearButton2 ms-1">
+                                          <i className="fa-sharp fa-chevron-right"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr> */}
                             </>
                           ))}
                         </tbody>

@@ -626,7 +626,7 @@ export const ConferenceCall = ({
                               type="search"
                               name="Search"
                               placeholder="Search users, groups or chat"
-                              class="formItem fw-normal"
+                              className="formItem fw-normal"
                               style={{ backgroundColor: "var(--searchBg)" }}
                             />
                           </div>
@@ -636,7 +636,7 @@ export const ConferenceCall = ({
                             </button>
                           </div>
                           <div className="col-auto">
-                            <div class="dropdown">
+                            <div className="dropdown">
                               <div
                                 className="myProfileWidget"
                                 type="button"
@@ -644,7 +644,7 @@ export const ConferenceCall = ({
                                 aria-expanded="false"
                               >
                                 <div
-                                  class="profileHolder"
+                                  className="profileHolder"
                                   id="profileOnlineNav"
                                 >
                                   <img
@@ -652,15 +652,15 @@ export const ConferenceCall = ({
                                     alt="profile"
                                   />
                                 </div>
-                                <div class="profileName">
+                                <div className="profileName">
                                   {account.username}{" "}
                                   <span className="status">Available</span>
                                 </div>
                               </div>
-                              <ul class="dropdown-menu" onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
+                              <ul className="dropdown-menu" onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
                                 <li>
                                   <div
-                                    class="dropdown-item"
+                                    className="dropdown-item"
                                     style={{ cursor: "pointer" }}
                                   >
                                     Logout
@@ -715,7 +715,7 @@ export const ConferenceCall = ({
                                   </span>
                                 </h4>
                                 {/* <button className="clearButton">
-                                                            <i class="fa-sharp fa-solid fa-circle-plus"></i> Add
+                                                            <i className="fa-sharp fa-solid fa-circle-plus"></i> Add
                                                             Participant
                                                         </button> */}
                               </div>
@@ -777,9 +777,9 @@ export const ConferenceCall = ({
                                     }}
                                   >
                                     {currentUser?.deaf ? (
-                                      <i class="fa-sharp fa-solid active fa-volume-slash"></i>
+                                      <i className="fa-sharp fa-solid active fa-volume-slash"></i>
                                     ) : (
-                                      <i class="fa-sharp fa-solid fa-volume"></i>
+                                      <i className="fa-sharp fa-solid fa-volume"></i>
                                     )}
                                   </div>
                                 </div>
@@ -795,13 +795,13 @@ export const ConferenceCall = ({
                                     }}
                                   >
                                     {currentUser?.mute_detect ? (
-                                      <i class="fa-light fa-microphone-slash"></i>
+                                      <i className="fa-light fa-microphone-slash"></i>
                                     ) : (
-                                      <i class="fa-light fa-microphone"></i>
+                                      <i className="fa-light fa-microphone"></i>
                                     )}
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-video"></i>
+                                    <i className="fa-light fa-video"></i>
                                   </button>
                                   {isScreenSharing ? (
                                     <button
@@ -810,7 +810,7 @@ export const ConferenceCall = ({
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }
                                     >
-                                      <i class="fa-sharp fa-light fa-screencast"></i>
+                                      <i className="fa-sharp fa-light fa-screencast"></i>
 
                                       <i className="text-danger fas fa-dot-circle"></i>
                                     </button>
@@ -821,7 +821,7 @@ export const ConferenceCall = ({
                                         setScreenTogglehit(screenTogglehit + 1)
                                       }
                                     >
-                                      <i class="fa-sharp fa-light fa-screencast"></i>
+                                      <i className="fa-sharp fa-light fa-screencast"></i>
                                     </button>
                                   )}
 
@@ -848,7 +848,7 @@ export const ConferenceCall = ({
                                     }
                                     }
                                   >
-                                    <i class="fa-light fa-messages"></i>
+                                    <i className="fa-light fa-messages"></i>
                                   </button>
                                   <button
                                     className={
@@ -860,10 +860,10 @@ export const ConferenceCall = ({
                                       setParticipantList(!participantList)
                                     }
                                   >
-                                    <i class="fa-light fa-users"></i>
+                                    <i className="fa-light fa-users"></i>
                                   </button>
                                   <button className="appPanelButtonCallerRect">
-                                    <i class="fa-light fa-hand"></i>
+                                    <i className="fa-light fa-hand"></i>
                                   </button>
                                 </div>
                                 {/* <CallController id={dummySession} memberInfo={confList.filter((item) => item.isYou)} /> */}
@@ -888,7 +888,7 @@ export const ConferenceCall = ({
                                   }}
                                 >
                                   <i
-                                    class={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
+                                    className={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
                                       }`}
                                   ></i>
                                 </button>
@@ -916,7 +916,7 @@ export const ConferenceCall = ({
                                     className="clearButton2 xl ms-auto"
                                     onClick={() => setParticipantList(false)}
                                   >
-                                    <i class={`fa-regular fa-xmark`}></i>
+                                    <i className={`fa-regular fa-xmark`}></i>
                                   </button>
                                 </div>
                                 <div>
@@ -931,10 +931,10 @@ export const ConferenceCall = ({
                                     Meeting Participants ({confList.length})
                                   </div>
                                   {/* <button className="panelButton static">
-                                  <span className="text"><i class="fa-solid fa-circle-plus"></i> Add Participant</span>
+                                  <span className="text"><i className="fa-solid fa-circle-plus"></i> Add Participant</span>
                                 </button> */}
                                 </div>
-                                <div class="col-12 mt-3">
+                                <div className="col-12 mt-3">
                                   <div className="d-flex justify-content-between align-items-center">
                                     <div className="col me-2">
                                       <input
@@ -962,7 +962,7 @@ export const ConferenceCall = ({
                                         <div className="d-flex align-items-center">
                                           <div className="profileHolder">
                                             {/* {getInitials(item.name)} */}
-                                            <i class="fa-light fa-user"></i>
+                                            <i className="fa-light fa-user"></i>
                                           </div>
                                           <span className="ms-2">
                                             {item.name}
@@ -987,7 +987,7 @@ export const ConferenceCall = ({
                                             }}
                                           >
                                             <i
-                                              class={
+                                              className={
                                                 !item.mute_detect
                                                   ? "fa-light fa-microphone"
                                                   : "fa-light fa-microphone-slash"
@@ -1011,7 +1011,7 @@ export const ConferenceCall = ({
                                               fontSize: "16px",
                                             }}
                                           >
-                                            <i class="fa-light fa-user-minus"></i>
+                                            <i className="fa-light fa-user-minus"></i>
                                           </button>
                                         </div>
                                       </li>
@@ -1029,7 +1029,7 @@ export const ConferenceCall = ({
                                     aria-expanded="true"
                                   >
                                     <button className="ms-3 toggleButton">
-                                      <i class="fa-solid fa-ellipsis"></i>
+                                      <i className="fa-solid fa-ellipsis"></i>
                                     </button>
                                     <ul
                                       className="dropdown-menu"
@@ -1126,7 +1126,7 @@ const ConferenceUserTab = ({
             <div className="justify-content-center h-100 d-flex align-items-center text-dark ">
               <div className="profileHolder">
                 {/* {getInitials(item.name)} */}
-                <i class="fa-light fa-user"></i>
+                <i className="fa-light fa-user"></i>
               </div>
             </div>
             <div>

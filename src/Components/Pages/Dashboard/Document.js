@@ -51,10 +51,6 @@ function Document({
     }, {});
 
     setRejectDocument(Object.values(maxIdItems));
-
-    // console.log(account.details.filter((item) => item.status == "2"));
-    // setRejectDocument(account.details.filter((item) => item.status == "2"));
-
     const newDocItems = [...docId];
     account.details.forEach((item) => {
       if (!newDocItems.some((doc) => doc.document_id === item.document_id)) {
@@ -294,8 +290,6 @@ function Document({
       }
     }
   }
-
-  console.log(rejectDocument, "This is rejected doc.", uploadDocument);
   return (
     <>
       <style>

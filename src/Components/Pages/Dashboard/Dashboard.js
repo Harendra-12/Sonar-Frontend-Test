@@ -5,13 +5,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import Clock from "react-clock";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
-import DoughnutChart from "../../CommonComponents/DoughnutChart";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
 import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
-import LineChartDashboard from "./ModuleGraphDashboard";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
 const Dashboard = () => {
   const callDetailsRefresh = useSelector((state) => state.callDetailsRefresh);
@@ -50,7 +48,6 @@ const Dashboard = () => {
           });
         }
       } catch (error) {
-        console.log(error);
       }
     };
     updateAccountDetails();
@@ -88,7 +85,7 @@ const Dashboard = () => {
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
-  }, [timeZone, account.timezone_id]);
+  }, [timeZone, account?.timezone_id]);
 
   // Getting register user data from socket and setting online extension
   useEffect(() => {
@@ -354,7 +351,7 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {checkViewSidebar(
+                  {/* {checkViewSidebar(
                     "ChannelHangupComplete",
                     slugPermissions,
                     account?.permissions
@@ -371,7 +368,7 @@ const Dashboard = () => {
                       >
                         Calls
                       </button>
-                    )}
+                    )} */}
                   {checkViewSidebar(
                     "BillingAddress",
                     slugPermissions,
@@ -603,7 +600,7 @@ const Dashboard = () => {
                                   <p>Click to view transaction history</p>
                                 </div>
                                 <div className="col-3">
-                                  <i class="fa-solid fa-file-invoice"></i>
+                                  <i className="fa-solid fa-file-invoice"></i>
                                 </div>
                               </div>
                             </div>
@@ -664,7 +661,7 @@ const Dashboard = () => {
                                     className="col-3"
                                     onClick={() => navigate("/card-details")}
                                   >
-                                    <i class="fa-duotone fa-money-check-dollar-pen"></i>
+                                    <i className="fa-duotone fa-money-check-dollar-pen"></i>
                                   </div>
                                 </div>
                               </div>
@@ -741,7 +738,7 @@ const Dashboard = () => {
                                   </div>
                                   <div className="col-3">
                                     <Tippy content="Click to view extensions">
-                                      <i class="fa-duotone fa-phone-office"></i>
+                                      <i className="fa-duotone fa-phone-office"></i>
                                     </Tippy>
                                   </div>
                                 </div>
@@ -826,7 +823,7 @@ const Dashboard = () => {
                                   allCall?.totalCalls
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -837,7 +834,7 @@ const Dashboard = () => {
                                   allCall.inbound.total
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -847,7 +844,7 @@ const Dashboard = () => {
                                   allCall.outbound.total
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -907,7 +904,7 @@ const Dashboard = () => {
                                   allCall?.outbound?.duration
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -918,7 +915,7 @@ const Dashboard = () => {
                                   allCall?.inbound?.duration
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -928,7 +925,7 @@ const Dashboard = () => {
                                   allCall?.outbound?.duration
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -982,7 +979,7 @@ const Dashboard = () => {
                                   allCall?.missed
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -993,7 +990,7 @@ const Dashboard = () => {
                                   allCall?.inbound?.missed
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -1003,7 +1000,7 @@ const Dashboard = () => {
                                   allCall?.outbound?.missed
                                 ) : (
                                   <i
-                                    class={
+                                    className={
                                       "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                     }
                                   ></i>
@@ -1283,7 +1280,7 @@ const Dashboard = () => {
                               className="col-3"
                               onClick={() => navigate("/card-transaction-list")}
                             >
-                              <i class="fa-solid fa-dollar-sign"></i>
+                              <i className="fa-solid fa-dollar-sign"></i>
                             </div>
                           </div>
                         </div>
@@ -1403,7 +1400,7 @@ const Dashboard = () => {
                                     navigate("/card-transaction-list")
                                   }
                                 >
-                                  <i class="fa-duotone fa-file-invoice"></i>
+                                  <i className="fa-duotone fa-file-invoice"></i>
                                 </div>
                               </div>
                             </div>
@@ -1444,7 +1441,7 @@ const Dashboard = () => {
                                   className="col-3"
                                   onClick={() => navigate("/card-details")}
                                 >
-                                  <i class="fa-duotone fa-address-card"></i>
+                                  <i className="fa-duotone fa-address-card"></i>
                                 </div>
                               </div>
                             </div>
@@ -1528,9 +1525,9 @@ const Dashboard = () => {
                         </div>
                         <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
                           <div className="wrapper itemWrapper c">
-                            <div class="heading">
-                              <div class="d-flex flex-wrap justify-content-between">
-                                <div class="col-9">
+                            <div className="heading">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-9">
                                   <h5>Billing Expenses</h5>
                                   <p>
                                     {" "}
@@ -1542,14 +1539,14 @@ const Dashboard = () => {
                                   </p>
                                 </div>
                                 <div
-                                  class="col-3"
+                                  className="col-3"
                                   onClick={() => navigate("/card-details")}
                                 >
-                                  <i class="fa-solid fa-gauge-simple-high"></i>
+                                  <i className="fa-solid fa-gauge-simple-high"></i>
                                 </div>
                               </div>
                             </div>
-                            <div class="d-flex flex-wrap justify-content-between mt-3">
+                            <div className="d-flex flex-wrap justify-content-between mt-3">
                               <GraphChart
                                 chartType="multiple"
                                 label1={"Wallet"}

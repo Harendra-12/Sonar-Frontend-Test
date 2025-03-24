@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
@@ -37,7 +39,6 @@ function UserConfiguration() {
           setCheckedUserPermissionData([...locationState.table_permissions])
         }
       } catch (error) {
-        console.log(error);
       }
     };
     permissionData();
@@ -60,7 +61,6 @@ function UserConfiguration() {
         toast.success("Assigned Permissions Successfully");
       }
     } catch (error) {
-      console.log(error);
     }
   };
   return (
@@ -95,7 +95,7 @@ function UserConfiguration() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                       </div>
@@ -107,9 +107,9 @@ function UserConfiguration() {
                   style={{ padding: "25px 23px" }}
                 >
                   <nav className="tangoNavs">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <div className="nav nav-tabs" id="nav-tab" role="tablist">
                       <button
-                        class="nav-link active"
+                        className="nav-link active"
                         id="nav-user-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-user"
@@ -121,7 +121,7 @@ function UserConfiguration() {
                         User Settings
                       </button>
                       <button
-                        class="nav-link"
+                        className="nav-link"
                         id="nav-exten-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#nav-exten"
@@ -135,7 +135,7 @@ function UserConfiguration() {
                     </div>
                   </nav>
                   <div
-                    class="tab-content"
+                    className="tab-content"
                     id="nav-tabContent"
                     style={{
                       border: "1px solid var(--border-color)",
@@ -144,7 +144,7 @@ function UserConfiguration() {
                     }}
                   >
                     <div
-                      class="tab-pane fade show active"
+                      className="tab-pane fade show active"
                       id="nav-user"
                       role="tabpanel"
                       aria-labelledby="nav-user-tab"
@@ -156,7 +156,7 @@ function UserConfiguration() {
                       />
                     </div>
                     <div
-                      class="tab-pane fade"
+                      className="tab-pane fade"
                       id="nav-exten"
                       role="tabpanel"
                       aria-labelledby="nav-exten-tab"
@@ -196,7 +196,7 @@ function UserConfiguration() {
                                         >
                                           <span className="text">Back</span>
                                           <span className="icon">
-                                            <i class="fa-solid fa-caret-left"></i>
+                                            <i className="fa-solid fa-caret-left"></i>
                                           </span>
                                         </button>
                                         <button
@@ -207,7 +207,7 @@ function UserConfiguration() {
                                         >
                                           <span className="text">Save</span>
                                           <span className="icon">
-                                            <i class="fa-solid fa-floppy-disk"></i>
+                                            <i className="fa-solid fa-floppy-disk"></i>
                                           </span>
                                         </button>
                                       </div>
@@ -272,7 +272,121 @@ function UserConfiguration() {
                                     >
                                       {isEditable && (
                                         <>
-                                          <div className="header">
+                                          <div className="profileView p-0">
+                                            <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
+                                              <div className="col-xl-12">
+                                                <div className="headerCommon d-flex align-items-center">
+                                                  <div className="col">
+                                                    Permissions for Role{" "}
+                                                    <span
+                                                      style={{
+                                                        color: "var(--ui-accent)",
+                                                        fontWeight: 600,
+                                                      }}
+                                                    >
+                                                      {/* {selectedRole} */}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className="accordion permissionListWrapper">
+                                                {userPermissionData && userPermissionData.map(
+                                                  (item) => (
+                                                    <div className="accordion-item">
+                                                      <h2
+                                                        className="accordion-header"
+                                                        id={`collapseHeading${item.id}`}
+                                                      >
+                                                        <button
+                                                          className="accordion-button collapsed"
+                                                          type="button"
+                                                          data-bs-toggle="collapse"
+                                                          data-bs-target={`#collapseRole${item.id}`}
+                                                          aria-expanded="true"
+                                                          aria-controls={`collapse${item.id}`}
+                                                        >
+                                                          <input
+                                                            type="checkbox"
+                                                            checked={checkedUserPermissionData.includes(
+                                                              item?.id
+                                                            )}
+                                                            onChange={(e) => {
+                                                              if (
+                                                                e.target.checked
+                                                              ) {
+                                                                setCheckedUserPermissionData(
+                                                                  (pre) => [
+                                                                    ...pre,
+                                                                    item?.id,
+                                                                  ]
+                                                                );
+                                                              } else {
+                                                                const newCheck =
+                                                                  checkedUserPermissionData.filter(
+                                                                    (id) =>
+                                                                      id !==
+                                                                      item?.id
+                                                                  );
+                                                                setCheckedUserPermissionData(
+                                                                  newCheck
+                                                                );
+                                                              }
+                                                            }}
+                                                          />
+
+                                                          <label>{item.column_name.replace(/[_-]/g, " ")}</label>
+                                                        </button>
+                                                      </h2>
+                                                      <div
+                                                        id={`collapseRole${item.id}`}
+                                                        className="accordion-collapse collapse"
+                                                        aria-labelledby={`collapseHeading${item.id}`}
+                                                      >
+                                                        <div className="accordion-body">
+                                                          <div
+                                                            className="col-xxl col-auto col-md-4 col-6"
+                                                          >
+                                                            <input
+                                                              type="checkbox"
+                                                              checked={checkedUserPermissionData.includes(
+                                                                item?.id
+                                                              )}
+                                                              onChange={(e) => {
+                                                                if (
+                                                                  e.target.checked
+                                                                ) {
+                                                                  setCheckedUserPermissionData(
+                                                                    (pre) => [
+                                                                      ...pre,
+                                                                      item?.id,
+                                                                    ]
+                                                                  );
+                                                                } else {
+                                                                  const newCheck =
+                                                                    checkedUserPermissionData.filter(
+                                                                      (id) =>
+                                                                        id !==
+                                                                        item?.id
+                                                                    );
+                                                                  setCheckedUserPermissionData(
+                                                                    newCheck
+                                                                  );
+                                                                }
+                                                              }}
+                                                            />
+                                                            <label className="formLabel ms-2 text-capitalize">
+                                                              {item.action}
+                                                            </label>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  )
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
+                                          {/* <div className="header">
                                             <div
                                               className="col fw-bold"
                                               style={{
@@ -281,8 +395,8 @@ function UserConfiguration() {
                                             >
                                               Choose what should be visible
                                             </div>
-                                          </div>
-                                          <div className="col-xl-12">
+                                          </div> */}
+                                          {/* <div className="col-xl-12">
                                             <div className="row" style={{ height: '400px', overflowY: 'scroll' }}>
                                               {userPermissionData && userPermissionData.map(
                                                 (item) => {
@@ -332,7 +446,7 @@ function UserConfiguration() {
                                                 }
                                               )}
                                             </div>
-                                          </div>
+                                          </div> */}
                                         </>
                                       )}
                                     </div>

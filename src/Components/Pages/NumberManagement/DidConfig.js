@@ -5,6 +5,7 @@ import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,
@@ -16,7 +17,6 @@ import {
   noSpecialCharactersValidator,
   rangeValidator,
   requiredValidator,
-  usagesValidator,
 } from "../../validations/validation";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -96,7 +96,6 @@ const DidConfig = () => {
       );
     } else {
       setValue("usages", "extension" || []);
-      // setDataAvailable(true);
     }
   }, [locationData]);
   useEffect(() => {
@@ -108,7 +107,6 @@ const DidConfig = () => {
         if (holdMusic?.status) {
           setHoldMusic(holdMusic.data);
           if (holdMusic.data.length > 0 && uploadedMusic) {
-            console.log(holdMusic.data, uploadedMusic);
             setValue("hold_music", uploadedMusic.id);
           }
         } else {
@@ -121,7 +119,6 @@ const DidConfig = () => {
       navigate("/");
     }
   }, [navigate, account, musicRefresh]);
-  console.log(watch());
   useEffect(() => {
     if (locationData) {
       setValue("did_id_view", locationData.did || "");
@@ -131,10 +128,10 @@ const DidConfig = () => {
       );
     }
 
-    register("usages", {
-      validate: usagesValidator.validate,
-      ...requiredValidator,
-    });
+    // register("usages", {
+    //   validate: usagesValidator.validate,
+    //   ...requiredValidator,
+    // });
     register("did_id_view", { required: true });
   }, [register, setValue]);
 
@@ -159,8 +156,10 @@ const DidConfig = () => {
   const forwardStatus = watch("forward", "disabled");
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    console.log(data, "-------------");
-
+    if (data.usages === "" || data.usages === null) {
+      data.action = null
+      data.usages = null
+    }
     data.record = data.record === true || data.record === "true";
     data.sticky_agent_enable =
       data.sticky_agent_enable === true || data.sticky_agent_enable === "true";
@@ -206,11 +205,16 @@ const DidConfig = () => {
         navigate(-1)
       } else {
         setLoading(false);
+        toast.error(apiData?.errors[Object.keys(apiData?.errors)[0]][0])
         // toast.error(apiData.message);
       }
     }
     if (locationData.configuration) {
       setLoading(true);
+      if (payload.action == "") {
+        delete payload.action;
+        delete payload.usages
+      }
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
         payload
@@ -220,6 +224,7 @@ const DidConfig = () => {
         toast.success(apiData.message);
       } else {
         setLoading(false);
+        toast.error(apiData?.errors[Object.keys(apiData?.errors)[0]])
         // toast.error(apiData.message);
       }
     }
@@ -238,44 +243,12 @@ const DidConfig = () => {
       });
     }
   }, [newAddDid]);
-
   return (
     <>
       <main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="Number Configuration" />
-            {/* <div id="subPageHeader">
-              <div className="col-xl-9 my-auto">
-                <p className="mb-0">
-                  Inbound destinations are the DID/DDI, DNIS or Alias for
-                  inbound calls.
-                </p>
-              </div>
-              <div className="col-xl-3 ps-2">
-                <div className="d-flex justify-content-end">
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={() => {
-                      navigate(-1);
-                      backToTop();
-                    }}
-                  >
-                    <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
-                  </button>
-                  <button
-                    effect="ripple"
-                    className="panelButton"
-                    onClick={handleFormSubmit}
-                  >
-                    <span className="text">{locationData.configuration ? "Update" : "Save"}</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
-                  </button>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="col-xl-12" style={{ overflow: "auto" }}>
             {loading ? (
@@ -307,7 +280,7 @@ const DidConfig = () => {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           <button
@@ -319,7 +292,7 @@ const DidConfig = () => {
                               {locationData.configuration ? "Update" : "Save"}
                             </span>
                             <span className="icon">
-                              <i class="fa-solid fa-floppy-disk"></i>
+                              <i className="fa-solid fa-floppy-disk"></i>
                             </span>
                           </button>
                         </div>
@@ -360,7 +333,8 @@ const DidConfig = () => {
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label htmlFor="">
-                              Usage <span className="text-danger">*</span>
+                              Usage
+                              {/* <span className="text-danger">*</span> */}
                             </label>
                             <label htmlFor="data" className="formItemDesc">
                               Set how the Destination will be used.
@@ -372,58 +346,45 @@ const DidConfig = () => {
                               name="forward"
                               id="selectFormRow"
                               // onChange={(e) => setForwardEnable(e.target.value)}
+                              value={watch().usages}
                               {...register("usages")}
                               onChange={(e) => {
-                                // Trigger react-hook-form's built-in handling
-                                register("usages").onChange(e);
+                                if (e.target.value === "agent") {
+                                  featureUnderdevelopment()
+                                } else {
+                                  // Trigger react-hook-form's built-in handling
+                                  register("usages").onChange(e);
 
-                                // Clear the "action" field when "usages" changes
-                                setValue("action", "");
+                                  // Clear the "action" field when "usages" changes
+                                  setValue("action", "");
+                                }
+
                               }}
                             >
+                              <option value={null}>None</option>
                               <option value="extension">Extension</option>
                               <option value="call center">Call Center</option>
                               <option value="ring group">Ring Group</option>
                               <option value="ivr">IVR</option>
+                              <option value="agent" >AI Agent</option>
                             </select>
                           </div>
-                          <div className="col-3">
-                            <ActionList
-                              category={watch().usages}
-                              title={null}
-                              label={null}
-                              getDropdownValue={actionListValue}
-                              value={watch().action}
-                              {...register("action", requiredValidator)}
-                            />
-                            {errors.action && (
+                          {(watch().usages && watch().usages?.length !== 0) &&
+                            <div className="col-3">
+                              <ActionList
+                                category={watch().usages}
+                                title={null}
+                                label={null}
+                                getDropdownValue={actionListValue}
+                                value={watch().action}
+                                {...register("action")}
+                              />
+                              {/* {errors.action && (
                               <ErrorMessage text={errors.action.message} />
-                            )}
-                          </div>
+                            )} */}
+                            </div>
+                          }
                         </div>
-
-                        {/* <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label htmlFor="">Action</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            Set the action to perform when the max wait time is
-                            reached.
-                          </label>
-                        </div>
-                        <div className="col-6">
-                          <ActionList
-                            category={watch().usages}
-                            title={null}
-                            label={null}
-                            getDropdownValue={actionListValue}
-                            value={watch().action}
-                            {...register("action", requiredValidator)}
-                          />
-                          {errors.action && (
-                            <ErrorMessage text={errors.action.message} />
-                          )}
-                        </div>
-                      </div> */}
 
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
@@ -507,68 +468,6 @@ const DidConfig = () => {
                             </div>
                           )}
                         </div>
-                        {/* {forwardStatus === "pstn" && (
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="forward_to">Select PSTN</label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Select a PSTN.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="number"
-                              name="forward_to"
-                              className="formItem"
-                              {...register("forward_to", {
-                                required: "PSTN is required",
-                                pattern: {
-                                  value: /^[0-9]*$/,
-                                  message: "Only digits are allowed",
-                                },
-                                minLength: {
-                                  value: 10,
-                                  message: "Must be at least 10 digits",
-                                },
-
-                                ...noSpecialCharactersValidator,
-                              })}
-                            />
-                            {errors.forward_to && (
-                              <ErrorMessage text={errors.forward_to.message} />
-                            )}
-                          </div>
-                        </div>
-                      )} */}
-                        {/* {forwardStatus === "direct" && (
-                        <div className="formRow col-xl-3">
-                          <div className="formLabel">
-                            <label htmlFor="selectFormRow">
-                              Forward Extension
-                            </label>
-                            <label htmlFor="data" className="formItemDesc">
-                              Select extension.
-                            </label>
-                          </div>
-                          <div className="col-6">
-                            <ActionList
-                              getDropdownValue={directListValue}
-                              value={watch().direct_extension}
-                              title={null}
-                              label={null}
-                              {...register("direct_extension", {
-                                requiredValidator,
-                              })}
-                            />
-                            {errors.direct_extension && (
-                              <ErrorMessage
-                                text={errors.direct_extension.message}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      )} */}
-
                         <div className="formRow col-xl-3">
                           <div className="formLabel">
                             <label htmlFor="selectFormRow">Prefix Tag</label>
@@ -690,7 +589,7 @@ const DidConfig = () => {
                           >
                             {watch().sticky_agent_enable === "true" ||
                               watch().sticky_agent_enable === 1 ? (
-                              <div class="formLabel">
+                              <div className="formLabel">
                                 <label className="formItemDesc">Status</label>
                               </div>
                             ) : (
@@ -714,7 +613,7 @@ const DidConfig = () => {
                                 className="col-2 pe-2"
                                 style={{ width: "12%" }}
                               >
-                                <div class="formLabel">
+                                <div className="formLabel">
                                   <Tippy content="Input in Days, Max 99">
                                     <label className="formItemDesc">
                                       Duration{" "}
@@ -774,7 +673,7 @@ const DidConfig = () => {
                               <div
                                 className={`col-${watch().spam_filter_type === "3" ? "4 pe-1 ms-auto" : "12"}`}>
                                 {watch().spam_filter_type != "1" && (
-                                  <div class="formLabel">
+                                  <div className="formLabel">
                                     <label>Type</label>
                                   </div>
                                 )}
@@ -810,7 +709,7 @@ const DidConfig = () => {
                                     </select>
                                   </div>
                                   <div className="col-4 ps-1">
-                                    <div class="formLabel">
+                                    <div className="formLabel">
                                       <Tippy content="Input in Days, Max 5">
                                         <label>
                                           Length{" "}
@@ -837,7 +736,7 @@ const DidConfig = () => {
                                     </select>
                                   </div>
                                   <div className="col-6 pe-1">
-                                    <div class="formLabel">
+                                    <div className="formLabel">
                                       <label>
                                         DTMF type{" "}
                                         <span

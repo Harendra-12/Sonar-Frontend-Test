@@ -85,7 +85,6 @@ function AllVoicemails({ isCustomerAdmin }) {
       } else {
         setLoading(false);
       }
-      console.log("api_data:", apiData);
     }
     getData();
   }, [pageNumber, voiceMailRefresh]);
@@ -210,13 +209,13 @@ function AllVoicemails({ isCustomerAdmin }) {
         <div className="col-12 d-flex">
           <div className="profileHolder">
             {/* <i className="fa-light fa-user fs-5" /> */}
-            <i class="fa-solid fa-microphone-lines fs-5"></i>
+            <i className="fa-solid fa-microphone-lines fs-5"></i>
           </div>
           <div className="col-4 my-auto ms-2 ms-xl-3">
             {isCustomerAdmin ? (
               <h4>
                 {item.src}
-                <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
+                <i className="fa-solid fa-voicemail mx-2 text-danger"></i>
                 {item.dest}
               </h4>
             ) : (
@@ -234,8 +233,8 @@ function AllVoicemails({ isCustomerAdmin }) {
               Voicemail, 15 sec
             </h6> */}
           </div>
-          <div class="col-3 mx-auto">
-            <div class="contactTags">
+          <div className="col-3 mx-auto">
+            <div className="contactTags">
               <span data-id="2">Duration: {item.duration}</span>
             </div>
           </div>
@@ -332,14 +331,14 @@ function AllVoicemails({ isCustomerAdmin }) {
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                       Voicemails{" "}
                       <button
-                        class="clearButton2"
+                        className="clearButton2"
                         onClick={() =>
                           setVoiceMailRefresh(voiceMailRefresh + 1)
                         }
                         disabled={loading}
                       >
                         <i
-                          class={
+                          className={
                             loading
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5 "
@@ -355,7 +354,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                         onChange={() => featureUnderdevelopment()}
                       />
@@ -371,25 +370,25 @@ function AllVoicemails({ isCustomerAdmin }) {
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li
                             onClick={() => {
                               if (allCallCenterIds.length > 0) {
@@ -400,7 +399,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -408,7 +407,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                           </li>
                           {/* <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
@@ -492,7 +491,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                         ))
                       ) : (
                         <div className="startAJob">
-                          <div class="text-center mt-3">
+                          <div className="text-center mt-3">
                             <img
                               src={require("../../assets/images/empty-box.png")}
                               alt="Empty"
@@ -577,19 +576,19 @@ function AllVoicemails({ isCustomerAdmin }) {
                         >
                           <i className="fa-regular fa-video" />
                         </button>
-                        <div class="dropdown">
+                        <div className="dropdown">
                           <button
-                            class="clearButton2 xl"
+                            className="clearButton2 xl"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                            <i className="fa-solid fa-ellipsis-vertical"></i>
                           </button>
-                          <ul class="dropdown-menu">
+                          <ul className="dropdown-menu">
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                                 alt="Add to Contact"
@@ -599,7 +598,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                             </li>
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
@@ -608,7 +607,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                             </li>
                             <li>
                               <a
-                                class="dropdown-item"
+                                className="dropdown-item"
                                 href="/"
                                 onClick={() => featureUnderdevelopment()}
                               >
@@ -647,9 +646,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                   <div className="overviewTableWrapper p-2 mt-2">
                     <div className="overviewTableChild">
                       <div className="d-flex flex-wrap">
-                        <div class="col-12">
-                          <div class="heading">
-                            <div class="content">
+                        <div className="col-12">
+                          <div className="heading">
+                            <div className="content">
                               <h4>Voicemails</h4>
                               <p>You can see all of the voicemail logs here</p>
                             </div>
@@ -743,7 +742,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                           {isCustomerAdmin ? (
                                             <span>
                                               {clickedVoiceMail.src}
-                                              <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
+                                              <i className="fa-solid fa-voicemail mx-2 text-danger"></i>
                                               {clickedVoiceMail.dest}
                                             </span>
                                           ) : (
@@ -860,7 +859,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                     {isCustomerAdmin ? (
                                                       <span>
                                                         {item.src}
-                                                        <i class="fa-solid fa-voicemail mx-2 text-danger"></i>
+                                                        <i className="fa-solid fa-voicemail mx-2 text-danger"></i>
                                                         {item.dest}
                                                       </span>
                                                     ) : (

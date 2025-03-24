@@ -210,7 +210,7 @@ function CdrFilterReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        created_at: createdAt
+        created_at: createdAt,
       }
     );
 
@@ -238,7 +238,7 @@ function CdrFilterReport({ page }) {
       setLoading(true);
       if (account && account.account_id) {
         const apiData = await generalGetFunction(finalUrl);
-        if (apiData?.status === 403) {
+        if (apiData?.response?.status == 403) {
           toast.error("You don't have permission to access this page.");
           setLoading(false);
           setContentLoader(false);
@@ -289,9 +289,8 @@ function CdrFilterReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-    createdAt
+    createdAt,
   ]);
-
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -470,14 +469,14 @@ function CdrFilterReport({ page }) {
           <div className="container-fluid px-0 position-relative">
             <Header
               title={`${page === "billing"
-                ? "Billing Reports"
-                : page === "callcenter"
-                  ? "Call Center Reports"
-                  : page === "ringgroup"
-                    ? "Ring Group Reports"
-                    : page === "callrecording"
-                      ? "Call Recordings"
-                      : "CDR Reports"
+                  ? "Billing Reports"
+                  : page === "callcenter"
+                    ? "Call Center Reports"
+                    : page === "ringgroup"
+                      ? "Ring Group Reports"
+                      : page === "callrecording"
+                        ? "Call Recordings"
+                        : "CDR Reports"
                 }`}
             />
             <div className="overviewTableWrapper">
@@ -521,7 +520,7 @@ function CdrFilterReport({ page }) {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -533,7 +532,7 @@ function CdrFilterReport({ page }) {
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i
-                              class={
+                              className={
                                 contentLoader
                                   ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                                   : "fa-regular fa-arrows-rotate fs-5"
@@ -549,7 +548,7 @@ function CdrFilterReport({ page }) {
                         >
                           <span className="text">Export</span>
                           <span className="icon">
-                            <i class="fa-solid fa-file-export"></i>
+                            <i className="fa-solid fa-file-export"></i>
                           </span>
                         </button>
                       </div>
@@ -742,13 +741,13 @@ function CdrFilterReport({ page }) {
                                 <option value={"outbound"}>
                                   Outbound Calls
                                 </option>
-                                <option value={"missed"}>Missed Calls</option>
+                                {/* <option value={"missed"}>Missed Calls</option> */}
                                 <option value={"internal"}>
                                   Internal Calls
                                 </option>
-                                <option value={"transfer"}>
+                                {/* <option value={"transfer"}>
                                   Transfer Calls
-                                </option>
+                                </option> */}
                               </select>
                             </div>
                             <div className="formRow border-0">
@@ -812,28 +811,66 @@ function CdrFilterReport({ page }) {
                                   }}
                                 >
                                   <option value={""}>All</option>
-                                  <option value={"NORMAL_CLEARING"}>Normal Clearing</option>
-                                  <option value={"ORIGINATOR_CANCEL"}>Originator Cancel</option>
-                                  <option value={"MANAGER_REQUEST"}>Manager Request</option>
+                                  <option value={"NORMAL_CLEARING"}>
+                                    Normal Clearing
+                                  </option>
+                                  <option value={"ORIGINATOR_CANCEL"}>
+                                    Originator Cancel
+                                  </option>
+                                  <option value={"MANAGER_REQUEST"}>
+                                    Manager Request
+                                  </option>
                                   <option value={"NO_ANSWER"}>No Answer</option>
-                                  <option value={"INVALID_GATEWAY"}>Invalid Gateway</option>
-                                  <option value={"SERVICE_UNAVAILABLE"}>Service Unavailable</option>
-                                  <option value={"INCOMPATIBLE_DESTINATION"}>Incompatible Destination</option>
-                                  <option value={"NO_USER_RESPONSE"}>No User Response</option>
-                                  <option value={"MEDIA_TIMEOUT"}>Media Timeout</option>
+                                  <option value={"INVALID_GATEWAY"}>
+                                    Invalid Gateway
+                                  </option>
+                                  <option value={"SERVICE_UNAVAILABLE"}>
+                                    Service Unavailable
+                                  </option>
+                                  <option value={"INCOMPATIBLE_DESTINATION"}>
+                                    Incompatible Destination
+                                  </option>
+                                  <option value={"NO_USER_RESPONSE"}>
+                                    No User Response
+                                  </option>
+                                  <option value={"MEDIA_TIMEOUT"}>
+                                    Media Timeout
+                                  </option>
                                   <option value={"LOSE_RACE"}>Lose Race</option>
-                                  <option value={"NORMAL_UNSPECIFIED"}>Normal Unspecified</option>
+                                  <option value={"NORMAL_UNSPECIFIED"}>
+                                    Normal Unspecified
+                                  </option>
                                   <option value={"USER_BUSY"}>User Busy</option>
-                                  <option value={"RECOVERY_ON_TIMER_EXPIRE"}>Recovery On Timer Expire</option>
-                                  <option value={"USER_NOT_REGISTERED"}>User Not Registered</option>
-                                  <option value={"CALL_REJECTED"}>Call Rejected</option>
-                                  <option value={"SUBSCRIBER_ABSENT"}>Subscriber Absent</option>
-                                  <option value={"CHAN_NOT_IMPLEMENTED"}>Chan Not Implemented</option>
-                                  <option value={"DESTINATION_OUT_OF_ORDER"}>Destination Out Of Order</option>
-                                  <option value={"NORMAL_TEMPORARY_FAILURE"}>Normal Temporary Failure</option>
-                                  <option value={"NO_ROUTE_DESTINATION"}>No Route Destination</option>
-                                  <option value={"ALLOTTED_TIMEOUT"}>Allotted Timeout</option>
-                                  <option value={"INVALID_NUMBER_FORMAT"}>Invalid Number Format</option>
+                                  <option value={"RECOVERY_ON_TIMER_EXPIRE"}>
+                                    Recovery On Timer Expire
+                                  </option>
+                                  <option value={"USER_NOT_REGISTERED"}>
+                                    User Not Registered
+                                  </option>
+                                  <option value={"CALL_REJECTED"}>
+                                    Call Rejected
+                                  </option>
+                                  <option value={"SUBSCRIBER_ABSENT"}>
+                                    Subscriber Absent
+                                  </option>
+                                  <option value={"CHAN_NOT_IMPLEMENTED"}>
+                                    Chan Not Implemented
+                                  </option>
+                                  <option value={"DESTINATION_OUT_OF_ORDER"}>
+                                    Destination Out Of Order
+                                  </option>
+                                  <option value={"NORMAL_TEMPORARY_FAILURE"}>
+                                    Normal Temporary Failure
+                                  </option>
+                                  <option value={"NO_ROUTE_DESTINATION"}>
+                                    No Route Destination
+                                  </option>
+                                  <option value={"ALLOTTED_TIMEOUT"}>
+                                    Allotted Timeout
+                                  </option>
+                                  <option value={"INVALID_NUMBER_FORMAT"}>
+                                    Invalid Number Format
+                                  </option>
                                 </select>
                               </div>
                             )}
@@ -898,7 +935,10 @@ function CdrFilterReport({ page }) {
                               <tr style={{ whiteSpace: "nowrap" }}>
                                 <th>#</th>
                                 {showKeys.map((key) => {
-                                  if (cdr?.data[0]?.hasOwnProperty(key) && key !== "id") {
+                                  if (
+                                    cdr?.data[0]?.hasOwnProperty(key) &&
+                                    key !== "id"
+                                  ) {
                                     let formattedKey = "";
                                     if (key === "variable_sip_from_user") {
                                       formattedKey = "Caller No.";
@@ -922,9 +962,8 @@ function CdrFilterReport({ page }) {
                                       formattedKey = "Hangup Status";
                                     } else if (key === "Hangup-Cause") {
                                       formattedKey = "Hangup Cause";
-                                    }
-                                    else if (key === "call_cost") {
-                                      formattedKey = "Charge"
+                                    } else if (key === "call_cost") {
+                                      formattedKey = "Charge";
                                     } else {
                                       formattedKey = key
                                         .replace(/[-_]/g, " ")
@@ -981,7 +1020,10 @@ function CdrFilterReport({ page }) {
                                           </td>
 
                                           {showKeys.map((key) => {
-                                            if (item.hasOwnProperty(key) && key !== "id") {
+                                            if (
+                                              item.hasOwnProperty(key) &&
+                                              key !== "id"
+                                            ) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
@@ -1027,28 +1069,52 @@ function CdrFilterReport({ page }) {
                                               ) {
                                                 const callIcons = {
                                                   inbound: {
-                                                    icon: "fa-phone-arrow-down-left",
-                                                    color: "var(--funky-boy3)",
+                                                    icon:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "fa-solid fa-phone-missed"
+                                                        : "fa-phone-arrow-down-left",
+                                                    color:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "var(--funky-boy4)"
+                                                        : "var(--funky-boy3)",
                                                     label: "Inbound",
                                                   },
                                                   outbound: {
-                                                    icon: "fa-phone-arrow-up-right",
-                                                    color: "var(--color3)",
+                                                    icon:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "fa-solid fa-phone-missed"
+                                                        : "fa-phone-arrow-up-right",
+                                                    color:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "var(--funky-boy4)"
+                                                        : "var(--color3)",
                                                     label: "Outbound",
                                                   },
-                                                  missed: {
-                                                    icon: "fa-phone-missed",
-                                                    color: "var(--funky-boy4)",
-                                                    label: "Missed",
-                                                  },
-                                                  transfer: {
-                                                    icon: "fa-exchange",
-                                                    color: "var(--funky-boy2)",
-                                                    label: "Transfer",
-                                                  },
+                                                  // missed: {
+                                                  //   icon: "fa-phone-missed",
+                                                  //   color: "var(--funky-boy4)",
+                                                  //   label: "Missed",
+                                                  // },
+                                                  // transfer: {
+                                                  //   icon: "fa-exchange",
+                                                  //   color: "var(--funky-boy2)",
+                                                  //   label: "Transfer",
+                                                  // },
                                                   internal: {
-                                                    icon: "fa-headset",
-                                                    color: "var(--color2)",
+                                                    icon:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "fa-solid fa-phone-missed"
+                                                        : "fa-headset",
+                                                    color:
+                                                      item.variable_DIALSTATUS ==
+                                                        "Missed"
+                                                        ? "var(--funky-boy4)"
+                                                        : "var(--color2)",
                                                     label: "Internal",
                                                   },
                                                 };
@@ -1114,48 +1180,55 @@ function CdrFilterReport({ page }) {
                                           })}
 
                                           <td>
-                                            <button
-                                              disabled={isBlocked}
-                                              effect="ripple"
-                                              className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                } ms-0`}
-                                              style={{
-                                                height: "34px",
-                                                width: "34px",
-                                              }}
-                                              onClick={() => {
-                                                setSelectedNumberToBlock(
-                                                  item["Call-Direction"] ===
-                                                    "inbound"
-                                                    ? item[
-                                                    "Caller-Caller-ID-Number"
-                                                    ]
-                                                    : item["Call-Direction"] ===
-                                                      "outbound"
-                                                      ? item[
-                                                      "Caller-Callee-ID-Number"
-                                                      ]
-                                                      : "N/A"
-                                                );
-                                                setPopUp(true);
-                                              }}
-                                            >
-                                              <Tippy
-                                                content={
-                                                  isBlocked
-                                                    ? "Blocked"
-                                                    : "Block"
-                                                }
-                                              >
-                                                <i className="fa-solid fa-ban"></i>
-                                              </Tippy>
-                                            </button>
+                                            {
+                                              (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
+                                                <button
+                                                  disabled={isBlocked}
+                                                  effect="ripple"
+                                                  className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                    } ms-0`}
+                                                  style={{
+                                                    height: "34px",
+                                                    width: "34px",
+                                                  }}
+                                                  onClick={() => {
+                                                    setSelectedNumberToBlock(
+                                                      item["Call-Direction"] ===
+                                                        "inbound"
+                                                        ? item[
+                                                        "Caller-Caller-ID-Number"
+                                                        ]
+                                                        : item["Call-Direction"] ===
+                                                          "outbound"
+                                                          ? item[
+                                                          "Caller-Callee-ID-Number"
+                                                          ]
+                                                          : "N/A"
+                                                    );
+                                                    setPopUp(true);
+                                                  }}
+                                                >
+                                                  <Tippy
+                                                    content={
+                                                      isBlocked
+                                                        ? "Blocked"
+                                                        : "Block"
+                                                    }
+                                                  >
+                                                    <i className="fa-solid fa-ban"></i>
+                                                  </Tippy>
+                                                </button>
+                                                : ""}
                                           </td>
                                           <td>
-                                            <button className={`tableButton ms-0`} onClick={() => setSelectedCdr(item.id)}>
-                                              <Tippy content={'View Note'}
-                                              >
-                                                <i class="fa-solid fa-comment-dots"></i>
+                                            <button
+                                              className={`tableButton ms-0`}
+                                              onClick={() =>
+                                                setSelectedCdr(item.id)
+                                              }
+                                            >
+                                              <Tippy content={"View Note"}>
+                                                <i className="fa-solid fa-comment-dots"></i>
                                               </Tippy>
                                             </button>
                                           </td>
@@ -1163,7 +1236,8 @@ function CdrFilterReport({ page }) {
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
-                                          item["recording_path"] && item["recording_path"] && (
+                                          item["recording_path"] &&
+                                          item["recording_path"] && (
                                             <tr>
                                               <td colSpan={showKeys.length + 1}>
                                                 <div className="audio-container mx-2">
@@ -1249,7 +1323,7 @@ function CdrFilterReport({ page }) {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       {/* ) : ( */}
@@ -1265,7 +1339,7 @@ function CdrFilterReport({ page }) {
                       >
                         <span className="text">Cancel</span>
                         <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
+                          <i className="fa-solid fa-xmark"></i>
                         </span>
                       </button>
                     </div>
@@ -1279,12 +1353,9 @@ function CdrFilterReport({ page }) {
         )}
       </main>
       {/* Note Popup */}
-      {selectedCdr !== "" &&
-        <Comments
-          id={selectedCdr}
-          setId={setSelectedCdr}
-        />
-      }
+      {selectedCdr !== "" && (
+        <Comments id={selectedCdr} setId={setSelectedCdr} />
+      )}
     </>
   );
 }

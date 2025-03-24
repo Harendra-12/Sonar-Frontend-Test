@@ -85,7 +85,7 @@ const DeviceProvisioningAdd = () => {
                 >
                   <span className="text">Back</span>
                   <span className="icon">
-                    <i class="fa-solid fa-caret-left"></i>
+                    <i className="fa-solid fa-caret-left"></i>
                   </span>
                 </button>
                 <button
@@ -95,7 +95,7 @@ const DeviceProvisioningAdd = () => {
                 >
                   <span className="text">Save</span>
                   <span className="icon">
-                    <i class="fa-solid fa-floppy-disk"></i>
+                    <i className="fa-solid fa-floppy-disk"></i>
                   </span>
                 </button>
               </div>
@@ -134,7 +134,7 @@ const DeviceProvisioningAdd = () => {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -144,7 +144,7 @@ const DeviceProvisioningAdd = () => {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>

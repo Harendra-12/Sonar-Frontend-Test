@@ -12,8 +12,6 @@ import { toast } from "react-toastify";
 function Header(props) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  // const accountDetails = useSelector((state) => state.accountDetails);
-  const balance = useSelector((state) => state.balance);
   const accountBalance = useSelector((state) => state.accountBalance)
   const [accounName, setAccountName] = useState();
   const [dropDown, setDropDown] = useState(false);
@@ -187,7 +185,7 @@ function Header(props) {
             </div>
             <div className="dropdown-item">
               <Link to={"/users-profile"} className="clearButton">
-                <i class="fa-regular fa-user me-2" aria-hidden="true"></i>
+                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
                 My Profile
               </Link>
             </div>

@@ -27,6 +27,7 @@ import MailSettings from "../MailSettings/MailSettings";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
+import CloseTabWarning from "./CloseTabWarning";
 
 const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
@@ -53,7 +54,6 @@ const WebrtcWrapper = () => {
   const [reconnecting, setReconnecting] = useState(0);
   const addContactRefresh = useSelector((state) => state.addContactRefresh);
   const [allContactLoading, setAllContactLoading] = useState(false);
-  console.log("This is active sessions", sessions);
   const [closeVideoCall, setCloseVideoCall] = useState(false);
   const [allContact, setAllContact] = useState([]);
   const [extensionFromCdrMessage, setExtensionFromCdrMessage] = useState();
@@ -71,7 +71,6 @@ const WebrtcWrapper = () => {
       const webSocket = new WebSocket(options.webSocketServer);
 
       webSocket.onopen = () => {
-        console.log("WebSocket connected");
         retryCountRef.current = 0;
       };
 
@@ -94,7 +93,6 @@ const WebrtcWrapper = () => {
         console.error(
           `WebSocket closed ${options.webSocketServer} (code: ${event.code})`
         );
-        console.log("Trying to reconnect to WebSocket...");
         if (retryCountRef.current < 3) {
           setTimeout(() => {
             retryCountRef.current += 1;
@@ -127,12 +125,10 @@ const WebrtcWrapper = () => {
     refVideoRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
-      console.log("SIP Registered!", ua);
       globalUserAgent = ua; // Store the registered UserAgent
     },
     // webSocketServer: "ws://192.168.2.225:5066",
   };
-  console.log(port, ip);
   useWebSocketErrorHandling(options);
 
   const checkMicrophoneStatus = () => {
@@ -176,27 +172,6 @@ const WebrtcWrapper = () => {
 
 
   useEffect(() => {
-    if (
-      selectedModule !== "onGoingCall" &&
-      sessions.find((session) => session.mode === "video")
-    ) {
-      console.log(
-        "aaaaa small video",
-        sessions.find((session) => session.mode === "video"),
-        videoCall,
-        selectedModule
-      );
-    } else {
-      console.log(
-        "aaaaa full video",
-        sessions.find((session) => session.mode === "video"),
-        videoCall,
-        selectedModule
-      );
-    }
-  }, [videoCall, selectedModule, sessions]);
-
-  useEffect(() => {
     dispatch({
       type: "SET_MINIMIZE",
       minimize: true,
@@ -216,8 +191,6 @@ const WebrtcWrapper = () => {
     };
     getContact();
   }, [addContactRefresh]);
-
-  console.log("conferenceccc", conferenceToggle || memberId, memberId);
 
   // Function that will check if session contains conference dummy id then remove it
   useEffect(() => {
@@ -243,6 +216,7 @@ const WebrtcWrapper = () => {
           }
       `}
       </style>
+      {/* <CloseTabWarning /> */}
       {agentDeposition && <AgentFeedback />}
       <SIPProvider options={options}>
         <SideNavbarApp
@@ -392,7 +366,7 @@ const WebrtcWrapper = () => {
             >
               <div className="container">
                 <div className="row">
-                  <div class="chatHeading">
+                  <div className="chatHeading">
                     <h5
                       data-bs-toggle="collapse"
                       href="#collapse1"
@@ -414,7 +388,7 @@ const WebrtcWrapper = () => {
                       ) : (
                         ""
                       )}{" "}
-                      <i class="fa-solid fa-chevron-down"></i>
+                      <i className="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
                   {sessions.length > 0 &&
@@ -423,7 +397,7 @@ const WebrtcWrapper = () => {
                       .map((session, chennel) => {
                         if (session.id !== dummySession) {
                           return (
-                            <div class="collapse show px-0" id="collapse1">
+                            <div className="collapse show px-0" id="collapse1">
                               <ActiveCallSidePanel
                                 key={chennel}
                                 mode={session.mode}
@@ -443,7 +417,7 @@ const WebrtcWrapper = () => {
                       })}
                 </div>
                 <div className="row">
-                  <div class="chatHeading">
+                  <div className="chatHeading">
                     <h5
                       data-bs-toggle="collapse"
                       href="#collapse2"
@@ -465,7 +439,7 @@ const WebrtcWrapper = () => {
                       ) : (
                         ""
                       )}{" "}
-                      <i class="fa-solid fa-chevron-down"></i>
+                      <i className="fa-solid fa-chevron-down"></i>
                     </h5>
                   </div>
                   {sessions.length > 0 &&
@@ -474,7 +448,7 @@ const WebrtcWrapper = () => {
                       .map((session, chennel) => {
                         if (session.id !== dummySession) {
                           return (
-                            <div class="collapse show px-0" id="collapse2">
+                            <div className="collapse show px-0" id="collapse2">
                               <ActiveCallSidePanel
                                 key={chennel}
                                 mode={session.mode}
@@ -544,7 +518,7 @@ const WebrtcWrapper = () => {
                             <p>Please Login to your Designated Call Center</p>
                           </div>
                           <button
-                            class="clearButton2 xl"
+                            className="clearButton2 xl"
                             onClick={() => {
                               setInitailCallCenterPopup(false);
                               dispatch({
@@ -557,7 +531,7 @@ const WebrtcWrapper = () => {
                               );
                             }}
                           >
-                            <i class={"fa-regular fa-xmark"}></i>
+                            <i className={"fa-regular fa-xmark"}></i>
                           </button>
                         </div>
                       </div>

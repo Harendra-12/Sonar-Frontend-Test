@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
@@ -8,7 +9,8 @@ import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import axios from "axios";
+const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
     <>
@@ -51,9 +53,11 @@ function Login() {
                 <div className="col-xl-6 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
-                      <h3>The simplest way to manage your workforce</h3>
+                      <h3>An Effective PBX Solution for all your Business Communication Needs</h3>
                       <p>Enter your credentials to access your control</p>
-                      <img src={require("../assets/images/logindash.png")} alt="logo" />
+                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <img src={require("../assets/images/pbx.webp")} alt="logo" style={{ marginLeft: '0', width: "85%" }} />
+                      </div>
                       {/* <img className="comp" src={require('../assets/images/temp.png')} /> */}
                     </div>
                   </div>
@@ -79,6 +83,108 @@ export function LoginComponent() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [popUp, setPopUp] = useState(false)
+  const [logInDetails, setLoginDetails] = useState([])
+
+  // Handle login function
+  async function handleLogin() {
+    const data = await login(userName, password);
+    if (data) {
+      if (data.status) {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
+
+          localStorage.setItem("account", JSON.stringify(profile.data));
+          const accountData = await generalGetFunction(
+            `/account/${profile.data.account_id}`
+          );
+          if (accountData?.status) {
+            dispatch({
+              type: "SET_ACCOUNTDETAILS",
+              accountDetails: accountData.data,
+            });
+            localStorage.setItem(
+              "accountDetails",
+              JSON.stringify(accountData.data)
+            );
+            if (Number(accountData.data.company_status) < 6) {
+              dispatch({
+                type: "SET_BILLINGLISTREFRESH",
+                billingListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_CARDLISTREFRESH",
+                cardListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: accountData.data,
+              });
+              localStorage.setItem(
+                "tempAccount",
+                JSON.stringify(accountData.data)
+              );
+              setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/temporary-dashboard");
+            } else {
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: null,
+              });
+              // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+              if (profile.data.user_role?.roles?.name === "Agent") {
+                if (profile.data.extension_id === null) {
+                  toast.error("You are not assigned to any extension");
+                  setLoading(false);
+                } else {
+                  setLoading(false);
+                  window.scrollTo(0, 0);
+                  navigate("/webrtc");
+                }
+              } else {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
+              }
+            }
+          } else {
+            setLoading(false);
+            toast.error("Server error !");
+          }
+        } else {
+          setLoading(false);
+          toast.error("unauthorized access!");
+        }
+      } else {
+        setLoading(false);
+        // const errorMessage = Object.keys(data.error);
+        toast.error(data.response.data.message);
+      }
+    }
+  }
+
+  // function to logout from specific device
+  async function handleLogoutFromSpecificDevice(token) {
+    try {
+      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log(logOut)
+      if (logOut?.data?.status) {
+        toast.success(logOut?.data?.message)
+      }
+    } catch (error) {
+      // console.log("00err",error)
+      toast.error(error?.response?.data?.message)
+    }
+  }
 
   // Function to handle login
   const userLogin = useCallback(async () => {
@@ -88,85 +194,85 @@ export function LoginComponent() {
       toast.error("Password is required!");
     } else {
       setLoading(true);
-      const data = await login(userName, password);
-      if (data) {
-        if (data.status) {
-          const profile = await generalGetFunction("/user");
-          if (profile?.status) {
-            dispatch({
-              type: "SET_ACCOUNT",
-              account: profile.data,
-            });
+      const checkLogin = await login(userName, password);
+      if (checkLogin?.status) {
+        const profile = await generalGetFunction("/user");
+        if (profile?.status) {
+          dispatch({
+            type: "SET_ACCOUNT",
+            account: profile.data,
+          });
 
-            localStorage.setItem("account", JSON.stringify(profile.data));
-            const accountData = await generalGetFunction(
-              `/account/${profile.data.account_id}`
+          localStorage.setItem("account", JSON.stringify(profile.data));
+          const accountData = await generalGetFunction(
+            `/account/${profile.data.account_id}`
+          );
+          if (accountData?.status) {
+            dispatch({
+              type: "SET_ACCOUNTDETAILS",
+              accountDetails: accountData.data,
+            });
+            localStorage.setItem(
+              "accountDetails",
+              JSON.stringify(accountData.data)
             );
-            if (accountData?.status) {
+            if (Number(accountData.data.company_status) < 6) {
               dispatch({
-                type: "SET_ACCOUNTDETAILS",
-                accountDetails: accountData.data,
+                type: "SET_BILLINGLISTREFRESH",
+                billingListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_CARDLISTREFRESH",
+                cardListRefresh: 1,
+              });
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: accountData.data,
               });
               localStorage.setItem(
-                "accountDetails",
+                "tempAccount",
                 JSON.stringify(accountData.data)
               );
-              if (Number(accountData.data.company_status) < 6) {
-                dispatch({
-                  type: "SET_BILLINGLISTREFRESH",
-                  billingListRefresh: 1,
-                });
-                dispatch({
-                  type: "SET_CARDLISTREFRESH",
-                  cardListRefresh: 1,
-                });
-                dispatch({
-                  type: "SET_TEMPACCOUNT",
-                  tempAccount: accountData.data,
-                });
-                localStorage.setItem(
-                  "tempAccount",
-                  JSON.stringify(accountData.data)
-                );
-                setLoading(false);
-                window.scrollTo(0, 0);
-                navigate("/temporary-dashboard");
-              } else {
-                dispatch({
-                  type: "SET_TEMPACCOUNT",
-                  tempAccount: null,
-                });
-                // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
-                if (profile.data.user_role?.roles?.name === "Agent") {
-                  if (profile.data.extension_id === null) {
-                    toast.error("You are not assigned to any extension");
-                    setLoading(false);
-                  } else {
-                    setLoading(false);
-                    window.scrollTo(0, 0);
-                    navigate("/webrtc");
-                  }
+              setLoading(false);
+              window.scrollTo(0, 0);
+              navigate("/temporary-dashboard");
+            } else {
+              dispatch({
+                type: "SET_TEMPACCOUNT",
+                tempAccount: null,
+              });
+              // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
+              if (profile.data.user_role?.roles?.name === "Agent") {
+                if (profile.data.extension_id === null) {
+                  toast.error("You are not assigned to any extension");
+                  setLoading(false);
                 } else {
                   setLoading(false);
                   window.scrollTo(0, 0);
-                  navigate("/dashboard");
+                  navigate("/webrtc");
                 }
+              } else {
+                setLoading(false);
+                window.scrollTo(0, 0);
+                navigate("/dashboard");
               }
-            } else {
-              setLoading(false);
-              toast.error("Server error !");
             }
           } else {
             setLoading(false);
-            toast.error("unauthorized access!");
+            toast.error("Server error !");
           }
         } else {
           setLoading(false);
-
-          // const errorMessage = Object.keys(data.error);
-          toast.error(data.response.data.message);
+          toast.error("unauthorized access!");
         }
+
+
+      } else {
+        setLoading(false)
+        setPopUp(true)
+        setLoginDetails(checkLogin?.response?.data?.data)
       }
+
     }
   }, [userName, password, dispatch, navigate]);
 
@@ -180,6 +286,7 @@ export function LoginComponent() {
     [userLogin]
   );
 
+  // Listen to enter press and then trigger login
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
@@ -189,57 +296,183 @@ export function LoginComponent() {
     };
   }, [handleKeyDown]);
 
+  // Handle logout from all device and then login in current device
+  async function handleLogoutAll() {
+    setLoading(true)
+    setPopUp(false)
+    const logoutAll = await generalGetFunction("logout?all")
+    if (logoutAll.status) {
+      handleLogin()
+    } else {
+      setLoading(false)
+      toast.error(logoutAll.message)
+    }
+  }
   return (
-    <form className="loginForm">
-      <div className="col-xl-12 m-auto">
-        {/* <div className="iconWrapper">
+    <>
+      <form className="loginForm">
+        <div className="col-xl-12 m-auto">
+          {/* <div className="iconWrapper">
           <i className="fa-regular fa-user" />
         </div> */}
-        <label>Username</label>
-        <div className="position-relative">
-          <i className="fa-thin fa-user" />
-          <input
-            type="text"
-            placeholder="Enter your username"
-            className="loginFormItem"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
+          <label>Username</label>
+          <div className="position-relative">
+            <i className="fa-thin fa-user" />
+            <input
+              type="text"
+              placeholder="Enter your username"
+              className="loginFormItem"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </div>
+          <label>Password</label>
+          <div className="position-relative">
+            <i className="fa-thin fa-lock" />
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="loginFormItem"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div onClick={backToTop}>
+            <button
+              disabled={loading}
+              className="formSubmit"
+              type="button"
+              effect="ripple"
+              onClick={() => {
+                localStorage.clear();
+                userLogin();
+              }}
+            >
+              {loading ? (
+                <img
+                  width="6%"
+                  src={require("../assets/images/loader-gif.webp")}
+                  alt=""
+                />
+              ) : (
+                "Login"
+              )}
+            </button>
+          </div>
         </div>
-        <label>Password</label>
-        <div className="position-relative">
-          <i className="fa-thin fa-lock" />
-          <input
-            type="password"
-            placeholder="Enter your password"
-            className="loginFormItem"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div onClick={backToTop}>
-          <button
-            disabled={loading}
-            className="formSubmit"
-            type="button"
-            effect="ripple"
-            onClick={() => {
-              localStorage.clear();
-              userLogin();
-            }}
-          >
-            {loading ? (
-              <img
-                width="6%"
-                src={require("../assets/images/loader-gif.webp")}
-                alt=""
-              />
-            ) : (
-              "Login"
-            )}
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+      {popUp ? (
+        <>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+                <h5>Warning!</h5>
+              </div>
+              <p>
+                You are already login on different device!
+              </p>
+
+              {logInDetails?.length > 0 &&
+                <ul className="mb-3">
+                  <p>You are logged in from the specific devices: </p>
+                  {logInDetails?.map((item) => {
+                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser}
+                      <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                    </li>
+                  })}
+                </ul>
+              }
+              <div className="d-flex justify-content-between px-0">
+                <button
+                  className="panelButton m-0 float-end"
+                  onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }}
+                >
+                  <span className="text">Login</span>
+                  <span className="icon">
+                    <i className="fa-solid fa-check"></i>
+                  </span>
+                </button>
+
+                <div>
+                  <button
+                    disabled={loading}
+                    className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
+                    onClick={handleLogoutAll}
+                  >
+                    <span className="text text-danger">Logout All Devices</span>
+                    {/* <span className="icon">
+                        <i className="fa-solid fa-power-off"></i>
+                      </span> */}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          {/* <div className="popupopen ">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4 col-md-5">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p className="my-2">
+                    You are already login on different device!
+                  </p>
+                  {logInDetails?.length > 0 &&
+                    <ul className="mb-3">
+                      <p>You are logged in from the specific devices: </p>
+                      {logInDetails?.map((item) => {
+                        return <li className="d-flex align-items-center">{item?.platform}   {item?.browser}
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off" /></button>
+                        </li>
+                      })}
+                    </ul>
+                  }
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="panelButton m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setLoading(true)
+                        handleLogin()
+                      }}
+                    >
+                      <span className="text">Login</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
+                    <div>
+                      <button
+                        disabled={loading}
+                        className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
+                        onClick={handleLogoutAll}
+                      >
+                        <span className="text text-danger">Logout All Devices</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> */}
+        </>
+      ) : (
+        ""
+      )}
+    </>
   );
 }

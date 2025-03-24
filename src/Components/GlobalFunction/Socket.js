@@ -15,7 +15,6 @@ const Socket = () => {
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data));
-      console.log("Message sent via WebSocket:", data);
     } else {
       console.warn("WebSocket is not open. Unable to send message.");
     }
@@ -28,7 +27,6 @@ const Socket = () => {
       const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
 
       socket.onopen = () => {
-        console.log("WebSocket connection established.");
         reconnectAttempts = 0; // Reset reconnect attempts
       };
 
@@ -37,7 +35,6 @@ const Socket = () => {
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result, current_time } = message;
-          // console.log("00000result",{key},{result})
           switch (key) {
             case "UserRegister":
               dispatch({
@@ -74,8 +71,6 @@ const Socket = () => {
               });
               break;
             case "Conference":
-              console.log("This is conference data", result);
-
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
             case "screenShare":
@@ -100,7 +95,7 @@ const Socket = () => {
                 })
               }
               break;
-            case "PreviewDialer":
+            case "progressive":
               dispatch({
                 type: "SET_PREVIEWDIALER",
                 previewDialer: result,
@@ -108,10 +103,8 @@ const Socket = () => {
               break;
 
             default:
-              console.log("Unhandled WebSocket message key:", key);
           }
         } else {
-          console.log("Received non-string message:", parsedData);
         }
       };
 
@@ -120,7 +113,6 @@ const Socket = () => {
       };
 
       socket.onclose = () => {
-        console.log("WebSocket connection closed. Reconnecting...");
         if (reconnectAttempts < 5) {
           reconnectAttempts++;
           setTimeout(connectWebSocket, 5000); // Retry after 5 seconds

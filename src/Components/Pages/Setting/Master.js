@@ -198,7 +198,6 @@ function Master() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchDomain, searchGroup]);
-  console.log(filterDomain, "This is filter domain");
   return (
     <main className="mainContent">
       <section id="phonePage">

@@ -38,7 +38,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       : "profileOfflineNav"
                   }
                 >
-                  <i class="fa-light fa-user"></i>
+                  <i className="fa-light fa-user"></i>
                   {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
@@ -88,8 +88,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-
-                className="navItem"
+                 onClick={() => setactivePage("e-fax")}
+                 className={
+                   activePage === "e-fax" ? "navItem active" : "navItem"
+                 }
               >
                 <div className="iconHolder">
                   <i className="fa-regular fa-paper-plane"></i>
@@ -99,7 +101,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-
+                onClick={featureUnderdevelopment}
                 className="navItem "
               >
                 <div className="iconHolder">
@@ -167,15 +169,15 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </li>
             }
             <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => featureUnderdevelopment()}
-                className="navItem"
-              >
-                <div className="iconHolder">
-                  <i class="fa-light fa-screwdriver-wrench"></i>
+            <div
+                  onClick={() => featureUnderdevelopment()}
+                  className="navItem"
+                >
+                  <div className="iconHolder">
+                  <i className="fa-light fa-screwdriver-wrench"></i>
+                  </div>
+                  <div className="itemTitle">Switch Admin</div>
                 </div>
-                <div className="itemTitle">Switch Admin</div>
-              </div>
             </li>
           </ul>
         </div>

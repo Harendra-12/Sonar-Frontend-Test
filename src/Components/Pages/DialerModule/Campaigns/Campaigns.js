@@ -66,38 +66,38 @@ function Campaigns() {
               <div className='overviewTableWrapper'>
                 <div className='overviewTableChild'>
                   <div className='d-flex flex-wrap'>
-                    <div class="col-12">
-                      <div class="heading">
-                        <div class="content">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
                           <h4>Campaigns</h4>
                           <p>You can see the list of campaigns</p>
                         </div>
-                        <div class="buttonGroup">
-                          <button class="panelButton gray">
-                            <span class="text">Back</span>
-                            <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
+                        <div className="buttonGroup">
+                          <button className="panelButton gray">
+                            <span className="text">Back</span>
+                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                           </button>
-                          <button class="panelButton" onClick={() => navigate("/campaign-create")}>
-                            <span class="text">Create</span>
-                            <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                          <button className="panelButton" onClick={() => navigate("/campaign-create")}>
+                            <span className="text">Create</span>
+                            <span className="icon"><i className="fa-solid fa-plus"></i></span>
                           </button>
                         </div>
                       </div>
                     </div>
                     <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
-                      <div class="tableHeader">
-                        <div class="showEntries">
+                      <div className="tableHeader">
+                        <div className="showEntries">
                           <label>Show</label>
-                          <select class="formItem">
+                          <select className="formItem">
                             <option value="10">10</option>
                             <option value="20">20</option>
                             <option value="30">30</option>
                           </select>
                           <label>entries</label>
                         </div>
-                        <div class="searchBox">
+                        <div className="searchBox">
                           <label>Search:</label>
-                          <input type="text" class="formItem" value="" />
+                          <input type="text" className="formItem" value="" />
                         </div>
                       </div>
                       <div className='tableContainer'>
@@ -238,13 +238,13 @@ function Campaigns() {
                                         <div className="avatar-container">
                                           {item.agents?.slice(0, 4).map((agent, index) => {
                                             return (
-                                              <Tippy key={index} content={agent.user_id}><i class="fa-light fa-user"></i></Tippy>
+                                              <Tippy key={index} content={agent.user_id}><i className="fa-light fa-user"></i></Tippy>
                                             )
                                           })}
 
-                                          {/* <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i class="fa-light fa-user"></i></Tippy> */}
+                                          {/* <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy>
+                                                                         <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy>
+                                                                         <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy> */}
                                           {item.agents?.length > 4 && <span>+2</span>}
 
                                         </div>
@@ -252,16 +252,16 @@ function Campaigns() {
                                     </td>
                                     <td><span className='ellipsis'>CustomerList.xls</span></td>
                                     <td>
-                                      <div class="dropdown">
-                                        <div class="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      <div className="dropdown">
+                                        <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                           <i className="fa-solid fa-ellipsis-vertical" />
                                         </div>
-                                        <ul class="dropdown-menu actionBtnDropdowns">
-                                          <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
-                                          <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-circle-play me-2"></i> Start</div></li>
-                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div class="clearButton text-align-start"><i class="fa-regular fa-pen me-2"></i> Edit</div></li>
-                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div class="clearButton text-align-start"><i class="fa-regular fa-clock me-2"></i> Schedule</div></li>
-                                          <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div class="clearButton text-align-start"><i class="fa-regular fa-trash me-2"></i> Delete</div></li>
+                                        <ul className="dropdown-menu actionBtnDropdowns">
+                                          <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
+                                          <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Start</div></li>
+                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>
+                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div className="clearButton text-align-start"><i className="fa-regular fa-clock me-2"></i> Schedule</div></li>
+                                          <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>
                                         </ul>
                                       </div>
                                     </td>
@@ -308,7 +308,7 @@ function Campaigns() {
                       >
                         <span className="text">Confirm</span>
                         <span className="icon">
-                          <i class="fa-solid fa-check"></i>
+                          <i className="fa-solid fa-check"></i>
                         </span>
                       </button>
                       <button
@@ -317,7 +317,7 @@ function Campaigns() {
                       >
                         <span className="text">Cancel</span>
                         <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
+                          <i className="fa-solid fa-xmark"></i>
                         </span>
                       </button>
                     </div>

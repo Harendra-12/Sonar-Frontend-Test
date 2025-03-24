@@ -25,6 +25,8 @@ import Socket from "../../GlobalFunction/Socket";
 import EmojiPicker from "emoji-picker-react";
 import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
+import AudioPlayer from "./AudioWaveForm";
+import DisplayFile from "./DisplayFile";
 
 function Messages({
   setSelectedModule,
@@ -80,8 +82,7 @@ function Messages({
   const [selectAll, setSelectAll] = useState(false);
   const [groupSelecedAgents, setGroupSelecedAgents] = useState([]);
   const [groupNameEdit, setGroupNameEdit] = useState("");
-  const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] =
-    useState(false);
+  const [saveEditToggleGroupNameChange, setSaveEditToggleGroupNameChange] = useState(false);
   const [addMember, setAddMember] = useState(false);
   const [selectedgroupUsers, setSelectedgroupUsers] = useState([]);
   const [groupLeavePopUp, setGroupLeavePopUp] = useState(false)
@@ -92,9 +93,14 @@ function Messages({
   const [isAdmin, setIsAdmin] = useState(false)
   const [fileUpload, setFileUpload] = useState(false)
   const [fileType, setFileType] = useState("")
-  console.log("groupSelecedAgents", groupSelecedAgents);
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
+  const [selectedUrl,setSelectedUrl]=useState(null)
+  const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
+  const [selectFileExtension,setSelectFileExtension]=useState(null)
+  const thisAudioRef = useRef(null); 
+  // const [currentPlaying, setCurrentPlaying] = useState("");
+  const [audioUrl,setAudioURL]=useState("")
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -121,6 +127,54 @@ function Messages({
     formState: { errors },
   } = useForm();
 
+//  function to extract extension
+  const extractFileExtension = (selectedUrl) => {
+    // debugger
+    if (!selectedUrl) return null;
+  
+    // Step 1: Remove query parameters and get the base URL
+    const fileUrl = selectedUrl.split("?")[0];
+    const fileName = fileUrl.split("/").pop();
+  
+    if (fileName) {
+      // Step 2: Try extracting extension from the filename
+      const fileParts = fileName.split(".");
+      if (fileParts.length > 1) {
+        return fileParts.pop().toLowerCase(); // Standard case: return the extension
+      }
+  
+      // Step 3: Fallback - Check query parameters for extension hints
+      const queryParams = selectedUrl.split("?")[1];
+      if (queryParams) {
+        const params = new URLSearchParams(queryParams);
+        // Look for common extension indicators in query params (customize as needed)
+        for (const [, value] of params) {
+          const lowerValue = value.toLowerCase();
+          if (lowerValue.includes("png")) return "png";
+          if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
+          if (lowerValue.includes("pdf")) return "pdf";
+          // Add more extensions as needed
+        }
+      }
+  
+      // Step 4: Fallback - Decode URL-encoded filename and retry
+      const decodedFileName = decodeURIComponent(fileName);
+      const decodedParts = decodedFileName.split(".");
+      if (decodedParts.length > 1) {
+        return decodedParts.pop().toLowerCase();
+      }
+    }
+  
+    return null; // No extension found
+  };
+  useEffect(() => {
+   if(selectedUrl){
+    const extension=extractFileExtension(selectedUrl);
+    setSelectFileExtension(extension);
+   }
+  }, [selectedUrl]);
+
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -180,7 +234,6 @@ function Messages({
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
-      console.log("SIP provider connected", sipProvider.connectStatus);
 
       setIsSIPReady(true);
     } else {
@@ -223,13 +276,14 @@ function Messages({
     }
   }
 
+  console.log(recipient,loadMore);
+  
   // Getting messages based on pagination
   useEffect(() => {
     async function getData(pageNumb) {
       const apiData = await generalGetFunction(
         recipient[2] === "singleChat" ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}` : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
       );
-
       apiData.data.data.map((item) => {
         setAllMessage((prevState) => ({
           ...prevState,
@@ -262,26 +316,36 @@ function Messages({
         ) {
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
+          console.log("from first");
+          
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
+        console.log("from second");
+        
       }
     }
   }, [recipient, loadMore]);
 
   // Logic to send message
   const sendSingleMessage = () => {
-    if (messageInput.trim() === "") return;
+    // Only proceed if there's either a URL or message text
+    if(!selectedUrl && messageInput.trim() === "") {
+      return;
+    }
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
-
+      
       const target = UserAgent.makeURI(targetURI);
-
       if (target) {
+        let messager;
         try {
-          const messager = new Messager(userAgent, target, messageInput);
+          const messageContent = messageInput.trim() || selectedUrl;
+            //  message if any file is selected
+          messager = new Messager(userAgent, target, messageContent);
+        
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -291,27 +355,26 @@ function Messages({
               ...(prevState[recipient[0]] || []),
               { from: extension, body: messageInput, time },
             ],
-          }));
+          }));     
           // Update contact last message
           const contactIndex = contact.findIndex(
             (contact) => contact.extension === recipient[0]
           );
           if (contactIndex !== -1) {
             const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text =
-              messageInput;
+            newContact[contactIndex].last_message_data.message_text = messageInput;
             newContact[contactIndex].last_message_data.created_at = time;
             setContact(newContact);
           }
           setActiveTab("all");
-
+          
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
           );
           const agentDetails = agents.find(
             (agent) => agent.extension.extension === recipient[0]
           );
-
+          
           if (!extensionExists) {
             contact.unshift({
               name: agentDetails.username,
@@ -326,6 +389,9 @@ function Messages({
             });
           }
           setMessageInput("");
+          setSelectedFile(null);
+          setSelectedUrl(null);
+          setSelectFileExtension(null);
         } catch (error) {
           setMessageInput("");
           console.error("Error sending message:", error);
@@ -335,10 +401,9 @@ function Messages({
         console.error("Invalid recipient address.");
       }
     } else {
-      console.error("UserAgent or session not ready.");
+      toast.error("UserAgent or session not ready.");
     }
   };
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -461,7 +526,6 @@ function Messages({
       if (messageListRef.current) {
         const threshold = messageListRef.current.scrollHeight * 0.9;
         if (messageListRef.current.scrollTop >= threshold) {
-          console.log("User has reached 90% from top", chatHistory);
           setLoadMore(loadMore + 1);
         }
       }
@@ -572,16 +636,11 @@ function Messages({
 
         // Listen for tracks being added to the remote stream
         remoteStream.onaddtrack = () => {
-          console.log("Remote track added:", remoteStream);
           playRemoteStream(remoteStream);
         };
 
         // If tracks are already present, attach immediately
         if (remoteStream.getTracks().length > 0) {
-          console.log(
-            "Remote stream tracks available immediately:",
-            remoteStream
-          );
           playRemoteStream(remoteStream);
         }
       }
@@ -596,7 +655,6 @@ function Messages({
           console.error("Error playing early media stream:", e);
         });
       }
-      console.log("apiData", apiData);
 
       setSelectedModule("onGoingCall");
       dispatch({
@@ -716,7 +774,6 @@ function Messages({
     getGroups();
   }, [groupRefresh]);
 
-  console.log("Is admin", isAdmin);
 
   // Delete tag
   async function handleDeleteTag(id) {
@@ -852,14 +909,6 @@ function Messages({
       setNewGroupLoader(false);
     }
   };
-
-  // const getGroupDataById = async (id) => {
-  //   const apiData = generalGetFunction(`/groups/show/${id}`);
-  //   if (apiData.status) {
-  //     console.log(apiData);
-  //   }
-  // };
-
   const handleAddNewMemberToGroup = async () => {
     // const payload = groupSelecedAgents.map((agent) => agent.id);
     const payLoad = {
@@ -869,7 +918,6 @@ function Messages({
     setNewGroupLoader(true);
     const apiData = await generalPostFunction("/group-users/store", payLoad);
     if (apiData.status) {
-      console.log(apiData);
       setGroupRefresh(groupRefresh + 1);
       setGroupChatPopUp(false);
       setAddMember(false);
@@ -877,10 +925,8 @@ function Messages({
       setNewGroupLoader(false);
     } else {
       setNewGroupLoader(false);
-      console.log(apiData);
     }
   };
-  // console.log(groupSelecedAgents);
   const handleremoveUserFromGroup = async (id) => {
     setNewGroupLoader(true);
     const apiData = await generalDeleteFunction(
@@ -888,7 +934,6 @@ function Messages({
       // payload
     );
     if (apiData.status) {
-      console.log(apiData);
       toast.success(apiData.message);
       setSelectedgroupUsers(
         selectedgroupUsers.filter((item) => item.id !== id)
@@ -896,31 +941,48 @@ function Messages({
       setNewGroupLoader(false);
     } else {
       setNewGroupLoader(false);
-      console.log(apiData);
     }
   };
 
+  // console.log("000allMessage",allMessage?.[recipient[0]])
+
+  // function to add display logic in messages
+ 
   // Logic to send group messages
   function sendGroupMessage() {
+    debugger
+    const messageContent = messageInput.trim() || selectedUrl;
+  
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
-      "sharedMessage": messageInput.trim(),
+      "sharedMessage": messageContent,
       "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
+    
     const time = formatDateTime(new Date());
+    
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[0]]: [
         ...(prevState[recipient[0]] || []),
-        { from: account.name, body: messageInput, time },
+        { 
+          from: account.name, 
+          body: messageContent , // Show appropriate text in the message history
+          time 
+        },
       ],
     }));
+    
+    // Clear both message input and selected file
     setMessageInput("");
+    setSelectedUrl(null);
+  
   }
+
   // Recieve group message
   useEffect(() => {
     const time = formatDateTime(new Date());
@@ -997,7 +1059,7 @@ function Messages({
               >
                 <span className="text">Cancel</span>
                 <span className="icon">
-                  <i class="fa-solid fa-caret-left"></i>
+                  <i className="fa-solid fa-caret-left"></i>
                 </span>
               </button>
               <button
@@ -1011,7 +1073,7 @@ function Messages({
               >
                 <span className="text">Save</span>
                 <span className="icon">
-                  <i class="fa-solid fa-floppy-disk"></i>
+                  <i className="fa-solid fa-floppy-disk"></i>
                 </span>
               </button>
             </div>
@@ -1040,12 +1102,12 @@ function Messages({
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                       Messages{" "}
                       <button
-                        class="clearButton2"
+                        className="clearButton2"
                         onClick={() => setContactRefresh(contactRefresh + 1)}
                         disabled={loading}
                       >
                         <i
-                          class={
+                          className={
                             loading
                               ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
                               : "fa-regular fa-arrows-rotate fs-5"
@@ -1061,7 +1123,7 @@ function Messages({
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                         onClick={() => featureUnderdevelopment()}
                       />
@@ -1077,25 +1139,25 @@ function Messages({
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li
                             onClick={() => {
                               if (allCallCenterIds.length > 0) {
@@ -1106,7 +1168,7 @@ function Messages({
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -1114,7 +1176,7 @@ function Messages({
                           </li>
                           {/* <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
@@ -1155,7 +1217,7 @@ function Messages({
                     className="clearColorButton dark"
                     onClick={() => setGroupChatPopUp(true)}
                   >
-                    <i class="fa-light fa-pen-to-square"></i> New Chat
+                    <i className="fa-light fa-pen-to-square"></i> New Chat
                   </button>
                 </div> */}
                 <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
@@ -1234,9 +1296,9 @@ function Messages({
                         style={{ height: "calc(100vh - 270px)" }}
                       >
                         {/* <div className="chatHeading">
-                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i class="fa-solid fa-chevron-down"></i></h5>
+                          <h5 data-bs-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapse1">Pinned <i className="fa-solid fa-chevron-down"></i></h5>
                         </div>
-                        <div class="collapse show" id="collapse1">
+                        <div className="collapse show" id="collapse1">
                           <div className="contactListItem" data-bell={"1"}>
                             <div className="row justify-content-between">
                               <div className="col-xl-12 d-flex">
@@ -1271,11 +1333,11 @@ function Messages({
                             aria-expanded="false"
                             aria-controls="collapse2"
                           >
-                            Chats <i class="fa-solid fa-chevron-down"></i>
+                            Chats <i className="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
                         <div
-                          class="collapse show"
+                          className="collapse show"
                           id="collapse2"
                           style={{
                             borderBottom: "1px solid var(--border-color)",
@@ -1369,11 +1431,11 @@ function Messages({
                             aria-expanded="false"
                             aria-controls="collapse3"
                           >
-                            Group Chat <i class="fa-solid fa-chevron-down"></i>
+                            Group Chat <i className="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
                         <div
-                          class="collapse show"
+                          className="collapse show"
                           id="collapse3"
                           style={{ borderBottom: "1px solid #ddd" }}
                         >
@@ -1434,7 +1496,7 @@ function Messages({
                             aria-expanded="false"
                             aria-controls="collapse2"
                           >
-                            Online<i class="fa-solid fa-chevron-down"></i>
+                            Online<i className="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
                         <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
@@ -1496,7 +1558,7 @@ function Messages({
                             <Tippy content="Click to add a new tag!">
                               <i
                                 onClick={() => setAddNewTag(true)}
-                                class="fa-regular fa-circle-plus fs-5"
+                                className="fa-regular fa-circle-plus fs-5"
                                 style={{ cursor: "pointer", fontSize: 18 }}
                               ></i>
                             </Tippy>
@@ -1539,7 +1601,7 @@ function Messages({
                                       onClick={handleUpdateTag}
                                     >
                                       <Tippy content="Click to save your tag!">
-                                        <i class="fa-regular fa-floppy-disk"></i>
+                                        <i className="fa-regular fa-floppy-disk"></i>
                                       </Tippy>
                                     </button>
                                   ) : (
@@ -1551,7 +1613,7 @@ function Messages({
                                       }}
                                     >
                                       <Tippy content="You can edit the tag here!">
-                                        <i class="fa-regular fa-pen-to-square"></i>
+                                        <i className="fa-regular fa-pen-to-square"></i>
                                       </Tippy>
                                     </button>
                                   )}
@@ -1560,7 +1622,7 @@ function Messages({
                                       className="clearButton2 xl"
                                       onClick={() => handleDeleteTag(item.id)}
                                     >
-                                      <i class="fa-regular fa-trash text-danger"></i>
+                                      <i className="fa-regular fa-trash text-danger"></i>
                                     </button>
                                   </Tippy>
                                 </div>
@@ -1595,13 +1657,13 @@ function Messages({
                                   className="clearButton2 xl"
                                   onClick={handleNewTag}
                                 >
-                                  <i class="fa-regular fa-circle-check"></i>
+                                  <i className="fa-regular fa-circle-check"></i>
                                 </button>
                                 <button
                                   className="clearButton2  xl"
                                   onClick={() => setAddNewTag(false)}
                                 >
-                                  <i class="fa-regular fa-trash text-danger"></i>
+                                  <i className="fa-regular fa-trash text-danger"></i>
                                 </button>
                               </div>
                             </div>
@@ -1622,7 +1684,7 @@ function Messages({
                               <Tippy content="Click to create a new group!">
                                 <i
                                   onClick={() => setGroupChatPopUp(true)}
-                                  class="fa-regular fa-circle-plus fs-5"
+                                  className="fa-regular fa-circle-plus fs-5"
                                   style={{ cursor: "pointer", fontSize: 18 }}
                                 ></i>
                               </Tippy>
@@ -1791,8 +1853,6 @@ function Messages({
                                   setGroupNameEdit(item.group_name);
                                   setSelectedgroupUsers(item.groupusers);
                                   item.groupusers.map((user) => {
-                                    console.log("--------------------------------------------------------", account.id, "user", user, user.is_admin);
-
                                     if (user.user_id === account.id) {
                                       setIsAdmin(user.is_admin)
                                     }
@@ -1859,7 +1919,6 @@ function Messages({
                 <div className="row">
                   <div className="col">
                     <div className="messageOverlay">
-                      {/* {console.log(recipient)} */}
                       {recipient[0] ? (
                         <div className="contactHeader">
                           <div>
@@ -1893,7 +1952,7 @@ function Messages({
                                 })}
                               {/* <span data-id="1">Work</span> */}
                               {selectedChat === "groupChat" ? "" :
-                                <div class="dropdown">
+                                <div className="dropdown">
                                   <span
                                     className="add"
                                     type="button"
@@ -1902,10 +1961,10 @@ function Messages({
                                     data-bs-auto-close="outside"
                                     ref={tagDropdownRef}
                                   >
-                                    <i class="fa-solid fa-circle-plus me-1"></i>{" "}
+                                    <i className="fa-solid fa-circle-plus me-1"></i>{" "}
                                     Add tag
                                   </span>
-                                  <ul class="dropdown-menu" ref={tagDropdownRef}>
+                                  <ul className="dropdown-menu" ref={tagDropdownRef}>
                                     {allTags.map((item, key) => {
                                       return (
                                         <div className="contactTagsAddEdit" style={{ width: '350px' }}>
@@ -1953,7 +2012,7 @@ function Messages({
                                                   onClick={handleUpdateTag}
                                                 >
                                                   <Tippy content="Click to save your tag!">
-                                                    <i class="fa-regular fa-floppy-disk"></i>
+                                                    <i className="fa-regular fa-floppy-disk"></i>
                                                   </Tippy>
                                                 </button>
                                               ) : (
@@ -1965,7 +2024,7 @@ function Messages({
                                                   }}
                                                 >
                                                   <Tippy content="You can edit the tag here!">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                    <i className="fa-regular fa-pen-to-square"></i>
                                                   </Tippy>
                                                 </button>
                                               )}
@@ -1974,7 +2033,7 @@ function Messages({
                                                   className="clearButton2 xl"
                                                   onClick={() => handleDeleteTag(item.id)}
                                                 >
-                                                  <i class="fa-regular fa-trash text-danger"></i>
+                                                  <i className="fa-regular fa-trash text-danger"></i>
                                                 </button>
                                               </Tippy>
                                             </div>
@@ -2037,19 +2096,19 @@ function Messages({
                             ) : (
                               ""
                             )}
-                            <div class="dropdown">
+                            <div className="dropdown">
                               <button
-                                class="clearButton2 xl"
+                                className="clearButton2 xl"
                                 type="button"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                               >
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                <i className="fa-solid fa-ellipsis-vertical"></i>
                               </button>
-                              <ul class="dropdown-menu">
+                              <ul className="dropdown-menu">
                                 <li>
                                   <div
-                                    class="dropdown-item"
+                                    className="dropdown-item"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
@@ -2058,7 +2117,7 @@ function Messages({
                                 </li>
                                 <li>
                                   <div
-                                    class="dropdown-item"
+                                    className="dropdown-item"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
@@ -2068,7 +2127,7 @@ function Messages({
                                 {selectedChat === "groupChat" && (
                                   <li>
                                     <div
-                                      class="dropdown-item"
+                                      className="dropdown-item"
                                       href="#"
                                       onClick={() => setManageGroupChat(true)}
                                     >
@@ -2080,7 +2139,7 @@ function Messages({
                                 {selectedChat === "groupChat" && (
                                   <li>
                                     <div
-                                      class="dropdown-item"
+                                      className="dropdown-item"
                                       href="#"
                                       onClick={() => {
                                         setGroupLeaveId(selectedgroupUsers.filter((item) => item.user_id === account.id)[0].id);
@@ -2094,7 +2153,7 @@ function Messages({
 
                                 <li>
                                   <div
-                                    class="dropdown-item text-danger"
+                                    className="dropdown-item text-danger"
                                     href="#"
                                     onClick={() => featureUnderdevelopment()}
                                   >
@@ -2165,12 +2224,14 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            <div className="">
+                                              {/* function to display the message */}
+                                       <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>
                                       ) : (
+                                        
                                         <div className="messageItem receiver">
                                           <div className="second">
                                             <h6>
@@ -2183,8 +2244,8 @@ function Messages({
                                                   .join(":")}
                                               </span>
                                             </h6>
-                                            <div className="messageDetails">
-                                              <p>{item.body}</p>
+                                            <div className="">
+                                            <DisplayFile item={item.body}/>
                                             </div>
                                           </div>
                                         </div>
@@ -2197,7 +2258,7 @@ function Messages({
                             </>
                           ) : (
                             <div className="startAJob">
-                              <div class="text-center mt-3">
+                              <div className="text-center mt-3">
                                 <img
                                   src={require("../../assets/images/empty-box.png")}
                                   alt="Empty"
@@ -2224,12 +2285,12 @@ function Messages({
                             <div className="col-12">
                               <nav>
                                 <div
-                                  class="nav nav-tabs"
+                                  className="nav nav-tabs"
                                   id="nav-tab"
                                   role="tablist"
                                 >
                                   <button
-                                    class="tabLink active"
+                                    className="tabLink active"
                                     id="nav-im-tab"
                                     data-bs-toggle="tab"
                                     data-bs-target="#nav-im"
@@ -2241,7 +2302,7 @@ function Messages({
                                     IM
                                   </button>
                                   <button
-                                    class="tabLink"
+                                    className="tabLink"
                                     id="nav-sms-tab"
                                     // data-bs-toggle="tab"
                                     // data-bs-target="#nav-whatsapp"
@@ -2254,7 +2315,7 @@ function Messages({
                                     SMS
                                   </button>
                                   <button
-                                    class="tabLink"
+                                    className="tabLink"
                                     id="nav-whatsapp-tab"
                                     // data-bs-toggle="tab"
                                     // data-bs-target="#nav-whatsapp"
@@ -2267,7 +2328,7 @@ function Messages({
                                     WhatsApp
                                   </button>
                                   <button
-                                    class="tabLink"
+                                    className="tabLink"
                                     id="nav-messenger-tab"
                                     // data-bs-toggle="tab"
                                     // data-bs-target="#nav-messenger"
@@ -2282,13 +2343,19 @@ function Messages({
                                 </div>
                               </nav>
                             </div>
-                            <div class="tab-content col-12" id="nav-tabContent">
+                            <div className="tab-content col-12" id="nav-tabContent">
                               <div
-                                class="tab-pane fade show active"
+                                className="tab-pane fade show active"
                                 id="nav-im"
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
+                                {selectedFile && (
+    <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
+      📎 {selectedFile.name}
+    </div>
+  )}
+
                                 <textarea
                                   type="text"
                                   name=""
@@ -2297,7 +2364,7 @@ function Messages({
                                   value={messageInput}
                                   onChange={(e) =>
                                     setMessageInput(e.target.value)
-                                  }
+                                    }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       if (recipient[2] === "groupChat") {
@@ -2310,7 +2377,7 @@ function Messages({
                                 />
                               </div>
                               <div
-                                class="tab-pane fade"
+                                className="tab-pane fade"
                                 id="nav-whatsapp"
                                 role="tabpanel"
                                 aria-labelledby="nav-whatsapp-tab"
@@ -2318,7 +2385,7 @@ function Messages({
                                 ...
                               </div>
                               <div
-                                class="tab-pane fade"
+                                className="tab-pane fade"
                                 id="nav-messenger"
                                 role="tabpanel"
                                 aria-labelledby="nav-messenger-tab"
@@ -2339,19 +2406,19 @@ function Messages({
                                   className="clearButton2"
                                   onClick={() => { setFileUpload(true); setFileType("image") }}
                                 >
-                                  <i class="fa-regular fa-image"></i>
+                                  <i className="fa-regular fa-image"></i>
                                 </button>
                                 <button
                                   className="clearButton2"
                                   onClick={() => { setFileUpload(true); setFileType("all") }}
                                 >
-                                  <i class="fa-solid fa-paperclip"></i>
+                                  <i className="fa-solid fa-paperclip"></i>
                                 </button>
                                 <button
                                   className="clearButton2"
                                   onClick={() => setEmojiOpen(!emojiOpen)}
                                 >
-                                  <i class="fa-regular fa-face-smile"></i>
+                                  <i className="fa-regular fa-face-smile"></i>
                                 </button>
                               </div>
                               <div>
@@ -2384,7 +2451,7 @@ function Messages({
                       style={{ borderLeft: "1px solid var(--border-color)" }}
                     >
                       <div className="messageOverlay">
-                        <div class="contactHeader" style={{ height: "71px" }}>
+                        <div className="contactHeader" style={{ height: "71px" }}>
                           <div className="col">
                             <h4 className="my-0">
                               <input
@@ -2398,7 +2465,7 @@ function Messages({
                               />
                             </h4>
                           </div>
-                          <div class="d-flex my-auto">
+                          <div className="d-flex my-auto">
                             {!saveEditToggleGroupNameChange ? (
                               <button
                                 className="clearButton2 xl"
@@ -2406,7 +2473,7 @@ function Messages({
                                   setSaveEditToggleGroupNameChange(true)
                                 }
                               >
-                                <i class="fa-regular fa-pen"></i>
+                                <i className="fa-regular fa-pen"></i>
                               </button>
                             ) : (
                               <button
@@ -2416,7 +2483,7 @@ function Messages({
                                   handleEditGroupName()
                                 }
                               >
-                                <i class="fa-regular fa-check"></i>
+                                <i className="fa-regular fa-check"></i>
                               </button>
                             )}
                           </div>
@@ -2747,7 +2814,7 @@ function Messages({
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
 
@@ -2761,7 +2828,7 @@ function Messages({
                         >
                           <span className="text">Cancel</span>
                           <span className="icon">
-                            <i class="fa-solid fa-xmark"></i>
+                            <i className="fa-solid fa-xmark"></i>
                           </span>
                         </button>
                       </div>
@@ -2783,7 +2850,7 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} />
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading}/>
         }
       </main>
     </>

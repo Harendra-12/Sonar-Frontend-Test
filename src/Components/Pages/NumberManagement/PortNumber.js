@@ -109,7 +109,7 @@ function PortNumber() {
                       }}
                     >
                       <span className="text">Back</span>
-                      <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                      <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                     </button>
                     <Link
                       to="/port-number-add"
@@ -118,7 +118,7 @@ function PortNumber() {
                       className="panelButton"
                     >
                       <span className="text">Add</span>
-                      <span className="icon"><i class="fa-solid fa-plus"></i></span>
+                      <span className="icon"><i className="fa-solid fa-plus"></i></span>
                     </Link>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ function PortNumber() {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           {  checkViewSidebar(
@@ -160,7 +160,7 @@ function PortNumber() {
                             >
                               <span className="text">Add</span>
                               <span className="icon">
-                                <i class="fa-solid fa-plus"></i>
+                                <i className="fa-solid fa-plus"></i>
                               </span>
                             </Link>
                           ) : (
@@ -172,7 +172,7 @@ function PortNumber() {
                             >
                               <span className="text">Add</span>
                               <span className="icon">
-                                <i class="fa-solid fa-plus"></i>
+                                <i className="fa-solid fa-plus"></i>
                               </span>
                             </button>
                           )}
@@ -313,7 +313,7 @@ function PortNumber() {
                                                 handleEditPortNumber(item.id)
                                               }
                                             >
-                                              <i class="fa-solid fa-pencil"></i>
+                                              <i className="fa-solid fa-pencil"></i>
                                             </button>
                                           </td>
                                           <td>
@@ -380,7 +380,7 @@ function PortNumber() {
                         >
                           <span className="text">Confirm</span>
                           <span className="icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i className="fa-solid fa-check"></i>
                           </span>
                         </button>
                       
@@ -392,7 +392,7 @@ function PortNumber() {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                       </div>

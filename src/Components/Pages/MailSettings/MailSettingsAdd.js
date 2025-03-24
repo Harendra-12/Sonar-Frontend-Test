@@ -47,7 +47,6 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
       // toast.error(addSettings.message);
     }
   });
-  console.log("loading", loading);
   return (
     <>
       <style>
@@ -76,7 +75,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                     }}
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
@@ -84,7 +83,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                     onClick={handleFormSubmit}
                   >
                     <span className="text">Save</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>
@@ -114,7 +113,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -125,7 +124,7 @@ const MailSettingsAdd = ({ setMailSettingAddToggle, setMailDataRefresh }) => {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>

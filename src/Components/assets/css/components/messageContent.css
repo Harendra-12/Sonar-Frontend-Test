@@ -258,6 +258,19 @@
     min-height: 30px;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
+    overflow-wrap: break-word;
+
+}
+
+.messageList .messageDetailss {
+    /* min-width: max-content; */
+    display: inline-block;
+    max-width: 500px;
+    min-width: 390px;
+    min-height: 30px;
+    /* padding: 8px 12px; */
+    /* border: 1px solid var(--border-color); */
+    overflow-wrap: break-word;
 }
 
 .messageList .messageItem h6 {

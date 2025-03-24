@@ -1209,3 +1209,66 @@ input[type=number] {
     color: var(--form-input-text);
     font-weight: 700;
 }
+
+
+.popupopen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* height: 100vh; */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    /* background-color: #0000004b; */
+    height: 100%;
+}
+
+.popupopen .content {
+    background-color: var(--ele-color);
+    padding: 20px 10px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.popupopen .content .iconWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.popupopen .content .iconWrapper i {
+    font-size: 2.1875rem;
+    color: rgb(255, 102, 0);
+}
+
+.f-select-width {
+    width: 65px !important;
+    height: 28px;
+    border-color: transparent;
+    background-color: #f4f7f9 !important;
+}
+
+.popupopen ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+
+    max-height: 140px;
+    overflow-y: scroll;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.popupopen ul li {
+    width: 50%;
+    padding-bottom: 5px;
+    font-size: 0.875rem;
+}
+
+/* .popupopen ul li i {
+    color: var(--ui-accent);
+} */

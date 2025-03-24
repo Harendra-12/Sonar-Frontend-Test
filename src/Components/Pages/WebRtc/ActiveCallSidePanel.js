@@ -24,7 +24,6 @@ function ActiveCallSidePanel({
   const { session, timer, hold, unhold, decline, hangup } =
     useSessionCall(sessionId);
   const audioRef = useRef(null);
-  console.log("This is global session", globalSession, previewDialer, session._id);
   const [playMusic, setPlayMusic] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
@@ -139,7 +138,7 @@ function ActiveCallSidePanel({
     globalSession.filter((item) => {
       if (item.id === session._id) {
         previewDialer.map((item2) => {
-          if ((item2.phone_number === item.destination.slice(2)) && (item.state === "Established")) {
+          if (((item2.phone_code+item2.phone_number) === item.destination) && (item.state === "Established")) {
             dispatch({
               type: "SET_AGENT_DEPOSITION",
               agentDeposition: true
@@ -314,13 +313,13 @@ function ActiveCallSidePanel({
               className="appPanelButtonCaller bg-warning"
               // onClick={() => holdCall("unhold")}
             >
-              <i class="fa-solid fa-pause"></i>
+              <i className="fa-solid fa-pause"></i>
             </button>
             <button
               className="appPanelButtonCaller bg-danger me-0"
               onClick={hangup}
             >
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>
@@ -340,13 +339,13 @@ function ActiveCallSidePanel({
               style={{ background: "#1ac444" }}
               onClick={(e) => handleAnswerCall(e, "audio")}
             >
-              <i class="fa-solid fa-phone"></i>
+              <i className="fa-solid fa-phone"></i>
             </button>
             <button
               className="appPanelButtonCaller bg-danger me-0"
               onClick={decline}
             >
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>
@@ -364,7 +363,7 @@ function ActiveCallSidePanel({
           </div>
           <div className="callBtnGrp my-auto ms-auto">
             <button className="appPanelButtonCaller bg-danger" onClick={hangup}>
-              <i class="fa-solid fa-phone-hangup"></i>
+              <i className="fa-solid fa-phone-hangup"></i>
             </button>
           </div>
         </div>

@@ -1,12 +1,12 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 // import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
-import Tippy from '@tippyjs/react';
 import { backToTop, generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CircularLoader from '../../Loader/CircularLoader';
-import GoogleTranslate from '../../CommonComponents/GoogleTranslate';
 
 function UserProfile() {
     const navigate = useNavigate();
@@ -21,23 +21,27 @@ function UserProfile() {
     const [inputAlias, setInputAlias] = useState("");
     const [loading, setLoading] = useState(false);
 
-
+// Setting all the previous value for the user 
     useEffect(() => {
         dispatch({
             type: "SET_TIMEZONEREFRESH",
             timeZoneRefresh: timeZoneRefresh + 1,
         });
-
-    }, [])
-    useEffect(() => {
-        if (timeZoneRefresh > 0) {
-            const timezone = allTimeZone.find((item) => {
-                return item?.id == account?.timezone_id
-            })
-            setSelectedTimezone(account?.timezone_id)
+        setInputAlias(account.alias);
+        setSelectedTimezone(account?.timezone_id)
+        const separateName = account.name.split(" ");
+        if (separateName.length === 1) {
+            setInputFirstName(separateName[0]);
+        } else if (separateName.length === 2) {
+            setInputFirstName(separateName[0]);
+            setInputLastName(separateName[1]);
+        } else {
+            setInputFirstName(separateName[0]);
+            setInputLastName(separateName.slice(1, separateName.length).join(" "));
         }
-    }, [timeZoneRefresh])
+    }, [])
 
+    // Handle the update logic for user edit
     const handleSave = async () => {
         setIsEdit(!isEdit);
         if (isEdit) {
@@ -45,30 +49,24 @@ function UserProfile() {
                 // email: account.email,
                 // domain_id: domainId,
                 timezone_id: selectedTimezone,
-                status: account.status,
-                role_id: account?.user_role?.role_id,
-                account_id: account.account_id,
+                // status: account.status,
+                // role_id: account?.user_role?.role_id,
+                // account_id: account.account_id,
                 permissions: account.permissions,
-                extension_id: account.extension.id,
-                usages: account.usages,
+                // extension_id: account.extension.id,
+                // usages: account.usages,
                 alias: inputAlias,
+                name: `${inputFirstName} ${inputLastName}`,
             };
-
-            // Only add name to payload if first and last name aren't empty
-            if (inputFirstName.trim() && inputLastName.trim()) {
-                payload.name = `${inputFirstName} ${inputLastName}`;
-            }
-
             setLoading(true);
             try {
-                const addUser = await generalPutFunction(`user/${account.id}`, payload);
+                await generalPutFunction(`user/${account.id}`, payload);
                 const profile = await generalGetFunction("/user");
                 if (profile?.status) {
                     dispatch({
                         type: "SET_ACCOUNT",
                         account: profile.data,
                     });
-
                     localStorage.setItem("account", JSON.stringify(profile.data));
                 }
             } catch (error) {
@@ -88,115 +86,6 @@ function UserProfile() {
                     <div className="row">
                         <Header title="User Profile" />
                     </div>
-                    {/* <div className="row" style={{
-                        backgroundImage: `url(${require('../../assets/images/images12.jpg')})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                    }}
-                    >
-                        <div className="col-xl-12 pe-xl-0 mt-5">
-                            <div className="profileView mt-2">
-                                <div className="profileDetailsHolder p-0">
-                                    <div className="baseDetails d-block">
-                                        <div className='row'>
-                                            <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-4">
-                                                <div className="profilePicHolders">
-                                                    <img
-                                                        src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                                        alt="img"
-                                                    />
-                                                    <div className='mt-3'>
-                                                        <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
-                                                            <span>
-                                                                <i class="fa-regular me-3 fa-user"></i>
-                                                            </span>
-                                                            <h4 className="mb-0">
-                                                                Rishabh Maurya <span className=''>(Rishu ) </span>
-                                                            </h4>
-                                                        </div>
-                                                        <div className="content profileicons mt-1  d-flex align-items-center justify-content-start">
-                                                            <span>
-                                                                <i class="fa-regular me-3 fa-envelope"></i>
-                                                            </span>
-                                                            <p className="mb-0">
-                                                                {" "}
-                                                                rishabhmaurya@gmail.com
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                            <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-4">
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="content w-100">
-
-                                                            <div className="mt-2">
-                                                                <div
-                                                                    className=" d-flex align-items-center justify-content-start"
-                                                                    style={{ height: "25px" }}
-                                                                >
-                                                                    <h4 className=" me-2">Extension :</h4>
-                                                                    <div className='assigned0'>
-                                                                        <p className="p-0 m-0 px-2 "                                                                        >
-                                                                            1011
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div
-                                                                    className=" d-flex align-items-center justify-content-start"
-                                                                    style={{ height: "25px" }}
-                                                                >
-                                                                    <h4 className=" me-2">Role Type :</h4>
-                                                                    <div>
-                                                                        <p className="imgwidth d-flex  ms-2 me-2" style={{ minWidth: "75px" }}>
-                                                                            Agents
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div
-                                                                    className=" d-flex align-items-center justify-content-start "
-                                                                    style={{ height: "25px" }}
-                                                                >
-                                                                    <h4 className=" me-2">TimeZone:</h4>
-                                                                    <p className=" ms-2 me-2" style={{ minWidth: "75px" }}>
-                                                                        17 February, 2025
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4">
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div className="content w-100">
-                                                            <div className="mt-2">
-                                                                <div className="" style={{ height: "25px" }}>
-                                                                    <h4 className="">Status</h4>
-                                                                    <div className='assigned'>
-                                                                        <p className="">
-                                                                            Enabled
-                                                                        </p>
-                                                                        <div>
-                                                                            <i className="fa-solid ms-1 fa-check"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
                     <div className="overviewTableWrapper">
                         <div className="overviewTableChild">
                             <div className="d-flex flex-wrap">
@@ -219,7 +108,7 @@ function UserProfile() {
                                             >
                                                 <span className="text">Back</span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-caret-left"></i>
+                                                    <i className="fa-solid fa-caret-left"></i>
                                                 </span>
                                             </button>
                                         </div>
@@ -241,7 +130,7 @@ function UserProfile() {
                                                             <div className='ms-5'>
                                                                 <div className="content mt-1 d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-user"></i>
+                                                                        <i className="fa-regular me-3 fa-user"></i>
                                                                     </div>
                                                                     <h5 className="mb-0">
                                                                         {account?.name}
@@ -249,7 +138,7 @@ function UserProfile() {
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-id-card"></i>
+                                                                        <i className="fa-regular me-3 fa-id-card"></i>
                                                                     </div>
                                                                     <p className="mb-0">
                                                                         {account?.usertype}
@@ -257,7 +146,7 @@ function UserProfile() {
                                                                 </div>
                                                                 <div className="content mt-1  d-flex align-items-center justify-content-start">
                                                                     <div className='profileicons'>
-                                                                        <i class="fa-regular me-3 fa-envelope"></i>
+                                                                        <i className="fa-regular me-3 fa-envelope"></i>
                                                                     </div>
                                                                     <p className="mb-0">
                                                                         {" "}
@@ -267,18 +156,7 @@ function UserProfile() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
-                                                        <div className="content mt-3">
-                                                            <div>
-                                                                <h5>Language</h5>
-                                                                <div className='assigned'>
-                                                                    <p className="">
-                                                                        <GoogleTranslate />
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
                                                     <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3">
                                                         <div className="content mt-3">
                                                             <div>
@@ -301,14 +179,14 @@ function UserProfile() {
                                 </div>
                                 {loading ? <><CircularLoader /></> : <div className='col-12'>
                                     <div className='heading bg-transparent border-bottom-0'>
-                                        <div class="content">
+                                        <div className="content">
                                             <h4>Account Information</h4>
                                         </div>
-                                        <div class="buttonGroup">
-                                            <button type="button" class={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
-                                                <span class="text">{isEdit ? 'Save' : 'Edit'}</span>
-                                                <span class="icon">
-                                                    <i class={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
+                                        <div className="buttonGroup">
+                                            <button type="button" className={`panelButton ${isEdit ? '' : 'edit'}`} onClick={handleSave}>
+                                                <span className="text">{isEdit ? 'Save' : 'Edit'}</span>
+                                                <span className="icon">
+                                                    <i className={`fa-solid fa-${isEdit ? 'floppy-disk' : 'pen'}`}></i>
                                                 </span>
                                             </button>
                                         </div>
@@ -321,7 +199,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The First Name of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[0]} onChange={(e) => setInputFirstName(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[0]}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" value={inputFirstName} onChange={(e) => setInputFirstName(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{inputFirstName}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -330,7 +208,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The Last Name of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account?.name.split(" ")[1]} onChange={(e) => setInputLastName(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{account?.name.split(" ")[1]}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" value={inputLastName} onChange={(e) => setInputLastName(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{inputLastName}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -339,7 +217,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The Alias or Nickname of the User. Can be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    {isEdit ? <input type="text" className="formItem" placeholder={account.alias} onChange={(e) => setInputAlias(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{account.alias}</h5>}
+                                                    {isEdit ? <input type="text" className="formItem" value={inputAlias} onChange={(e) => setInputAlias(e.target.value)} /> : <h5 className='mb-0 pb-2 border-bottom'>{inputAlias}</h5>}
                                                 </div>
                                             </div>
                                             <div className='formRow col-xl-3'>
@@ -372,15 +250,6 @@ function UserProfile() {
                                                                     })}
                                                                 </select>
                                                             </div>
-                                                            {/* <div className="col-4 ps-0">
-                                      <button
-                                        className="panelButton static ms-0 w-100"
-                                        style={{ height: "34px" }}
-                                        onClick={() => handleChangeTimeZone()}
-                                      >
-                                        <span className="text">Change</span>
-                                      </button>
-                                    </div> */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -391,7 +260,7 @@ function UserProfile() {
                                                     <label className='formItemDesc'>The username assigned to the User. Cannot be editable.</label>
                                                 </div>
                                                 <div className='col-6'>
-                                                    <h5 className='mb-0 pb-2 border-bottom'>{account.name}</h5>
+                                                    <h5 className='mb-0 pb-2 border-bottom'>{account.username}</h5>
                                                 </div>
                                             </div>
                                             {account.usertype == "Company" ? <></> : <div className='formRow col-xl-3'>

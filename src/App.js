@@ -143,6 +143,8 @@ import CampaignScheduler from "./Components/Pages/DialerModule/Campaigns/Campaig
 import EFax from "./Components/Pages/WebRtc/EFax";
 import CustomModule from "./Components/Pages/Setting/CustomModule";
 import SubscriptionManagement from "./Components/Pages/Billing/SubscriptionManagement";
+import GoogleTranslate from "./Components/CommonComponents/GoogleTranslate";
+import Buyers from "./Components/Pages/CallTracker/Buyers";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -176,11 +178,9 @@ function App() {
   // useEffect(()=>{
   //   const token = generateToken().then((res)=>console.log("This is from response",res))
   //   if(token){
-  //     console.log(account,"This is token from app",token);
   //   }
 
   //   onMessage(messaging,(payload)=>{
-  //     console.log(payload);
   //   })
   // },[account])
   // useEffect(() => {
@@ -194,6 +194,7 @@ function App() {
   window.dynamicId = 10;
   return (
     <>
+      <GoogleTranslate />
       <Router>
         <NavigationSetter />
         <DispatchSetter />
@@ -236,7 +237,9 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route path="/custom-module" element={<CustomModule />} />
+          <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
+            <Navigate to="/dashboard" replace />
+          )} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -800,6 +803,7 @@ function App() {
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}
           />
+          <Route path="/buyers" element={<Buyers />} />
           {/* ------ Call Tracker */}
 
           {/* ------ Reports */}

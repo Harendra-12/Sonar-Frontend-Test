@@ -259,40 +259,40 @@ function TrackerDashboard() {
                                         <div className='d-flex flex-wrap'>
                                             <div className='col-12'>
                                                 <div className='heading'>
-                                                    <div class="content">
+                                                    <div className="content">
                                                         <h4>Vendor Call Analytics</h4>
                                                         <p>You can see a brief analysis of all the vendors</p>
                                                     </div>
                                                     <div className='buttonGroup'>
-                                                        <button effect="ripple" class="panelButton gray">
-                                                            <span class="text">Back</span>
-                                                            <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
+                                                        <button effect="ripple" className="panelButton gray">
+                                                            <span className="text">Back</span>
+                                                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                                         </button>
-                                                        <button effect="ripple" class="panelButton">
-                                                            <span class="text">Refresh</span>
-                                                            <span class="icon"><i class="fa-solid fa-arrows-rotate"></i></span>
+                                                        <button effect="ripple" className="panelButton">
+                                                            <span className="text">Refresh</span>
+                                                            <span className="icon"><i className="fa-solid fa-arrows-rotate"></i></span>
                                                         </button>
-                                                        <button effect="ripple" class="panelButton">
-                                                            <span class="text">Export</span>
-                                                            <span class="icon"><i class="fa-solid fa-file-csv"></i></span>
+                                                        <button effect="ripple" className="panelButton">
+                                                            <span className="text">Export</span>
+                                                            <span className="icon"><i className="fa-solid fa-file-csv"></i></span>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-12" style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
-                                                <div class="tableHeader">
-                                                    <div class="showEntries">
+                                            <div className="col-12" style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
+                                                <div className="tableHeader">
+                                                    <div className="showEntries">
                                                         <label>Show</label>
-                                                        <select class="formItem">
+                                                        <select className="formItem">
                                                             <option value="10">10</option>
                                                             <option value="20">20</option>
                                                             <option value="30">30</option>
                                                         </select>
                                                         <label>entries</label>
                                                     </div>
-                                                    <div class="searchBox position-relative">
+                                                    <div className="searchBox position-relative">
                                                         <label>Search:</label>
-                                                        <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
+                                                        <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
                                                     </div>
                                                 </div>
                                                 <div className="tableContainer" style={{ height: '30vh' }}>

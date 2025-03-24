@@ -12,7 +12,6 @@ const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
 export const generateToken = async ()=>{
   const permission = await Notification.requestPermission()
-  console.log(permission);
   if(permission==="granted"){
     if(localStorage.getItem("firebaseToken")){
       return null

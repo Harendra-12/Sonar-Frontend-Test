@@ -55,7 +55,6 @@ const AgentSearch = ({
       }
     }
   }, [extensionFromCdrMessage, allOptions]);
-  // console.log(allOptions);
   // Custom styles for react-select
   const customStyles = {
     control: (provided, state) => ({

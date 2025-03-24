@@ -52,7 +52,6 @@ function AddNewAddress({ closePopup }) {
           [item]: true,
         }));
       } else if (item === "phone") {
-        // console.log(billing[item].length,"This is loop",item);
         if (billing[item].length > 15 || billing[item].length < 8) {
           setErrorBilling((prevData) => ({
             ...prevData,

@@ -81,7 +81,7 @@ function ChangePassword() {
                       className="panelButton gray"
                     >
                       <span className="text">Back</span>
-                      <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                      <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                     </button>
                     <button
                       type="button"
@@ -90,7 +90,7 @@ function ChangePassword() {
                       onClick={handleSubmit}
                     >
                       <span className="text">Save</span>
-                      <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                      <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                     </button>
                   </div>
                 </div>

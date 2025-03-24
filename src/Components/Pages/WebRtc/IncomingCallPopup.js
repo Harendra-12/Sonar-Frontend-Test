@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
@@ -15,6 +16,8 @@ function IncomingCallPopup({
   isVideoOn,
 }) {
   const previewDialer = useSelector((state) => state.previewDialer);
+  console.log("preview ",previewDialer);
+  
   const [isMinimized, setIsMinimized] = useState(true);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -25,8 +28,7 @@ function IncomingCallPopup({
   const [attendShow, setAttendShow] = useState(false);
   const dummySession = useSelector((state) => state.dummySession);
   const [muteAudio, setMuteAudio] = useState(false);
-
-  console.log("previewDialer", previewDialer);
+console.log("Session",session);
 
   useEffect(() => {
     const audio = new Audio(ringtone);
@@ -209,14 +211,10 @@ function IncomingCallPopup({
               // Add event listeners for accepted and rejected states
               referRequest.delegate = {
                 onAccept: () => {
-                  console.log("Transfer accepted.");
                 },
                 onReject: () => {
-                  console.log("Transfer rejected.");
                 },
               };
-
-              console.log("Refer request sent. Awaiting response...");
             } else {
               console.error("Invalid transfer address.");
             }
@@ -256,8 +254,6 @@ function IncomingCallPopup({
     }
     }
   }, [session])
-  
-  console.log("Sessionasasasa", session, session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2));
 
 
   return (
@@ -276,21 +272,21 @@ function IncomingCallPopup({
             </div>
             <div className="controls">
               <button
-                class="callButton"
+                className="callButton"
                 onClick={() => handleAnswerCall("audio")}
               >
-                <i class="fa-duotone fa-phone"></i>
+                <i className="fa-duotone fa-phone"></i>
               </button>
               {isVideoOn && (
                 <button
-                  class="callButton"
+                  className="callButton"
                   onClick={() => handleAnswerCall("video")}
                 >
-                  <i class="fa-duotone fa-video"></i>
+                  <i className="fa-duotone fa-video"></i>
                 </button>
               )}
-              <button class="callButton hangup" onClick={decline}>
-                <i class="fa-duotone fa-phone-hangup"></i>
+              <button className="callButton hangup" onClick={decline}>
+                <i className="fa-duotone fa-phone-hangup"></i>
               </button>
             </div>
             <div>
@@ -315,8 +311,8 @@ function IncomingCallPopup({
             </div> */}
           </div>
           <div className="minimizeBtn">
-            <button class="whiteCircleBtn" onClick={() => setIsMinimized(true)}>
-              <i class="fa-solid fa-dash"></i>
+            <button className="whiteCircleBtn" onClick={() => setIsMinimized(true)}>
+              <i className="fa-solid fa-dash"></i>
             </button>
           </div>
         </div>
@@ -329,7 +325,7 @@ function IncomingCallPopup({
         >
           {/* Preview dialer */}
           {previewDialer.map((item) => {
-            if (item.phone_number === session.incomingInviteRequest?.message?.from?.uri?.normal?.user.slice(2)) {
+            if ((item.phone_code+item.phone_number) == session.incomingInviteRequest?.message?.from?.uri?.normal?.user) {
               return (
                 <div className="campaignInfoWrapper">
                   <div className="campaignContent">
@@ -355,17 +351,17 @@ function IncomingCallPopup({
                 <h4>{callerExtension}</h4>
               </div>
               <div>
-                <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i class={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>
+                <button className="clearButton2" onClick={() => setMuteAudio(!muteAudio)}><i className={muteAudio ? "fa-regular fa-volume-xmark" : "fa-regular fa-volume"}></i></button>
               </div>
             </div>
             <div className="controls px-2">
               <button
-                class="callButton"
+                className="callButton"
                 onClick={() => handleAnswerCall("audio")}
               >
-                <i class="fa-solid fa-phone"></i>
-                <div class="circle1"></div>
-                <div class="circle2"></div>
+                <i className="fa-solid fa-phone"></i>
+                <div className="circle1"></div>
+                <div className="circle2"></div>
               </button>
               {/* <button
                 className="callButton bg-primary"
@@ -376,15 +372,15 @@ function IncomingCallPopup({
               >
                 <i className="fa-thin fa-phone-arrow-up-right" />
               </button> */}
-              <button class="callButton hangup" onClick={decline}>
-                <i class="fa-solid fa-phone-hangup"></i>
+              <button className="callButton hangup" onClick={decline}>
+                <i className="fa-solid fa-phone-hangup"></i>
               </button>
               {isVideoOn && (
                 <button
-                  class="callButton"
+                  className="callButton"
                   onClick={() => handleAnswerCall("video")}
                 >
-                  <i class="fa-solid fa-video" style={{ color: '#ff9b00' }}></i>
+                  <i className="fa-solid fa-video" style={{ color: '#ff9b00' }}></i>
                 </button>
               )}
             </div>
@@ -428,7 +424,7 @@ function IncomingCallPopup({
                       setBlindTransferNumber(blindTransferNumber.slice(0, -1))
                     }
                   >
-                    <i class="fa-light fa-delete-left"></i>
+                    <i className="fa-light fa-delete-left"></i>
                   </buton>
                 </div>
 

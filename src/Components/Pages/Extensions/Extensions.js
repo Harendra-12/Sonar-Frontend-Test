@@ -28,6 +28,7 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [onlineFilter,setonlineFilter]=useState("all")
   const [searchValue, setSearchValue] = useState("");
   const showKeys = [
     "extension",
@@ -85,7 +86,7 @@ const Extensions = () => {
       async function getData() {
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
           );
           if (apiData?.status) {
             setExtension(apiData.data);
@@ -112,7 +113,7 @@ const Extensions = () => {
         setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
           );
           if (apiData?.status) {
             setLoading(false);
@@ -141,7 +142,7 @@ const Extensions = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [navigate, pageNumber, account, itemsPerPage, searchValue]);
+  }, [navigate, pageNumber, account, itemsPerPage, searchValue,onlineFilter]);
 
   return (
     <main className="mainContent">
@@ -169,7 +170,7 @@ const Extensions = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <Link
@@ -179,7 +180,7 @@ const Extensions = () => {
                         >
                           <span className="text">Buy</span>
                           <span className="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <i className="fa-solid fa-cart-shopping"></i>
                           </span>
                         </Link>
                       </div>
@@ -280,7 +281,13 @@ const Extensions = () => {
                                                 );
                                               })}
                                               <th className="text-center">
-                                                Status
+                                            
+                                                <span>
+                                                  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                                                    <option value="all" disabled>Status</option>
+                                                    <option value="online">Online</option>
+                                                  </select>
+                                                </span>
                                               </th>
                                               {checkViewSidebar(
                                                 "Extension",
@@ -348,7 +355,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-pencil"></i>
+                                                          <i className="fa-solid fa-pencil"></i>
                                                         </button>
                                                       </td>
                                                     )}
@@ -374,7 +381,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-phone-office"></i>
+                                                          <i className="fa-solid fa-phone-office"></i>
                                                         </button>
                                                       ) : ( */}
                                                         <button
@@ -392,7 +399,7 @@ const Extensions = () => {
                                                             )
                                                           }
                                                         >
-                                                          <i class="fa-solid fa-plus"></i>
+                                                          <i className="fa-solid fa-plus"></i>
                                                         </button>
                                                       {/* )} */}
                                                     </td>

@@ -37,6 +37,7 @@ const Users = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [refreshData, setRefreshData] = useState(0);
+  const [onlineFilter,setonlineFilter]=useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
   // Setting up online users to display when user is logged in
   useEffect(() => {
@@ -62,7 +63,7 @@ const Users = () => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter==="online"?"&online":""}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -77,8 +78,7 @@ const Users = () => {
         // toast.error(apiData.message);
         setLoading(false);
         setRefreshState(false);
-        // console.log(apiData.response.status);
-        if (apiData.response.status === 403) {
+        if (apiData?.response?.status === 403) {
           setNoPermissionToRead(true);
         }
       }
@@ -99,6 +99,7 @@ const Users = () => {
     itemsPerPage,
     userInput,
     refreshData,
+    onlineFilter,
   ]);
 
   // Checking if role is created and the current user have permsiion to create user
@@ -221,7 +222,7 @@ const Users = () => {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         {  checkViewSidebar("User", slugPermissions, account?.permissions,"add")? (
@@ -234,7 +235,7 @@ const Users = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </Link>
                         ) : (
@@ -247,7 +248,7 @@ const Users = () => {
                           >
                             <span className="text">Add</span>
                             <span className="icon">
-                              <i class="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </button>
                         )}
@@ -293,9 +294,14 @@ const Users = () => {
                             {/* <th>Account ID</th> */}
                             <th>Role</th>
                             <th>Usage</th>
-                            <th>Online</th>
+                            <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                              <option value="all" disabled>Status</option>
+                              <option value="online">Online</option>
+                              </select></th>
                             {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
-                            <th>Status</th>
+                            <th>Status <span>
+                            
+                              </span></th>
                             <th>Delete</th>
                           </tr>
                         </thead>
@@ -377,7 +383,7 @@ const Users = () => {
                                             })
                                           }
                                         >
-                                          <i class="fa-solid fa-pencil"></i>
+                                          <i className="fa-solid fa-pencil"></i>
                                         </button>
                                       </td>}
                                       <td
@@ -494,7 +500,7 @@ const Users = () => {
                         {selectedUser?.id ? "Confirm" : "Lets Go!"}
                       </span>
                       <span className="icon">
-                        <i class="fa-solid fa-check"></i>
+                        <i className="fa-solid fa-check"></i>
                       </span>
                     </button>
                     <button
@@ -506,7 +512,7 @@ const Users = () => {
                     >
                       <span className="text">Cancel</span>
                       <span className="icon">
-                        <i class="fa-solid fa-xmark"></i>
+                        <i className="fa-solid fa-xmark"></i>
                       </span>
                     </button>
                   </div>

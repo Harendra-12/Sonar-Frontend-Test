@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import ActiveCalls from "../PhoneDashboard/ActiveCalls";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -54,14 +53,12 @@ function CallDashboard() {
     if (match) {
       return match[1]; // Return the matched number
     } else {
-      console.log("No number found after the last space.");
       return null;
     }
   }
 
   const handleUnPark = async (parkedNumber) => {
     if (!parkedNumber) {
-      console.log("invalid number");
       return;
     }
     const payload = {
@@ -114,7 +111,7 @@ function CallDashboard() {
                         type="search"
                         name="Search"
                         placeholder="Search users, groups or chat"
-                        class="formItem fw-normal"
+                        className="formItem fw-normal"
                         style={{ backgroundColor: "var(--searchBg)" }}
                       />
                     </div>
@@ -125,25 +122,25 @@ function CallDashboard() {
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
                     <div className="col-auto">
-                      <div class="dropdown">
+                      <div className="dropdown">
                         <div
                           className="myProfileWidget"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div class="profileHolder" id="profileOnlineNav">
+                          <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
                               alt="profile"
                             />
                           </div>
-                          <div class="profileName">
+                          <div className="profileName">
                             {account.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
-                        <ul class="dropdown-menu">
+                        <ul className="dropdown-menu">
                           <li
                             onClick={() => {
                               if (allCallCenterIds.length > 0) {
@@ -154,7 +151,7 @@ function CallDashboard() {
                             }}
                           >
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Logout
@@ -162,7 +159,7 @@ function CallDashboard() {
                           </li>
                           <li onClick={() => navigate("/my-profile")}>
                             <div
-                              class="dropdown-item"
+                              className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile

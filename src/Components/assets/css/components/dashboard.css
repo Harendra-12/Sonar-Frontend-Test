@@ -661,3 +661,7 @@
 .hover-dropdown .dropdown-toggle::after {
     display: none;
 }
+
+.accordion.dashboard .itemWrapper.shadow-none {
+    min-height: 110px;
+}

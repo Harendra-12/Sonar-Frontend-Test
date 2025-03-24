@@ -111,7 +111,7 @@ const ExtensionsAdd = () => {
                   }}
                 >
                   <span className="text">Back</span>
-                  <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                  <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                 </button>
                 <button
                   effect="ripple"
@@ -120,7 +120,7 @@ const ExtensionsAdd = () => {
                 // onClick={handleSubmit}
                 >
                   <span className="text">Save</span>
-                  <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                  <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                 </button>
               </div>
             </div>
@@ -156,7 +156,7 @@ const ExtensionsAdd = () => {
                       >
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i class="fa-solid fa-caret-left"></i>
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
                       <button
@@ -167,7 +167,7 @@ const ExtensionsAdd = () => {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                     </div>
@@ -182,9 +182,9 @@ const ExtensionsAdd = () => {
                 >
                   <form action="#" className="tangoNavs">
                     <nav>
-                      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <button
-                          class="nav-link active"
+                          className="nav-link active"
                           id="nav-gen-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-gen"
@@ -196,7 +196,7 @@ const ExtensionsAdd = () => {
                           General
                         </button>
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-voicemail-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-voicemail"
@@ -207,9 +207,9 @@ const ExtensionsAdd = () => {
                         >
                           Voicemail
                         </button>
-                        {/* <button class="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button> */}
+                        {/* <button className="nav-link" id="nav-device-tab" data-bs-toggle="tab" data-bs-target="#nav-device" type="button" role="tab" aria-controls="nav-device" aria-selected="false">Device Provisioning</button> */}
                         <button
-                          class="nav-link"
+                          className="nav-link"
                           id="nav-adv-tab"
                           data-bs-toggle="tab"
                           data-bs-target="#nav-adv"
@@ -222,9 +222,9 @@ const ExtensionsAdd = () => {
                         </button>
                       </div>
                     </nav>
-                    <div class="tab-content" id="nav-tabContent">
+                    <div className="tab-content" id="nav-tabContent">
                       <div
-                        class="tab-pane fade show active"
+                        className="tab-pane fade show active"
                         id="nav-gen"
                         role="tabpanel"
                         aria-labelledby="nav-gen-tab"
@@ -539,7 +539,7 @@ const ExtensionsAdd = () => {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-voicemail"
                         role="tabpanel"
                         aria-labelledby="nav-voicemail-tab"
@@ -684,7 +684,7 @@ const ExtensionsAdd = () => {
                         </form>
                       </div>
                       <div
-                        class="tab-pane fade"
+                        className="tab-pane fade"
                         id="nav-adv"
                         role="tabpanel"
                         aria-labelledby="nav-adv-tab"

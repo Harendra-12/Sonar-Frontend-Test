@@ -57,7 +57,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState?.user_role == "Company"
   );
-  // console.log("0000", setUsersDetails)
   const {
     register,
     watch,
@@ -143,7 +142,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
               value: newData?.extension_id,
             });
             if (!isCustomerAdmin) {
-              console.log(isCustomerAdmin);
               setSelectedPermission(newData.permissions);
               if (newData?.user_role) {
                 setSelectedRole(newData?.user_role["roles"]?.name);
@@ -408,7 +406,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           >
                             <span className="text">Back</span>
                             <span className="icon">
-                              <i class="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
                           <button
@@ -419,7 +417,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           >
                             <span className="text">Save</span>
                             <span className="icon">
-                              <i class="fa-solid fa-floppy-disk"></i>
+                              <i className="fa-solid fa-floppy-disk"></i>
                             </span>
                           </button>
                         </div>
@@ -569,9 +567,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                     );
                                   })}
                               </select>
-                              {errors.timezone_id && (
+                              {errors?.timezone_id && (
                                 <ErrorMessage
-                                  text={errors.timezone_id.message}
+                                  text={errors?.timezone_id.message}
                                 />
                               )}
                             </div>
@@ -784,7 +782,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             </div>
                             <div className="col-6">
                               <input
-                                type="text"
+                                type="password"
                                 className="formItem"
                                 name=""
                                 value={password}
@@ -819,17 +817,17 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   </div>
                                 </div>
                               </div>
-                              <div class="accordion permissionListWrapper">
+                              <div className="accordion permissionListWrapper">
                                 {filteredPermission &&
                                   Object.keys(filteredPermission).map(
                                     (item, key) => (
                                       <div className="accordion-item" key={key}>
                                         <h2
-                                          class="accordion-header"
+                                          className="accordion-header"
                                           id={`collapseHeading${key}`}
                                         >
                                           <button
-                                            class="accordion-button collapsed"
+                                            className="accordion-button collapsed"
                                             type="button"
                                             data-bs-toggle="collapse"
                                             data-bs-target={`#collapseRole${key}`}
@@ -849,10 +847,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         </h2>
                                         <div
                                           id={`collapseRole${key}`}
-                                          class="accordion-collapse collapse"
+                                          className="accordion-collapse collapse"
                                           aria-labelledby={`collapseHeading${key}`}
                                         >
-                                          <div class="accordion-body">
+                                          <div className="accordion-body">
                                             {filteredPermission[item].map(
                                               (innerItem, key) => (
                                                 <div
@@ -1023,7 +1021,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                       >
                         <span className="text">Save</span>
                         <span className="icon">
-                          <i class="fa-solid fa-floppy-disk"></i>
+                          <i className="fa-solid fa-floppy-disk"></i>
                         </span>
                       </button>
                       <button
@@ -1032,7 +1030,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                       >
                         <span className="text">Close</span>
                         <span className="icon">
-                          <i class="fa-solid fa-xmark"></i>
+                          <i className="fa-solid fa-xmark"></i>
                         </span>
                       </button>
                     </div>

@@ -66,13 +66,16 @@ export async function generalGetFunction(endpoint) {
       });
       if (err.response?.status === 401) {
         handleNavigation("/");
-        return err.response.data;
-      } else if (err.response?.status >= 500) {
+        return err
+          ?.response?.data;
+      } else if (err?.response?.status === 429) {
+        toast.error("Too many attempts. Please wait before trying again.")
+      }
+      else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
       } else {
         return err;
       }
-      // console.log("This is error log",err.response.status);
     });
 }
 
@@ -87,10 +90,10 @@ export async function generalPostFunction(endpoint, data) {
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
-        const errorMessage = Object.keys(err.response.data.errors);
+        // const errorMessage = Object.keys(err.response.data.errors);
         // toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
-        const errorMessage = Object.keys(err.response.data.error);
+        // const errorMessage = Object.keys(err.response.data.error);
         // toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(
@@ -145,7 +148,6 @@ export async function generalDeleteFunction(endpoint) {
       return res.data;
     })
     .catch((err) => {
-      console.log("delete error:", err);
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
@@ -204,7 +206,7 @@ export async function fileUploadPutFunction(endpoint, data) {
 // Generate presigned url function
 export async function generatePreSignedUrl(name) {
   return axiosInstance
-    .post("/s3/presigned-url", {src: name})
+    .post("/s3/presigned-url", { src: name })
     .then((res) => {
       return res.data;
     })
@@ -212,10 +214,10 @@ export async function generatePreSignedUrl(name) {
       if (err.response.status === 500) {
         toast.error("Something went wrong");
       } else if (err.response.data.errors) {
-        const errorMessage = Object.keys(err.response.data.errors);
+        // const errorMessage = Object.keys(err.response.data.errors);
         // toast.error(err.response.data.errors[errorMessage[0]][0]);
       } else if (err.response.data.error) {
-        const errorMessage = Object.keys(err.response.data.error);
+        // const errorMessage = Object.keys(err.response.data.error);
         // toast.error(err.response.data.error[errorMessage[0]][0]);
       } else {
         toast.error(
@@ -239,35 +241,27 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
-export function checkViewSidebar(slug,permissions,userPermissions,action=undefined) {
-  const sidebar = [];
+export function checkViewSidebar(slug, permissions, userPermissions, action = undefined) {
+  const allPermission = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
       permissions[key].forEach((item) => {
-        if(userPermissions?.includes(item.id)){
-          sidebar.push({
+        if (userPermissions?.includes(item.id)) {
+          allPermission.push({
             id: item?.id,
             action: item?.action,
-            slug: item?.model,
+            model: item?.model,
           });
         }
       });
     }
   }
-  const AllSlug = sidebar
-    .filter(
-      (item) =>
-        item.action === "edit" ||
-        item.action === "add" ||
-        item.action==="read"
-    )
-    .map((item) => item.slug);
-    // console.log("0000Model",{AllSlug},{sidebar})
-  if (AllSlug.includes(slug)&&!action) {
-    return true;
-  }else if(action){
-    const actionPresent=sidebar.find((item)=>item.slug===slug&& item.action===action)
-    if(actionPresent) return true;
+  if (!action) {
+    const actionPresent = allPermission.find((item) => item.model === slug)
+    if (actionPresent) return true;
+  } else if (action) {
+    const actionPresent = allPermission.find((item) => item.model === slug && item.action === action)
+    if (actionPresent) return true;
   }
   return false;
 }
@@ -343,7 +337,7 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   // Dispatch logout action and disconnect session
   dispatch({ type: "SET_LOGOUT", logout: 1 });
   setTimeout(() => {
-    dispatch({type:"RESET_STATE"})
+    dispatch({ type: "RESET_STATE" })
   }, 100);
   sessionManager.disconnect();
 }

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
-import { generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import CustomDashboardManage from '../Setting/CustomDashboardManage';
 
 function ActiveCallsPage({ isParentWebRtc }) {
+    const account = useSelector((state) => state.account);
+    const slugPermissions = useSelector((state) => state?.permissions);
     const activeCall = useSelector((state) => state.activeCall);
     const [filter, setFilter] = useState("all");
     const [customModule, setCustomModule] = useState([]);
@@ -18,9 +20,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
         return acc;
     }, {});
     const [customPopup, setCustomPopup] = useState(false);
-    const [refresh,setRefresh] = useState(0);
-    const [selectedModule,setSelectedModule] = useState('');
-    const [addNewMod,setAddNewMod] = useState(false);
+    const [refresh, setRefresh] = useState(0);
+    const [selectedModule, setSelectedModule] = useState('');
+    const [addNewMod, setAddNewMod] = useState(false);
     const activeState = activeCall.filter((item) => item.b_callstate === "ACTIVE" || item.b_callstate === "HELD");
     const activeoutboundCalls = activeState.filter(call => call.direction === "outbound" || call.direction === "inbound");
     const activenumberCount = activeoutboundCalls.reduce((acc, call) => {
@@ -66,7 +68,6 @@ function ActiveCallsPage({ isParentWebRtc }) {
                 }, 0);
             return count;
         } else {
-            console.log(type, value);
             const count = ringingState
                 .reduce((acc, call) => {
                     if (call.did_num == value) {
@@ -101,7 +102,6 @@ function ActiveCallsPage({ isParentWebRtc }) {
                 }, 0);
             return count;
         } else {
-            console.log(type, value);
             const count = activeState
                 .reduce((acc, call) => {
                     if (call.did_num == value) {
@@ -181,11 +181,14 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
+                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") &&
                                         customModule?.map((item, index) => {
                                             return (
                                                 <div className='col-xl-3' key={index}>
                                                     <div className={`deviceProvision position-relative`} >
-                                                        <button className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
+                                                        <button 
+                                                         disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
+                                                         className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                             <i className="fa-solid fa-pen" />
                                                         </button>
                                                         <div className="itemWrapper a">
@@ -263,15 +266,17 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             )
                                         })
                                     }
-                                 
-                                    <div className='col-xl-2' onClick={() => {setAddNewMod(true);setSelectedModule();setCustomPopup(true)}}>
-                                        <div className={`deviceProvision h-100`} >
-                                            <div className="itemWrapper a addNew h-100">
-                                                <i className='fa-regular fa-plus'></i>
-                                                <p>Add New Module</p>
+                                    {
+                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "add") &&
+                                        <div className='col-xl-2' onClick={() => { setAddNewMod(true); setSelectedModule(); setCustomPopup(true) }}>
+                                            <div className={`deviceProvision h-100`} >
+                                                <div className="itemWrapper a addNew h-100">
+                                                    <i className='fa-regular fa-plus'></i>
+                                                    <p>Add New Module</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                             <div className="overviewTableChild">

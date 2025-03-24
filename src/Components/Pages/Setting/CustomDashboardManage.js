@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { checkViewSidebar, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
@@ -17,7 +17,8 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     const [feature, setFeature] = useState([])
     const [allUser, setAllUser] = useState([]);
     const [userId, setUserId] = useState("");
-    const [selectedUser,setSelecteduser]=useState("")
+    const slugPermissions = useSelector((state) => state?.permissions);
+    // const [selectedUser,setSelecteduser]=useState("")
 
     // Handel fetaure change
     function handleFeatureChange(value) {
@@ -30,23 +31,23 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
         }
     }
 
-      // fetching api to get all user data
-  useEffect(() => {
-    async function getAllUser() {
-      try {
-        const res = await generalGetFunction("/agents?usages=pbx&allagents");
-        const data = res.data.map((item) => ({
-          name: item.name,
-          id: item.id,
-        }));
-        setAllUser(data);
-        setUserId(selectedModule?.user_id)
-      } catch (error) {
-        console.error("Error fetching agents:", error);
-      }
-    }
-    getAllUser()
-  },[])
+    // fetching api to get all user data
+    useEffect(() => {
+        async function getAllUser() {
+            try {
+                const res = await generalGetFunction("/agents?usages=pbx&allagents");
+                const data = res.data.map((item) => ({
+                    name: item.name,
+                    id: item.id,
+                }));
+                setAllUser(data);
+                setUserId(selectedModule?.user_id)
+            } catch (error) {
+                console.error("Error fetching agents:", error);
+            }
+        }
+        getAllUser()
+    }, [])
     // Checking if the callcenter, ringgroup and did details is already available or not if not available then get it by api calling
     useEffect(() => {
         async function getData() {
@@ -122,7 +123,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId,  user_id:userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
@@ -141,7 +142,7 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             return
         }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id:userId,name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
@@ -244,33 +245,33 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                         </div>
                                                     </div>
                                                     <div className="formRow">
-                              <div className="formLabel">
-                                <label className="text-dark">Select User</label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  Please select the user for which you want to
-                                  enable the module.
-                                </label>
-                              </div>
-                              <div className="col-6">
-                                <select
-                                  className="formItem"
-                                  value={userId}
-                                  onChange={(e) => {
-                                    const selectedUserObject = allUser.find(user => user.id == e.target.value);
-                                    const selectedName = selectedUserObject ? selectedUserObject.name : '';
-                                    setSelecteduser(selectedName);
-                                    return setUserId(e.target.value);
-                                  }}
-                                >
-                                    <option>Select User</option>
-                                  {allUser.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                      {item.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            </div>
+                                                        <div className="formLabel">
+                                                            <label className="text-dark">Select User</label>
+                                                            <label htmlFor="data" className="formItemDesc">
+                                                                Please select the user for which you want to
+                                                                enable the module.
+                                                            </label>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <select
+                                                                className="formItem"
+                                                                value={userId}
+                                                                onChange={(e) => {
+                                                                    // const selectedUserObject = allUser.find(user => user.id == e.target.value);
+                                                                    // const selectedName = selectedUserObject ? selectedUserObject.name : '';
+                                                                    // setSelecteduser(selectedName);
+                                                                    return setUserId(e.target.value);
+                                                                }}
+                                                            >
+                                                                <option>Select User</option>
+                                                                {allUser.map((item) => (
+                                                                    <option key={item.id} value={item.id}>
+                                                                        {item.name}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
                                                             <label className="text-dark">Select Info</label>
@@ -317,14 +318,16 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                     </div>
                                                     <div className="formRow">
                                                         {!addNewMod &&
-                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}>
+                                                            <button type='button' className="panelButton delete ms-0" onClick={removeCustomFilter}
+                                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "delete"))}
+                                                            >
                                                                 <span className="text" >Delete</span>
-                                                                <span className="icon"><i class="fa-solid fa-trash"></i></span>
+                                                                <span className="icon"><i className="fa-solid fa-trash"></i></span>
                                                             </button>
                                                         }
                                                         <button type='button' className="panelButton ms-auto" onClick={() => { addNewMod ? addNewCustomFilter() : updateCustomFilter() }}>
                                                             <span className="text" >{addNewCustomFilter ? "Save" : "Update"}</span>
-                                                            <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                                                            <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                                                         </button>
                                                     </div>
                                                 </form>

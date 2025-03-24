@@ -115,7 +115,7 @@ function PortNumberEdit() {
                     }}
                   >
                     <span className="text">Back</span>
-                    <span className="icon"><i class="fa-solid fa-caret-left"></i></span>
+                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                   </button>
                   <button
                     effect="ripple"
@@ -123,7 +123,7 @@ function PortNumberEdit() {
                     onClick={handleFormSubmit}
                   >
                     <span className="text">Save</span>
-                    <span className="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                    <span className="icon"><i className="fa-solid fa-floppy-disk"></i></span>
                   </button>
                 </div>
               </div>
@@ -150,7 +150,7 @@ function PortNumberEdit() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -160,7 +160,7 @@ function PortNumberEdit() {
                         >
                           <span className="text">Save</span>
                           <span className="icon">
-                            <i class="fa-solid fa-floppy-disk"></i>
+                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -345,13 +345,13 @@ function PortNumberEdit() {
                             <ErrorMessage text={errors.phone_number.message} />
                           )}
                         </div>
-                        {/* <div class="col-xl-2 mt-auto">
+                        {/* <div className="col-xl-2 mt-auto">
                       <button
-                        class="panelButton ms-xl-5"
+                        className="panelButton ms-xl-5"
                         effect="ripple"
                         type="button"
                       >
-                        <i class="fa-duotone fa-circle-plus me-2"></i>Add More
+                        <i className="fa-duotone fa-circle-plus me-2"></i>Add More
                       </button>
                     </div> */}
                       </div>

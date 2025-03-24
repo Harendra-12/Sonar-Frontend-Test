@@ -34,7 +34,6 @@ function AgentDispositionManage() {
     }, [refresh])
 
     async function changeDesposition() {
-        console.log(selectedDisposition, newDesposition, addNew);
         if (newDesposition === "") {
             toast.error("Please enter disposition name")
             return
@@ -110,7 +109,7 @@ function AgentDispositionManage() {
                                                     >
                                                         <span className="text">Back</span>
                                                         <span className="icon">
-                                                            <i class="fa-solid fa-caret-left"></i>
+                                                            <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
                                                     <button
@@ -167,7 +166,7 @@ function AgentDispositionManage() {
                                                                                             setAddNew(false);
                                                                                         }}
                                                                                         className="tableButton edit m-2" >
-                                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                                        <i className="fa-solid fa-pencil"></i>
                                                                                     </button>
                                                                                 </Tippy>
                                                                                 <Tippy content='Delete this disposition'>
@@ -254,7 +253,7 @@ function AgentDispositionManage() {
                                             >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-check"></i>
+                                                    <i className="fa-solid fa-check"></i>
                                                 </span>
                                             </button>
                                             <button
@@ -263,7 +262,7 @@ function AgentDispositionManage() {
                                             >
                                                 <span className="text">Cancel</span>
                                                 <span className="icon">
-                                                    <i class="fa-solid fa-xmark"></i>
+                                                    <i className="fa-solid fa-xmark"></i>
                                                 </span>
                                             </button>
                                         </div>

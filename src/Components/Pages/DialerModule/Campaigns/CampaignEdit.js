@@ -125,7 +125,6 @@ function CampaignCreate() {
 
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
-        console.log("this is leads", leads);
         setSelectedDisposition(getDid.data.disposition.map((item) => (item.id)));
         seteditSteps({
           firstStep: true,
@@ -251,8 +250,6 @@ function CampaignCreate() {
     getDidData();
   }, []);
 
-  console.log(editState);
-
   useEffect(() => {
     const timer = setTimeout(async () => {
       const getAgentData = async () => {
@@ -309,7 +306,7 @@ function CampaignCreate() {
       return
     }
     if (editState.dialer == null) {
-      const payload = { ...data, campaign_id: campaignId, dispositions: selectedDesposition };
+      const payload = { ...data, campaign_id: value, dispositions: selectedDesposition };
       const apiData = await generalPostFunction(
         "/dialer-setting/store",
         payload
@@ -324,7 +321,7 @@ function CampaignCreate() {
         setLoading(false);
       }
     } else {
-      const payload = { ...data, campaign_id: campaignId };
+      const payload = { ...data, campaign_id: value };
       setLoading(true);
       const apiData = await generalPutFunction(
         `/dialer-setting/update/${editState.dialer.id}`,
@@ -492,7 +489,7 @@ function CampaignCreate() {
                         >
                           <span className="text">Back</span>
                           <span className="icon">
-                            <i class="fa-solid fa-caret-left"></i>
+                            <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
                         <button
@@ -741,10 +738,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -764,10 +761,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -787,10 +784,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -810,10 +807,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -833,10 +830,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -856,10 +853,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -879,10 +876,10 @@ function CampaignCreate() {
                                           <input type="time" className="formItem" />
                                         </div>
                                         <div className="item">
-                                          <div class="my-auto position-relative mx-1">
-                                            <label class="switch">
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
-                                              <span class="slider round"></span>
+                                              <span className="slider round"></span>
                                             </label>
                                           </div>
                                           <label className="ms-1">Full day</label>
@@ -926,8 +923,8 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               <div className="col-12 my-2">
-                                <div class="searchBox position-relative">
-                                  {/* <input type="text" name="Search" placeholder="Search" class="formItem" value={filter}  /> */}
+                                <div className="searchBox position-relative">
+                                  {/* <input type="text" name="Search" placeholder="Search" className="formItem" value={filter}  /> */}
                                   <div className="searchBox position-relative">
                                     <input
                                       type="number"
@@ -1601,8 +1598,8 @@ function CampaignCreate() {
                                 </div>
                               </div>
                               {/* <div className='col-12 my-2'>
-                                                            <div class="searchBox position-relative">
-                                                                <input type="text" name="Search" placeholder="Search" class="formItem" value="" />
+                                                            <div className="searchBox position-relative">
+                                                                <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
                                                             </div>
                                                         </div> */}
                               <div className="tableHeader">
@@ -1682,7 +1679,7 @@ function CampaignCreate() {
                                                 )}
                                             </div>
                                             {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                                    <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
+                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
                                                                                 </div> */}
                                           </div>
                                         </div>
@@ -1747,7 +1744,7 @@ function CampaignCreate() {
                                           )}
                                         </div> */}
                                             {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                                    <div class="tableButton edit" ><i class="fa-solid fa-plus"></i> </div>
+                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
                                                                                 </div> */}
                                           </div>
                                         </div>
@@ -1783,12 +1780,12 @@ function CampaignCreate() {
                               <div className="container h-100">
                                 <div className="row h-100 justify-content-center align-items-center">
 
-                                  <div class="heading bg-transparent border-bottom-0 pt-0">
-                                    <div class="content">
+                                  <div className="heading bg-transparent border-bottom-0 pt-0">
+                                    <div className="content">
                                       <h4>List of Leads</h4>
                                       <p>You can see the list of leads assigned to this campaign.</p>
                                     </div>
-                                    <div class="buttonGroup">
+                                    <div className="buttonGroup">
                                       <button
                                         className="panelButton static m-0 px-2"
                                         onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
@@ -1897,7 +1894,6 @@ function CampaignCreate() {
                                           </tr>
                                         </thead>
                                         <tbody className="">
-                                          {console.log(editState)}
                                           {editState?.leads?.map(
                                             (item, index) => {
                                               return (
@@ -1957,7 +1953,6 @@ function CampaignCreate() {
                   </div>
                   <div className="col-10 ps-0">
                     <h4>Leads Edit</h4>
-                    {console.log(leadsEditState)}
                     <div className="col-12" style={{ padding: "10px 0px" }}>
                       <form className="row mb-0">
                         <div className="formRow col-xl-12">

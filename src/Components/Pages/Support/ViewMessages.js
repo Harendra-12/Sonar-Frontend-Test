@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import { Navigate, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 // import React, { useState } from 'react'
 
 
@@ -25,20 +25,20 @@ function ViewMessages() {
                         <div className='overviewTableWrapper'>
                             <div className='overviewTableChild'>
                                 <div className='d-flex flex-wrap'>
-                                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <div class="heading">
-                                            <div class="content">
+                                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div className="heading">
+                                            <div className="content">
                                                 <h4>Ticket</h4>
                                                 <p>You can Create ticket of users </p>
                                             </div>
-                                            <div class="buttonGroup">
-                                                <button class="panelButton gray" onClick={handleback}>
-                                                    <span class="text">Back</span>
-                                                    <span class="icon"><i class="fa-solid fa-caret-left"></i></span>
+                                            <div className="buttonGroup">
+                                                <button className="panelButton gray" onClick={handleback}>
+                                                    <span className="text">Back</span>
+                                                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
                                                 </button>
-                                                {/* <button class="panelButton" onClick={() => Navigate("/ticket")}>
-                                                    <span class="text">Create</span>
-                                                    <span class="icon"><i class="fa-solid fa-plus"></i></span>
+                                                {/* <button className="panelButton" onClick={() => Navigate("/ticket")}>
+                                                    <span className="text">Create</span>
+                                                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
                                                 </button> */}
                                             </div>
                                         </div>
@@ -53,8 +53,8 @@ function ViewMessages() {
                                                             <h4 className="">Rishabh </h4>
                                                             <div className="contactTags">
                                                                 {/* <span data-id="1">Work</span> */}
-                                                                <div class="dropdown">
-                                                                    <ul class="dropdown-menu">
+                                                                <div className="dropdown">
+                                                                    <ul className="dropdown-menu">
                                                                         <li className="dropdown-item" >
                                                                             rterter
                                                                         </li>
@@ -70,46 +70,46 @@ function ViewMessages() {
                                                             <button className="clearButton2 xl" effect="ripple" >
                                                                 <i className="fa-regular fa-video" />
                                                             </button>
-                                                            <div class="dropdown">
+                                                            <div className="dropdown">
                                                                 <button
-                                                                    class="clearButton2 xl"
+                                                                    className="clearButton2 xl"
                                                                     type="button"
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false" >
-                                                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                                                    <i className="fa-solid fa-ellipsis-vertical"></i>
                                                                 </button>
-                                                                <ul class="dropdown-menu">
+                                                                <ul className="dropdown-menu">
                                                                     <li>
                                                                         <div
-                                                                            class="dropdown-item"
+                                                                            className="dropdown-item"
                                                                             href="#">
                                                                             Mark as unread
                                                                         </div>
                                                                     </li>
                                                                     <li>
                                                                         <div
-                                                                            class="dropdown-item"
+                                                                            className="dropdown-item"
                                                                             href="#" >
                                                                             Archive this chat
                                                                         </div>
                                                                     </li>
                                                                     <li>
                                                                         <div
-                                                                            class="dropdown-item"
+                                                                            className="dropdown-item"
                                                                             href="#" >
                                                                             Manage Group Chat
                                                                         </div>
                                                                     </li>
                                                                     <li>
                                                                         <div
-                                                                            class="dropdown-item"
+                                                                            className="dropdown-item"
                                                                             href="#" >
                                                                             Leave this group
                                                                         </div>
                                                                     </li>
                                                                     <li>
                                                                         <div
-                                                                            class="dropdown-item text-danger"
+                                                                            className="dropdown-item text-danger"
                                                                             href="#">  Close this chat
                                                                         </div>
                                                                     </li>
@@ -154,7 +154,7 @@ function ViewMessages() {
                                                                 </div>
                                                             </>
                                                             <div className="startAJob">
-                                                                <div class="text-center mt-3">
+                                                                <div className="text-center mt-3">
                                                                     <img
                                                                         src={require("../../assets/images/empty-box.png")}
                                                                         alt="Empty"
@@ -169,9 +169,9 @@ function ViewMessages() {
                                                             </div>
                                                         </div>
                                                         <div className="messageInput">
-                                                            <div class="tab-content col-12" id="nav-tabContent">
+                                                            <div className="tab-content col-12" id="nav-tabContent">
                                                                 <div
-                                                                    class="tab-pane fade show active"
+                                                                    className="tab-pane fade show active"
                                                                     id="nav-im"
                                                                     role="tabpanel"
                                                                     aria-labelledby="nav-im-tab"
@@ -184,14 +184,14 @@ function ViewMessages() {
                                                                     />
                                                                 </div>
                                                                 <div
-                                                                    class="tab-pane fade"
+                                                                    className="tab-pane fade"
                                                                     id="nav-whatsapp"
                                                                     role="tabpanel"
                                                                     aria-labelledby="nav-whatsapp-tab" >
                                                                     ...
                                                                 </div>
                                                                 <div
-                                                                    class="tab-pane fade"
+                                                                    className="tab-pane fade"
                                                                     id="nav-messenger"
                                                                     role="tabpanel"
                                                                     aria-labelledby="nav-messenger-tab">
@@ -211,18 +211,18 @@ function ViewMessages() {
                                                                         className="clearButton2"
 
                                                                     >
-                                                                        <i class="fa-regular fa-image"></i>
+                                                                        <i className="fa-regular fa-image"></i>
                                                                     </button>
                                                                     <button
                                                                         className="clearButton2"
 
                                                                     >
-                                                                        <i class="fa-solid fa-paperclip"></i>
+                                                                        <i className="fa-solid fa-paperclip"></i>
                                                                     </button>
                                                                     <button
                                                                         className="clearButton2"
                                                                     >
-                                                                        <i class="fa-regular fa-face-smile"></i>
+                                                                        <i className="fa-regular fa-face-smile"></i>
                                                                     </button>
                                                                 </div>
                                                                 <div>

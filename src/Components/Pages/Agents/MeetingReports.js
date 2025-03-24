@@ -24,7 +24,7 @@ function MeetingReports() {
                                             className="panelButton gray">
                                             <span className="text">Back</span>
                                             <span className="icon">
-                                                <i class="fa-solid fa-caret-left"></i>
+                                                <i className="fa-solid fa-caret-left"></i>
                                             </span>
                                         </button>
                                         <Link
@@ -35,7 +35,7 @@ function MeetingReports() {
                                             className="panelButton" >
                                             <span className="text">Buy</span>
                                             <span className="icon">
-                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                <i className="fa-solid fa-cart-shopping"></i>
                                             </span>
                                         </Link>
                                     </div>
