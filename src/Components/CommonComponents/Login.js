@@ -386,8 +386,14 @@ export function LoginComponent() {
                 <ul className="mb-3 d-block">
                   <p>You are logged in from the specific devices: </p>
                   {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center col-12">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
-                      <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                    return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
+                      <div>
+                        {item?.platform} - {item?.browser}
+                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}</p>
+                      </div>
+                      <div>
+                        <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                      </div>
                     </li>
                   })}
                 </ul>
