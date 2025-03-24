@@ -684,7 +684,26 @@ function CdrReport({ page }) {
                         ""
                       )}
                       {page === "callrecording" ? (
-                        ""
+                        <>
+                          {/* <div className="d-flex">
+                            <div className="formRow border-0">
+                              <label className="formLabel text-start mb-0 w-100">
+                                Storage Left
+                              </label>
+                              <div className="formItem">
+                                50 GB
+                              </div>
+                            </div>
+                            <div className="formRow border-0">
+                              <label className="formLabel text-start mb-0 w-100">
+                                Total Storage
+                              </label>
+                              <div className="formItem">
+                                50 GB
+                              </div>
+                            </div>
+                          </div> */}
+                        </>
                       ) : (
                         <>
                           <div className="formRow border-0 ">
