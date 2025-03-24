@@ -202,7 +202,7 @@ function ClickToCallEdit() {
                                                             </div>
                                                         </nav>
                                                         <div className="row">
-                                                            <div className="col-8">
+                                                            <div className="col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
                                                                 <div className="tab-content" id="nav-tabContent">
                                                                     <div
                                                                         className="tab-pane fade show active"
@@ -212,7 +212,7 @@ function ClickToCallEdit() {
                                                                         tabindex="0"
                                                                     >
                                                                         <form>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Company Logo</label>
                                                                                     <label
@@ -224,7 +224,7 @@ function ClickToCallEdit() {
                                                                                     </label>
                                                                                 </div>
 
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     <input
                                                                                         type="file"
                                                                                         name="did_id_view"
@@ -246,7 +246,7 @@ function ClickToCallEdit() {
                                                                                     />
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">
                                                                                         Color Scheme
@@ -258,285 +258,289 @@ function ClickToCallEdit() {
                                                                                         Choose your color scheme
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-4 ms-auto pe-2">
-                                                                                    <div className="d-flex align-items-center justify-content-start">
-                                                                                        <div className="tawk-colors-active">
-                                                                                            <div className="tawk-colors">
-                                                                                                <span />
+                                                                                <div className="col-7">
+                                                                                    <div className="d-flex align-items-center justify-content-between">
+
+                                                                                        <div className="d-flex align-items-center justify-content-between">
+
+                                                                                            <div className="tawk-colors-active">
+                                                                                                <div className="tawk-colors">
+                                                                                                    <span />
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="tawk-colors-active ms-2">
-                                                                                            <div className="tawk-colors-1">
-                                                                                                <span />
+                                                                                            <div className="tawk-colors-active ms-2">
+                                                                                                <div className="tawk-colors-1">
+                                                                                                    <span />
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="tawk-colors-active ms-2">
-                                                                                            <div className="tawk-colors-2">
-                                                                                                <span />
+                                                                                            <div className="tawk-colors-active ms-2">
+                                                                                                <div className="tawk-colors-2">
+                                                                                                    <span />
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="tawk-colors-active ms-2">
-                                                                                            <div className="tawk-colors-3">
-                                                                                                <span />
+                                                                                            <div className="tawk-colors-active ms-2">
+                                                                                                <div className="tawk-colors-3">
+                                                                                                    <span />
+                                                                                                </div>
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div className="tawk-colors-active2 ms-2">
-                                                                                            <div className="tawk-colors-active  dropdown">
-                                                                                                <div className="tawk-colors-4">
-                                                                                                    <div>
-                                                                                                        <div className="dropdown-content">
-                                                                                                            <div className="palette-container">
-                                                                                                                <div className="palette-grid">
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#f79999",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#f79999");
-                                                                                                                        }}
-                                                                                                                        data-color="#f79999"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#ffd39e",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#ffd39e");
-                                                                                                                        }}
-                                                                                                                        data-color="#ffd39e"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#f9fcaf",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#f9fcaf");
-                                                                                                                        }}
-                                                                                                                        data-color="#f9fcaf"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#c5ffb9",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#c5ffb9");
-                                                                                                                        }}
-                                                                                                                        data-color="#c5ffb9"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#95f5fd",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#95f5fd");
-                                                                                                                        }}
-                                                                                                                        data-color="#95f5fd"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#9cc2ff",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#9cc2ff");
-                                                                                                                        }}
-                                                                                                                        data-color="#9cc2ff"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#b9adff",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#b9adff");
-                                                                                                                        }}
-                                                                                                                        data-color="#bdb2ff"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#ffc6ff",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#ffc6ff");
-                                                                                                                        }}
-                                                                                                                        data-color="#ffc6ff"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#fffffc",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#fffffc");
-                                                                                                                        }}
-                                                                                                                        data-color="#fffffc"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#f8edeb",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#f8edeb");
-                                                                                                                        }}
-                                                                                                                        data-color="#f8edeb"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#ffccd5",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#ffccd5");
-                                                                                                                        }}
-                                                                                                                        data-color="#ffccd5"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#d4a5a5",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#d4a5a5");
-                                                                                                                        }}
-                                                                                                                        data-color="#d4a5a5"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#adb5bd",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#adb5bd");
-                                                                                                                        }}
-                                                                                                                        data-color="#adb5bd"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#f81e1e",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#f81e1e");
-                                                                                                                        }}
-                                                                                                                        data-color="#f81e1e"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#6df74a",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#6df74a");
-                                                                                                                        }}
-                                                                                                                        data-color="#6df74a"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#31ddfc",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#31ddfc");
-                                                                                                                        }}
-                                                                                                                        data-color="#31ddfc"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#435be7",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#435be7");
-                                                                                                                        }}
-                                                                                                                        data-color="#435be7"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#a48fff",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#a48fff");
-                                                                                                                        }}
-                                                                                                                        data-color="#a48fff"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#bb2ffc",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#bb2ffc");
-                                                                                                                        }}
-                                                                                                                        data-color="#bb2ffc"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#fd39b2",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#fd39b2");
-                                                                                                                        }}
-                                                                                                                        data-color="#fd39b2"
-                                                                                                                    />
-                                                                                                                    <div
-                                                                                                                        className="color-circle"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#f1f500",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#f1f500");
-                                                                                                                        }}
-                                                                                                                        data-color="#f1f500"
-                                                                                                                    />
-                                                                                                                </div>
-                                                                                                                <div className="selected-color">
-                                                                                                                    <div
-                                                                                                                        id="selectedColorPreview"
-                                                                                                                        style={{
-                                                                                                                            background:
-                                                                                                                                "#ffffff",
-                                                                                                                        }}
-                                                                                                                        onClick={() => {
-                                                                                                                            setValue("color", "#ffffff");
-                                                                                                                        }}
-                                                                                                                        data-color="#ffffff"
-                                                                                                                    ></div>
-                                                                                                                    <span
-                                                                                                                        className="icon"
-                                                                                                                        id="pickerIcon"
-                                                                                                                    >
-                                                                                                                        🎨
-                                                                                                                    </span>
+                                                                                            <div className="tawk-colors-active2 ms-2">
+                                                                                                <div className="tawk-colors-active  dropdown">
+                                                                                                    <div className="tawk-colors-4">
+                                                                                                        <div>
+                                                                                                            <div className="dropdown-content">
+                                                                                                                <div className="palette-container">
+                                                                                                                    <div className="palette-grid">
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#f79999",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#f79999");
+                                                                                                                            }}
+                                                                                                                            data-color="#f79999"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#ffd39e",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#ffd39e");
+                                                                                                                            }}
+                                                                                                                            data-color="#ffd39e"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#f9fcaf",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#f9fcaf");
+                                                                                                                            }}
+                                                                                                                            data-color="#f9fcaf"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#c5ffb9",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#c5ffb9");
+                                                                                                                            }}
+                                                                                                                            data-color="#c5ffb9"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#95f5fd",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#95f5fd");
+                                                                                                                            }}
+                                                                                                                            data-color="#95f5fd"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#9cc2ff",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#9cc2ff");
+                                                                                                                            }}
+                                                                                                                            data-color="#9cc2ff"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#b9adff",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#b9adff");
+                                                                                                                            }}
+                                                                                                                            data-color="#bdb2ff"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#ffc6ff",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#ffc6ff");
+                                                                                                                            }}
+                                                                                                                            data-color="#ffc6ff"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#fffffc",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#fffffc");
+                                                                                                                            }}
+                                                                                                                            data-color="#fffffc"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#f8edeb",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#f8edeb");
+                                                                                                                            }}
+                                                                                                                            data-color="#f8edeb"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#ffccd5",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#ffccd5");
+                                                                                                                            }}
+                                                                                                                            data-color="#ffccd5"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#d4a5a5",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#d4a5a5");
+                                                                                                                            }}
+                                                                                                                            data-color="#d4a5a5"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#adb5bd",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#adb5bd");
+                                                                                                                            }}
+                                                                                                                            data-color="#adb5bd"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#f81e1e",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#f81e1e");
+                                                                                                                            }}
+                                                                                                                            data-color="#f81e1e"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#6df74a",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#6df74a");
+                                                                                                                            }}
+                                                                                                                            data-color="#6df74a"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#31ddfc",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#31ddfc");
+                                                                                                                            }}
+                                                                                                                            data-color="#31ddfc"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#435be7",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#435be7");
+                                                                                                                            }}
+                                                                                                                            data-color="#435be7"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#a48fff",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#a48fff");
+                                                                                                                            }}
+                                                                                                                            data-color="#a48fff"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#bb2ffc",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#bb2ffc");
+                                                                                                                            }}
+                                                                                                                            data-color="#bb2ffc"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#fd39b2",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#fd39b2");
+                                                                                                                            }}
+                                                                                                                            data-color="#fd39b2"
+                                                                                                                        />
+                                                                                                                        <div
+                                                                                                                            className="color-circle"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#f1f500",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#f1f500");
+                                                                                                                            }}
+                                                                                                                            data-color="#f1f500"
+                                                                                                                        />
+                                                                                                                    </div>
+                                                                                                                    <div className="selected-color">
+                                                                                                                        <div
+                                                                                                                            id="selectedColorPreview"
+                                                                                                                            style={{
+                                                                                                                                background:
+                                                                                                                                    "#ffffff",
+                                                                                                                            }}
+                                                                                                                            onClick={() => {
+                                                                                                                                setValue("color", "#ffffff");
+                                                                                                                            }}
+                                                                                                                            data-color="#ffffff"
+                                                                                                                        ></div>
+                                                                                                                        <span
+                                                                                                                            className="icon"
+                                                                                                                            id="pickerIcon"
+                                                                                                                        >
+                                                                                                                            🎨
+                                                                                                                        </span>
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
@@ -544,16 +548,19 @@ function ClickToCallEdit() {
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="col-2">
+
+                                                                                        <div className="form-widths">
                                                                                     <input
                                                                                         className="formItem"
                                                                                         {...register("color")}
+                                                                                        style={{ width: "100px" }}
                                                                                     />
                                                                                 </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                             
                                                                             </div>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">
                                                                                         Company Name
@@ -565,14 +572,14 @@ function ClickToCallEdit() {
                                                                                         Enter your company name
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     <input className="formItem" {...register("name")} />
                                                                                     {errors.did_id && (
                                                                                         <ErrorMessage text={errors.name} />
                                                                                     )}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="selectFormRow">
                                                                                         Company Description
@@ -584,14 +591,14 @@ function ClickToCallEdit() {
                                                                                         Enter your company description
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     <input className="formItem"   {...register("description")} />
                                                                                     {errors.did_id && (
                                                                                         <ErrorMessage text={errors.description} />
                                                                                     )}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Usage</label>
                                                                                     <label
@@ -601,7 +608,7 @@ function ClickToCallEdit() {
                                                                                         Please choose the usage.
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     <select
                                                                                         type="text"
                                                                                         name="did_id_view"
@@ -632,7 +639,7 @@ function ClickToCallEdit() {
                                                                                     )}
                                                                                 </div>
                                                                             </div>
-                                                                            <div className="formRow col-xxl-8 col-xl-12">
+                                                                            <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Action</label>
                                                                                     <label
@@ -642,11 +649,11 @@ function ClickToCallEdit() {
                                                                                         Please choose the usage.
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     {watch().usages !== "pstn" &&
                                                                                         watch().usages !== "" ? (
                                                                                         <ActionList
-                                                                                            category={watch().usages==="ringgroup"?"ring group":watch().usages==="callcenter"?"call center":watch().usages}
+                                                                                            category={watch().usages === "ringgroup" ? "ring group" : watch().usages === "callcenter" ? "call center" : watch().usages}
                                                                                             title={null}
                                                                                             label={null}
                                                                                             getDropdownValue={actionListValue}
@@ -677,8 +684,7 @@ function ClickToCallEdit() {
                                                                                     )}
                                                                                 </div>
                                                                             </div>
-                                                                            <div
-                                                                                className="formRow col-xxl-8 col-xl-12 pt-3"
+                                                                            <div className="formRow col-xl-12 pt-3"
                                                                                 style={{
                                                                                     borderTop:
                                                                                         "1px solid var(--border-color)",
@@ -697,7 +703,7 @@ function ClickToCallEdit() {
                                                                                         install click to call widget.
                                                                                     </label>
                                                                                 </div>
-                                                                                <div className="col-6">
+                                                                                <div className="col-7">
                                                                                     <textarea
                                                                                         type="text"
                                                                                         name="did_id_view"

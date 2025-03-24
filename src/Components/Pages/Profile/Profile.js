@@ -194,7 +194,7 @@ const Profile = () => {
               <div className="profileView">
                 <div className="profileDetailsHolder p-0">
                   <div className="baseDetails">
-                    <div className="col-xxl-3 col-xl-4">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4">
                       <div className="profilePicHolder">
                         <img
                           src={
@@ -206,7 +206,7 @@ const Profile = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-xxl-9 col-xl-8 my-auto">
+                    <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 my-auto">
                       <div>
                         <div className="content profileicons mt-1 d-flex align-items-center justify-content-start">
                           <span>

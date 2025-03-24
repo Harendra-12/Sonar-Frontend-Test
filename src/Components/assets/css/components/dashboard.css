@@ -55,7 +55,7 @@
 }
 
 .mainContent .itemWrapper.accordion-item {
-    max-height: 350px;
+    /* max-height: 370px; */
 }
 
 .mainContent .title {

@@ -44,12 +44,13 @@ function AddOns() {
                                             <div className="product-container">
                                                 {/* Product 1 */}
                                                 <div className="product-cart">
-                                                    
+                                                <div className="product-image">
                                                     <img
                                                         src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
                                                         alt="Click to Call"
-                                                        className="product-image"
+                                                        // className="product-image"
                                                     />
+                                                    </div>
                                                     <div className="product-title hover mt-4">
                                                         <p>
                                                             Click to Call <span className="text-smalls">(Poly CCX 700)</span>
@@ -59,7 +60,7 @@ function AddOns() {
                                                     <div className="product-description mt-2">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -78,17 +79,19 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
 
                                                 {/* Product 2 */}
                                                 <div className='product-cart'>
-                                                    
+                                                <div className="product-image">
                                                     <img
                                                         src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
                                                         alt="Click to Call"
-                                                        className="product-image" />
+                                                        // className="product-image" 
+                                                        />
+                                                        </div>
                                                     <div className="product-title mt-4">
                                                         <p>
                                                             WhatsApp Integration
@@ -98,7 +101,7 @@ function AddOns() {
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -117,17 +120,18 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 3 */}
                                                 <div className='product-cart'>
-                                                    
-                                                    <img
-                                                        src="https://cyclr.com/wp-content/uploads/2022/03/ext-477.png"
-                                                        alt="Click to Call"
-                                                        className="product-image"
-                                                    />
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://cyclr.com/wp-content/uploads/2022/03/ext-477.png"
+                                                            alt="Click to Call"
+                                                        // className="product-image"
+                                                        />
+                                                        </div>
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Messenger Integration
@@ -137,7 +141,7 @@ function AddOns() {
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -156,18 +160,18 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 4 */}
                                                 <div className='product-cart'>
-
-                                                    
-                                                    <img
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/60/Skype_logo_%282019%E2%80%93present%29.svg"
-                                                        alt="Click to Call"
-                                                        className="product-image"
-                                                    />
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://upload.wikimedia.org/wikipedia/commons/6/60/Skype_logo_%282019%E2%80%93present%29.svg"
+                                                            alt="Click to Call"
+                                                            className="product-image"
+                                                        />
+                                                    </div>
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Skype Integration<span className="text-smalls"> (facebook)</span>
@@ -176,7 +180,7 @@ function AddOns() {
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -195,17 +199,18 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 5 */}
                                                 <div className='product-cart'>
-                                                    
-                                                    <img
-                                                        src="https://5.imimg.com/data5/SELLER/Default/2023/6/318550307/WD/YP/AO/6017711/teamviewer-software-solution-500x500.png"
-                                                        alt="Click to Call"
-                                                        className="product-image"
-                                                    />
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://5.imimg.com/data5/SELLER/Default/2023/6/318550307/WD/YP/AO/6017711/teamviewer-software-solution-500x500.png"
+                                                            alt="Click to Call"
+                                                        // className="product-image"
+                                                        />
+                                                    </div>
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Team Collaboration
@@ -215,7 +220,7 @@ function AddOns() {
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -234,17 +239,19 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                                 {/* Product 6 */}
                                                 <div className='product-cart'>
-                                                    
-                                                    <img
-                                                        src="https://www.koolmetrix.gr/wp-content/uploads/2019/05/rtanalytics.png"
-                                                        alt="Click to Call"
-                                                        className="product-image"
-                                                    />
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://www.koolmetrix.gr/wp-content/uploads/2019/05/rtanalytics.png"
+                                                            alt="Click to Call"
+                                                        // className="product-image"
+                                                        />
+                                                    </div>
+
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Real-Time Reporting
@@ -254,7 +261,7 @@ function AddOns() {
                                                     <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color">
+                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                                         <div>
                                                             <div className="product-price me-2">$50.00</div>
                                                         </div>
@@ -273,7 +280,7 @@ function AddOns() {
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                            <h4 className='mb-1 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
                                                     </div>
                                                 </div>
                                             </div>

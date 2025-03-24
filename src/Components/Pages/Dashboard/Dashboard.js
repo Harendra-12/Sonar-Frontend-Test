@@ -351,7 +351,7 @@ const Dashboard = () => {
                   >
                     My Information
                   </button>
-                  {checkViewSidebar(
+                  {/* {checkViewSidebar(
                     "ChannelHangupComplete",
                     slugPermissions,
                     account?.permissions
@@ -368,7 +368,7 @@ const Dashboard = () => {
                       >
                         Calls
                       </button>
-                    )}
+                    )} */}
                   {checkViewSidebar(
                     "BillingAddress",
                     slugPermissions,

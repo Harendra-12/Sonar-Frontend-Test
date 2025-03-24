@@ -50,7 +50,7 @@ function Login() {
                     </p>
                   </div>
                 </div>
-                <div className="col-xl-6 d-xl-block d-none">
+                <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
                       <h3>An Effective PBX Solution for all your Business Communication Needs</h3>
@@ -85,6 +85,7 @@ export function LoginComponent() {
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
+  const [logInText, setLogInText] = useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -179,8 +180,9 @@ export function LoginComponent() {
       console.log(logOut)
       if (logOut?.data?.status) {
         toast.success(logOut?.data?.message)
-        setLoading(true)
-        userLogin()
+        setLoading(true);
+        setLoginDetails(logOut?.data?.data)
+        setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
@@ -197,6 +199,7 @@ export function LoginComponent() {
     } else {
       setLoading(true);
       const checkLogin = await login(userName, password);
+      // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
         if (profile?.status) {
@@ -269,10 +272,14 @@ export function LoginComponent() {
         }
 
 
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
+        setLoading(false)
+        toast.error(checkLogin?.response?.data?.message)
       } else {
         setLoading(false)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
+        setLogInText("You are already login on different device!")
       }
 
     }
@@ -372,15 +379,21 @@ export function LoginComponent() {
                 <h5>Warning!</h5>
               </div>
               <p>
-                You are already login on different device!
+                {logInText}
               </p>
 
               {logInDetails?.length > 0 &&
-                <ul className="mb-3">
+                <ul className="mb-3 d-block">
                   <p>You are logged in from the specific devices: </p>
                   {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser}
-                      <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                    return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
+                      <div>
+                        {item?.platform} - {item?.browser}
+                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}</p>
+                      </div>
+                      <div>
+                        <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                      </div>
                     </li>
                   })}
                 </ul>
@@ -416,61 +429,54 @@ export function LoginComponent() {
             </div>
           </div>
 
-
-          {/* <div className="popupopen ">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4 col-md-5">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+{/* 
+          <div className="popupopen ">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p className="my-2">
-                    You are already login on different device!
-                  </p>
-                  {logInDetails?.length > 0 &&
-                    <ul className="mb-3">
-                      <p>You are logged in from the specific devices: </p>
-                      {logInDetails?.map((item) => {
-                        return <li className="d-flex align-items-center">{item?.platform}   {item?.browser}
-                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off" /></button>
-                        </li>
-                      })}
-                    </ul>
-                  }
-                  <div className="d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                        setLoading(true)
-                        handleLogin()
-                      }}
-                    >
-                      <span className="text">Login</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-check"></i>
-                      </span>
-                    </button>
-
-                    <div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p className="my-2">
+                      You are about to log out of all devices!
+                    </p>
+                    <div className="d-flex justify-content-between mt-3">
                       <button
-                        disabled={loading}
-                        className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
-                        onClick={handleLogoutAll}
+                        className="panelButton delete m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                          setLoading(true)
+                          handleLogin()
+                        }}
                       >
-                        <span className="text text-danger">Logout All Devices</span>
+                        <span className="text">LogOut</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-power-off"></i>
+                        </span>
                       </button>
+
+                      <div>
+                        <button
+                          disabled={loading}
+                          className="panelButton gray"
+                          onClick={handleLogoutAll}
+                        >
+                          <span className="text">Close</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div> */}
+          </div> */}
         </>
       ) : (
         ""

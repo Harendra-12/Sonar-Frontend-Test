@@ -6,11 +6,13 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
   generalPutFunction,
+  logout,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
+import { useSIPProvider } from "modify-react-sipjs";
 
 const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
@@ -23,6 +25,7 @@ const CallCenter = ({ initial }) => {
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
+    const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
   useEffect(() => {
@@ -63,9 +66,21 @@ const CallCenter = ({ initial }) => {
     }
   }, [Id, callCenter]);
   // Function to handle logout
-  const handleLogOut = async () => {
-    setLoading(true);
-  };
+ const handleLogOut = async () => {
+     setLoading(true);
+     try {
+       const apiResponses = await logout(
+         allCallCenterIds,
+         dispatch,
+         sessionManager
+       );
+     } catch (error) {
+       console.error("Unexpected error in handleLogOut:", error);
+       alert("Something went wrong. Please try again.");
+     } finally {
+       setLoading(false);
+     }
+   };
 
   return (
     <>

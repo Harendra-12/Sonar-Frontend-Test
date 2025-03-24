@@ -88,8 +88,8 @@ const DisplayFile = ({ item }) => {
           <div className="audio-container mx-2">
             <audio
               controls={true}
-              ref={thisAudioRef}
-              autoPlay={true}
+              // ref={thisAudioRef}
+              autoPlay={false}
             >
               <source
                 src={item}
