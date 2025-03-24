@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
+import Tippy from "@tippyjs/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -145,13 +146,19 @@ const CallQueueDetails = () => {
                             <div
                               style={{
                                 color: "var(--ui-accent)",
-                                textDecoration: "underline",
                               }}
                               type="button"
                               data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
-                              {call.agents.length}
+                              <div className="avatar-container">
+                                {call.agents?.slice(0, 4).map((item, index) => {
+                                  return (
+                                    <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                  )
+                                })}
+                                {call.agents.length > 4 && <span>+2</span>}
+                              </div>
                             </div>
                             <ul className="dropdown-menu light">
                               <li className="col-12">
