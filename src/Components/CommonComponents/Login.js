@@ -85,7 +85,7 @@ export function LoginComponent() {
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
-  const [logInText,setLogInText]=useState("");
+  const [logInText, setLogInText] = useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -272,10 +272,10 @@ export function LoginComponent() {
         }
 
 
-      } else if(checkLogin?.response?.status===401||checkLogin?.response?.status===403){
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
-      }else {
+      } else {
         setLoading(false)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
@@ -424,7 +424,7 @@ export function LoginComponent() {
           </div>
 
 
-          {/* <div className="popupopen ">
+          <div className="popupopen ">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
                 <div className="row content col-xl-4 col-md-5">
@@ -470,7 +470,7 @@ export function LoginComponent() {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </>
       ) : (
         ""
