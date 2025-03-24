@@ -1038,42 +1038,46 @@ function CdrReport({ page }) {
                                       ) : (
                                         <td>
                                           {" "}
-                                          <button
-                                            disabled={isBlocked}
-                                            effect="ripple"
-                                            className={`tableButton ${isBlocked ? "delete" : "warning"
-                                              } ms-0`}
-                                            // style={{ height: "34px" }}
-                                            onClick={() => {
-                                              setSelectedNumberToBlock(
-                                                item["Call-Direction"] ===
-                                                  "inbound"
-                                                  ? item[
-                                                  "Caller-Caller-ID-Number"
-                                                  ]
-                                                  : item["Call-Direction"] ===
-                                                    "outbound"
-                                                    ? item[
-                                                    "Caller-Callee-ID-Number"
-                                                    ]
-                                                    : "N/A"
-                                              );
-                                              setPopUp(true);
-                                            }}
-                                          >
-                                            {/* <span className="text">
+                                          {
+                                            (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
+                                              <button
+                                                disabled={isBlocked}
+                                                effect="ripple"
+                                                className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                  } ms-0`}
+                                                // style={{ height: "34px" }}
+                                                onClick={() => {
+                                                  setSelectedNumberToBlock(
+                                                    item["Call-Direction"] ===
+                                                      "inbound"
+                                                      ? item[
+                                                      "Caller-Caller-ID-Number"
+                                                      ]
+                                                      : item["Call-Direction"] ===
+                                                        "outbound"
+                                                        ? item[
+                                                        "Caller-Callee-ID-Number"
+                                                        ]
+                                                        : "N/A"
+                                                  );
+                                                  setPopUp(true);
+                                                }}
+                                              >
+
+                                                {/* <span className="text">
                                             {isBlocked ? "Blocked" : "Block"}
                                           </span> */}
-                                            {/* <span className="icon"> */}
-                                            <Tippy
-                                              content={
-                                                isBlocked ? "Blocked" : "Block"
-                                              }
-                                            >
-                                              <i className="fa-solid fa-ban"></i>
-                                            </Tippy>
-                                            {/* </span> */}
-                                          </button>
+                                                {/* <span className="icon"> */}
+                                                <Tippy
+                                                  content={
+                                                    isBlocked ? "Blocked" : "Block"
+                                                  }
+                                                >
+                                                  <i className="fa-solid fa-ban"></i>
+                                                </Tippy>
+                                                {/* </span> */}
+                                              </button>
+                                              : ""}
                                         </td>
                                       )}
                                       <td>
@@ -1211,12 +1215,12 @@ function CdrReport({ page }) {
       ) : (
         ""
       )}
-         {selectedCdr !== "" &&
-              <Comments
-                id={selectedCdr}
-                setId={setSelectedCdr}
-              />
-            }
+      {selectedCdr !== "" &&
+        <Comments
+          id={selectedCdr}
+          setId={setSelectedCdr}
+        />
+      }
     </main>
   );
 }

@@ -306,7 +306,7 @@ function CampaignCreate() {
       return
     }
     if (editState.dialer == null) {
-      const payload = { ...data, campaign_id: campaignId, dispositions: selectedDesposition };
+      const payload = { ...data, campaign_id: value, dispositions: selectedDesposition };
       const apiData = await generalPostFunction(
         "/dialer-setting/store",
         payload
@@ -321,7 +321,7 @@ function CampaignCreate() {
         setLoading(false);
       }
     } else {
-      const payload = { ...data, campaign_id: campaignId };
+      const payload = { ...data, campaign_id: value };
       setLoading(true);
       const apiData = await generalPutFunction(
         `/dialer-setting/update/${editState.dialer.id}`,

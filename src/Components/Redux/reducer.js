@@ -6,7 +6,7 @@ var loginUser = [];
 var callState = [];
 var channelHangupComplete = [];
 var allCall = [];
-var allcallDetails=[];
+// var allcallDetails=[];
 var activeCall = [];
 var tempAccount = JSON.parse(localStorage.getItem("tempAccount"));
 var accountDetails = JSON.parse(localStorage.getItem("accountDetails"));
@@ -354,7 +354,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_PREVIEWDIALER":
       return {
         ...state,
-        previewDialer:action.previewDialer
+        previewDialer: [...state.previewDialer, action.previewDialer]
       };
     case "REMOVE_PREVIEWDIALER":
       return {
