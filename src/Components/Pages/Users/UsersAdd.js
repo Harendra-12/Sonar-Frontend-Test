@@ -45,6 +45,7 @@ const UsersAdd = () => {
   const account = useSelector((state) => state.account);
   const [parentChecked, setParentChecked] = useState({});
   const [selectedExtension, setSelectedExtension] = useState("");
+  const [allChecked,setAllChecked]=useState(false)
 
   const {
     register,
@@ -241,11 +242,17 @@ const UsersAdd = () => {
   // Initialize parentChecked state
   useEffect(() => {
     const initialParentChecked = {};
+    
     Object.keys(filteredPermission).forEach((item) => {
       initialParentChecked[item] = filteredPermission[item].every((innerItem) =>
         selectedPermission.includes(innerItem.id)
       );
     });
+    if(Object.values(initialParentChecked).every(value => value === true)){
+      setAllChecked(true)
+    }else{
+      setAllChecked(false)
+    }
     setParentChecked(initialParentChecked);
   }, [selectedPermission]);
 
@@ -267,11 +274,40 @@ const UsersAdd = () => {
     setParentChecked(updatedParentChecked);
   };
 
+  // function to handle select All
+  const handleAllParentCheckboxChange = (isChecked) => {
+     // Initialize an empty array to store all the ids
+ if(isChecked){
+  const allIds = []; 
+  // Loop through each key in the permissions object
+  Object.keys(filteredPermission).forEach(key => {
+    // For each key, loop through its array items
+    filteredPermission[key].forEach(item => {
+      // Add the id of each item to the allIds array
+      allIds.push(item.id);
+    });
+  });
+  const updatedParentChecked = { ...parentChecked };
+  
+  // Set all values to true
+  Object.keys(updatedParentChecked).forEach(key => {
+    parentChecked[key] = true;
+  });
+  setSelectedPermission( allIds);
+  setParentChecked(allChecked)
+ }else{
+  setSelectedPermission( []);
+  setParentChecked([])
+ }
+    };
+    
+
   // Handle parent checkbox change
   const handleParentCheckboxChange = (item) => {
     const newParentChecked = !parentChecked[item];
     const newSelectedPermission = [...selectedPermission];
-
+    console.log("00filtere",{filteredPermission},{parentChecked})
+  
     filteredPermission[item].forEach((innerItem) => {
       const index = newSelectedPermission.indexOf(innerItem.id);
       if (newParentChecked) {
@@ -568,7 +604,7 @@ const UsersAdd = () => {
                                 })}
                             </select>
                             {errors&& (
-                              <ErrorMessage text={errors?.timezone_id.message} />
+                              <ErrorMessage text={errors?.timezone_id?.message} />
                             )}
                           </div>
                         </div>
@@ -781,6 +817,11 @@ const UsersAdd = () => {
                                 >
                                   {selectedRole}
                                 </span>
+                                {/* <span><input type="checkbox" checked={allChecked} onChange={(e)=>{
+                                  const isChecked = e.target.checked;
+                                  setAllChecked(!allChecked)
+                                  handleAllParentCheckboxChange(isChecked)
+                                }}/> Select All</span> */}
                               </div>
                             </div>
                           </div>
