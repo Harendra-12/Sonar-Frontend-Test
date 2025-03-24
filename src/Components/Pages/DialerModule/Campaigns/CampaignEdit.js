@@ -32,7 +32,7 @@ function CampaignCreate() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [completedStep, setCompletedStep] = useState(0);
-  const [campaignId, setCampaignId] = useState("");
+  // const [campaignId, setCampaignId] = useState("");
   const [selectedAgent, setSelectedAgent] = useState([]);
   const [newFile, setNewFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -292,7 +292,7 @@ function CampaignCreate() {
       setStepSelector(2);
       setLoading(false);
       toast.success(apiData.message);
-      setCampaignId(apiData.data.id);
+      // setCampaignId(apiData.data.id);
       setcampaignRefresh((prev) => prev + 1);
     } else {
       setLoading(false);

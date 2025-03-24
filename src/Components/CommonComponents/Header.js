@@ -70,7 +70,7 @@ function Header(props) {
     if (account === null || account === "") {
       navigate("/");
     } else {
-      setAccountName(account.username);
+      setAccountName(account?.username);
     }
   }, [account, navigate]);
 
