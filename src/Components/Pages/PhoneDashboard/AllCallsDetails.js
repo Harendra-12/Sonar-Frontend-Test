@@ -39,7 +39,7 @@ function AllCallsDetails() {
                       </div>
 
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-1" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
                             <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
                         </p>
@@ -157,7 +157,7 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-1" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
@@ -282,7 +282,7 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-1" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
@@ -405,7 +405,7 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-1" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
