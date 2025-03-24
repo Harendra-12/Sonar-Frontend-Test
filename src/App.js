@@ -144,6 +144,7 @@ import EFax from "./Components/Pages/WebRtc/EFax";
 import CustomModule from "./Components/Pages/Setting/CustomModule";
 import SubscriptionManagement from "./Components/Pages/Billing/SubscriptionManagement";
 import GoogleTranslate from "./Components/CommonComponents/GoogleTranslate";
+import Buyers from "./Components/Pages/CallTracker/Buyers";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -802,6 +803,7 @@ function App() {
             path="/did-listing-tracker"
             element={<DidListing page="tracker" />}
           />
+          <Route path="/buyers" element={<Buyers />} />
           {/* ------ Call Tracker */}
 
           {/* ------ Reports */}
