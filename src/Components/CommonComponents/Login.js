@@ -50,7 +50,7 @@ function Login() {
                     </p>
                   </div>
                 </div>
-                <div className="col-xl-6 d-xl-block d-none">
+                <div className="col-xl-6 col-lg-5 d-xl-block d-none">
                   <div className="loginImgWrapper">
                     <div className="content">
                       <h3>An Effective PBX Solution for all your Business Communication Needs</h3>
@@ -383,10 +383,10 @@ export function LoginComponent() {
               </p>
 
               {logInDetails?.length > 0 &&
-                <ul className="mb-3">
+                <ul className="mb-3  d-block">
                   <p>You are logged in from the specific devices: </p>
                   {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
+                    return <li className="d-flex align-items-center w-100 ">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
                       <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
                     </li>
                   })}

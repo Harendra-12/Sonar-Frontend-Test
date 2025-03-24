@@ -1243,10 +1243,10 @@ input[type=number] {
 }
 
 .f-select-width {
-    width: 65px !important;
+    width: 75px !important;
     height: 28px;
     border-color: transparent;
-    background-color: #f4f7f9 !important;
+    /* background-color: #f4f7f9 !important; */
 }
 
 .popupopen ul {
