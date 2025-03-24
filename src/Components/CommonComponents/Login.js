@@ -424,7 +424,7 @@ export function LoginComponent() {
           </div>
 
 
-          <div className="popupopen ">
+          {/* <div className="popupopen ">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
                 <div className="row content col-xl-4 col-md-5">
@@ -470,7 +470,7 @@ export function LoginComponent() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </>
       ) : (
         ""

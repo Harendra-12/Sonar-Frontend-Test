@@ -332,6 +332,7 @@
 
     .mainContent .itemWrapper.shadow-none {
         height: 90px;
+        padding: 5px;
     }
 
     /* .formRow .formItemDesc {
