@@ -383,10 +383,10 @@ export function LoginComponent() {
               </p>
 
               {logInDetails?.length > 0 &&
-                <ul className="mb-3">
+                <ul className="mb-3 d-block">
                   <p>You are logged in from the specific devices: </p>
                   {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
+                    return <li className="d-flex align-items-center col-12">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
                       <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
                     </li>
                   })}
