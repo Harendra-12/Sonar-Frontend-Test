@@ -213,7 +213,7 @@ function CampaignCreate() {
         requires_followup: editState.dialer.requires_followup,
         incorrect_number: editState.dialer.incorrect_number,
         left_voicemail: editState.dialer.left_voicemail,
-        type:editState.dialer.type
+        type: editState.dialer.type
       };
       reset(result);
     } else if (stepSelector === 3) {
@@ -1583,18 +1583,6 @@ function CampaignCreate() {
                                   <p>
                                     Select from the available list of agents
                                   </p>
-                                </div>
-                                <div
-                                  className="col-2"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <i
-                                    className="fa-solid fa-user"
-                                    style={{
-                                      boxShadow:
-                                        "rgba(0, 0, 0, 0.15) 0px 3px 5px",
-                                    }}
-                                  />
                                 </div>
                               </div>
                               {/* <div className='col-12 my-2'>

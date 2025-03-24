@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
+import Tippy from "@tippyjs/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -158,13 +159,19 @@ const RingGroup = () => {
                             <div
                               style={{
                                 color: "var(--ui-accent)",
-                                textDecoration: "underline",
                               }}
                               type="button"
                               data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
-                              {call.ring_group_destination.length}
+                              <div className="avatar-container">
+                                {call.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                  return (
+                                    <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                  )
+                                })}
+                                {call.ring_group_destination.length > 4 && <span>+2</span>}
+                              </div>
                             </div>
                             <ul className="dropdown-menu light">
                               <li className="col-12">
@@ -185,7 +192,7 @@ const RingGroup = () => {
 
                                   )
                                 )}
-                             
+
                               </div>
                               <li className="col-12">
                                 {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
