@@ -110,7 +110,7 @@ function Call({
   const callListRef = useRef(null);
   const handleScroll = () => {
     const div = callListRef.current;
-    if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+    if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
       if (!isLoading && rawData.current_page !== rawData?.last_page) {
         setCurrentPage(currentPage + 1);
       }

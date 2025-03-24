@@ -85,6 +85,7 @@ export function LoginComponent() {
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
+  const [logInText,setLogInText]=useState("");
 
   // Handle login function
   async function handleLogin() {
@@ -179,6 +180,9 @@ export function LoginComponent() {
       console.log(logOut)
       if (logOut?.data?.status) {
         toast.success(logOut?.data?.message)
+        setLoading(true);
+        setLoginDetails(logOut?.data?.data)
+        setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
@@ -195,6 +199,7 @@ export function LoginComponent() {
     } else {
       setLoading(true);
       const checkLogin = await login(userName, password);
+      // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
         if (profile?.status) {
@@ -267,10 +272,14 @@ export function LoginComponent() {
         }
 
 
-      } else {
+      } else if(checkLogin?.response?.status===401||checkLogin?.response?.status===403){
+        setLoading(false)
+        toast.error(checkLogin?.response?.data?.message)
+      }else {
         setLoading(false)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
+        setLogInText("You are already login on different device!")
       }
 
     }
@@ -370,14 +379,14 @@ export function LoginComponent() {
                 <h5>Warning!</h5>
               </div>
               <p>
-                You are already login on different device!
+                {logInText}
               </p>
 
               {logInDetails?.length > 0 &&
                 <ul className="mb-3">
                   <p>You are logged in from the specific devices: </p>
                   {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser}
+                    return <li className="d-flex align-items-center">{item?.platform} - {item?.browser} {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}
                       <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
                     </li>
                   })}
