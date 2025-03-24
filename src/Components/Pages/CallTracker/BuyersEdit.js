@@ -1,7 +1,10 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
+import { backToTop } from '../../GlobalFunction/globalFunction';
+import { useNavigate } from 'react-router-dom';
 
 const BuyersEdit = () => {
+    const navigate = useNavigate();
     return (
         <>
             <main className="mainContent">
@@ -36,10 +39,10 @@ const BuyersEdit = () => {
                                                     <button
                                                         effect="ripple"
                                                         className="panelButton gray"
-                                                    // onClick={() => {
-                                                    //     navigate(-1);
-                                                    //     backToTop();
-                                                    // }}
+                                                        onClick={() => {
+                                                            navigate(-1);
+                                                            backToTop();
+                                                        }}
                                                     >
                                                         <span className="text">Back</span>
                                                         <span className="icon">
@@ -82,7 +85,7 @@ const BuyersEdit = () => {
                                                             Strategy
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
+                                                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -97,7 +100,7 @@ const BuyersEdit = () => {
                                                             Campaign
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                         who seeks after it and wants to have it, simply because it is pain
+                                                            who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -120,7 +123,7 @@ const BuyersEdit = () => {
                                                             Status
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, 
+                                                            There is no one who loves pain itself,
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -135,7 +138,7 @@ const BuyersEdit = () => {
                                                             DID
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, simply because it is pain
+                                                            There is no one who loves pain itself, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -150,7 +153,7 @@ const BuyersEdit = () => {
                                                             Source
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it,
+                                                            There is no one who loves pain itself, who seeks after it and wants to have it,
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -159,7 +162,7 @@ const BuyersEdit = () => {
                                                             // {...register("strategy")}
                                                             id="selectFormRow"
                                                         >
-                                                           <option value="enterprise">File</option>
+                                                            <option value="enterprise">File</option>
                                                             <option value="sequence">Pdf</option>
                                                             <option value="simultaneously">png</option>
                                                             <option value="random">jpg</option>

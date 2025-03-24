@@ -839,13 +839,14 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                                <NavLink
+                                  to="/buyers"
+                                  onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/extensions-add",
-                                        "/extensions-edit",
+                                        "/buyer-edit",
+                                        "/buyer-add",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -854,7 +855,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Buyers</div>
-                                </Link>
+                                </NavLink>
                               </li>
 
                               <li className="tabItem ">

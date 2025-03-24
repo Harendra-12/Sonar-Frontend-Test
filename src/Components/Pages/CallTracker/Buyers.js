@@ -1,8 +1,10 @@
 import React from 'react'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import Header from '../../CommonComponents/Header'
+import { useNavigate } from 'react-router-dom'
 
 function Buyers() {
+    const navigate = useNavigate();
     return (
         <>
             <main className="mainContent">
@@ -32,10 +34,9 @@ function Buyers() {
                                                         </span>
                                                     </button>
                                                     <button
-                                                        disabled
+                                                        onClick={() => navigate('/buyer-add')}
                                                         effect="ripple"
                                                         className="panelButton"
-                                                        style={{ cursor: "not-allowed" }}
                                                     >
                                                         <span className="text">Add</span>
                                                         <span className="icon">
@@ -116,11 +117,11 @@ function Buyers() {
                                                             <td>
                                                                 <button
                                                                     className="tableButton edit"
-                                                                //   onClick={() =>
-                                                                //     navigate(
-                                                                //       `/ring-groups-edit?id=${item.id}`
-                                                                //     )
-                                                                //   }
+                                                                    onClick={() =>
+                                                                        navigate(
+                                                                            `/buyer-edit`
+                                                                        )
+                                                                    }
                                                                 >
                                                                     <i className="fa-solid fa-pencil" />
                                                                 </button>
