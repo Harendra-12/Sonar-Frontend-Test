@@ -5,6 +5,7 @@ import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
 import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import CustomDashboardManage from '../Setting/CustomDashboardManage';
+import { useLocation } from 'react-router-dom';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -29,6 +30,24 @@ function ActiveCallsPage({ isParentWebRtc }) {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
+    const locationState = useLocation();
+
+    // Location State when redirecting from Phone Dashboard
+    useEffect(() => {
+        if (locationState.state !== null) {
+            if (locationState?.state?.filter === "all") {
+                setFilter("all")
+            } else if (locationState?.state?.filter === "internal") {
+                setFilter("internal")
+            } else if (locationState?.state?.filter === "inbound") {
+                setFilter("inbound")
+            } else if (locationState?.state?.filter === "outbound") {
+                setFilter("outbound")
+            }
+        }
+        // console.log(locationState);
+
+    }, [locationState])
 
     // Getting all custome module for filter on initial phase 
     useEffect(() => {
@@ -312,14 +331,13 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         <>
                                             <nav className='tangoNavs'>
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button onClick={() => setFilter("all")} className="nav-link active" id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-1">{activeState.length}</span></button>
+                                                    <button onClick={() => setFilter("all")} className={`nav-link ${locationState?.state?.filter === "all" || locationState.state == null ? 'active' : ''}`} id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-1">{activeState.length}</span></button>
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-1" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-1" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
-                                                    <button onClick={() => setFilter("internal")} className="nav-link" id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread ms-1">{activeState.filter((call) => call.direction === "internal").length}</span></button>
-                                                    <button onClick={() => setFilter("inbound")} className="nav-link" id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
-                                                    <button onClick={() => setFilter("outbound")} className="nav-link" id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread ms-1">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
-
+                                                    <button onClick={() => setFilter("internal")} className={`nav-link ${locationState?.state?.filter === "internal" ? 'active' : ''}`} id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread ms-1">{activeState.filter((call) => call.direction === "internal").length}</span></button>
+                                                    <button onClick={() => setFilter("inbound")} className={`nav-link ${locationState?.state?.filter === "inbound" ? 'active' : ''}`} id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                    <button onClick={() => setFilter("outbound")} className={`nav-link ${locationState?.state?.filter === "outbound" ? 'active' : ''}`} id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread ms-1">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">

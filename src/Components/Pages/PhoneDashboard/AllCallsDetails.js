@@ -60,7 +60,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to={"/active-calls"} state={{ filter: 'all' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -81,7 +81,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Calls</p>
                               </div>
-                              <div className="col-3">
+                              <div className="col-3" >
                                 <i className="fa-solid fa-phone-hangup"></i>
                               </div>
                             </div>
@@ -184,7 +184,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'inbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -308,7 +308,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'outbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -431,7 +431,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'internal' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>

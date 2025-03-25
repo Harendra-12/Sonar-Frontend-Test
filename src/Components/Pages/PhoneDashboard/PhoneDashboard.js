@@ -346,7 +346,7 @@ function PhoneDashboard() {
                 </div>
               </div>
             </div>
-            <div className="callDashParkedCalls" style={{ transform: !isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
               <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
                 <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
               </button>
