@@ -469,14 +469,14 @@ function CdrFilterReport({ page }) {
           <div className="container-fluid px-0 position-relative">
             <Header
               title={`${page === "billing"
-                  ? "Billing Reports"
-                  : page === "callcenter"
-                    ? "Call Center Reports"
-                    : page === "ringgroup"
-                      ? "Ring Group Reports"
-                      : page === "callrecording"
-                        ? "Call Recordings"
-                        : "CDR Reports"
+                ? "Billing Reports"
+                : page === "callcenter"
+                  ? "Call Center Reports"
+                  : page === "ringgroup"
+                    ? "Ring Group Reports"
+                    : page === "callrecording"
+                      ? "Call Recordings"
+                      : "CDR Reports"
                 }`}
             />
             <div className="overviewTableWrapper">
@@ -540,17 +540,33 @@ function CdrFilterReport({ page }) {
                             ></i>
                           </span>
                         </button>
-                        <button
-                          effect="ripple"
-                          className="panelButton"
-                          onClick={() => handleExport()}
-                          disabled={loading}
-                        >
-                          <span className="text">Export</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-file-export"></i>
-                          </span>
-                        </button>
+                        <div className="dropdown">
+                          <button
+                            effect="ripple"
+                            className="panelButton"
+                            disabled={loading}
+                            type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                          >
+                            <span className="text">Export</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-file-export"></i>
+                            </span>
+                          </button>
+                          <ul
+                            className="dropdown-menu actionBtnDropdowns"
+                          >
+                            <li className="dropdown-item">
+                              <button className="clearButton text-align-start" onClick={() => handleExport()}>
+                                <i className="fa-regular fa-file-csv me-2" /> Export To CSV
+                              </button>
+                            </li>
+                            <li className="dropdown-item">
+                              <button className="clearButton text-align-start">
+                                <i className="fa-regular fa-envelope-open-text me-2" /> Send To Email
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
