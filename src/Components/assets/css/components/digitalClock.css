@@ -1,0 +1,77 @@
+.clock-wrapper {
+    position: relative;
+    font-weight: 800;
+    font-size: 22px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: right;
+    color: white;
+    text-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    gap: 1px;
+    /* border: 8px solid #fef9c3; */
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.clock-stand {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1.25rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.clock-stand div {
+    width: 75%;
+    height: 1.25rem;
+    background-color: #fef9c3;
+    border-radius: 0.25rem;
+}
+
+.timer {
+    position: relative;
+    padding: 5px;
+}
+
+.timer-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.timer-bg div:first-child {
+    background: linear-gradient(135deg, #1f2937, #111827);
+}
+
+.timer-bg div:last-child {
+    background: linear-gradient(135deg, #374151, #111827);
+}
+
+.timer-value {
+    position: relative;
+    text-align: center;
+}
+
+.timer-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-line div {
+    height: 1px;
+    width: 100%;
+    background-color: #1f2937;
+}
