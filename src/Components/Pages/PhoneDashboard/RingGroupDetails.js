@@ -76,12 +76,48 @@ const RingGroup = () => {
               </div>
               <div className="d-flex col">
                 <div className="col-6">
-                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>Active Calls: 0</p>
-                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>Missed Calls: 0</p>
+                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
+                    Active Calls:
+                    {activeCallData.filter(
+                      (e) =>
+                        e.b_callstate === "ACTIVE" ||
+                        e.b_callstate === "HELD"
+                    ).length}
+                  </p>
+                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
+                    Missed Calls:
+                    {allCallDetails?.filter_count?.filter(
+                      (item) =>
+                        item["Call-Direction"] == "missed" &&
+                        item.application_state == "ringgroup"
+                    )[0]?.filter_count || 0}
+                  </p>
                 </div>
                 <div className="col-6">
-                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>Completed Calls: 0</p>
-                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>Total Calls: 0</p>
+                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
+                    Completed Calls:
+                    {allCallDetails?.filter_count?.filter(
+                      (item) =>
+                        item["Call-Direction"] == "inbound" &&
+                        item.application_state == "ringgroup"
+                    )[0]?.filter_count || 0}
+                  </p>
+                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
+                    Total Calls:
+                    {allCallDetails?.filter_count
+                      ?.filter((item) => {
+                        return (
+                          item.application_state === "ringgroup" &&
+                          (item["Call-Direction"] === "inbound" ||
+                            item["Call-Direction"] === "missed")
+                        );
+                      })
+                      .reduce(
+                        (acc, current) =>
+                          acc + (current?.filter_count || 0),
+                        0
+                      ) || 0}
+                  </p>
                 </div>
               </div>
             </div>
