@@ -34,6 +34,9 @@
     padding: 7px 10px;
     min-height: 50px;
 }
+.management_fomr .formRow{
+    padding: 7px 20px;
+}
 
 /* #detailsContent .formRow   */
 .formLabel {
