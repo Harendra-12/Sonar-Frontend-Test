@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import Tippy from "@tippyjs/react";
 function CallCenterQueue() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -392,13 +393,20 @@ function CallCenterQueue() {
                                               <div
                                                 style={{
                                                   color: "var(--ui-accent)",
-                                                  textDecoration: "underline",
                                                 }}
                                                 type="button"
                                                 data-bs-toggle="hover-dropdown"
                                                 aria-expanded="false"
                                               >
-                                                {item.agents.length}
+                                                {/* {item.agents.length} */}
+                                                <div className="avatar-container">
+                                                  {item.agents?.slice(0, 4).map((item, index) => {
+                                                    return (
+                                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                                    )
+                                                  })}
+                                                  {item.agents.length > 4 && <span>+2</span>}
+                                                </div>
                                               </div>
                                               <ul className="dropdown-menu light">
                                                 <li className="col-12">

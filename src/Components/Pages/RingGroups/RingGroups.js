@@ -15,6 +15,7 @@ import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import Tippy from "@tippyjs/react";
 
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
@@ -365,13 +366,20 @@ const RingGroups = () => {
                                               <div
                                                 style={{
                                                   color: "var(--ui-accent)",
-                                                  textDecoration: "underline",
                                                 }}
                                                 type="button"
                                                 data-bs-toggle="hover-dropdown "
                                                 aria-expanded="false"
                                               >
-                                                {item.ring_group_destination.length}
+                                                {/* {item.ring_group_destination.length} */}
+                                                <div className="avatar-container">
+                                                  {item.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                                    return (
+                                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                                    )
+                                                  })}
+                                                  {item.ring_group_destination.length > 4 && <span>+2</span>}
+                                                </div>
                                               </div>
                                               <ul className="dropdown-menu light">
                                                 <li className="col-12">
