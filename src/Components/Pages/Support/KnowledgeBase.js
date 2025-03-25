@@ -16,12 +16,14 @@ function KnowledgeBase() {
                             <div className="overviewTableChild0">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
-                                        <div className="heading">
-                                            <div className="content mt-5 d-flex align-items-center justify-content-center">
-                                                <h5 style={{ fontSize: "32px" }} >How can we help you?</h5>
-                                                {/* <p>You can see the list of Call Desposition</p> */}
-                                            </div>
-                                            {/* <div className="buttonGroup">
+                                        <div>
+                                            <div className='hero'>
+                                                <div className="heading">
+                                                    <div className="content mt-5 d-flex align-items-center justify-content-center">
+                                                        <h3 style={{ fontSize: "48px", color: "white" }} >How can we help you?</h3>
+                                                        {/* <p>You can see the list of Call Desposition</p> */}
+                                                    </div>
+                                                    {/* <div className="buttonGroup">
                                                 <button
                                                     effect="ripple"
                                                     className="panelButton gray">
@@ -42,13 +44,9 @@ function KnowledgeBase() {
                                                     </span>
                                                 </Link>
                                             </div> */}
-                                        </div>
-                                    </div>
-                                    <div
-                                        className="col-12"
-                                        style={{ overflow: "auto", padding: "25px 20px 0", }} >
-                                        <div className="tableHeader0">
-                                            {/* <div className="showEntries">
+                                                </div>
+                                                <div className='col-7 mx-auto'><div className="tableHeader0">
+                                                    {/* <div className="showEntries">
                                                 <label>Show</label>
                                                 <select
                                                     className="formItem"
@@ -60,96 +58,125 @@ function KnowledgeBase() {
                                                 </select>
                                                 <label>entries</label>
                                             </div> */}
-                                            <div className="searchBoxlable">
-                                                <div className="inputWrappers">
-                                                    <i className="fas fa-search searchIcon"></i>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Ask us anything"
-                                                        className="formItem form-left" />
+                                                    <div className="searchBoxlable">
+                                                        <div className="inputWrappers">
+
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Search our article "
+                                                                className="formItem form-left" />
+                                                            <i className="fas fa-search searchIcon"></i>
+                                                        </div>
+                                                        <div className='mt-1 text-center'><p style={{ fontSize: "16px", color: "white", fontWeight:600 }}>Popular help articles :<span className='para-line'> Privacy FAQs,  How to Install Your Hotjar Tracking Code  </span></p></div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div className='d-flex align-items-center justify-content-center'>
+                                                <div className='content-artical'>
+                                                    <p>FEATURED ARTICLE</p>
+                                                    <div  className='d-flex align-items-center justify-content-start icon-larges'>
+                                                        <h3>Hotjar Certifications are now live </h3>
+
+                                                        <i class="fa-solid fa-shield-virus"></i>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-12"
+                                        style={{ overflow: "auto", padding: "25px 20px 0", }} >
+
                                         <div className=' mt-5  align-items-center justify-content-center'>
-                                            <div className="content Additional-font d-flex align-items-center justify-content-center">
-                                                <p>Frequently asked questions</p>
+                                            <div className="content Additional-font text-center">
+                                                <div> <h5 className='p-3 m-0'>Frequently asked questions</h5>
+
+                                                    <p>What’s your deal with controversial topics?</p></div>
                                             </div>
                                             <div>
-                                                <div className='row mt-3'>
+                                                <div className='row mt-5'>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-between ">
+                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-between ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center justify-content-between ">
+                                                                <div className="d-flex align-items-center justify-content-start ">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>How do I manage my incoming call settings?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
+                                                        <div className="itemWrapper  hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
+                                                                <div className="d-flex align-items-center  justify-content-start ">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>How do I send fax ?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
+                                                        <div className="itemWrapper  hover-shadow a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
+                                                                <div className="d-flex align-items-center  justify-content-start ">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>How do I setup my deskphone?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
+                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
+                                                                <div className="d-flex align-items-center  justify-content-start ">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>What do I need to do to register my business SMS with TCR?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
+                                                        <div className="itemWrapper hover-shadow  a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
+                                                                <div className="d-flex align-items-center  justify-content-start">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>Why can't I sign in to the Admin Portal or the RingCentral app?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div className="col-xl-4 col-lg-6 col-md-6   mb-lg-3 mb-xl-4"
                                                         style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a bg-none d-flex align-items-center  justify-content-center ">
+                                                        <div className="itemWrapper  hover-shadow a bg-none d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
+                                                                <div className="d-flex align-items-center  justify-content-start ">
+                                                                    <div className=" me-3">
+                                                                        <i className="fa-solid fa-right-to-bracket"></i>
+                                                                    </div>
                                                                     <h6>How do I create custom call rules for holidays or after hours?</h6>
-                                                                    <div className="col-3 text-end">
-                                                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -162,124 +189,7 @@ function KnowledgeBase() {
 
                                         <div className=' mt-5  align-items-center justify-content-center'>
                                             <div className="content Additional-font d-flex align-items-center justify-content-center">
-                                                <p>Popular video tutorials</p>
-                                            </div>
-                                            <div>
-                                                <div className='row mt-3'>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4  "
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Call Dashboard Provider</h4>
-                                                                            <p>Customize how you want your main company number to ring.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Company call handling</h4>
-                                                                            <p>Use the Admin Portal to set up phone settings for users within your account.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Personal call handling</h4>
-                                                                            <p>Set up where calls ring, when greetings play, and what happens to missed calls.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Active Call Management</h4>
-                                                                            <p>Mute, record, transfer, and park active calls.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Call forwarding</h4>
-                                                                            <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-xl-4  col-lg-6 col-md-6   mb-lg-3  mb-xl-4"
-                                                        style={{ cursor: "pointer" }}>
-                                                        <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
-                                                            <div className="heading0 ">
-                                                                <div className="d-flex align-items-center  justify-content-center ">
-                                                                    <div>
-                                                                        <video controls>
-                                                                            <source src="https://www.youtube.com/watch?v=JGzOe84w8Gc" type="video/ogg" />
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                        <div className="heading">
-                                                                            <h4>Voice mail setup</h4>
-                                                                            <p>Learn how to send calls to voicemail, forward to another number, or play an announcement.</p></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className=' mt-5  align-items-center justify-content-center'>
-                                            <div className="content Additional-font d-flex align-items-center justify-content-center">
-                                                <p>Additional resources</p>
+                                                <h5>Additional resources</h5>
                                             </div>
                                             <div>
                                                 <div className='row mt-3'>
@@ -287,8 +197,8 @@ function KnowledgeBase() {
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-between ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center justify-content-between ">
-                                                                    <div className="col-3">
+                                                                <div className="d-flex align-items-center justify-content-start ">
+                                                                    <div className="me-3">
                                                                         <i className="fa-solid fa-computer float-start"></i>
                                                                     </div>
                                                                     <div>
@@ -306,8 +216,8 @@ function KnowledgeBase() {
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading ">
-                                                                <div className="d-flex align-items-center  justify-content-between ">
-                                                                    <div className="col-3 text-end">
+                                                                <div className="d-flex align-items-center  justify-content-start ">
+                                                                    <div className="me-3">
                                                                         <i className="fa-solid fa-users float-start"></i>
                                                                     </div>
                                                                     <div>
@@ -323,8 +233,8 @@ function KnowledgeBase() {
                                                         style={{ cursor: "pointer" }}>
                                                         <div className="itemWrapper a d-flex align-items-center  justify-content-center ">
                                                             <div className="heading">
-                                                                <div className="d-flex align-items-center  justify-content-space-between ">
-                                                                    <div className="col-3 text-start0">
+                                                                <div className="d-flex align-items-center  justify-content-space-start ">
+                                                                    <div className="me-3">
                                                                         <i className="fa-solid fa-file-lines float-start"></i>
                                                                     </div>
                                                                     <div>

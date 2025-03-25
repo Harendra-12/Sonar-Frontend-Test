@@ -340,7 +340,52 @@
     padding: 10px;
 }
 
-.Additional-font p {
+.Additional-font h5 {
     font-size: 2.0625rem;
     font-weight: 600;
+}
+
+.Additional-font  p{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-subtext);
+}
+
+
+.hover-shadow:hover{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.hero {
+    padding: 115px 40px;
+    text-align: center;
+    width: 100%;
+    background-position: center;
+    background-color: #263346;
+    background-image: url(https://assets.hotjar.com/cs-team/knowlege_base/theme_assets/hero.png);
+    background-size: cover;
+}
+
+
+.content-artical{
+    margin: 0 auto;
+    margin-top: -65px;
+    margin-bottom: 44px;
+    background-color: #fff;
+    max-width: 610px;
+    width: 574px;
+    height: auto;
+    border: solid 1px #a6a8b3;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.content-artical h3:hover{
+    text-decoration: underline;
+}
+
+
+.content-artical .icon-larges i{
+    font-size: 25px;
+    margin: 5px;
 }
