@@ -32,6 +32,7 @@ function PhoneDashboard() {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account);
   const assignedExtension = extension.filter((item) => item.user);
+  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
   useEffect(() => {
     async function getData() {
       // const apiData = await generalGetFunction(
@@ -58,7 +59,7 @@ function PhoneDashboard() {
 
   useEffect(() => {
     if (registerUser.length > 0) {
-     
+
     } else {
     }
     if (extensionRefresh > 0) {
@@ -342,6 +343,74 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-6">
                   <CallQueueDetails />
+                </div>
+              </div>
+            </div>
+            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+              <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)}>
+                <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
+              </button>
+              <div className="overviewTableWrapper p-0">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Active Agents</h4>
+                          <p>You can see all of the active agents here</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12" style={{ padding: '25px 20px 0px' }}>
+                      <div className="tableContainer mt-0">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Status</th>
+                              <th>Name</th>
+                              <th>Direction</th>
+                              <th>Origin / Dest</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <span className="extensionStatus online"></span>
+                                  <span className="ms-1">Online</span>
+                                </div>
+                              </td>
+                              <td>Agent Name</td>
+                              <td><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: "var(--funky-boy3)" }}></i> Inbound</td>
+                              <td>1005</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <span className="extensionStatus onCall"></span>
+                                  <span className="ms-1">On Call</span>
+                                </div>
+                              </td>
+                              <td>Agent Name</td>
+                              <td><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: "var(--color3)" }}></i> Outbound</td>
+                              <td>1005</td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <span className="extensionStatus online"></span>
+                                  <span className="ms-1">Online</span>
+                                </div>
+                              </td>
+                              <td>Agent Name</td>
+                              <td><i class="fa-solid fa-headset me-1" style={{ color: "var(--color2)" }}></i> Internal</td>
+                              <td>1005</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
