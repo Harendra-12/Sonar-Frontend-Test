@@ -416,7 +416,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 {
                                                                     activeCall && ringingState.map((item, key) => {
                                                                         return (
-                                                                            <tr style={{ backgroundColor: call.application_state === "ringgroup" ? "#f8d7da" : call.application_state === "callcenter" ? "#0f5132" : "" }}>
+                                                                            <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#0f5132" : "" }}>
                                                                                 <td>{key + 1}</td>
                                                                                 <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
