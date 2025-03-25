@@ -316,9 +316,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-1" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-1" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
-                                                    <button onClick={() => setFilter("all")} className="nav-link" id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread ms-1">0</span></button>
-                                                    <button onClick={() => setFilter("all")} className="nav-link" id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>0</span></button>
-                                                    <button onClick={() => setFilter("all")} className="nav-link" id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread ms-1">0</span></button>
+                                                    <button onClick={() => setFilter("internal")} className="nav-link" id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread ms-1">{activeState.filter((call) => call.direction === "internal").length}</span></button>
+                                                    <button onClick={() => setFilter("inbound")} className="nav-link" id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                    <button onClick={() => setFilter("outbound")} className="nav-link" id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread ms-1">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
 
                                                 </div>
                                             </nav>
@@ -392,9 +392,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread ms-1" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button className="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center <span className="unread ms-1" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{ringingState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button className="nav-link" id="nav-didring-tab" data-bs-toggle="tab" data-bs-target="#nav-didring" type="button" role="tab" aria-controls="nav-didring" aria-selected="false">DID</button>
-                                                    <button className="nav-link" id="nav-internalring-tab" data-bs-toggle="tab" data-bs-target="#nav-internalring" type="button" role="tab" aria-controls="nav-internalring" aria-selected="false">Internal <span className="unread ms-1">0</span></button>
-                                                    <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>0</span></button>
-                                                    <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread ms-1">0</span></button>
+                                                    <button className="nav-link" id="nav-internalring-tab" data-bs-toggle="tab" data-bs-target="#nav-internalring" type="button" role="tab" aria-controls="nav-internalring" aria-selected="false">Internal <span className="unread ms-1">{ringingState.filter((call) => call.direction === "internal").length}</span></button>
+                                                    <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{ringingState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                    <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread ms-1">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -544,7 +544,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.map((item, key) => {
+                                                                    activeCall && ringingState.filter((item) => item.direction === "internal").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -580,7 +580,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.map((item, key) => {
+                                                                    activeCall && ringingState.filter((item) => item.direction === "inbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -616,7 +616,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.map((item, key) => {
+                                                                    activeCall && ringingState.filter((item) => item.direction === "outbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
