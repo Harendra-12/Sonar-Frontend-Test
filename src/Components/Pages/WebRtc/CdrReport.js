@@ -508,6 +508,21 @@ function CdrReport({ page }) {
                       </select>
                       <label>entries</label>
                     </div>
+                    {page === "callrecording" && (
+                      <div style={{ width: '200px' }}>
+                        <div className="showEntries">
+                          <label>Storage</label><label>100 GB</label>
+                        </div>
+                        <div class="progress">
+                          <Tippy content="45% Storage Used, 45 GB">
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "45%" }} aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                          </Tippy>
+                          <Tippy content="55% Storage Available, 55 GB">
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment two" style={{ width: "55%" }} aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                          </Tippy>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="tableHeader">
                     <div className="d-flex justify-content-xl-end">
@@ -843,6 +858,8 @@ function CdrReport({ page }) {
                           ) : (
                             <th>Block</th>
                           )}
+                          <th>Notes</th>
+                          <th>Delete</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -852,7 +869,7 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                  ? 9
+                                  ? 10
                                   : 17
                             }
                             row={12}
@@ -1106,6 +1123,17 @@ function CdrReport({ page }) {
                                             <i className="fa-solid fa-comment-dots"></i>
                                           </Tippy>
                                         </button>
+                                      </td>
+                                      <td>
+                                        {item["recording_path"] &&
+                                          item["variable_billsec"] > 0 && (
+                                            <button className={`tableButton delete ms-0`}>
+                                              <Tippy content={'Delete Recording'}
+                                              >
+                                                <i className="fa-solid fa-trash"></i>
+                                              </Tippy>
+                                            </button>
+                                          )}
                                       </td>
                                     </tr>
                                     {currentPlaying ===

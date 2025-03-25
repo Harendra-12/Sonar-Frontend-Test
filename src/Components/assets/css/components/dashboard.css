@@ -190,7 +190,7 @@
 
 .itemWrapper .data-number2 ul li {
     padding: 10px 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .itemWrapper .data-number2 ul li:first-child {
@@ -548,7 +548,7 @@
 .tangoNavs .nav-tabs .nav-link {
     /* color: var(--ele-color); */
     color: var(--color-subtext);
-    padding: 10px 25px;
+    padding: 10px 10px;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {

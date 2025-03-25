@@ -1179,7 +1179,7 @@ input[type=number] {
     border-radius: 10px;
 }
 
-.callDashParkedCalls button {
+.callDashParkedCalls button.callDashParkedCallsBtn {
     border: 0;
     background-color: #0000001a;
     position: absolute;

@@ -18,7 +18,7 @@ function CallDashboard() {
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isParkedCallsOpen, setIsParkedCallsOpen] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const { sessionManager } = useSIPProvider();
 
 
@@ -253,7 +253,7 @@ function CallDashboard() {
               </div> */}
               <ActiveCallsPage isParentWebRtc={true} />
               <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
-                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)}>
+                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)} className="callDashParkedCallsBtn">
                   <i className={`fa-solid fa-chevron-${isParkedCallsOpen ? "right" : "left"}`} />
                 </button>
                 <div className="overviewTableWrapper p-0">

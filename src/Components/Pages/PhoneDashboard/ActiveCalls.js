@@ -2,22 +2,28 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 
 
-function ActiveCalls({ isWebrtc,filter }) {
+function ActiveCalls({ isWebrtc, filter }) {
   const activeCall = useSelector((state) => state.activeCall);
-  const [filterCalls,setFilterCalls] = useState([]);
-  useEffect(()=>{
-    if(filter==="all"){
+  const [filterCalls, setFilterCalls] = useState([]);
+  useEffect(() => {
+    if (filter === "all") {
       setFilterCalls(activeCall)
-    }else if(filter==="ringgroup"){
-      setFilterCalls(activeCall.filter((call) => call.application_state==="ringgroup"))
-    }else if(filter==="callcenter"){
-      setFilterCalls(activeCall.filter((call) => call.application_state==="callcenter"))
+    } else if (filter === "ringgroup") {
+      setFilterCalls(activeCall.filter((call) => call.application_state === "ringgroup"))
+    } else if (filter === "callcenter") {
+      setFilterCalls(activeCall.filter((call) => call.application_state === "callcenter"))
+    } else if (filter === "internal") {
+      setFilterCalls(activeCall.filter((call) => call.direction === "internal"))
+    } else if (filter === "inbound") {
+      setFilterCalls(activeCall.filter((call) => call.direction === "inbound"))
+    } else if (filter === "outbound") {
+      setFilterCalls(activeCall.filter((call) => call.direction === "outbound"))
     }
-  },[filter,activeCall])
+  }, [filter, activeCall])
   const [loading, setLoading] = useState(false);
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
@@ -83,7 +89,7 @@ function ActiveCalls({ isWebrtc,filter }) {
     }
   }
 
-  async function whisper(id, dest,leg) {
+  async function whisper(id, dest, leg) {
     setLoading(true);
     const apiData = await generalGetFunction(
       `/freeswitch/call-whisper/${id}/${dest}/${leg}`
@@ -106,10 +112,10 @@ function ActiveCalls({ isWebrtc,filter }) {
       interceptCall(id, dest);
     } else if (bargeStatus === "eavesdrop") {
       eavesdropCall(id, dest);
-    } else if(bargeStatus === "whisper-aleg"){
-      whisper(id,dest,"eavesdrop_whisper_aleg=true")
-    }else if(bargeStatus === "whisper-bleg"){
-      whisper(id,dest,"eavesdrop_whisper_bleg=true")
+    } else if (bargeStatus === "whisper-aleg") {
+      whisper(id, dest, "eavesdrop_whisper_aleg=true")
+    } else if (bargeStatus === "whisper-bleg") {
+      whisper(id, dest, "eavesdrop_whisper_bleg=true")
     }
   }, [bargeStatus, id]);
 
@@ -149,7 +155,7 @@ function ActiveCalls({ isWebrtc,filter }) {
               ).map
               ((item, key) => {
                 return (
-                  <tr>
+                  <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#0f5132" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
                     <td>{key + 1}</td>
                     <td>{item.created.split(" ")[1]}</td>
                     <td>
