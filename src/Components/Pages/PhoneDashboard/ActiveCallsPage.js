@@ -186,9 +186,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             return (
                                                 <div className='col-xl-3' key={index}>
                                                     <div className={`deviceProvision position-relative`} >
-                                                        <button 
-                                                         disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
-                                                         className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
+                                                        <button
+                                                            disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
+                                                            className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
                                                             <i className="fa-solid fa-pen" />
                                                         </button>
                                                         <div className="itemWrapper a">
@@ -316,6 +316,10 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-2">{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-2">{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
+                                                    <button onClick={() => setFilter("did")} className="nav-link" id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal</button>
+                                                    <button onClick={() => setFilter("did")} className="nav-link" id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound</button>
+                                                    <button onClick={() => setFilter("did")} className="nav-link" id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound</button>
+
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -364,6 +368,97 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-internal" role="tabpanel" aria-labelledby="nav-internal-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Internal Calls</th>
+                                                                    <th>Internal Calls Completed</th>
+                                                                    <th>Total Internal Calls</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {activenumberCount && Object.keys(activenumberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{activenumberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-inbound" role="tabpanel" aria-labelledby="nav-inbound-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Inbound Calls</th>
+                                                                    <th>Inbound Calls Completed</th>
+                                                                    <th>Total Inbound Calls</th>
+                                                                </tr>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {activenumberCount && Object.keys(activenumberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{activenumberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-outbound" role="tabpanel" aria-labelledby="nav-outbound-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Outbound Calls</th>
+                                                                    <th>Outbound Calls Completed</th>
+                                                                    <th>Total Outbound Calls</th>
+                                                                </tr>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {activenumberCount && Object.keys(activenumberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{activenumberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </>
                                     </div>
                                     <div
@@ -377,6 +472,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                     <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread ms-2">{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
                                                     <button className="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center <span className="unread ms-2">{ringingState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button className="nav-link" id="nav-didring-tab" data-bs-toggle="tab" data-bs-target="#nav-didring" type="button" role="tab" aria-controls="nav-didring" aria-selected="false">DID</button>
+                                                    <button className="nav-link" id="nav-internalring-tab" data-bs-toggle="tab" data-bs-target="#nav-internalring" type="button" role="tab" aria-controls="nav-internalring" aria-selected="false">Internal</button>
+                                                    <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound</button>
+                                                    <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound</button>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -498,6 +596,93 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                     <th>#</th>
                                                                     <th>Did Tag</th>
                                                                     <th>Total Count</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {numberCount && Object.keys(numberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{numberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-internalring" role="tabpanel" aria-labelledby="nav-internalring-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Internal Calls</th>
+                                                                    <th>Internal Calls Completed</th>
+                                                                    <th>Total Internal Calls</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {numberCount && Object.keys(numberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{numberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-inboundring" role="tabpanel" aria-labelledby="nav-inboundring-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Inbound Calls</th>
+                                                                    <th>Inbound Calls Completed</th>
+                                                                    <th>Total Inbound Calls</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                {numberCount && Object.keys(numberCount).map((item, key) => {
+                                                                    return (
+                                                                        <tr>
+                                                                            <td>{key + 1}</td>
+                                                                            <td>{item}</td>
+                                                                            <td>{numberCount[item]}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="tab-content" id="nav-tabContent">
+                                                <div className="tab-pane fade" id="nav-outboundring" role="tabpanel" aria-labelledby="nav-outboundring-tab" tabindex="0">
+                                                    <div className="tableContainer" style={{ height: '50vh' }}>
+                                                        <table>
+                                                            <thead>
+                                                                <tr>
+                                                                <th>#</th>
+                                                                    <th>Agents On Calls</th>
+                                                                    <th>Missed Outbound Calls</th>
+                                                                    <th>Outbound Calls Completed</th>
+                                                                    <th>Total Outbound Calls</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
