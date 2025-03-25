@@ -789,15 +789,15 @@ const Dashboard = () => {
                                     </li>
                                     <li>
                                       Default Fax Number{" "}
-                                      <span className="float-end"></span>
+                                      <span className="float-end">N/A</span>
                                     </li>
                                     <li>
                                       Default SMS{" "}
-                                      <span className="float-end"></span>
+                                      <span className="float-end">N/A</span>
                                     </li>
                                     <li>
                                       Default WhatsApp{" "}
-                                      <span className="float-end"></span>
+                                      <span className="float-end">N/A</span>
                                     </li>
                                   </ul>
                                 </div>
