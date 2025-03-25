@@ -44,12 +44,12 @@ function AddOns() {
                                             <div className="product-container">
                                                 {/* Product 1 */}
                                                 <div className="product-cart">
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
-                                                        alt="Click to Call"
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                            alt="Click to Call"
                                                         // className="product-image"
-                                                    />
+                                                        />
                                                     </div>
                                                     <div className="product-title hover mt-4">
                                                         <p>
@@ -57,7 +57,7 @@ function AddOns() {
                                                         </p>
                                                     </div>
 
-                                                    <div className="product-description mt-2">
+                                                    <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
                                                     <div className="d-flex align-items-center justify-content-center teext-color mb-3">
@@ -75,23 +75,47 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-46" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-46" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
+
                                                     </div>
+
+
+
                                                 </div>
+
 
                                                 {/* Product 2 */}
                                                 <div className='product-cart'>
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                                                        alt="Click to Call"
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                                            alt="Click to Call"
                                                         // className="product-image" 
                                                         />
-                                                        </div>
+                                                    </div>
                                                     <div className="product-title mt-4">
                                                         <p>
                                                             WhatsApp Integration
@@ -116,12 +140,35 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-47" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-47" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
+
                                                     </div>
+
+
+
                                                 </div>
                                                 {/* Product 3 */}
                                                 <div className='product-cart'>
@@ -131,7 +178,7 @@ function AddOns() {
                                                             alt="Click to Call"
                                                         // className="product-image"
                                                         />
-                                                        </div>
+                                                    </div>
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Messenger Integration
@@ -156,12 +203,33 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-48" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-48" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
+
                                                     </div>
+
                                                 </div>
                                                 {/* Product 4 */}
                                                 <div className='product-cart'>
@@ -195,12 +263,28 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-49" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-49" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
                                                     </div>
+
                                                 </div>
                                                 {/* Product 5 */}
                                                 <div className='product-cart'>
@@ -235,12 +319,32 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-50" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-50" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
+
                                                     </div>
+
                                                 </div>
                                                 {/* Product 6 */}
                                                 <div className='product-cart'>
@@ -276,12 +380,32 @@ function AddOns() {
                                                     </div>
 
                                                     {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
                                                         <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-51" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-51" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="currentColor" class="bi bi-cart-fill thumbs-up-solid" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart thumbs-up-regular" viewBox="0 0 16 16">
+                                                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                                                </svg>
+
+                                                            </span>
+                                                            <span>Add to Cart</span>
+                                                        </label>
+
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -293,12 +417,12 @@ function AddOns() {
                                         aria-labelledby="offcanvasRightLabel"
                                     >
                                         <div className="offcanvas-header">
-                                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                                            <h5 className="offcanvas-title text-white fs-4" id="offcanvasRightLabel">
                                                 Click to call
                                             </h5>
                                             <button
                                                 type="button"
-                                                className="btn-close"
+                                                className="btn-close offcanvas_close"
                                                 data-bs-dismiss="offcanvas"
                                                 aria-label="Close" />
                                         </div>
@@ -314,7 +438,7 @@ function AddOns() {
                                                 <div className="offcanvas-text-side">
                                                     <div className='d-flex align-items-center justify-content-between'>
                                                         <div>
-                                                            <p className=' m-0 p-0'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
+                                                            <p className=' m-0 p-0 fs-5  fw-semibold'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
                                                             <div className="test-number m-0 p-0">
                                                                 <p className="">$50.00 <span>$29/month</span></p>
                                                             </div>
@@ -323,7 +447,7 @@ function AddOns() {
                                                             <button
                                                                 effect="ripple"
                                                                 className="panelButton" >
-                                                                <span className="text">Buy</span>
+                                                                <span className="text fs-6">Buy</span>
                                                                 <span className="icon">
                                                                     <i className="fa-solid fa-cart-shopping"></i>
                                                                 </span>
@@ -340,9 +464,9 @@ function AddOns() {
                                                         simplicity, as well as the high-quality audio you expect.
                                                     </p>
                                                 </div>
-                                                <div className="">
+                                                <div className="canvas_list">
                                                     <ul>
-                                                        <li>Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
+                                                        <li> Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
                                                         <li>
                                                             Notification LED (green, amber, red), visible from front and
                                                             behind
