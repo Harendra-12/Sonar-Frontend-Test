@@ -1196,7 +1196,7 @@ function CardAndBilling() {
                               <h5>Auto Pay Feature</h5>
                               {
                                 !autoPaymentFetchData ? "" :
-                                  <p>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
+                                  <p style={{ fontSize: '0.875rem', fontWeight: '600' }}>Status: <span className={`text-${autoPaymentFetchData.status === "disable" ? "danger" : "success"}`} style={{ textTransform: 'capitalize' }}><b>{autoPaymentFetchData.status}</b></span></p>
                               }
                             </div>
 
@@ -1221,7 +1221,7 @@ function CardAndBilling() {
                                     </button>
                                   </div> :
                                   <>
-                                    <div className="col-10">
+                                    <div className="col-9">
                                       <h5>
                                         $ {autoPaymentFetchData.amount}
                                       </h5>
@@ -1229,7 +1229,7 @@ function CardAndBilling() {
                                         <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
                                       </p>
                                     </div>
-                                    <div className="col-2" >
+                                    <div className="col-3" >
                                       <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
                                         <span className="text">Edit</span>
                                         <span className="icon"><i className="fa-solid fa-pen" /></span>

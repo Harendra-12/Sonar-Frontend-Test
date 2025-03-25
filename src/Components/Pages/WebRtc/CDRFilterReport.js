@@ -58,6 +58,7 @@ function CdrFilterReport({ page }) {
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
+  const [exportPopup, setExportPopup] = useState(false);
 
   const [filteredKeys, setFilteredKeys] = useState([]);
   const [showKeys, setShowKeys] = useState([
@@ -545,14 +546,15 @@ function CdrFilterReport({ page }) {
                             effect="ripple"
                             className="panelButton"
                             disabled={loading}
-                            type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                            onClick={() => setExportPopup(true)}
+                          // type="button" data-bs-toggle="dropdown" aria-expanded="true"
                           >
                             <span className="text">Export</span>
                             <span className="icon">
                               <i className="fa-solid fa-file-export"></i>
                             </span>
                           </button>
-                          <ul
+                          {/* <ul
                             className="dropdown-menu actionBtnDropdowns"
                           >
                             <li className="dropdown-item">
@@ -565,7 +567,7 @@ function CdrFilterReport({ page }) {
                                 <i className="fa-regular fa-envelope-open-text me-2" /> Send To Email
                               </button>
                             </li>
-                          </ul>
+                          </ul> */}
                         </div>
                       </div>
                     </div>
@@ -1367,6 +1369,330 @@ function CdrFilterReport({ page }) {
         ) : (
           ""
         )}
+        {exportPopup && (
+          <div className="addNewContactPopup" style={{ width: "500px" }}>
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-file-export" />
+                <h5>Export Options</h5>
+                <p>Choose what and how you want to export the call detail reports</p>
+              </div>
+              <div style={{ borderBottom: '1px solid var(--border-color)' }} />
+              <div className="col-12 my-2">
+                <div className="row">
+                  <h5 className="mb-0 d-flex justify-content-between align-items-center">CDR Filters <button className="tableButton delete"><i className="fa-solid fa-trash" /></button></h5>
+                  {filteredKeys.includes("variable_start_stamp") && (
+                    <>
+                      {" "}
+                      <div className="formRow border-0 col-4">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Date Filter
+                        </label>
+                        <select
+                          className="formItem"
+                          value={filterBy}
+                          onChange={(e) => {
+                            setFilterBy(e.target.value);
+                            setStartDateFlag("");
+                            setEndDateFlag("");
+                          }}
+                        >
+                          <option value={"date"}>Single Date</option>
+                          <option value={"date_range"}>Date Range</option>
+                          <option value={"7_days"}>Last 7 Days</option>
+                          <option value={"1_month"}>Last 1 Month</option>
+                          <option value={"3_month"}>Last 3 Months</option>
+                        </select>
+                      </div>
+                      {filterBy === "date" && (
+                        <div className="formRow border-0 col-4">
+                          <label className="formLabel text-start mb-0 w-100">
+                            Choose Date
+                          </label>
+                          <input
+                            type="date"
+                            className="formItem"
+                            max={new Date()?.toISOString()?.split("T")[0]}
+                            value={startDateFlag}
+                            onChange={(e) => {
+                              setStartDateFlag(e.target.value);
+                              setPageNumber(1);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {filterBy === "date_range" && (
+                        <>
+                          <div className="formRow border-0 col-4">
+                            <label className="formLabel text-start mb-0 w-100">
+                              From
+                            </label>
+                            <input
+                              type="date"
+                              className="formItem"
+                              max={
+                                new Date()?.toISOString()?.split("T")[0]
+                              }
+                              value={startDateFlag}
+                              onChange={(e) => {
+                                setStartDateFlag(e.target.value);
+                                setPageNumber(1);
+                              }}
+                            />
+                          </div>
+                          <div className="formRow border-0 col-4">
+                            <label className="formLabel text-start mb-0 w-100">
+                              To
+                            </label>
+                            <input
+                              type="date"
+                              className="formItem"
+                              max={
+                                new Date()?.toISOString()?.split("T")[0]
+                              }
+                              value={endDateFlag}
+                              onChange={(e) => {
+                                setEndDateFlag(e.target.value);
+                                setPageNumber(1);
+                              }}
+                              min={startDateFlag} // Prevent selecting an end date before the start date
+                            />
+                          </div>
+                        </>
+                      )}
+                    </>
+                  )}
+                  {filteredKeys.includes("variable_sip_from_user") && (
+                    <div className="formRow border-0 col-4">
+                      <label className="formLabel text-start mb-0 w-100">
+                        Call Origin
+                      </label>
+                      <input
+                        type="text"
+                        className="formItem"
+                        // value={debounceCallOrigin}
+                        value={debounceCallOriginFlag}
+                        // onChange={(e) => {
+                        //   setDebounceCallOrigin(e.target.value);
+                        //   setPageNumber(1);
+                        // }}
+                        // min={100}
+                        // max={99999}
+                        onChange={handleCallOriginChange}
+                      />
+                    </div>
+                  )}
+                  {filteredKeys.includes("variable_sip_to_user") && (
+                    <div className="formRow border-0 col-4">
+                      <label className="formLabel text-start mb-0 w-100">
+                        Call Destination
+                      </label>
+                      <input
+                        type="text"
+                        className="formItem"
+                        value={debounceCallDestinationFlag}
+                        // value={debounceCallDestination}
+                        // onChange={(e) => {
+                        //   setDebounceCallDestination(e.target.value);
+                        //   setPageNumber(1);
+                        // }}
+                        onChange={handleCallDestinationChange}
+                      />
+                    </div>
+                  )}
+
+                  {page === "all" &&
+                    filteredKeys.includes("variable_sip_to_user") ? (
+                    <>
+                      <div className="formRow border-0 col-4">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Call Direction
+                        </label>
+                        <select
+                          className="formItem"
+                          onChange={(e) => {
+                            setCallDirection(e.target.value);
+                            setPageNumber(1);
+                          }}
+                          value={callDirection}
+                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                        >
+                          <option value={""}>All Calls</option>
+                          <option value={"inbound"}>Inbound Calls</option>
+                          <option value={"outbound"}>
+                            Outbound Calls
+                          </option>
+                          {/* <option value={"missed"}>Missed Calls</option> */}
+                          <option value={"internal"}>
+                            Internal Calls
+                          </option>
+                          {/* <option value={"transfer"}>
+                                  Transfer Calls
+                                </option> */}
+                        </select>
+                      </div>
+                      <div className="formRow border-0 col-4">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Call Type
+                        </label>
+                        <select
+                          className="formItem"
+                          onChange={(e) => {
+                            setCallType(e.target.value);
+                            setPageNumber(1);
+                          }}
+                        >
+                          <option value={""}>All Calls</option>
+                          <option value={"extension"}>Extension</option>
+                          <option value={"voicemail"}>Voice Mail</option>
+                          <option value={"callcenter"}>
+                            Call Center
+                          </option>
+                          <option value={"ringgroup"}>Ring Group</option>
+                        </select>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {page === "callrecording" &&
+                    !filteredKeys.includes("Hangup-Cause") ? (
+                    ""
+                  ) : (
+                    <>
+                      <div className="formRow border-0 col-4">
+                        <label className="formLabel text-start mb-0 w-100">
+                          Hangup Status
+                        </label>
+                        <select
+                          className="formItem"
+                          onChange={(e) => {
+                            setHagupCause(e.target.value);
+                            setPageNumber(1);
+                          }}
+                        >
+                          <option value={""}>All</option>
+                          <option value={"Answered"}>Answer</option>
+                          <option value={"Missed"}>Missed</option>
+                          <option value={"Voicemail"}>Voicemail</option>
+                          <option value={"Cancelled"}>Cancelled</option>
+                          <option value={"Failed"}>Failed</option>
+                        </select>
+                      </div>
+                      {filteredKeys.includes("Hangup-Cause") && (
+                        <div className="formRow border-0 pe-xl-0 col-3">
+                          <label className="formLabel text-start mb-0 w-100">
+                            Hangup Cause
+                          </label>
+                          <select
+                            className="formItem"
+                            onChange={(e) => {
+                              setHangupStatus(e.target.value);
+                              setPageNumber(1);
+                            }}
+                          >
+                            <option value={""}>All</option>
+                            <option value={"NORMAL_CLEARING"}>
+                              Normal Clearing
+                            </option>
+                            <option value={"ORIGINATOR_CANCEL"}>
+                              Originator Cancel
+                            </option>
+                            <option value={"MANAGER_REQUEST"}>
+                              Manager Request
+                            </option>
+                            <option value={"NO_ANSWER"}>No Answer</option>
+                            <option value={"INVALID_GATEWAY"}>
+                              Invalid Gateway
+                            </option>
+                            <option value={"SERVICE_UNAVAILABLE"}>
+                              Service Unavailable
+                            </option>
+                            <option value={"INCOMPATIBLE_DESTINATION"}>
+                              Incompatible Destination
+                            </option>
+                            <option value={"NO_USER_RESPONSE"}>
+                              No User Response
+                            </option>
+                            <option value={"MEDIA_TIMEOUT"}>
+                              Media Timeout
+                            </option>
+                            <option value={"LOSE_RACE"}>Lose Race</option>
+                            <option value={"NORMAL_UNSPECIFIED"}>
+                              Normal Unspecified
+                            </option>
+                            <option value={"USER_BUSY"}>User Busy</option>
+                            <option value={"RECOVERY_ON_TIMER_EXPIRE"}>
+                              Recovery On Timer Expire
+                            </option>
+                            <option value={"USER_NOT_REGISTERED"}>
+                              User Not Registered
+                            </option>
+                            <option value={"CALL_REJECTED"}>
+                              Call Rejected
+                            </option>
+                            <option value={"SUBSCRIBER_ABSENT"}>
+                              Subscriber Absent
+                            </option>
+                            <option value={"CHAN_NOT_IMPLEMENTED"}>
+                              Chan Not Implemented
+                            </option>
+                            <option value={"DESTINATION_OUT_OF_ORDER"}>
+                              Destination Out Of Order
+                            </option>
+                            <option value={"NORMAL_TEMPORARY_FAILURE"}>
+                              Normal Temporary Failure
+                            </option>
+                            <option value={"NO_ROUTE_DESTINATION"}>
+                              No Route Destination
+                            </option>
+                            <option value={"ALLOTTED_TIMEOUT"}>
+                              Allotted Timeout
+                            </option>
+                            <option value={"INVALID_NUMBER_FORMAT"}>
+                              Invalid Number Format
+                            </option>
+                          </select>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+              <div style={{ borderBottom: '1px solid var(--border-color)' }} />
+              <div className="col-12 mt-2">
+                <h5 className="mb-0 d-flex justify-content-between align-items-center">Format Options</h5>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked />
+                  <label class="formLabel" for="flexRadioDefault1">
+                    Export To CSV
+                  </label>
+                </div>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                  <label class="formLabel" for="flexRadioDefault2">
+                    Send To Mail
+                  </label>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button className="panelButton gray ms-0" onClick={() => setExportPopup(false)}>
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button className="panelButton me-0" onClick={() => { handleExport(); setExportPopup(false) }}>
+                    <span className="text">Export</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-file-export" />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>)}
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
