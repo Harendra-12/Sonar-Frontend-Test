@@ -346,8 +346,8 @@ function PhoneDashboard() {
                 </div>
               </div>
             </div>
-            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
-              <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)}>
+            <div className="callDashParkedCalls" style={{ transform: !isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+              <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
                 <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
               </button>
               <div className="overviewTableWrapper p-0">
@@ -356,58 +356,144 @@ function PhoneDashboard() {
                     <div className="col-12">
                       <div className="heading">
                         <div className="content">
-                          <h4>Active Agents</h4>
-                          <p>You can see all of the active agents here</p>
+                          <h4>Agent Status</h4>
+                          <p>You can see all of the active and inactive agents here</p>
                         </div>
                       </div>
                     </div>
-                    <div className="col-12" style={{ padding: '25px 20px 0px' }}>
-                      <div className="tableContainer mt-0">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Status</th>
-                              <th>Name</th>
-                              <th>Direction</th>
-                              <th>Origin / Dest</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <div className="d-flex align-items-center">
-                                  <span className="extensionStatus online"></span>
-                                  <span className="ms-1">Online</span>
-                                </div>
-                              </td>
-                              <td>Agent Name</td>
-                              <td><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: "var(--funky-boy3)" }}></i> Inbound</td>
-                              <td>1005</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div className="d-flex align-items-center">
-                                  <span className="extensionStatus onCall"></span>
-                                  <span className="ms-1">On Call</span>
-                                </div>
-                              </td>
-                              <td>Agent Name</td>
-                              <td><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: "var(--color3)" }}></i> Outbound</td>
-                              <td>1005</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <div className="d-flex align-items-center">
-                                  <span className="extensionStatus online"></span>
-                                  <span className="ms-1">Online</span>
-                                </div>
-                              </td>
-                              <td>Agent Name</td>
-                              <td><i class="fa-solid fa-headset me-1" style={{ color: "var(--color2)" }}></i> Internal</td>
-                              <td>1005</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                    <div className="col-12" style={{ padding: '0px 10px 0px' }}>
+                      <nav className="tangoNavs">
+                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                          <button
+                            className="nav-link active"
+                            id="nav-online-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-online"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-online"
+                            aria-selected="true"
+                          >
+                            Online
+                          </button>
+                          <button
+                            className="nav-link"
+                            id="nav-offline-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-offline"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-offline"
+                            aria-selected="false"
+                          >
+                            Offline
+                          </button>
+                        </div>
+                      </nav>
+                      <div
+                        className="tab-content mt-3"
+                        id="nav-tabContent"
+                        style={{
+                          borderTop: "none",
+                          borderRadius: "0px 0px 5px 5px"
+                        }}
+                      >
+                        <div
+                          className="tab-pane fade show active"
+                          id="nav-online"
+                          role="tabpanel"
+                          aria-labelledby="nav-online-tab"
+                          tabIndex={0}
+                        >
+                          <div className="tableContainer mt-0">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Status</th>
+                                  <th>Name</th>
+                                  <th>Direction</th>
+                                  <th>Origin / Dest</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus online"></span>
+                                      <span className="ms-1">Online</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: "var(--funky-boy3)" }}></i> Inbound</td>
+                                  <td>1005</td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus onCall"></span>
+                                      <span className="ms-1">On Call</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: "var(--color3)" }}></i> Outbound</td>
+                                  <td>1005</td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus online"></span>
+                                      <span className="ms-1">Online</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td><i class="fa-solid fa-headset me-1" style={{ color: "var(--color2)" }}></i> Internal</td>
+                                  <td>1005</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          className="tab-pane fade"
+                          id="nav-offline"
+                          role="tabpanel"
+                          aria-labelledby="nav-offline-tab"
+                          tabIndex={0}
+                        >
+                          <div className="tableContainer mt-0">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Status</th>
+                                  <th>Name</th>
+                                  <th>Extension</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus offline"></span>
+                                      <span className="ms-1">Offline</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td>1005</td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus offline"></span>
+                                      <span className="ms-1">Offline</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td>1005</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
