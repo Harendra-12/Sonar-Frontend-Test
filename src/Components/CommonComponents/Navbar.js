@@ -880,6 +880,73 @@ function Navbar() {
                           </div>
                         </div>
                       </li>
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse13"
+                          aria-expanded={
+                            isChildActive([
+                              "/tracker-dashboard",
+                              "/did-listing-tracker",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse13"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-box-open"></i>
+                          </div>
+                          <div className="itemTitle">Third Party Integration</div>
+                        </button>
+                        <div
+                          id="collapse13"
+                          className={`accordion-collapse collapse ${isChildActive([
+                            "/meta-config",
+                            "/whatsapp-config",
+                            "/teams-config",
+                          ])
+                            ? "show"
+                            : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/meta-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">Meta</div>
+                                </NavLink>
+                              </li>
+
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/whatsapp-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">
+                                    WhatsApp
+                                  </div>
+                                </NavLink>
+                              </li>
+
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/teams-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">
+                                    Microsoft Teams
+                                  </div>
+                                </NavLink>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
                     </>
                   )}
                   {checkViewSidebar(
