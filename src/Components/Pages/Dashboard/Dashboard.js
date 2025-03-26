@@ -2,12 +2,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
-import Clock from "react-clock";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
-import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
