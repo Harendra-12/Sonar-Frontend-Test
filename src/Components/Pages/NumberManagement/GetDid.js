@@ -94,7 +94,7 @@ function GetDid() {
       setDid(apiData.data);
     } else {
       setDid([]);
-      toast.error(apiData.message)
+      // toast.error(apiData.message)
     }
   };
 
@@ -496,14 +496,16 @@ function GetDid() {
                             {
                               (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
                                 <div className={`formRow col-${did ? '12' : '3'}`}>
-                                  <div
-                                    className="formLabel d-flex justify-content-between"
-                                    style={{ width: "100%" }}
-                                  >
-                                    <label htmlFor="npa">First 3 Digits</label>
-                                    {errors.npa && (
-                                      <ErrorMessage text={errors.npa.message} />
-                                    )}
+                                  <div className="col-12">
+                                    <div
+                                      className="formLabel d-flex justify-content-between"
+                                      style={{ maxWidth: "100%" }}
+                                    >
+                                      <label htmlFor="npa">First 3 Digits</label>
+                                      {errors.npa && (
+                                        <ErrorMessage text={errors.npa.message} />
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="col-12">
                                     <input
@@ -511,7 +513,7 @@ function GetDid() {
                                       name="npa"
                                       className={`formItem ${errors.npa ? "error" : ""}`}
                                       {...register("npa", {
-                                        ...requiredValidator,
+                                        ...(watch("searchBy") === "npanxx" ? requiredValidator : {}),
                                         ...lengthValidator(3, 3),
                                         ...noSpecialCharactersValidator,
                                       })}
@@ -527,14 +529,16 @@ function GetDid() {
                             {
                               (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
                                 <div className={`formRow col-${did ? '12' : '3'}`}>
-                                  <div
-                                    className="formLabel d-flex justify-content-between"
-                                    style={{ width: "100%" }}
-                                  >
-                                    <label htmlFor="nxx">Next 3 Digits</label>
-                                    {errors.nxx && (
-                                      <ErrorMessage text={errors.nxx.message} />
-                                    )}
+                                  <div className="col-12">
+                                    <div
+                                      className="formLabel d-flex justify-content-between"
+                                      style={{ maxWidth: "100%" }}
+                                    >
+                                      <label htmlFor="nxx">Next 3 Digits</label>
+                                      {errors.nxx && (
+                                        <ErrorMessage text={errors.nxx.message} />
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="col-12">
                                     <input
