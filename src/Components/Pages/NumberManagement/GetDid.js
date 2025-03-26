@@ -1,9 +1,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable eqeqeq */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -49,6 +50,7 @@ function GetDid() {
   const [selectedDid, setSelectedDid] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [availableCountries, setAvailableCountries] = useState([]);
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);
   const [rechargePopUp, setRechargePopUp] = useState(false);
   const [selectedUsage, setSelectedUsage] = useState([
@@ -198,6 +200,22 @@ function GetDid() {
     const price = parseFloat(item.price) || 0; // Convert price string to a number
     return total + price;
   }, 0);
+
+  // Handle All Country Call
+  useEffect(() => {
+    fetchAllCountry();
+  }, [])
+
+  const fetchAllCountry = async () => {
+    try {
+      const apiData = await generalGetFunction("/available-countries");
+      if (apiData?.status) {
+        setAvailableCountries(apiData.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -245,10 +263,19 @@ function GetDid() {
                         )}
                       </div>
                       <div className="col-12">
-                        <div className="formItem d-flex align-items-center">
-                          <img src='https://cdn-icons-png.flaticon.com/512/11105/11105310.png' style={{ width: 'auto', height: '100%', marginRight: '10px' }} alt="" />
-                          <label>(+1) United States - US</label>
-                        </div>
+                        <select className="formItem" defaultValue="US">
+                          {availableCountries.length > 0 ? availableCountries.map((item, key) => {
+                            return (
+                              <option key={key} value={item?.country_code}>
+                                <div>
+                                  <label>{item?.country} - {item?.country_code}</label>
+                                </div>
+                              </option>
+                            )
+                          }) : (
+                            <option>No Country Found!</option>
+                          )}
+                        </select>
                         <label htmlFor="data" className="formItemDesc text-start">
                           Input your preferred country
                         </label>
@@ -653,6 +680,7 @@ function GetDid() {
                                     ) : (
                                       <>
                                         {did.map((item) => {
+
                                           return (
                                             <tr>
                                               <td>{item.didSummary}</td>
@@ -771,7 +799,7 @@ function GetDid() {
                                         <span className="checkmark"></span>
                                       </li>
                                       {totalPrice > Number(accountBalance) ? <div className="col-auto">
-                                        <button className="tableButton edit" onClick={()=>setRechargePopUp(true)}>
+                                        <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
                                           <i className="fa-solid fa-dollar-sign" />
                                         </button>
                                       </div> : ""
