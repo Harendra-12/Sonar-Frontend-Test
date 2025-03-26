@@ -59,6 +59,7 @@ function CdrReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [storageInformation, setStorageInformation] = useState([]);
+  const accountStorageInfo = useSelector((state) => state.accountDetails.package.device_storage);
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
   const thisAudioRef = useRef(null);
@@ -553,10 +554,10 @@ function CdrReport({ page }) {
                     {page === "callrecording" && (
                       <div style={{ width: '200px' }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>{storageInformation?.total_size}</label>
+                          <label>Storage</label><label>{accountStorageInfo} GB</label>
                         </div>
                         <div class="progress">
-                          <Tippy content={`45% Storage Used, ${storageInformation?.total_size}`}>
+                          <Tippy content={`Storage Used: ${storageInformation?.total_size}`}>
                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "45%" }} aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                           <Tippy content="55% Storage Available, 55 GB">
