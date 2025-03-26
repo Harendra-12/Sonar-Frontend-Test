@@ -34,6 +34,22 @@ function PhoneDashboard() {
   const account = useSelector((state) => state.account);
   const assignedExtension = extension.filter((item) => item.user);
   const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+  const [graphData, setGraphData] = useState({
+    totalCallMin: [],
+    numberOfCall: [],
+    amntCostPerCall: [],
+    totalSpent: [],
+  })
+  const [graphFilter, setGraphFilter] = useState({
+    totalCallMin: {
+      time: "1"
+    },
+    numberOfCall: {
+      date: ""
+    },
+    amntCostPerCall: [],
+    totalSpent: [],
+  });
 
   const [agents, setAgents] = useState([]);
 
@@ -150,6 +166,73 @@ function PhoneDashboard() {
       });
     }
   }, [callCenter, allCall]);
+
+  // Fetch Graph API Call
+  useEffect(() => {
+    fetchNumberOfCallGraphData();
+    fetchTotalCallMinGraphData();
+  }, [graphFilter.numberOfCall, graphFilter.totalCallMin])
+
+  // Number Of Call Graph Data
+  const fetchNumberOfCallGraphData = async () => {
+    const endDate = new Date(); // Current date
+    const startDate = new Date(); // Will be modified
+
+    switch (graphFilter.numberOfCall.date) {
+      case "7_days":
+        startDate?.setDate(endDate.getDate() - 7);
+        break;
+      case "1_month":
+        startDate?.setMonth(endDate.getMonth() - 1);
+        break;
+      case "3_month":
+        startDate?.setMonth(endDate.getMonth() - 3);
+        break;
+      case "6_month":
+        startDate?.setMonth(endDate.getMonth() - 6);
+        break;
+      case "12_month":
+        startDate?.setFullYear(endDate.getFullYear() - 1);
+        break;
+      default:
+        startDate?.setDate(endDate.getDate() - 7);
+    }
+
+    const startDateString = startDate.toISOString().split("T")[0];
+    const endDateString = endDate.toISOString().split("T")[0]
+
+    try {
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateString}&end_date=${endDateString}`);
+      if (apiCall.status) {
+        console.log(apiCall);
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          numberOfCall: apiCall.filtered
+        }))
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Number Of Call Graph Data
+  const fetchTotalCallMinGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0]; // Current date
+    const startDate = new Date().toISOString().split("T")[0]; // Will be modified
+
+    try {
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDate}&end_date=${endDate}&hours=${graphFilter.totalCallMin.time}`);
+      if (apiCall.status) {
+        console.log(apiCall);
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          totalCallMin: apiCall.filtered
+        }))
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <main className="mainContent">
@@ -359,29 +442,39 @@ function PhoneDashboard() {
                         <div className='col-9'>
                           <h5>Total Call Min</h5>
                         </div>
+                        <div className="col-3">
+                          <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
+                            <select className="formItem" value={graphFilter.totalCallMin.time}
+                              onChange={(e) =>
+                                setGraphFilter((prevGraphData) => ({
+                                  ...prevGraphData,
+                                  totalCallMin: {
+                                    ...prevGraphData.totalCallMin,
+                                    time: e.target.value,
+                                  },
+                                }))
+                              }
+                            >
+                              <option value="1">Last 1 Hour</option>
+                              <option value="6">Last 6 Hours</option>
+                              <option value="12">Last 12 Hours</option>
+                              {/* <option value="24">Last 24 Hours</option> */}
+                            </select>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
                       <GraphChart
                         height={'240px'}
-                        // chartType="singleLine"
-                        label1={"Wallet"}
-                        label2={"Card"}
-                        // labels={[ "Field 1", "Field 2"]}
-                        fields={[
-                          "0s",
-                          "10s",
-                          "20s",
-                          "30s",
-                          "40s",
-                          "50s",
-                          "60s",
-                        ]}
-                        percentage={[
-                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
-                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
-                        ]}
-                        colors={["#f18f01", "#36A2EB"]}
+                        chartType="multiple"
+                        label1={"Inbound"}
+                        label2={"Outbound"}
+                        label3={"Internal"}
+                        label4={"Missed"}
+                        fields={graphData?.totalCallMin?.map((item, index) => item.start_time.split(" ")[1])}
+                        percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
+                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
                       />
                     </div>
                   </div>
@@ -393,29 +486,40 @@ function PhoneDashboard() {
                         <div className='col-9'>
                           <h5>Number of Call</h5>
                         </div>
+                        <div className="col-3">
+                          <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
+                            <select className="formItem" value={graphFilter.numberOfCall.date}
+                              onChange={(e) =>
+                                setGraphFilter((prevGraphData) => ({
+                                  ...prevGraphData,
+                                  numberOfCall: {
+                                    ...prevGraphData.numberOfCall,
+                                    date: e.target.value,
+                                  },
+                                }))
+                              }
+                            >
+                              <option value="7_days">Last 7 Days</option>
+                              <option value="1_month">Last 1 Month</option>
+                              <option value="3_month">Last 3 Months</option>
+                              <option value="6_month">Last 6 Months</option>
+                              <option value="12_month">Last 12 Months</option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
                       <GraphChart
                         height={'240px'}
-                        // chartType="multiple"
-                        label1={"Wallet"}
-                        label2={"Card"}
-                        // labels={[ "Field 1", "Field 2"]}
-                        fields={[
-                          "0s",
-                          "10s",
-                          "20s",
-                          "30s",
-                          "40s",
-                          "50s",
-                          "60s",
-                        ]}
-                        percentage={[
-                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
-                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
-                        ]}
-                        colors={["#f18f01", "#36A2EB"]}
+                        chartType="multiple"
+                        label1={"Inbound"}
+                        label2={"Outbound"}
+                        label3={"Internal"}
+                        label4={"Missed"}
+                        fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
+                        percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
+                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
                       />
                     </div>
                   </div>
@@ -556,7 +660,7 @@ function PhoneDashboard() {
                                   <th>Status</th>
                                   <th>Name</th>
                                   <th>Direction</th>
-                                  <th>Origin / Dest</th>
+                                  <th>Origin</th>
                                 </tr>
                               </thead>
                               <tbody>
