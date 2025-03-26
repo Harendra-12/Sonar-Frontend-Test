@@ -409,6 +409,7 @@ function Navbar() {
                       id="collapseOne"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
+                        "/agent-dashboard",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                         "/did-listing-pbx",
@@ -482,6 +483,11 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                             <li className="tabItem ">
+                                <NavLink to="/agent-dashboard">
+                                  <div className="itemTitle">Agent Dashboard</div>
+                                </NavLink>
+                              </li>
                           {checkViewSidebar(
                             "CallCenterAgent",
                             permissions,

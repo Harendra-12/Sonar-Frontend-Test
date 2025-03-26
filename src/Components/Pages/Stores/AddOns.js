@@ -490,7 +490,6 @@ function AddOns() {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {/* {popUp ? (
 <div className="popup">

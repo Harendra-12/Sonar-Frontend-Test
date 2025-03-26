@@ -150,6 +150,10 @@ import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
 import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
+import Meta from "./Components/Pages/Meta/Meta";
+import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
+import MicrosoftTeams from "./Components/Pages/MicrosoftTeams/MicrosoftTeams";
+import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -396,6 +400,7 @@ function App() {
           <Route path="/agents-edit-dialer" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
+          <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
           {/*Addon path */}
@@ -812,6 +817,14 @@ function App() {
           <Route path="/buyer-edit" element={<BuyersEdit />} />
           <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
+
+
+          {/* ----------- meta */}
+            <Route path="/meta-config" element= { <Meta />} />
+            <Route path="/whatsapp-config" element= { <WhatsApp />} />
+            <Route path="/teams-config" element= { <MicrosoftTeams />} />
+
+          {/* ----------- meta */}
 
           {/* ---------------- source */}
             <Route  path="source" element={<Source />} />
