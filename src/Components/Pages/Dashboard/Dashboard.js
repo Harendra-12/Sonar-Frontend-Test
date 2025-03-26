@@ -441,7 +441,7 @@ const Dashboard = () => {
 
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-9">
+                            <div className="col">
                               <h5>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
                               <p>
@@ -453,7 +453,7 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-auto">
                               <div className="clock-wrapper">
                                 {/* clock stand */}
                                 <div className="clock-stand">
