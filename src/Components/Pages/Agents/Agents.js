@@ -30,7 +30,9 @@ function Agents({ type }) {
         })
       );
     }
+
   }, [logonUser]);
+
   useEffect(() => {
     const getData = async () => {
       setLoading(true);

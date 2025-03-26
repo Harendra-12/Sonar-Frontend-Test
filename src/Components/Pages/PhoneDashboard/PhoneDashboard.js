@@ -34,6 +34,9 @@ function PhoneDashboard() {
   const account = useSelector((state) => state.account);
   const assignedExtension = extension.filter((item) => item.user);
   const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+
+  const [agents, setAgents] = useState([]);
+
   useEffect(() => {
     async function getData() {
       // const apiData = await generalGetFunction(
@@ -557,39 +560,51 @@ function PhoneDashboard() {
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>
-                                    <div className="d-flex align-items-center">
-                                      <span className="extensionStatus online"></span>
-                                      <span className="ms-1">Online</span>
-                                    </div>
-                                  </td>
-                                  <td>Agent Name</td>
-                                  <td><i class="fa-solid fa-phone-arrow-down-left me-1" style={{ color: "var(--funky-boy3)" }}></i> Inbound</td>
-                                  <td>1005</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="d-flex align-items-center">
-                                      <span className="extensionStatus onCall"></span>
-                                      <span className="ms-1">On Call</span>
-                                    </div>
-                                  </td>
-                                  <td>Agent Name</td>
-                                  <td><i class="fa-solid fa-phone-arrow-up-right me-1" style={{ color: "var(--color3)" }}></i> Outbound</td>
-                                  <td>1005</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="d-flex align-items-center">
-                                      <span className="extensionStatus online"></span>
-                                      <span className="ms-1">Online</span>
-                                    </div>
-                                  </td>
-                                  <td>Agent Name</td>
-                                  <td><i class="fa-solid fa-headset me-1" style={{ color: "var(--color2)" }}></i> Internal</td>
-                                  <td>1005</td>
-                                </tr>
+                                {allUser?.data?.length > 0 &&
+                                  allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                    .filter((agent) => onlineUser.includes(agent?.id))
+                                    .map((agent, index) => {
+                                      const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension);
+                                      const getCallStatus = () => {
+                                        const activeCall = activeCallsForAgent[0];
+                                        if (!activeCall) return null;
+
+                                        if (activeCall.b_callstate === "ACTIVE") {
+                                          return {
+                                            status: "In Call",
+                                            direction: activeCall.direction,
+                                            duration: activeCall.duration,
+                                            with: activeCall.direction === "internal" ?
+                                              activeCall.cid_name :
+                                              activeCall.callee_num
+                                          };
+                                        }
+                                        return null;
+                                      };
+
+                                      const callStatus = getCallStatus();
+                                      return (
+                                        <tr>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
+                                              <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
+                                            </div>
+                                          </td>
+                                          <td>{agent?.name}</td>
+                                          <td style={{ textTransform: 'capitalize' }}>
+                                            {callStatus && (
+                                              <>
+                                                <i class={`fa-solid fa-${callStatus?.direction === 'internal' ? 'headset' : callStatus?.direction === 'inbound' ? 'phone-arrow-down-left' : callStatus?.direction === 'outbound' ? 'phone-arrow-up-right' : 'phone'} me-1`}
+                                                  style={{ color: callStatus?.direction === 'internal' ? 'var(--color2)' : callStatus?.direction === 'inbound' ? 'var(--funky-boy3)' : callStatus?.direction === 'outbound' ? 'var(--color3)' : 'var(--color2)' }}></i>
+                                                {callStatus?.direction}
+                                              </>
+                                            )}
+                                          </td>
+                                          <td>{callStatus?.with}</td>
+                                        </tr>
+                                      )
+                                    })}
                               </tbody>
                             </table>
                           </div>
@@ -611,6 +626,23 @@ function PhoneDashboard() {
                                 </tr>
                               </thead>
                               <tbody>
+                                {allUser?.data?.length > 0 &&
+                                  allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                    .filter((agent) => !onlineUser.includes(agent?.id))
+                                    .map((agent, index) => {
+                                      return (
+                                        <tr>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <span className={"extensionStatus offline"}></span>
+                                              <span className="ms-1">Offline</span>
+                                            </div>
+                                          </td>
+                                          <td>{agent?.name}</td>
+                                          <td>{agent?.extension?.extension}</td>
+                                        </tr>
+                                      )
+                                    })}
                                 <tr>
                                   <td>
                                     <div className="d-flex align-items-center">
