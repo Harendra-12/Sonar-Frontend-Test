@@ -12,8 +12,8 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
     labels: fields,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: percentage,
+        label: label1,
+        data: percentage[0],
         backgroundColor: colors,
         hoverBackgroundColor: colors,
         borderColor: colors,

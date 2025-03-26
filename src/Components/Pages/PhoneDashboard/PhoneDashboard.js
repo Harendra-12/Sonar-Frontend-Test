@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
+import GraphChart from "../../CommonComponents/GraphChart";
 
 
 function PhoneDashboard() {
@@ -343,6 +344,146 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-6">
                   <CallQueueDetails />
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-12">
+              <div className="row">
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Total Call Min</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="singleLine"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Number of Call</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="multiple"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Amount Cost Per Call </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="singleLine"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Total Spent</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="singleLine"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
