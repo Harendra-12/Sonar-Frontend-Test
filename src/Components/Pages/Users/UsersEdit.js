@@ -7,6 +7,8 @@ import {
   backToTop,
   generalGetFunction,
   generalPutFunction,
+  fileUploadPutFunction,
+  fileUploadFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -54,9 +56,12 @@ const UsersEdit = ({ page, setUsersDetails }) => {
     label: "",
     value: "",
   });
+  const [profilePicPopup, setProfilePicPopup] = useState(false);
+  const [newImage, setNewImage] = useState();
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
     locationState?.user_role == "Company"
   );
+  const [profileImage, setProfileImage] = useState(null);
   const {
     register,
     watch,
@@ -148,6 +153,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
               }
             }
 
+            setProfileImage(newData?.profile_picture);
+            // setNewImage(newData?.profile_picture);
             delete newData.name;
             delete newData.user_role;
             delete newData.permissions;
@@ -219,6 +226,40 @@ const UsersEdit = ({ page, setUsersDetails }) => {
       accountDetailsRefresh: accountDetailsRefresh + 1,
     });
   }, []);
+
+  //   Handle new music function to add new music
+  async function handleNewImage() {
+    if (newImage) {
+      const maxSizeInMB = 2;
+      const fileSizeInMB = newImage.size / (1024 * 1024);
+      if (fileSizeInMB > maxSizeInMB) {
+        toast.error(`Please choose a file less than ${maxSizeInMB}MB.`);
+      } else {
+        // setLoading(true);
+        const parsedData = new FormData();
+        parsedData.append("profile_picture", newImage);
+        setProfilePicPopup(!profilePicPopup);
+        const apiData = await fileUploadFunction(
+          `/user/update-profile-picture/${locationState.id}`,
+          parsedData
+        );
+        if (apiData.status) {
+          setLoading(false);
+          setProfileImage(apiData?.data?.profile_picture);
+          setProfilePicPopup(!profilePicPopup);
+          // setRefresh(refresh + 1);
+          toast.success(apiData.message);
+        } else {
+          setProfilePicPopup(!profilePicPopup);
+          setLoading(false);
+          toast.error(apiData.message);
+        }
+      }
+    } else {
+      toast.error("Please choose a file");
+    }
+  }
+
   // Handle edit user form submit
   const handleFormSubmit = handleSubmit(async (data) => {
     if (password !== "" && password.length < 6) {
@@ -539,6 +580,61 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           </div>
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
+                              <label htmlFor="">Profile Picture</label>
+                            </div>
+                            <div className="col-6">
+                              <div className="profileView">
+                                <button
+                                  style={{
+                                    border: "none",
+                                    backgroundColor: "transparent",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setProfilePicPopup(!profilePicPopup);
+                                  }}
+                                >
+                                  <div
+                                    className="profileHolder"
+                                    style={{
+                                      height: "50px",
+                                      width: "50px",
+                                      position: "relative",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {profileImage ? (
+                                      <i className="fa-solid fa-pen profilePhotoEditIcon"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-plus profilePhotoAddIcon"></i>
+                                    )}
+
+                                    <img
+                                      src={
+                                        // profileImage
+                                        //   ? URL.createObjectURL(profileImage)
+                                        //   : profileImage ||
+                                        profileImage
+                                          ? profileImage
+                                          : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                      }
+                                      alt="profile"
+                                      style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%",
+                                      }}
+                                    />
+                                  </div>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
                               <label htmlFor="selectFormRow">
                                 Time Zone <span className="text-danger">*</span>
                               </label>
@@ -633,8 +729,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                       e.target.value === ""
                                         ? ""
                                         : roleName.permissions.map((item) => {
-                                          return item.permission_id;
-                                        })
+                                            return item.permission_id;
+                                          })
                                     );
                                   }}
                                 >
@@ -892,6 +988,176 @@ const UsersEdit = ({ page, setUsersDetails }) => {
             )}
           </div>
         </section>
+        {profilePicPopup ? (
+          <div className="popup music">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="card px-0 col-xl-4 col-md-6">
+                  <div className="header">
+                    <h5 className="card-title fs14 border-bootm fw700">
+                      Upload Profile Picture
+                    </h5>
+                  </div>
+                  <div className="card-body">
+                    {newImage ? (
+                      // Show image preview if a file is uploaded
+                      <div className="image-container mx-2 text-center">
+                        <img
+                          src={URL.createObjectURL(newImage)}
+                          alt="Profile Preview"
+                          style={{
+                            maxWidth: "100%",
+                            maxHeight: "200px",
+                            objectFit: "contain",
+                          }}
+                        />
+                        <button
+                          className="audioCustomButton ms-2"
+                          onClick={() => setNewImage(null)}
+                        >
+                          <i className="fa-sharp fa-solid fa-rotate-left" />{" "}
+                          Reset
+                        </button>
+                      </div>
+                    ) : (
+                      // Show upload options if no file is uploaded
+                      <div
+                        className="popup-border text-center p-2"
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.add("drag-over");
+                        }}
+                        onDragLeave={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.remove("drag-over");
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.remove("drag-over");
+
+                          const file = e.dataTransfer.files[0];
+                          if (file) {
+                            if (
+                              ![
+                                "image/jpeg",
+                                "image/jpg",
+                                "image/png",
+                                "image/gif",
+                              ].includes(file.type)
+                            ) {
+                              toast.error(
+                                "Only JPG, JPEG, PNG & GIF files are allowed."
+                              );
+                              return;
+                            }
+
+                            const fileSizeInMB = file.size / (1024 * 1024);
+                            if (fileSizeInMB > 2) {
+                              toast.error("File size must be less than 2MB");
+                              return;
+                            }
+
+                            const fileName = file.name.replace(/ /g, "-");
+                            const newFile = new File([file], fileName, {
+                              type: file.type,
+                            });
+                            setNewImage(newFile);
+                          }
+                        }}
+                      >
+                        <input
+                          type="file"
+                          className="form-control-file d-none"
+                          id="fileInput"
+                          accept=".jpg,.jpeg,.png,.gif"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              if (
+                                ![
+                                  "image/jpeg",
+                                  "image/jpg",
+                                  "image/png",
+                                  "image/gif",
+                                ].includes(file.type)
+                              ) {
+                                toast.error(
+                                  "Only JPG, JPEG, PNG & GIF files are allowed."
+                                );
+                                return;
+                              }
+
+                              const fileSizeInMB = file.size / (1024 * 1024);
+                              if (fileSizeInMB > 2) {
+                                toast.error("File size must be less than 2MB");
+                                return;
+                              }
+
+                              const fileName = file.name.replace(/ /g, "-");
+                              const newFile = new File([file], fileName, {
+                                type: file.type,
+                              });
+                              setNewImage(newFile);
+                            }
+                          }}
+                        />
+                        <label htmlFor="fileInput" className="d-block">
+                          <div className="test-user text-center">
+                            <i
+                              style={{ fontSize: 30 }}
+                              className="fa-solid fa-cloud-arrow-up"
+                            />
+                            <p className="mb-0 mt-2 text-center">
+                              Drag and Drop or <span>Click on upload</span>
+                            </p>
+                            <span>
+                              Supports formats: JPG, JPEG, PNG, GIF (Max Size:
+                              2MB)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-footer">
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex">
+                        <button
+                          className="panelButton m-0"
+                          onClick={handleNewImage}
+                          disabled={!newImage}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                        <button
+                          className="panelButton gray"
+                          onClick={() => {
+                            setProfilePicPopup(false);
+                            setNewImage(null);
+                          }}
+                        >
+                          <span className="text">Cancel</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
         {popUp ? (
           <div className="popup">
             <div className="container h-100">
@@ -984,8 +1250,9 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               />
                             </div>
                             <div
-                              className={`${watch().extension_id ? "col-5" : "col-5"
-                                }`}
+                              className={`${
+                                watch().extension_id ? "col-5" : "col-5"
+                              }`}
                             >
                               <select
                                 className="formItem"
@@ -994,8 +1261,8 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 {...register("usages", {
                                   ...requiredValidator,
                                 })}
-                              // value={watch().extension_id}
-                              // {...register("extension_id")}
+                                // value={watch().extension_id}
+                                // {...register("extension_id")}
                               >
                                 <option value="pbx">PBX</option>
                                 <option value="dialer">Dialer</option>

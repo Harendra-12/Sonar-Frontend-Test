@@ -16,7 +16,6 @@ if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
-
 const setAuthToken = (token) => {
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -66,12 +65,10 @@ export async function generalGetFunction(endpoint) {
       });
       if (err.response?.status === 401) {
         handleNavigation("/");
-        return err
-          ?.response?.data;
+        return err?.response?.data;
       } else if (err?.response?.status === 429) {
-        toast.error("Too many attempts. Please wait before trying again.")
-      }
-      else if (err.response?.status >= 500) {
+        toast.error("Too many attempts. Please wait before trying again.");
+      } else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
       } else {
         return err;
@@ -241,7 +238,12 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
-export function checkViewSidebar(slug, permissions, userPermissions, action = undefined) {
+export function checkViewSidebar(
+  slug,
+  permissions,
+  userPermissions,
+  action = undefined
+) {
   const allPermission = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
@@ -257,15 +259,16 @@ export function checkViewSidebar(slug, permissions, userPermissions, action = un
     }
   }
   if (!action) {
-    const actionPresent = allPermission.find((item) => item.model === slug)
+    const actionPresent = allPermission.find((item) => item.model === slug);
     if (actionPresent) return true;
   } else if (action) {
-    const actionPresent = allPermission.find((item) => item.model === slug && item.action === action)
+    const actionPresent = allPermission.find(
+      (item) => item.model === slug && item.action === action
+    );
     if (actionPresent) return true;
   }
   return false;
 }
-
 
 export function featureUnderdevelopment() {
   let popup = document.getElementById("globalPopup");
@@ -306,7 +309,6 @@ export function featureUnderdevelopment() {
   }
 }
 
-
 // General logout Function
 export async function logout(allCallCenterIds, dispatch, sessionManager) {
   if (allCallCenterIds.length > 0) {
@@ -337,7 +339,7 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   // Dispatch logout action and disconnect session
   dispatch({ type: "SET_LOGOUT", logout: 1 });
   setTimeout(() => {
-    dispatch({ type: "RESET_STATE" })
+    dispatch({ type: "RESET_STATE" });
   }, 100);
   sessionManager.disconnect();
 }
