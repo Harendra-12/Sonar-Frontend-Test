@@ -464,7 +464,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{new Date().getHours()}</div>
+                                  <div className="timer-value">{String(new Date().getHours()).padStart(2, "0")}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
@@ -477,7 +477,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{new Date().getMinutes()}</div>
+                                  <div className="timer-value">{String(new Date().getMinutes()).padStart(2, "0")}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
