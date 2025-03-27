@@ -336,16 +336,24 @@ ul {
   color: var(--form-input-text) !important;
 }
 
-.tableContainer .open-live {
-  height: 20px;
-  width: 100px;
-  /* border: 1px solid black; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  color: green;
-
-
-
+.accordion-text .rolebar{
+  font-size: 16px;
+  color: var(--form-input-text) ;
 }
+
+
+.accordion-text .collapse-border{
+  padding: 6px;
+}
+
+
+.accordion-text .collapse-card{
+  border: 1px solid;
+    border-radius: 6px;
+    border-color: #dcdcdcbf;
+}
+.accordion-text  p{
+padding: 0px;
+margin: 0px;
+}
+
