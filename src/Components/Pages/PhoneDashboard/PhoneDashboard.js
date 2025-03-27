@@ -735,8 +735,8 @@ function PhoneDashboard() {
                               </thead>
                               <tbody>
                                 {allUser?.data?.length > 0 &&
-                                  allUser?.data?.filter((agent) => agent?.extension_id !== null)
-                                    .filter((agent) => !onlineUser.includes(agent?.id))
+                                  allUser?.data?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.id))
+                                    // .filter((agent) => )
                                     .map((agent, index) => {
                                       return (
                                         <tr>
@@ -751,26 +751,6 @@ function PhoneDashboard() {
                                         </tr>
                                       )
                                     })}
-                                <tr>
-                                  <td>
-                                    <div className="d-flex align-items-center">
-                                      <span className="extensionStatus offline"></span>
-                                      <span className="ms-1">Offline</span>
-                                    </div>
-                                  </td>
-                                  <td>Agent Name</td>
-                                  <td>1005</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <div className="d-flex align-items-center">
-                                      <span className="extensionStatus offline"></span>
-                                      <span className="ms-1">Offline</span>
-                                    </div>
-                                  </td>
-                                  <td>Agent Name</td>
-                                  <td>1005</td>
-                                </tr>
                               </tbody>
                             </table>
                           </div>
