@@ -111,10 +111,10 @@ const AgentDashboard = () => {
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
                                                 <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                                    <div className='col-3'>
+                                                    <div className='col-auto'>
                                                         <h5>Call Per Hour</h5>
                                                     </div>
-                                                    <div className='col-9'>
+                                                    <div className='col-auto'>
                                                         <ul class=" chart_tabs" >
                                                             <li class="nav-item">
                                                                 <button class="nav-link active" >1hr</button>
