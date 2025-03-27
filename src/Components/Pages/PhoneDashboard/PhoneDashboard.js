@@ -439,15 +439,15 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row">
-                <div className='col-6 d-xxl-block d-xl-none'>
+                <div className='col-md-6 col-12 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
-                      <div className="d-flex flex-wrap justify-content-between">
-                        <div className='col-9'>
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className='col-auto'>
                           <h5>Total Call Per Hour</h5>
                         </div>
-                        <div className="col-3">
-                          <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
+                        <div className="col-auto">
+                          {/* <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
                             <select className="formItem" value={graphFilter.totalCallMin.interval}
                               onChange={(e) =>
                                 setGraphFilter((prevGraphData) => ({
@@ -462,9 +462,29 @@ function PhoneDashboard() {
                               <option value="1">Last 1 Hour</option>
                               <option value="6">Last 6 Hours</option>
                               <option value="12">Last 12 Hours</option>
-                              {/* <option value="24">Last 24 Hours</option> */}
                             </select>
-                          </div>
+                          </div> */}
+                          <ul class=" chart_tabs" >
+                            <li class="nav-item">
+                              <button class="nav-link active" >1hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <button class="nav-link" >6hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <button class="nav-link" >12hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <button class="nav-link" >24hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <button class="nav-link" >48hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <button class="nav-link">72hr</button>
+                            </li>
+
+                          </ul>
                         </div>
                       </div>
                     </div>
@@ -483,16 +503,16 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-6 d-xxl-block d-xl-none'>
+                <div className='col-md-6 col-12 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
-                      <div className="d-flex flex-wrap justify-content-between">
-                        <div className='col-9'>
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className='col-auto'>
                           <h5>Number of Call</h5>
                         </div>
-                        <div className="col-3">
+                        <div className="col-auto">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
-                            <select className="formItem" value={graphFilter.numberOfCall.date}
+                            {/* <select className="formItem" value={graphFilter.numberOfCall.date}
                               onChange={(e) =>
                                 setGraphFilter((prevGraphData) => ({
                                   ...prevGraphData,
@@ -508,7 +528,28 @@ function PhoneDashboard() {
                               <option value="3_month">Last 3 Months</option>
                               <option value="6_month">Last 6 Months</option>
                               <option value="12_month">Last 12 Months</option>
-                            </select>
+                            </select> */}
+                            <ul class=" chart_tabs" >
+                              <li class="nav-item">
+                                <button class="nav-link active" >1hr</button>
+                              </li>
+                              <li class="nav-item">
+                                <button class="nav-link" >6hr</button>
+                              </li>
+                              <li class="nav-item">
+                                <button class="nav-link" >12hr</button>
+                              </li>
+                              <li class="nav-item">
+                                <button class="nav-link" >24hr</button>
+                              </li>
+                              <li class="nav-item">
+                                <button class="nav-link" >48hr</button>
+                              </li>
+                              <li class="nav-item">
+                                <button class="nav-link">72hr</button>
+                              </li>
+
+                            </ul>
                           </div>
                         </div>
                       </div>

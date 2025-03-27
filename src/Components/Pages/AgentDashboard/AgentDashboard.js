@@ -110,35 +110,59 @@ const AgentDashboard = () => {
                                     <div className='col-xxl-6 col-xl-6 '>
                                         <div className="itemWrapper a">
                                             <div className='heading h-auto'>
-                                                <div className="d-flex flex-wrap justify-content-between">
-                                                    <div className='col-9'>
+                                                <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                                    <div className='col-auto'>
                                                         <h5>Call Per Hour</h5>
+                                                    </div>
+                                                    <div className='col-auto'>
+                                                        <ul class=" chart_tabs" >
+                                                            <li class="nav-item">
+                                                                <button class="nav-link active" >1hr</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" >6hr</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" >12hr</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" >24hr</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" >48hr</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link">72hr</button>
+                                                            </li>
+
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div className='d-flex flex-wrap justify-content-between mt-1'>
-                                                <GraphChart
-                                                    height={'240px'}
-                                                    chartType="multiple"
-                                                    label1={"Wallet"}
-                                                    label2={"Card"}
-                                                    // labels={[ "Field 1", "Field 2"]}
-                                                    fields={[
-                                                        "0s",
-                                                        "10s",
-                                                        "20s",
-                                                        "30s",
-                                                        "40s",
-                                                        "50s",
-                                                        "60s",
-                                                    ]}
-                                                    percentage={[
-                                                        [10, 12, 14, 16, 24, 14, 16], // CPU Usage
-                                                        [8, 15, 20, 18, 25, 10, 12], // Memory Usage
-                                                    ]}
-                                                    colors={["#f18f01", "#36A2EB"]}
-                                                />
-                                            </div>
+                                                        <GraphChart
+                                                            height={'240px'}
+                                                            chartType="multiple"
+                                                            label1={"Wallet"}
+                                                            label2={"Card"}
+                                                            // labels={[ "Field 1", "Field 2"]}
+                                                            fields={[
+                                                                "0s",
+                                                                "10s",
+                                                                "20s",
+                                                                "30s",
+                                                                "40s",
+                                                                "50s",
+                                                                "60s",
+                                                            ]}
+                                                            percentage={[
+                                                                [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                                                                [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                                                            ]}
+                                                            colors={["#f18f01", "#36A2EB"]}
+                                                        />
+                                                    </div>
                                         </div>
                                     </div>
                                     <div className='col-xxl-6 col-xl-6'>
@@ -161,7 +185,7 @@ const AgentDashboard = () => {
                                                             <div className="d-flex flex-wrap justify-content-between">
                                                                 <div className='col-4'>
                                                                     <p>Today</p>
-                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up "  /></div>
+                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up " /></div>
                                                                 </div>
                                                                 <div className='col-4 '>
                                                                     <p>This Week</p>
@@ -186,7 +210,7 @@ const AgentDashboard = () => {
                                                             <div className="d-flex flex-wrap justify-content-between">
                                                                 <div className='col-4'>
                                                                     <p>Today</p>
-                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up "  /></div>
+                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up " /></div>
                                                                 </div>
                                                                 <div className='col-4 '>
                                                                     <p>This Week</p>
@@ -210,7 +234,7 @@ const AgentDashboard = () => {
                                                             <div className="d-flex flex-wrap justify-content-between">
                                                                 <div className='col-4'>
                                                                     <p>Today</p>
-                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up "  /></div>
+                                                                    <div className='agent_badge success_badge '>28 <i className="fa-solid fa-arrow-trend-up " /></div>
                                                                 </div>
                                                                 <div className='col-4 '>
                                                                     <p>This Week</p>
@@ -234,7 +258,7 @@ const AgentDashboard = () => {
                                                             <div className="d-flex flex-wrap justify-content-between">
                                                                 <div className='col-4'>
                                                                     <p>Today</p>
-                                                                    <div className='agent_badge danger_badge '>08 <i className="fa-solid fa-arrow-trend-up "  /></div>
+                                                                    <div className='agent_badge danger_badge '>08 <i className="fa-solid fa-arrow-trend-up " /></div>
                                                                 </div>
                                                                 <div className='col-4 '>
                                                                     <p>This Week</p>
@@ -322,7 +346,7 @@ const AgentDashboard = () => {
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
                                                                 </td>
-                                                              
+
                                                             </tr>
                                                             <tr>
                                                                 <td>Rishabh maurya</td>
@@ -331,13 +355,13 @@ const AgentDashboard = () => {
                                                                 <td>999</td>
                                                                 <td>00:00:00</td>
                                                                 <td>
-                                                                <button
+                                                                    <button
                                                                         className="tableButton edit"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
                                                                 </td>
-                                                               
+
                                                             </tr>
                                                             <tr>
                                                                 <td>Rishabh maurya</td>
@@ -346,13 +370,13 @@ const AgentDashboard = () => {
                                                                 <td>999</td>
                                                                 <td>00:00:00</td>
                                                                 <td>
-                                                                <button
+                                                                    <button
                                                                         className="tableButton edit"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
                                                                 </td>
-                                                            
+
                                                             </tr>
                                                             <tr>
                                                                 <td>Rishabh maurya</td>
@@ -361,13 +385,13 @@ const AgentDashboard = () => {
                                                                 <td>999</td>
                                                                 <td>00:00:00</td>
                                                                 <td>
-                                                                <button
+                                                                    <button
                                                                         className="tableButton edit"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
                                                                 </td>
-                                                               
+
                                                             </tr>
                                                             <tr>
                                                                 <td>Rishabh maurya</td>
@@ -376,13 +400,13 @@ const AgentDashboard = () => {
                                                                 <td>999</td>
                                                                 <td>00:00:00</td>
                                                                 <td>
-                                                                <button
+                                                                    <button
                                                                         className="tableButton edit"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
                                                                 </td>
-                                                               
+
                                                             </tr>
                                                         </tbody>
                                                     </table>
