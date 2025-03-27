@@ -19,6 +19,8 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import Comments from "./Comments";
+import Duplicates from "./Duplicates";
+import AudioPlayer from "./AudioWaveForm";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -61,6 +63,8 @@ function CdrFilterReport({ page }) {
   const [exportPopup, setExportPopup] = useState(false);
 
   const [filteredKeys, setFilteredKeys] = useState([]);
+  const [showDuplicatePopUp,setShowDuplicatePopUp]=useState(false)
+  const [duplicatePopUpData,setDuplicatePopUpData]=useState({})
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -412,6 +416,11 @@ function CdrFilterReport({ page }) {
     return `${hours}:${minutes}:${secs}`;
   }
 
+  const duplicateColumn=async(item)=>{
+    setShowDuplicatePopUp(true)
+    setDuplicatePopUpData(item);
+
+  }
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -996,6 +1005,7 @@ function CdrFilterReport({ page }) {
                                 })}
                                 <th>Block</th>
                                 <th>Note</th>
+                                <th>Duplicate</th>
                               </tr>
                             </thead>
 
@@ -1250,7 +1260,20 @@ function CdrFilterReport({ page }) {
                                               </Tippy>
                                             </button>
                                           </td>
+                                          <td>
+                                         {item?.duplicated==1&& <button
+                                              className={`tableButton ms-0`}
+                                              onClick={
+                                               ()=>duplicateColumn(item)
+                                              }
+                                            >
+                                              <Tippy content={"View Note"}>
+                                                <i className="fa-solid fa-comment-dots"></i>
+                                              </Tippy>
+                                            </button>}
+                                          </td>
                                         </tr>
+                                
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
@@ -1259,7 +1282,7 @@ function CdrFilterReport({ page }) {
                                             <tr>
                                               <td colSpan={showKeys.length + 1}>
                                                 <div className="audio-container mx-2">
-                                                  <audio
+                                                  {/* <audio
                                                     controls={true}
                                                     ref={thisAudioRef}
                                                     autoPlay={true}
@@ -1272,7 +1295,8 @@ function CdrFilterReport({ page }) {
                                                       src={audioURL}
                                                       type="audio/mpeg"
                                                     />
-                                                  </audio>
+                                                  </audio> */}
+                                                    <AudioPlayer audioUrl={audioURL} />
 
                                                   <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
@@ -1698,6 +1722,7 @@ function CdrFilterReport({ page }) {
       {selectedCdr !== "" && (
         <Comments id={selectedCdr} setId={setSelectedCdr} />
       )}
+       {showDuplicatePopUp&&<Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
   );
 }

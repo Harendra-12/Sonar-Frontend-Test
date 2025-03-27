@@ -30,6 +30,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
+    const [usageLoading,setUsageLoading]=useState(false);
     const locationState = useLocation();
 
     // Location State when redirecting from Phone Dashboard
@@ -52,11 +53,16 @@ function ActiveCallsPage({ isParentWebRtc }) {
     // Getting all custome module for filter on initial phase 
     useEffect(() => {
         async function getCustomModule() {
+            setUsageLoading(true);
             const apiData = await generalGetFunction("/usage/all")
-            const filterData = await generalGetFunction("/call-details")
             if (apiData.status) {
-                setCustomModule(apiData.data)
+                setCustomModule(apiData.data);
+                setUsageLoading(false); // Stop loader if status is true
+            } else {
+                setUsageLoading(false); // Stop loader if status is false
             }
+            const filterData = await generalGetFunction("/call-details")
+          
             if (filterData.status) {
                 setCdrData(filterData.cdr_filters.filter_count)
             }
@@ -200,11 +206,11 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
-                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") &&
+                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") && 
                                         customModule?.map((item, index) => {
                                             return (
                                                 <div className='col-xxl-2 col-xl-3' key={index}>
-                                                    <div className={`deviceProvision position-relative`} >
+                                                   {usageLoading?<div>Test567</div>: <div className={`deviceProvision position-relative`} >
                                                         <button
                                                             disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
                                                             className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
@@ -280,7 +286,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div>}
                                                 </div>
                                             )
                                         })

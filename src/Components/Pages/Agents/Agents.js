@@ -180,7 +180,7 @@ function Agents({ type }) {
                             <button
                               className="tableButton edit"
                               onClick={() => {
-                                navigate(`/agents-edit?id=${item.id}`, {
+                                navigate(`/agents-edit?id=${item?.extension?.id}`, {
                                   state: item,
                                 });
                               }}
