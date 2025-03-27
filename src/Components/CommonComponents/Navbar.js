@@ -392,6 +392,7 @@ function Navbar() {
                           "/agents",
                           "/agents-add",
                           "/agents-edit",
+                          "/agents-pbx-add",
                           "/active-calls",
                           "/voicemail-report",
                         ])
@@ -426,6 +427,7 @@ function Navbar() {
                         "/agents",
                         "/agents-add",
                         "/agents-edit",
+                        "/agents-pbx-add",
                         "/call-dashboard",
                         "/active-calls",
                         "/voicemail-report",
@@ -499,7 +501,7 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                      ["/agents-add", "/agents-edit"].some((path) =>
+                                      ["/agents-add", "/agents-edit", "/agents-pbx-add"].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
                                       ? "nav-link active"

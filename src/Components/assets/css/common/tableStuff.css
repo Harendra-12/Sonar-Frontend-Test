@@ -218,20 +218,20 @@ table td.incoming::after {
 
 
 
-/* .searchBoxlable{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+.searchBoxlable .para-line{
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 500;
+
     
     
-} */
+}
 
 
 .searchBoxlable .inputWrappers {
     position: relative;
-    display: flex;
-    align-items: center;
+    /* display: flex; */
+    align-items:flex-end;
     /* border: 2px solid #ccc; */
     border-radius: 4px;
     padding: 0;
@@ -240,7 +240,17 @@ table td.incoming::after {
 }
 
 .inputWrappers .form-left {
-    padding-left: 2.375rem;
+    /* padding-left: 2.375rem; */
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    
+;
 }
 
 
@@ -256,6 +266,9 @@ table td.incoming::after {
     text-align: center;
     pointer-events: none;
     color: #aaa;
+    right: 0px;
+    top: 7px;
+    font-size: 20px;
 
 }
 

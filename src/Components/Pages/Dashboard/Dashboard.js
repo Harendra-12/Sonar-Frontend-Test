@@ -2,12 +2,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from "react";
-import Clock from "react-clock";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
 import { useNavigate } from "react-router-dom";
-import "react-clock/dist/Clock.css";
 import Tippy from "@tippyjs/react";
 import { checkViewSidebar, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import ModuleGraphDashboard from "./ModuleGraphDashboard";
@@ -441,7 +439,7 @@ const Dashboard = () => {
 
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            <div className="col-9">
+                            <div className="col">
                               <h5>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
                               <p>
@@ -453,7 +451,7 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-3">
+                            <div className="col-auto">
                               <div className="clock-wrapper">
                                 {/* clock stand */}
                                 <div className="clock-stand">

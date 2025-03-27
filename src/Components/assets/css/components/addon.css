@@ -336,9 +336,10 @@
     padding: 0px;
 }
 
-.offcanvas-text-side span.text{
+.offcanvas-text-side span.text {
     font-size: 14px !important;
 }
+
 .offcanvas-custom {
     background-color: #404146;
     /* Dark background */
@@ -385,11 +386,49 @@
     padding: 10px;
 }
 
-.Additional-font p {
+.Additional-font h5 {
     font-size: 2.0625rem;
     font-weight: 600;
 }
 
+
+.hover-shadow:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.hero {
+    padding: 115px 40px;
+    text-align: center;
+    width: 100%;
+    background-position: center;
+    background-color: #263346;
+    background-image: url(https://assets.hotjar.com/cs-team/knowlege_base/theme_assets/hero.png);
+    background-size: cover;
+}
+
+
+.content-artical {
+    margin: 0 auto;
+    margin-top: -65px;
+    margin-bottom: 44px;
+    background-color: #fff;
+    max-width: 610px;
+    width: 574px;
+    height: auto;
+    border: solid 1px #a6a8b3;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.content-artical h3:hover {
+    text-decoration: underline;
+}
+
+
+.content-artical .icon-larges i {
+    font-size: 25px;
+    margin: 5px;
+}
 
 
 /* -------------------- new checkbox */
@@ -435,9 +474,11 @@
     display: none;
     animation: keyframes-fill .5s;
 }
-.checkbox_wrapper label{
+
+.checkbox_wrapper label {
     cursor: pointer;
 }
+
 .checkbox_wrapper input:checked~label .cartSvg .thumbs-up-regular {
     display: none;
 }
@@ -445,11 +486,13 @@
 .checkbox_wrapper input:checked~label .cartSvg .thumbs-up-solid {
     display: block;
 }
-.offcanvas_close{
+
+.offcanvas_close {
     color: #fff;
     filter: invert(1);
     opacity: 1;
 }
+
 /* ------ Animation ------ */
 @keyframes keyframes-fill {
     0% {
@@ -462,15 +505,17 @@
     }
 }
 
-.canvas_list ul{
+.canvas_list ul {
     padding-left: 30px;
 }
-.canvas_list ul li{
+
+.canvas_list ul li {
     list-style-type: none;
     position: relative;
     margin-bottom: 10px;
 }
-.canvas_list ul li::before{
+
+.canvas_list ul li::before {
     content: "";
     position: absolute;
     top: 0;

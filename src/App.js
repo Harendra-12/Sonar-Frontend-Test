@@ -325,6 +325,21 @@ function App() {
               )
             }
           />
+          <Route
+            path="/agents-pbx-add"
+            element={
+              checkViewSidebar(
+                "User",
+                slugPermissions,
+                account?.permissions,
+                "add"
+              ) ? (
+                <UsersAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
           <Route path="/users-profile" element={<UserProfile />} />
           <Route
             path="/users-edit"
@@ -827,9 +842,9 @@ function App() {
           {/* ----------- meta */}
 
           {/* ---------------- source */}
-            <Route  path="source" element={<Source />} />
-            <Route  path="source-edit" element={<SourceEdit />} />
-            <Route  path="source-add" element={<SourceAdd />} />
+          <Route path="source" element={<Source />} />
+          <Route path="source-edit" element={<SourceEdit />} />
+          <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
 
           {/* ------ Reports */}
