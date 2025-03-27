@@ -150,10 +150,13 @@ import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
 import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
-import Meta from "./Components/Pages/Meta/Meta";
-import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
-import MicrosoftTeams from "./Components/Pages/MicrosoftTeams/MicrosoftTeams";
 import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import MetaConfig from "./Components/Pages/ThirdPartyApps/Meta/MetaConfig";
+import MicrosoftTeamsConfig from "./Components/Pages/ThirdPartyApps/MicrosoftTeams/MicrosoftTeamsConfig";
+import WhatsAppConfig from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfig";
+import AllThirdPartyConfig from "./Components/Pages/ThirdPartyApps/AllThirdPartyConfig";
+import MetaConfigEdit from "./Components/Pages/ThirdPartyApps/Meta/MetaConfigEdit";
+import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfigEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -835,9 +838,14 @@ function App() {
 
 
           {/* ----------- meta */}
-            <Route path="/meta-config" element= { <Meta />} />
-            <Route path="/whatsapp-config" element= { <WhatsApp />} />
-            <Route path="/teams-config" element= { <MicrosoftTeams />} />
+          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route path="/meta-config" element={<MetaConfig />} />
+          <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
+
+          <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
+          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
+
+          <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
 
           {/* ----------- meta */}
 

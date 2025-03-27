@@ -42,7 +42,8 @@ function PhoneDashboard() {
   })
   const [graphFilter, setGraphFilter] = useState({
     totalCallMin: {
-      interval: "1"
+      interval: "1",
+      startTime: "1",
     },
     numberOfCall: {
       date: "7_days"
@@ -217,11 +218,29 @@ function PhoneDashboard() {
 
   // Number Of Call Graph Data
   const fetchTotalCallMinGraphData = async () => {
-    const endDate = new Date().toISOString().split("T")[0]; // Current date
-    const startDate = new Date().toISOString().split("T")[0]; // Will be modified
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date().toISOString().split("T")[0];
     const currentTime = new Date().toTimeString().slice(0, 8);
+    const filterTime = new Date();
 
-    const startDateTime = `${startDate} 00:00:00`;
+    switch (graphFilter.totalCallMin.startTime) {
+      case "1":
+        filterTime?.setHours(filterTime.getHours() - 1);
+        break;
+      case "3":
+        filterTime?.setHours(filterTime.getHours() - 3);
+        break;
+      case "6":
+        filterTime?.setHours(filterTime.getHours() - 6);
+        break;
+      case "12":
+        filterTime?.setHours(filterTime.getHours() - 12);
+        break;
+      default:
+        filterTime?.setHours(0, 0, 0);
+    }
+
+    const startDateTime = `${startDate} ${filterTime.toTimeString().slice(0, 8)}`;
     const endDateTime = `${endDate} ${currentTime}`;
 
     try {
@@ -464,26 +483,68 @@ function PhoneDashboard() {
                               <option value="12">Last 12 Hours</option>
                             </select>
                           </div> */}
-                          <ul class=" chart_tabs" >
+                          <ul class="chart_tabs" >
                             <li class="nav-item">
-                              <button class="nav-link active" >1hr</button>
+                              <input class="nav-link" type="radio" name="graphTimeFilter"
+                                value="1"
+                                checked={graphFilter.totalCallMin.startTime === '1'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    totalCallMin: {
+                                      ...prevGraphData.totalCallMin,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">1 Hr</button>
                             </li>
                             <li class="nav-item">
-                              <button class="nav-link" >6hr</button>
+                              <input class="nav-link" type="radio" name="graphTimeFilter" value="3"
+                                checked={graphFilter.totalCallMin.startTime === '3'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    totalCallMin: {
+                                      ...prevGraphData.totalCallMin,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">3 Hr</button>
                             </li>
                             <li class="nav-item">
-                              <button class="nav-link" >12hr</button>
+                              <input class="nav-link" type="radio" name="graphTimeFilter" value="6"
+                                checked={graphFilter.totalCallMin.startTime === '6'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    totalCallMin: {
+                                      ...prevGraphData.totalCallMin,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">6 Hr</button>
                             </li>
                             <li class="nav-item">
-                              <button class="nav-link" >24hr</button>
+                              <input class="nav-link" type="radio" name="graphTimeFilter" value="12"
+                                checked={graphFilter.totalCallMin.startTime === '12'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    totalCallMin: {
+                                      ...prevGraphData.totalCallMin,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">12 Hr</button>
                             </li>
-                            <li class="nav-item">
-                              <button class="nav-link" >48hr</button>
-                            </li>
-                            <li class="nav-item">
-                              <button class="nav-link">72hr</button>
-                            </li>
-
                           </ul>
                         </div>
                       </div>
@@ -512,35 +573,9 @@ function PhoneDashboard() {
                         </div>
                         <div className="col-auto">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
-                            {/* <select className="formItem" value={graphFilter.numberOfCall.date}
-                              onChange={(e) =>
-                                setGraphFilter((prevGraphData) => ({
-                                  ...prevGraphData,
-                                  numberOfCall: {
-                                    ...prevGraphData.numberOfCall,
-                                    date: e.target.value,
-                                  },
-                                }))
-                              }
-                            >
-                              <option value="7_days">Last 7 Days</option>
-                              <option value="1_month">Last 1 Month</option>
-                              <option value="3_month">Last 3 Months</option>
-                              <option value="6_month">Last 6 Months</option>
-                              <option value="12_month">Last 12 Months</option>
-                            </select> */}
-                            {/* <div class="form-check">
-
-                            </div>
-                            <div class="form-check">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked />
-                              <label class="form-check-label" for="flexRadioDefault2" >
-                                6hr
-                              </label>
-                            </div> */}
                             <ul class="chart_tabs" >
                               <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" defaultChecked={true}
+                                <input class="nav-link" type="radio" name="graphFilter"
                                   value="7_days"
                                   checked={graphFilter.numberOfCall.date === '7_days'}
                                   onChange={(e) =>
