@@ -45,7 +45,7 @@ function PhoneDashboard() {
       interval: "1"
     },
     numberOfCall: {
-      date: ""
+      date: "7_days"
     },
     amntCostPerCall: [],
     totalSpent: [],
@@ -529,26 +529,92 @@ function PhoneDashboard() {
                               <option value="6_month">Last 6 Months</option>
                               <option value="12_month">Last 12 Months</option>
                             </select> */}
-                            <ul class=" chart_tabs" >
-                              <li class="nav-item">
-                                <button class="nav-link active" >1hr</button>
-                              </li>
-                              <li class="nav-item">
-                                <button class="nav-link" >6hr</button>
-                              </li>
-                              <li class="nav-item">
-                                <button class="nav-link" >12hr</button>
-                              </li>
-                              <li class="nav-item">
-                                <button class="nav-link" >24hr</button>
-                              </li>
-                              <li class="nav-item">
-                                <button class="nav-link" >48hr</button>
-                              </li>
-                              <li class="nav-item">
-                                <button class="nav-link">72hr</button>
-                              </li>
+                            {/* <div class="form-check">
 
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked />
+                              <label class="form-check-label" for="flexRadioDefault2" >
+                                6hr
+                              </label>
+                            </div> */}
+                            <ul class="chart_tabs" >
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" defaultChecked={true}
+                                  value="7_days"
+                                  checked={graphFilter.numberOfCall.date === '7_days'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">7 Days</button>
+                              </li>
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" value="1_month"
+                                  checked={graphFilter.numberOfCall.date === '1_month'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">1 Month</button>
+                              </li>
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" value="3_month"
+                                  checked={graphFilter.numberOfCall.date === '3_month'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">3 Month</button>
+                              </li>
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" value="6_month"
+                                  checked={graphFilter.numberOfCall.date === '6_month'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">6 Month</button>
+                              </li>
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" value="12_month"
+                                  checked={graphFilter.numberOfCall.date === '12_month'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">12 Month</button>
+                              </li>
                             </ul>
                           </div>
                         </div>
@@ -806,7 +872,7 @@ function PhoneDashboard() {
         </div>
       </section>
       {/* <GlobalCalls /> */}
-    </main>
+    </main >
   );
 }
 
