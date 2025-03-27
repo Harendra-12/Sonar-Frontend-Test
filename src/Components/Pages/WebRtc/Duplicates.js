@@ -264,7 +264,24 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData, 
                       </div>
                     </div>
                   }
-                </> : <SkeletonTableLoader />}
+                </> :
+                <div className='tableContainer m-0 p-0'>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Call Direction</th>
+                        <th>Call Origin</th>
+                        <th>Call Destination</th>
+                        <th>Recordings</th>
+                        <th>Duration</th>
+                        <th>Comments</th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <SkeletonTableLoader col={6} row={15} />
+                    </tbody>
+                  </table>
+                </div>}
               <div className="col-xl-12 mt-2">
                 <div className="d-flex justify-content-between align-items-center">
                   <button className="panelButton gray mx-0" onClick={() => setShowDuplicatePopUp(false)}>
