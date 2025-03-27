@@ -42,7 +42,7 @@ function PhoneDashboard() {
   })
   const [graphFilter, setGraphFilter] = useState({
     totalCallMin: {
-      time: "1"
+      interval: "1"
     },
     numberOfCall: {
       date: ""
@@ -219,9 +219,13 @@ function PhoneDashboard() {
   const fetchTotalCallMinGraphData = async () => {
     const endDate = new Date().toISOString().split("T")[0]; // Current date
     const startDate = new Date().toISOString().split("T")[0]; // Will be modified
+    const currentTime = new Date().toTimeString().slice(0, 8);
+
+    const startDateTime = `${startDate} 00:00:00`;
+    const endDateTime = `${endDate} ${currentTime}`;
 
     try {
-      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDate}&end_date=${endDate}&hours=${graphFilter.totalCallMin.time}`);
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
       if (apiCall.status) {
         console.log(apiCall);
         setGraphData((prevGraphData) => ({
@@ -435,22 +439,22 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row">
-                <div className='col-3 d-xxl-block d-xl-none'>
+                <div className='col-6 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between">
                         <div className='col-9'>
-                          <h5>Total Call Min</h5>
+                          <h5>Total Call Per Hour</h5>
                         </div>
                         <div className="col-3">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
-                            <select className="formItem" value={graphFilter.totalCallMin.time}
+                            <select className="formItem" value={graphFilter.totalCallMin.interval}
                               onChange={(e) =>
                                 setGraphFilter((prevGraphData) => ({
                                   ...prevGraphData,
                                   totalCallMin: {
                                     ...prevGraphData.totalCallMin,
-                                    time: e.target.value,
+                                    interval: e.target.value,
                                   },
                                 }))
                               }
@@ -479,7 +483,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-3 d-xxl-block d-xl-none'>
+                <div className='col-6 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between">
@@ -524,7 +528,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-3 d-xxl-block d-xl-none'>
+                {/* <div className='col-3 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between">
@@ -591,7 +595,7 @@ function PhoneDashboard() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
