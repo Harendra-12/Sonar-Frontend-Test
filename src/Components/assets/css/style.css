@@ -51,6 +51,7 @@
 @import url('./components/addon.css');
 @import url('./components/store-extension.css');
 @import url('./components/twakto-new.css');
+@import url('./components/digitalClock.css');
 /* Responsive CSS */
 @import url('./common/responsive.css');
 
@@ -192,7 +193,7 @@ html {
   margin: 0;
   padding: 0;
   /* overflow: hidden; */
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 body {

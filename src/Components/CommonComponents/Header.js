@@ -70,7 +70,7 @@ function Header(props) {
     if (account === null || account === "") {
       navigate("/");
     } else {
-      setAccountName(account.username);
+      setAccountName(account?.username);
     }
   }, [account, navigate]);
 
@@ -175,18 +175,18 @@ function Header(props) {
               <Link to={"/change-password"}>Change Password</Link>
             </div> */}
             <div className="dropdown-item">
+              <Link to={"/users-profile"} className="clearButton">
+                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
+                My Profile
+              </Link>
+            </div>
+            <div className="dropdown-item">
               <Link
                 onClick={() => setPopUp(true)}
                 className="clearButton text-align-start"
               >
                 <i className="fa-regular fa-lock me-2"></i>
                 Change Password
-              </Link>
-            </div>
-            <div className="dropdown-item">
-              <Link to={"/users-profile"} className="clearButton">
-                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
-                My Profile
               </Link>
             </div>
             <div

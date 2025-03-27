@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
+import Tippy from "@tippyjs/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -64,27 +65,66 @@ const RingGroup = () => {
   }, [ringGroup, activeCall]);
 
   return (
-    <div className="overviewTableWrapper px-0 pt-0">
+    <div className="overviewTableWrapper px-0 pt-0" id="rGroupAccordion">
       <div className="overviewTableChild">
         <div className="d-flex flex-wrap">
-          <div className="col-12">
-            <div className="heading">
-              <div className="content">
+          <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <div className="heading col-12">
+              <div className="content col-6">
                 <h4>Ring Groups</h4>
                 <p>You can see a brief analysis of all the ring group</p>
               </div>
-              {/* <div className="buttonGroup">
-                <button effect="ripple" className="panelButton">
-                  <span className="text">Export</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-file-csv" />
-                  </span>
-                </button>
-              </div> */}
+              <div className="d-flex col">
+                <div className="col-6">
+                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
+                    Active Calls:
+                    {activeCallData.filter(
+                      (e) =>
+                        e.b_callstate === "ACTIVE" ||
+                        e.b_callstate === "HELD"
+                    ).length}
+                  </p>
+                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
+                    Missed Calls:
+                    {allCallDetails?.filter_count?.filter(
+                      (item) =>
+                        item["Call-Direction"] == "missed" &&
+                        item.application_state == "ringgroup"
+                    )[0]?.filter_count || 0}
+                  </p>
+                </div>
+                <div className="col-6">
+                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
+                    Completed Calls:
+                    {allCallDetails?.filter_count?.filter(
+                      (item) =>
+                        item["Call-Direction"] == "inbound" &&
+                        item.application_state == "ringgroup"
+                    )[0]?.filter_count || 0}
+                  </p>
+                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
+                    Total Calls:
+                    {allCallDetails?.filter_count
+                      ?.filter((item) => {
+                        return (
+                          item.application_state === "ringgroup" &&
+                          (item["Call-Direction"] === "inbound" ||
+                            item["Call-Direction"] === "missed")
+                        );
+                      })
+                      .reduce(
+                        (acc, current) =>
+                          acc + (current?.filter_count || 0),
+                        0
+                      ) || 0}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div
-            className="col-12"
+            id="collapseTwo"
+            className="col-12 accordion-collapse collapse"
             style={{ overflow: "auto", padding: "10px 10px 0px" }}
           >
             <div className="tableContainer mt-0" style={{ height: "30vh" }}>
@@ -158,13 +198,19 @@ const RingGroup = () => {
                             <div
                               style={{
                                 color: "var(--ui-accent)",
-                                textDecoration: "underline",
                               }}
                               type="button"
                               data-bs-toggle="hover-dropdown"
                               aria-expanded="false"
                             >
-                              {call.ring_group_destination.length}
+                              <div className="avatar-container">
+                                {call.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                  return (
+                                    <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                  )
+                                })}
+                                {call.ring_group_destination.length > 4 && <span>+2</span>}
+                              </div>
                             </div>
                             <ul className="dropdown-menu light">
                               <li className="col-12">
@@ -185,7 +231,7 @@ const RingGroup = () => {
 
                                   )
                                 )}
-                             
+
                               </div>
                               <li className="col-12">
                                 {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">

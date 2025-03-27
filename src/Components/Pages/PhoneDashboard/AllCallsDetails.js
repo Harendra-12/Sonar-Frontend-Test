@@ -28,8 +28,8 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse1"
                   >
-                    <div className="col-12 title text-start d-flex align-items-center justify-content-between">
-                      <div>
+                    <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
+                      <div className="col-xxl col-xl-12">
                         <i className="fa-duotone fa-phone-volume" /> All Calls  {" "}
                         {extensionDataLoading && (
                           <i
@@ -38,15 +38,11 @@ function AllCallsDetails() {
                         )}
                       </div>
 
-                      <div>
-                        <div className="d-flex align-items-center justify-content-between me-4">
-                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
-                            {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
-                              <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
-                          </p>
-
-                        </div>
-
+                      <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
+                          {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
+                            <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
+                        </p>
                       </div>
                     </div>
                   </button>
@@ -64,7 +60,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to={"/active-calls"} state={{ filter: 'all' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -85,7 +81,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Calls</p>
                               </div>
-                              <div className="col-3">
+                              <div className="col-3" >
                                 <i className="fa-solid fa-phone-hangup"></i>
                               </div>
                             </div>
@@ -147,8 +143,8 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse2"
                   >
-                    <div className="col-12 title text-start  d-flex align-items-center justify-content-between">
-                      <div>
+                    <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
+                      <div className="col-xxl col-xl-12">
                         <i
                           className="fa-duotone fa-phone-arrow-down-left"
                           style={{ color: "var(--funky-boy3)" }}
@@ -160,17 +156,14 @@ function AllCallsDetails() {
                           ></i>
                         )}
                       </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center justify-content-center me-4">
-                          <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
-                            {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
-                              className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                            ></i>}
-                          </p>
-
-                        </div>
-
+                      <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
+                          {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
+                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
+                          ></i>}
+                        </p>
                       </div>
+
                     </div>
                   </button>
                 </h2>
@@ -191,7 +184,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'inbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -275,8 +268,8 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapse3"
                   >
-                    <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
-                      <div>
+                    <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
+                      <div className="col-xxl col-xl-12">
                         <i
                           className="fa-duotone fa-phone-arrow-up-right"
                           style={{ color: "var(--color3)" }}
@@ -288,13 +281,12 @@ function AllCallsDetails() {
                           ></i>
                         )}
                       </div>
-                      <div className="  d-flex align-items-center justify-content-between me-4">
-                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
+                      <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
                         </p>
-
                       </div>
                     </div>
                   </button>
@@ -316,7 +308,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'outbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>
@@ -399,8 +391,8 @@ function AllCallsDetails() {
                     data-bs-target="#collapseinternal"
                     aria-expanded="false"
                     aria-controls="collapseinternal" >
-                    <div className="col-12 title text-start   d-flex align-items-center justify-content-between">
-                      <div>
+                    <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
+                      <div className="col-xxl col-xl-12">
                         <i
                           className="fa-duotone fa-right-left"
                           style={{ color: "var(--funky-boy4)" }}
@@ -412,8 +404,8 @@ function AllCallsDetails() {
                           ></i>
                         )}
                       </div>
-                      <div className="  d-flex align-items-center justify-content-between me-4">
-                        <p className="p-0 m-0 me-2 " style={{ fontSize: '14px', color: 'var(--color-subtext)' }}>Active: || Total:&nbsp;
+                      <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
+                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
                           {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
                             className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
                           ></i>}
@@ -439,7 +431,7 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Agents On Calls</p>
                               </div>
-                              <Link to="/active-calls" className="col-3">
+                              <Link to="/active-calls" state={{ filter: 'internal' }} className="col-3">
                                 <i className="fa-solid fa-phone-intercom"></i>
                               </Link>
                             </div>

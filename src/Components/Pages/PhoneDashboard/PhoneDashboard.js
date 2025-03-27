@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
+import GraphChart from "../../CommonComponents/GraphChart";
 
 
 function PhoneDashboard() {
@@ -32,6 +33,26 @@ function PhoneDashboard() {
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account);
   const assignedExtension = extension.filter((item) => item.user);
+  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+  const [graphData, setGraphData] = useState({
+    totalCallMin: [],
+    numberOfCall: [],
+    amntCostPerCall: [],
+    totalSpent: [],
+  })
+  const [graphFilter, setGraphFilter] = useState({
+    totalCallMin: {
+      time: "1"
+    },
+    numberOfCall: {
+      date: ""
+    },
+    amntCostPerCall: [],
+    totalSpent: [],
+  });
+
+  const [agents, setAgents] = useState([]);
+
   useEffect(() => {
     async function getData() {
       // const apiData = await generalGetFunction(
@@ -58,7 +79,7 @@ function PhoneDashboard() {
 
   useEffect(() => {
     if (registerUser.length > 0) {
-     
+
     } else {
     }
     if (extensionRefresh > 0) {
@@ -145,6 +166,73 @@ function PhoneDashboard() {
       });
     }
   }, [callCenter, allCall]);
+
+  // Fetch Graph API Call
+  useEffect(() => {
+    fetchNumberOfCallGraphData();
+    fetchTotalCallMinGraphData();
+  }, [graphFilter.numberOfCall, graphFilter.totalCallMin])
+
+  // Number Of Call Graph Data
+  const fetchNumberOfCallGraphData = async () => {
+    const endDate = new Date(); // Current date
+    const startDate = new Date(); // Will be modified
+
+    switch (graphFilter.numberOfCall.date) {
+      case "7_days":
+        startDate?.setDate(endDate.getDate() - 7);
+        break;
+      case "1_month":
+        startDate?.setMonth(endDate.getMonth() - 1);
+        break;
+      case "3_month":
+        startDate?.setMonth(endDate.getMonth() - 3);
+        break;
+      case "6_month":
+        startDate?.setMonth(endDate.getMonth() - 6);
+        break;
+      case "12_month":
+        startDate?.setFullYear(endDate.getFullYear() - 1);
+        break;
+      default:
+        startDate?.setDate(endDate.getDate() - 7);
+    }
+
+    const startDateString = startDate.toISOString().split("T")[0];
+    const endDateString = endDate.toISOString().split("T")[0]
+
+    try {
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateString}&end_date=${endDateString}`);
+      if (apiCall.status) {
+        console.log(apiCall);
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          numberOfCall: apiCall.filtered
+        }))
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Number Of Call Graph Data
+  const fetchTotalCallMinGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0]; // Current date
+    const startDate = new Date().toISOString().split("T")[0]; // Will be modified
+
+    try {
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDate}&end_date=${endDate}&hours=${graphFilter.totalCallMin.time}`);
+      if (apiCall.status) {
+        console.log(apiCall);
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          totalCallMin: apiCall.filtered
+        }))
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <main className="mainContent">
@@ -342,6 +430,350 @@ function PhoneDashboard() {
                 </div>
                 <div className="col-xl-6">
                   <CallQueueDetails />
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-12">
+              <div className="row">
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Total Call Min</h5>
+                        </div>
+                        <div className="col-3">
+                          <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
+                            <select className="formItem" value={graphFilter.totalCallMin.time}
+                              onChange={(e) =>
+                                setGraphFilter((prevGraphData) => ({
+                                  ...prevGraphData,
+                                  totalCallMin: {
+                                    ...prevGraphData.totalCallMin,
+                                    time: e.target.value,
+                                  },
+                                }))
+                              }
+                            >
+                              <option value="1">Last 1 Hour</option>
+                              <option value="6">Last 6 Hours</option>
+                              <option value="12">Last 12 Hours</option>
+                              {/* <option value="24">Last 24 Hours</option> */}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        chartType="multiple"
+                        label1={"Inbound"}
+                        label2={"Outbound"}
+                        label3={"Internal"}
+                        label4={"Missed"}
+                        fields={graphData?.totalCallMin?.map((item, index) => item.start_time.split(" ")[1])}
+                        percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
+                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Number of Call</h5>
+                        </div>
+                        <div className="col-3">
+                          <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
+                            <select className="formItem" value={graphFilter.numberOfCall.date}
+                              onChange={(e) =>
+                                setGraphFilter((prevGraphData) => ({
+                                  ...prevGraphData,
+                                  numberOfCall: {
+                                    ...prevGraphData.numberOfCall,
+                                    date: e.target.value,
+                                  },
+                                }))
+                              }
+                            >
+                              <option value="7_days">Last 7 Days</option>
+                              <option value="1_month">Last 1 Month</option>
+                              <option value="3_month">Last 3 Months</option>
+                              <option value="6_month">Last 6 Months</option>
+                              <option value="12_month">Last 12 Months</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        chartType="multiple"
+                        label1={"Inbound"}
+                        label2={"Outbound"}
+                        label3={"Internal"}
+                        label4={"Missed"}
+                        fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
+                        percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
+                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Amount Cost Per Call </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="singleLine"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-3 d-xxl-block d-xl-none'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between">
+                        <div className='col-9'>
+                          <h5>Total Spent</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        // chartType="singleLine"
+                        label1={"Wallet"}
+                        label2={"Card"}
+                        // labels={[ "Field 1", "Field 2"]}
+                        fields={[
+                          "0s",
+                          "10s",
+                          "20s",
+                          "30s",
+                          "40s",
+                          "50s",
+                          "60s",
+                        ]}
+                        percentage={[
+                          [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                          [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                        ]}
+                        colors={["#f18f01", "#36A2EB"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="callDashParkedCalls" style={{ transform: isActiveAgentsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
+              <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn">
+                <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
+              </button>
+              <div className="overviewTableWrapper p-0">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Agent Status</h4>
+                          <p>You can see all of the active and inactive agents here</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-12" style={{ padding: '0px 10px 0px' }}>
+                      <nav className="tangoNavs">
+                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                          <button
+                            className="nav-link active"
+                            id="nav-online-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-online"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-online"
+                            aria-selected="true"
+                          >
+                            Online
+                          </button>
+                          <button
+                            className="nav-link"
+                            id="nav-offline-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#nav-offline"
+                            type="button"
+                            role="tab"
+                            aria-controls="nav-offline"
+                            aria-selected="false"
+                          >
+                            Offline
+                          </button>
+                        </div>
+                      </nav>
+                      <div
+                        className="tab-content mt-3"
+                        id="nav-tabContent"
+                        style={{
+                          borderTop: "none",
+                          borderRadius: "0px 0px 5px 5px"
+                        }}
+                      >
+                        <div
+                          className="tab-pane fade show active"
+                          id="nav-online"
+                          role="tabpanel"
+                          aria-labelledby="nav-online-tab"
+                          tabIndex={0}
+                        >
+                          <div className="tableContainer mt-0">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Status</th>
+                                  <th>Name</th>
+                                  <th>Direction</th>
+                                  <th>Origin</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {allUser?.data?.length > 0 &&
+                                  allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                    .filter((agent) => onlineUser.includes(agent?.id))
+                                    .map((agent, index) => {
+                                      const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension);
+                                      const getCallStatus = () => {
+                                        const activeCall = activeCallsForAgent[0];
+                                        if (!activeCall) return null;
+
+                                        if (activeCall.b_callstate === "ACTIVE") {
+                                          return {
+                                            status: "In Call",
+                                            direction: activeCall.direction,
+                                            duration: activeCall.duration,
+                                            with: activeCall.direction === "internal" ?
+                                              activeCall.cid_name :
+                                              activeCall.callee_num
+                                          };
+                                        }
+                                        return null;
+                                      };
+
+                                      const callStatus = getCallStatus();
+                                      return (
+                                        <tr>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
+                                              <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
+                                            </div>
+                                          </td>
+                                          <td>{agent?.name}</td>
+                                          <td style={{ textTransform: 'capitalize' }}>
+                                            {callStatus && (
+                                              <>
+                                                <i class={`fa-solid fa-${callStatus?.direction === 'internal' ? 'headset' : callStatus?.direction === 'inbound' ? 'phone-arrow-down-left' : callStatus?.direction === 'outbound' ? 'phone-arrow-up-right' : 'phone'} me-1`}
+                                                  style={{ color: callStatus?.direction === 'internal' ? 'var(--color2)' : callStatus?.direction === 'inbound' ? 'var(--funky-boy3)' : callStatus?.direction === 'outbound' ? 'var(--color3)' : 'var(--color2)' }}></i>
+                                                {callStatus?.direction}
+                                              </>
+                                            )}
+                                          </td>
+                                          <td>{callStatus?.with}</td>
+                                        </tr>
+                                      )
+                                    })}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          className="tab-pane fade"
+                          id="nav-offline"
+                          role="tabpanel"
+                          aria-labelledby="nav-offline-tab"
+                          tabIndex={0}
+                        >
+                          <div className="tableContainer mt-0">
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Status</th>
+                                  <th>Name</th>
+                                  <th>Extension</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {allUser?.data?.length > 0 &&
+                                  allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                    .filter((agent) => !onlineUser.includes(agent?.id))
+                                    .map((agent, index) => {
+                                      return (
+                                        <tr>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <span className={"extensionStatus offline"}></span>
+                                              <span className="ms-1">Offline</span>
+                                            </div>
+                                          </td>
+                                          <td>{agent?.name}</td>
+                                          <td>{agent?.extension?.extension}</td>
+                                        </tr>
+                                      )
+                                    })}
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus offline"></span>
+                                      <span className="ms-1">Offline</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td>1005</td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <span className="extensionStatus offline"></span>
+                                      <span className="ms-1">Offline</span>
+                                    </div>
+                                  </td>
+                                  <td>Agent Name</td>
+                                  <td>1005</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

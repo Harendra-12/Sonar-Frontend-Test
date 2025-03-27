@@ -544,3 +544,11 @@ form.tangoNavs .nav-tabs {
     font-weight: 500;
 
 }
+
+.overviewTableWrapper .accordion-button:not(.collapsed) .heading {
+    border-radius: 10px 10px 0 0;
+}
+
+.overviewTableWrapper .accordion-button .heading {
+    border-radius: 10px;
+}

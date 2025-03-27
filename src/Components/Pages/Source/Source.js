@@ -1,17 +1,15 @@
 import React from 'react'
 import PaginationComponent from '../../CommonComponents/PaginationComponent'
 import Header from '../../CommonComponents/Header'
-import { useNavigate } from 'react-router-dom'
 
-function Buyers() {
-    const navigate = useNavigate();
+function Source() {
     return (
         <>
             <main className="mainContent">
                 <section id="phonePage">
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Buyers" />
+                            <Header title="Source" />
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">
                                     <div className="d-flex flex-wrap">
@@ -19,7 +17,7 @@ function Buyers() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>
-                                                        Buyers
+                                                    Source
                                                     </h4>
                                                     <p>You can see all list of Buyers groups</p>
                                                 </div>
@@ -34,9 +32,10 @@ function Buyers() {
                                                         </span>
                                                     </button>
                                                     <button
-                                                        onClick={() => navigate('/buyer-add')}
+                                                        disabled
                                                         effect="ripple"
                                                         className="panelButton"
+                                                        style={{ cursor: "not-allowed" }}
                                                     >
                                                         <span className="text">Add</span>
                                                         <span className="icon">
@@ -117,11 +116,11 @@ function Buyers() {
                                                             <td>
                                                                 <button
                                                                     className="tableButton edit"
-                                                                    onClick={() =>
-                                                                        navigate(
-                                                                            `/buyer-edit`
-                                                                        )
-                                                                    }
+                                                                //   onClick={() =>
+                                                                //     navigate(
+                                                                //       `/ring-groups-edit?id=${item.id}`
+                                                                //     )
+                                                                //   }
                                                                 >
                                                                     <i className="fa-solid fa-pencil" />
                                                                 </button>
@@ -260,4 +259,4 @@ function Buyers() {
     )
 }
 
-export default Buyers
+export default Source

@@ -189,6 +189,7 @@
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 15px;
+        font-size: 0.7rem;
     }
 
     .mainContentApp .tabLink {
@@ -253,6 +254,7 @@
 
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 10px;
+        font-size: 0.7rem;
     }
 
     .formItem {
@@ -332,6 +334,7 @@
 
     .mainContent .itemWrapper.shadow-none {
         height: 90px;
+        padding: 5px;
     }
 
     /* .formRow .formItemDesc {

@@ -145,6 +145,11 @@ import CustomModule from "./Components/Pages/Setting/CustomModule";
 import SubscriptionManagement from "./Components/Pages/Billing/SubscriptionManagement";
 import GoogleTranslate from "./Components/CommonComponents/GoogleTranslate";
 import Buyers from "./Components/Pages/CallTracker/Buyers";
+import BuyersEdit from "./Components/Pages/CallTracker/BuyersEdit";
+import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
+import Source from "./Components/Pages/Source/Source";
+import SourceEdit from "./Components/Pages/Source/SourceEdit";
+import SourceAdd from "./Components/Pages/Source/SourceAdd";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -303,6 +308,21 @@ function App() {
           />
           <Route
             path="/users-add"
+            element={
+              checkViewSidebar(
+                "User",
+                slugPermissions,
+                account?.permissions,
+                "add"
+              ) ? (
+                <UsersAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/agents-pbx-add"
             element={
               checkViewSidebar(
                 "User",
@@ -804,7 +824,15 @@ function App() {
             element={<DidListing page="tracker" />}
           />
           <Route path="/buyers" element={<Buyers />} />
+          <Route path="/buyer-edit" element={<BuyersEdit />} />
+          <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
+
+          {/* ---------------- source */}
+          <Route path="source" element={<Source />} />
+          <Route path="source-edit" element={<SourceEdit />} />
+          <Route path="source-add" element={<SourceAdd />} />
+          {/* ---------------- source */}
 
           {/* ------ Reports */}
           <Route

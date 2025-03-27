@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { useDispatch, useSelector } from "react-redux";
+import { generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
 import ActiveCallsPage from "../PhoneDashboard/ActiveCallsPage";
+import { useSIPProvider } from "modify-react-sipjs";
 
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
@@ -17,17 +18,19 @@ function CallDashboard() {
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isParkedCallsOpen, setIsParkedCallsOpen] = useState(false);
+  const dispatch = useDispatch()
+  const { sessionManager } = useSIPProvider();
 
 
   // Function to handle logout
   const handleLogOut = async () => {
     // setLoading(true);
     try {
-      // const apiResponses = await logout(
-      //   allCallCenterIds,
-      //   dispatch,
-      //   sessionManager
-      // );
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
     } catch (error) {
       console.error("Unexpected error in handleLogOut:", error);
       alert("Something went wrong. Please try again.");
@@ -250,7 +253,7 @@ function CallDashboard() {
               </div> */}
               <ActiveCallsPage isParentWebRtc={true} />
               <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
-                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)}>
+                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)} className="callDashParkedCallsBtn">
                   <i className={`fa-solid fa-chevron-${isParkedCallsOpen ? "right" : "left"}`} />
                 </button>
                 <div className="overviewTableWrapper p-0">
