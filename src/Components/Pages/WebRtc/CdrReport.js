@@ -18,6 +18,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Comments from "./Comments";
+import AudioPlayer from "./AudioWaveForm";
 
 
 function CdrReport({ page }) {
@@ -1142,7 +1143,7 @@ function CdrReport({ page }) {
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
-                                              <audio
+                                              {/* <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
                                                 autoPlay={true}
@@ -1155,9 +1156,9 @@ function CdrReport({ page }) {
                                                   src={audioURL}
                                                   type="audio/mpeg"
                                                 />
-                                              </audio>
-
-                                              <button
+                                              </audio> */}
+                                                  <AudioPlayer audioUrl={audioURL} />
+                                              {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>
                                               //   handleAudioDownload(
@@ -1166,7 +1167,7 @@ function CdrReport({ page }) {
                                               // }
                                               >
                                                 <i className="fa-sharp fa-solid fa-download" />
-                                              </button>
+                                              </button> */}
                                               {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}

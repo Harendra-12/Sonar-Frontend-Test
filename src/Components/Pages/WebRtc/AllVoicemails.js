@@ -35,7 +35,7 @@ function AllVoicemails({ isCustomerAdmin }) {
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [showInfoAudio,setShowInfoAudio]=useState(false);
-  const [showLogsAudio,setShowLogsAudio]=useState(false);
+  const [showLogsAudio,setShowLogsAudio]=useState("");
   
    
   
@@ -1002,7 +1002,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                           <div
                                             className="clearButton text-align-start"
                                             onClick={() => {
-                                              setShowLogsAudio(true)
+                                              setShowLogsAudio(item.id)
                                               if (item?.recording_path) {
                                                 handlePlaying(
                                                   item?.recording_path
@@ -1055,9 +1055,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     </ul>
                                   </div></td>
                                                 </tr>
-                                              {setShowLogsAudio&&  <tr
+                                              {showLogsAudio==item?.id&& <tr
                                                   // className="collapse"
-                                                  id={`voiceMail${index}`}
+                                                  key={`voiceMail${index}`}
                                                 >
                                                   <td colSpan={5}>
                                                     <div

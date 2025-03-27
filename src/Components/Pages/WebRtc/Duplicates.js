@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { generalGetFunction, generalPostFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
+import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 
-export default function Duplicates({setShowDuplicatePopUp,duplicatePopUpData }) {
+export default function Duplicates({setShowDuplicatePopUp,duplicatePopUpData,selectedId }) {
      const [loading, setLoading] = useState(true);
      const [comment, setComment] = useState("");
      const [commentData, setCommentData] = useState([]);
@@ -12,22 +13,26 @@ export default function Duplicates({setShowDuplicatePopUp,duplicatePopUpData }) 
       const [currentPlaying, setCurrentPlaying] = useState("");
        const [audioURL, setAudioURL] = useState("");
         const thisAudioRef = useRef(null);
-        const [id,setId]=useState("")
+        const [id,setId]=useState("");
+        const [openNotes,setOpenNotes]=useState(false)
 
      useEffect(()=>{
      async function getData(){
-        const callDirection=duplicatePopUpData["Call-Direction"];
-           
+        const callDirection=duplicatePopUpData["Call-Direction"];          
         let res;
         try {
+          
           if(callDirection== "inbound"){
+
             res= await generalGetFunction(`/cdr-comments-user?source=${duplicatePopUpData["variable_sip_to_user"]}`)
           }else{
             res= await generalGetFunction(`/cdr-comments-user?destination=${duplicatePopUpData["variable_sip_from_user"]}`)
           }
           if(res.status){
-            console.log("000res",res.data)
+            setLoading(false)
             setDuplicateData(res.data);
+          }else{
+            setLoading(false)
           }
           
         } catch (error) {
@@ -77,9 +82,10 @@ const handelOpenNotes=(id)=>{
     setLoading(true);
     const apiData = await generalGetFunction(`/cdr_comment/all?cdr_id=${id}`)
     if (apiData.status) {
+      setLoading(false);
         setCommentData(apiData.data)
-        setId(id);
-        setLoading(false);
+        setOpenNotes(true)
+      
     } else {
         setLoading(false);
     }
@@ -120,108 +126,110 @@ getComment(id)
           */}
             <div className="col-xl-12">
                 
-            <table className="w-full bg-white">
-          <thead className="">
-            <tr>
-              <th className="px-4 py-3 text-left">Call Direction</th>
-              <th className="px-4 py-3 text-left">Call Origin</th>
-              <th className="px-4 py-3 text-left">Call Destination</th>
-              <th className="px-4 py-3 text-left">Recordings</th>
-              <th className="px-4 py-3 text-left">Duration</th>
-              <th className="px-4 py-3 text-left">Comments</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {duplicateData.map((call, index) => (
-              <tr 
-                key={index} 
-                className="hover:bg-gray-50 transition-colors"
-                onClick={()=>handelOpenNotes(duplicatePopUpData.id)}
-              >
-                <td className="px-4 py-3">{call["Call-Direction"]}</td>
-                <td className="px-4 py-3">{call["variable_sip_from_user"]}</td>
-                <td className="px-4 py-3">{call["variable_sip_to_user"]}</td>
-                <td className="px-4 py-3">
-                <td>
-                                                   
-                                                        <button
-                                                          className="tableButton px-2 mx-0"
-                                                          onClick={() => {
-                                                            if (
-                                                             call[
-                                                              "recording_path"
-                                                              ] ===
-                                                              currentPlaying
-                                                            ) {
-                                                              setCurrentPlaying(
-                                                                ""
-                                                              );
-                                                              setAudioURL("");
-                                                            } else {
-                                                              handlePlaying(
-                                                                call[
-                                                                "recording_path"
-                                                                ]
-                                                              );
-                                                            }
-                                                          }}
-                                                        >
-                                                          {currentPlaying ===
-                                                            call[
-                                                            "recording_path"
-                                                            ] ? (
-                                                            <i className="fa-solid fa-stop"></i>
-                                                          ) : (
-                                                            <i className="fa-solid fa-play"></i>
-                                                          )}
-                                                        </button>
-                                                      
-                                                  </td>
-                </td>
-                <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
-                <td className="px-4 py-3">{call.comments}</td>
+            {!loading?<>{duplicateData.length>0?
+            <div className="overflow-y-auto ">
+              <table className="h-64 overflow-y-scroll bg-white">
+                        <thead className="">
+              <tr>
+                <th className=" text-left">Call Direction</th>
+                <th className=" text-left">Call Origin</th>
+                <th className=" text-left">Call Destination</th>
+                <th className=" text-left">Recordings</th>
+                <th className=" text-left">Duration</th>
+                <th className=" text-left">Comments</th>
               </tr>
-           
-            ))}
-            <tr>{commentData&& <div className=''>
-                            {loading ?
-                                <div>
-                                    <div className=''>
-                                        <div className='d-flex align-items-center'>
-                                            <span>
-                                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
-                                            </span>
-                                            <span className='username-cmt skeleton skeleton-text ms-3' style={{ width: 100 }}></span>
-                                        </div>
-                                        <div className='name-comment skeleton skeleton-text'></div>
-                                        <div className='name-comment skeleton skeleton-text w-75'></div>
-                                    </div>
-                                </div>
-                                :
-                                commentData.length > 0 ?
-                                    commentData.map((item, index) => {
-                                        return (
-                                            <div key={index}>
-                                                <div className='back-comment'>
-                                                    <span>
-                                                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
-                                                    </span>
-                                                    <span className='username-cmt ms-2'>  {item?.commented?.username}</span>
-                                                    <div className='d-flex align-items-end justify-content-between mt-1'>
-                                                        <span className='name-comment ms-1'>   {item.comment}</span>
-                                                        <span className='date-small' >  {item.created_at.split("T")[0]}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })
-                                    : <div className="formLabel">
-                                        <label htmlFor="">No comment found</label>
-                                    </div>
-                            }
-                        </div>}</tr>
-          </tbody>
-        </table>
+                        </thead>
+                        <tbody className="">
+              {duplicateData.map((call, index) => (
+                <tr
+                  key={index}
+                  className=""
+                  onClick={()=>handelOpenNotes(duplicatePopUpData.id)}
+                >
+                  <td className="">{call["Call-Direction"]}</td>
+                  <td className="">{call["variable_sip_from_user"]}</td>
+                  <td className="">{call["variable_sip_to_user"]}</td>
+                  <td className="">
+                  <td>
+              
+                                                          <button
+                                                            className="tableButton"
+                                                            // onClick={() => {
+                                                            //   if (
+                                                            //    call[
+                                                            //     "recording_path"
+                                                            //     ] ===
+                                                            //     currentPlaying
+                                                            //   ) {
+                                                            //     setCurrentPlaying(
+                                                            //       ""
+                                                            //     );
+                                                            //     setAudioURL("");
+                                                            //   } else {
+                                                            //     handlePlaying(
+                                                            //       call[
+                                                            //       "recording_path"
+                                                            //       ]
+                                                            //     );
+                                                            //   }
+                                                            // }}
+                                                          >
+                                                            {currentPlaying ===
+                                                              call[
+                                                              "recording_path"
+                                                              ] ? (
+                                                              <i className="fa-solid fa-stop"></i>
+                                                            ) : (
+                                                              <i className="fa-solid fa-play"></i>
+                                                            )}
+                                                          </button>
+              
+                                                    </td>
+                  </td>
+                  <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
+                  <td className="px-4 py-3">{call.comments}</td>
+                </tr>
+              ))}
+              <tr>{selectedId==duplicateData.id&&commentData.length>0&& <div className=''>
+                              {loading ?
+                                  <div>
+                                      <div className=''>
+                                          <div className='d-flex align-items-center'>
+                                              <span>
+                                                  <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                              </span>
+                                              <span className='username-cmt skeleton skeleton-text ms-3' style={{ width: 100 }}></span>
+                                          </div>
+                                          <div className='name-comment skeleton skeleton-text'></div>
+                                          <div className='name-comment skeleton skeleton-text w-75'></div>
+                                      </div>
+                                  </div>
+                                  :
+                                  commentData.length > 0 ?
+                                      commentData.map((item, index) => {
+                                          return (
+                                              <div key={index}>
+                                                  <div className='back-comment'>
+                                                      <span>
+                                                          <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
+                                                      </span>
+                                                      <span className='username-cmt ms-2'>  {item?.commented?.username}</span>
+                                                      <div className='d-flex align-items-end justify-content-between mt-1'>
+                                                          <span className='name-comment ms-1'>   {item.comment}</span>
+                                                          <span className='date-small' >  {item.created_at.split("T")[0]}</span>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          )
+                                      })
+                                      : <div className="formLabel">
+                                          <label htmlFor="">No comment found</label>
+                                      </div>
+                              }
+                          </div>}</tr>
+                        </tbody>
+                      </table>
+            </div>:"No History Found"}</>:<SkeletonTableLoader/>}
 
                 <div className="col-xl-12 mt-2">
                     <div className="d-flex justify-content-between align-items-center">

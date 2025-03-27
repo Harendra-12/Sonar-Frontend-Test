@@ -1298,9 +1298,9 @@ function CdrFilterReport({ page }) {
                                                   </audio> */}
                                                     <AudioPlayer audioUrl={audioURL} />
 
-                                                  <button className="audioCustomButton">
+                                                  {/* <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
-                                                  </button>
+                                                  </button> */}
                                                 </div>
                                               </td>
                                             </tr>
@@ -1722,7 +1722,7 @@ function CdrFilterReport({ page }) {
       {selectedCdr !== "" && (
         <Comments id={selectedCdr} setId={setSelectedCdr} />
       )}
-       {showDuplicatePopUp&&<Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
+       {showDuplicatePopUp&&<Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} selectedId={selectedCdr}  />}
     </>
   );
 }
