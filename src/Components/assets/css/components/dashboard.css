@@ -145,7 +145,13 @@
     height: 42px;
     text-align: center;
 }
-
+.itemWrapper .heading i.onlyAgent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+}
 
 
 
@@ -664,4 +670,36 @@
 
 .accordion.dashboard .itemWrapper.shadow-none {
     min-height: 110px;
+}
+
+.agent_badge{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-inline: 15px;
+    padding-block: 3px;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 12px !important;
+    width: fit-content;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+.agent_badge i{
+    font-size: 12px;
+    display: flex;
+        justify-content: center;
+        align-items: center;
+}
+.agent_badge.success_badge{
+    background: rgba(0, 231, 165, 0.188);
+    color: #047857 !important;
+}
+.agent_badge.danger_badge{
+    background: rgba(231, 0, 162, 0.188);
+    color: #b8014d !important;
+}
+.agentItem{
+    border-radius: 10px;
 }
