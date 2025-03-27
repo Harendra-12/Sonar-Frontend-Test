@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import { useForm } from 'react-hook-form';
 import { requiredValidator } from '../../../validations/validation';
-import { generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../../Loader/CircularLoader';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
@@ -78,6 +78,10 @@ const WhatsAppConfigEdit = () => {
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                         >
                           <span className="text">Back</span>
                           <span className="icon">

@@ -978,7 +978,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
 
-                              <li className="tabItem ">
+                              {/* <li className="tabItem ">
                                 <NavLink
                                   to="/teams-config"
                                   onClick={() => backToTop()}
@@ -987,7 +987,7 @@ function Navbar() {
                                     Microsoft Teams
                                   </div>
                                 </NavLink>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>

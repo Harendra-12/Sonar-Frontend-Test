@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import { useForm } from 'react-hook-form';
 import { requiredValidator } from '../../../validations/validation';
-import { generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, generalPostFunction } from '../../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../../Loader/CircularLoader';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
+import { useNavigate } from 'react-router-dom';
 
 const WhatsAppConfig = () => {
   const [loading, setLoading] = useState(false);
   const { register, formState: { errors }, reset, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   // Handle WhatsApp Config Setup
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -55,6 +57,10 @@ const WhatsAppConfig = () => {
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                         >
                           <span className="text">Back</span>
                           <span className="icon">

@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
-import { generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
+import { backToTop, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import { requiredValidator } from '../../../validations/validation';
 import CircularLoader from '../../../Loader/CircularLoader';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const MetaConfig = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const instagramConfigForm = useForm();
 
@@ -88,6 +90,10 @@ const MetaConfig = () => {
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                         >
                           <span className="text">Back</span>
                           <span className="icon">

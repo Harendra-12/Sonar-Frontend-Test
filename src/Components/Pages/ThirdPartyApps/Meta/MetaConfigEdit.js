@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header'
-import { generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction'
+import { backToTop, generalGetFunction, generalPostFunction, generalPutFunction } from '../../../GlobalFunction/globalFunction'
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import { requiredValidator } from '../../../validations/validation';
@@ -114,6 +114,10 @@ const MetaConfigEdit = () => {
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                         >
                           <span className="text">Back</span>
                           <span className="icon">
