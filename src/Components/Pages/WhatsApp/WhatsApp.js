@@ -54,78 +54,9 @@ const WhatsApp = () => {
                     <form className="row col-12 mx-auto">
                       <div className="formRow col-xl-3">
                         <div className="formLabel">
-                          <label htmlFor="">API Key</label>
-                          <label htmlFor="data" className="formItemDesc">
-                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                          </label>
-                        </div>
-                        <div className="col-xl-6 col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                          />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
                           <label htmlFor="">
-                            Account ID
-                            {/* <span className="text-danger">*</span> */}
-                          </label>
-                          <label htmlFor="data" className="formItemDesc">
-                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                          </label>
-                        </div>
-                        <div className="col-xl-6 col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                          />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label htmlFor="">
-                            DID
-                            {/* <span className="text-danger">*</span> */}
-                          </label>
-                          <label htmlFor="data" className="formItemDesc">
-                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                          </label>
-                        </div>
-                        <div className="col-xl-6 col-12">
-                          <input
-                            type="text"
-                            name="extension"
-                            className="formItem"
-                          />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label htmlFor="">
-                            Password
-                            {/* <span className="text-danger">*</span> */}
-                          </label>
-                          <label htmlFor="data" className="formItemDesc">
-                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                          </label>
-                        </div>
-                        <div className="col-xl-6 col-12">
-                          <input
-                            type="password"
-                            name="extension"
-                            className="formItem"
-                          />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label htmlFor="">
-                            Serial Number
-                            {/* <span className="text-danger">*</span> */}
+                            App Id
+                            <span className="text-danger">*</span>
                           </label>
                           <label htmlFor="data" className="formItemDesc">
                             There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
@@ -134,6 +65,60 @@ const WhatsApp = () => {
                         <div className="col-xl-6 col-12">
                           <input
                             type="number"
+                            name="extension"
+                            className="formItem"
+                          />
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">
+                            App Token
+                            <span className="text-danger">*</span>
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                          </label>
+                        </div>
+                        <div className="col-xl-6 col-12">
+                          <input
+                            type="text"
+                            name="extension"
+                            className="formItem"
+                          />
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">
+                            Page Id
+                            <span className="text-danger">*</span>
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                          </label>
+                        </div>
+                        <div className="col-xl-6 col-12">
+                          <input
+                            type="number"
+                            name="extension"
+                            className="formItem"
+                          />
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-3">
+                        <div className="formLabel">
+                          <label htmlFor="">
+                          DID 
+                            <span className="text-danger">*</span>
+                          </label>
+                          <label htmlFor="data" className="formItemDesc">
+                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                          </label>
+                        </div>
+                        <div className="col-xl-6 col-12">
+                          <input
+                            type="text"
                             name="extension"
                             className="formItem"
                           />
