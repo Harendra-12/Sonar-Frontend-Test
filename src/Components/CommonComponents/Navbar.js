@@ -392,6 +392,7 @@ function Navbar() {
                           "/agents",
                           "/agents-add",
                           "/agents-edit",
+                          "/agents-pbx-add",
                           "/active-calls",
                           "/voicemail-report",
                         ])
@@ -425,6 +426,7 @@ function Navbar() {
                         "/agents",
                         "/agents-add",
                         "/agents-edit",
+                        "/agents-pbx-add",
                         "/call-dashboard",
                         "/active-calls",
                         "/voicemail-report",
@@ -493,7 +495,7 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                      ["/agents-add", "/agents-edit"].some((path) =>
+                                      ["/agents-add", "/agents-edit", "/agents-pbx-add"].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
                                       ? "nav-link active"
@@ -875,6 +877,73 @@ function Navbar() {
                                 >
                                   <div className="itemTitle">Source</div>
                                 </Link>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="">
+                        <button
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapse13"
+                          aria-expanded={
+                            isChildActive([
+                              "/tracker-dashboard",
+                              "/did-listing-tracker",
+                            ])
+                              ? "true"
+                              : "false"
+                          }
+                          aria-controls="collapse13"
+                        >
+                          <div className="iconHolder">
+                            <i className="fa-regular fa-box-open"></i>
+                          </div>
+                          <div className="itemTitle">Third Party Integration</div>
+                        </button>
+                        <div
+                          id="collapse13"
+                          className={`accordion-collapse collapse ${isChildActive([
+                            "/meta-config",
+                            "/whatsapp-config",
+                            "/teams-config",
+                          ])
+                            ? "show"
+                            : ""
+                            }`}
+                          data-bs-parent="#sidenNav"
+                        >
+                          <div className="menuWrapper">
+                            <ul className="tabMenu">
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/meta-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">Meta</div>
+                                </NavLink>
+                              </li>
+
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/whatsapp-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">
+                                    WhatsApp
+                                  </div>
+                                </NavLink>
+                              </li>
+
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/teams-config"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">
+                                    Microsoft Teams
+                                  </div>
+                                </NavLink>
                               </li>
                             </ul>
                           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { fileUploadFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import ActionList from "../../CommonComponents/ActionList";
 import { toast } from "react-toastify";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
+import { HexColorPicker } from "react-colorful";
 
 function ClickToCallSetup() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function ClickToCallSetup() {
   const [newFile, setNewFile] = useState(null);
   const [popUp, setPopUp] = useState(false);
   const [embededCode, setEmbededCode] = useState("")
-  const [widgetExpanded,setWidgetExpanded] = useState(true)
+  const [widgetExpanded, setWidgetExpanded] = useState(true)
 
   // Handle selected image to display it to the user
   const handleImageChange = (event) => {
@@ -40,6 +41,16 @@ function ClickToCallSetup() {
     setValue,
     watch,
   } = useForm();
+
+  const textColor = watch("textcolor");
+  const buttonColor = watch("buttoncolor");
+  const baseColor = watch("color");
+
+  useEffect(() => {
+    register("textcolor");
+    register("buttoncolor");
+    register("color");
+  }, [register]);
 
   const actionListValue = (value) => {
     setValue("action", value[0]);
@@ -75,6 +86,8 @@ function ClickToCallSetup() {
     parsedData.append("action", watch().action);
     parsedData.append("usages", watch().usages);
     parsedData.append("primary_color", watch().color);
+    parsedData.append("textcolor", watch().textcolor);
+    parsedData.append("buttoncolor", watch().buttoncolor);
     // parsedData.append("embed_code", watch().embed_code);
     const apiData = await fileUploadFunction("/click-to-call/store", parsedData);
     if (apiData?.status) {
@@ -535,13 +548,95 @@ function ClickToCallSetup() {
                                               </div>
                                             </div>
                                             <div className="form-widths">
-                                              <input
+                                              {/* <input
                                                 className="formItem ms-1"
                                                 defaultValue={"#f42633"}
                                                 {...register("color")}
                                                 style={{ width: "100px" }}
-                                              />
-
+                                              /> */}
+                                              <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <div className="d-flex align-items-center">
+                                                  <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
+                                                  <label className="ms-2">Choose Color</label>
+                                                </div>
+                                              </button>
+                                              <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                <HexColorPicker
+                                                  color={baseColor}
+                                                  onChange={(newColor) => setValue("color", newColor)} />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="formRow col-xl-12   ">
+                                        <div className="formLabel">
+                                          <label htmlFor="selectFormRow">
+                                            Text Color Scheme
+                                          </label>
+                                          <label
+                                            htmlFor="data"
+                                            className="formItemDesc"
+                                          >
+                                            Choose your text color scheme
+                                          </label>
+                                        </div>
+                                        <div className="col-7">
+                                          <div className="d-flex align-items-center justify-content-between">
+                                            <div class="form-widths">
+                                              {/* <input
+                                                className="formItem ms-1"
+                                                defaultValue={"#f42633"}
+                                                {...register("textcolor")}
+                                                style={{ width: "100px" }}
+                                              /> */}
+                                              <button class="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <div className="d-flex align-items-center">
+                                                  <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
+                                                  <label className="ms-2">Choose Color</label>
+                                                </div>
+                                              </button>
+                                              <div class="dropdown-menu p-0" aria-labelledby="textColorPicker">
+                                                <HexColorPicker
+                                                  color={textColor}
+                                                  onChange={(newColor) => setValue("textcolor", newColor)} />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="formRow col-xl-12   ">
+                                        <div className="formLabel">
+                                          <label htmlFor="selectFormRow">
+                                            Button Color Scheme
+                                          </label>
+                                          <label
+                                            htmlFor="data"
+                                            className="formItemDesc"
+                                          >
+                                            Choose your button color scheme
+                                          </label>
+                                        </div>
+                                        <div className="col-7">
+                                          <div className="d-flex align-items-center justify-content-between">
+                                            <div class="form-widths">
+                                              {/* <input
+                                                className="formItem ms-1"
+                                                defaultValue={"#f42633"}
+                                                {...register("textcolor")}
+                                                style={{ width: "100px" }}
+                                              /> */}
+                                              <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                <div className="d-flex align-items-center">
+                                                  <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
+                                                  <label className="ms-2">Choose Color</label>
+                                                </div>
+                                              </button>
+                                              <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                <HexColorPicker
+                                                  color={buttonColor}
+                                                  onChange={(newColor) => setValue("buttoncolor", newColor)} />
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -700,16 +795,16 @@ function ClickToCallSetup() {
                                         {!callFormVisible ?
                                           <>
                                             <div className="callByAudio">
-                                              <button type="button" onClick={() => setCallFormVisible(true)}>
+                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
                                                 <i className="fa-solid fa-phone"></i>
                                               </button>
-                                              <h5>Arrange an <span>Audio Call</span> with our Agent</h5>
+                                              <h5>Arrange an <span style={{ color: watch().textcolor }}>Audio Call</span> with our Agent</h5>
                                             </div>
                                             <div className="callByVideo">
-                                              <button type="button" onClick={() => setCallFormVisible(true)}>
+                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
                                                 <i className="fa-solid fa-video"></i>
                                               </button>
-                                              <h5>Arrange a <span>Video Call</span> with our Agent</h5>
+                                              <h5>Arrange a <span style={{ color: watch().textcolor }}>Video Call</span> with our Agent</h5>
                                             </div>
                                           </> : ""}
                                         {callFormVisible ? <div className="callDialogBox">

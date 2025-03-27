@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
+  generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
   generatePreSignedUrl,
@@ -18,6 +19,7 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Comments from "./Comments";
+import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 
 
 function CdrReport({ page }) {
@@ -56,6 +58,8 @@ function CdrReport({ page }) {
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
+  const [storageInformation, setStorageInformation] = useState([]);
+  const { confirm, ModalComponent } = PromptFunctionPopup();
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -395,6 +399,44 @@ function CdrReport({ page }) {
     }
   };
 
+  // Delete Call Recording Function
+  const handleDeleteCallRecording = async (selectedCdr) => {
+    const userConfirmed = await confirm();
+    if (userConfirmed) {
+      setLoading(true);
+      try {
+        const apiCall = await generalDeleteFunction(`/cdr-record-remove/${selectedCdr}`);
+        if (apiCall.status) {
+          setLoading(false);
+          toast.success("Call Recording Deleted Successfully.");
+          refreshCallData();
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
+    }
+  }
+
+  // Fetch Storage Information
+  const getStorageInformation = async () => {
+    setLoading(true);
+    try {
+      const apiCall = await generalGetFunction(`/get-stoarge-details`);
+      if (apiCall) {
+        setStorageInformation(apiCall);
+        setLoading(false);
+      }
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getStorageInformation();
+  }, [])
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -511,10 +553,10 @@ function CdrReport({ page }) {
                     {page === "callrecording" && (
                       <div style={{ width: '200px' }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>100 GB</label>
+                          <label>Storage</label><label>{storageInformation?.total_size}</label>
                         </div>
                         <div class="progress">
-                          <Tippy content="45% Storage Used, 45 GB">
+                          <Tippy content={`45% Storage Used, ${storageInformation?.total_size}`}>
                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "45%" }} aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                           <Tippy content="55% Storage Available, 55 GB">
@@ -893,6 +935,19 @@ function CdrReport({ page }) {
                                     );
                                   }
                                 });
+
+                                // Map File Storage Sizes To CDR
+                                const matchedStorage = storageInformation?.file_details?.find(
+                                  (storage) => {
+                                    if (item["recording_path"] && item["variable_billsec"] > 0) {
+                                      if (storage.url === item["recording_path"].replace('s3.', '')) {
+                                        return storage.size;
+                                      }
+                                    }
+                                  }
+                                );
+                                const storageSize = matchedStorage?.size || "N/A";
+
                                 return (
                                   <>
                                     <tr key={index} className="cdrTableRow">
@@ -1008,29 +1063,34 @@ function CdrReport({ page }) {
                                       <td>
                                         {item["recording_path"] &&
                                           item["variable_billsec"] > 0 && (
-                                            <button
-                                              className="tableButton px-2 mx-0"
-                                              onClick={() => {
-                                                if (
-                                                  item["recording_path"] ==
-                                                  currentPlaying
-                                                ) {
-                                                  setCurrentPlaying("");
-                                                  setAudioURL("");
-                                                } else {
-                                                  handlePlaying(
-                                                    item["recording_path"]
-                                                  );
-                                                }
-                                              }}
-                                            >
-                                              {currentPlaying ===
-                                                item["recording_path"] ? (
-                                                <i className="fa-solid fa-stop"></i>
-                                              ) : (
-                                                <i className="fa-solid fa-play"></i>
-                                              )}
-                                            </button>
+                                            <>
+                                              <div className="d-flex justify-content-start align-items-center">
+                                                <button
+                                                  className="tableButton px-2 mx-0"
+                                                  onClick={() => {
+                                                    if (
+                                                      item["recording_path"] ==
+                                                      currentPlaying
+                                                    ) {
+                                                      setCurrentPlaying("");
+                                                      setAudioURL("");
+                                                    } else {
+                                                      handlePlaying(
+                                                        item["recording_path"]
+                                                      );
+                                                    }
+                                                  }}
+                                                >
+                                                  {currentPlaying ===
+                                                    item["recording_path"] ? (
+                                                    <i className="fa-solid fa-stop"></i>
+                                                  ) : (
+                                                    <i className="fa-solid fa-play"></i>
+                                                  )}
+                                                </button>
+                                                <label className="ms-2">{storageSize}</label>
+                                              </div>
+                                            </>
 
                                             // <MusicPlayer
                                             //   audioSrc={item["recording_path"]}
@@ -1127,7 +1187,7 @@ function CdrReport({ page }) {
                                       <td>
                                         {item["recording_path"] &&
                                           item["variable_billsec"] > 0 && (
-                                            <button className={`tableButton delete ms-0`}>
+                                            <button className={`tableButton delete ms-0`} onClick={() => handleDeleteCallRecording(item.id)}>
                                               <Tippy content={'Delete Recording'}
                                               >
                                                 <i className="fa-solid fa-trash"></i>
@@ -1268,6 +1328,7 @@ function CdrReport({ page }) {
           setId={setSelectedCdr}
         />
       }
+      <ModalComponent task={"delete"} reference={"cdr recording"} />
     </main>
   );
 }
