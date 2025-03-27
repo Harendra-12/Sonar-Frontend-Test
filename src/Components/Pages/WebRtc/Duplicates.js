@@ -24,9 +24,9 @@ export default function Duplicates({setShowDuplicatePopUp,duplicatePopUpData,sel
           
           if(callDirection== "inbound"){
 
-            res= await generalGetFunction(`/cdr-comments-user?source=${duplicatePopUpData["variable_sip_to_user"]}`)
+            res= await generalGetFunction(`/cdr-comments-user?source=${duplicatePopUpData["variable_sip_from_user"]}`)
           }else{
-            res= await generalGetFunction(`/cdr-comments-user?destination=${duplicatePopUpData["variable_sip_from_user"]}`)
+            res= await generalGetFunction(`/cdr-comments-user?destination=${duplicatePopUpData["variable_sip_to_user"]}`)
           }
           if(res.status){
             setLoading(false)
