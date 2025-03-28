@@ -15,7 +15,9 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
   const [duplicateData, setDuplicateData] = useState([]);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio,setShowAudio]=useState(false)
   const thisAudioRef = useRef(null);
+  const [ showDropDown,setShowDropdown]=useState(false)
  
 
   useEffect(() => {
@@ -67,7 +69,6 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
 setShowComment(true)
   }
   const handlePlaying = async (audio) => {
-    debugger
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
@@ -90,7 +91,7 @@ setShowComment(true)
       console.error("Error in handlePlaying:", error);
     }
   };
-
+ 
   return (
 
    <>
@@ -115,44 +116,84 @@ setShowComment(true)
                          <th>Call Direction</th>
                          <th>Call Origin</th>
                          <th>Call Destination</th>
-                         <th>Recordings</th>
+                         {/* <th>Recordings</th> */}
                          <th>Duration</th>
                          <th>Comments</th>
                        </tr>
                      </thead>
                      <tbody  >
                        {duplicateData.map((call, index) => (
-                         <React.Fragment key={call["recording_path"]}>
+                         <React.Fragment key={index}>
                            <tr
                            >
                              <td>{call["Call-Direction"]}</td>
                              <td>{call["variable_sip_from_user"]}</td>
                              <td>{call["variable_sip_to_user"]}</td>
-                             <td>
-                               <button
-                                 className="tableButton"
-                              //  onClick={() =>{
-                              //   setCurrentPlaying(call[
-                              //     "recording_path"
-                              //     ])
-                              //      handlePlaying(
-                              //        call[
-                              //        "recording_path"
-                              //        ]
-                              //      );
-                                 
-                              //  }}
-                               >
-                                 {currentPlaying ===
-                                   call[
-                                   "recording_path"
-                                   ] ? (
-                                   <i className="fa-solid fa-stop"></i>
-                                 ) : (
-                                   <i className="fa-solid fa-play"></i>
-                                 )}
-                               </button>
-                             </td>
+                             {/* <td>
+                                 { call["recording_path"]!==null&&   <button
+                                        className="tableButton"
+                                        onClick={() => { 
+                                            if (currentPlaying === call["recording_path"]) {
+                                              setShowDropdown(false)
+                                                setCurrentPlaying("");
+                                              // console.log(call["recording_path"])
+                                            } else {
+                                                setCurrentPlaying(call["recording_path"]);
+                                                setShowDropdown(true)
+                                            }
+                                          }
+                                           
+                                        }
+                                    >
+                                         {showDropDown && currentPlaying === call["recording_path"] ? (
+                                            <ul className="dropdown-menu actionBtnDropdowns" key={index}>
+                                              
+                                                <>
+                                                    <li className="dropdown-item">
+                                                        <div className="clearButton text-align-start"    onClick={() => {
+                                             
+                                              if (call.recording_path!==currentPlaying) {
+                                                setShowDropdown(false)
+                                                setShowAudio(true)
+                                                handlePlaying(
+                                                  call.recording_path
+                                                );
+                                              }else{
+                                                setShowAudio(false)
+                                              }
+                                            }}>
+                                                            <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
+                                                            {call?.recording_path !== null ? "Play " : "Configure"}
+                                                         
+                                                        </div>
+                                                    </li>
+                                                    <li className="dropdown-item">
+                                                        <div className="clearButton text-align-start">
+                                                            <i className="fa-solid fa-bolt me-2"></i>
+                                                            Transcript
+                                                        </div>
+                                                    </li>
+                                                </>
+
+                                                <>
+                                                    <li className="dropdown-item">
+                                                        <div className="clearButton text-align-start">
+                                                            <i className="fa-regular fa-download"></i> Download
+                                                        </div>
+                                                    </li>
+                                                </>
+                                                <li className="dropdown-item"></li>
+                                            </ul>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {currentPlaying === call["recording_path"] ? (
+                                            <i className="fa-solid fa-stop"></i>
+                                        ) : (
+                                            <i className="fa-solid fa-play"></i>
+                                        )}
+                                    </button>}
+                                </td> */}
                              <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
                              <td className="px-4 py-3">
                                <button
@@ -165,15 +206,15 @@ setShowComment(true)
                              </td>
                            </tr>
                            {/* Recording Player */}
-                          {currentPlaying ===
-                                          call["recording_path"] &&
+                          {/* {currentPlaying ===
+                                          call["recording_path"] &&showAudio&&
                                         <tr>
                                           <td colspan="18">
                                             <div class="audio-container mx-2">
                                             <AudioPlayer audioUrl={audioURL} />
                                             </div>
                                           </td>
-                                        </tr>}
+                                        </tr>} */}
                          </React.Fragment>
                        ))}
                    
@@ -206,7 +247,7 @@ setShowComment(true)
                      <th>Call Direction</th>
                      <th>Call Origin</th>
                      <th>Call Destination</th>
-                     <th>Recordings</th>
+                     {/* <th>Recordings</th> */}
                      <th>Duration</th>
                      <th>Comments</th>
                    </tr>
