@@ -853,7 +853,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                             className="clearButton text-align-start"
                                             onClick={() =>
                                               handleAudioDownload(
-                                                clickedVoiceMail.recording_path.recording_path
+                                                clickedVoiceMail.recording_path
                                               )
                                             }
                                           >
