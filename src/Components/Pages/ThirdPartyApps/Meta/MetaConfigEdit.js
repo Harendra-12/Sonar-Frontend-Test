@@ -104,7 +104,7 @@ const MetaConfigEdit = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Meta Config</h4>
+                        <h4>Meta Config Edit</h4>
                         <p>
                           You can setup and configure your Meta account to be used with our service
                         </p>

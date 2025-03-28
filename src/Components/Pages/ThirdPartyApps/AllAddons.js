@@ -77,7 +77,7 @@ const AllAddons = () => {
                                     <div className="col-12">
                                         <div className="heading">
                                             <div className="content">
-                                                <h4> All Third Party Addons</h4>
+                                                <h4>All Third Party Addons</h4>
                                                 <p>List of all existing third party apps.</p>
                                             </div>
                                             <div className="buttonGroup">
