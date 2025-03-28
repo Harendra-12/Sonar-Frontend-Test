@@ -335,25 +335,3 @@ ul {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
 }
-
-.accordion-text .rolebar{
-  font-size: 16px;
-  color: var(--form-input-text) ;
-}
-
-
-.accordion-text .collapse-border{
-  padding: 6px;
-}
-
-
-.accordion-text .collapse-card{
-  border: 1px solid;
-    border-radius: 6px;
-    border-color: #dcdcdcbf;
-}
-.accordion-text  p{
-padding: 0px;
-margin: 0px;
-}
-
