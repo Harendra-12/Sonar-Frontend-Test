@@ -151,10 +151,11 @@ import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
 import Meta from "./Components/Pages/ThirdPartyIntegration/Meta/Meta";
-import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
+// import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
 import MicrosoftTeams from "./Components/Pages/MicrosoftTeams/MicrosoftTeams";
 import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
 import AllAddons from "./Components/Pages/ThirdPartyIntegration/AllAddons/AllAddons";
+import WhatsApp from "./Components/Pages/ThirdPartyIntegration/WhatsApp/WhatsApp";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
