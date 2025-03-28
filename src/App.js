@@ -150,6 +150,18 @@ import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
 import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
+import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import MetaConfig from "./Components/Pages/ThirdPartyApps/Meta/MetaConfig";
+import MicrosoftTeamsConfig from "./Components/Pages/ThirdPartyApps/MicrosoftTeams/MicrosoftTeamsConfig";
+import WhatsAppConfig from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfig";
+import AllThirdPartyConfig from "./Components/Pages/ThirdPartyApps/AllThirdPartyConfig";
+import MetaConfigEdit from "./Components/Pages/ThirdPartyApps/Meta/MetaConfigEdit";
+import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfigEdit";
+import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
+import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
+import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
+import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import AllAddons from "./Components/Pages/ThirdPartyIntegration/AllAddons/AllAddons";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -411,6 +423,7 @@ function App() {
           <Route path="/agents-edit-dialer" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
+          <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
           {/*Addon path */}
@@ -827,6 +840,29 @@ function App() {
           <Route path="/buyer-edit" element={<BuyersEdit />} />
           <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
+
+
+          {/* ----------- Third Party Addons */}
+          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route path="/all-addons" element={<AllAddons />} />
+          <Route path="/meta-config" element={<MetaConfig />} />
+          <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
+
+          <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
+          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
+
+          <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
+
+          {/* ----------- Third Party Addons */}
+
+          {/* AI Routes */}
+          <Route path="/all-ai-agent" element={<AllAiAgent />} />
+          <Route path="/ai-agent-add" element={<AIAgentAdd />} />
+          <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
+          {/* AI Routes */}
+
+
+
 
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />

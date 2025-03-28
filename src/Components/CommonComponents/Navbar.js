@@ -410,6 +410,7 @@ function Navbar() {
                       id="collapseOne"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
+                        "/agent-dashboard",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                         "/did-listing-pbx",
@@ -484,6 +485,11 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                          <li className="tabItem ">
+                            <NavLink to="/agent-dashboard">
+                              <div className="itemTitle">Agent Dashboard</div>
+                            </NavLink>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterAgent",
                             permissions,
@@ -888,8 +894,12 @@ function Navbar() {
                           data-bs-target="#collapse13"
                           aria-expanded={
                             isChildActive([
-                              "/tracker-dashboard",
-                              "/did-listing-tracker",
+                              "/meta-config",
+                              "/meta-config-edit",
+                              "/whatsapp-config",
+                              "/whatsapp-config-edit",
+                              "/teams-config",
+                              "/all-third-party-apps"
                             ])
                               ? "true"
                               : "false"
@@ -905,8 +915,11 @@ function Navbar() {
                           id="collapse13"
                           className={`accordion-collapse collapse ${isChildActive([
                             "/meta-config",
+                            "/meta-config-edit",
                             "/whatsapp-config",
+                            "/whatsapp-config-edit",
                             "/teams-config",
+                            "/all-third-party-apps"
                           ])
                             ? "show"
                             : ""
@@ -917,8 +930,27 @@ function Navbar() {
                             <ul className="tabMenu">
                               <li className="tabItem ">
                                 <NavLink
+                                  to="/all-third-party-apps"
+                                  onClick={() => backToTop()}
+                                >
+                                  <div className="itemTitle">All Apps</div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
                                   to="/meta-config"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/meta-config",
+                                        "/meta-config-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
                                 >
                                   <div className="itemTitle">Meta</div>
                                 </NavLink>
@@ -927,7 +959,18 @@ function Navbar() {
                               <li className="tabItem ">
                                 <NavLink
                                   to="/whatsapp-config"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      [
+                                        "/whatsapp-config",
+                                        "/whatsapp-config-edit",
+                                      ].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
                                 >
                                   <div className="itemTitle">
                                     WhatsApp
@@ -935,16 +978,16 @@ function Navbar() {
                                 </NavLink>
                               </li>
 
-                              <li className="tabItem ">
+                              {/* <li className="tabItem ">
                                 <NavLink
                                   to="/teams-config"
-                                  onClick={() => featureUnderdevelopment()}
+                                  onClick={() => backToTop()}
                                 >
                                   <div className="itemTitle">
                                     Microsoft Teams
                                   </div>
                                 </NavLink>
-                              </li>
+                              </li> */}
                             </ul>
                           </div>
                         </div>
@@ -986,7 +1029,9 @@ function Navbar() {
                       data-bs-target="#collapse14"
                       aria-expanded={
                         isChildActive([
-                          "/ai-dashboard",
+                          "/all-ai-agent",
+                          "/ai-agent-add",
+                          "/ai-agent-edit"
                         ])
                           ? "true"
                           : "false"
@@ -1001,7 +1046,9 @@ function Navbar() {
                     <div
                       id="collapse14"
                       className={`accordion-collapse collapse ${isChildActive([
-                        "/ai-dashboard",
+                        "/all-ai-agent",
+                        "/ai-agent-add",
+                        "/ai-agent-edit"
                       ])
                         ? "show"
                         : ""
@@ -1035,13 +1082,22 @@ function Navbar() {
                             </Link>
                           </li>
                           <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/all-ai-agent"
+                              onClick={() => backToTop()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/all-ai-agent", "/ai-agent-add", "/ai-agent-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                             >
                               <div className="itemTitle">
                                 Agents
                               </div>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li className="tabItem ">
                             <Link

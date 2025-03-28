@@ -44,12 +44,12 @@ function AddOns() {
                                             <div className="product-container">
                                                 {/* Product 1 */}
                                                 <div className="product-cart">
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
-                                                        alt="Click to Call"
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
+                                                            alt="Click to Call"
                                                         // className="product-image"
-                                                    />
+                                                        />
                                                     </div>
                                                     <div className="product-title hover mt-4">
                                                         <p>
@@ -57,7 +57,7 @@ function AddOns() {
                                                         </p>
                                                     </div>
 
-                                                    <div className="product-description mt-2">
+                                                    <div className="product-description">
                                                         Make instant calls directly from the platform.
                                                     </div>
                                                     <div className="d-flex align-items-center justify-content-center teext-color mb-3">
@@ -74,24 +74,36 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-46" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-46" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
                                                     </div>
                                                 </div>
 
+
                                                 {/* Product 2 */}
                                                 <div className='product-cart'>
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                                                        alt="Click to Call"
+                                                    <div className="product-image">
+                                                        <img
+                                                            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                                                            alt="Click to Call"
                                                         // className="product-image" 
                                                         />
-                                                        </div>
+                                                    </div>
                                                     <div className="product-title mt-4">
                                                         <p>
                                                             WhatsApp Integration
@@ -115,13 +127,28 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-47" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-47" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
+
                                                     </div>
+
+
+
                                                 </div>
                                                 {/* Product 3 */}
                                                 <div className='product-cart'>
@@ -131,7 +158,7 @@ function AddOns() {
                                                             alt="Click to Call"
                                                         // className="product-image"
                                                         />
-                                                        </div>
+                                                    </div>
                                                     <div className="product-title  mt-4">
                                                         <p>
                                                             Messenger Integration
@@ -155,12 +182,23 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-48" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+
+                                                        <label for="cbx-48" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
                                                     </div>
                                                 </div>
                                                 {/* Product 4 */}
@@ -194,13 +232,23 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-49" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+                                                        <label for="cbx-49" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
                                                     </div>
+
                                                 </div>
                                                 {/* Product 5 */}
                                                 <div className='product-cart'>
@@ -234,12 +282,21 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-50" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+                                                        <label for="cbx-50" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
                                                     </div>
                                                 </div>
                                                 {/* Product 6 */}
@@ -275,12 +332,21 @@ function AddOns() {
                                                         </div>
                                                     </div>
 
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
+                                                    {/* Buy Now (Initially Hidden) */}
+                                                    {/* <div className="add-to-cart-container">
                                                         <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                                                             <input className="checkbox" type="checkbox" />
                                                         </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
+                                                        <h4 className='mb-0 p-1'> Buy Now </h4>
+                                                    </div> */}
+                                                    <div class="checkbox_wrapper">
+                                                        <input type="checkbox" id="cbx-51" class="inp-cbx" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" />
+                                                        <label for="cbx-51" class="cbx">
+                                                            <span className='cartSvg'>
+                                                                <i class="fa-solid fa-cart-shopping"></i>
+                                                            </span>
+                                                            <span>Buy Now</span>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -293,12 +359,12 @@ function AddOns() {
                                         aria-labelledby="offcanvasRightLabel"
                                     >
                                         <div className="offcanvas-header">
-                                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                                            <h5 className="offcanvas-title text-white fs-4" id="offcanvasRightLabel">
                                                 Click to call
                                             </h5>
                                             <button
                                                 type="button"
-                                                className="btn-close"
+                                                className="btn-close offcanvas_close"
                                                 data-bs-dismiss="offcanvas"
                                                 aria-label="Close" />
                                         </div>
@@ -314,7 +380,7 @@ function AddOns() {
                                                 <div className="offcanvas-text-side">
                                                     <div className='d-flex align-items-center justify-content-between'>
                                                         <div>
-                                                            <p className=' m-0 p-0'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
+                                                            <p className=' m-0 p-0 fs-5  fw-semibold'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
                                                             <div className="test-number m-0 p-0">
                                                                 <p className="">$50.00 <span>$29/month</span></p>
                                                             </div>
@@ -323,7 +389,7 @@ function AddOns() {
                                                             <button
                                                                 effect="ripple"
                                                                 className="panelButton" >
-                                                                <span className="text">Buy</span>
+                                                                <span className="text fs-6">Buy</span>
                                                                 <span className="icon">
                                                                     <i className="fa-solid fa-cart-shopping"></i>
                                                                 </span>
@@ -340,9 +406,9 @@ function AddOns() {
                                                         simplicity, as well as the high-quality audio you expect.
                                                     </p>
                                                 </div>
-                                                <div className="">
+                                                <div className="canvas_list">
                                                     <ul>
-                                                        <li>Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
+                                                        <li> Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
                                                         <li>
                                                             Notification LED (green, amber, red), visible from front and
                                                             behind
@@ -366,7 +432,6 @@ function AddOns() {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {/* {popUp ? (
 <div className="popup">

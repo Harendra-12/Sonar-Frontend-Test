@@ -47,6 +47,8 @@ function CdrReport({ page }) {
   const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [isRecordingFlag, setIsRecordingFlag] = useState("");
+
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
   const [callBlock, setCallBlock] = useState([]);
@@ -59,6 +61,7 @@ function CdrReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [storageInformation, setStorageInformation] = useState([]);
+  const accountStorageInfo = useSelector((state) => state.accountDetails.package.device_storage);
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
   const thisAudioRef = useRef(null);
@@ -169,7 +172,7 @@ function CdrReport({ page }) {
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
+      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}&recording=true`,
       {
         "Call-Direction": callDirection,
         application_state:
@@ -192,7 +195,7 @@ function CdrReport({ page }) {
 
     async function getData() {
       if (account && account.account_id) {
-        const apiData = await generalGetFunction("/all-cdr-reports");
+        const apiData = await generalGetFunction(finalUrl);
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
@@ -229,6 +232,7 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
+    isRecordingFlag
   ]);
 
   const getDateRange = (period) => {
@@ -553,14 +557,11 @@ function CdrReport({ page }) {
                     {page === "callrecording" && (
                       <div style={{ width: '200px' }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>{storageInformation?.total_size}</label>
+                          <label>Storage</label><label>{accountStorageInfo === "" ? "N/A" : `${accountStorageInfo} GB`}</label>
                         </div>
                         <div class="progress">
-                          <Tippy content={`45% Storage Used, ${storageInformation?.total_size}`}>
-                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "45%" }} aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                          </Tippy>
-                          <Tippy content="55% Storage Available, 55 GB">
-                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment two" style={{ width: "55%" }} aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                          <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                         </div>
                       </div>
@@ -742,23 +743,23 @@ function CdrReport({ page }) {
                       )}
                       {page === "callrecording" ? (
                         <>
-                          {/* <div className="d-flex">
-                            <div className="formRow border-0">
-                              <label className="formLabel text-start mb-0 w-100">
-                                Storage Left
-                              </label>
-                              <div className="formItem">
-                                50 GB
-                              </div>
-                            </div>
-                            <div className="formRow border-0">
-                              <label className="formLabel text-start mb-0 w-100">
-                                Total Storage
-                              </label>
-                              <div className="formItem">
-                                50 GB
-                              </div>
-                            </div>
+                          {/* <div className="formRow border-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Recording
+                            </label>
+                            <select
+                              className="formItem"
+                              onChange={(e) => {
+                                setIsRecordingFlag(e.target.value);
+                                setPageNumber(1);
+                              }}
+                              value={isRecordingFlag}
+                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
+                            >
+                              <option>All</option>
+                              <option value={"true"}>Available</option>
+                              <option value={"false"}>Unavailable</option>
+                            </select>
                           </div> */}
                         </>
                       ) : (

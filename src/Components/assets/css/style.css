@@ -335,17 +335,3 @@ ul {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
 }
-
-.tableContainer .open-live {
-  height: 20px;
-  width: 100px;
-  /* border: 1px solid black; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  color: green;
-
-
-
-}

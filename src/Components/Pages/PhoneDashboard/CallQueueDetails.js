@@ -67,7 +67,7 @@ const CallQueueDetails = () => {
     <div className="overviewTableWrapper px-0 pt-0 accordion" id="cQueueAccordion">
       <div className="overviewTableChild">
         <div className="d-flex flex-wrap">
-          <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnes" aria-expanded="true" aria-controls="collapseOnes">
             <div className="heading col-12">
               <div className="content col-6">
                 <h4>Call Queue</h4>
@@ -118,7 +118,7 @@ const CallQueueDetails = () => {
             </div>
           </div>
           <div
-            id="collapseOne"
+            id="collapseOnes"
             className="col-12 accordion-collapse collapse"
             style={{ overflow: "auto", padding: "10px 10px 0px" }}
             aria-labelledby="headingOne" data-bs-parent="#cQueueAccordion"
