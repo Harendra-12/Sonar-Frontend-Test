@@ -160,8 +160,7 @@ import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/Whats
 import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
 import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
-import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
-import AllAddons from "./Components/Pages/ThirdPartyIntegration/AllAddons/AllAddons";
+import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
