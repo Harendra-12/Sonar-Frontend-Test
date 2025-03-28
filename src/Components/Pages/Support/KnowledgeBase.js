@@ -10,7 +10,7 @@ function KnowledgeBase() {
                         <Header title="Knowledge Base" />
                     </div>
                 </div>
-                <div className='container'>
+                <div className='container-fluid px-0'>
                     <div className='row'>
                         <div className="overviewTableWrapper0">
                             <div className="overviewTableChild0">
