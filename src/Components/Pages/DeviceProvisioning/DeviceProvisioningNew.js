@@ -14,48 +14,6 @@ import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import { requiredValidator } from "../../validations/validation";
 import CircularLoader from "../../Loader/CircularLoader";
 
-const dummySoftphoneData = [
-  {
-    id: 1,
-    name: "EyeBeam",
-    slug: "EyeBeam",
-    models: [
-      {
-        id: 1,
-        name: "Premium",
-        brand_id: 1,
-      },
-      {
-        id: 2,
-        name: "Double",
-        brand_id: 1,
-      },
-      {
-        id: 3,
-        name: "Signal",
-        brand_id: 1,
-      },
-      {
-        id: 4,
-        name: "None",
-        brand_id: 1,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Zoom",
-    slug: "Zoom",
-    models: [
-      {
-        id: 5,
-        name: "Premium",
-        brand_id: 2,
-      },
-    ],
-  },
-];
-
 function DeviceProvisioningNew() {
   const [isDeviceChosen, setIsDeviceChosen] = useState(false);
   const navigate = useNavigate();
@@ -66,6 +24,7 @@ function DeviceProvisioningNew() {
   const [brandId, setBrandId] = useState("");
   const [allDevices, setAllDevices] = useState([]);
   const extensionId = location.state.id;
+  const [authorisationName, setAuthorisationName] = useState("");
 
   const [loading, setLoading] = useState(true);
   const {
@@ -92,13 +51,34 @@ function DeviceProvisioningNew() {
     }
   });
 
+  const handleSoftphoneSubmit = async () => {
+    if (authorisationName === "") {
+      toast.error("Please enter authorisation name");
+      return;
+    }
+
+    const payload = {
+      authorisation_name: authorisationName,
+      address: extensionId,
+      type: "softphone",
+    };
+    const apiData = await generalPostFunction("/provision/store", payload);
+    if (apiData.status) {
+      setLoading(false);
+      toast.success(apiData.message);
+      reset();
+      navigate(-1);
+    } else {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     setValue("address", extensionId);
     async function getData() {
       const apiData = await generalGetFunction("/available-devices");
       if (apiData.status) {
         setAllDevices(apiData.data);
-        console.log("apiData.data", apiData.data);
         setLoading(false);
       } else {
         toast.error(apiData.error);
@@ -113,7 +93,8 @@ function DeviceProvisioningNew() {
       toast.error("Please select a model");
     } else {
       setBrandId(id);
-      setIsDeviceChosen(true);
+      // setIsDeviceChosen(true);
+      setIsDeviceChosen("hard");
     }
   }
   return (
@@ -208,6 +189,7 @@ function DeviceProvisioningNew() {
                               aria-selected="false"
                               onClick={() => {
                                 setDeviceType("softPhone");
+                                // setIsDeviceChosen("soft");
                                 setModelId("");
                               }}
                             >
@@ -338,63 +320,31 @@ function DeviceProvisioningNew() {
                             tabindex="1"
                           >
                             <div className="row col-12 mx-auto mb-0">
-                              {dummySoftphoneData.map((device, index) => {
-                                return (
-                                  <div
-                                    className="formRow col-xl-6 deviceProvision"
-                                    key={index}
-                                  >
-                                    <div className="col-4">
-                                      <img
-                                        src={require("../../assets/images/eyebeam.png")}
-                                        alt=""
-                                      ></img>
-                                    </div>
-                                    <div className="formLabel ">
-                                      <label htmlFor="">
-                                        <h5>{device.slug}</h5>
-                                      </label>
-                                      <br />
-                                      <label>
-                                        <p>Brand:</p>
-                                      </label>
-                                      <div className="row align-items-center mt-2">
-                                        <div className="col pe-0">
-                                          <select
-                                            className="formItem"
-                                            defaultValue={""}
-                                            onChange={(e) => {
-                                              setModelId(e.target.value);
-                                              setBrandId(device.id);
-                                            }}
-                                          >
-                                            <option value="" disabled>
-                                              Device
-                                            </option>
-                                            {device.models.map(
-                                              (model, index) => {
-                                                return (
-                                                  <option
-                                                    key={index}
-                                                    value={model.id}
-                                                  >
-                                                    {model.name}
-                                                  </option>
-                                                );
-                                              }
-                                            )}
-                                          </select>
-                                        </div>
-                                        <div className="col-auto">
-                                          <button className="tableButton">
-                                            <i className="fa-solid fa-plus"></i>
-                                          </button>
-                                        </div>
-                                      </div>
+                              <div className="formRow col-xl-6 deviceProvision">
+                                <div className="col-4">
+                                  <img
+                                    src={require("../../assets/images/eyebeam.png")}
+                                    alt="soft phone"
+                                  ></img>
+                                </div>
+                                <div className="formLabel d-flex flex-column align-items-center">
+                                  <label htmlFor="">
+                                    <h5>Soft Phone</h5>
+                                  </label>
+                                  <div className="row align-items-center mt-2">
+                                    <div className="col-auto">
+                                      <button
+                                        className="tableButton"
+                                        onClick={() =>
+                                          setIsDeviceChosen("soft")
+                                        }
+                                      >
+                                        <i className="fa-solid fa-plus"></i>
+                                      </button>
                                     </div>
                                   </div>
-                                );
-                              })}
+                                </div>
+                              </div>
                               {/* <div className="formRow col-xl-6 deviceProvision">
                                 <div className="col-4">
                                   <img
@@ -471,7 +421,8 @@ function DeviceProvisioningNew() {
                       </div>
                     </div>
 
-                    {isDeviceChosen ? (
+                    {isDeviceChosen === "hard" &&
+                    deviceType === "desktopPhone" ? (
                       <div className="col-xl-6">
                         <form>
                           {/* <div className="formRow">
@@ -548,12 +499,13 @@ function DeviceProvisioningNew() {
                                 name="address"
                                 className="formItem"
                                 value={
-                                  allDevices.filter(
+                                  allDevices.find(
                                     (device) => device.id === brandId
-                                  )[0].slug
+                                  )?.slug || ""
                                 }
                                 disabled
                               />
+
                               {/* {errors.address && (
                                                             <ErrorMessage text={errors.address.message} />
                                                         )} */}
@@ -614,83 +566,17 @@ function DeviceProvisioningNew() {
                           </div>
                         </form>
                       </div>
-                    ) : isDeviceChosen === "soft" ? (
+                    ) : isDeviceChosen === "soft" &&
+                      deviceType === "softPhone" ? (
                       <div className="col-xl-6">
                         <form>
                           <div className="formRow">
                             <div className="formLabel">
-                              <label className="text-dark">User</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Please enter user
+                              <label className="text-dark">
+                                Authorisation Name
                               </label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                disabled
-                                type="text"
-                                name="address"
-                                className="formItem"
-                              />
-                              {/* {errors.address && (
-                                                            <ErrorMessage text={errors.address.message} />
-                                                        )} */}
-                            </div>
-                          </div>
-
-                          <div className="formRow">
-                            <div className="formLabel">
-                              <label className="text-dark">Extension</label>
                               <label htmlFor="data" className="formItemDesc">
-                                Select an Extension
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <select
-                                className="formItem"
-                                name="transport "
-                                id="selectFormRow"
-                              >
-                                <option disabled value="">
-                                  Chose an Extension
-                                </option>
-                                <option selected value="1000">
-                                  1000
-                                </option>
-                                <option value="1001">1001</option>
-                                <option value="1002">1002</option>
-                                <option value="1003">1003</option>
-                              </select>
-                              {/* {errors.transport && (
-                                                            <ErrorMessage text={errors.transport.message} />
-                                                        )} */}
-                            </div>
-                          </div>
-
-                          <div className="formRow">
-                            <div className="formLabel">
-                              <label className="text-dark">Password</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter password
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="address"
-                                className="formItem"
-                                minLength="3"
-                                maxLength="4"
-                                placeholder="5070"
-                              />
-                              {/* {errors.port && <ErrorMessage text={errors.port.message} />} */}
-                            </div>
-                          </div>
-
-                          <div className="formRow">
-                            <div className="formLabel">
-                              <label className="text-dark">Domain</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter your domain ip
+                                Enter your authorisation name
                               </label>
                             </div>
                             <div className="col-6">
@@ -699,50 +585,24 @@ function DeviceProvisioningNew() {
                                 name=""
                                 className="formItem"
                                 placeholder="124abc"
+                                value={authorisationName}
+                                onChange={(e) =>
+                                  setAuthorisationName(e.target.value)
+                                }
                               />
-                              {/* {errors.serial_number && (
-                                                                <ErrorMessage text={errors.serial_number.message} />
-                                                            )} */}
-                            </div>
-                          </div>
-
-                          <div className="formRow">
-                            <div className="formLabel">
-                              <label className="text-dark">SIP Server</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter your sip server
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="serial_numbers"
-                                className="formItem"
-                                placeholder="124abc"
-                              />
-                              {/* {errors.serial_number && (
-                                                                <ErrorMessage text={errors.serial_number.message} />
-                                                            )} */}
                             </div>
                           </div>
                           <div className="formRow">
-                            <div className="formLabel">
-                              <label className="text-dark">SIP Proxy</label>
-                              <label htmlFor="data" className="formItemDesc">
-                                Enter your sip proxy
-                              </label>
-                            </div>
-                            <div className="col-6">
-                              <input
-                                type="text"
-                                name="serial_numbers"
-                                className="formItem"
-                                placeholder="124abc"
-                              />
-                              {/* {errors.serial_number && (
-                                                                <ErrorMessage text={errors.serial_number.message} />
-                                                            )} */}
-                            </div>
+                            <button
+                              className="panelButton ms-auto"
+                              type="button"
+                              onClick={handleSoftphoneSubmit}
+                            >
+                              <span className="text">Save</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-floppy-disk"></i>
+                              </span>
+                            </button>
                           </div>
                         </form>
                       </div>

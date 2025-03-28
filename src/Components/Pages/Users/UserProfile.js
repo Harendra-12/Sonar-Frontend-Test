@@ -172,6 +172,8 @@ function UserProfile() {
                                   style={{
                                     position: "relative",
                                     cursor: "pointer",
+                                    width: "100%",
+                                    height: "100%",
                                   }}
                                   onClick={(e) => {
                                     e.preventDefault();
