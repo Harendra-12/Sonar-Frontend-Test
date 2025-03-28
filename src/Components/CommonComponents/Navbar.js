@@ -1743,8 +1743,26 @@ function Navbar() {
                                 </NavLink>
                               </li>
                               <li className="tabItem ">
-                                <Link
-                                  // to="/extensions"
+
+
+                              <NavLink
+                                  to="/ticket"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/ticket"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">
+                                  Submit a Ticket
+                                  </div>
+                                </NavLink>
+                                {/* <Link
+                                  
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||
@@ -1761,13 +1779,34 @@ function Navbar() {
                                   <div className="itemTitle">
                                     Submit a Ticket
                                   </div>
-                                </Link>
+                                </Link> */}
                               </li>
-                              {account?.permissions?.includes(248) ||
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/live-chat"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/live-chat"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">
+                                  Live chat support
+                                  </div>
+                                </NavLink>
+                              </li>
+
+
+
+                              {/* {account?.permissions?.includes(248) ||
                                 account?.permissions?.includes(250) ? (
                                 <li className="tabItem ">
                                   <NavLink
-                                    to="/live-chat"
+                                    to="/live-chat" 
                                     onClick={backToTop}
                                     type="button"
                                   >
@@ -1776,7 +1815,7 @@ function Navbar() {
                                     </div>
                                   </NavLink>
                                 </li>
-                              ) : null}
+                              ) : null} */}
                             </ul>
                           </div>
                         </div>

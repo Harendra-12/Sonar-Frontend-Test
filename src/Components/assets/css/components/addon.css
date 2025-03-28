@@ -411,13 +411,14 @@
     margin: 0 auto;
     margin-top: -65px;
     margin-bottom: 44px;
-    background-color: #fff;
+    background-color: var(--bg-color);
     max-width: 610px;
     width: 574px;
     height: auto;
     border: solid 1px #a6a8b3;
     border-radius: 8px;
     padding: 24px;
+   
 }
 
 .content-artical h3:hover {

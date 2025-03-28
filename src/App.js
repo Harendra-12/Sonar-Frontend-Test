@@ -154,6 +154,7 @@ import Meta from "./Components/Pages/Meta/Meta";
 import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
 import MicrosoftTeams from "./Components/Pages/MicrosoftTeams/MicrosoftTeams";
 import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import LiveChat from "./Components/Pages/Support/LiveChat";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -810,7 +811,7 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          {/* <Route path="/ticket" element={<Ticket />} /> */}
+          <Route path="/live-chat" element={<LiveChat />} />
           <Route path="/ticket" element={<Ticket />} />
           <Route path="/view-massage" element={<ViewMessages />} />
 
