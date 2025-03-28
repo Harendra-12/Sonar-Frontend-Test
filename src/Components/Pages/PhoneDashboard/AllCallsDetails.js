@@ -16,7 +16,7 @@ function AllCallsDetails() {
     <>
       {callDetails ? (
         <div className="accordion dashboard" id="accordionPanelsStayOpenExample">
-          <div className="row gy-3 gx-xxl-4 gx-lg-3">
+          <div className="row gy-3 gx-xxl-3 gx-lg-2">
             <div className="col-lg-3 ">
               <div className="accordion-item itemWrapper a h-auto">
                 <h2 className="accordion-header ">
@@ -40,9 +40,7 @@ function AllCallsDetails() {
 
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.totalCalls !== undefined ? callDetails?.totalCalls :
-                            <i className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"} ></i>}
-                        </p>
+                          {callDetails?.totalCalls || 'N/A'}</p>
                       </div>
                     </div>
                   </button>
@@ -158,9 +156,7 @@ function AllCallsDetails() {
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
-                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                          ></i>}
+                          {callDetails?.inbound?.total || 'N/A'}
                         </p>
                       </div>
 
@@ -274,7 +270,7 @@ function AllCallsDetails() {
                           className="fa-duotone fa-phone-arrow-up-right"
                           style={{ color: "var(--color3)" }}
                         />{" "}
-                        Outbound Calls{" "}
+                        Outbound Calls
                         {extensionDataLoading && (
                           <i
                             className={"ms-2 fa-regular fa-arrows-rotate fs-5 fa-spin"}
@@ -283,9 +279,7 @@ function AllCallsDetails() {
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.outbound?.total !== undefined ? callDetails?.outbound?.total : <i
-                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                          ></i>}
+                          {callDetails?.outbound?.total || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -406,9 +400,7 @@ function AllCallsDetails() {
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.internal?.total !== undefined ? callDetails?.internal?.total : <i
-                            className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto h-auto"}
-                          ></i>}
+                          {callDetails?.internal?.total || 'N/A'}
                         </p>
                       </div>
                     </div>

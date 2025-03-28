@@ -21,6 +21,7 @@ const AIAgentAdd = () => {
     if (apiData?.status) {
       setLoading(false);
       reset();
+      navigate('/all-ai-agent');
       toast.success(apiData.message);
     } else {
       setLoading(false);
