@@ -172,7 +172,7 @@ function CdrReport({ page }) {
       return queryParams ? `${baseApiUrl}&${queryParams}` : baseApiUrl;
     };
     const finalUrl = buildUrl(
-      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}`,
+      `/all-cdr-reports?account=${account.account_id}&page=${pageNumber}&row_per_page=${itemsPerPage}&recording=true`,
       {
         "Call-Direction": callDirection,
         application_state:
@@ -195,7 +195,7 @@ function CdrReport({ page }) {
 
     async function getData() {
       if (account && account.account_id) {
-        const apiData = await generalGetFunction(`/all-cdr-reports?recording=${isRecordingFlag}`);
+        const apiData = await generalGetFunction(finalUrl);
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
@@ -743,7 +743,7 @@ function CdrReport({ page }) {
                       )}
                       {page === "callrecording" ? (
                         <>
-                          <div className="formRow border-0">
+                          {/* <div className="formRow border-0">
                             <label className="formLabel text-start mb-0 w-100">
                               Recording
                             </label>
@@ -760,7 +760,7 @@ function CdrReport({ page }) {
                               <option value={"true"}>Available</option>
                               <option value={"false"}>Unavailable</option>
                             </select>
-                          </div>
+                          </div> */}
                         </>
                       ) : (
                         <>
