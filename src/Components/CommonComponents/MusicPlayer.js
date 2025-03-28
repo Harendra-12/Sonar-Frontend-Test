@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import AudioPlayer from "../Pages/WebRtc/AudioWaveForm";
 
 const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop, controls }) => {
   const audioRef = useRef(null);
@@ -41,7 +42,8 @@ const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop, controls }) => {
 
   return (
     <div>
-      <audio ref={audioRef} src={audioSrc} controls={controls}></audio>
+      {/* <audio ref={audioRef} src={audioSrc} controls={controls}></audio> */}
+          <AudioPlayer audioUrl={audioSrc} />
       <button onClick={togglePlayPause} className="tableButton px-2 mx-0">
         {isPlaying ? (
           <i className="fa-duotone fa-pause"></i>

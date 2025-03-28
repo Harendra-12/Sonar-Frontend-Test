@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import CustomDashboardManage from '../Setting/CustomDashboardManage';
 import { useLocation } from 'react-router-dom';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -30,6 +31,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
         acc[call.did_tag] = (acc[call.did_tag] || 0) + 1;
         return acc;
     }, {});
+    const [usageLoading, setUsageLoading] = useState(false);
     const locationState = useLocation();
 
     // Location State when redirecting from Phone Dashboard
@@ -52,11 +54,16 @@ function ActiveCallsPage({ isParentWebRtc }) {
     // Getting all custome module for filter on initial phase 
     useEffect(() => {
         async function getCustomModule() {
+            setUsageLoading(true);
             const apiData = await generalGetFunction("/usage/all")
-            const filterData = await generalGetFunction("/call-details")
             if (apiData.status) {
-                setCustomModule(apiData.data)
+                setCustomModule(apiData.data);
+                setUsageLoading(false); // Stop loader if status is true
+            } else {
+                setUsageLoading(false); // Stop loader if status is false
             }
+            const filterData = await generalGetFunction("/call-details")
+
             if (filterData.status) {
                 setCdrData(filterData.cdr_filters.filter_count)
             }
@@ -200,90 +207,98 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
-                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") &&
-                                        customModule?.map((item, index) => {
-                                            return (
-                                                <div className='col-xxl-2 col-xl-3' key={index}>
-                                                    <div className={`deviceProvision position-relative`} >
-                                                        <button
-                                                            disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
-                                                            className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
-                                                            <i className="fa-solid fa-pen" />
-                                                        </button>
-                                                        <div className="itemWrapper a">
-                                                            <div className="heading h-auto d-block">
-                                                                <div className='d-flex align-items-center0 justify-content-between '>
-                                                                    <div>
-                                                                        <h5>{item?.name}</h5>
-                                                                        <p>Type: {item?.model_type}</p>
-                                                                    </div>
-                                                                    <div className='text-end'>
-                                                                        <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
-                                                                        <p>{item?.model?.tag && `Tag: ${item?.model?.tag}`}</p>
+                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") && !usageLoading ?
+                                            customModule?.map((item, index) => {
+                                                return (
+                                                    <div className='col-xxl-2 col-xl-3' key={index}>
+                                                        <div className={`deviceProvision position-relative`} >
+                                                            <button
+                                                                disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}
+                                                                className='clearButton2 editBtn' onClick={() => { setSelectedModule(item); setCustomPopup(true); setAddNewMod(false); }}>
+                                                                <i className="fa-solid fa-pen" />
+                                                            </button>
+                                                            <div className="itemWrapper a">
+                                                                <div className="heading h-auto d-block">
+                                                                    <div className='d-flex align-items-center0 justify-content-between '>
+                                                                        <div>
+                                                                            <h5>{item?.name}</h5>
+                                                                            <p>Type: {item?.model_type}</p>
+                                                                        </div>
+                                                                        <div className='text-end'>
+                                                                            <h5>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</h5>
+                                                                            <p>{item?.model?.tag && `Tag: ${item?.model?.tag}`}</p>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div className="data-number3 h-auto mt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
-                                                                <div className="d-flex justify-content-center pt-2">
-                                                                    {
-                                                                        item.active ?
-                                                                            <div className="col-3">
-                                                                                <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
-                                                                                    {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    {/* <i
+                                                                <div className="data-number3 h-auto mt-2" style={{ borderTop: "1px solid var(--border-color)" }}>
+                                                                    <div className="d-flex justify-content-center pt-2">
+                                                                        {
+                                                                            item.active ?
+                                                                                <div className="col-3">
+                                                                                    <h4 style={{ color: "rgb(221, 46, 47)", fontWeight: 700 }}>
+                                                                                        {filterActiveState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                                        {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
                                                                                     /> */}
-                                                                                </h4>
-                                                                                <p>Active</p>
-                                                                            </div> : ""
-                                                                    }
-                                                                    {
-                                                                        item?.ringing ?
-                                                                            <div className="col-3">
+                                                                                    </h4>
+                                                                                    <p>Active</p>
+                                                                                </div> : ""
+                                                                        }
+                                                                        {
+                                                                            item?.ringing ?
+                                                                                <div className="col-3">
 
-                                                                                <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
-                                                                                    {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                    {/* <i
+                                                                                    <h4 style={{ color: "rgb(1, 199, 142)", fontWeight: 700 }}>
+                                                                                        {filterRingingState(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                        {/* <i
                                                                                         className="fa-solid fa-bell-ring ms-1"
                                                                                         style={{ color: "rgb(1, 199, 142)", fontSize: 17 }}
                                                                                     /> */}
-                                                                                </h4>
-                                                                                <p className='p-0 m-0'>Ringing</p>
-                                                                            </div> : " "
-                                                                    }
-                                                                    {
-                                                                        item?.total ?
-                                                                            <div className="col-3">
+                                                                                    </h4>
+                                                                                    <p className='p-0 m-0'>Ringing</p>
+                                                                                </div> : " "
+                                                                        }
+                                                                        {
+                                                                            item?.total ?
+                                                                                <div className="col-3">
 
-                                                                                <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
-                                                                                    {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
-                                                                                    {/* <i
+                                                                                    <h4 style={{ color: "rgb(247, 167, 51)", fontWeight: 700 }}>
+                                                                                        {filterTotalCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model?.did)}{" "}
+                                                                                        {/* <i
                                                                                         className="fa-solid fa-phone-volume ms-1"
                                                                                         style={{ color: "var(--funky-boy4)", fontSize: 17 }}
                                                                                     /> */}
-                                                                                </h4>
-                                                                                <p>Total</p>
-                                                                            </div> : ""
-                                                                    }
-                                                                    {
-                                                                        item?.missed ?
-                                                                            <div className="col-3">
+                                                                                    </h4>
+                                                                                    <p>Total</p>
+                                                                                </div> : ""
+                                                                        }
+                                                                        {
+                                                                            item?.missed ?
+                                                                                <div className="col-3">
 
-                                                                                <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
-                                                                                    {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
-                                                                                </h4>
-                                                                                <p>Missed</p>
-                                                                            </div> : ""
-                                                                    }
+                                                                                    <h4 style={{ color: "rgb(51, 136, 247)", fontWeight: 700, }}>
+                                                                                        {filterMissedCalls(item?.model_type, item?.model_type === "CallCenterQueue" ? item?.model?.extension : item?.model_type === "Ringgroup" ? item?.model?.extension : item?.model.did)}{" "}
+                                                                                    </h4>
+                                                                                    <p>Missed</p>
+                                                                                </div> : ""
+                                                                        }
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                )
+                                            }) : (
+                                                <div className='col-xxl-2 col-xl-3'>
+                                                    <div className="deviceProvision position-relative h-100">
+                                                        <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                                                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             )
-                                        })
                                     }
                                     {
                                         checkViewSidebar("Usage", slugPermissions, account?.permissions, "add") &&

@@ -86,7 +86,7 @@ const Extensions = () => {
       async function getData() {
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
           );
           if (apiData?.status) {
             setExtension(apiData.data);
@@ -113,7 +113,7 @@ const Extensions = () => {
         setLoading(true);
         if (account && account.account_id) {
           const apiData = await generalGetFunction(
-            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter==="online"?"&online":""}`
+            `/extension/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchValue}${onlineFilter === "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
           );
           if (apiData?.status) {
             setLoading(false);
@@ -286,6 +286,8 @@ const Extensions = () => {
                                                   <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
                                                     <option value="all" disabled>Status</option>
                                                     <option value="online">Online</option>
+                                                    <option value="offline">Offline</option>
+                                                    <option value="all">All</option>
                                                   </select>
                                                 </span>
                                               </th>

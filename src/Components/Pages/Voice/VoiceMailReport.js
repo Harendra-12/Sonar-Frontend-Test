@@ -9,6 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import AudioPlayer from "../WebRtc/AudioWaveForm";
 
 
 function VoiceMailReport() {
@@ -204,7 +205,7 @@ function VoiceMailReport() {
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
-                                        <audio
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -216,7 +217,8 @@ function VoiceMailReport() {
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
+                                            <AudioPlayer audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
