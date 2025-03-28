@@ -14,7 +14,7 @@ import { HexColorPicker } from "react-colorful";
 function ClickToCallEdit() {
     const navigate = useNavigate();
     const [selectedImage, setSelectedImage] = useState(null);
-    const [widgetExpanded, setWidgetExpanded] = useState(false)
+    const [widgetExpanded, setWidgetExpanded] = useState(true)
     const [callFormVisible, setCallFormVisible] = useState(false)
     const [name, setName] = useState("")
     const [number, setNumber] = useState("")
