@@ -206,7 +206,7 @@ setShowComment(true)
                              </td>
                            </tr>
                            {/* Recording Player */}
-                          {currentPlaying ===
+                          {/* {currentPlaying ===
                                           call["recording_path"] &&showAudio&&
                                         <tr>
                                           <td colspan="18">
@@ -214,7 +214,7 @@ setShowComment(true)
                                             <AudioPlayer audioUrl={audioURL} />
                                             </div>
                                           </td>
-                                        </tr>}
+                                        </tr>} */}
                          </React.Fragment>
                        ))}
                    
@@ -247,7 +247,7 @@ setShowComment(true)
                      <th>Call Direction</th>
                      <th>Call Origin</th>
                      <th>Call Destination</th>
-                     <th>Recordings</th>
+                     {/* <th>Recordings</th> */}
                      <th>Duration</th>
                      <th>Comments</th>
                    </tr>
