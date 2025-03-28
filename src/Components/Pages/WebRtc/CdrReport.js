@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Comments from "./Comments";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function CdrReport({ page }) {
@@ -1218,7 +1218,7 @@ function CdrReport({ page }) {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                                  <AudioPlayer audioUrl={audioURL} />
+                                              <AudioWaveformCommon audioUrl={audioURL} />
                                               {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>

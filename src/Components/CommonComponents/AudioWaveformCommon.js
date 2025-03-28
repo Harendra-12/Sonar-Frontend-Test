@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
-const AudioWaveform = ({ audioUrl }) => {
+const AudioWaveformCommon = ({ audioUrl }) => {
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -38,7 +38,7 @@ const AudioWaveform = ({ audioUrl }) => {
 
                 const audioBlob = await response.blob();
                 const blobUrl = URL.createObjectURL(audioBlob);
-                
+
                 // Load the Blob URL into WaveSurfer
                 wavesurfer.current.load(blobUrl);
 
@@ -72,9 +72,8 @@ const AudioWaveform = ({ audioUrl }) => {
             {error && <div className="text-red-500 mb-2">{error}</div>}
             <div ref={waveformRef} className="w-full"></div>
             <button
-                className={`mt-2 px-4 py-2 text-white rounded ${
-                    error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
-                }`}
+                className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
+                    }`}
                 onClick={togglePlay}
                 disabled={error || !wavesurfer.current?.isReady}
             >
@@ -84,4 +83,4 @@ const AudioWaveform = ({ audioUrl }) => {
     );
 };
 
-export default AudioWaveform;
+export default AudioWaveformCommon;

@@ -23,8 +23,8 @@ import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import Comments from "./Comments";
 import Duplicates from "./Duplicates";
-import AudioPlayer from "./AudioWaveForm";
 import ExportPopUp from "./ExportPopUp";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -67,8 +67,8 @@ function CdrFilterReport({ page }) {
   const [exportPopup, setExportPopup] = useState(false);
   const [calendarStartDate, setCalendarStartDate] = useState(new Date());
   const [filteredKeys, setFilteredKeys] = useState([]);
-  const [showDuplicatePopUp,setShowDuplicatePopUp]=useState(false)
-  const [duplicatePopUpData,setDuplicatePopUpData]=useState({})
+  const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false)
+  const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
   const [error, setError] = useState('');
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -421,7 +421,7 @@ function CdrFilterReport({ page }) {
     return `${hours}:${minutes}:${secs}`;
   }
 
-  const duplicateColumn=async(item)=>{
+  const duplicateColumn = async (item) => {
     setShowDuplicatePopUp(true)
     setDuplicatePopUpData(item);
 
@@ -459,7 +459,7 @@ function CdrFilterReport({ page }) {
     URL.revokeObjectURL(url);
   }
 
- 
+
   // function to handle export
   const handleExport = async () => {
     setLoading(true);
@@ -1267,10 +1267,10 @@ function CdrFilterReport({ page }) {
                                             </button>
                                           </td>
                                           <td>
-                                         {item?.duplicated==1&& <button
+                                            {item?.duplicated == 1 && <button
                                               className={`tableButton ms-0`}
                                               onClick={
-                                               ()=>duplicateColumn(item)
+                                                () => duplicateColumn(item)
                                               }
                                             >
                                               <Tippy content={"View Note"}>
@@ -1279,7 +1279,7 @@ function CdrFilterReport({ page }) {
                                             </button>}
                                           </td>
                                         </tr>
-                                
+
 
                                         {/* Audio Player Row */}
                                         {currentPlaying ===
@@ -1302,7 +1302,7 @@ function CdrFilterReport({ page }) {
                                                       type="audio/mpeg"
                                                     />
                                                   </audio> */}
-                                                    <AudioPlayer audioUrl={audioURL} />
+                                                  <AudioWaveformCommon audioUrl={audioURL} />
 
                                                   {/* <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
@@ -1399,14 +1399,14 @@ function CdrFilterReport({ page }) {
         ) : (
           ""
         )}
-        {exportPopup && (<ExportPopUp filteredKeys={filteredKeys} page={page}  setExportPopup={ setExportPopup} setLoading={setLoading}   exportToCSV={  exportToCSV} itemsPerPage={itemsPerPage} account={account} setCircularLoader={setCircularLoader}/>
+        {exportPopup && (<ExportPopUp filteredKeys={filteredKeys} page={page} setExportPopup={setExportPopup} setLoading={setLoading} exportToCSV={exportToCSV} itemsPerPage={itemsPerPage} account={account} setCircularLoader={setCircularLoader} />
         )}
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
         <Comments id={selectedCdr} setId={setSelectedCdr} />
       )}
-       {showDuplicatePopUp&&<Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr}  />}
+      {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
   );
 }
