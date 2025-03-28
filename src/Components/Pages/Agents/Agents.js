@@ -191,6 +191,19 @@ function Agents({ type }) {
                                         </button>
                                       </td>}
                                     {/* <td>
+                            account?.permissions,"edit")&& <td>
+                            <button
+                              className="tableButton edit"
+                              onClick={() => {
+                                navigate(`/agents-edit?id=${item?.extension?.id}`, {
+                                  state: item,
+                                });
+                              }}
+                            >
+                              <i className="fa-solid fa-pencil"></i>
+                            </button>
+                          </td>}
+                                  {/* <td>
                                   <div className="my-auto position-relative mx-1">
                                     <label className="switch">
                                       <input

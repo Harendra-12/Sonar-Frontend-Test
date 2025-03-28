@@ -671,8 +671,8 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        {/* <AudioPlayer audioUrl={audioURL} /> */}
-                                        <audio
+                                        <AudioPlayer audioUrl={audioURL} />
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -684,7 +684,7 @@ function CallDetails({
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
 
                                         {/* <button
                                           className="audioCustomButton"
