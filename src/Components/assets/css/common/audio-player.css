@@ -55,3 +55,7 @@ audio {
   display: flex;
   align-items: center;
 }
+
+.audio-container canvas {
+  width: 100%;
+}
