@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import { toast } from 'react-toastify';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 function AllThirdPartyConfig() {
     const navigate = useNavigate();
@@ -155,7 +156,12 @@ function AllThirdPartyConfig() {
                                                                     }) :
                                                                     (
                                                                         <tr>
-                                                                            <td colSpan={5} className='text-center'>No Data Found</td>
+                                                                            <td colSpan={99} className='text-center'>
+                                                                                <EmptyPrompt
+                                                                                    name="third party apps"
+                                                                                    link="/add-ons"
+                                                                                />
+                                                                            </td>
                                                                         </tr>
                                                                     )
                                                                 }

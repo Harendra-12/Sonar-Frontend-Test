@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { backToTop, generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import { toast } from 'react-toastify';
+import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 function AllAiAgent() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ function AllAiAgent() {
     const fetchAllConfig = async () => {
         setLoading(true);
         try {
-            const apiCall = await generalGetFunction('/social-platforms/all');
+            const apiCall = await generalGetFunction('/ainumber/all');
             if (apiCall.status) {
                 setAllConfigData(apiCall.data);
                 setLoading(false);
@@ -35,7 +36,7 @@ function AllAiAgent() {
         if (userConfirmed) {
             setLoading(true);
             try {
-                const apiCall = await generalDeleteFunction(`/social-platforms/${id}`);
+                const apiCall = await generalDeleteFunction(`/ainumber/${id}`);
                 if (apiCall.status) {
                     setLoading(false);
                     toast.success("Config Deleted Successfully.");
@@ -84,24 +85,19 @@ function AllAiAgent() {
                                                             <i className="fa-solid fa-caret-left"></i>
                                                         </span>
                                                     </button>
-                                                    <div className="dropdown">
-                                                        <button
-                                                            type="button"
-                                                            className="panelButton"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="true"
-                                                            onClick={() => {
-                                                                navigate('/ai-agent-add');
-                                                                backToTop();
-                                                            }}
-                                                        >
-                                                            <span className="text">Add</span>
-                                                            <span className="icon">
-                                                                <i className="fa-solid fa-plus"></i>
-                                                            </span>
-                                                        </button>
-                                                    </div>
-
+                                                    <button
+                                                        type="button"
+                                                        className="panelButton"
+                                                        onClick={() => {
+                                                            navigate('/ai-agent-add');
+                                                            backToTop();
+                                                        }}
+                                                    >
+                                                        <span className="text">Add</span>
+                                                        <span className="icon">
+                                                            <i className="fa-solid fa-plus"></i>
+                                                        </span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,9 +109,8 @@ function AllAiAgent() {
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th>Platform</th>
-                                                            <th>App ID</th>
-                                                            <th>Add. Info</th>
+                                                            <th>Name</th>
+                                                            <th>Number</th>
                                                             <th>Edit</th>
                                                             <th>Delete</th>
                                                         </tr>
@@ -127,9 +122,8 @@ function AllAiAgent() {
                                                                     allConfigData?.map((item, index) => {
                                                                         return (
                                                                             <tr key={item.id}>
-                                                                                <td style={{ textTransform: 'capitalize' }}>{item.platform}</td>
-                                                                                <td>{item.app_id}</td>
-                                                                                <td>{item.additional_config || "N/A"}</td>
+                                                                                <td>{item.name}</td>
+                                                                                <td>{item.ainumber}</td>
                                                                                 <td>
                                                                                     <button className='tableButton edit' onClick={() => handleConfigEdit(item.id)}>
                                                                                         <i className='fa-solid fa-pen' />
@@ -145,7 +139,12 @@ function AllAiAgent() {
                                                                     }) :
                                                                     (
                                                                         <tr>
-                                                                            <td colSpan={5} className='text-center'>No Data Found</td>
+                                                                            <td colSpan={5} className='text-center'>
+                                                                                <EmptyPrompt
+                                                                                    name="AI Agent"
+                                                                                    link="/ai-agent-add"
+                                                                                />
+                                                                            </td>
                                                                         </tr>
                                                                     )
                                                                 }

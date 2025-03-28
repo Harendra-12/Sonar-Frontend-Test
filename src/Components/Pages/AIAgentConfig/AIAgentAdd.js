@@ -17,7 +17,7 @@ const AIAgentAdd = () => {
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data };
-    const apiData = await generalPostFunction("/social-platforms/store", payload);
+    const apiData = await generalPostFunction("/ainumber/store", payload);
     if (apiData?.status) {
       setLoading(false);
       reset();
@@ -103,10 +103,10 @@ const AIAgentAdd = () => {
                             type="text"
                             name="extension"
                             className="formItem"
-                            {...register("agent_name", { ...requiredValidator, })}
+                            {...register("name", { ...requiredValidator, })}
                           />
-                          {errors.agent_name && (
-                            <ErrorMessage text={errors.agent_name.message} />
+                          {errors.name && (
+                            <ErrorMessage text={errors.name.message} />
                           )}
                         </div>
                       </div>
@@ -125,12 +125,12 @@ const AIAgentAdd = () => {
                             type="text"
                             name="extension"
                             className="formItem"
-                            {...register("agent_number", {
+                            {...register("ainumber", {
                               ...requiredValidator,
                             })}
                           />
-                          {errors.agent_number && (
-                            <ErrorMessage text={errors.agent_number.message} />
+                          {errors.ainumber && (
+                            <ErrorMessage text={errors.ainumber.message} />
                           )}
                         </div>
                       </div>

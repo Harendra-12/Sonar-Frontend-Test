@@ -19,15 +19,15 @@ const AIAgentEdit = () => {
       if (locationState.state.id) {
         setLoading(true);
         try {
-          const apiData = await generalGetFunction(`/social-platforms/show/${locationState.state.id}`)
+          const apiData = await generalGetFunction(`/ainumber/show/${locationState.state.id}`)
           if (apiData.status) {
-            const { app_id, app_token } = apiData?.data;
-            reset({ app_id, app_token });
-            setLoading(true);
+            const { name, ainumber } = apiData?.data;
+            reset({ name, ainumber });
+            setLoading(false);
           }
         } catch (err) {
           console.log(err);
-          setLoading(true);
+          setLoading(false);
         }
       }
     }
@@ -38,11 +38,11 @@ const AIAgentEdit = () => {
   const handleFormSubmit = handleSubmit(async (data) => {
     setLoading(true);
     const payload = { ...data };
-    const apiData = await generalPutFunction(`/social-platforms/${locationState.state.id}`, payload);
+    const apiData = await generalPutFunction(`/ainumber/${locationState.state.id}`, payload);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
-      navigate('/all-third-party-apps');
+      navigate('/all-ai-agent');
     } else {
       setLoading(false);
     }
@@ -124,10 +124,10 @@ const AIAgentEdit = () => {
                             type="text"
                             name="extension"
                             className="formItem"
-                            {...register("agent_name", { ...requiredValidator, })}
+                            {...register("name", { ...requiredValidator, })}
                           />
-                          {errors.agent_name && (
-                            <ErrorMessage text={errors.agent_name.message} />
+                          {errors.name && (
+                            <ErrorMessage text={errors.name.message} />
                           )}
                         </div>
                       </div>
@@ -146,12 +146,12 @@ const AIAgentEdit = () => {
                             type="text"
                             name="extension"
                             className="formItem"
-                            {...register("agent_number", {
+                            {...register("ainumber", {
                               ...requiredValidator,
                             })}
                           />
-                          {errors.agent_number && (
-                            <ErrorMessage text={errors.agent_number.message} />
+                          {errors.ainumber && (
+                            <ErrorMessage text={errors.ainumber.message} />
                           )}
                         </div>
                       </div>
