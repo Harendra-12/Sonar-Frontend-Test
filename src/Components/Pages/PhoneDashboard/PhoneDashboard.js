@@ -37,7 +37,7 @@ function PhoneDashboard() {
   const [graphData, setGraphData] = useState({
     totalCallMin: [],
     numberOfCall: [],
-    amntCostPerCall: [],
+    callCostPerHour: [],
     totalSpent: [],
   })
   const [graphFilter, setGraphFilter] = useState({
@@ -48,7 +48,10 @@ function PhoneDashboard() {
     numberOfCall: {
       date: "7_days"
     },
-    amntCostPerCall: [],
+    callCostPerHour: {
+      interval: "1",
+      startTime: "24",
+    },
     totalSpent: [],
   });
 
@@ -171,8 +174,11 @@ function PhoneDashboard() {
   // Fetch Graph API Call
   useEffect(() => {
     fetchNumberOfCallGraphData();
+  }, [graphFilter.numberOfCall])
+
+  useEffect(() => {
     fetchTotalCallMinGraphData();
-  }, [graphFilter.numberOfCall, graphFilter.totalCallMin])
+  }, [graphFilter.totalCallMin, graphFilter.callCostPerHour])
 
   // Number Of Call Graph Data
   const fetchNumberOfCallGraphData = async () => {
@@ -253,8 +259,9 @@ function PhoneDashboard() {
         console.log(apiCall);
         setGraphData((prevGraphData) => ({
           ...prevGraphData,
-          totalCallMin: apiCall.filtered
-        }))
+          totalCallMin: apiCall.filtered,
+          callCostPerHour: apiCall.filtered
+        }));
       }
     } catch (err) {
       console.log(err);
@@ -462,7 +469,7 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row">
-                <div className='col-md-4 col-12 d-xxl-block d-xl-none'>
+                <div className='col-md-4 col-12'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -572,7 +579,7 @@ function PhoneDashboard() {
                     </div>
                   </div>
                 </div>
-                <div className='col-md-4 col-12 d-xxl-block d-xl-none'>
+                <div className='col-md-4 col-12'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -660,6 +667,116 @@ function PhoneDashboard() {
                         type={"line"}
                         fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
                         percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
+                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='col-md-4 col-12'>
+                  <div className="itemWrapper a">
+                    <div className='heading h-auto'>
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className='col-auto'>
+                          <h5>Call Cost Per Hour</h5>
+                        </div>
+                        <div className="col-auto">
+                          <ul class="chart_tabs" >
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphCostFilter"
+                                value="1"
+                                checked={graphFilter.callCostPerHour.startTime === '1'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    callCostPerHour: {
+                                      ...prevGraphData.callCostPerHour,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">1 Hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                                checked={graphFilter.callCostPerHour.startTime === '3'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    callCostPerHour: {
+                                      ...prevGraphData.callCostPerHour,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">3 Hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                                checked={graphFilter.callCostPerHour.startTime === '6'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    callCostPerHour: {
+                                      ...prevGraphData.callCostPerHour,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">6 Hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                                checked={graphFilter.callCostPerHour.startTime === '12'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    callCostPerHour: {
+                                      ...prevGraphData.callCostPerHour,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">12 Hr</button>
+                            </li>
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                                checked={graphFilter.callCostPerHour.startTime === '24'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    callCostPerHour: {
+                                      ...prevGraphData.callCostPerHour,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">24 Hr</button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between mt-1'>
+                      <GraphChart
+                        height={'240px'}
+                        chartType="multiple"
+                        label1={"Inbound"}
+                        label2={"Outbound"}
+                        label3={"Internal"}
+                        label4={"Missed"}
+                        type={"bar"}
+                        fields={graphData?.callCostPerHour?.map((item, index) => {
+                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                          return `${time}`
+                        })}
+                        percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
                         colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
                       />
                     </div>
