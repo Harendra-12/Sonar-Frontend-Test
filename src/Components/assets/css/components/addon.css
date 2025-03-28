@@ -439,9 +439,7 @@
     background: #0056b3;
     color: #fff;
     border-radius: 25px;
-    padding-block: 5px;
-    padding-inline-start: 45px;
-    padding-inline-end: 25px;
+    padding: 5px 25px;
     position: relative;
     cursor: pointer;
 }
@@ -455,16 +453,9 @@
 }
 
 .cartSvg {
-    position: absolute;
-    left: 20px;
-    top: 3px;
+    margin-right: 10px;
 }
 
-.cartSvg svg {
-    fill: #fff;
-    font-size: 20px;
-
-}
 
 .thumbs-up-regular {
     animation: keyframes-fill .5s;
