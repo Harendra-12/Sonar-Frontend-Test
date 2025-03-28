@@ -555,3 +555,30 @@ form.tangoNavs .nav-tabs {
 .overviewTableWrapper .accordion-button .heading {
     border-radius: 10px;
 }
+
+.image_wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.image_box{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100px;
+    height: auto;
+}
+.image_box img{
+    width: 100%;
+}
+.addWrap .card{
+    height: 100%;
+    background: #efefef;
+    border-color: #a3a3a3 !important;
+}
+.addWrap .card.active{
+    background: #e5ffe5;
+    border-color: #168700 !important;
+}

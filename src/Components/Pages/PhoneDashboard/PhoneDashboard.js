@@ -547,7 +547,7 @@ function PhoneDashboard() {
                               <button class="nav-link">6 Month</button>
                             </li>
                             <li class="nav-item">
-                              <input class="nav-link" type="radio" name="graphFilter2" value="12_month"
+                              <input class="nav-link" type="radio" name="graphFilter" value="12_month"
                               // checked={graphFilter.numberOfCall.date === '12_month'}
                               // onChange={(e) =>
                               //     setGraphFilter((prevGraphData) => ({

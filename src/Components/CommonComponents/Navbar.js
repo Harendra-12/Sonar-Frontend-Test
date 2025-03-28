@@ -923,6 +923,16 @@ function Navbar() {
                             <ul className="tabMenu">
                               <li className="tabItem ">
                                 <NavLink
+                                  to="/all-addons"
+                                  onClick={() => featureUnderdevelopment()}
+                                >
+                                  <div className="itemTitle">All Addons
+
+                                  </div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
                                   to="/meta-config"
                                   onClick={() => featureUnderdevelopment()}
                                 >

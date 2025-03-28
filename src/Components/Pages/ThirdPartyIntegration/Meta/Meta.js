@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../../CommonComponents/Header'
+import Header from '../../../CommonComponents/Header'
 
 const Meta = () => {
   return (
