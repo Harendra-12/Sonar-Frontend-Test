@@ -1181,7 +1181,7 @@ input[type=number] {
 
 .callDashParkedCalls button.callDashParkedCallsBtn {
     border: 0;
-    background-color: #0000001a;
+    background-color: #0075ff96;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1190,10 +1190,11 @@ input[type=number] {
     border-radius: 5px 0 0 5px;
     backdrop-filter: blur(5px);
     transition: 0.3s ease-in-out;
+    color: #fff;
 }
 
 .callDashParkedCalls button:hover {
-    background-color: #3c3c3c30;
+    background-color: var(--color2);
 }
 
 #google_translate_element select {
@@ -1272,5 +1273,3 @@ input[type=number] {
 /* .popupopen ul li i {
     color: var(--ui-accent);
 } */
-
-
