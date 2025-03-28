@@ -1,9 +1,9 @@
 import React from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, LineController, BarElement } from 'chart.js';
 
 // Register necessary components
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, LineController);
 
 const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, label3, label4, height, type }) => {
 
