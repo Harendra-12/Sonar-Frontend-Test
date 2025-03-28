@@ -196,7 +196,7 @@ function ClickToCallEdit() {
                                         <div className="tawk-margin-auto tawk-width-100">
                                             <div className="tawk-wizard-chat-form">
                                                 <div className="tawk-flex tawk-flex-wrap tawk-flex-large-gap tawk-margin-xlarge-top">
-                                                    <form className="tangoNavs">
+                                                    <div className="tangoNavs">
                                                         <nav>
                                                             <div
                                                                 className="nav nav-tabs"
@@ -224,7 +224,7 @@ function ClickToCallEdit() {
                                                                         id="nav-gen"
                                                                         role="tabpanel"
                                                                         aria-labelledby="nav-gen-tab"
-                                                                        tabindex="0"
+                                                                        tabIndex="0"
                                                                     >
                                                                         <form>
                                                                             <div className="formRow col-xl-12">
@@ -570,13 +570,13 @@ function ClickToCallEdit() {
                                                                                                 {...register("color")}
                                                                                                 style={{ width: "100px" }}
                                                                                             /> */}
-                                                                                            <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                            <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                 <div className="d-flex align-items-center">
                                                                                                     <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
                                                                                                     <label className="ms-2">Choose Color</label>
                                                                                                 </div>
                                                                                             </button>
-                                                                                            <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                                                            <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
                                                                                                 <HexColorPicker
                                                                                                     color={baseColor}
                                                                                                     onChange={(newColor) => setValue("color", newColor)} />
@@ -607,13 +607,13 @@ function ClickToCallEdit() {
                                                                                                 {...register("textcolor")}
                                                                                                 style={{ width: "100px" }}
                                                                                             /> */}
-                                                                                            <button class="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                            <button className="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                 <div className="d-flex align-items-center">
                                                                                                     <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
                                                                                                     <label className="ms-2">Choose Color</label>
                                                                                                 </div>
                                                                                             </button>
-                                                                                            <div class="dropdown-menu p-0" aria-labelledby="textColorPicker">
+                                                                                            <div className="dropdown-menu p-0" aria-labelledby="textColorPicker">
                                                                                                 <HexColorPicker
                                                                                                     color={textColor}
                                                                                                     onChange={(newColor) => setValue("textcolor", newColor)} />
@@ -643,13 +643,13 @@ function ClickToCallEdit() {
                                                                                                 {...register("buttoncolor")}
                                                                                                 style={{ width: "100px" }}
                                                                                             /> */}
-                                                                                            <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                            <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                                                                 <div className="d-flex align-items-center">
                                                                                                     <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
                                                                                                     <label className="ms-2">Choose Color</label>
                                                                                                 </div>
                                                                                             </button>
-                                                                                            <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                                                            <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
                                                                                                 <HexColorPicker
                                                                                                     color={buttonColor}
                                                                                                     onChange={(newColor) => setValue("buttoncolor", newColor)} />
@@ -806,7 +806,8 @@ function ClickToCallEdit() {
                                                                                         type="text"
                                                                                         name="did_id_view"
                                                                                         className="formItem h-auto"
-                                                                                        value={embadedCode}
+                                                                                        defaultValue={embadedCode}
+                                                                                        disabled={true}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -827,7 +828,7 @@ function ClickToCallEdit() {
                                                                                 <div className="wrapper">
                                                                                     <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
                                                                                     <div className="compLogo">
-                                                                                        <img src={selectedImage ? selectedImage : logo} alt=''></img>
+                                                                                        <img src={selectedImage ? selectedImage : logo} alt='' onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}></img>
                                                                                     </div>
                                                                                     <div className="text">
                                                                                         <h5>{watch().name}</h5>
@@ -884,7 +885,7 @@ function ClickToCallEdit() {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
