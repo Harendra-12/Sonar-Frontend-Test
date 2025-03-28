@@ -157,6 +157,9 @@ import WhatsAppConfig from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppC
 import AllThirdPartyConfig from "./Components/Pages/ThirdPartyApps/AllThirdPartyConfig";
 import MetaConfigEdit from "./Components/Pages/ThirdPartyApps/Meta/MetaConfigEdit";
 import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfigEdit";
+import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
+import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
+import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -837,7 +840,7 @@ function App() {
           {/* ------ Call Tracker */}
 
 
-          {/* ----------- meta */}
+          {/* ----------- Third Party Addons */}
           <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
@@ -847,7 +850,14 @@ function App() {
 
           <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
 
-          {/* ----------- meta */}
+          {/* ----------- Third Party Addons */}
+
+          {/* AI Routes */}
+          <Route path="/all-ai-agent" element={<AllAiAgent />} />
+          <Route path="/ai-agent-add" element={<AIAgentAdd />} />
+          <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
+          {/* AI Routes */}
+
 
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />

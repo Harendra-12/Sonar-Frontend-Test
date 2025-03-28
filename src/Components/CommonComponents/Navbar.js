@@ -1029,7 +1029,9 @@ function Navbar() {
                       data-bs-target="#collapse14"
                       aria-expanded={
                         isChildActive([
-                          "/ai-dashboard",
+                          "/all-ai-agent",
+                          "/ai-agent-add",
+                          "/ai-agent-edit"
                         ])
                           ? "true"
                           : "false"
@@ -1044,7 +1046,9 @@ function Navbar() {
                     <div
                       id="collapse14"
                       className={`accordion-collapse collapse ${isChildActive([
-                        "/ai-dashboard",
+                        "/all-ai-agent",
+                        "/ai-agent-add",
+                        "/ai-agent-edit"
                       ])
                         ? "show"
                         : ""
@@ -1078,13 +1082,22 @@ function Navbar() {
                             </Link>
                           </li>
                           <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
+                            <NavLink
+                              to="/all-ai-agent"
+                              onClick={() => backToTop()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/all-ai-agent", "/ai-agent-add", "/ai-agent-edit"].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
                             >
                               <div className="itemTitle">
                                 Agents
                               </div>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li className="tabItem ">
                             <Link
