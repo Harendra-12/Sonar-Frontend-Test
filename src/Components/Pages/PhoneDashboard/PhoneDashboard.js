@@ -43,7 +43,7 @@ function PhoneDashboard() {
   const [graphFilter, setGraphFilter] = useState({
     totalCallMin: {
       interval: "1",
-      startTime: "1",
+      startTime: "24",
     },
     numberOfCall: {
       date: "7_days"
@@ -180,20 +180,17 @@ function PhoneDashboard() {
     const startDate = new Date(); // Will be modified
 
     switch (graphFilter.numberOfCall.date) {
+      case "3_days":
+        startDate?.setDate(endDate.getDate() - 3);
+        break;
       case "7_days":
         startDate?.setDate(endDate.getDate() - 7);
         break;
-      case "1_month":
+      case "15_days":
+        startDate?.setMonth(endDate.getDate() - 15);
+        break;
+      case "30_days":
         startDate?.setMonth(endDate.getMonth() - 1);
-        break;
-      case "3_month":
-        startDate?.setMonth(endDate.getMonth() - 3);
-        break;
-      case "6_month":
-        startDate?.setMonth(endDate.getMonth() - 6);
-        break;
-      case "12_month":
-        startDate?.setFullYear(endDate.getFullYear() - 1);
         break;
       default:
         startDate?.setDate(endDate.getDate() - 7);
@@ -216,31 +213,38 @@ function PhoneDashboard() {
     }
   }
 
-  // Number Of Call Graph Data
+  // Call Per Hour Graph Data
   const fetchTotalCallMinGraphData = async () => {
     const endDate = new Date().toISOString().split("T")[0];
-    const startDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date();
     const currentTime = new Date().toTimeString().slice(0, 8);
-    const filterTime = new Date();
 
     switch (graphFilter.totalCallMin.startTime) {
       case "1":
-        filterTime?.setHours(filterTime.getHours() - 1);
+        startDate?.setHours(startDate.getHours() - 1);
         break;
       case "3":
-        filterTime?.setHours(filterTime.getHours() - 3);
+        startDate?.setHours(startDate.getHours() - 3);
         break;
       case "6":
-        filterTime?.setHours(filterTime.getHours() - 6);
+        startDate?.setHours(startDate.getHours() - 6);
         break;
       case "12":
-        filterTime?.setHours(filterTime.getHours() - 12);
+        startDate?.setHours(startDate.getHours() - 12);
+        break;
+      case "24":
+        startDate?.setHours(startDate.getHours() - 24);
         break;
       default:
-        filterTime?.setHours(0, 0, 0);
+        startDate?.setHours(0, 0, 0);
     }
 
-    const startDateTime = `${startDate} ${filterTime.toTimeString().slice(0, 8)}`;
+    const startDateTimeObj = {
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toTimeString().slice(0, 8)
+    }
+
+    const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
     const endDateTime = `${endDate} ${currentTime}`;
 
     try {
@@ -458,7 +462,7 @@ function PhoneDashboard() {
             </div>
             <div className="col-xl-12">
               <div className="row">
-                <div className='col-md-6 col-12 d-xxl-block d-xl-none'>
+                <div className='col-md-4 col-12 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -466,23 +470,6 @@ function PhoneDashboard() {
                           <h5>Total Call Per Hour</h5>
                         </div>
                         <div className="col-auto">
-                          {/* <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
-                            <select className="formItem" value={graphFilter.totalCallMin.interval}
-                              onChange={(e) =>
-                                setGraphFilter((prevGraphData) => ({
-                                  ...prevGraphData,
-                                  totalCallMin: {
-                                    ...prevGraphData.totalCallMin,
-                                    interval: e.target.value,
-                                  },
-                                }))
-                              }
-                            >
-                              <option value="1">Last 1 Hour</option>
-                              <option value="6">Last 6 Hours</option>
-                              <option value="12">Last 12 Hours</option>
-                            </select>
-                          </div> */}
                           <ul class="chart_tabs" >
                             <li class="nav-item">
                               <input class="nav-link" type="radio" name="graphTimeFilter"
@@ -545,6 +532,21 @@ function PhoneDashboard() {
                               />
                               <button class="nav-link">12 Hr</button>
                             </li>
+                            <li class="nav-item">
+                              <input class="nav-link" type="radio" name="graphTimeFilter" value="24"
+                                checked={graphFilter.totalCallMin.startTime === '24'}
+                                onChange={(e) =>
+                                  setGraphFilter((prevGraphData) => ({
+                                    ...prevGraphData,
+                                    totalCallMin: {
+                                      ...prevGraphData.totalCallMin,
+                                      startTime: e.target.value,
+                                    },
+                                  }))
+                                }
+                              />
+                              <button class="nav-link">24 Hr</button>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -557,14 +559,20 @@ function PhoneDashboard() {
                         label2={"Outbound"}
                         label3={"Internal"}
                         label4={"Missed"}
-                        fields={graphData?.totalCallMin?.map((item, index) => item.start_time.split(" ")[1])}
+                        type={"bar"}
+                        fields={graphData?.totalCallMin?.map((item, index) => {
+                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                          return `${time}`
+                        })}
                         percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
                         colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
                       />
                     </div>
                   </div>
                 </div>
-                <div className='col-md-6 col-12 d-xxl-block d-xl-none'>
+                <div className='col-md-4 col-12 d-xxl-block d-xl-none'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -574,6 +582,22 @@ function PhoneDashboard() {
                         <div className="col-auto">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
                             <ul class="chart_tabs" >
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter"
+                                  value="3_days"
+                                  checked={graphFilter.numberOfCall.date === '3_days'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">3 Days</button>
+                              </li>
                               <li class="nav-item">
                                 <input class="nav-link" type="radio" name="graphFilter"
                                   value="7_days"
@@ -591,8 +615,23 @@ function PhoneDashboard() {
                                 <button class="nav-link">7 Days</button>
                               </li>
                               <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="1_month"
-                                  checked={graphFilter.numberOfCall.date === '1_month'}
+                                <input class="nav-link" type="radio" name="graphFilter" value="15_days"
+                                  checked={graphFilter.numberOfCall.date === '15_days'}
+                                  onChange={(e) =>
+                                    setGraphFilter((prevGraphData) => ({
+                                      ...prevGraphData,
+                                      numberOfCall: {
+                                        ...prevGraphData.numberOfCall,
+                                        date: e.target.value,
+                                      },
+                                    }))
+                                  }
+                                />
+                                <button class="nav-link">15 Days</button>
+                              </li>
+                              <li class="nav-item">
+                                <input class="nav-link" type="radio" name="graphFilter" value="30_days"
+                                  checked={graphFilter.numberOfCall.date === '30_days'}
                                   onChange={(e) =>
                                     setGraphFilter((prevGraphData) => ({
                                       ...prevGraphData,
@@ -604,51 +643,6 @@ function PhoneDashboard() {
                                   }
                                 />
                                 <button class="nav-link">1 Month</button>
-                              </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="3_month"
-                                  checked={graphFilter.numberOfCall.date === '3_month'}
-                                  onChange={(e) =>
-                                    setGraphFilter((prevGraphData) => ({
-                                      ...prevGraphData,
-                                      numberOfCall: {
-                                        ...prevGraphData.numberOfCall,
-                                        date: e.target.value,
-                                      },
-                                    }))
-                                  }
-                                />
-                                <button class="nav-link">3 Month</button>
-                              </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="6_month"
-                                  checked={graphFilter.numberOfCall.date === '6_month'}
-                                  onChange={(e) =>
-                                    setGraphFilter((prevGraphData) => ({
-                                      ...prevGraphData,
-                                      numberOfCall: {
-                                        ...prevGraphData.numberOfCall,
-                                        date: e.target.value,
-                                      },
-                                    }))
-                                  }
-                                />
-                                <button class="nav-link">6 Month</button>
-                              </li>
-                              <li class="nav-item">
-                                <input class="nav-link" type="radio" name="graphFilter" value="12_month"
-                                  checked={graphFilter.numberOfCall.date === '12_month'}
-                                  onChange={(e) =>
-                                    setGraphFilter((prevGraphData) => ({
-                                      ...prevGraphData,
-                                      numberOfCall: {
-                                        ...prevGraphData.numberOfCall,
-                                        date: e.target.value,
-                                      },
-                                    }))
-                                  }
-                                />
-                                <button class="nav-link">12 Month</button>
                               </li>
                             </ul>
                           </div>
@@ -663,6 +657,7 @@ function PhoneDashboard() {
                         label2={"Outbound"}
                         label3={"Internal"}
                         label4={"Missed"}
+                        type={"line"}
                         fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
                         percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
                         colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
 
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
-const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, label3, label4, height }) => {
+const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, label3, label4, height, type }) => {
 
   // Define the data for the chart
   const data = {
@@ -32,7 +32,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
     }, {
       label: label2,
       data: percentage[1],
-      type: 'line',
+      type: type,
       // this dataset is drawn on top
       backgroundColor: colors[1],
       borderColor: colors[1],
@@ -41,7 +41,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
     {
       label: label3,
       data: percentage[2],
-      type: 'line',
+      type: type,
       // this dataset is drawn on top
       backgroundColor: colors[2],
       borderColor: colors[2],
@@ -50,7 +50,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
     {
       label: label4,
       data: percentage[3],
-      type: 'line',
+      type: type,
       // this dataset is drawn on top
       backgroundColor: colors[3],
       borderColor: colors[3],
@@ -62,7 +62,7 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
 
   // Optional: Define options for customization
   const options = {
-    cutout: 90,
+    // cutout: 90,
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -75,21 +75,23 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
     },
     scales: {
       x: {
-        grid: {
-          color: 'rgba(128, 128, 128, 0.2)',
-        }
+        // grid: {
+        //   color: 'rgba(128, 128, 128, 0.2)',
+        // }
+        stacked: true,
       },
       y: {
-        grid: {
-          color: 'rgba(128, 128, 128, 0.2)',
-        }
+        // grid: {
+        //   color: 'rgba(128, 128, 128, 0.2)',
+        // }
+        stacked: true,
       }
     }
   };
 
   return (
     <div style={{ width: '100%', height: height || '300px', position: 'relative', margin: '0 auto' }}>
-      <Line data={chartType === "multiple" ? multiChartData : data} options={options} />
+      <Bar data={chartType === "multiple" ? multiChartData : data} options={options} />
     </div>
   );
 };
