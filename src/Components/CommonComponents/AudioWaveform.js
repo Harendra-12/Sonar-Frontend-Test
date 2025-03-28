@@ -15,9 +15,9 @@ const AudioWaveform = ({ audioUrl }) => {
             container: waveformRef.current,
             waveColor: "#4F46E5",
             progressColor: "#2563EB",
-            barWidth: 2,
+            barWidth: 4,
             responsive: true,
-            height: 100,
+            height: 200,
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
         });
@@ -38,7 +38,7 @@ const AudioWaveform = ({ audioUrl }) => {
 
                 const audioBlob = await response.blob();
                 const blobUrl = URL.createObjectURL(audioBlob);
-                
+
                 // Load the Blob URL into WaveSurfer
                 wavesurfer.current.load(blobUrl);
 
@@ -68,10 +68,10 @@ const AudioWaveform = ({ audioUrl }) => {
     };
 
     return (
-        <div className="p-4 border rounded-md">
+        <div className="p-4 border rounded-md" style={{ width: '100%' }}>
             {error && <div className="text-red-500 mb-2">{error}</div>}
-            <div ref={waveformRef} className="w-full"></div>
-            <button
+            <div ref={waveformRef} style={{ width: '100%' }}></div>
+            {/* <button
                 className={`mt-2 px-4 py-2 text-white rounded ${
                     error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
                 }`}
@@ -79,7 +79,7 @@ const AudioWaveform = ({ audioUrl }) => {
                 disabled={error || !wavesurfer.current?.isReady}
             >
                 {isPlaying ? "Pause" : "Play"}
-            </button>
+            </button> */}
         </div>
     );
 };
