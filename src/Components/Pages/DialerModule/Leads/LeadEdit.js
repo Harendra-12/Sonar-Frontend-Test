@@ -202,9 +202,9 @@ function LeadEdit() {
                                                 </div>
                                             </div>
                                         </form>
-                                        <div className='col-6'>
+                                        {/* <div className='col-6'>
                                             <PagePermissionForUser />
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
