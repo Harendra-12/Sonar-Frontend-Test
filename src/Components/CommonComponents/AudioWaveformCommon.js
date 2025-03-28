@@ -17,10 +17,17 @@ const AudioWaveformCommon = ({ audioUrl }) => {
             progressColor: "#2563EB",
             barWidth: 4,
             responsive: true,
-            height: 200,
+            height: 100,
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
         });
+        wavesurfer.on('load', () => {
+            togglePlay();
+        });
+        wavesurfer.on('interaction', () => {
+            togglePlay();
+        })
+
 
         // Fetch the audio file and convert to Blob
         const loadAudio = async () => {
