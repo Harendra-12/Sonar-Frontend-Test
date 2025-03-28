@@ -103,6 +103,11 @@
     transition: all 0.3s ease-in-out;
 }
 
+.product-cart.active {
+    border: 1px solid #00ab2b;
+    background: #f2fff5;
+}
+
 .product-cart:hover .product-image {
     transform: scale(1.1);
 }
@@ -444,6 +449,13 @@
     cursor: pointer;
 }
 
+.checkbox_wrapper.edit {
+    background: #00ab2b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .product-container input {
     height: 15px;
     width: 15px;
@@ -456,6 +468,22 @@
     margin-right: 10px;
 }
 
+.cartSvg.addonsBtn {
+    top: 6px;
+}
+
+.checkbox_wrapper.edit .cartSvg {
+    top: 6px;
+}
+
+.cartSvg svg {
+    fill: #fff;
+    font-size: 20px;
+}
+
+.cartSvg i {
+    font-size: 12px;
+}
 
 .thumbs-up-regular {
     animation: keyframes-fill .5s;
@@ -515,4 +543,9 @@
     width: 16px;
     height: 16px;
 
+}
+
+.content_width {
+    max-width: 200px;
+    width: 100%;
 }

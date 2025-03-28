@@ -160,6 +160,8 @@ import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/Whats
 import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
 import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
+import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import AllAddons from "./Components/Pages/ThirdPartyIntegration/AllAddons/AllAddons";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -842,6 +844,7 @@ function App() {
 
           {/* ----------- Third Party Addons */}
           <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route path="/all-addons" element={<AllAddons />} />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 
@@ -857,6 +860,8 @@ function App() {
           <Route path="/ai-agent-add" element={<AIAgentAdd />} />
           <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
           {/* AI Routes */}
+
+
 
 
           {/* ---------------- source */}

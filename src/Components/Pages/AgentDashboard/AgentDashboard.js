@@ -115,7 +115,7 @@ const AgentDashboard = () => {
                                                         <h5>Call Per Hour</h5>
                                                     </div>
                                                     <div className='col-auto'>
-                                                        <ul class=" chart_tabs" >
+                                                        {/* <ul class=" chart_tabs" >
                                                             <li class="nav-item">
                                                                 <button class="nav-link active" >1hr</button>
                                                             </li>
@@ -135,34 +135,112 @@ const AgentDashboard = () => {
                                                                 <button class="nav-link">72hr</button>
                                                             </li>
 
+                                                        </ul> */}
+                                                        <ul class="chart_tabs" >
+                                                            <li class="nav-item">
+                                                                <input class="nav-link" type="radio" name="graphFilter" defaultChecked={true}
+                                                                    value="7_days"
+                                                                    // checked={graphFilter.numberOfCall.date === '7_days'}
+                                                                    // onChange={(e) =>
+                                                                    //     setGraphFilter((prevGraphData) => ({
+                                                                    //         ...prevGraphData,
+                                                                    //         numberOfCall: {
+                                                                    //             ...prevGraphData.numberOfCall,
+                                                                    //             date: e.target.value,
+                                                                    //         },
+                                                                    //     }))
+                                                                    // }
+                                                                />
+                                                                <button class="nav-link">7 Days</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <input class="nav-link" type="radio" name="graphFilter" value="1_month"
+                                                                    // checked={graphFilter.numberOfCall.date === '1_month'}
+                                                                    // onChange={(e) =>
+                                                                    //     setGraphFilter((prevGraphData) => ({
+                                                                    //         ...prevGraphData,
+                                                                    //         numberOfCall: {
+                                                                    //             ...prevGraphData.numberOfCall,
+                                                                    //             date: e.target.value,
+                                                                    //         },
+                                                                    //     }))
+                                                                    // }
+                                                                />
+                                                                <button class="nav-link">1 Month</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <input class="nav-link" type="radio" name="graphFilter" value="3_month"
+                                                                    // checked={graphFilter.numberOfCall.date === '3_month'}
+                                                                    // onChange={(e) =>
+                                                                    //     setGraphFilter((prevGraphData) => ({
+                                                                    //         ...prevGraphData,
+                                                                    //         numberOfCall: {
+                                                                    //             ...prevGraphData.numberOfCall,
+                                                                    //             date: e.target.value,
+                                                                    //         },
+                                                                    //     }))
+                                                                    // }
+                                                                />
+                                                                <button class="nav-link">3 Month</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <input class="nav-link" type="radio" name="graphFilter" value="6_month"
+                                                                    // checked={graphFilter.numberOfCall.date === '6_month'}
+                                                                    // onChange={(e) =>
+                                                                    //     setGraphFilter((prevGraphData) => ({
+                                                                    //         ...prevGraphData,
+                                                                    //         numberOfCall: {
+                                                                    //             ...prevGraphData.numberOfCall,
+                                                                    //             date: e.target.value,
+                                                                    //         },
+                                                                    //     }))
+                                                                    // }
+                                                                />
+                                                                <button class="nav-link">6 Month</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <input class="nav-link" type="radio" name="graphFilter" value="12_month"
+                                                                    // checked={graphFilter.numberOfCall.date === '12_month'}
+                                                                    // onChange={(e) =>
+                                                                    //     setGraphFilter((prevGraphData) => ({
+                                                                    //         ...prevGraphData,
+                                                                    //         numberOfCall: {
+                                                                    //             ...prevGraphData.numberOfCall,
+                                                                    //             date: e.target.value,
+                                                                    //         },
+                                                                    //     }))
+                                                                    // }
+                                                                />
+                                                                <button class="nav-link">12 Month</button>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className='d-flex flex-wrap justify-content-between mt-1'>
-                                                        <GraphChart
-                                                            height={'240px'}
-                                                            chartType="multiple"
-                                                            label1={"Wallet"}
-                                                            label2={"Card"}
-                                                            // labels={[ "Field 1", "Field 2"]}
-                                                            fields={[
-                                                                "0s",
-                                                                "10s",
-                                                                "20s",
-                                                                "30s",
-                                                                "40s",
-                                                                "50s",
-                                                                "60s",
-                                                            ]}
-                                                            percentage={[
-                                                                [10, 12, 14, 16, 24, 14, 16], // CPU Usage
-                                                                [8, 15, 20, 18, 25, 10, 12], // Memory Usage
-                                                            ]}
-                                                            colors={["#f18f01", "#36A2EB"]}
-                                                        />
-                                                    </div>
+                                                <GraphChart
+                                                    height={'240px'}
+                                                    chartType="multiple"
+                                                    label1={"Wallet"}
+                                                    label2={"Card"}
+                                                    // labels={[ "Field 1", "Field 2"]}
+                                                    fields={[
+                                                        "0s",
+                                                        "10s",
+                                                        "20s",
+                                                        "30s",
+                                                        "40s",
+                                                        "50s",
+                                                        "60s",
+                                                    ]}
+                                                    percentage={[
+                                                        [10, 12, 14, 16, 24, 14, 16], // CPU Usage
+                                                        [8, 15, 20, 18, 25, 10, 12], // Memory Usage
+                                                    ]}
+                                                    colors={["#f18f01", "#36A2EB"]}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                     <div className='col-xxl-6 col-xl-6'>
