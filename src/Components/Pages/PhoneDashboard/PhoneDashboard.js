@@ -367,7 +367,7 @@ function PhoneDashboard() {
             </div>
             <div className="col-12 mt-3 tangoNavs">
               <AllCallsDetails />
-              <div className="row my-3 gx-xxl-4 gx-lg-3">
+              <div className="row my-3 gx-xxl-3 gx-lg-2">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
                   <div className="itemWrapper a">
                     <div className="heading h-auto">
@@ -538,7 +538,7 @@ function PhoneDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              <div className="row gx-xxl-4 gx-lg-3">
+              <div className="row gx-xxl-3 gx-lg-2">
                 <div className="col-xl-6">
                   <RingGroup />
                 </div>
@@ -548,7 +548,7 @@ function PhoneDashboard() {
               </div>
             </div>
             <div className="col-xl-12">
-              <div className="row">
+              <div className="row gx-xxl-3 gx-lg-2">
                 <div className='col-md-4 col-12'>
                   <div className="itemWrapper a">
                     <div className='heading h-auto'>
