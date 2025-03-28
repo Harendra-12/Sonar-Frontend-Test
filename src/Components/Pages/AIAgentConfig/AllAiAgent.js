@@ -160,7 +160,7 @@ function AllAiAgent() {
                         </div>
                     </div>
                 </section>
-                <ModalComponent task={"delete"} reference={"config"} />
+                <ModalComponent task={"delete"} reference={"AI agent"} />
             </main>
         </>
     )
