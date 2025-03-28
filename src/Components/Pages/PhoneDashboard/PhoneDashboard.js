@@ -55,6 +55,12 @@ function PhoneDashboard() {
     totalSpent: [],
   });
 
+  const [graphLoading, setGraphLoading] = useState({
+    totalCallMin: 1,
+    numberOfCall: 1,
+    callCostPerHour: 1
+  });
+
   const [agents, setAgents] = useState([]);
 
   useEffect(() => {
@@ -178,7 +184,11 @@ function PhoneDashboard() {
 
   useEffect(() => {
     fetchTotalCallMinGraphData();
-  }, [graphFilter.totalCallMin, graphFilter.callCostPerHour])
+  }, [graphFilter.totalCallMin])
+
+  useEffect(() => {
+    fetchTotalCallCostGraphData();
+  }, [graphFilter.callCostPerHour])
 
   // Number Of Call Graph Data
   const fetchNumberOfCallGraphData = async () => {
@@ -193,10 +203,10 @@ function PhoneDashboard() {
         startDate?.setDate(endDate.getDate() - 7);
         break;
       case "15_days":
-        startDate?.setMonth(endDate.getDate() - 15);
+        startDate?.setDate(endDate.getDate() - 15);
         break;
       case "30_days":
-        startDate?.setMonth(endDate.getMonth() - 1);
+        startDate?.setDate(endDate.getMonth() - 1);
         break;
       default:
         startDate?.setDate(endDate.getDate() - 7);
@@ -206,6 +216,10 @@ function PhoneDashboard() {
     const endDateString = endDate.toISOString().split("T")[0]
 
     try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        numberOfCall: 1
+      }));
       const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateString}&end_date=${endDateString}`);
       if (apiCall.status) {
         console.log(apiCall);
@@ -213,6 +227,10 @@ function PhoneDashboard() {
           ...prevGraphData,
           numberOfCall: apiCall.filtered
         }))
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          numberOfCall: 0
+        }));
       }
     } catch (err) {
       console.log(err);
@@ -254,13 +272,75 @@ function PhoneDashboard() {
     const endDateTime = `${endDate} ${currentTime}`;
 
     try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        totalCallMin: 1
+      }));
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
+      if (apiCall.status) {
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          totalCallMin: apiCall.filtered,
+        }));
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          totalCallMin: 0
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Call Cost Graph Data
+  const fetchTotalCallCostGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date();
+    const currentTime = new Date().toTimeString().slice(0, 8);
+
+    switch (graphFilter.callCostPerHour.startTime) {
+      case "1":
+        startDate?.setHours(startDate.getHours() - 1);
+        break;
+      case "3":
+        startDate?.setHours(startDate.getHours() - 3);
+        break;
+      case "6":
+        startDate?.setHours(startDate.getHours() - 6);
+        break;
+      case "12":
+        startDate?.setHours(startDate.getHours() - 12);
+        break;
+      case "24":
+        startDate?.setHours(startDate.getHours() - 24);
+        break;
+      default:
+        startDate?.setHours(0, 0, 0);
+    }
+
+    const startDateTimeObj = {
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toTimeString().slice(0, 8)
+    }
+
+    const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
+    const endDateTime = `${endDate} ${currentTime}`;
+
+    try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        callCostPerHour: 1
+      }));
       const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
       if (apiCall.status) {
         console.log(apiCall);
         setGraphData((prevGraphData) => ({
           ...prevGraphData,
-          totalCallMin: apiCall.filtered,
           callCostPerHour: apiCall.filtered
+        }));
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          callCostPerHour: 0
         }));
       }
     } catch (err) {
@@ -559,23 +639,31 @@ function PhoneDashboard() {
                       </div>
                     </div>
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
-                      <GraphChart
-                        height={'240px'}
-                        chartType="multiple"
-                        label1={"Inbound"}
-                        label2={"Outbound"}
-                        label3={"Internal"}
-                        label4={"Missed"}
-                        type={"bar"}
-                        fields={graphData?.totalCallMin?.map((item, index) => {
-                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
-                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
-                          return `${time}`
-                        })}
-                        percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
-                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
-                      />
+                      {graphLoading.totalCallMin == 1 ? (
+                        <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
+                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                          </div>
+                        </div>) :
+                        <GraphChart
+                          height={'240px'}
+                          chartType="multiple"
+                          label1={"Inbound"}
+                          label2={"Outbound"}
+                          label3={"Internal"}
+                          label4={"Missed"}
+                          type={"bar"}
+                          fields={graphData?.totalCallMin?.map((item, index) => {
+                            const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                            const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                            const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                            return `${time}`
+                          })}
+                          percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
+                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                        />
+                      }
+
                     </div>
                   </div>
                 </div>
@@ -657,18 +745,25 @@ function PhoneDashboard() {
                       </div>
                     </div>
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
-                      <GraphChart
-                        height={'240px'}
-                        chartType="multiple"
-                        label1={"Inbound"}
-                        label2={"Outbound"}
-                        label3={"Internal"}
-                        label4={"Missed"}
-                        type={"line"}
-                        fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
-                        percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
-                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
-                      />
+                      {graphLoading.numberOfCall == 1 ? (
+                        <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
+                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                          </div>
+                        </div>
+                      ) :
+                        <GraphChart
+                          height={'240px'}
+                          chartType="multiple"
+                          label1={"Inbound"}
+                          label2={"Outbound"}
+                          label3={"Internal"}
+                          label4={"Missed"}
+                          type={"line"}
+                          fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
+                          percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
+                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                        />}
                     </div>
                   </div>
                 </div>
@@ -762,23 +857,32 @@ function PhoneDashboard() {
                       </div>
                     </div>
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
-                      <GraphChart
-                        height={'240px'}
-                        chartType="multiple"
-                        label1={"Inbound"}
-                        label2={"Outbound"}
-                        label3={"Internal"}
-                        label4={"Missed"}
-                        type={"bar"}
-                        fields={graphData?.callCostPerHour?.map((item, index) => {
-                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
-                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
-                          return `${time}`
-                        })}
-                        percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
-                        colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
-                      />
+                      {graphLoading.callCostPerHour == 1 ?
+                        (
+                          <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
+                            <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                              <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                            </div>
+                          </div>
+                        ) :
+                        <GraphChart
+                          height={'240px'}
+                          chartType="multiple"
+                          label1={"Inbound"}
+                          label2={"Outbound"}
+                          label3={"Internal"}
+                          label4={"Missed"}
+                          type={"bar"}
+                          fields={graphData?.callCostPerHour?.map((item, index) => {
+                            const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                            const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                            const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                            return `${time}`
+                          })}
+                          percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
+                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                        />
+                      }
                     </div>
                   </div>
                 </div>
