@@ -21,10 +21,10 @@ const AudioWaveformCommon = ({ audioUrl }) => {
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
         });
-        wavesurfer.on('load', () => {
+        wavesurfer.current.on('ready', () => {
             togglePlay();
         });
-        wavesurfer.on('interaction', () => {
+        wavesurfer.current.on('interaction', () => {
             togglePlay();
         })
 

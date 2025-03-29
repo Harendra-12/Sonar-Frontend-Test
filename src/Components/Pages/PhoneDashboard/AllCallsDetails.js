@@ -79,9 +79,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Calls</p>
                               </div>
-                              <div className="col-3" >
+                              <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'all' }} className="col-3" >
                                 <i className="fa-solid fa-phone-hangup"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -100,9 +100,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Total Calls Completed</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'all' }} className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -118,9 +118,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Total Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} className="col-3">
                                 <i className="fa-solid fa-phone-volume"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -201,9 +201,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Inbound Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'inbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -222,9 +222,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p> Inbound Calls Completed</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'inbound' }} className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -241,9 +241,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Total Inbound Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'all', direction: 'inbound' }} className="col-3">
                                 <i className="ms-2 fa-solid fa-phone-arrow-down-left"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -323,9 +323,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Outbound Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'outbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -344,9 +344,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Outbound Calls Completed</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'outbound' }} className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -363,9 +363,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Total Outbound Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'all', direction: 'outbound' }} className="col-3">
                                 <i className="fa-solid fa-phone-arrow-up-right"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -444,9 +444,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Missed Internal Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'internal' }} className="col-3">
                                 <i className="fa-solid fa-phone-hangup"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -465,9 +465,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Internal Calls Completed</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'internal' }} className="col-3">
                                 <i className="fa-solid fa-circle-check"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -484,9 +484,9 @@ function AllCallsDetails() {
                                 </h3>
                                 <p>Total Internal Calls</p>
                               </div>
-                              <div className="col-3">
+                              <Link to={"/cdr-report"} state={{ filter: 'all', direction: 'internal' }} className="col-3">
                                 <i className="fa-solid fa-phone-arrow-up-right"></i>
-                              </div>
+                              </Link>
                             </div>
                           </div>
                         </div>

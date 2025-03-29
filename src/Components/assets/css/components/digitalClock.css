@@ -1,9 +1,9 @@
 .clock-wrapper {
     position: relative;
     font-weight: 800;
-    font-size: 22px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    font-size: 1.25rem;
+    display: flex;
+    flex-direction: row;
     text-align: right;
     color: white;
     text-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -11,6 +11,7 @@
     /* border: 8px solid #fef9c3; */
     border-radius: 0.25rem;
     overflow: hidden;
+    width: fit-content;
 }
 
 .clock-stand {

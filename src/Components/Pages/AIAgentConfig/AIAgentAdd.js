@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useForm } from 'react-hook-form';
-import { requiredValidator } from '../../validations/validation';
+import { lengthValidator, numberValidator, requiredValidator } from '../../validations/validation';
 import { backToTop, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
@@ -128,6 +128,8 @@ const AIAgentAdd = () => {
                             className="formItem"
                             {...register("ainumber", {
                               ...requiredValidator,
+                              ...numberValidator,
+                              ...lengthValidator(8, 14),
                             })}
                           />
                           {errors.ainumber && (
