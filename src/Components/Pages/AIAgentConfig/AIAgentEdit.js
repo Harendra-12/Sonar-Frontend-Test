@@ -149,7 +149,7 @@ const AIAgentEdit = () => {
                             {...register("ainumber", {
                               ...requiredValidator,
                               ...numberValidator,
-                              ...lengthValidator(8, 12),
+                              ...lengthValidator(8, 14),
                             })}
                           />
                           {errors.ainumber && (
