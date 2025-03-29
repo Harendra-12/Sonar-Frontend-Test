@@ -1,11 +1,25 @@
+import Tippy from "@tippyjs/react";
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
+import Hover from 'wavesurfer.js/dist/plugins/hover.esm.js'
 
 const AudioWaveformCommon = ({ audioUrl }) => {
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [error, setError] = useState(null);
+    const [playBackSpeed, setPlayBackSpeed] = useState(1);
+
+    const [currentTime, setCurrentTime] = useState("0:00");
+    const [duration, setDuration] = useState("0:00");
+
+    const hover = Hover.create({
+        lineColor: '#ff0000',
+        lineWidth: 2,
+        labelBackground: '#555',
+        labelColor: '#fff',
+        labelSize: '11px',
+    });
 
     useEffect(() => {
         if (!waveformRef.current) return;
@@ -13,19 +27,25 @@ const AudioWaveformCommon = ({ audioUrl }) => {
         // Initialize WaveSurfer
         wavesurfer.current = WaveSurfer.create({
             container: waveformRef.current,
-            waveColor: "#4F46E5",
-            progressColor: "#2563EB",
-            barWidth: 4,
+            waveColor: "#656666",
+            progressColor: "#EE772F",
+            barWidth: 2,
+            // barGap: 1,
             responsive: true,
-            height: 100,
+            height: 70,
             cursorWidth: 1,
             cursorColor: "#D1D5DB",
+            plugins: [hover]
         });
+
+        wavesurfer.current.on("decode", (dur) => setDuration(formatTime(dur)));
+        wavesurfer.current.on("timeupdate", (time) => setCurrentTime(formatTime(time)));
+
         wavesurfer.current.on('ready', () => {
-            togglePlay();
+            wavesurfer.current.playPause();
         });
         wavesurfer.current.on('interaction', () => {
-            togglePlay();
+            wavesurfer.current.play();
         })
 
 
@@ -67,26 +87,88 @@ const AudioWaveformCommon = ({ audioUrl }) => {
         };
     }, [audioUrl]);
 
-    const togglePlay = () => {
-        if (!error && wavesurfer.current.isReady) {
-            setIsPlaying(!isPlaying);
-            wavesurfer.current.playPause();
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secondsRemainder = Math.round(seconds) % 60;
+        return `${minutes}:${secondsRemainder.toString().padStart(2, "0")}`;
+    };
+
+    const handlePlayPause = () => {
+        if (wavesurfer.current) {
+            if (wavesurfer.current.isPlaying()) {
+                setIsPlaying(false);
+                wavesurfer.current.playPause();
+            } else {
+                setIsPlaying(true);
+                wavesurfer.current.playPause();
+            }
+
         }
     };
 
+    const togglePlay = () => {
+        wavesurfer.current.playPause();
+    };
+
+
+    let preservePitch = true
+    const speeds = [0.25, 0.5, 1, 2, 4]
+
+    const handlePitchPreserve = (e) => {
+        if (wavesurfer.current) {
+            preservePitch = e.target.checked
+            wavesurfer.current.setPlaybackRate(wavesurfer.current.getPlaybackRate(), preservePitch)
+        }
+    }
+
+    const handleSpeedChange = () => {
+        if (wavesurfer.current) {
+            wavesurfer.current.setPlaybackRate(playBackSpeed, preservePitch)
+            wavesurfer.current.play();
+        }
+    }
+
+    useEffect(() => {
+        handleSpeedChange()
+    }, [playBackSpeed])
+
     return (
-        <div className="p-4 border rounded-md" style={{ width: '100%' }}>
+        <div className="d-flex justify-content-center align-items-center" style={{ width: '100%' }}>
             {error && <div className="text-red-500 mb-2">{error}</div>}
-            <div ref={waveformRef} style={{ width: '100%' }}></div>
+
+            <div ref={waveformRef} style={{ width: '75%', position: "relative" }}>
+                <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
+                <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
+            </div>
             {/* <button
-                className={`mt-2 px-4 py-2 text-white rounded ${
-                    error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
-                }`}
+                className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
+                    }`}
                 onClick={togglePlay}
                 disabled={error || !wavesurfer.current?.isReady}
             >
                 {isPlaying ? "Pause" : "Play"}
             </button> */}
+            <div className="customAudioControls" style={{ width: '25%' }}>
+                <button className="clearButton2 xl" onClick={handlePlayPause}>
+                    <i className={`fa-solid fa-${isPlaying ? 'pause' : 'play'}`}></i>
+                </button>
+                <div className="d-flex align-items-center">
+                    <div className="me-4">
+                        <div className="d-flex justify-content-between">
+                            <label class="form-label mb-0">0.5x</label>
+                            <label class="form-label mb-0 fw-bold">{playBackSpeed}x</label>
+                            <label class="form-label mb-0">4x</label>
+                        </div>
+                        <input type="range" class="form-range" min="0.5" max="4" step="0.5" onChange={(e) => setPlayBackSpeed(e.target.value)} value={playBackSpeed} />
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" onChange={(e) => handlePitchPreserve(e)} defaultChecked={true} />
+                        <label class="form-check-label">
+                            Preserve Pitch
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
