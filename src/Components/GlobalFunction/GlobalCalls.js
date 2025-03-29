@@ -399,16 +399,39 @@ function GlobalCalls() {
 
   useEffect(() => {
     async function logOut() {
-      const apiData = await generalGetFunction("/logout");
-      // localStorage.clear();
-      navigate("/");
-      if (apiData?.status) {
+      try {
+        // First close all websocket connections
+        if (window.socketInstances) {
+          window.socketInstances.forEach((socket) => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.close(1000, "Logging out");
+            }
+          });
+          window.socketInstances = [];
+        }
+
+        // Clear token first to prevent new socket connections
+        localStorage.removeItem("token");
+
+        // Then make the logout API call
+        const apiData = await generalGetFunction("/logout");
+
+        // Clear remaining localStorage and Redux state
         localStorage.clear();
-        dispatch({
-          type: "SET_ACCOUNT",
-          account: null,
-        });
+
+        // Reset Redux state before navigation
+        dispatch({ type: "RESET_STATE" });
+        dispatch({ type: "SET_ACCOUNT", account: null });
         dispatch({ type: "SET_LOGOUT", logout: 0 });
+
+        // Navigate last
+        navigate("/");
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Still clear everything even if API call fails
+        localStorage.clear();
+        dispatch({ type: "RESET_STATE" });
+        navigate("/");
       }
     }
     if (logout > 0) {

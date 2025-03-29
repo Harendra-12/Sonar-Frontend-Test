@@ -402,7 +402,10 @@ const counterReducer = (state = initialState, action) => {
         dummyPassword: action.dummyPassword,
       };
     case "RESET_STATE":
-      return initialState;
+      return {
+        ...initialState,
+        logout: 0, // Ensure logout flag is reset
+      };
     case "SET_LOGOUT":
       return {
         ...state,
