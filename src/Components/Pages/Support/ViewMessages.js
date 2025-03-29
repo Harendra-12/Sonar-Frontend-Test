@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header'
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import React, { useState } from 'react'
 
 
@@ -43,10 +43,84 @@ function ViewMessages() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        className="col-12 col-xl-12 col-lg-12 col-xxl-12 callDetails eFaxCompose" >
+                                    <div className="col-12 col-xl-12 col-lg-12 col-xxl-12 callDetails eFaxCompose" >
                                         <div className="row">
-                                            <div className="col-12">
+                                            <div className='col-4'>
+                                                <div className='allticketshow mt-4'>
+
+
+
+                                                   
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Status :
+
+                                                        </p>
+                                                        <span class="tableLabel success">
+                                                            Open
+                                                        </span>
+                                                    </div>
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Email :
+
+                                                        </p>
+                                                        <span>
+                                                            mauryarishabh@gmail.com
+                                                        </span>
+                                                    </div>
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Created On  :
+
+                                                        </p>
+                                                        <span>
+                                                            3/29/2025 12:44pm
+                                                        </span>
+                                                    </div>
+
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Subject :
+
+                                                        </p>
+                                                        <span>
+                                                            require toools
+                                                        </span>
+                                                    </div>
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Department :
+
+
+                                                        </p>
+                                                        <span>
+                                                            SUPPORT
+                                                        </span>
+                                                    </div>
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Query Type:
+
+
+                                                        </p>
+                                                        <span>
+                                                            Major
+                                                        </span>
+                                                    </div>
+                                                    <div className='d-flex align-items-center justify-content-between border-btmo'>
+                                                        <p>
+                                                            Massage
+
+                                                        </p>
+                                                        <span>
+                                                            fix this bugs pending works
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div className="col-8">
                                                 <div className="messageOverlay">
                                                     <div className="contactHeader">
                                                         <div>
@@ -238,6 +312,7 @@ function ViewMessages() {
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
