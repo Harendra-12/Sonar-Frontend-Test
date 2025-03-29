@@ -52,7 +52,6 @@ export const DummySipRegisteration = ({
     } else {
       setNewMessage(true);
     }
-
   }, [conferenceMessage]);
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -185,7 +184,7 @@ export const DummySipRegisteration = ({
             if (
               confLists.status &&
               confLists?.data !==
-              `-ERR Conference ${locationState.state.room_id} not found\n`
+                `-ERR Conference ${locationState.state.room_id} not found\n`
             ) {
               setConfList(
                 JSON?.parse?.(confLists?.data)
@@ -242,16 +241,20 @@ export const DummySipRegisteration = ({
     const connectWebSocket = () => {
       const socket = new WebSocket(`wss://${ip}:${port}?type=admin`);
 
-      socket.onopen = () => {
-      };
+      // Track socket instance
+      if (!window.socketInstances) {
+        window.socketInstances = [];
+      }
+      window.socketInstances.push(socket);
+
+      socket.onopen = () => {};
       socket.onmessage = (event) => {
         if (typeof JSON.parse(event.data) === "string") {
           if (JSON.parse(JSON.parse(event.data))["key"] === "Conference") {
-
             setConferenceData(
               JSON.parse(JSON.parse(event.data))["result"]["Conference-Name"] ==
-              locationState.state.room_id &&
-              JSON.parse(JSON.parse(event.data))["result"]
+                locationState.state.room_id &&
+                JSON.parse(JSON.parse(event.data))["result"]
             );
           } else if (
             JSON.parse(JSON.parse(event.data))["key"] === "screenShare"
@@ -266,14 +269,15 @@ export const DummySipRegisteration = ({
             JSON.parse(JSON.parse(event.data))["key"] === "conferenceMessage"
           ) {
             if (
-              JSON.parse(JSON.parse(event.data))["result"]["room_id"] == locationState.state.room_id) {
+              JSON.parse(JSON.parse(event.data))["result"]["room_id"] ==
+              locationState.state.room_id
+            ) {
               // Store conference message as an object with previous data
               dispatch({
                 type: "SET_CONFERENCEMESSAGE",
-                conferenceMessage: JSON.parse(JSON.parse(event.data))["result"]
-              })
+                conferenceMessage: JSON.parse(JSON.parse(event.data))["result"],
+              });
             }
-
           }
         } else {
         }
@@ -299,6 +303,9 @@ export const DummySipRegisteration = ({
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
+        window.socketInstances = window.socketInstances.filter(
+          (s) => s !== socketRef.current
+        );
       }
     };
   }, [dummySession]);
@@ -336,7 +343,7 @@ export const DummySipRegisteration = ({
             hold: conferenceData["Hold"],
             isYou:
               conferenceData["Caller-Caller-ID-Name"] ===
-                locationState.state.name
+              locationState.state.name
                 ? true
                 : false,
             deaf: false,
@@ -377,7 +384,7 @@ export const DummySipRegisteration = ({
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] ===
-                  locationState.state.name
+                locationState.state.name
                   ? true
                   : false,
               deaf: false,
@@ -432,7 +439,7 @@ export const DummySipRegisteration = ({
               hold: conferenceData["Hold"],
               isYou:
                 conferenceData["Caller-Caller-ID-Name"] ===
-                  locationState.state.name
+                locationState.state.name
                   ? true
                   : false,
               deaf: false,
@@ -759,11 +766,11 @@ export const DummySipRegisteration = ({
                                 <div className="videoHolder">
                                   <div className="activeGuyName">
                                     {conferenceScreenShareStatus?.sharedMessage ==
-                                      true
+                                    true
                                       ? conferenceScreenShareStatus.user
                                       : selectedConferenceUser?.name !== ""
-                                        ? selectedConferenceUser?.name
-                                        : currentUser?.name}
+                                      ? selectedConferenceUser?.name
+                                      : currentUser?.name}
                                     {/* {locationState?.name} */}
                                   </div>
                                   {dummySession !== "" ? (
@@ -786,11 +793,11 @@ export const DummySipRegisteration = ({
                                     <div className="justify-content-center h-100 d-flex align-items-center text-white fs-1">
                                       <div className="contactViewProfileHolder">
                                         {conferenceScreenShareStatus?.sharedMessage ==
-                                          true
+                                        true
                                           ? conferenceScreenShareStatus?.user
                                           : selectedConferenceUser?.name !== ""
-                                            ? selectedConferenceUser?.name
-                                            : currentUser?.name}
+                                          ? selectedConferenceUser?.name
+                                          : currentUser?.name}
                                       </div>
                                     </div>
                                   )}
@@ -896,13 +903,14 @@ export const DummySipRegisteration = ({
                                     className={
                                       toggleMessages
                                         ? "appPanelButtonCallerRect active"
-                                        : newMessage ? "appPanelButtonCallerRect notif" : "appPanelButtonCallerRect"
+                                        : newMessage
+                                        ? "appPanelButtonCallerRect notif"
+                                        : "appPanelButtonCallerRect"
                                     }
                                     onClick={() => {
                                       setToggleMessages(!toggleMessages);
                                       setNewMessage(false);
-                                    }
-                                    }
+                                    }}
                                   >
                                     <i className="fa-light fa-messages"></i>
                                   </button>
@@ -927,8 +935,9 @@ export const DummySipRegisteration = ({
                               {/* )} */}
                             </div>
                             <div
-                              className={`conferenceParticipantsWrapper ${participantMiniview ? "" : "hidden"
-                                }`}
+                              className={`conferenceParticipantsWrapper ${
+                                participantMiniview ? "" : "hidden"
+                              }`}
                             >
                               <div className="py-2 px-3 pe-2">
                                 <button
@@ -944,11 +953,19 @@ export const DummySipRegisteration = ({
                                   }}
                                 >
                                   <i
-                                    className={`fa-regular fa-chevron-${participantMiniview ? "right" : "left"
-                                      }`}
+                                    className={`fa-regular fa-chevron-${
+                                      participantMiniview ? "right" : "left"
+                                    }`}
                                   ></i>
                                 </button>
-                                <div className="noScrollbar" style={{ height: '100vh', overflowY: 'auto', paddingLeft: '10px' }}>
+                                <div
+                                  className="noScrollbar"
+                                  style={{
+                                    height: "100vh",
+                                    overflowY: "auto",
+                                    paddingLeft: "10px",
+                                  }}
+                                >
                                   {confList.map((item, index) => {
                                     return (
                                       <ConferenceUserTab
