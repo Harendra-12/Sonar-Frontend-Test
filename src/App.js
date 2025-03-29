@@ -161,6 +161,7 @@ import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
 import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
+import LiveChat from "./Components/Pages/Support/LiveChat";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -817,7 +818,7 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          {/* <Route path="/ticket" element={<Ticket />} /> */}
+          <Route path="/live-chat" element={<LiveChat />} />
           <Route path="/ticket" element={<Ticket />} />
           <Route path="/view-massage" element={<ViewMessages />} />
 
