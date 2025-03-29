@@ -206,13 +206,16 @@ function GetDid() {
   useEffect(() => {
     fetchAllCountry();
 
-    Promise.all([
-      setValue('searchType', "tollfree"),
-      setValue('quantity', 10),
-      setValue('searchBy', "npa"),
-    ]).then(() => {
+    setValue('searchType', "tollfree");
+    setValue('quantity', 10);
+    setValue('searchBy', "npa");
+    setValue('country', "US");
+
+    const timer = setTimeout(() => {
       handleSubmit(onSubmit)();
-    });
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [])
 
   const fetchAllCountry = async () => {
@@ -221,13 +224,14 @@ function GetDid() {
       if (apiData?.status) {
         setAvailableCountries(apiData.data);
         if (apiData.data.find(item => item.country_code === "US")) {
-          setSelectedCountry("US")
+          setValue('country', "US");
         }
       }
     } catch (err) {
       console.log(err);
     }
   }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -275,8 +279,11 @@ function GetDid() {
                         )}
                       </div>
                       <div className="col-12">
-                        <select className="formItem" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}
-                          {...register("country")}
+                        <select className="formItem"
+                          value={watch().country}
+                          {...register("country", {
+                            ...requiredValidator,
+                          })}
                         >
                           {availableCountries.length > 0 ? availableCountries.map((item, key) => {
                             return (
