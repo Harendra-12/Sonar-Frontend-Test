@@ -152,7 +152,9 @@ function AvailableDeviceList({ header = true, extensionData }) {
   }
   return (
     <>
-      <main className="mainContent">
+      <main
+        className={header == false ? "mainContentAgents ms-0" : "mainContent"}
+      >
         <section id="phonePage">
           {/* {loading ? (
                         <div colSpan={99}>
