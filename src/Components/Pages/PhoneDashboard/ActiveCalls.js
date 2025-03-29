@@ -141,12 +141,15 @@ function ActiveCalls({ isWebrtc, filter }) {
             <th>Feature Tag</th>
             <th>CID Number</th>
             <th>Destination</th>
+            {filter === "all" && <th>Direction</th>}
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
             {isWebrtc !== false && <th className="text-align">Hang Up</th>}
           </tr>
         </thead>
         <tbody>
+          {console.log(filterCalls)
+          }
           {filterCalls &&
             filterCalls
               .filter(
@@ -164,6 +167,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     <td>{item.feature_tag}</td>
                     <td>{item.cid_num}</td>
                     <td>{item.dest}</td>
+                    {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.b_direction}</td>}
                     <td>{item.duration}</td>
                     {isWebrtc !== false && <td>
                       <select
