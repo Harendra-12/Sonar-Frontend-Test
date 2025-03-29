@@ -23,6 +23,7 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
   const logout = useSelector((state) => state.logout);
 
   const navigate = useNavigate();
@@ -35,12 +36,14 @@ function GlobalCalls() {
   // );
   const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
- 
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (account && account?.account_id) {
       async function getData() {
-        const apiData = await generalGetFunction(`/call-details?account=${account.account_id}`);
+        const apiData = await generalGetFunction(
+          `/call-details?account=${account.account_id}`
+        );
         if (apiData?.status) {
           dispatch({
             type: "SET_ALLCALL",
@@ -48,10 +51,8 @@ function GlobalCalls() {
           });
           dispatch({
             type: "SET_ALLCALLDETAILS",
-            allCallDetails: apiData?.cdr_filters
-            ,
+            allCallDetails: apiData?.cdr_filters,
           });
-          
         }
       }
 
@@ -150,7 +151,7 @@ function GlobalCalls() {
         const AssignedCallcenter = [...details].filter((queue) =>
           queue.agents.some((agent) => Number(agent.agent_name) == Id)
         );
-        let CallerId = null; 
+        let CallerId = null;
         if (AssignedCallcenter.length > 0) {
           dispatch({
             type: "SET_OPEN_CALLCENTER_POPUP",
@@ -301,14 +302,16 @@ function GlobalCalls() {
           type: "SET_PERMISSIONS",
           permissions: permissionData.data,
         });
-        localStorage.setItem("permissions",JSON.stringify(permissionData.data))
+        localStorage.setItem(
+          "permissions",
+          JSON.stringify(permissionData.data)
+        );
       }
     }
     if (permissionRefresh > 0 && localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);
-
 
   // Getting ivr details
   useEffect(() => {
@@ -327,6 +330,22 @@ function GlobalCalls() {
       getData();
     }
   }, [ivrRefresh]);
+
+  // Getting aiAgents details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/ainumber/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_AIAGENTS",
+          aiAgents: apiData.data,
+        });
+      }
+    }
+    if (aiAgentsRefresh > 0) {
+      getData();
+    }
+  }, [aiAgentsRefresh]);
 
   // Getting device provisioning details
   useEffect(() => {
@@ -378,8 +397,6 @@ function GlobalCalls() {
     }
   }, []);
 
-
- 
   useEffect(() => {
     async function logOut() {
       const apiData = await generalGetFunction("/logout");
@@ -391,14 +408,13 @@ function GlobalCalls() {
           type: "SET_ACCOUNT",
           account: null,
         });
-        dispatch({ type: "SET_LOGOUT", logout: 0 })
-
+        dispatch({ type: "SET_LOGOUT", logout: 0 });
       }
     }
     if (logout > 0) {
-      logOut()
+      logOut();
     }
-  }, [logout])
+  }, [logout]);
   return <div></div>;
 }
 
