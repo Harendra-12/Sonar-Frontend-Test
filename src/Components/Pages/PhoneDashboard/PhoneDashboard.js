@@ -89,7 +89,7 @@ function PhoneDashboard() {
 
 
 
-  
+
   useEffect(() => {
     if (registerUser.length > 0) {
 
@@ -225,7 +225,6 @@ function PhoneDashboard() {
       }));
       const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateString}&end_date=${endDateString}`);
       if (apiCall.status) {
-        console.log(apiCall);
         setGraphData((prevGraphData) => ({
           ...prevGraphData,
           numberOfCall: apiCall.filtered
@@ -336,7 +335,6 @@ function PhoneDashboard() {
       }));
       const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
       if (apiCall.status) {
-        console.log(apiCall);
         setGraphData((prevGraphData) => ({
           ...prevGraphData,
           callCostPerHour: apiCall.filtered
@@ -644,7 +642,7 @@ function PhoneDashboard() {
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
                       {graphLoading.totalCallMin == 1 ? (
                         <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
-                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                             <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                           </div>
                         </div>) :
@@ -750,7 +748,7 @@ function PhoneDashboard() {
                     <div className='d-flex flex-wrap justify-content-between mt-1'>
                       {graphLoading.numberOfCall == 1 ? (
                         <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
-                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                             <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                           </div>
                         </div>
@@ -863,7 +861,7 @@ function PhoneDashboard() {
                       {graphLoading.callCostPerHour == 1 ?
                         (
                           <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
-                            <div className="itemWrapper a addNew d-flex justify-content-center align-items-center">
+                            <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                               <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                             </div>
                           </div>

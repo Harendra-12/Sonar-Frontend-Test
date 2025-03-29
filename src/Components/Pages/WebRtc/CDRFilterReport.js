@@ -14,7 +14,7 @@ import {
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -90,6 +90,7 @@ function CdrFilterReport({ page }) {
     "call_cost",
     "id",
   ]);
+  const locationState = useLocation();
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -300,6 +301,7 @@ function CdrFilterReport({ page }) {
     itemsPerPage,
     page,
     createdAt,
+    locationState
   ]);
 
   const getDateRange = (period) => {
@@ -476,6 +478,21 @@ function CdrFilterReport({ page }) {
       toast.error("Error during export:", error?.message);
     }
   };
+
+  // Filter To Set when Navigating from PBX Dashboard
+  useEffect(() => {
+    if (locationState.state !== null) {
+      setLoading(true);
+      const { filter, direction } = locationState.state;
+
+      setHagupCause(filter === "missed" ? "Missed" : filter === "completed" ? "Answered" : "");
+      setCallDirection(direction === "all" ? "" : direction);
+
+      setTimeout(() => {
+        refreshCallData();
+      }, 100)
+    }
+  }, [locationState])
 
   return (
     <>
@@ -822,6 +839,7 @@ function CdrFilterReport({ page }) {
                                   setHagupCause(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                value={hangupCause}
                               >
                                 <option value={""}>All</option>
                                 <option value={"Answered"}>Answer</option>

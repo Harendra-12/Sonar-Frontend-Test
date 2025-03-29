@@ -70,54 +70,87 @@ const RingGroup = () => {
         <div className="d-flex flex-wrap">
           <div className="col-12 accordion-button p-0 border-0 bg-transparent collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <div className="heading col-12">
-              <div className="content col-6">
+              <div className="content col-xxl-6 col-xl-5">
                 <h4>Ring Groups</h4>
                 <p>You can see a brief analysis of all the ring group</p>
               </div>
               <div className="d-flex col">
                 <div className="col-6">
-                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
-                    Active Calls:
-                    {activeCallData.filter(
-                      (e) =>
-                        e.b_callstate === "ACTIVE" ||
-                        e.b_callstate === "HELD"
-                    ).length}
-                  </p>
-                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
-                    Missed Calls:
-                    {allCallDetails?.filter_count?.filter(
-                      (item) =>
-                        item["Call-Direction"] == "missed" &&
-                        item.application_state == "ringgroup"
-                    )[0]?.filter_count || 0}
-                  </p>
+                  <div className="headingExtraInfo">
+                    <div className="col-8">
+                      <p>
+                        Active Calls:
+                      </p>
+                    </div>
+                    <div className="col-4">
+                      <p>
+                        {activeCallData.filter(
+                          (e) =>
+                            e.b_callstate === "ACTIVE" ||
+                            e.b_callstate === "HELD"
+                        ).length}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="headingExtraInfo">
+                    <div className="col-8">
+                      <p>
+                        Missed Calls:
+                      </p>
+                    </div>
+                    <div className="col-4">
+                      <p>
+                        {allCallDetails?.filter_count?.filter(
+                          (item) =>
+                            item["Call-Direction"] == "missed" &&
+                            item.application_state == "ringgroup"
+                        )[0]?.filter_count || 0}
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-6">
-                  <p class="p-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700, marginBottom: '5px' }}>
-                    Completed Calls:
-                    {allCallDetails?.filter_count?.filter(
-                      (item) =>
-                        item["Call-Direction"] == "inbound" &&
-                        item.application_state == "ringgroup"
-                    )[0]?.filter_count || 0}
-                  </p>
-                  <p class="p-0 m-0" style={{ fontSize: "14px", color: "var(--color-subtext)", fontWeight: 700 }}>
-                    Total Calls:
-                    {allCallDetails?.filter_count
-                      ?.filter((item) => {
-                        return (
-                          item.application_state === "ringgroup" &&
-                          (item["Call-Direction"] === "inbound" ||
-                            item["Call-Direction"] === "missed")
-                        );
-                      })
-                      .reduce(
-                        (acc, current) =>
-                          acc + (current?.filter_count || 0),
-                        0
-                      ) || 0}
-                  </p>
+                  <div className="headingExtraInfo">
+                    <div className="col-8">
+                      <p>
+                        Completed Calls:
+                      </p>
+                    </div>
+                    <div className="col-4">
+                      <p>
+                        {allCallDetails?.filter_count?.filter(
+                          (item) =>
+                            item["Call-Direction"] == "inbound" &&
+                            item.application_state == "ringgroup"
+                        )[0]?.filter_count || 0}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="headingExtraInfo">
+                    <div className="col-8">
+                      <p>
+                        Total Calls:
+                      </p>
+                    </div>
+                    <div className="col-4">
+                      <p>
+                        {allCallDetails?.filter_count
+                          ?.filter((item) => {
+                            return (
+                              item.application_state === "ringgroup" &&
+                              (item["Call-Direction"] === "inbound" ||
+                                item["Call-Direction"] === "missed")
+                            );
+                          })
+                          .reduce(
+                            (acc, current) =>
+                              acc + (current?.filter_count || 0),
+                            0
+                          ) || 0}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
