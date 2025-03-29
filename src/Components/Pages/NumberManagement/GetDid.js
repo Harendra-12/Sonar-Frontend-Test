@@ -59,6 +59,7 @@ function GetDid() {
       value: "voice",
     },
   ]);
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [popUp, setPopUp] = useState(false);
   const {
     register,
@@ -201,9 +202,18 @@ function GetDid() {
     return total + price;
   }, 0);
 
-  // Handle All Country Call
+  // Handle All Country Call & Basic API Call @ Page Start
   useEffect(() => {
     fetchAllCountry();
+
+    Promise.all([
+      setValue('searchType', "tollfree"),
+      setValue('quantity', 10),
+      setValue('searchBy', "npa"),
+      setValue('npa', "888"),
+    ]).then(() => {
+      handleSubmit(onSubmit)();
+    });
   }, [])
 
   const fetchAllCountry = async () => {
@@ -211,6 +221,9 @@ function GetDid() {
       const apiData = await generalGetFunction("/available-countries");
       if (apiData?.status) {
         setAvailableCountries(apiData.data);
+        if (apiData.data.find(item => item.country_code === "US")) {
+          setSelectedCountry("US")
+        }
       }
     } catch (err) {
       console.log(err);
@@ -263,7 +276,9 @@ function GetDid() {
                         )}
                       </div>
                       <div className="col-12">
-                        <select className="formItem" defaultValue="US">
+                        <select className="formItem" value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)}
+                          {...register("country")}
+                        >
                           {availableCountries.length > 0 ? availableCountries.map((item, key) => {
                             return (
                               <option key={key} value={item?.country_code}>
@@ -640,9 +655,6 @@ function GetDid() {
 
                             <div className="formRow col">
                               <div className="col-12">
-                                <div className="formLabel">
-                                  <label htmlFor=""></label>
-                                </div>
                                 <button
                                   effect="ripple"
                                   className="panelButton m-0"
@@ -653,10 +665,6 @@ function GetDid() {
                                     <i className="fa-solid fa-magnifying-glass"></i>
                                   </span>
                                 </button>
-                                <label
-                                  htmlFor="data"
-                                  className="formItemDesc text-start"
-                                ></label>
                               </div>
                             </div>
                           </form>
@@ -850,79 +858,85 @@ function GetDid() {
           </div>
         </div>
       </section>
-      {didBuyPopUP ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleBuyPopUp}
-                rechargeType={"buyDid"}
-                selectedDid={selectedDid}
-              />
+      {
+        didBuyPopUP ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleBuyPopUp}
+                  rechargeType={"buyDid"}
+                  selectedDid={selectedDid}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {rechargePopUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleRechargePopup}
-                rechargeType={"rechargeWallet"}
-              />
+        ) : (
+          ""
+        )
+      }
+      {
+        rechargePopUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleRechargePopup}
+                  rechargeType={"rechargeWallet"}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )
+      }
       {loading ? <CircularLoader /> : ""}
-      {popUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+      {
+        popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
-                    Are you sure you want to purchase{" "}
-                    {selectedDid?.length > 1 ? "these" : "this"} DID?
-                  </p>
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0 float-end"
-                      onClick={() => handlePayment()}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check" /></span>
-                    </button>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon"><i className="fa-solid fa-xmark" /></span>
-                    </button>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      Are you sure you want to purchase{" "}
+                      {selectedDid?.length > 1 ? "these" : "this"} DID?
+                    </p>
+                    <div className="mt-2 d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0 float-end"
+                        onClick={() => handlePayment()}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i className="fa-solid fa-check" /></span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon"><i className="fa-solid fa-xmark" /></span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )
+      }
+    </main >
   );
 }
 
