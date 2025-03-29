@@ -42,10 +42,12 @@ const AudioWaveformCommon = ({ audioUrl }) => {
         wavesurfer.current.on("timeupdate", (time) => setCurrentTime(formatTime(time)));
 
         wavesurfer.current.on('ready', () => {
-            wavesurfer.current.playPause();
+            wavesurfer.current.play();
+            setIsPlaying(true);
         });
         wavesurfer.current.on('interaction', () => {
             wavesurfer.current.play();
+            setIsPlaying(true);
         })
 
 
@@ -133,7 +135,7 @@ const AudioWaveformCommon = ({ audioUrl }) => {
     }, [playBackSpeed])
 
     return (
-        <div className="d-flex justify-content-center align-items-center" style={{ width: '100%' }}>
+        <div className="d-flex justify-content-center align-items-center p-2" style={{ width: '100%' }}>
             {error && <div className="text-red-500 mb-2">{error}</div>}
 
             <div ref={waveformRef} style={{ width: '75%', position: "relative" }}>
