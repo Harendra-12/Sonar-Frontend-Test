@@ -210,7 +210,6 @@ function GetDid() {
       setValue('searchType', "tollfree"),
       setValue('quantity', 10),
       setValue('searchBy', "npa"),
-      setValue('npa', "888"),
     ]).then(() => {
       handleSubmit(onSubmit)();
     });
