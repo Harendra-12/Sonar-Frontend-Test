@@ -59,3 +59,13 @@ audio {
 .audio-container canvas {
   width: 100%;
 }
+
+.customAudioControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--ele-color);
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  padding: 10px 15px;
+}

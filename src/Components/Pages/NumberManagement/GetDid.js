@@ -145,7 +145,7 @@ function GetDid() {
         type: "wallet",
         didType: "random",
         // rate: Number(selectedDid[0].price) * selectedDid.length,
-        accountId: selectedDid[0].vendorAccountId,
+        accountId: selectedDid.find((item) => (item.vendorAccountId))?.vendorAccountId,
         dids: selectedDid.map((item) => {
           return {
             did: !item.id ? item.phone_number : item.id,
