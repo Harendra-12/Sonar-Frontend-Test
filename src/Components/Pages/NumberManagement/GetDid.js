@@ -140,21 +140,16 @@ function GetDid() {
     if (paymentMethod === "wallet") {
       const parsedData = {
         companyId: account.account_id,
-        vendorId: selectedDid[0].vendorId,
+        // vendorId: selectedDid[0].vendorId,
         didQty: selectedDid.length,
         type: "wallet",
         didType: "random",
-        rate: Number(selectedDid[0].price) * selectedDid.length,
+        // rate: Number(selectedDid[0].price) * selectedDid.length,
         accountId: selectedDid[0].vendorAccountId,
         dids: selectedDid.map((item) => {
-          if (!item.id) {
-            return {
-              dids: item.phone_number
-            }
-          } else {
-            return {
-              dids: item.id,
-            }
+          return {
+            did: !item.id ? item.phone_number : item.id,
+            vendorId: item.vendorId
           }
         }),
       };
