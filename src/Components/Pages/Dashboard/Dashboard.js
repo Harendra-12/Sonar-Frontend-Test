@@ -453,10 +453,6 @@ const Dashboard = () => {
                             </div>
                             <div className="col-auto">
                               <div className="clock-wrapper">
-                                {/* clock stand */}
-                                <div className="clock-stand">
-                                  <div />
-                                </div>
                                 {/* left timer */}
                                 <div className="timer">
                                   <div className="timer-bg">
@@ -464,7 +460,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{String(new Date().getHours()).padStart(2, "0")}</div>
+                                  <div className="timer-value">{String(new Date().getHours() > 12 ? new Date().getHours() - 12 : new Date().getHours()).padStart(2, "0")}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
@@ -478,6 +474,18 @@ const Dashboard = () => {
                                     <div />
                                   </div>
                                   <div className="timer-value">{String(new Date().getMinutes()).padStart(2, "0")}</div>
+                                  {/* line across middle */}
+                                  <div className="timer-line">
+                                    <div />
+                                  </div>
+                                </div>
+                                <div className="timer">
+                                  <div className="timer-bg">
+                                    {/* background squares */}
+                                    <div />
+                                    <div />
+                                  </div>
+                                  <div className="timer-value">{String(new Date().getHours() > 12) ? 'PM' : 'AM'}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
