@@ -147,9 +147,15 @@ function GetDid() {
         rate: Number(selectedDid[0].price) * selectedDid.length,
         accountId: selectedDid[0].vendorAccountId,
         dids: selectedDid.map((item) => {
-          return {
-            dids: item.id,
-          };
+          if (!item.id) {
+            return {
+              dids: item.phone_number
+            }
+          } else {
+            return {
+              dids: item.id,
+            }
+          }
         }),
       };
       if (
@@ -701,7 +707,7 @@ function GetDid() {
 
                                           return (
                                             <tr>
-                                              <td>{item.didSummary}</td>
+                                              <td>{item.friendly_name ? item.friendly_name : item.didSummary}</td>
                                               <td>
                                                 <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
                                                   {
@@ -768,7 +774,7 @@ function GetDid() {
                                     {selectedDid.map((item) => {
                                       return (
                                         <li>
-                                          {item.didSummary}{" "}
+                                          {item.friendly_name ? item.friendly_name : item.didSummary}{" "}
                                           <span className="float-end">${item.price}</span>
                                         </li>
                                       );
