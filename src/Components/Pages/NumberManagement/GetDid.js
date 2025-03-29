@@ -153,9 +153,6 @@ function GetDid() {
           }
         }),
       };
-      console.log(parsedData);
-
-      return;
       if (
         Number(accountDetails?.balance?.amount) <
         Number(selectedDid[0].price) * selectedDid.length
