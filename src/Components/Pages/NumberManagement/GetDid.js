@@ -155,7 +155,8 @@ function GetDid() {
       };
       if (
         Number(accountDetails?.balance?.amount) <
-        Number(selectedDid[0].price) * selectedDid.length
+        // Number(selectedDid[0].price) * selectedDid.length
+        totalPrice
       ) {
         toast.error("Wallet balance is low");
       } else {

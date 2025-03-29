@@ -136,41 +136,44 @@ const AudioWaveformCommon = ({ audioUrl }) => {
 
     return (
         <div className="d-flex justify-content-center align-items-center p-2" style={{ width: '100%' }}>
-            {error && <div className="text-red-500 mb-2">{error}</div>}
-
-            <div ref={waveformRef} style={{ width: '75%', position: "relative" }}>
-                <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
-                <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
-            </div>
-            {/* <button
-                className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
-                    }`}
-                onClick={togglePlay}
-                disabled={error || !wavesurfer.current?.isReady}
-            >
-                {isPlaying ? "Pause" : "Play"}
-            </button> */}
-            <div className="customAudioControls" style={{ width: '25%' }}>
-                <button className="clearButton2 xl" onClick={handlePlayPause}>
-                    <i className={`fa-solid fa-${isPlaying ? 'pause' : 'play'}`}></i>
-                </button>
-                <div className="d-flex align-items-center">
-                    <div className="me-4">
-                        <div className="d-flex justify-content-between">
-                            <label class="form-label mb-0">0.5x</label>
-                            <label class="form-label mb-0 fw-bold">{playBackSpeed}x</label>
-                            <label class="form-label mb-0">4x</label>
+            {error ? <div className="text-red-500 my-2">{error}</div> :
+                (
+                    <>
+                        <div ref={waveformRef} style={{ width: '75%', position: "relative" }}>
+                            <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
+                            <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
                         </div>
-                        <input type="range" class="form-range" min="0.5" max="4" step="0.5" onChange={(e) => setPlayBackSpeed(e.target.value)} value={playBackSpeed} />
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" onChange={(e) => handlePitchPreserve(e)} defaultChecked={true} />
-                        <label class="form-check-label">
-                            Preserve Pitch
-                        </label>
-                    </div>
-                </div>
-            </div>
+                        <div className="customAudioControls" style={{ width: '25%' }}>
+                            {/* <button
+                                className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
+                                    }`}
+                                onClick={togglePlay}
+                                disabled={error || !wavesurfer.current?.isReady}
+                            >
+                                {isPlaying ? "Pause" : "Play"}
+                            </button> */}
+                            <button className="clearButton2 xl" onClick={handlePlayPause}>
+                                <i className={`fa-solid fa-${isPlaying ? 'pause' : 'play'}`}></i>
+                            </button>
+                            <div className="d-flex align-items-center">
+                                <div className="me-4">
+                                    <div className="d-flex justify-content-between">
+                                        <label class="form-label mb-0">0.5x</label>
+                                        <label class="form-label mb-0 fw-bold">{playBackSpeed}x</label>
+                                        <label class="form-label mb-0">4x</label>
+                                    </div>
+                                    <input type="range" class="form-range" min="0.5" max="4" step="0.5" onChange={(e) => setPlayBackSpeed(e.target.value)} value={playBackSpeed} />
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" onChange={(e) => handlePitchPreserve(e)} defaultChecked={true} />
+                                    <label class="form-check-label">
+                                        Preserve Pitch
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
         </div>
     );
 };
