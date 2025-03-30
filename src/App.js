@@ -188,12 +188,28 @@ function App() {
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
-  const token = localStorage.getItem("token");
+  Socket();
 
+  // Unlock this if want push notification add account edit here if id is available
+  // useEffect(()=>{
+  //   const token = generateToken().then((res)=>console.log("This is from response",res))
+  //   if(token){
+  //   }
+
+  //   onMessage(messaging,(payload)=>{
+  //   })
+  // },[account])
+  // useEffect(() => {
+  //   if (localStorage.getItem("token") !== null) {
+  //     dispatch({
+  //       type: "SET_DOMAINREFRESH",
+  //       domainRefresh: domainRefresh + 1,
+  //     });
+  //   }
+  // }, []);
+  window.dynamicId = 10;
   return (
     <>
-      {/* Socket component should return null, not an object */}
-      {token && <Socket />}
       <GoogleTranslate />
       <Router>
         <NavigationSetter />
@@ -237,20 +253,9 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/phone-dashboard" element={<PhoneDashboard />} />
           <Route path="/active-calls" element={<ActiveCallsPage />} />
-          <Route
-            path="/custom-module"
-            element={
-              checkViewSidebar(
-                "Usage",
-                slugPermissions,
-                account?.permissions
-              ) ? (
-                <CustomModule />
-              ) : (
-                <Navigate to="/dashboard" replace />
-              )
-            }
-          />
+          <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
+            <Navigate to="/dashboard" replace />
+          )} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -261,7 +266,7 @@ function App() {
               checkViewSidebar(
                 "Ringgroup",
                 slugPermissions,
-                account?.permissions
+                account?.permissions,
               ) ? (
                 <RingGroups />
               ) : (
@@ -305,11 +310,7 @@ function App() {
           <Route
             path="/users"
             element={
-              checkViewSidebar(
-                "User",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+              checkViewSidebar("User", slugPermissions, account?.permissions) ? (
                 <Users />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -474,11 +475,7 @@ function App() {
           <Route
             path="/cdr-report"
             element={
-              checkViewSidebar(
-                "ChannelHangupComplete",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+              checkViewSidebar("ChannelHangupComplete", slugPermissions, account?.permissions) ? (
                 <CdrFilterReport page="all" />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -529,11 +526,7 @@ function App() {
           <Route
             path="/port-number"
             element={
-              checkViewSidebar(
-                "Port",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+              checkViewSidebar("Port", slugPermissions, account?.permissions) ? (
                 <PortNumber />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -546,8 +539,7 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,
-                "add"
+                account?.permissions, "add"
               ) ? (
                 <PortNumberAdd />
               ) : (
@@ -561,8 +553,7 @@ function App() {
               checkViewSidebar(
                 "Port",
                 slugPermissions,
-                account?.permissions,
-                "edit"
+                account?.permissions, "edit"
               ) ? (
                 <PortNumberEdit />
               ) : (
@@ -603,8 +594,7 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,
-                "edit"
+                account?.permissions, "edit"
               ) ? (
                 <CallCenterQueueEdit />
               ) : (
@@ -618,8 +608,7 @@ function App() {
               checkViewSidebar(
                 "CallCenterQueue",
                 slugPermissions,
-                account?.permissions,
-                "add"
+                account?.permissions, "add"
               ) ? (
                 <CallCenterQueueAdd />
               ) : (
@@ -641,11 +630,7 @@ function App() {
           <Route
             path="/roles"
             element={
-              checkViewSidebar(
-                "Role",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+              checkViewSidebar("Role", slugPermissions, account?.permissions) ? (
                 <Roles />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -664,11 +649,11 @@ function App() {
                 slugPermissions,
                 account?.permissions
               ) &&
-              checkViewSidebar(
-                "BillingAddress",
-                slugPermissions,
-                account?.permissions
-              ) ? (
+                checkViewSidebar(
+                  "BillingAddress",
+                  slugPermissions,
+                  account?.permissions
+                ) ? (
                 <CardAndBilling />
               ) : (
                 <Navigate to="/dashboard" replace />
@@ -719,8 +704,7 @@ function App() {
               checkViewSidebar(
                 "MailSetting",
                 slugPermissions,
-                account?.permissions,
-                "edit"
+                account?.permissions, "edit"
               ) ? (
                 <MailSettingsEdit />
               ) : (
@@ -751,8 +735,7 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,
-                "add"
+                account?.permissions, "add"
               ) ? (
                 <IvrAdd />
               ) : (
@@ -780,8 +763,7 @@ function App() {
               checkViewSidebar(
                 "IvrMaster",
                 slugPermissions,
-                account?.permissions,
-                "edit"
+                account?.permissions, "edit"
               ) ? (
                 <IvrEdit />
               ) : (
@@ -858,20 +840,15 @@ function App() {
           <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
 
+
           {/* ----------- Third Party Addons */}
-          <Route
-            path="/all-third-party-apps"
-            element={<AllThirdPartyConfig />}
-          />
+          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
           <Route path="/all-addons" element={<AllAddons />} />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 
           <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
-          <Route
-            path="/whatsapp-config-edit"
-            element={<WhatsAppConfigEdit />}
-          />
+          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
 
           <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
 
@@ -882,6 +859,9 @@ function App() {
           <Route path="/ai-agent-add" element={<AIAgentAdd />} />
           <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
           {/* AI Routes */}
+
+
+
 
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />
