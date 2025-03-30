@@ -81,12 +81,12 @@ function Email() {
                             />
                           </div>
                           <div className="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
                         <ul className="dropdown-menu">
-                          <li onClick={() => {dispatch({ type: "SET_LOGOUT", logout: 1 });sessionManager.disconnect()}}>
+                          <li onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
                             <div
                               className="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -115,7 +115,7 @@ function Email() {
                     <span>
                       {account && extension ? (
                         <span>
-                          {account.username} - {account && extension}
+                          {account?.username} - {account && extension}
                         </span>
                       ) : (
                         <span className="text-danger">

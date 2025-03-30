@@ -25,7 +25,7 @@ const CallCenter = ({ initial }) => {
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-    const { sessionManager } = useSIPProvider();
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
   useEffect(() => {
@@ -66,21 +66,21 @@ const CallCenter = ({ initial }) => {
     }
   }, [Id, callCenter]);
   // Function to handle logout
- const handleLogOut = async () => {
-     setLoading(true);
-     try {
-       const apiResponses = await logout(
-         allCallCenterIds,
-         dispatch,
-         sessionManager
-       );
-     } catch (error) {
-       console.error("Unexpected error in handleLogOut:", error);
-       alert("Something went wrong. Please try again.");
-     } finally {
-       setLoading(false);
-     }
-   };
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -154,7 +154,7 @@ const CallCenter = ({ initial }) => {
                           />
                         </div>
                         <div className="profileName">
-                          {account.username}{" "}
+                          {account?.username}{" "}
                           <span className="status">Available</span>
                         </div>
                       </div>
@@ -319,7 +319,7 @@ const CallCenterListItem = ({
       }
       return total;
     }, 0);
-    
+
     setTotalTime(totalBreakTimeInMs / 1000);
 
     const ongoingBreak = filteredData.find(

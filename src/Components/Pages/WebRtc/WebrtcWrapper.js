@@ -34,7 +34,7 @@ const WebrtcWrapper = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
   console.log("token", token);
-  
+
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
@@ -212,7 +212,7 @@ const WebrtcWrapper = () => {
     });
   }, []);
 
-  
+
   useEffect(() => {
     sessionStorage.setItem("tabSession", "active");
 
@@ -532,7 +532,7 @@ const WebrtcWrapper = () => {
         {conferenceToggle || memberId ? (
           <ConferenceCall
             conferenceId={conferenceId}
-            name={account.username}
+            name={account?.username}
             extension_id={`${account?.extension?.extension}@${account?.domain?.domain_name}`}
             room_id={conferenceId}
             setactivePage={setactivePage}
