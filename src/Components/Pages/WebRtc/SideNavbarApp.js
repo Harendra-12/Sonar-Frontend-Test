@@ -4,8 +4,10 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import { useNavigate } from "react-router-dom";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
+  const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
@@ -88,10 +90,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
             </li>
             <li style={{ cursor: "pointer" }}>
               <div
-                 onClick={() => setactivePage("e-fax")}
-                 className={
-                   activePage === "e-fax" ? "navItem active" : "navItem"
-                 }
+                onClick={() => setactivePage("e-fax")}
+                className={
+                  activePage === "e-fax" ? "navItem active" : "navItem"
+                }
               >
                 <div className="iconHolder">
                   <i className="fa-regular fa-paper-plane"></i>
@@ -168,17 +170,18 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
               </li>
             }
-            <li style={{ cursor: "pointer" }}>
-            <div
-                  onClick={() => featureUnderdevelopment()}
+            {account?.user_role?.roles?.name !== "Agent" || isCustomerAdmin ?
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => navigate('/dashboard')}
                   className="navItem"
                 >
                   <div className="iconHolder">
-                  <i className="fa-light fa-screwdriver-wrench"></i>
+                    <i className="fa-light fa-screwdriver-wrench"></i>
                   </div>
                   <div className="itemTitle">Switch Admin</div>
                 </div>
-            </li>
+              </li> : ""}
           </ul>
         </div>
       </div>
