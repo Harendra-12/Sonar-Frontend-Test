@@ -22,21 +22,12 @@ const Socket = () => {
 
   useEffect(() => {
     let reconnectAttempts = 0;
-    let socketInstance = null;
 
     const connectWebSocket = () => {
-      if (!token) return;
-
       const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
-      socketInstance = socket;
-
-      if (!window.socketInstances) {
-        window.socketInstances = [];
-      }
-      window.socketInstances.push(socket);
 
       socket.onopen = () => {
-        reconnectAttempts = 0;
+        reconnectAttempts = 0; // Reset reconnect attempts
       };
 
       socket.onmessage = (event) => {
@@ -57,10 +48,7 @@ const Socket = () => {
               dispatch({ type: "SET_LOGINUSER", loginUser: result });
               break;
             case "Balance":
-              dispatch({
-                type: "SET_ACCOUNTBALANCE",
-                accountBalance: result?.amount,
-              });
+              dispatch({ type: "SET_ACCOUNTBALANCE", accountBalance: result?.amount });
               break;
             case "CallState":
               dispatch({ type: "SET_CALLSTATE", callState: result });
@@ -76,17 +64,10 @@ const Socket = () => {
               break;
             case "activeCalls":
               dispatch({
-                type: "SET_ACTIVECALL",
-                activeCall: result
-                  .filter(
-                    (item) =>
-                      item.application_state !== "conference" &&
-                      item.account_id == account.account_id
-                  )
-                  .map((item) => ({
-                    ...item,
-                    serverTime: current_time,
-                  })),
+                type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({
+                  ...item,
+                  "serverTime": current_time
+                }))
               });
               break;
             case "Conference":
@@ -101,16 +82,17 @@ const Socket = () => {
             case "broadcastGroupMessage":
               dispatch({
                 type: "SET_GROUPMESSAGE",
-                groupMessage: result,
-              });
+                groupMessage: result
+              })
               break;
             case "conferenceMessage":
-              if (result["room_id"] == RoomID) {
+              if (
+                result["room_id"] == RoomID) {
                 // Store conference message as an object with previous data
                 dispatch({
                   type: "SET_CONFERENCEMESSAGE",
-                  conferenceMessage: result,
-                });
+                  conferenceMessage: result
+                })
               }
               break;
             case "progressive":
@@ -131,9 +113,9 @@ const Socket = () => {
       };
 
       socket.onclose = () => {
-        if (localStorage.getItem("token") && reconnectAttempts < 5) {
+        if (reconnectAttempts < 5) {
           reconnectAttempts++;
-          setTimeout(connectWebSocket, 5000);
+          setTimeout(connectWebSocket, 5000); // Retry after 5 seconds
         }
       };
 
@@ -144,19 +126,14 @@ const Socket = () => {
       connectWebSocket();
     }
 
-    // Cleanup function
     return () => {
-      if (socketInstance) {
-        socketInstance.close();
-        window.socketInstances = window.socketInstances.filter(
-          (s) => s !== socketInstance
-        );
+      if (socketRef.current) {
+        socketRef.current.close();
       }
     };
   }, [account, dispatch, token, ip, port]);
 
-  // Return null instead of the socket object
-  return null;
+  return { sendMessage };
 };
 
 export default Socket;
