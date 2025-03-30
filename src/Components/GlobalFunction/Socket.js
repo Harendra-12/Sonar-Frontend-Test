@@ -11,6 +11,7 @@ const Socket = () => {
   const token = localStorage.getItem("token");
   const socketRef = useRef(null);
   const RoomID = useSelector((state) => state.RoomID);
+  const isLogOut = useSelector((state) => state.logout);
   // Function to send messages
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
@@ -24,6 +25,11 @@ const Socket = () => {
     let reconnectAttempts = 0;
 
     const connectWebSocket = () => {
+
+      if (isLogOut == 1 || !localStorage.getItem("token")) {
+        return;
+      }
+
       const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
 
       socket.onopen = () => {
