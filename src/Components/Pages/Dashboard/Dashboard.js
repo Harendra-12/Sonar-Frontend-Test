@@ -440,7 +440,7 @@ const Dashboard = () => {
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col">
-                              <h5>{accountDetails?.country}</h5>
+                              <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
                               <p>Language: {account?.language}</p>
                               <p>
                                 TimeZone:{" "}
