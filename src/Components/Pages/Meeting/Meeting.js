@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, generalDeleteFunction, generalGetFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 function Meeting() {
     const [refreshState, setRefreshState] = useState(0);
@@ -17,6 +18,8 @@ function Meeting() {
     const [deleteId, setDeleteId] = useState('');
     const [moderatorPinId, setModeratorPinId] = useState('');
     const [participantPinId, setParticipantPinId] = useState('');
+    const [recordData, setRecorddata] = useState([]);
+    const [dataLoade, setdataLoader] = useState(true);
 
     useEffect(() => {
         async function getData() {
@@ -43,6 +46,41 @@ function Meeting() {
         } else {
             setLoading(false);
             setDeleteId('');
+        }
+    }
+
+    async function handleGetRecord(id) {
+        setdataLoader(true);
+        axios.get(`https://api.webvio.in/recordings?roomName=${id}`).then((res) => {
+            setRecorddata(res.data.recordings);
+            setdataLoader(false);
+        }).catch((err) => {
+            setdataLoader(false);
+        })
+
+    }
+
+    console.log(recordData, "recordData");
+    function formatTimestamp(nanoseconds) {
+        console.log(nanoseconds, "nanoseconds");
+        
+        const milliseconds = Number(nanoseconds) / 1_000_000; // Convert safely
+        const date = new Date(milliseconds);
+    
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+    
+        return `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+    }
+
+    async function handleShare(filename) {
+        const apidata = await generatePreSignedUrl(filename);
+        if (apidata?.status) {
+            window.open(apidata.url, "_blank");
         }
     }
     return (
@@ -149,8 +187,8 @@ function Meeting() {
                                                                 conference?.data?.map((item, key) => {
                                                                     return (
                                                                         <>
-                                                                            <tr key={key} data-bs-toggle="collapse" href={`#meeting${key}`} role="button">
-                                                                                <td>{item.conf_name}</td>
+                                                                            <tr key={key} data-bs-toggle="collapse" href={`#meeting${key}`} role="button" onClick={() => handleGetRecord(item.id)}>
+                                                                                <td >{item.conf_name}</td>
                                                                                 <td>{item.conf_max_members}</td>
                                                                                 <td>{item.conf_ext}</td>
                                                                                 <td><div className='d-flex align-items-center justify-content-start '>
@@ -186,34 +224,41 @@ function Meeting() {
                                                                                             <thead>
                                                                                                 <tr>
                                                                                                     <th>
-                                                                                                        Field 1
+                                                                                                        Sl No.
                                                                                                     </th>
                                                                                                     <th>
-                                                                                                        Field 1
+                                                                                                        Date
                                                                                                     </th>
                                                                                                     <th>
-                                                                                                        Action 1
+                                                                                                        Share
                                                                                                     </th>
                                                                                                     <th>
-                                                                                                        Action 2
+                                                                                                        Delete
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </thead>
                                                                                             <tbody>
-                                                                                                <tr>
-                                                                                                    <td>Info 1</td>
-                                                                                                    <td>Info 1</td>
-                                                                                                    <td>
-                                                                                                        <button className='tableButton' onClick={() => setViewVideoPopup(true)}>
-                                                                                                            <i className='fa-solid fa-eye' />
-                                                                                                        </button>
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <button className='tableButton delete'>
-                                                                                                            <i className='fa-solid fa-trash' />
-                                                                                                        </button>
-                                                                                                    </td>
-                                                                                                </tr>
+                                                                                                {
+                                                                                                    dataLoade ? <SkeletonTableLoader col={4} row={5} /> : recordData.map((item,key) => {
+                                                                                                        return (
+                                                                                                            <tr>
+                                                                                                                <td>{key+1}</td>
+                                                                                                                <td>{formatTimestamp(item?.fileUrl?.file?.startedAt)}</td>
+                                                                                                                <td>
+                                                                                                                    <button className='tableButton' onClick={() =>handleShare(item?.fileUrl?.file?.filename) }>
+                                                                                                                        <i className='fa-solid fa-eye' />
+                                                                                                                    </button>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <button className='tableButton delete'>
+                                                                                                                        <i className='fa-solid fa-trash' />
+                                                                                                                    </button>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        )
+                                                                                                    })
+                                                                                                }
+
                                                                                             </tbody>
                                                                                         </table>
                                                                                     </div>
