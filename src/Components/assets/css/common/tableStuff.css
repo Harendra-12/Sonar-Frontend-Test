@@ -16,7 +16,7 @@ table th {
 
 table thead tr {
     /* background-color: var(--div-color); */
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color) !important;
 }
 
 table tbody tr {
@@ -218,20 +218,20 @@ table td.incoming::after {
 
 
 
-.searchBoxlable .para-line{
+.searchBoxlable .para-line {
     text-decoration: underline;
     font-size: 14px;
     font-weight: 500;
 
-    
-    
+
+
 }
 
 
 .searchBoxlable .inputWrappers {
     position: relative;
     /* display: flex; */
-    align-items:flex-end;
+    align-items: flex-end;
     /* border: 2px solid #ccc; */
     border-radius: 4px;
     padding: 0;
@@ -249,8 +249,8 @@ table td.incoming::after {
     background: transparent;
     border: 1px solid white;
     color: white;
-    
-;
+
+    ;
 }
 
 
