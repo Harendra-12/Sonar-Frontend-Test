@@ -14,7 +14,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
-import AudioPlayer from "../WebRtc/AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function Music() {
@@ -371,7 +371,7 @@ function Music() {
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
-                                            <AudioPlayer audioUrl={audioURL} />
+                                              <AudioWaveformCommon audioUrl={audioURL} />
                                               {/* <audio
                                                 controls
                                                 autoPlay

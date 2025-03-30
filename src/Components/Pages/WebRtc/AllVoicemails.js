@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function AllVoicemails({ isCustomerAdmin }) {
@@ -902,7 +902,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                     {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                    <AudioPlayer audioUrl={audioURL} />
+                                    <AudioWaveformCommon audioUrl={audioURL} />
                                   </div>}
                                 </div>
                               </div>
@@ -1085,7 +1085,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                                       <button className="audioCustomButton ms-1">
                                                         <i className="fa-sharp fa-solid fa-box-archive" />
                                                       </button> */}
-                                                      <AudioPlayer audioUrl={audioURL} />
+                                                      <AudioWaveformCommon audioUrl={audioURL} />
                                                     </div>
                                                   </td>
 

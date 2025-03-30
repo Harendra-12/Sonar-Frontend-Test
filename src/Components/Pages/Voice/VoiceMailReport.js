@@ -9,7 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
-import AudioPlayer from "../WebRtc/AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function VoiceMailReport() {
@@ -189,12 +189,11 @@ function VoiceMailReport() {
                                       }}
                                     >
                                       <i
-                                        className={`fa-duotone fa-${
-                                          currentPlaying ==
-                                          item["recording_path"]
+                                        className={`fa-duotone fa-${currentPlaying ==
+                                            item["recording_path"]
                                             ? "stop"
                                             : "play"
-                                        }`}
+                                          }`}
                                       ></i>
                                     </button>
                                   </td>
@@ -218,7 +217,7 @@ function VoiceMailReport() {
                                             type="audio/mpeg"
                                           />
                                         </audio> */}
-                                            <AudioPlayer audioUrl={audioURL} />
+                                        <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
