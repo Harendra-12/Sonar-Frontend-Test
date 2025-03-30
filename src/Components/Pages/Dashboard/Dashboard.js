@@ -485,7 +485,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{String(new Date().getHours() > 12) ? 'PM' : 'AM'}</div>
+                                  <div className="timer-value">{new Date().getHours() > 12 ? 'PM' : 'AM'}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
