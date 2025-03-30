@@ -121,8 +121,7 @@ function KnowledgeBase() {
                                                                     <div className=" me-3">
                                                                         <i className="fa-solid fa-right-to-bracket"></i>
                                                                     </div>
-                                                                    <h6>Why can't I sign in to the Admin Portal or the RingCentral app?</h6>
-
+                                                                    <h6>Why can't I sign in to the Admin Portal or the WebRTC?</h6>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -136,7 +135,6 @@ function KnowledgeBase() {
                                                                         <i className="fa-solid fa-right-to-bracket"></i>
                                                                     </div>
                                                                     <h6>How do I create custom call rules for holidays or after hours?</h6>
-
                                                                 </div>
                                                             </div>
                                                         </div>
