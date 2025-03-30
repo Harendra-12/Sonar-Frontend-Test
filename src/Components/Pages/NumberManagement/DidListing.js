@@ -98,15 +98,18 @@ function DidListing({ page }) {
         `/did/configure/destroy/${id}`
       );
       if (apiData?.status) {
-        const newData = await generalGetFunction(`/did/all`);
-        if (newData?.status) {
-          setDid(newData.data);
-          toast.success(apiData.message);
-          setRefreshDid(refreshDid + 1);
-        } else {
-          toast.error(apiData.message);
-          // navigate(-1);
-        }
+        setLoading(false);
+        toast.success(apiData.message);
+        setRefreshDid(refreshDid + 1);
+        // const newData = await generalGetFunction(`/did/all`);
+        // if (newData?.status) {
+        //   setDid(newData.data);
+        //   toast.success(apiData.message);
+        //   setRefreshDid(refreshDid + 1);
+        // } else {
+        //   toast.error(apiData.message);
+        //   // navigate(-1);
+        // }
       }
     } catch (error) {
       console.error(error);
@@ -124,10 +127,11 @@ function DidListing({ page }) {
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
-      const newData = await generalGetFunction(`/did/all`);
-      if (newData?.status) {
-        setDid(newData.data);
-      }
+      // const newData = await generalGetFunction(`/did/all`);
+      // if (newData?.status) {
+      //   setDid(newData.data);
+      // }
+      setRefreshDid(refreshDid + 1)
     } else {
       setLoading(false);
     }
@@ -206,11 +210,11 @@ function DidListing({ page }) {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                     {  checkViewSidebar(
-                            'DidConfigure',
-                            slugPermissions,
-                            account?.permissions,"add"
-                          )&&   <button
+                        {checkViewSidebar(
+                          'DidConfigure',
+                          slugPermissions,
+                          account?.permissions, "add"
+                        ) && <button
                           type="button"
                           className="panelButton"
                           onClick={() => {
@@ -221,11 +225,11 @@ function DidListing({ page }) {
                             }
                           }}
                         >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-plus"></i>
-                          </span>
-                        </button>}
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>}
                       </div>
                     </div>
                   </div>
