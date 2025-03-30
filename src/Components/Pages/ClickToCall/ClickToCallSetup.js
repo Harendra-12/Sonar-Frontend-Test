@@ -206,8 +206,7 @@ function ClickToCallSetup() {
                                             htmlFor="data"
                                             className="formItemDesc"
                                           >
-                                            Please enter your company name and
-                                            logo.
+                                            Logo should be atleast <span className="text-danger fw-bold">100px x 100px</span> OR <span className="text-danger fw-bold">1:1</span> Dimension
                                           </label>
                                         </div>
 
@@ -221,7 +220,6 @@ function ClickToCallSetup() {
                                               const file = e.target.files[0];
                                               if (file) {
                                                 // Check if the file type is MP3
-
                                                 const fileName = file.name.replace(/ /g, "-");
                                                 const newFile = new File([file], fileName, {
                                                   type: file.type,
@@ -247,7 +245,7 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-7">
                                           <div className="d-flex align-items-center justify-content-between">
-                                            <div>
+                                            {/* <div>
                                               <div className="d-flex align-items-center justify-content-between">
                                                 <div className="tawk-colors-active ">
                                                   <div className="tawk-colors"
@@ -546,24 +544,29 @@ function ClickToCallSetup() {
                                                   </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                            <div className="form-widths">
-                                              {/* <input
-                                                className="formItem ms-1"
-                                                defaultValue={"#f42633"}
-                                                {...register("color")}
-                                                style={{ width: "100px" }}
-                                              /> */}
-                                              <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                <div className="d-flex align-items-center">
-                                                  <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
-                                                  <label className="ms-2">Choose Color</label>
+                                            </div> */}
+                                            <div className="form-widths d-flex">
+                                              <div className="me-2">
+                                                <input
+                                                  className="formItem ms-1"
+                                                  // value={baseColor || '#f42633'}
+                                                  // onChange={(newColor) => setValue("color", newColor)}
+                                                  {...register("color")}
+                                                  style={{ width: "100px" }}
+                                                />
+                                              </div>
+                                              <div>
+                                                <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                  <div className="d-flex align-items-center">
+                                                    <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
+                                                    <label className="ms-2">Choose Color</label>
+                                                  </div>
+                                                </button>
+                                                <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                  <HexColorPicker
+                                                    color={baseColor}
+                                                    onChange={(newColor) => setValue("color", newColor)} />
                                                 </div>
-                                              </button>
-                                              <div class="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
-                                                <HexColorPicker
-                                                  color={baseColor}
-                                                  onChange={(newColor) => setValue("color", newColor)} />
                                               </div>
                                             </div>
                                           </div>
@@ -583,23 +586,28 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-7">
                                           <div className="d-flex align-items-center justify-content-between">
-                                            <div class="form-widths">
-                                              {/* <input
-                                                className="formItem ms-1"
-                                                defaultValue={"#f42633"}
-                                                {...register("textcolor")}
-                                                style={{ width: "100px" }}
-                                              /> */}
-                                              <button class="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                <div className="d-flex align-items-center">
-                                                  <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
-                                                  <label className="ms-2">Choose Color</label>
+                                            <div class="form-widths d-flex">
+                                              <div className="me-2">
+                                                <input
+                                                  className="formItem ms-1"
+                                                  // value={textColor || '#17c100'}
+                                                  // onChange={(newColor) => setValue("textcolor", newColor)}
+                                                  {...register("textcolor")}
+                                                  style={{ width: "100px" }}
+                                                />
+                                              </div>
+                                              <div>
+                                                <button class="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                  <div className="d-flex align-items-center">
+                                                    <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
+                                                    <label className="ms-2">Choose Color</label>
+                                                  </div>
+                                                </button>
+                                                <div class="dropdown-menu p-0" aria-labelledby="textColorPicker">
+                                                  <HexColorPicker
+                                                    color={textColor}
+                                                    onChange={(newColor) => setValue("textcolor", newColor)} />
                                                 </div>
-                                              </button>
-                                              <div class="dropdown-menu p-0" aria-labelledby="textColorPicker">
-                                                <HexColorPicker
-                                                  color={textColor}
-                                                  onChange={(newColor) => setValue("textcolor", newColor)} />
                                               </div>
                                             </div>
                                           </div>
@@ -619,13 +627,16 @@ function ClickToCallSetup() {
                                         </div>
                                         <div className="col-7">
                                           <div className="d-flex align-items-center justify-content-between">
-                                            <div class="form-widths">
-                                              {/* <input
-                                                className="formItem ms-1"
-                                                defaultValue={"#f42633"}
-                                                {...register("textcolor")}
-                                                style={{ width: "100px" }}
-                                              /> */}
+                                            <div class="form-widths d-flex">
+                                              <div className="me-2">
+                                                <input
+                                                  className="formItem ms-1"
+                                                  // value={buttonColor || '#17c100'}
+                                                  // onChange={(newColor) => setValue("buttoncolor", newColor)}
+                                                  {...register("buttoncolor")}
+                                                  style={{ width: "100px" }}
+                                                />
+                                              </div>
                                               <button class="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                                 <div className="d-flex align-items-center">
                                                   <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>

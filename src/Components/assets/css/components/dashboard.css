@@ -556,6 +556,7 @@
     /* color: var(--ele-color); */
     color: var(--color-subtext);
     padding: 10px 10px;
+    font-size: 0.875rem;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {

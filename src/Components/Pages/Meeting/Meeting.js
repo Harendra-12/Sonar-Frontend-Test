@@ -13,6 +13,7 @@ function Meeting() {
     const [itemsPerPage, setItemsPerPage] = useState(20);
     const [searchValue, setSearchValue] = useState('');
     const [popUp, setPopUp] = useState(false);
+    const [viewVideoPopup, setViewVideoPopup] = useState(false);
     const [deleteId, setDeleteId] = useState('');
     const [moderatorPinId, setModeratorPinId] = useState('');
     const [participantPinId, setParticipantPinId] = useState('');
@@ -147,35 +148,78 @@ function Meeting() {
                                                             {conference &&
                                                                 conference?.data?.map((item, key) => {
                                                                     return (
-                                                                        <tr key={key}>
-                                                                            <td>{item.conf_name}</td>
-                                                                            <td>{item.conf_max_members}</td>
-                                                                            <td>{item.conf_ext}</td>
-                                                                            <td><div className='d-flex align-items-center justify-content-start '>
+                                                                        <>
+                                                                            <tr key={key} data-bs-toggle="collapse" href={`#meeting${key}`} role="button">
+                                                                                <td>{item.conf_name}</td>
+                                                                                <td>{item.conf_max_members}</td>
+                                                                                <td>{item.conf_ext}</td>
+                                                                                <td><div className='d-flex align-items-center justify-content-start '>
 
-                                                                                {moderatorPinId === item.id ? item.moderator_pin : "******"}
-                                                                                <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                            </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div className='d-flex align-items-center justify-content-start '>
-                                                                                    {participantPinId === item.id ? item.participate_pin : "******"}
-                                                                                    <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                    {moderatorPinId === item.id ? item.moderator_pin : "******"}
+                                                                                    <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
                                                                                 </div>
-                                                                            </td>
-                                                                            <td>{item.conf_url}</td>
-                                                                            <td>
-                                                                                <div
-                                                                                    className="tableButton delete"
-                                                                                    onClick={() => {
-                                                                                        setDeleteId(item.id);
-                                                                                        setPopUp(true);
-                                                                                    }}
-                                                                                >
-                                                                                    <i className="fa-solid fa-trash"></i>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div className='d-flex align-items-center justify-content-start '>
+                                                                                        {participantPinId === item.id ? item.participate_pin : "******"}
+                                                                                        <button onClick={() => setParticipantPinId(participantPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${participantPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>{item.conf_url}</td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        className="tableButton delete"
+                                                                                        onClick={() => {
+                                                                                            setDeleteId(item.id);
+                                                                                            setPopUp(true);
+                                                                                        }}
+                                                                                    >
+                                                                                        <i className="fa-solid fa-trash"></i>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            {/* Meeting Details Or Something */}
+                                                                            <tr class="collapse" id={`meeting${key}`}>
+                                                                                <td colSpan={99}>
+                                                                                    <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
+                                                                                        <table>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>
+                                                                                                        Field 1
+                                                                                                    </th>
+                                                                                                    <th>
+                                                                                                        Field 1
+                                                                                                    </th>
+                                                                                                    <th>
+                                                                                                        Action 1
+                                                                                                    </th>
+                                                                                                    <th>
+                                                                                                        Action 2
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td>Info 1</td>
+                                                                                                    <td>Info 1</td>
+                                                                                                    <td>
+                                                                                                        <button className='tableButton' onClick={() => setViewVideoPopup(true)}>
+                                                                                                            <i className='fa-solid fa-eye' />
+                                                                                                        </button>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <button className='tableButton delete'>
+                                                                                                            <i className='fa-solid fa-trash' />
+                                                                                                        </button>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </>
                                                                     );
                                                                 })}{" "}
                                                         </>
@@ -203,7 +247,6 @@ function Meeting() {
                                 <div className="col-10 ps-0">
                                     <h4>Warning!</h4>
                                     <p>
-
                                         Are you sure you want to delete this Meeting?
                                     </p>
                                     <div className="d-flex justify-content-between">
@@ -243,6 +286,15 @@ function Meeting() {
             ) : (
                 ""
             )}
+            {viewVideoPopup ? (
+                <div className='popup'>
+                    <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
+                        <div className='videoContainer'>
+                            <video />
+                        </div>
+                    </div>
+                </div>
+            ) : ""}
         </main>
     )
 }
