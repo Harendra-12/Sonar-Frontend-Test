@@ -7,7 +7,7 @@ import {
   featureUnderdevelopment,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 function CallDetails({
   clickedCall,
@@ -103,7 +103,7 @@ function CallDetails({
     }
   };
 
-  const handleTranscript=()=>{
+  const handleTranscript = () => {
 
 
   }
@@ -671,7 +671,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <AudioPlayer audioUrl={audioURL} />
+                                        <AudioWaveformCommon audioUrl={audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
