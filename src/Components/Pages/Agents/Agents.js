@@ -7,9 +7,13 @@ import {
   backToTop,
   checkViewSidebar,
   generalGetFunction,
+  generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import { toast } from "react-toastify";
+import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import axios from "axios";
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
@@ -21,6 +25,8 @@ function Agents({ type }) {
   const [userInput, setuserInput] = useState("");
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
+  const { confirm, ModalComponent } = PromptFunctionPopup();
+  const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -33,19 +39,21 @@ function Agents({ type }) {
 
   }, [logonUser]);
 
+  const getData = async () => {
+    setLoading(true);
+    const apiData = await generalGetFunction(
+      `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}&search=${userInput}`
+    );
+    if (apiData?.status) {
+      setAgents(apiData.data);
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
-      const apiData = await generalGetFunction(
-        `/agents?usages=${type}&row_per_page=${entriesPerPage}&page=${pageNumber}&search=${userInput}`
-      );
-      if (apiData?.status) {
-        setAgents(apiData.data);
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
-    };
+    getData();
     if (userInput.trim().length === 0) {
       getData();
     } else {
@@ -55,6 +63,37 @@ function Agents({ type }) {
       return () => clearTimeout(timer);
     }
   }, [entriesPerPage, pageNumber, type, userInput]);
+
+
+  // Handle Agent Logout Function
+  const handleAgentLogout = async (token) => {
+    if (token) {
+      const userConfirmed = await confirm();
+      if (userConfirmed) {
+        setLoading(true);
+        try {
+          const logOut = await axios.get(`${baseName}/logout?all`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          console.log(logOut);
+
+          if (logOut?.data.status) {
+            toast.success(logOut?.data.message);
+            setLoading(false);
+            getData();
+          } else {
+            toast.error(logOut?.data.message || logOut?.data.error);
+          }
+        } catch (err) {
+          console.log(err);
+          toast.error(err);
+          setLoading(false);
+        }
+      }
+    }
+  }
 
   return (
     <main className="mainContent">
@@ -152,6 +191,10 @@ function Agents({ type }) {
                               {checkViewSidebar(
                                 "CallCenterAgent",
                                 slugPermissions,
+                                account?.permissions, "edit") && <th>LogOut</th>}
+                              {checkViewSidebar(
+                                "CallCenterAgent",
+                                slugPermissions,
                                 account?.permissions, "edit") && <th>Edit</th>}
                               {/* <th>Status</th> */}
                             </tr>
@@ -175,6 +218,20 @@ function Agents({ type }) {
                                         }
                                       ></span>
                                     </td>
+                                    {(checkViewSidebar(
+                                      "CallCenterAgent",
+                                      slugPermissions,
+                                      account?.permissions, "edit")) && (onlineUsers.includes(item.id) && item.token != null) ?
+                                      <td>
+                                        <button
+                                          className="tableButton delete"
+                                          onClick={() => {
+                                            handleAgentLogout(item.token);
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-power-off"></i>
+                                        </button>
+                                      </td> : <td></td>}
                                     {checkViewSidebar(
                                       "CallCenterAgent",
                                       slugPermissions,
@@ -289,6 +346,7 @@ function Agents({ type }) {
             ) : (
                 ""
             )} */}
+      <ModalComponent task={"logout"} reference={"agent"} />
     </main>
   );
 }
