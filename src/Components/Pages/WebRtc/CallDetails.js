@@ -9,7 +9,7 @@ import {
   generalPostFunction,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 function CallDetails({
   clickedCall,
@@ -105,13 +105,9 @@ function CallDetails({
     }
   };
 
-  async function handleTranscript(url) {
-    console.log(url);
-    
-    const apiData = await generatePreSignedUrl(url)
-    if (apiData.status) {
-      const trnascript = await generalPostFunction("/transcribe-audio", { src: apiData.url })
-    }
+  const handleTranscript = () => {
+
+
   }
 
   const handlePlaying = async (audio) => {
@@ -682,7 +678,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <AudioPlayer audioUrl={audioURL} />
+                                        <AudioWaveformCommon audioUrl={audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
