@@ -1,12 +1,12 @@
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
 import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import CustomDashboardManage from '../Setting/CustomDashboardManage';
 import { useLocation } from 'react-router-dom';
-import CircularLoader from '../../Loader/CircularLoader';
+// import CircularLoader from '../../Loader/CircularLoader';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -197,6 +197,52 @@ function ActiveCallsPage({ isParentWebRtc }) {
             }
         }
     }
+    const convertDurationToSeconds = (duration) => {
+        const [hours, minutes, seconds] = duration.split(":").map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    };
+
+    const formatTime = (seconds) => {
+        const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+        const s = (seconds % 60).toString().padStart(2, "0");
+        return `${h}:${m}:${s}`;
+    };
+
+    const [updatedData, setUpdatedData] = useState([]);
+    const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
+    const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+
+    useEffect(() => {
+        ringingState.forEach((item) => {
+            if (!startTimestampsRef.current.has(item.uuid)) {
+                startTimestampsRef.current.set(item.uuid, Date.now());
+                initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+            }
+        });
+
+        const interval = setInterval(() => {
+            setUpdatedData((prevData) => {
+                return ringingState.map((item) => {
+                    const startTimestamp = startTimestampsRef.current.get(item.uuid);
+                    const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
+                    const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+
+                    // Calculate the correct updated duration without double adding
+                    const newDuration = initialDuration + elapsedTime;
+
+                    // Keep other properties unchanged except realTimeDuration
+                    return {
+                        ...item,
+                        realTimeDuration: formatTime(newDuration),
+                    };
+                });
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [ringingState]);
+
     return (
         <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
             <section id="phonePage">
@@ -447,7 +493,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.map((item, key) => {
+                                                                    activeCall && updatedData.map((item, key) => {
                                                                         return (
                                                                             <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#0f5132" : "" }}>
                                                                                 <td>{key + 1}</td>
@@ -455,7 +501,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -484,7 +530,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((call) => call.application_state === "ringgroup").map((item, key) => {
+                                                                    activeCall && updatedData.filter((call) => call.application_state === "ringgroup").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -492,7 +538,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -518,7 +564,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((call) => call.application_state === "callcenter").map((item, key) => {
+                                                                    activeCall && updatedData.filter((call) => call.application_state === "callcenter").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -526,7 +572,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -577,7 +623,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "internal").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "internal").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -585,7 +631,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -613,7 +659,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "inbound").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "inbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -621,7 +667,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -649,7 +695,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "outbound").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "outbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -657,7 +703,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>

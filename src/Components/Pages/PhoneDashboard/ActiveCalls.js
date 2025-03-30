@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -28,13 +28,6 @@ function ActiveCalls({ isWebrtc, filter }) {
   const [bargeStatus, setBargeStatus] = useState("disable");
   const [id, setId] = useState("");
   const [dest, setDest] = useState("")
-  // const [timer,setTimer]=useState(0)
-  // useEffect(() => {
-  //  setTimer(0)
-  // },[activeCall.length])
-  // setTimeout(() => {
-  //   setTimer(timer + 1);
-  // },1000);
   async function killCall(id) {
     setLoading(true);
     const apiData = await generalGetFunction(`/freeswitch/call-kill/${id}`);
@@ -130,6 +123,53 @@ function ActiveCalls({ isWebrtc, filter }) {
       return null;
     }
   }
+
+   const convertDurationToSeconds = (duration) => {
+          const [hours, minutes, seconds] = duration.split(":").map(Number);
+          return hours * 3600 + minutes * 60 + seconds;
+      };
+  
+      const formatTime = (seconds) => {
+          const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+          const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+          const s = (seconds % 60).toString().padStart(2, "0");
+          return `${h}:${m}:${s}`;
+      };
+  
+      const [updatedData, setUpdatedData] = useState([]);
+      const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
+      const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+  
+      useEffect(() => {
+          filterCalls.forEach((item) => {
+              if (!startTimestampsRef.current.has(item.uuid)) {
+                  startTimestampsRef.current.set(item.uuid, Date.now());
+                  initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+              }
+          });
+  
+          const interval = setInterval(() => {
+              setUpdatedData((prevData) => {
+                  return filterCalls.map((item) => {
+                      const startTimestamp = startTimestampsRef.current.get(item.uuid);
+                      const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
+                      const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+  
+                      // Calculate the correct updated duration without double adding
+                      const newDuration = initialDuration + elapsedTime;
+  
+                      // Keep other properties unchanged except realTimeDuration
+                      return {
+                          ...item,
+                          realTimeDuration: formatTime(newDuration),
+                      };
+                  });
+              });
+          }, 1000);
+  
+          return () => clearInterval(interval);
+      }, [filterCalls]);
+  
   return (
     <>
       <table>
@@ -151,7 +191,7 @@ function ActiveCalls({ isWebrtc, filter }) {
           {console.log(filterCalls)
           }
           {filterCalls &&
-            filterCalls
+            updatedData
               .filter(
                 (call) =>
                   call.b_callstate === "ACTIVE" || call.b_callstate === "HELD"
@@ -167,8 +207,8 @@ function ActiveCalls({ isWebrtc, filter }) {
                     <td>{item.feature_tag}</td>
                     <td>{item.cid_num}</td>
                     <td>{item.dest}</td>
-                    {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.b_direction}</td>}
-                    <td>{item.duration}</td>
+                    {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
+                    <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
                       <select
                         className="formItem"
