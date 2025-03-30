@@ -1756,7 +1756,7 @@ function Navbar() {
                           data-bs-toggle="collapse"
                           data-bs-target="#collapse12"
                           aria-expanded={
-                            isChildActive(["/knowledge-base", "/live-chat"])
+                            isChildActive(["/knowledge-base", "/ticket", "/view-massage"])
                               ? "true"
                               : "false"
                           }
@@ -1769,7 +1769,7 @@ function Navbar() {
                         </button>
                         <div
                           id="collapse12"
-                          className={`accordion-collapse collapse ${isChildActive(["/knowledge-base", "/live-chat"])
+                          className={`accordion-collapse collapse ${isChildActive(["/knowledge-base", "/ticket", "/view-massage"])
                             ? "show"
                             : ""
                             }`}
@@ -1797,13 +1797,12 @@ function Navbar() {
                               </li>
                               <li className="tabItem ">
                                 <Link
-                                  // to="/extensions"
+                                  // to="/ticket"
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/extensions-add",
-                                        "/extensions-edit",
+                                        "/view-massage",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )

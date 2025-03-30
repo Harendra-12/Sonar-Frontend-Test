@@ -10,81 +10,41 @@ function KnowledgeBase() {
                         <Header title="Knowledge Base" />
                     </div>
                 </div>
-                <div className='container-fluid px-0'>
+                <div className='container-fluid'>
                     <div className='row'>
-                        <div className="overviewTableWrapper0">
+                        <div className="overviewTableWrapper0 px-0">
                             <div className="overviewTableChild0">
                                 <div className="d-flex flex-wrap">
                                     <div className="col-12">
-                                        <div>
-                                            <div className='hero'>
-                                                <div className="heading">
-                                                    <div className="content mt-5 d-flex align-items-center justify-content-center">
-                                                        <h3 style={{ fontSize: "48px", color: "white" }} >How can we help you?</h3>
-                                                        {/* <p>You can see the list of Call Desposition</p> */}
-                                                    </div>
-                                                    {/* <div className="buttonGroup">
-                                                <button
-                                                    effect="ripple"
-                                                    className="panelButton gray">
-                                                    <span className="text">Back</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-caret-left"></i>
-                                                    </span>
-                                                </button>
-                                                <Link
-
-                                                    to="#"
-
-                                                    effect="ripple"
-                                                    className="panelButton" >
-                                                    <span className="text">Buy</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-cart-shopping"></i>
-                                                    </span>
-                                                </Link>
-                                            </div> */}
-                                                </div>
-                                                <div className='col-7 mx-auto'><div className="tableHeader0">
-                                                    {/* <div className="showEntries">
-                                                <label>Show</label>
-                                                <select
-                                                    className="formItem"
-
-                                                >
-                                                    <option value={10}>10</option>
-                                                    <option value={20}>20</option>
-                                                    <option value={30}>30</option>
-                                                </select>
-                                                <label>entries</label>
-                                            </div> */}
-                                                    <div className="searchBoxlable">
-                                                        <div className="inputWrappers">
-
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Search our article "
-                                                                className="formItem form-left" />
-                                                            <i className="fas fa-search searchIcon"></i>
-                                                        </div>
-                                                        <div className='mt-1 text-center'><p style={{ fontSize: "16px", color: "white", fontWeight:600 }}>Popular help articles :<span className='para-line'> Privacy FAQs,  How to Install Your Hotjar Tracking Code  </span></p></div>
-                                                    </div>
-                                                </div>
+                                        <div className='hero'>
+                                            <div className="heading">
+                                                <div className="content mt-5 d-flex align-items-center justify-content-center">
+                                                    <h3 style={{ fontSize: "48px", color: "white" }} >How can we help you?</h3>
                                                 </div>
                                             </div>
-
-
-                                            <div className='d-flex align-items-center justify-content-center'>
+                                            <div className='col-7 mx-auto'><div className="tableHeader0">
+                                                <div className="searchBoxlable">
+                                                    <div className="inputWrappers">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Search our article "
+                                                            className="formItem form-left" />
+                                                        <i className="fas fa-search searchIcon"></i>
+                                                    </div>
+                                                    <div className='mt-1 text-center'><p style={{ fontSize: "16px", color: "white", fontWeight: 600 }}>Popular help articles :<span className='para-line'> Privacy FAQs,  How to Install Your Hotjar Tracking Code  </span></p></div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        {/* <div className='d-flex align-items-center justify-content-center'>
                                                 <div className='content-artical'>
                                                     <p>FEATURED ARTICLE</p>
-                                                    <div  className='d-flex align-items-center justify-content-start icon-larges'>
+                                                    <div className='d-flex align-items-center justify-content-start icon-larges'>
                                                         <h3>Hotjar Certifications are now live </h3>
-
                                                         <i class="fa-solid fa-shield-virus"></i>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </div> */}
                                     </div>
                                     <div className="col-12"
                                         style={{ overflow: "auto", padding: "25px 20px 0", }} >

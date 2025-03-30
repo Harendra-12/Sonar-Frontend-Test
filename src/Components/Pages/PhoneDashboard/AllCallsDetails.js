@@ -37,10 +37,15 @@ function AllCallsDetails() {
                           ></i>
                         )}
                       </div>
-
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.totalCalls || 'N/A'}</p>
+                        <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
+                          <div>
+                            <span className="badge rounded-pill text-bg-primary">Active: {activeCall.length}</span>
+                          </div>
+                          <div className="ms-1">
+                            <span className="badge rounded-pill text-bg-primary">Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </button>
@@ -155,9 +160,14 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.inbound?.total || 'N/A'}
-                        </p>
+                        <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
+                          <div>
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy3)' }}>Active: {activeCall.length}</span>
+                          </div>
+                          <div className="ms-1">
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy3)' }}>Total:&nbsp;{callDetails?.inbound?.total || 'N/A'}</span>
+                          </div>
+                        </div>
                       </div>
 
                     </div>
@@ -278,9 +288,14 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.outbound?.total || 'N/A'}
-                        </p>
+                        <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
+                          <div>
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--color3)' }}>Active: {activeCall.length}</span>
+                          </div>
+                          <div className="ms-1">
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--color3)' }}>Total:&nbsp;{callDetails?.outbound?.total || 'N/A'}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </button>
@@ -399,9 +414,14 @@ function AllCallsDetails() {
                         )}
                       </div>
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
-                        <p className="p-0 m-0 me-4 pe-2" style={{ fontSize: '14px', color: 'var(--color-subtext)', fontWeight: 700 }}>Active: {activeCall.length} || Total:&nbsp;
-                          {callDetails?.internal?.total || 'N/A'}
-                        </p>
+                        <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
+                          <div>
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy4)' }}>Active: {activeCall.length}</span>
+                          </div>
+                          <div className="ms-1">
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy4)' }}>Total:&nbsp;{callDetails?.internal?.total || 'N/A'}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </button>

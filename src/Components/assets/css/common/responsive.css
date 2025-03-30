@@ -350,5 +350,9 @@
         --size: 200px;
     }
 
+    .headingExtraInfo span.badge.rounded-pill {
+        font-size: 0.625rem;
+    }
+
 
 }
