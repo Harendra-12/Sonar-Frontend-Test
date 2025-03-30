@@ -158,7 +158,7 @@ function ActiveCalls({ isWebrtc, filter }) {
               ).map
               ((item, key) => {
                 return (
-                  <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#0f5132" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
+                  <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#d1e7dd" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
                     <td>{key + 1}</td>
                     <td>{item.created.split(" ")[1]}</td>
                     <td>
