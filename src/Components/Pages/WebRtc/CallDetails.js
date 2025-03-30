@@ -5,6 +5,8 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  generalGetFunction,
+  generalPostFunction,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import AudioPlayer from "./AudioWaveForm";
@@ -103,9 +105,13 @@ function CallDetails({
     }
   };
 
-  const handleTranscript=()=>{
-
-
+  async function handleTranscript(url) {
+    console.log(url);
+    
+    const apiData = await generatePreSignedUrl(url)
+    if (apiData.status) {
+      const trnascript = await generalPostFunction("/transcribe-audio", { src: apiData.url })
+    }
   }
 
   const handlePlaying = async (audio) => {
@@ -633,8 +639,13 @@ function CallDetails({
                                         <li className="dropdown-item">
                                           <div
                                             className="clearButton text-align-start"
-                                            onClick={() =>
-                                              handleTranscript()
+                                            onClick={() => {
+                                              if (item?.recording_path) {
+                                                handleTranscript(
+                                                  item?.recording_path
+                                                );
+                                              }
+                                            }
                                             }
                                           >
                                             <i className="fa-solid fa-bolt me-2"></i>
