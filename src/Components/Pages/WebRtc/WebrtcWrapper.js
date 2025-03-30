@@ -30,7 +30,11 @@ import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
 
 const WebrtcWrapper = () => {
+  const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
+  const token = localStorage.getItem("token");
+  console.log("token", token);
+  
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
@@ -207,6 +211,46 @@ const WebrtcWrapper = () => {
       video.style.display = "none";
     });
   }, []);
+
+  
+  useEffect(() => {
+    sessionStorage.setItem("tabSession", "active");
+
+    const handleBeforeUnload = (event) => {
+      if (sessionStorage.getItem("tabSession") === "active") {
+        event.preventDefault();
+        event.returnValue = ""; // Show confirmation popup
+      }
+    };
+
+    const handlePageHide = (event) => {
+      // ✅ Check if it's a refresh
+      if (event.persisted) return; // Browser page restore (skip API)
+
+      const isRefresh = performance.getEntriesByType("navigation")[0]?.type === "reload";
+
+      if (!isRefresh && sessionStorage.getItem("tabSession") === "active" && token) {
+        // ✅ API call only on tab close
+        fetch(`${baseName}/logout`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          keepalive: true,
+        }).catch((err) => console.log("API call failed:", err));
+        localStorage.clear();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handlePageHide);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pagehide", handlePageHide);
+    };
+  }, [token]);
   return (
     <>
       <style>
