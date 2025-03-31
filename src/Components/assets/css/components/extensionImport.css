@@ -557,17 +557,21 @@ form.tangoNavs .nav-tabs {
     border-radius: 10px;
 }
 
-.overviewTableWrapper .accordion-button .headingExtraInfo {
+.headingExtraInfo {
     display: flex;
 }
 
-.overviewTableWrapper .accordion-button .headingExtraInfo p {
+.headingExtraInfo p {
     padding: 0;
     margin: 0;
     font-size: 0.875rem;
     color: var(--color-subtext);
     font-weight: 700;
     margin-bottom: 5px;
+}
+
+.headingExtraInfo span.badge.rounded-pill {
+    font-size: 0.75rem;
 }
 
 .image_wrap {

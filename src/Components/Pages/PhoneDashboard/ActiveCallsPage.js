@@ -1,12 +1,12 @@
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import ActiveCalls from './ActiveCalls';
 import { useSelector } from 'react-redux';
 import { checkViewSidebar, generalGetFunction } from '../../GlobalFunction/globalFunction';
 import CustomDashboardManage from '../Setting/CustomDashboardManage';
 import { useLocation } from 'react-router-dom';
-import CircularLoader from '../../Loader/CircularLoader';
+// import CircularLoader from '../../Loader/CircularLoader';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -197,13 +197,59 @@ function ActiveCallsPage({ isParentWebRtc }) {
             }
         }
     }
+    const convertDurationToSeconds = (duration) => {
+        const [hours, minutes, seconds] = duration.split(":").map(Number);
+        return hours * 3600 + minutes * 60 + seconds;
+    };
+
+    const formatTime = (seconds) => {
+        const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+        const s = (seconds % 60).toString().padStart(2, "0");
+        return `${h}:${m}:${s}`;
+    };
+
+    const [updatedData, setUpdatedData] = useState([]);
+    const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
+    const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+
+    useEffect(() => {
+        ringingState.forEach((item) => {
+            if (!startTimestampsRef.current.has(item.uuid)) {
+                startTimestampsRef.current.set(item.uuid, Date.now());
+                initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+            }
+        });
+
+        const interval = setInterval(() => {
+            setUpdatedData((prevData) => {
+                return ringingState.map((item) => {
+                    const startTimestamp = startTimestampsRef.current.get(item.uuid);
+                    const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
+                    const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+
+                    // Calculate the correct updated duration without double adding
+                    const newDuration = initialDuration + elapsedTime;
+
+                    // Keep other properties unchanged except realTimeDuration
+                    return {
+                        ...item,
+                        realTimeDuration: formatTime(newDuration),
+                    };
+                });
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [ringingState]);
+
     return (
         <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
             <section id="phonePage">
                 <div className="container-fluid">
                     <div className="row">
                         {!isParentWebRtc && <Header title="Active Calls" />}
-                        <div className="overviewTableWrapper">
+                        <div className="overviewTableWrapper p-3">
                             <div className='col-xl-12 mb-3'>
                                 <div className='row gy-4'>
                                     {
@@ -346,13 +392,13 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         <>
                                             <nav className='tangoNavs'>
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button onClick={() => setFilter("all")} className={`nav-link ${locationState?.state?.filter === "all" || locationState.state == null ? 'active' : ''}`} id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread ms-1">{activeState.length}</span></button>
-                                                    <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread ms-1" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
-                                                    <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread ms-1" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
+                                                    <button onClick={() => setFilter("all")} className={`nav-link ${locationState?.state?.filter === "all" || locationState.state == null ? 'active' : ''}`} id="nav-all-tab" data-bs-toggle="tab" data-bs-target="#nav-all" type="button" role="tab" aria-controls="nav-all" aria-selected="true">All <span className="unread">{activeState.length}</span></button>
+                                                    <button onClick={() => setFilter("ringgroup")} className="nav-link " id="nav-rgroup-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroup" type="button" role="tab" aria-controls="nav-rgroup" aria-selected="true">Ring Group <span className="unread" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{activeState.filter((call) => call.application_state === "ringgroup").length}</span></button>
+                                                    <button onClick={() => setFilter("callcenter")} className="nav-link" id="nav-ccenter-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenter" type="button" role="tab" aria-controls="nav-ccenter" aria-selected="false">Call Center <span className="unread" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{activeState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button onClick={() => setFilter("did")} className="nav-link" id="nav-did-tab" data-bs-toggle="tab" data-bs-target="#nav-did" type="button" role="tab" aria-controls="nav-did" aria-selected="false">DID</button>
-                                                    <button onClick={() => setFilter("internal")} className={`nav-link ${locationState?.state?.filter === "internal" ? 'active' : ''}`} id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread ms-1">{activeState.filter((call) => call.direction === "internal").length}</span></button>
-                                                    <button onClick={() => setFilter("inbound")} className={`nav-link ${locationState?.state?.filter === "inbound" ? 'active' : ''}`} id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
-                                                    <button onClick={() => setFilter("outbound")} className={`nav-link ${locationState?.state?.filter === "outbound" ? 'active' : ''}`} id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread ms-1">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
+                                                    <button onClick={() => setFilter("internal")} className={`nav-link ${locationState?.state?.filter === "internal" ? 'active' : ''}`} id="nav-internal-tab" data-bs-toggle="tab" data-bs-target="#nav-internal" type="button" role="tab" aria-controls="nav-internal" aria-selected="false">Internal <span className="unread">{activeState.filter((call) => call.direction === "internal").length}</span></button>
+                                                    <button onClick={() => setFilter("inbound")} className={`nav-link ${locationState?.state?.filter === "inbound" ? 'active' : ''}`} id="nav-inbound-tab" data-bs-toggle="tab" data-bs-target="#nav-inbound" type="button" role="tab" aria-controls="nav-inbound" aria-selected="false">Inbound <span className="unread" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{activeState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                    <button onClick={() => setFilter("outbound")} className={`nav-link ${locationState?.state?.filter === "outbound" ? 'active' : ''}`} id="nav-outbound-tab" data-bs-toggle="tab" data-bs-target="#nav-outbound" type="button" role="tab" aria-controls="nav-outbound" aria-selected="false">Outbound <span className="unread">{activeState.filter((call) => call.direction === "outbound").length}</span></button>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -421,13 +467,13 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         <>
                                             <nav className='tangoNavs'>
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button className="nav-link active" id="nav-allringing-tab" data-bs-toggle="tab" data-bs-target="#nav-allringing" type="button" role="tab" aria-controls="nav-allringing" aria-selected="true">All <span className="unread ms-1">{ringingState.length}</span></button>
-                                                    <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread ms-1" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
-                                                    <button className="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center <span className="unread ms-1" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{ringingState.filter((call) => call.application_state === "callcenter").length}</span></button>
+                                                    <button className="nav-link active" id="nav-allringing-tab" data-bs-toggle="tab" data-bs-target="#nav-allringing" type="button" role="tab" aria-controls="nav-allringing" aria-selected="true">All <span className="unread">{ringingState.length}</span></button>
+                                                    <button className="nav-link" id="nav-rgroupring-tab" data-bs-toggle="tab" data-bs-target="#nav-rgroupring" type="button" role="tab" aria-controls="nav-rgroupring" aria-selected="true">Ring Group <span className="unread" style={{ backgroundColor: 'rgb(221, 46, 47)' }}>{ringingState.filter((call) => call.application_state === "ringgroup").length}</span></button>
+                                                    <button className="nav-link" id="nav-ccenterring-tab" data-bs-toggle="tab" data-bs-target="#nav-ccenterring" type="button" role="tab" aria-controls="nav-ccenterring" aria-selected="false">Call Center <span className="unread" style={{ backgroundColor: 'rgb(1, 199, 142)' }}>{ringingState.filter((call) => call.application_state === "callcenter").length}</span></button>
                                                     <button className="nav-link" id="nav-didring-tab" data-bs-toggle="tab" data-bs-target="#nav-didring" type="button" role="tab" aria-controls="nav-didring" aria-selected="false">DID</button>
-                                                    <button className="nav-link" id="nav-internalring-tab" data-bs-toggle="tab" data-bs-target="#nav-internalring" type="button" role="tab" aria-controls="nav-internalring" aria-selected="false">Internal <span className="unread ms-1">{ringingState.filter((call) => call.direction === "internal").length}</span></button>
-                                                    <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound <span className="unread ms-1" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{ringingState.filter((call) => call.direction === "inbound").length}</span></button>
-                                                    <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread ms-1">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
+                                                    <button className="nav-link" id="nav-internalring-tab" data-bs-toggle="tab" data-bs-target="#nav-internalring" type="button" role="tab" aria-controls="nav-internalring" aria-selected="false">Internal <span className="unread">{ringingState.filter((call) => call.direction === "internal").length}</span></button>
+                                                    <button className="nav-link" id="nav-inboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-inboundring" type="button" role="tab" aria-controls="nav-inboundring" aria-selected="false">Inbound <span className="unread" style={{ backgroundColor: 'rgb(247, 167, 51)' }}>{ringingState.filter((call) => call.direction === "inbound").length}</span></button>
+                                                    <button className="nav-link" id="nav-outboundring-tab" data-bs-toggle="tab" data-bs-target="#nav-outboundring" type="button" role="tab" aria-controls="nav-outboundring" aria-selected="false">Outbound <span className="unread">{ringingState.filter((call) => call.direction === "outbound").length}</span></button>
                                                 </div>
                                             </nav>
                                             <div className="tab-content" id="nav-tabContent">
@@ -447,15 +493,15 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.map((item, key) => {
+                                                                    activeCall && updatedData.map((item, key) => {
                                                                         return (
-                                                                            <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#0f5132" : "" }}>
+                                                                            <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : "" }}>
                                                                                 <td>{key + 1}</td>
                                                                                 <td>{item.did_tag}</td>
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -484,7 +530,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((call) => call.application_state === "ringgroup").map((item, key) => {
+                                                                    activeCall && updatedData.filter((call) => call.application_state === "ringgroup").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -492,7 +538,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -518,7 +564,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((call) => call.application_state === "callcenter").map((item, key) => {
+                                                                    activeCall && updatedData.filter((call) => call.application_state === "callcenter").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -526,7 +572,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
                                                                             </tr>
                                                                         )
                                                                     })
@@ -577,7 +623,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "internal").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "internal").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -585,7 +631,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -613,7 +659,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "inbound").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "inbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -621,7 +667,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>
@@ -649,7 +695,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
                                                             <tbody>
                                                                 {
-                                                                    activeCall && ringingState.filter((item) => item.direction === "outbound").map((item, key) => {
+                                                                    activeCall && updatedData.filter((item) => item.direction === "outbound").map((item, key) => {
                                                                         return (
                                                                             <tr>
                                                                                 <td>{key + 1}</td>
@@ -657,7 +703,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                                 <td>{item.cid_name}</td>
                                                                                 <td>{item.dest}</td>
                                                                                 <td>{item.feature_tag}</td>
-                                                                                <td>{item.duration}</td>
+                                                                                <td>{item.realTimeDuration}</td>
 
                                                                                 {/* <td>{item.name.split("/")[1]}</td> */}
                                                                             </tr>

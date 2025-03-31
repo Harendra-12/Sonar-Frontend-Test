@@ -12,11 +12,11 @@ import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 
-function AvailableDeviceList() {
+function AvailableDeviceList({ header = true, extensionData }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const id = location.state.id;
-  const extension = location.state.extension;
+  const navId = location.state.id;
+  const navExtension = location.state.extension;
   const [allDevices, setAllDevices] = useState([]);
   const [provesionDevice, setProvesionDevice] = useState([]);
   const [selectDeviceEdit, setSelectDeviceEdit] = useState();
@@ -30,6 +30,21 @@ function AvailableDeviceList() {
   const [deleteId, setDeleteId] = useState("");
   const [status, setStatus] = useState("");
   const [softphoneName, setSoftphoneName] = useState();
+  const [id, setId] = useState();
+  const [extension, setExtension] = useState();
+
+  useEffect(() => {
+    // Guard clause to prevent destructuring undefined
+    if (!extensionData?.extension) {
+      setId(navId);
+      setExtension(navExtension);
+      return;
+    }
+
+    const { id, extension } = extensionData.extension;
+    setId(id || navId);
+    setExtension(extension || navExtension);
+  }, [extensionData, navId, navExtension]);
 
   useEffect(() => {
     async function getData() {
@@ -51,7 +66,7 @@ function AvailableDeviceList() {
       }
     }
     getData();
-  }, [refresh]);
+  }, [refresh, extension, id]);
 
   useEffect(() => {
     if (selectDeviceEdit === "soft") {
@@ -137,7 +152,9 @@ function AvailableDeviceList() {
   }
   return (
     <>
-      <main className="mainContent">
+      <main
+        className={header == false ? "mainContentAgents ms-0" : "mainContent"}
+      >
         <section id="phonePage">
           {/* {loading ? (
                         <div colSpan={99}>
@@ -146,9 +163,11 @@ function AvailableDeviceList() {
                     ) : (
                         ""
                     )} */}
-          <div className="container-fluid px-0">
-            <Header title="Device Provisioning" />
-          </div>
+          {header && (
+            <div className="container-fluid px-0">
+              <Header title="Device Provisioning" />
+            </div>
+          )}
           <div className="col-xl-12">
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">

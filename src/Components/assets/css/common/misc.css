@@ -1273,3 +1273,17 @@ input[type=number] {
 /* .popupopen ul li i {
     color: var(--ui-accent);
 } */
+
+.popup .videoContainer {
+    width: 80%;
+    height: 80%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+.popup .videoContainer video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

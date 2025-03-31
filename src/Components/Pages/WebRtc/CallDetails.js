@@ -5,9 +5,11 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  generalGetFunction,
+  generalPostFunction,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 function CallDetails({
   clickedCall,
@@ -103,9 +105,12 @@ function CallDetails({
     }
   };
 
-  const handleTranscript=()=>{
-
-
+  async function handleTranscript  (url) {
+    const newUrl = url.split(".com/").pop();
+    const presignData = await generatePreSignedUrl(newUrl);
+    if (presignData?.status && presignData?.url) {
+      const trnascript = await generalPostFunction("/transcribe-audio",{src:presignData?.url});
+    }
   }
 
   const handlePlaying = async (audio) => {
@@ -633,8 +638,13 @@ function CallDetails({
                                         <li className="dropdown-item">
                                           <div
                                             className="clearButton text-align-start"
-                                            onClick={() =>
-                                              handleTranscript()
+                                            onClick={() => {
+                                              if (item?.recording_path) {
+                                                handleTranscript(
+                                                  item?.recording_path
+                                                );
+                                              }
+                                            }
                                             }
                                           >
                                             <i className="fa-solid fa-bolt me-2"></i>
@@ -671,7 +681,7 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        <AudioPlayer audioUrl={audioURL} />
+                                        <AudioWaveformCommon audioUrl={audioURL} />
                                         {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}

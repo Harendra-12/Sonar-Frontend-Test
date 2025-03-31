@@ -283,7 +283,7 @@
 }
 
 .itemWrapper .moreInfo:hover {
-    /* background-color: #00000017; */
+    /* background-color: var(--immortalBlack)00017; */
     background-color: var(--bg-color);
     border-radius: 10px;
 }
@@ -396,7 +396,7 @@
     border: 1px solid #845adf;
     border-radius: 5px;
     color: #845adf;
-    background: #eee6ff;
+    background: var(--chart-tab-bg);
 }
 
 .itemWrapper.a .add-rings0 P {
@@ -408,7 +408,7 @@
     border: 1px solid #845adf;
     border-radius: 5px;
     color: #845adf;
-    background: #eee6ff;
+    background: var(--chart-tab-bg);
 }
 
 
@@ -556,6 +556,7 @@
     /* color: var(--ele-color); */
     color: var(--color-subtext);
     padding: 10px 10px;
+    font-size: 0.875rem;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {
@@ -710,7 +711,7 @@
 }
 
 .chart_tabs {
-    background: #eee6ff;
+    background: var(--chart-tab-bg);
     border: none;
     border-radius: 50px;
     padding: 5px;
@@ -731,7 +732,7 @@
     border-radius: 25px;
     padding-block: 4px;
     padding-inline: 13px;
-    color: #000;
+    color: var(--immortalBlack);
     margin-bottom: 0;
     font-weight: 500;
     transition: all 0.4s ease-in-out;

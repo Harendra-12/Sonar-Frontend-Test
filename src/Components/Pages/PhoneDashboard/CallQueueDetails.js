@@ -76,59 +76,43 @@ const CallQueueDetails = () => {
               <div className="d-flex col">
                 <div className="col-6">
                   <div className="headingExtraInfo">
-                    <div className="col-8">
-                      <p>
-                        Active Calls:
-                      </p>
-                    </div>
-                    <div className="col-4">
-                      <p>
+                    <div className="mx-auto">
+                      <span className="badge rounded-pill bg-primary" style={{ minWidth: '7vw' }}>
+                        Active Calls:&nbsp;
                         {activeCallData.filter((e) => e.b_callstate === "ACTIVE" || e.b_callstate === "HELD").length}
-                      </p>
+                      </span>
                     </div>
                   </div>
-                  <div className="headingExtraInfo">
-                    <div className="col-8">
-                      <p>
-                        Missed Calls:
-                      </p>
-                    </div>
-                    <div className="col-4">
-                      <p>
+                  <div className="headingExtraInfo mt-1">
+                    <div className="mx-auto">
+                      <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}>
+                        Missed Calls:&nbsp;
                         {allCallDetails?.filter_count?.filter(
                           (item) =>
                             item["Call-Direction"] == "missed" &&
                             item?.application_state == 'callcenter'
                         )[0]?.filter_count || 0}
-                      </p>
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="headingExtraInfo">
-                    <div className="col-8">
-                      <p>
-                        Completed Calls:
-                      </p>
-                    </div>
-                    <div className="col-4">
-                      <p>
+                    <div className="mx-auto">
+                      <span className="badge rounded-pill " style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}>
+                        Completed Calls:&nbsp;
                         {allCallDetails?.filter_count?.filter(
                           (item) =>
                             item["Call-Direction"] == "inbound" &&
                             item.application_state == 'callcenter'
                         )[0]?.filter_count || 0}
-                      </p>
+                      </span>
                     </div>
                   </div>
-                  <div className="headingExtraInfo">
-                    <div className="col-8">
-                      <p>
-                        Total Calls:
-                      </p>
-                    </div>
-                    <div className="col-4">
-                      <p>
+                  <div className="headingExtraInfo mt-1">
+                    <div className="mx-auto">
+                      <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}>
+                        Total Calls:&nbsp;
                         {allCallDetails?.filter_count
                           ?.filter((item) => {
                             return (
@@ -142,7 +126,7 @@ const CallQueueDetails = () => {
                               acc + (current?.filter_count || 0),
                             0
                           ) || 0}
-                      </p>
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -27,10 +27,10 @@
 .unread {
     border-radius: 50px;
     background-color: var(--ui-accent);
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     color: #fff;
     padding: 4px 8px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .mainContentApp .nav-link:hover {

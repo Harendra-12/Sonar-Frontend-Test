@@ -262,9 +262,8 @@ function UserProfile() {
                           </span>
                           <span className="icon">
                             <i
-                              className={`fa-solid fa-${
-                                isEdit ? "floppy-disk" : "pen"
-                              }`}
+                              className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
+                                }`}
                             ></i>
                           </span>
                         </button>
@@ -389,7 +388,7 @@ function UserProfile() {
                           </div>
                           <div className="col-6">
                             <h5 className="mb-0 pb-2 border-bottom">
-                              {account.username}
+                              {account?.username}
                             </h5>
                           </div>
                         </div>

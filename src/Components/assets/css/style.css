@@ -110,6 +110,7 @@
   --webUtilGray: #858585;
   --immortalBlack: #000;
   --webCaller: #fff;
+  --chart-tab-bg: #eee6ff;
 }
 
 :root.dark {
@@ -134,6 +135,7 @@
   --searchBg: #383838;
   --webBG: var(--bg-color);
   --webCaller: var(--nav-color);
+  --chart-tab-bg: var(--formHeadingBloc);
 
   --webUtilGray: rgb(175, 175, 175);
   --immortalBlack: rgb(241, 241, 241)

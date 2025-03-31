@@ -53,6 +53,8 @@ var timeZoneRefresh = 0;
 var ivr = [];
 var ivrRefresh = 0;
 var deviceProvisioning = [];
+var aiAgents = [];
+var aiAgentsRefresh = 0;
 var deviceProvisioningRefresh = 0;
 var minimize = false;
 var updateBalance = 0;
@@ -68,15 +70,15 @@ var conferenceMessage = [];
 var RoomID = "";
 var groupMessage = [];
 var previewDialer = [];
-var agentDeposition = false
-var desposiTionOptions = []
-var allCallCenterIds = []
-var callCenterPopUp = localStorage.getItem("callCenterPopUp")
-var openCallCenterPopUp = false
-var logout = 0
-var dummyExtension = ""
-var dummyPassword = ""
-var accountBalance = 0
+var agentDeposition = false;
+var desposiTionOptions = [];
+var allCallCenterIds = [];
+var callCenterPopUp = localStorage.getItem("callCenterPopUp");
+var openCallCenterPopUp = false;
+var logout = 0;
+var dummyExtension = "";
+var dummyPassword = "";
+var accountBalance = 0;
 
 const initialState = {
   account,
@@ -131,6 +133,8 @@ const initialState = {
   timeZoneRefresh,
   ivr,
   ivrRefresh,
+  aiAgents,
+  aiAgentsRefresh,
   deviceProvisioning,
   deviceProvisioningRefresh,
   minimize,
@@ -155,7 +159,7 @@ const initialState = {
   accountRefresh,
   dummyExtension,
   dummyPassword,
-  accountBalance
+  accountBalance,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -174,7 +178,7 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, channelHangupComplete: action.channelHangupComplete };
     case "SET_ALLCALL":
       return { ...state, allCall: action.allCall };
-      case "SET_ALLCALLDETAILS":
+    case "SET_ALLCALLDETAILS":
       return { ...state, allCallDetails: action.allCallDetails };
     case "SET_TEMPACCOUNT":
       return { ...state, tempAccount: action.tempAccount };
@@ -207,7 +211,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_OPEN_CALLCENTER_POPUP":
       return {
         ...state,
-        openCallCenterPopUp: action.openCallCenterPopUp
+        openCallCenterPopUp: action.openCallCenterPopUp,
       };
     case "SET_RINGGROUPREFRESH":
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
@@ -282,17 +286,23 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivr: action.ivr };
     case "SET_IVRREFRESH":
       return { ...state, ivrRefresh: action.ivrRefresh };
+    case "SET_AIAGENTS":
+      return { ...state, aiAgents: action.aiAgents };
+    case "SET_AIAGENTSREFRESH":
+      return { ...state, aiAgentsRefresh: action.aiAgentsRefresh };
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
     case "SET_ALL_CALL_CENTER_IDS":
       return {
         ...state,
-        allCallCenterIds: [...state.allCallCenterIds, action.CallerId]
+        allCallCenterIds: [...state.allCallCenterIds, action.CallerId],
       };
     case "DELETE_CALLER_ID":
       return {
         ...state,
-        allCallCenterIds: state.allCallCenterIds.filter(id => id !== action.CallerId)
+        allCallCenterIds: state.allCallCenterIds.filter(
+          (id) => id !== action.CallerId
+        ),
       };
     case "SET_DEVICE_PROVISIONINGREFRESH":
       return {
@@ -342,7 +352,10 @@ const counterReducer = (state = initialState, action) => {
     case "SET_CONFERENCEMESSAGE":
       return {
         ...state,
-        conferenceMessage: [...state.conferenceMessage, action.conferenceMessage],
+        conferenceMessage: [
+          ...state.conferenceMessage,
+          action.conferenceMessage,
+        ],
       };
     case "SET_ROOMID":
       return {
@@ -354,7 +367,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_PREVIEWDIALER":
       return {
         ...state,
-        previewDialer: [...state.previewDialer, action.previewDialer]
+        previewDialer: [...state.previewDialer, action.previewDialer],
       };
     case "REMOVE_PREVIEWDIALER":
       return {
@@ -381,15 +394,18 @@ const counterReducer = (state = initialState, action) => {
     case "SET_DUMMYEXTENSION":
       return {
         ...state,
-        dummyExtension: action.dummyExtension
+        dummyExtension: action.dummyExtension,
       };
     case "SET_DUMMYPASSWORD":
       return {
         ...state,
-        dummyPassword: action.dummyPassword
-      }
+        dummyPassword: action.dummyPassword,
+      };
     case "RESET_STATE":
-      return initialState;
+      return {
+        ...initialState,
+        logout: 0, // Ensure logout flag is reset
+      };
     case "SET_LOGOUT":
       return {
         ...state,
