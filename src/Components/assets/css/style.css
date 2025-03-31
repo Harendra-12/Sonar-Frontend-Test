@@ -109,6 +109,16 @@
   --immortalBlack: #000;
   --webCaller: #fff;
   --chart-tab-bg: #eee6ff;
+  /* =====  new */
+  --chat-bg-user-active: #ededed;
+  --chat-bg-message-receive: #f0f7ff;
+  --chat-bg-message-sent: #D9FDD3;
+  --chat-bg-icon: #efefef;
+  --chat-icon: #575353;
+  --chat-bg-side-icon: #e0eaf5;
+  --chat-bg-footer: #f0f0f0;
+  --chat-bg-button: #efefef;
+  --chat-border: #e9e7e7;
 }
 
 :root.dark {
@@ -136,7 +146,17 @@
   --chart-tab-bg: var(--formHeadingBloc);
 
   --webUtilGray: rgb(175, 175, 175);
-  --immortalBlack: rgb(241, 241, 241)
+  --immortalBlack: rgb(241, 241, 241);
+   /* =====  new */
+   --chat-bg-user-active: #494b55;
+   --chat-bg-message-receive: #353e49;
+   --chat-bg-message-sent: #1a2918;
+   --chat-bg-icon: #454855;
+   --chat-icon: #b5b5b5;
+   --chat-bg-side-icon: #51525b;
+   --chat-bg-footer: #424351;
+   --chat-bg-button: #424351;
+   --chat-border: #484a59;
 }
 
 :root.green {

@@ -6,10 +6,11 @@ const WhatsAppChatBox = ({ initial }) => {
     const sessions = useSelector((state) => state.sessions);
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(!open);
-    }
-
+    // const handleOpen = () => {
+    //     setOpen(!open);
+    // }
+    const handleOpen = () => setOpen(false);
+    const handleClose = () => setOpen(true);
     return (
         <>
             <main
@@ -113,67 +114,72 @@ const WhatsAppChatBox = ({ initial }) => {
                             <div class="overviewTableWrapper">
                                 <div class="overviewTableChild chartBox">
                                     <div class="d-flex flex-wrap">
-                                        <div class="col-lg-5 col-5">
-                                            <div className='d-flex chat_sideNav'>
-                                               
-                                                    <div className={`leftBox ${open ? 'active': 'hidden'}`}>
+                                        <div class= {`chat_nav col-lg-5 col-12 ${open ? 'active' : 'hidden'}`}>
+                                            {/* <div className={`chat_nav ${open ? 'active' : 'hidden'}`}> */}
+                                                <div className='d-flex chat_sideNav'>
+                                                    <div className={`leftBox ${open ? 'active' : 'hidden'}`}>
                                                         <div className='pb-3 pt-4 px-3 '>
-                                                            <ul>
+                                                            <div className='left_listClose'>
+                                                                <button onClick={handleClose} className=' border-0 bg-transparent'><i class="fa-solid fa-xmark"></i></button>
+                                                            </div>
+                                                            <ul className='mt-3'>
                                                                 <li className='active'><button><i class="fa-brands fa-rocketchat"></i></button></li>
                                                                 <li><button><i class="fa-solid fa-rotate"></i></button></li>
                                                             </ul>
+                                                        </div>
+                                                    </div>
 
+                                                    <div className=" pb-3 w-100">
+                                                        <div className='d-flex justify-content-start gap-2 align-items-center px-3 py-3  borderGray'>
+
+                                                            <div className='form-group w-100 position-relative '>
+                                                                <input
+                                                                    type="search"
+                                                                    name="Search"
+                                                                    placeholder="Search users, groups or chat"
+                                                                    className="formItem fw-normal searchInput"
+                                                                />
+                                                                <i class="fas fa-search user_Search"></i>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                              
-                                                <div className=" pb-3 w-100">
-                                                    <div className='d-flex justify-content-start gap-2 align-items-center px-3 py-3 border-bottom'>
-                                                        <button className='chat_menu ' onClick={handleOpen}>
-                                                            <i class="fa-solid fa-bars"></i></button>
-                                                        <div className='form-group w-100 position-relative '>
-                                                            <input
-                                                                type="search"
-                                                                name="Search"
-                                                                placeholder="Search users, groups or chat"
-                                                                className="formItem fw-normal searchInput"
-                                                            />
-                                                            <i class="fas fa-search user_Search"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div className='user_list'>
-                                                        <div className='profile_wrap isActive py-3'>
-                                                            <div className='d-flex justify-content-start align-items-center gap-3'>
-                                                                <div className='profileBox'>
-                                                                    <img src={require("../../../assets/images/boy.png")} alt="loader" />
+                                                        <div className='user_list'>
+                                                            <div className='profile_wrap isActive py-3'>
+                                                                <div className='d-flex justify-content-start align-items-center gap-3'>
+                                                                    <div className='profileBox'>
+                                                                        <img src={require("../../../assets/images/boy.png")} alt="loader" />
+                                                                    </div>
+                                                                    <p className='mb-0 profile_text'><span>Claire</span> <br /><span>Haha that's terrifying 😂 Haha that's terrifying</span></p>
                                                                 </div>
-                                                                <p className='mb-0 profile_text'><span>Claire</span> <br /><span>Haha that's terrifying 😂 Haha that's terrifying</span></p>
-                                                            </div>
-                                                            <div className='user_info'>
-                                                                <p className='mb-0'>7:30 am</p>
-                                                                <p className='mb-0 text-end read mt-2'><i class="fa-solid fa-check-double"></i></p>
-                                                            </div>
-                                                        </div>
-                                                        <div className='profile_wrap py-3'>
-                                                            <div className='d-flex justify-content-start align-items-center gap-3'>
-                                                                <div className='profileBox'>
-                                                                    <img src={require("../../../assets/images/boy.png")} alt="loader" />
+                                                                <div className='user_info'>
+                                                                    <p className='mb-0'>7:30 am</p>
+                                                                    <p className='mb-0 text-end read mt-2'><i class="fa-solid fa-check-double"></i></p>
                                                                 </div>
-                                                                <p className='mb-0 profile_text'><span>Claire</span> <br /><span>Haha that's terrifying 😂 Haha that's terrifying</span></p>
                                                             </div>
-                                                            <div className='user_info'>
-                                                                <p className='mb-0 un_Read'>7:30 am</p>
-                                                                <div className='message_record ms-auto mt-2'>25+</div>
+                                                            <div className='profile_wrap py-3'>
+                                                                <div className='d-flex justify-content-start align-items-center gap-3'>
+                                                                    <div className='profileBox'>
+                                                                        <img src={require("../../../assets/images/boy.png")} alt="loader" />
+                                                                    </div>
+                                                                    <p className='mb-0 profile_text'><span>Claire</span> <br /><span>Haha that's terrifying 😂 Haha that's terrifying</span></p>
+                                                                </div>
+                                                                <div className='user_info'>
+                                                                    <p className='mb-0 un_Read'>7:30 am</p>
+                                                                    <div className='message_record ms-auto mt-2'>25+</div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            {/* </div> */}
                                         </div>
-                                        <div class="col-lg-7 col-7" >
+                                        <div class="col-lg-7 col-12" >
                                             <div className='d-flex justify-content-between flex-column h-100'>
                                                 <div>
-                                                    <div className='chat_head '>
+                                                    <div className='chat_head position-relative'>
+                                                       
                                                         <div className='d-flex justify-content-start align-items-center gap-3'>
+                                                        <button className='chat_menu ' onClick={handleOpen}>
+                                                        <i class="fa-solid fa-bars"></i></button>
                                                             <div className='profileBox'>
                                                                 <img src={require("../../../assets/images/boy.png")} alt="loader" />
                                                             </div>

@@ -363,14 +363,19 @@
     .chat_menu{
         display: block;
     }
-    .chat_sideNav .leftBox {
+    .chat_nav {
         background: #fff;
         position: absolute;
-        left: -100%;
+        left: -1000%;
         transition: all 0.4s ease-in-out;
-        z-index: 111;
+        z-index: 2;
+        opacity: 0;
     }
-    .chat_sideNav .leftBox.hidden {
+    .chat_nav.hidden {
         left: 0;
+        opacity: 1;
+    }
+    .left_listClose{
+        display: block;
     }
 }
