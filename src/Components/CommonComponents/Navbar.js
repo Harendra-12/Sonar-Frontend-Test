@@ -1796,7 +1796,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                               <li className="tabItem ">
-                            <Link>
+                    
 
                             <NavLink
                                   to="/ticket"
@@ -1814,7 +1814,7 @@ function Navbar() {
                                   Submit a Ticket
                                   </div>
                                 </NavLink>
-                            </Link>
+             
                                   {/* // to="/ticket" */}
 
                               

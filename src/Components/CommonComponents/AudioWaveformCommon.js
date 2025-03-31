@@ -143,7 +143,7 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                             <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
                             <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
                         </div>
-                        <div className="customAudioControls" style={{ width: '25%' }}>
+                        <div className="customAudioControls" style={{ width: 'auto' }}>
                             {/* <button
                                 className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
                                     }`}

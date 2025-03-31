@@ -1369,7 +1369,7 @@ function Messages({
                                       return newState;
                                     });
                                   }}
-                                  className="row justify-content-between"
+                                  className="row justify-content-between d-grid"
                                 >
                                   <div className="col-xl-12 d-flex">
                                     <div
