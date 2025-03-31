@@ -1796,11 +1796,9 @@ function Navbar() {
                                 </NavLink>
                               </li>
                               <li className="tabItem ">
-                                <Link
-                                  // to="/ticket"
+                            <Link>
 
-
-                              <NavLink
+                            <NavLink
                                   to="/ticket"
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
@@ -1816,8 +1814,17 @@ function Navbar() {
                                   Submit a Ticket
                                   </div>
                                 </NavLink>
+                            </Link>
+                                  {/* // to="/ticket" */}
+
+                              
+ 
                                 {/* <Link
                                   
+=======
+                                <Link
+                                  // to="/ticket"
+>>>>>>> 58f23a9cba051b7df48f14373b604f6b4a334397
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||
