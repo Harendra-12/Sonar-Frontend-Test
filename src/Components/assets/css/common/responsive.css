@@ -356,3 +356,21 @@
 
 
 }
+
+
+
+@media (max-width: 767px){
+    .chat_menu{
+        display: block;
+    }
+    .chat_sideNav .leftBox {
+        background: #fff;
+        position: absolute;
+        left: -100%;
+        transition: all 0.4s ease-in-out;
+        z-index: 111;
+    }
+    .chat_sideNav .leftBox.hidden {
+        left: 0;
+    }
+}

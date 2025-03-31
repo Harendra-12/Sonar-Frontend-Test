@@ -1293,6 +1293,7 @@ input[type=number] {
 /* ======================================= whatsapp chat box */
 .chartBox{
     height: calc(100vh - 100px);
+    position: relative;
 }
 .chat_sideNav{
     border-right: 1px solid #d7d7d7;
@@ -1300,6 +1301,8 @@ input[type=number] {
 .chat_sideNav .leftBox{
     border-right: 1px solid #d7d7d7;
     height: calc(100vh - 100px);
+    max-width: 59px;
+    flex-shrink: 0;
 }
 .chat_sideNav ul li{
     list-style-type: none;
@@ -1312,13 +1315,17 @@ input[type=number] {
 }
 .chat_sideNav ul li button{
     background: transparent;
-    border-radius: 17px;
+    border-radius: 25px;
     padding: 8px;
     border: none;
-    width: 80px;
-    height: 33px;
+    width: 35px;
+    height: 35px;
     color: #575353;
     transition: all 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
 }
 .chat_sideNav ul li:hover button{
     background: #e0eaf5;
@@ -1392,8 +1399,8 @@ input[type=number] {
     position: relative;
   }
   .input-search{
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     border-style: none;
     /* padding: 10px; */
     font-size: 1rem;
@@ -1401,7 +1408,7 @@ input[type=number] {
     border-radius: 25px;
     transition: all .5s ease-in-out;
     background-color: #efefef;
-    padding-right: 40px;
+    padding-right: 27px;
     color:#180505;
   }
   .input-search::placeholder{
@@ -1427,28 +1434,32 @@ input[type=number] {
   }
   .btn-search:focus ~ .input-search{
     width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
+    padding-left: 15px;
+    /* border-radius: 0px; */
+    background-color: #efefef;
     border-bottom:1px solid #e9e7e7;
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
   }
   .input-search:focus{
     width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
+    /* border-radius: 0px; */
+    background-color: #efefef;
     border-bottom:1px solid rgba(255,255,255,.5);
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
   }
   
   .chat_button{
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background: #efefef;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
+  }
+  .chat_button i{
+    font-size: 0.875rem;
   }
   .chat_head{
     display: flex;
@@ -1463,22 +1474,29 @@ input[type=number] {
   .chart_text{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 5px;
   }
   .message_chatbox{
     /* width: 100%; */
     max-width: 60%;
-    padding: 8px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 15px;
   }
   .message_chatbox.received{
     background: rgb(240, 247, 255);
     margin-right: auto;
+    border-top-left-radius: 0;
   }
   .message_chatbox.sent{
     background: #D9FDD3;
     margin-left: auto;
+    border-top-right-radius: 0;
   }
+
+  .chat_head {
+    padding: 11px;
+  }
+
   .c_time{
     font-size: 0.75rem;
     text-align: end;
@@ -1511,4 +1529,35 @@ input[type=number] {
     width: 100%;
     border-radius: 25px !important;
     padding-left: 20px;
+  }
+  .user_Search{
+    position: absolute;
+    top: 12px;
+    left: 14px;
+  }
+  .send_btn i{
+    font-size: 0.875rem;
+  }
+  .searchInput{
+    padding-inline: 40px !important;
+    border-radius: 25px;
+  }
+  .user_list{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    /* gap: 20px; */
+    height: calc(100vh - 164px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    cursor: pointer;
+  }
+  .chart_body{
+    gap: 20px;
+    height: calc(100vh - 219px);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .chat_menu{
+    display: none;
   }

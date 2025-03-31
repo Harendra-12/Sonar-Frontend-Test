@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import { useSelector } from 'react-redux';
 
 const WhatsAppChatBox = ({ initial }) => {
     const sessions = useSelector((state) => state.sessions);
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(!open);
+    }
+
     return (
         <>
             <main
@@ -107,28 +113,34 @@ const WhatsAppChatBox = ({ initial }) => {
                             <div class="overviewTableWrapper">
                                 <div class="overviewTableChild chartBox">
                                     <div class="d-flex flex-wrap">
-                                        <div class="col-lg-5 col-12">
+                                        <div class="col-lg-5 col-5">
                                             <div className='d-flex chat_sideNav'>
-                                                <div className="col-3 leftBox">
-                                                    <div className='pb-3 pt-4 px-3 '>
-                                                        <ul>
-                                                            <li className='active'><button><i class="fa-brands fa-rocketchat"></i></button></li>
-                                                            <li><button><i class="fa-solid fa-rotate"></i></button></li>
-                                                        </ul>
+                                               
+                                                    <div className={`leftBox ${open ? 'active': 'hidden'}`}>
+                                                        <div className='pb-3 pt-4 px-3 '>
+                                                            <ul>
+                                                                <li className='active'><button><i class="fa-brands fa-rocketchat"></i></button></li>
+                                                                <li><button><i class="fa-solid fa-rotate"></i></button></li>
+                                                            </ul>
 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-9 pb-3 ">
-                                                    <div className='form-group px-3 py-3'>
-                                                        <input
-                                                            type="search"
-                                                            name="Search"
-                                                            placeholder="Search users, groups or chat"
-                                                            className="formItem fw-normal"
-                                                            style={{ backgroundColor: "var(--searchBg)" }}
-                                                        />
+                                              
+                                                <div className=" pb-3 w-100">
+                                                    <div className='d-flex justify-content-start gap-2 align-items-center px-3 py-3 border-bottom'>
+                                                        <button className='chat_menu ' onClick={handleOpen}>
+                                                            <i class="fa-solid fa-bars"></i></button>
+                                                        <div className='form-group w-100 position-relative '>
+                                                            <input
+                                                                type="search"
+                                                                name="Search"
+                                                                placeholder="Search users, groups or chat"
+                                                                className="formItem fw-normal searchInput"
+                                                            />
+                                                            <i class="fas fa-search user_Search"></i>
+                                                        </div>
                                                     </div>
-                                                    <div className=' d-flex justify-content-start gap-2 flex-column'>
+                                                    <div className='user_list'>
                                                         <div className='profile_wrap isActive py-3'>
                                                             <div className='d-flex justify-content-start align-items-center gap-3'>
                                                                 <div className='profileBox'>
@@ -157,10 +169,10 @@ const WhatsAppChatBox = ({ initial }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-7 col-12" >
+                                        <div class="col-lg-7 col-7" >
                                             <div className='d-flex justify-content-between flex-column h-100'>
                                                 <div>
-                                                    <div className='chat_head p-3'>
+                                                    <div className='chat_head '>
                                                         <div className='d-flex justify-content-start align-items-center gap-3'>
                                                             <div className='profileBox'>
                                                                 <img src={require("../../../assets/images/boy.png")} alt="loader" />
@@ -186,12 +198,36 @@ const WhatsAppChatBox = ({ initial }) => {
                                                                 <p>Hey brother</p>
                                                                 <span className='c_time'>17:07 <i class="fa-solid fa-check-double read"></i></span>
                                                             </div>
+                                                            <div className='message_chatbox sent'>
+                                                                <p>are you still a fan of UI design?</p>
+                                                                <span className='c_time'>17:07 <i class="fa-solid fa-check-double read"></i></span>
+                                                            </div>
+                                                            <div className='message_chatbox sent'>
+                                                                <p>Hey brother</p>
+                                                                <span className='c_time'>17:07 <i class="fa-solid fa-check-double read"></i></span>
+                                                            </div>
+                                                            <div className='message_chatbox sent'>
+                                                                <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
+                                                                <span className='c_time'>17:07 <i class="fa-solid fa-check-double read"></i></span>
+                                                            </div>
+                                                            <div className='message_chatbox received'>
+                                                                <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
+                                                                <span className='c_time'>17:07</span>
+                                                            </div>
+                                                            <div className='message_chatbox received'>
+                                                                <p>There is no one who loves pain itself</p>
+                                                                <span className='c_time'>17:07</span>
+                                                            </div>
+                                                            <div className='message_chatbox received'>
+                                                                <p>who seeks after it and wants to have it, simply because it is pain</p>
+                                                                <span className='c_time'>17:07</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className='chat_footer'>
                                                     <div class="chat-input">
-                                                        <button className='send_btn me-2 plus'><i class="fa-solid fa-plus"></i></button>
+                                                        <button className='send_btn me-2 plus '><i class="fa-solid fa-plus d-flex justify-content-center align-items-center"></i></button>
                                                         <input type="text" placeholder="Type a message..." id="messageInput" className='formItem ' />
                                                         <button className='send_btn ms-2'><i class="fas fa-paper-plane"></i></button>
                                                     </div>
