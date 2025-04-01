@@ -1294,6 +1294,7 @@ input[type=number] {
 .chartBox{
     height: calc(100vh - 100px);
     position: relative;
+    overflow: hidden;
 }
 .chat_sideNav{
     border-right: 1px solid var(--chat-border);
@@ -1303,6 +1304,7 @@ input[type=number] {
     height: calc(100vh - 100px);
     max-width: 59px;
     flex-shrink: 0;
+    background:  var(--chat-body-left);
 }
 .chat_sideNav ul li{
     list-style-type: none;
@@ -1365,7 +1367,7 @@ input[type=number] {
   display: inline-block;
 }
 .borderGray{
-    border: 1px solid var(--chat-border);
+    border-bottom: 1px solid var(--chat-border);
 }
 .profile_wrap{
     display: flex;
@@ -1383,12 +1385,12 @@ input[type=number] {
     color: #03a9f4;
 }
 .un_Read{
-    color: #1DA855;
+    color: #15aa85;
 }
 .message_record{
     width: fit-content;
     border-radius: 50%;
-    background-color: #24D366;
+    background-color: #15aa85;
     color: #fff;
     font-size: 0.75rem;
     padding: 4px;
@@ -1476,6 +1478,7 @@ input[type=number] {
     align-items: center;
     flex-wrap: wrap;
     border-bottom: 1px solid var(--chat-border);
+    background: var(--chat-header);
   }
   .chart_body{
     padding: 20px;
@@ -1522,17 +1525,19 @@ input[type=number] {
   .send_btn{
     width: 30px;
     height: 30px;
-    background: #0199ff;
+    background: #15aa85;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
-    color: #fff;
+   
   }
   .send_btn.plus{
-    background: #a1d4f8;
-    color: #000;
+    background: var(--chat-bg-side-icon);
+  }
+  .send_btn.plus i{
+    color: var(--chat-icon);
   }
   .chat-input input{
     width: 100%;
@@ -1546,10 +1551,14 @@ input[type=number] {
   }
   .send_btn i{
     font-size: 0.875rem;
+    color:#fff;
   }
   .searchInput{
     padding-inline: 40px !important;
     border-radius: 25px;
+    background: var(--chat-input-bg);
+    box-shadow: rgba(0, 0, 0, .06) 0 0 10px;
+    border: 0;
   }
   .user_list{
     display: flex;
@@ -1560,12 +1569,14 @@ input[type=number] {
     overflow-x: hidden;
     overflow-y: auto;
     cursor: pointer;
+    background: var(--chat-user-list);
   }
   .chart_body{
     gap: 20px;
-    height: calc(100vh - 219px);
+    height: calc(100vh - 231px);
     overflow-x: hidden;
     overflow-y: auto;
+    background: var(--chat-body);
   }
   .chat_menu{
     display: none;
@@ -1584,4 +1595,24 @@ input[type=number] {
   }
   .left_listClose button i{
     color: #575353;
+  }
+  .chat-input .formItem {
+    background: var(--chat-input-bg);
+    box-shadow: rgba(0, 0, 0, .06) 0 0 10px;
+    border: 0;
+  }
+  .notSend{
+    width: 16px;
+    height: 16px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+   border: 1px solid red;
+   color: red;
+   font-size: 0.75rem;
+  }
+  .searchBar_userList{
+    background: var(--chat-header);
   }
