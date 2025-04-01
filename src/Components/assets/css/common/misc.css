@@ -1616,3 +1616,13 @@ input[type=number] {
   .searchBar_userList{
     background: var(--chat-header);
   }
+
+  .w_loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    height: calc(100vh - 231px);
+    background: rgba(0, 0, 0, .06);
+  }
