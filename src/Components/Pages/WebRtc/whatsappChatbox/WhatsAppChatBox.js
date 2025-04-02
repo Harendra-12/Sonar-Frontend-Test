@@ -40,7 +40,7 @@ const WhatsAppChatBox = ({ initial }) => {
   useEffect(() => {
     if (whatsappContactRefresh > 0) {
       setWhatsappContactData(whatsappContact);
-      setActiveChat(whatsappContact[0]);
+      setActiveChat(whatsappContact?.[0]);
     } else {
       dispatch({
         type: "SET_WHATSAPPCONTACTREFRESH",
