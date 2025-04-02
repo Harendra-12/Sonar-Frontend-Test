@@ -41,6 +41,10 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   useEffect(() => {
     const handlePlaying = async (audio) => {
+      // Reseting state before Playing
+      setCurrentPlaying("");
+      setAudioURL("");
+
       try {
         setCurrentPlaying(audio);
         const url = audio.split(".com/").pop();
@@ -288,6 +292,10 @@ function AllVoicemails({ isCustomerAdmin }) {
 
   // function to play the audio
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("audio");
+    setAudioURL("");
+
     if (!audio) return;
     if (currentPlaying === audio) {
       if (thisAudioRef.current) {

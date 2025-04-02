@@ -25,6 +25,10 @@ function VoiceMailReport() {
   const [audioURL, setAudioURL] = useState("");
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
@@ -190,9 +194,9 @@ function VoiceMailReport() {
                                     >
                                       <i
                                         className={`fa-duotone fa-${currentPlaying ==
-                                            item["recording_path"]
-                                            ? "stop"
-                                            : "play"
+                                          item["recording_path"]
+                                          ? "stop"
+                                          : "play"
                                           }`}
                                       ></i>
                                     </button>

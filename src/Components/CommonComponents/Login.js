@@ -86,7 +86,7 @@ export function LoginComponent() {
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
-  const [logOutToken,setLogOutToken]=useState("")
+  const [logOutToken, setLogOutToken] = useState("")
 
   // Handle login function
   async function handleLogin() {
@@ -172,31 +172,31 @@ export function LoginComponent() {
 
   // function to handle time
   function formatTimeWithAMPM(timeString) {
-  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
 
-  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-    return "Invalid time format";
-  }
-
-  let period = 'AM';
-  let formattedHours = hours;
-
-  if (hours >= 12) {
-    period = 'PM';
-    if (hours > 12) {
-      formattedHours -= 12;
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
     }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
   }
-
-  if (formattedHours === 0) {
-    formattedHours = 12; // Midnight is 12 AM
-  }
-
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
-}
 
 
 
@@ -229,6 +229,10 @@ export function LoginComponent() {
     } else if (password === "") {
       toast.error("Password is required!");
     } else {
+      // Reseting State before Loggin In
+      dispatch({ type: "RESET_STATE" });
+      localStorage.clear();
+
       setLoading(true);
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
@@ -304,7 +308,7 @@ export function LoginComponent() {
         }
 
 
-      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403 ) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
@@ -348,7 +352,7 @@ export function LoginComponent() {
           Authorization: `Bearer ${logOutToken}`,
         },
       });
-  
+
       if (logoutAll.status >= 200 && logoutAll.status < 300) {
         handleLogin();
       } else {
@@ -475,7 +479,7 @@ export function LoginComponent() {
             </div>
           </div>
 
-{/* 
+          {/* 
           <div className="popupopen ">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">

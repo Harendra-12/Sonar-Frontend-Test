@@ -32,6 +32,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
   const [softphoneName, setSoftphoneName] = useState();
   const [id, setId] = useState();
   const [extension, setExtension] = useState();
+  const [deviceType, setDeviceType] = useState("hardphone");
 
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
@@ -86,12 +87,22 @@ function AvailableDeviceList({ header = true, extensionData }) {
       toast.error("Please enter a serial number");
       return;
     }
-    const parsedData = {
-      model_id: selectedModel,
-      serial_number: serialNumber,
-      brand_id: selectedBrand,
-      status: status,
-    };
+    // const parsedData = {
+    //   model_id: selectedModel,
+    //   serial_number: serialNumber,
+    //   brand_id: selectedBrand,
+    //   status: status,
+    // };
+    const parsedData =
+      deviceType !== "hardphone"
+        ? { status: status }
+        : {
+            model_id: selectedModel,
+            serial_number: serialNumber,
+            brand_id: selectedBrand,
+            status: status,
+          };
+
     setLoading(true);
     const apiData = await generalPutFunction(
       `/provision/update/${selectedDdeviceIs}`,
@@ -102,6 +113,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
       setRefresh(refresh + 1);
       setLoading(false);
       setPopu(false);
+      setSelectedDdeviceIs(null);
       //   setSelectDeviceEdit(false);
       setSelectDeviceEdit("");
     } else {
@@ -125,6 +137,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
       setRefresh(refresh + 1);
       setLoading(false);
       setPopu(false);
+      setSelectedDdeviceIs(null);
       //   setSelectDeviceEdit(false);
       setSelectDeviceEdit("");
     } else {
@@ -237,6 +250,12 @@ function AvailableDeviceList({ header = true, extensionData }) {
                                 item.status === "active" ? "active" : ""
                               } `}
                               key={index}
+                              style={{
+                                border:
+                                  item.id === selectedDdeviceIs
+                                    ? "1px solid var(--ui-accent)"
+                                    : undefined,
+                              }}
                               onClick={() => {
                                 setSelectedDdeviceIs(item.id);
                                 setSelectedBrand(item.brand_id);
@@ -314,6 +333,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
                                           );
                                           setDeleteId("");
                                           setPopu(true);
+                                          setDeviceType(item.type);
                                         }}
                                       />
                                       <span className="slider round" />
@@ -441,7 +461,10 @@ function AvailableDeviceList({ header = true, extensionData }) {
                             <button
                               className="panelButton gray ms-0"
                               //   onClick={() => setSelectDeviceEdit(false)}
-                              onClick={() => setSelectDeviceEdit("")}
+                              onClick={() => {
+                                setSelectDeviceEdit("");
+                                setSelectedDdeviceIs(null);
+                              }}
                               type="button"
                             >
                               <span className="text">Close</span>
@@ -556,7 +579,10 @@ function AvailableDeviceList({ header = true, extensionData }) {
                             <button
                               className="panelButton gray ms-0"
                               //   onClick={() => setSelectDeviceEdit(false)}
-                              onClick={() => setSelectDeviceEdit("")}
+                              onClick={() => {
+                                setSelectDeviceEdit("");
+                                setSelectedDdeviceIs(null);
+                              }}
                               type="button"
                             >
                               <span className="text">Close</span>

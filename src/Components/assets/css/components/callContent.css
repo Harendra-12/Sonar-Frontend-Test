@@ -427,7 +427,7 @@
     margin-bottom: 20px;
 }
 
-.addNewContactPopup .heading i {
+.addNewContactPopup .heading>i {
     color: #fff;
     font-size: 1.25rem;
     background-color: var(--ui-accent);

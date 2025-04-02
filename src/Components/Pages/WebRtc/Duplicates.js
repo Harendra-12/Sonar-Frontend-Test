@@ -8,17 +8,17 @@ import AudioPlayer from './AudioWaveForm';
 import Comments from './Comments';
 
 export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }) {
-  const [selectedId,setSelectedId]=useState(duplicatePopUpData.id)
+  const [selectedId, setSelectedId] = useState(duplicatePopUpData.id)
   const [loading, setLoading] = useState(true);
   const [showComment, setShowComment] = useState(false);
   // const [commentData, setCommentData] = useState([]);
   const [duplicateData, setDuplicateData] = useState([]);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  const [showAudio,setShowAudio]=useState(false)
+  const [showAudio, setShowAudio] = useState(false)
   const thisAudioRef = useRef(null);
-  const [ showDropDown,setShowDropdown]=useState(false)
- 
+  const [showDropDown, setShowDropdown] = useState(false)
+
 
   useEffect(() => {
     return () => {
@@ -66,9 +66,13 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
 
 
   const handelOpenNotes = () => {
-setShowComment(true)
+    setShowComment(true)
   }
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
@@ -91,45 +95,45 @@ setShowComment(true)
       console.error("Error in handlePlaying:", error);
     }
   };
- 
+
   return (
 
-   <>
-   {showComment&&  <Comments id={selectedId} setId={setSelectedId} />} <div className="backdropContact " style={{zIndex: "11"}}>
-   <div className="addNewContactPopup w-auto">
+    <>
+      {showComment && <Comments id={selectedId} setId={setSelectedId} />} <div className="backdropContact " style={{ zIndex: "11" }}>
+        <div className="addNewContactPopup w-auto">
 
-     {/* <div className="col-12 heading mb-0">
+          {/* <div className="col-12 heading mb-0">
              <i className="fa-light fa-comment-dots" />
              <h5>Agent Note</h5>
          </div>
        */}
-     <div className='overviewTableWrapper p-0'>
-       <div className='overviewTableChild border-0 shadow-none'>
-         <div className="col-xl-12">
-           {!loading ?
-             <>
-               {duplicateData.length > 0 ?
-                 <div className='tableContainer m-0 p-0'>
-                   <table>
-                     <thead>
-                       <tr>
-                         <th>Call Direction</th>
-                         <th>Call Origin</th>
-                         <th>Call Destination</th>
-                         {/* <th>Recordings</th> */}
-                         <th>Duration</th>
-                         <th>Comments</th>
-                       </tr>
-                     </thead>
-                     <tbody  >
-                       {duplicateData.map((call, index) => (
-                         <React.Fragment key={index}>
-                           <tr
-                           >
-                             <td>{call["Call-Direction"]}</td>
-                             <td>{call["variable_sip_from_user"]}</td>
-                             <td>{call["variable_sip_to_user"]}</td>
-                             {/* <td>
+          <div className='overviewTableWrapper p-0'>
+            <div className='overviewTableChild border-0 shadow-none'>
+              <div className="col-xl-12">
+                {!loading ?
+                  <>
+                    {duplicateData.length > 0 ?
+                      <div className='tableContainer m-0 p-0'>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Call Direction</th>
+                              <th>Call Origin</th>
+                              <th>Call Destination</th>
+                              {/* <th>Recordings</th> */}
+                              <th>Duration</th>
+                              <th>Comments</th>
+                            </tr>
+                          </thead>
+                          <tbody  >
+                            {duplicateData.map((call, index) => (
+                              <React.Fragment key={index}>
+                                <tr
+                                >
+                                  <td>{call["Call-Direction"]}</td>
+                                  <td>{call["variable_sip_from_user"]}</td>
+                                  <td>{call["variable_sip_to_user"]}</td>
+                                  {/* <td>
                                  { call["recording_path"]!==null&&   <button
                                         className="tableButton"
                                         onClick={() => { 
@@ -194,19 +198,19 @@ setShowComment(true)
                                         )}
                                     </button>}
                                 </td> */}
-                             <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
-                             <td className="px-4 py-3">
-                               <button
-                                 className="tableButton"
-                                 onClick={() => handelOpenNotes()}
-                               >
-                                 <i className="fa-solid fa-comment-dots"></i>
-                               </button>
-                               {/* {call.comments} */}
-                             </td>
-                           </tr>
-                           {/* Recording Player */}
-                          {/* {currentPlaying ===
+                                  <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
+                                  <td className="px-4 py-3">
+                                    <button
+                                      className="tableButton"
+                                      onClick={() => handelOpenNotes()}
+                                    >
+                                      <i className="fa-solid fa-comment-dots"></i>
+                                    </button>
+                                    {/* {call.comments} */}
+                                  </td>
+                                </tr>
+                                {/* Recording Player */}
+                                {/* {currentPlaying ===
                                           call["recording_path"] &&showAudio&&
                                         <tr>
                                           <td colspan="18">
@@ -215,74 +219,74 @@ setShowComment(true)
                                             </div>
                                           </td>
                                         </tr>} */}
-                         </React.Fragment>
-                       ))}
-                   
-                     </tbody>
-                   </table>
-                 </div>
-                 :
-                 <div className="startAJob">
-                   <div className="text-center mt-3">
-                     <img
-                       src={require("../../assets/images/empty-box.png")}
-                       alt="Empty"
-                     ></img>
-                     <div>
-                       <h5>
-                         No Records are Available.
-                       </h5>
-                       <h5>
-                         Please select a different <b>record</b> to see all of its details here.
-                       </h5>
-                     </div>
-                   </div>
-                 </div>
-               }
-             </> :
-             <div className='tableContainer m-0 p-0'>
-               <table>
-                 <thead>
-                   <tr>
-                     <th>Call Direction</th>
-                     <th>Call Origin</th>
-                     <th>Call Destination</th>
-                     {/* <th>Recordings</th> */}
-                     <th>Duration</th>
-                     <th>Comments</th>
-                   </tr>
-                 </thead>
-                 <tbody >
-                   <SkeletonTableLoader col={6} row={15} />
-                 </tbody>
-               </table>
-             </div>}
-           <div className="col-xl-12 mt-2">
-             <div className="d-flex justify-content-between align-items-center">
-               <button className="panelButton gray mx-0" onClick={() => setShowDuplicatePopUp(false)}>
-                 <span className="text">Close</span>
-                 <span className="icon">
-                   <i className="fa-solid fa-caret-left" />
-                 </span>
-               </button>
-               {/* {
+                              </React.Fragment>
+                            ))}
+
+                          </tbody>
+                        </table>
+                      </div>
+                      :
+                      <div className="startAJob">
+                        <div className="text-center mt-3">
+                          <img
+                            src={require("../../assets/images/empty-box.png")}
+                            alt="Empty"
+                          ></img>
+                          <div>
+                            <h5>
+                              No Records are Available.
+                            </h5>
+                            <h5>
+                              Please select a different <b>record</b> to see all of its details here.
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </> :
+                  <div className='tableContainer m-0 p-0'>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Call Direction</th>
+                          <th>Call Origin</th>
+                          <th>Call Destination</th>
+                          {/* <th>Recordings</th> */}
+                          <th>Duration</th>
+                          <th>Comments</th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                        <SkeletonTableLoader col={6} row={15} />
+                      </tbody>
+                    </table>
+                  </div>}
+                <div className="col-xl-12 mt-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <button className="panelButton gray mx-0" onClick={() => setShowDuplicatePopUp(false)}>
+                      <span className="text">Close</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-caret-left" />
+                      </span>
+                    </button>
+                    {/* {
    comment && comment !== "" && <button className="tableButton delete" onClick={() => handleComments("delete")}>
      <i className="fa-solid fa-trash" />
    </button>
  } */}
-               <button className="panelButton mx-0" >
-                 <span className="text">ok</span>
-                 <span className="icon">
-                   <i className="fa-solid fa-floppy-disk" />
-                 </span>
-               </button>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
- </div></>
+                    <button className="panelButton mx-0" >
+                      <span className="text">ok</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-floppy-disk" />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></>
   )
 }
 
