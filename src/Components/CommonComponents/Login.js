@@ -90,6 +90,10 @@ export function LoginComponent() {
 
   // Handle login function
   async function handleLogin() {
+    // Reseting State before Loggin In
+    dispatch({ type: "RESET_STATE" });
+    localStorage.clear();
+
     const data = await login(userName, password);
     if (data) {
       if (data.status) {
