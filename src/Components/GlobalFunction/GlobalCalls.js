@@ -376,7 +376,7 @@ function GlobalCalls() {
       if (apiData?.status) {
         dispatch({
           type: "SET_WHATSAPPCONTACT",
-          whatsappContact: apiData.data,
+          whatsappContact: apiData?.data,
         });
       }
     }
