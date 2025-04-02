@@ -161,6 +161,7 @@ import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
 import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
+import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -467,6 +468,7 @@ function App() {
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />
           <Route path="/message" element={<Messages />} />
+          <Route path="/whatsapp-chatbox" element={<WhatsAppChatBox />} />
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />

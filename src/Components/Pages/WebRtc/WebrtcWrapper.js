@@ -28,6 +28,7 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
+import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -330,6 +331,7 @@ const WebrtcWrapper = () => {
         {activePage == "mail-setting" && (
           <MailSettings style={{ marginLeft: "var(--sideNavApp-width)" }} />
         )}
+        {activePage == "whatsapp-chartbox" && <WhatsAppChatBox />}
 
         <IncomingCalls
           setSelectedModule={setSelectedModule}

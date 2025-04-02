@@ -52,6 +52,10 @@ var timeZone = [];
 var timeZoneRefresh = 0;
 var ivr = [];
 var ivrRefresh = 0;
+var whatsappContact = [];
+var whatsappContactRefresh = 0;
+var whatsappMessage = [];
+var whatsappMessageRefresh = 0;
 var deviceProvisioning = [];
 var aiAgents = [];
 var aiAgentsRefresh = 0;
@@ -133,6 +137,10 @@ const initialState = {
   timeZoneRefresh,
   ivr,
   ivrRefresh,
+  whatsappContact,
+  whatsappContactRefresh,
+  whatsappMessage,
+  whatsappMessageRefresh,
   aiAgents,
   aiAgentsRefresh,
   deviceProvisioning,
@@ -286,6 +294,20 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ivr: action.ivr };
     case "SET_IVRREFRESH":
       return { ...state, ivrRefresh: action.ivrRefresh };
+    case "SET_WHATSAPPCONTACT":
+      return { ...state, whatsappContact: action.whatsappContact };
+    case "SET_WHATSAPPCONTACTREFRESH":
+      return {
+        ...state,
+        whatsappContactRefresh: action.whatsappContactRefresh,
+      };
+    case "SET_WHATSAPPMESSAGE":
+      return { ...state, whatsappMessage: action.whatsappMessage };
+    case "SET_WHATSAPPMESSAGEREFRESH":
+      return {
+        ...state,
+        whatsappMessageRefresh: action.whatsappMessageRefresh,
+      };
     case "SET_AIAGENTS":
       return { ...state, aiAgents: action.aiAgents };
     case "SET_AIAGENTSREFRESH":
