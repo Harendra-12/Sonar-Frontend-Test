@@ -437,6 +437,7 @@ function GlobalCalls() {
 
   useEffect(() => {
     async function logOut() {
+      const audioObj = document.querySelectorAll("audio");
       try {
         // First close all websocket connections
         if (window.socketInstances) {
@@ -450,6 +451,8 @@ function GlobalCalls() {
 
         // Clear token first to prevent new socket connections
         localStorage.removeItem("token");
+
+        audioObj.forEach((item) => item.pause());
 
         // Then make the logout API call
         const apiData = await generalGetFunction("/logout");

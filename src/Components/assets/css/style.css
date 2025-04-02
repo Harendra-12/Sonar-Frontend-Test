@@ -70,16 +70,22 @@
   --div-color: #161c31;
   --caller-color: #0a0d16;
   --color1: #360568;
-  --color2: #3e8ef7;
-  --color2-trans: #49c2ff30;
+  /* --color2: #3e8ef7; */
+  --color2: #3066BE;
+  --color2-trans: #3066BE30;
   /* Accent Color */
-  --ui-accent: #3e8ef7;
+  /* --ui-accent: #3e8ef7; */
+  --ui-accent: #3066BE;
   /* --ui-icon: #00a6fb; */
   --ui-icon: #fff;
-  --ui-accent-green: #a5d02a;
+  /* --ui-accent-green: #a5d02a;
   --ui-accent-green-trans: #b7e92b30;
   --color3: #f17d01;
-  --color3-trans: #ffc46e30;
+  --color3-trans: #ffc46e30; */
+  --ui-accent-green: #62A8AC;
+  --ui-accent-green-trans: #62A8AC30;
+  --color3: #FF8C42;
+  --color3-trans: #FF8C4230;
   /* Highlight, Notification & Alert Color */
   --color-text: #fff;
   /* Contrast Text Color */
@@ -152,21 +158,24 @@
 
   --webUtilGray: rgb(175, 175, 175);
   --immortalBlack: rgb(241, 241, 241);
-   /* =====  new */
-   --chat-bg-user-active: #2b3942;
-   --chat-bg-message-receive: #1f2c34;
-   --chat-bg-message-sent: #006049;
-   --chat-bg-icon: #454855;
-   --chat-icon: #b5b5b5;
-   --chat-bg-side-icon: #2b3a44;
-   --chat-bg-footer: #202b34;
-   --chat-bg-button: #1e2e39;
-   --chat-border: #484a59;
-   --chat-body: #0c131b;
-   --chat-body-left: #1f2c34;
-   --chat-input-bg: #2d3841;
-   --chat-user-list: #111b22;
-   --chat-header: #202b34;
+  /* =====  new */
+  --chat-bg-user-active: #2b3942;
+  --chat-bg-message-receive: #1f2c34;
+  --chat-bg-message-sent: #006049;
+  --chat-bg-icon: #454855;
+  --chat-icon: #b5b5b5;
+  --chat-bg-side-icon: #2b3a44;
+  --chat-bg-footer: #202b34;
+  --chat-bg-button: #1e2e39;
+  --chat-border: #484a59;
+  --chat-body: #0c131b;
+  --chat-body-left: #1f2c34;
+  --chat-input-bg: #2d3841;
+  --chat-user-list: #111b22;
+  --chat-header: #202b34;
+
+  --color3: #FF8C427c;
+  --ui-accent: #3e8ef77c;
 }
 
 :root.green {

@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import Tippy from "@tippyjs/react";
+import CircularLoader from "../../Loader/CircularLoader";
 
 const RingGroups = () => {
   const [ringGroup, setRingGroup] = useState();
@@ -23,6 +24,7 @@ const RingGroups = () => {
   const ringGroupRefresh = useSelector((state) => state.ringGroupRefresh);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const account = useSelector((state) => state.account);
   const allUser = useSelector((state) => state.allUser);
@@ -180,414 +182,433 @@ const RingGroups = () => {
     }
   };
 
+  // Agent Edit
+  const handleAgentClick = async (item) => {
+    setPageLoading(true);
+    if (item) {
+      const apiData = await generalGetFunction(`/agents?search=${item.username}`);
+      if (apiData?.status) {
+        const userData = apiData.data.data[0];
+        setPageLoading(false);
+        navigate(`/agents-edit?id=${userData.id}`, {
+          state: userData,
+        });
+      }
+    }
+  }
+
   return (
-    <main className="mainContent">
-      <section id="phonePage">
-        <div className="container-fluid">
-          <div className="row">
-            <Header title="Ring Groups" />
-            <div className="overviewTableWrapper">
-              <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
-                  <div className="col-12">
-                    <div className="heading">
-                      <div className="content">
-                        <h4>
-                          Ring Group List
+    <>
+      {pageLoading && <CircularLoader />}
+
+      <main className="mainContent">
+        <section id="phonePage">
+          <div className="container-fluid">
+            <div className="row">
+              <Header title="Ring Groups" />
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>
+                            Ring Group List
+                            <button
+                              className="clearButton"
+                              onClick={() => setRefreshState(refreshState + 1)}
+                              disabled={loading}
+                            >
+                              <i
+                                className={
+                                  loading
+                                    ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                                    : "fa-regular fa-arrows-rotate fs-5"
+                                }
+                              ></i>
+                            </button>
+                          </h4>
+                          <p>You can see all list of ring groups</p>
+                        </div>
+                        <div className="buttonGroup">
                           <button
-                            className="clearButton"
-                            onClick={() => setRefreshState(refreshState + 1)}
-                            disabled={loading}
-                          >
-                            <i
-                              className={
-                                loading
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
-                              }
-                            ></i>
-                          </button>
-                        </h4>
-                        <p>You can see all list of ring groups</p>
-                      </div>
-                      <div className="buttonGroup">
-                        <button
-                          effect="ripple"
-                          className="panelButton gray"
-                          onClick={() => {
-                            navigate(-1);
-                            backToTop();
-                          }}
-                        >
-                          <span className="text">Back</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-caret-left"></i>
-                          </span>
-                        </button>
-                        {checkViewSidebar(
-                          "Ringgroup",
-                          slugPermissions,
-                          account?.permissions,
-                          "add"
-                        ) ? (
-                          <Link
-                            // to="/ring-groups-add"
-                            // onClick={backToTop}
-                            onClick={handleRingGroupAddValidation}
                             effect="ripple"
-                            className="panelButton"
+                            className="panelButton gray"
+                            onClick={() => {
+                              navigate(-1);
+                              backToTop();
+                            }}
                           >
-                            <span className="text">Add</span>
+                            <span className="text">Back</span>
                             <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
-                            </span>
-                          </Link>
-                        ) : (
-                          <button
-                            disabled
-                            onClick={handleRingGroupAddValidation}
-                            effect="ripple"
-                            className="panelButton"
-                            style={{ cursor: "not-allowed" }}
-                          >
-                            <span className="text">Add</span>
-                            <span className="icon">
-                              <i className="fa-solid fa-plus"></i>
+                              <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
-                  >
-                    <div className="tableHeader">
-                      <div className="showEntries">
-                        <label>Show</label>
-                        <select
-                          className="formItem"
-                          value={itemsPerPage}
-                          onChange={(e) => {
-                            setItemsPerPage(e.target.value);
-                          }}
-                        >
-                          <option value={10}>10</option>
-                          <option value={20}>20</option>
-                          <option value={30}>30</option>
-                        </select>
-                        <label>entries</label>
-                      </div>
-                      <div className="searchBox position-relative">
-                        <label>Search:</label>
-                        <input
-                          type="text"
-                          name="Search"
-                          placeholder="Search"
-                          value={searchValue}
-                          className="formItem"
-                          onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="tableContainer">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Extension</th>
-                            <th>Strategy</th>
-                            <th>Members</th>
-                            <th>Status</th>
-                            <th>Description</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {noPermissionToRead &&
-                            checkViewSidebar(
-                              "Ringgroup",
-                              slugPermissions,
-                              account?.permissions,
-                              "read"
-                            ) ? (
-                            <tr>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td>No Permission</td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
-                            </tr>
+                          {checkViewSidebar(
+                            "Ringgroup",
+                            slugPermissions,
+                            account?.permissions,
+                            "add"
+                          ) ? (
+                            <Link
+                              // to="/ring-groups-add"
+                              // onClick={backToTop}
+                              onClick={handleRingGroupAddValidation}
+                              effect="ripple"
+                              className="panelButton"
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </Link>
                           ) : (
-                            <>
-                              {loading ? (
-                                <SkeletonTableLoader col={8} row={15} />
-                              ) : (
-                                <>
-                                  {ringGroup &&
-                                    ringGroup?.data?.map((item, index) => {
-                                      return (
-                                        <tr key={index}>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/ring-groups-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.name}
-                                          </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/ring-groups-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.extension}
-                                          </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/ring-groups-edit?id=${item.id}`
-                                              )
-                                            }
-                                          >
-                                            {item.strategy}
-                                          </td>
-
-                                          <td>
-                                            <div className="hover-dropdown ">
-                                              <div
-                                                style={{
-                                                  color: "var(--ui-accent)",
-                                                }}
-                                                type="button"
-                                                data-bs-toggle="hover-dropdown "
-                                                aria-expanded="false"
-                                              >
-                                                {/* {item.ring_group_destination.length} */}
-                                                <div className="avatar-container">
-                                                  {item.ring_group_destination?.slice(0, 4).map((item, index) => {
-                                                    return (
-                                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
-                                                    )
-                                                  })}
-                                                  {item.ring_group_destination.length > 4 && <span>+2</span>}
-                                                </div>
-                                              </div>
-                                              <ul className="dropdown-menu light">
-                                                <li className="col-12">
-                                                  <div className="dropdown-item fw-bold disabled">
-                                                    Agents
-                                                  </div>
-                                                </li>
-                                                <div
-                                                  style={{ columnCount: 1 }}
-                                                >
-                                                  {item.ring_group_destination.slice(0, 6).map(
-                                                    (item, index) => (
-                                                      <li>
-                                                        <div className="dropdown-item">
-                                                          {item?.username}
-                                                        </div>
-                                                      </li>
-                                                    )
-                                                  )}
-                                                </div>
-                                                {item.ring_group_destination.length > 6 && <li className="col-12">
-                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
-                                                    Show More
-                                                  </Link>
-                                                </li>}
-                                              </ul>
-                                            </div>
-                                          </td>
-
-                                          {/* <td>(999) 999-9999, (999) 999-9999</td> */}
-                                          <td>
-                                            <div className="my-auto position-relative mx-1">
-                                              <label className="switch">
-                                                <input
-                                                  type="checkbox"
-                                                  checked={
-                                                    item.status == "active"
-                                                  }
-                                                  onClick={(e) => {
-                                                    setSelectedRingGroup(item);
-                                                    setPopUp(true);
-                                                  }}
-                                                  // {...register("status")}
-                                                  id="showAllCheck"
-                                                />
-                                                <span className="slider round" />
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td
-                                            onClick={() =>
-                                              navigate(
-                                                `/ring-groups-edit?id=${item.id}`
-                                              )
-                                            }
-                                            className="ellipsis"
-                                            id="detailBox"
-                                          >
-                                            {item.description}
-                                          </td>
-                                          <td>
-                                            <button
-                                              className="tableButton edit"
+                            <button
+                              disabled
+                              onClick={handleRingGroupAddValidation}
+                              effect="ripple"
+                              className="panelButton"
+                              style={{ cursor: "not-allowed" }}
+                            >
+                              <span className="text">Add</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-plus"></i>
+                              </span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="col-12"
+                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    >
+                      <div className="tableHeader">
+                        <div className="showEntries">
+                          <label>Show</label>
+                          <select
+                            className="formItem"
+                            value={itemsPerPage}
+                            onChange={(e) => {
+                              setItemsPerPage(e.target.value);
+                            }}
+                          >
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={30}>30</option>
+                          </select>
+                          <label>entries</label>
+                        </div>
+                        <div className="searchBox position-relative">
+                          <label>Search:</label>
+                          <input
+                            type="text"
+                            name="Search"
+                            placeholder="Search"
+                            value={searchValue}
+                            className="formItem"
+                            onChange={(e) => setSearchValue(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="tableContainer">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Extension</th>
+                              <th>Strategy</th>
+                              <th>Members</th>
+                              <th>Status</th>
+                              <th>Description</th>
+                              <th>Edit</th>
+                              <th>Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {noPermissionToRead &&
+                              checkViewSidebar(
+                                "Ringgroup",
+                                slugPermissions,
+                                account?.permissions,
+                                "read"
+                              ) ? (
+                              <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>No Permission</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            ) : (
+                              <>
+                                {loading ? (
+                                  <SkeletonTableLoader col={8} row={15} />
+                                ) : (
+                                  <>
+                                    {ringGroup &&
+                                      ringGroup?.data?.map((item, index) => {
+                                        return (
+                                          <tr key={index}>
+                                            <td
                                               onClick={() =>
                                                 navigate(
                                                   `/ring-groups-edit?id=${item.id}`
                                                 )
                                               }
                                             >
-                                              <i className="fa-solid fa-pencil" />
-                                            </button>
-                                          </td>
-                                          <td>
-                                            <button
-                                              className="tableButton delete"
-                                              onClick={() => {
-                                                setPopUp(true);
-                                                setDeleteId(item.id);
-                                              }}
+                                              {item.name}
+                                            </td>
+                                            <td
+                                              onClick={() =>
+                                                navigate(
+                                                  `/ring-groups-edit?id=${item.id}`
+                                                )
+                                              }
                                             >
-                                              <i className="fa-solid fa-trash" />
-                                            </button>
-                                          </td>
-                                          <div className="utilPopup"></div>
-                                        </tr>
-                                      );
-                                    })}
-                                  {ringGroup &&
-                                    ringGroup?.data?.length === 0 ? (
-                                    <td colSpan={99}>
-                                      <EmptyPrompt
-                                        name="Ring Group"
-                                        link="ring-groups-add"
-                                      />
-                                    </td>
-                                  ) : (
-                                    ""
-                                  )}
-                                </>
-                              )}
-                            </>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+                                              {item.extension}
+                                            </td>
+                                            <td
+                                              onClick={() =>
+                                                navigate(
+                                                  `/ring-groups-edit?id=${item.id}`
+                                                )
+                                              }
+                                            >
+                                              {item.strategy}
+                                            </td>
 
-                    <div className="tableHeader mb-3">
-                      {ringGroup && ringGroup?.data?.length > 0 ? (
-                        <PaginationComponent
-                          pageNumber={(e) => setPageNumber(e)}
-                          totalPage={ringGroup.last_page}
-                          from={ringGroup.from}
-                          to={ringGroup.to}
-                          total={ringGroup.total}
-                        />
-                      ) : (
-                        ""
+                                            <td>
+                                              <div className="hover-dropdown ">
+                                                <div
+                                                  style={{
+                                                    color: "var(--ui-accent)",
+                                                  }}
+                                                  type="button"
+                                                  data-bs-toggle="hover-dropdown "
+                                                  aria-expanded="false"
+                                                >
+                                                  {/* {item.ring_group_destination.length} */}
+                                                  <div className="avatar-container">
+                                                    {item.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                                      return (
+                                                        <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                                      )
+                                                    })}
+                                                    {item.ring_group_destination.length > 4 && <span>+2</span>}
+                                                  </div>
+                                                </div>
+                                                <ul className="dropdown-menu light">
+                                                  <li className="col-12">
+                                                    <div className="dropdown-item fw-bold disabled">
+                                                      Agents
+                                                    </div>
+                                                  </li>
+                                                  <div
+                                                    style={{ columnCount: 1 }}
+                                                  >
+                                                    {item.ring_group_destination.map(
+                                                      (item, index) => (
+                                                        <li>
+                                                          <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
+                                                            {item?.username}
+                                                          </div>
+                                                        </li>
+                                                      )
+                                                    )}
+                                                  </div>
+                                                  {/* {item.ring_group_destination.length > 6 && <li className="col-12">
+                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                    Show More
+                                                  </Link>
+                                                </li>} */}
+                                                </ul>
+                                              </div>
+                                            </td>
+
+                                            {/* <td>(999) 999-9999, (999) 999-9999</td> */}
+                                            <td>
+                                              <div className="my-auto position-relative mx-1">
+                                                <label className="switch">
+                                                  <input
+                                                    type="checkbox"
+                                                    checked={
+                                                      item.status == "active"
+                                                    }
+                                                    onClick={(e) => {
+                                                      setSelectedRingGroup(item);
+                                                      setPopUp(true);
+                                                    }}
+                                                    // {...register("status")}
+                                                    id="showAllCheck"
+                                                  />
+                                                  <span className="slider round" />
+                                                </label>
+                                              </div>
+                                            </td>
+                                            <td
+                                              onClick={() =>
+                                                navigate(
+                                                  `/ring-groups-edit?id=${item.id}`
+                                                )
+                                              }
+                                              className="ellipsis"
+                                              id="detailBox"
+                                            >
+                                              {item.description}
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="tableButton edit"
+                                                onClick={() =>
+                                                  navigate(
+                                                    `/ring-groups-edit?id=${item.id}`
+                                                  )
+                                                }
+                                              >
+                                                <i className="fa-solid fa-pencil" />
+                                              </button>
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="tableButton delete"
+                                                onClick={() => {
+                                                  setPopUp(true);
+                                                  setDeleteId(item.id);
+                                                }}
+                                              >
+                                                <i className="fa-solid fa-trash" />
+                                              </button>
+                                            </td>
+                                            <div className="utilPopup"></div>
+                                          </tr>
+                                        );
+                                      })}
+                                    {ringGroup &&
+                                      ringGroup?.data?.length === 0 ? (
+                                      <td colSpan={99}>
+                                        <EmptyPrompt
+                                          name="Ring Group"
+                                          link="ring-groups-add"
+                                        />
+                                      </td>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div className="tableHeader mb-3">
+                        {ringGroup && ringGroup?.data?.length > 0 ? (
+                          <PaginationComponent
+                            pageNumber={(e) => setPageNumber(e)}
+                            totalPage={ringGroup.last_page}
+                            from={ringGroup.from}
+                            to={ringGroup.to}
+                            total={ringGroup.total}
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      {deleteId == ""
+                        ? error
+                        : "Are you sure you want to delete this ring group?"}
+                      {selectedRingGroup?.id && (
+                        <p>
+                          Are you sure you want to{" "}
+                          {selectedRingGroup.status == "active"
+                            ? "deactivate"
+                            : "activate"}{" "}
+                          this ring group?
+                        </p>
                       )}
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      {deleteId !== "" || selectedRingGroup?.id ? (
+                        <button
+                          disabled={loading}
+                          className="panelButton m-0"
+                          onClick={() => {
+                            if (deleteId !== "") handleDelete(deleteId);
+                            else if (selectedRingGroup.id)
+                              handleUpdateStatusRingGroup(selectedRingGroup.id);
+                          }}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                      ) : (
+                        <button
+                          className="panelButton m-0"
+                          onClick={() => {
+                            // setForce(true);
+                            setPopUp(false);
+                            navigate(`${redirectRoutes}`);
+                          }}
+                        >
+                          <span className="text">Lets Go!</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+                      )}
+
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                          setDeleteId("");
+                          setSelectedRingGroup({});
+                          // setDeleteToggle(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      {popUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4 col-md-5">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
-                  </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
-                    {deleteId == ""
-                      ? error
-                      : "Are you sure you want to delete this ring group?"}
-                    {selectedRingGroup?.id && (
-                      <p>
-                        Are you sure you want to{" "}
-                        {selectedRingGroup.status == "active"
-                          ? "deactivate"
-                          : "activate"}{" "}
-                        this ring group?
-                      </p>
-                    )}
-                  </p>
-                  <div className="d-flex justify-content-between">
-                    {deleteId !== "" || selectedRingGroup?.id ? (
-                      <button
-                        disabled={loading}
-                        className="panelButton m-0"
-                        onClick={() => {
-                          if (deleteId !== "") handleDelete(deleteId);
-                          else if (selectedRingGroup.id)
-                            handleUpdateStatusRingGroup(selectedRingGroup.id);
-                        }}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                    ) : (
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => {
-                          // setForce(true);
-                          setPopUp(false);
-                          navigate(`${redirectRoutes}`);
-                        }}
-                      >
-                        <span className="text">Lets Go!</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                    )}
-
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                        setDeleteId("");
-                        setSelectedRingGroup({});
-                        // setDeleteToggle(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon">
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )}
+      </main>
+    </>
   );
 };
 

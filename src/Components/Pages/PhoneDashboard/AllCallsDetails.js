@@ -40,10 +40,10 @@ function AllCallsDetails() {
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
-                            <span className="badge rounded-pill text-bg-primary">Active: {activeCall.length}</span>
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--ui-accent)' }}>Active: {activeCall.length}</span>
                           </div>
                           <div className="ms-1">
-                            <span className="badge rounded-pill text-bg-primary">Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
+                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--ui-accent)' }}>Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
