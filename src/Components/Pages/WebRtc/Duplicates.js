@@ -7,7 +7,7 @@ import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import AudioPlayer from './AudioWaveForm';
 import Comments from './Comments';
 
-export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }) {
+export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData}) {
   const [selectedId,setSelectedId]=useState(duplicatePopUpData.id)
   const [loading, setLoading] = useState(true);
   const [showComment, setShowComment] = useState(false);
@@ -18,6 +18,20 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
   const [showAudio,setShowAudio]=useState(false)
   const thisAudioRef = useRef(null);
   const [ showDropDown,setShowDropdown]=useState(false)
+    const [pageNumber, setPageNumber] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [showKeys, setShowKeys] = useState([
+        "Call-Direction",
+        "variable_sip_from_user",
+        "tag",
+        "application_state",
+        "application_state_to_ext",
+        "e_name",
+        "Date",
+        "Time",
+        "recording_path",
+        "variable_billsec",
+      ]);
  
 
   useEffect(() => {
@@ -91,6 +105,52 @@ setShowComment(true)
       console.error("Error in handlePlaying:", error);
     }
   };
+  function getCallIcon(item) {
+    const callIcons = {
+      inbound: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-phone-arrow-down-left",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--funky-boy3)",
+        label: "Inbound",
+      },
+      outbound: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-phone-arrow-up-right",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--color3)",
+        label: "Outbound",
+      },
+      internal: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-headset",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--color2)",
+        label: "Internal",
+      },
+    };
+  
+    return callIcons[item["Call-Direction"]] || callIcons.internal;
+  }
+  
+  // Example usage:
+  // Assuming 'item' is defined somewhere in your code
+  // const callType = getCallIcon(item);
+  
+  // if you need to use it in place of your previous code:
+  // const callType = getCallIcon(item);
  
   return (
 
@@ -112,89 +172,161 @@ setShowComment(true)
                  <div className='tableContainer m-0 p-0'>
                    <table>
                      <thead>
-                       <tr>
-                         <th>Call Direction</th>
-                         <th>Call Origin</th>
-                         <th>Call Destination</th>
-                         {/* <th>Recordings</th> */}
-                         <th>Duration</th>
-                         <th>Comments</th>
-                       </tr>
+                     <tr>
+                      <th>#</th>
+  {showKeys.map((key) => {
+    let headerText = key; // Default to the key itself
+
+    switch (key) {
+      case "Call-Direction":
+        headerText = "Call Direction";
+        break;
+      case "Caller-Orig-Caller-ID-Name":
+        headerText = "Caller No.";
+        break;
+      case "variable_sip_from_user":
+        headerText = "Caller No.";
+        break;
+      case "tag":
+        headerText = "Tag";
+        break;
+      case "application_state":
+        headerText = "Via/Route";
+        break;
+      case "application_state_to_ext":
+        headerText = "Ext/Dest";
+        break;
+      case "e_name":
+        headerText = "User Name"; // or whatever mapping is needed
+        break;
+      case "Date":
+        headerText = "Date";
+        break;
+      case "Time":
+        headerText = "Time";
+        break;
+      case "recording_path":
+        headerText = "Recordings";
+        break;
+      case "variable_billsec":
+        headerText = "Duration";
+        break;
+      default:
+        // Handle other keys if necessary
+        break;
+    }
+
+    return <th key={key}>{headerText}</th>;
+  })}
+  <th>Comments</th>
+</tr>
                      </thead>
                      <tbody  >
-                       {duplicateData.map((call, index) => (
-                         <React.Fragment key={index}>
+                       {duplicateData.map((call, index) => {
+                         const callIcon = getCallIcon(call); // Call the getCallIcon function
+                        return  <React.Fragment key={index}>
                            <tr
                            >
-                             <td>{call["Call-Direction"]}</td>
-                             <td>{call["variable_sip_from_user"]}</td>
-                             <td>{call["variable_sip_to_user"]}</td>
-                             {/* <td>
-                                 { call["recording_path"]!==null&&   <button
-                                        className="tableButton"
-                                        onClick={() => { 
-                                            if (currentPlaying === call["recording_path"]) {
-                                              setShowDropdown(false)
-                                                setCurrentPlaying("");
-                                              // console.log(call["recording_path"])
-                                            } else {
-                                                setCurrentPlaying(call["recording_path"]);
-                                                setShowDropdown(true)
-                                            }
-                                          }
-                                           
-                                        }
-                                    >
-                                         {showDropDown && currentPlaying === call["recording_path"] ? (
-                                            <ul className="dropdown-menu actionBtnDropdowns" key={index}>
-                                              
-                                                <>
-                                                    <li className="dropdown-item">
-                                                        <div className="clearButton text-align-start"    onClick={() => {
-                                             
-                                              if (call.recording_path!==currentPlaying) {
-                                                setShowDropdown(false)
-                                                setShowAudio(true)
-                                                handlePlaying(
-                                                  call.recording_path
-                                                );
-                                              }else{
-                                                setShowAudio(false)
-                                              }
-                                            }}>
-                                                            <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
-                                                            {call?.recording_path !== null ? "Play " : "Configure"}
-                                                         
-                                                        </div>
-                                                    </li>
-                                                    <li className="dropdown-item">
-                                                        <div className="clearButton text-align-start">
-                                                            <i className="fa-solid fa-bolt me-2"></i>
-                                                            Transcript
-                                                        </div>
-                                                    </li>
-                                                </>
-
-                                                <>
-                                                    <li className="dropdown-item">
-                                                        <div className="clearButton text-align-start">
-                                                            <i className="fa-regular fa-download"></i> Download
-                                                        </div>
-                                                    </li>
-                                                </>
-                                                <li className="dropdown-item"></li>
-                                            </ul>
-                                        ) : (
-                                            <></>
-                                        )}
-                                        {currentPlaying === call["recording_path"] ? (
-                                            <i className="fa-solid fa-stop"></i>
-                                        ) : (
-                                            <i className="fa-solid fa-play"></i>
-                                        )}
-                                    </button>}
-                                </td> */}
-                             <td className="px-4 py-3">{formatTime(call["variable_billsec"])}</td>
+                            <td>
+                                            {(pageNumber - 1) *
+                                              Number(itemsPerPage) +
+                                              (index + 1)}
+                                          </td>
+                                          {showKeys.map((key, keyIndex) => {
+    if (key === "Call-Direction") {
+        return (
+            <td>
+                <i
+                    className={`fa-solid ${callIcon.icon} me-1`}
+                    style={{ color: callIcon.color }}
+                ></i>
+                {callIcon.label}
+            </td>
+        );
+    } else if (key === "e_name") {
+        return <td >{call["e_name"]}</td>;
+    } else if (key === "variable_sip_from_user") {
+        return <td >{call["variable_sip_from_user"]}</td>;
+    } else if (key === "tag") {
+        return <td >{call["tag"]}</td>;
+    } else if (key === "application_state") {
+        return <td >{call["application_state"]}</td>;
+    } else if (key === "application_state_to_ext") {
+        return <td>{call["application_state_to_ext"]}</td>;
+    } else if (key === "Date") {
+        return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
+    } else if (key === "Time") {
+        return <td >{call["variable_start_stamp"]?.split(" ")[1]}</td>;
+    } else if (key === "recording_path") {
+        return (
+            <td >
+                {call["recording_path"] !== null && call["variable_billsec"] > 0 && (
+                    <button
+                        className="tableButton"
+                        onClick={() => {
+                            if (currentPlaying === call["recording_path"]) {
+                                setCurrentPlaying("");
+                                setShowAudio(false);
+                            } else {
+                                setCurrentPlaying(call["recording_path"]);
+                                setShowDropdown(true);
+                                setShowAudio(false);
+                            }
+                        }}
+                    >
+                        {showDropDown && currentPlaying === call["recording_path"] ? (
+                            <ul className="dropdown-menu actionBtnDropdowns" key={index}>
+                                <>
+                                    <li className="dropdown-item">
+                                        <div
+                                            className="clearButton text-align-start"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (call.recording_path === currentPlaying) {
+                                                    setShowDropdown(false);
+                                                    setShowAudio(true);
+                                                    handlePlaying(call.recording_path);
+                                                }
+                                            }}
+                                        >
+                                            <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
+                                            Play
+                                        </div>
+                                    </li>
+                                    <li className="dropdown-item">
+                                        <div className="clearButton text-align-start">
+                                            <i className="fa-solid fa-bolt me-2"></i>
+                                            Transcript
+                                        </div>
+                                    </li>
+                                </>
+                                <>
+                                    <li className="dropdown-item">
+                                        <div className="clearButton text-align-start">
+                                            <i className="fa-regular fa-download"></i> Download
+                                        </div>
+                                    </li>
+                                </>
+                                <li className="dropdown-item"></li>
+                            </ul>
+                        ) : (
+                            <></>
+                        )}
+                        {currentPlaying === call["recording_path"] ? (
+                            <i className="fa-solid fa-stop"></i>
+                        ) : (
+                            <i className="fa-solid fa-play"></i>
+                        )}
+                    </button>
+                )}
+            </td>
+        );
+    } else if (key === "variable_billsec") {
+        return <td>{formatTime(call["variable_billsec"])}</td>;
+    }
+    return null;
+})}
+                        
                              <td className="px-4 py-3">
                                <button
                                  className="tableButton"
@@ -206,7 +338,7 @@ setShowComment(true)
                              </td>
                            </tr>
                            {/* Recording Player */}
-                          {/* {currentPlaying ===
+                          {currentPlaying ===
                                           call["recording_path"] &&showAudio&&
                                         <tr>
                                           <td colspan="18">
@@ -214,9 +346,9 @@ setShowComment(true)
                                             <AudioPlayer audioUrl={audioURL} />
                                             </div>
                                           </td>
-                                        </tr>} */}
+                                        </tr>}
                          </React.Fragment>
-                       ))}
+})}
                    
                      </tbody>
                    </table>
@@ -243,17 +375,23 @@ setShowComment(true)
              <div className='tableContainer m-0 p-0'>
                <table>
                  <thead>
-                   <tr>
-                     <th>Call Direction</th>
-                     <th>Call Origin</th>
-                     <th>Call Destination</th>
-                     {/* <th>Recordings</th> */}
-                     <th>Duration</th>
-                     <th>Comments</th>
-                   </tr>
+                 <tr>
+                       <th>#</th>
+                         <th>Call Direction</th>
+                         <th>Caller No.</th>
+                         <th>Call Destination</th>
+                         <th>Tag</th>
+                         <th>Via/Route</th>
+                         <th>Ext/Dest</th>
+                         <th>Date</th>
+                         <th>Time</th>
+                         <th>Recordings</th>
+                         <th>Duration</th>
+                         <th>Comments</th>
+                       </tr>
                  </thead>
                  <tbody >
-                   <SkeletonTableLoader col={6} row={15} />
+                   <SkeletonTableLoader col={13} row={15} />
                  </tbody>
                </table>
              </div>}
@@ -270,12 +408,12 @@ setShowComment(true)
      <i className="fa-solid fa-trash" />
    </button>
  } */}
-               <button className="panelButton mx-0" >
+               {/* <button className="panelButton mx-0" >
                  <span className="text">ok</span>
                  <span className="icon">
                    <i className="fa-solid fa-floppy-disk" />
                  </span>
-               </button>
+               </button> */}
              </div>
            </div>
          </div>
