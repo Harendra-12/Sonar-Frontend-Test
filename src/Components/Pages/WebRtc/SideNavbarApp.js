@@ -182,6 +182,21 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Switch Admin</div>
                 </div>
               </li> : ""}
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("whatsapp-chartbox")}
+                  className={
+                    activePage === "whatsapp" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  </div>
+                  <div className="itemTitle">WhatsApp</div>
+                </div>
+              </li>
+
           </ul>
         </div>
       </div>
