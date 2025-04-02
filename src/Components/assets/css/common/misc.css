@@ -1172,7 +1172,7 @@ input[type=number] {
     top: 50%;
     transform: translate(0, -50%);
     z-index: 9999;
-    transition: 1s linear;
+    transition: 0.5s linear;
 }
 
 .callDashParkedCalls .overviewTableWrapper {
