@@ -884,6 +884,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 name=""
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="current-password"
                               />
                             </div>
                           </div>
