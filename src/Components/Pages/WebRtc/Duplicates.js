@@ -155,6 +155,34 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
   
   // if you need to use it in place of your previous code:
   // const callType = getCallIcon(item);
+
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
  
   return (
 
@@ -254,13 +282,33 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
     } else if (key === "tag") {
         return <td >{call["tag"]}</td>;
     } else if (key === "application_state") {
-        return <td >{call["application_state"]}</td>;
+        return     <td>
+        {[
+          "intercept",
+          "eavesdrop",
+          "whisper",
+          "barge",
+        ].includes(
+          call["application_state"]
+        )
+          ? call[
+          "other_leg_destination_number"
+          ]
+          : call[
+          "Caller-Callee-ID-Number"
+          ]}{" "}
+        {call[
+          "application_state_name"
+        ] &&
+          `(${call["application_state_name"]})`}
+      </td>
     } else if (key === "application_state_to_ext") {
         return <td>{call["application_state_to_ext"]}</td>;
     } else if (key === "Date") {
         return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
     } else if (key === "Time") {
-        return <td >{call["variable_start_stamp"]?.split(" ")[1]}</td>;
+      const time=formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
+        return <td >{time}</td>;
     } else if (key === "recording_path") {
         return (
             <td >
