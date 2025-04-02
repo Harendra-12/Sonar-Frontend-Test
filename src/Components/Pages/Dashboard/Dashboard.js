@@ -460,7 +460,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{String(new Date().getHours() > 12 ? new Date().getHours() - 12 : new Date().getHours()).padStart(2, "0")}</div>
+                                  <div className="timer-value">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
@@ -473,7 +473,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{String(new Date().getMinutes()).padStart(2, "0")}</div>
+                                  <div className="timer-value">{String(new Date(time).getMinutes()).padStart(2, "0")}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
@@ -485,7 +485,7 @@ const Dashboard = () => {
                                     <div />
                                     <div />
                                   </div>
-                                  <div className="timer-value">{new Date().getHours() > 12 ? 'PM' : 'AM'}</div>
+                                  <div className="timer-value">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</div>
                                   {/* line across middle */}
                                   <div className="timer-line">
                                     <div />
