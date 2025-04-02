@@ -293,6 +293,10 @@ function CdrReport({ page }) {
   }, [filterBy]);
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
