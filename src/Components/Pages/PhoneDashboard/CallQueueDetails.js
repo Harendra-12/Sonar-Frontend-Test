@@ -112,7 +112,7 @@ const CallQueueDetails = () => {
                             (item) =>
                               item["Call-Direction"] == "missed" &&
                               item?.application_state == 'callcenter'
-                          )[0]?.filter_count || 0}
+                          ).reduce((acc, current) => acc + (current.filter_count), 0) || 0}
                         </span>
                       </div>
                     </div>
@@ -126,7 +126,7 @@ const CallQueueDetails = () => {
                             (item) =>
                               item["Call-Direction"] == "inbound" &&
                               item.application_state == 'callcenter'
-                          )[0]?.filter_count || 0}
+                          ).reduce((acc, current) => acc + (current.filter_count), 0) || 0}
                         </span>
                       </div>
                     </div>
