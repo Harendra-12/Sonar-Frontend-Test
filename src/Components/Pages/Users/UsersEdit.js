@@ -575,6 +575,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   ...noSpecialCharactersValidator,
                                 })}
                                 onKeyDown={restrictToAllowedChars}
+                                autoComplete="off"
                               />
                             </div>
                           </div>
