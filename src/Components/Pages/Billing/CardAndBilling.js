@@ -1192,7 +1192,7 @@ function CardAndBilling() {
                         >
                           <div className="heading">
 
-                            <div className="col-9">
+                            <div className="col-xl-9 col-lg-9 col-sm-9 col-sm-9 col-9">
                               <h5>Auto Pay Feature</h5>
                               {
                                 !autoPaymentFetchData ? "" :
@@ -1200,7 +1200,7 @@ function CardAndBilling() {
                               }
                             </div>
 
-                            <div className="col-3" style={{ cursor: "pointer" }}>
+                            <div className="col-xl-3 col-lg-3 col-sm-3 col-sm-3 col-3" style={{ cursor: "pointer" }}>
                               <i
                                 className="fa-duotone fa-circle-dollar"
                                 style={{
@@ -1221,7 +1221,7 @@ function CardAndBilling() {
                                     </button>
                                   </div> :
                                   <>
-                                    <div className="col-9">
+                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                       <h5>
                                         $ {autoPaymentFetchData.amount}
                                       </h5>
@@ -1229,7 +1229,7 @@ function CardAndBilling() {
                                         <b>Minimum Threshold</b>: $ {autoPaymentFetchData.threshold}
                                       </p>
                                     </div>
-                                    <div className="col-3" >
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
                                       <button className="panelButton edit ms-auto" onClick={() => setAutoPayPopup(true)}>
                                         <span className="text">Edit</span>
                                         <span className="icon"><i className="fa-solid fa-pen" /></span>

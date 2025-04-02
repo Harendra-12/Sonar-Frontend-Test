@@ -283,14 +283,15 @@ function IvrOptions() {
                           (editId === item.id && editAction_name === "pstn") ? (
                           <div className="col-3 pe-2">
                             <PhoneInput
-                              disabled={
-                                editId === item.id
-                                  ? editAction_name === "hangup" ||
-                                    editAction_name === "backtoivr"
-                                    ? true
-                                    : false
-                                  : true
-                              }
+                              // disabled={
+                              //   editId === item.id
+                              //     ? editAction_name === "hangup" ||
+                              //       editAction_name === "backtoivr"
+                              //       ? true
+                              //       : false
+                              //     : true
+                              // }
+                               defaultCountry="IN"
                               placeholder="Enter phone number"
                               limitMaxLength={true}
                               value={item.action_id}

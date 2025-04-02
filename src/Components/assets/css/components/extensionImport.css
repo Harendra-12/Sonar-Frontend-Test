@@ -604,3 +604,49 @@ form.tangoNavs .nav-tabs {
     background: #e5ffe5;
     border-color: #168700 !important;
 }
+
+
+
+.overviewTableWrapper .headingExtraInfo .activecalls{
+    background-color:#2a85fc;
+    color:  #d8e4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: 5px;
+}
+
+.overviewTableWrapper .headingExtraInfo .ringscalls{
+    background-color: #f84238 !important;
+    color:  rgb(235, 221, 221);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+.overviewTableWrapper .headingExtraInfo .completecalls{
+    background-color: #00a08b !important;
+    color:  #feffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.overviewTableWrapper .headingExtraInfo .totalcalls{
+    background-color: #fa9d11 !important;
+    color:  #fdfcfa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: 5px;
+}
