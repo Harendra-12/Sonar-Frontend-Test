@@ -881,10 +881,10 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                               <input
                                 type="password"
                                 className="formItem"
-                                name=""
+                                name="new password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                autoComplete="current-password"
+                                autoComplete="off"
                               />
                             </div>
                           </div>
