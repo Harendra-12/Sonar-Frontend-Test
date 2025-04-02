@@ -454,7 +454,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             type="button"
                             effect="ripple"
                             className="panelButton"
-                            onClick={()=>handleFormSubmit()}
+                            onClick={handleFormSubmit}
                           >
                             <span className="text">Save</span>
                             <span className="icon">
@@ -474,7 +474,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                   >
                     <div className="row gx-5">
                       <div className="col-xl-6">
-                        <form action="#" className="row px-2" autoComplete="off">
+                        <form action="#" className="row px-2">
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="">
@@ -575,7 +575,6 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                   ...noSpecialCharactersValidator,
                                 })}
                                 onKeyDown={restrictToAllowedChars}
-                                autoComplete="off"
                               />
                             </div>
                           </div>
@@ -879,12 +878,11 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             </div>
                             <div className="col-6">
                               <input
-                                type="text"
+                                type="password"
                                 className="formItem"
-                                name="new password"
+                                name=""
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                autoComplete="current-password"
                               />
                             </div>
                           </div>
