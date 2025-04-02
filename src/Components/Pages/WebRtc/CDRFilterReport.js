@@ -1290,13 +1290,13 @@ function CdrFilterReport({ page }) {
                                           </td>
                                           <td>
                                             {item?.duplicated == 1 && <button
-                                              className={`tableButton ms-0`}
+                                              className={`tableButton edit ms-0`}
                                               onClick={
                                                 () => duplicateColumn(item)
                                               }
                                             >
-                                              <Tippy content={"View Note"}>
-                                                <i className="fa-solid fa-comment-dots"></i>
+                                              <Tippy content={"View Duplicate"}>
+                                                <i className="fa-solid fa-clone"></i>
                                               </Tippy>
                                             </button>}
                                           </td>
