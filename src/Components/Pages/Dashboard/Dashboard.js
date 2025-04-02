@@ -509,7 +509,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper b">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -544,7 +544,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper c">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -584,7 +584,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper d">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -758,130 +758,9 @@ const Dashboard = () => {
                         ) : (
                           <></>
                         )} */}
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="itemWrapper d">
-                            <div className="heading">
-                              <div
-                                className="d-flex flex-wrap justify-content-between"
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                  navigate("/did-listing")
-                                }
-                              >
-                                <div className="col-9">
-                                  <h5>DID Information</h5>
-                                  <p>Click to view all available DIDs</p>
-                                </div>
-                                <div className="col-3">
-                                  <i className="fa-solid fa-file-invoice"></i>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="data-number2">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-12">
-                                  <ul>
-                                    <li>
-                                      Total DID Purchasd{" "}
-                                      <span className="float-end">
-                                        {accountDetails?.dids?.length}
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Default Outbound Number{" "}
-                                      <span className="float-end">
-                                        {accountDetails?.dids?.filter((item) => item.default_outbound == 1)[0]?.did}
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Default Fax Number{" "}
-                                      <span className="float-end">N/A</span>
-                                    </li>
-                                    <li>
-                                      Default SMS{" "}
-                                      <span className="float-end">N/A</span>
-                                    </li>
-                                    <li>
-                                      Default WhatsApp{" "}
-                                      <span className="float-end">N/A</span>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                            {/* <DoughnutChart
-                              fields={["Inbound", "Outbound", "Total"]}
-                              percentage={[
-                                callCardData.handled.inboundAnswered,
-                                callCardData.handled.outboundAnswered,
-                                callCardData.handled.count,
-                              ]}
-                              centerTitle={`${extensionList}/${Number(
-                                accountDetails?.package?.number_of_user
-                              )}`}
-                              centerDesc="Extensions Details"
-                              colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            /> */}
-                            <div className='circularProgressWrapper'>
-                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d0130" stroke-width="20"
-                                ></circle>
-                                <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#f17d01" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
-                                ></circle>
-                              </svg>
-                              <div className='circularProgressContent'>
-                                <div className="data-number">
-                                  <label style={{ color: '#f17d01' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
-                                </div>
-                                <p>Total Online Users</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
-                            {/* <DoughnutChart
-                              fields={["Inbound", "Outbound", "Total"]}
-                              percentage={[
-                                callCardData.handled.inboundAnswered,
-                                callCardData.handled.outboundAnswered,
-                                callCardData.handled.count,
-                              ]}
-                              centerTitle={`${extensionList}/${Number(
-                                accountDetails?.package?.number_of_user
-                              )}`}
-                              centerDesc="Extensions Details"
-                              colors={["#9999", "#FF638470", "#36A2EB70"]}
-                            /> */}
-                            <div className='circularProgressWrapper'>
-                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a30" stroke-width="20"
-                                ></circle>
-                                <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#a5d02a" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
-                                ></circle>
-                              </svg>
-                              <div className='circularProgressContent'>
-                                <div className="data-number">
-                                  <label style={{ color: '#a5d02a' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
-                                </div>
-                                <p>Total Available Extensions</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                         {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
                           <div className="col-xl-3 mb-3 mb-xl-0">
-                            <div className="itemWrapper b">
+                            <div className="itemWrapper a">
                               <div className="heading">
                                 <div
                                   className="d-flex flex-wrap justify-content-between"
@@ -943,6 +822,127 @@ const Dashboard = () => {
                             </div>
                           </div>
                         )}
+                        <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                            {/* <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
+                              percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
+                                callCardData.handled.count,
+                              ]}
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            /> */}
+                            <div className='circularProgressWrapper'>
+                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                <circle className="bg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
+                                ></circle>
+                                <circle className="fg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
+                                  stroke-dasharray="361.25 361.25"
+                                ></circle>
+                              </svg>
+                              <div className='circularProgressContent'>
+                                <div className="data-number">
+                                  <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                </div>
+                                <p>Total Online Users</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="wrapper h-100" style={{ placeContent: 'center' }}>
+                            {/* <DoughnutChart
+                              fields={["Inbound", "Outbound", "Total"]}
+                              percentage={[
+                                callCardData.handled.inboundAnswered,
+                                callCardData.handled.outboundAnswered,
+                                callCardData.handled.count,
+                              ]}
+                              centerTitle={`${extensionList}/${Number(
+                                accountDetails?.package?.number_of_user
+                              )}`}
+                              centerDesc="Extensions Details"
+                              colors={["#9999", "#FF638470", "#36A2EB70"]}
+                            /> */}
+                            <div className='circularProgressWrapper'>
+                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                <circle className="bg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
+                                ></circle>
+                                <circle className="fg"
+                                  cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
+                                  stroke-dasharray="361.25 361.25"
+                                ></circle>
+                              </svg>
+                              <div className='circularProgressContent'>
+                                <div className="data-number">
+                                  <label style={{ color: '#ff8c42' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                </div>
+                                <p>Total Available Extensions</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-xl-3 mb-3 mb-xl-0">
+                          <div className="itemWrapper d">
+                            <div className="heading">
+                              <div
+                                className="d-flex flex-wrap justify-content-between"
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  navigate("/did-listing")
+                                }
+                              >
+                                <div className="col-9">
+                                  <h5>DID Information</h5>
+                                  <p>Click to view all available DIDs</p>
+                                </div>
+                                <div className="col-3">
+                                  <i className="fa-solid fa-file-invoice"></i>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="data-number2">
+                              <div className="d-flex flex-wrap justify-content-between">
+                                <div className="col-12">
+                                  <ul>
+                                    <li>
+                                      Total DID Purchasd{" "}
+                                      <span className="float-end">
+                                        {accountDetails?.dids?.length}
+                                      </span>
+                                    </li>
+                                    <li>
+                                      Default Outbound Number{" "}
+                                      <span className="float-end">
+                                        {accountDetails?.dids?.filter((item) => item.default_outbound == 1)[0]?.did}
+                                      </span>
+                                    </li>
+                                    <li>
+                                      Default Fax Number{" "}
+                                      <span className="float-end">N/A</span>
+                                    </li>
+                                    <li>
+                                      Default SMS{" "}
+                                      <span className="float-end">N/A</span>
+                                    </li>
+                                    <li>
+                                      Default WhatsApp{" "}
+                                      <span className="float-end">N/A</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
