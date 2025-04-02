@@ -15,6 +15,7 @@ function Meeting() {
     const [searchValue, setSearchValue] = useState('');
     const [popUp, setPopUp] = useState(false);
     const [viewVideoPopup, setViewVideoPopup] = useState(false);
+    const [showRecordingsPopup, setShowRecordingsPopup] = useState(false);
     const [deleteId, setDeleteId] = useState('');
     const [moderatorPinId, setModeratorPinId] = useState('');
     const [participantPinId, setParticipantPinId] = useState('');
@@ -63,17 +64,17 @@ function Meeting() {
     console.log(recordData, "recordData");
     function formatTimestamp(nanoseconds) {
         console.log(nanoseconds, "nanoseconds");
-        
+
         const milliseconds = Number(nanoseconds) / 1_000_000; // Convert safely
         const date = new Date(milliseconds);
-    
+
         const dd = String(date.getDate()).padStart(2, '0');
         const mm = String(date.getMonth() + 1).padStart(2, '0');
         const yyyy = date.getFullYear();
         const hh = String(date.getHours()).padStart(2, '0');
         const min = String(date.getMinutes()).padStart(2, '0');
         const ss = String(date.getSeconds()).padStart(2, '0');
-    
+
         return `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
     }
 
@@ -174,28 +175,29 @@ function Meeting() {
                                                         <th>Moderator Pin</th>
                                                         <th>Joining Pin</th>
                                                         <th>Meeting link</th>
+                                                        <th>Recordings</th>
                                                         <th>Delete</th>
                                                         {/* <th>Action</th> */}
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {loading ? (
-                                                        <SkeletonTableLoader col={7} row={15} />
+                                                        <SkeletonTableLoader col={8} row={15} />
                                                     ) : (
                                                         <>
                                                             {conference &&
                                                                 conference?.data?.map((item, key) => {
                                                                     return (
                                                                         <>
-                                                                            <tr key={key} data-bs-toggle="collapse" href={`#meeting${key}`} role="button" onClick={() => handleGetRecord(item.id)}>
+                                                                            <tr key={key} onClick={() => handleGetRecord(item.id)}>
                                                                                 <td >{item.conf_name}</td>
                                                                                 <td>{item.conf_max_members}</td>
                                                                                 <td>{item.conf_ext}</td>
-                                                                                <td><div className='d-flex align-items-center justify-content-start '>
-
-                                                                                    {moderatorPinId === item.id ? item.moderator_pin : "******"}
-                                                                                    <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
-                                                                                </div>
+                                                                                <td>
+                                                                                    <div className='d-flex align-items-center justify-content-start '>
+                                                                                        {moderatorPinId === item.id ? item.moderator_pin : "******"}
+                                                                                        <button onClick={() => setModeratorPinId(moderatorPinId === item.id ? "" : item.id)} className="clearButton2 edit ms-3"><i className={`fa-solid ${moderatorPinId === item.id ? "fa-eye" : "fa-eye-slash"}`}></i></button>
+                                                                                    </div>
                                                                                 </td>
                                                                                 <td>
                                                                                     <div className='d-flex align-items-center justify-content-start '>
@@ -206,6 +208,14 @@ function Meeting() {
                                                                                 <td>{item.conf_url}</td>
                                                                                 <td>
                                                                                     <div
+                                                                                        className="tableButton"
+                                                                                        onClick={() => setShowRecordingsPopup(true)}
+                                                                                    >
+                                                                                        <i className="fa-solid fa-archive"></i>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
                                                                                         className="tableButton delete"
                                                                                         onClick={() => {
                                                                                             setDeleteId(item.id);
@@ -213,54 +223,6 @@ function Meeting() {
                                                                                         }}
                                                                                     >
                                                                                         <i className="fa-solid fa-trash"></i>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            {/* Meeting Details Or Something */}
-                                                                            <tr class="collapse" id={`meeting${key}`}>
-                                                                                <td colSpan={99}>
-                                                                                    <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
-                                                                                        <table>
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th>
-                                                                                                        Sl No.
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        Date
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        Share
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        Delete
-                                                                                                    </th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                {
-                                                                                                    dataLoade ? <SkeletonTableLoader col={4} row={5} /> : recordData.map((item,key) => {
-                                                                                                        return (
-                                                                                                            <tr>
-                                                                                                                <td>{key+1}</td>
-                                                                                                                <td>{formatTimestamp(item?.fileUrl?.file?.startedAt)}</td>
-                                                                                                                <td>
-                                                                                                                    <button className='tableButton' onClick={() =>handleShare(item?.fileUrl?.file?.filename) }>
-                                                                                                                        <i className='fa-solid fa-eye' />
-                                                                                                                    </button>
-                                                                                                                </td>
-                                                                                                                <td>
-                                                                                                                    <button className='tableButton delete'>
-                                                                                                                        <i className='fa-solid fa-trash' />
-                                                                                                                    </button>
-                                                                                                                </td>
-                                                                                                            </tr>
-                                                                                                        )
-                                                                                                    })
-                                                                                                }
-
-                                                                                            </tbody>
-                                                                                        </table>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
@@ -340,6 +302,68 @@ function Meeting() {
                     </div>
                 </div>
             ) : ""}
+            {/* Meeting Details Or Something */}
+            {showRecordingsPopup && (
+                <div className='addNewContactPopup' style={{ width: "500px" }}>
+                    <div class="overviewTableWrapper p-0">
+                        <div className='overviewTableChild border-0 shadow-none'>
+                            <div className='col-xl-12'>
+                                <div className='tableContainer m-0 p-0'>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Sl No.
+                                                </th>
+                                                <th>
+                                                    Date
+                                                </th>
+                                                <th>
+                                                    Share
+                                                </th>
+                                                <th>
+                                                    Delete
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                dataLoade ? <SkeletonTableLoader col={4} row={5} /> : recordData.map((item, key) => {
+                                                    return (
+                                                        <tr>
+                                                            <td>{key + 1}</td>
+                                                            <td>{formatTimestamp(item?.fileUrl?.file?.startedAt)}</td>
+                                                            <td>
+                                                                <button className='tableButton' onClick={() => handleShare(item?.fileUrl?.file?.filename)}>
+                                                                    <i className='fa-solid fa-eye' />
+                                                                </button>
+                                                            </td>
+                                                            <td>
+                                                                <button className='tableButton delete'>
+                                                                    <i className='fa-solid fa-trash' />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className='col-xl-12 mt-2'>
+                                    <div className='d-flex justify-content-between align-items-center'>
+                                        <button className="panelButton gray ms-auto" onClick={() => setShowRecordingsPopup(false)}>
+                                            <span className="text">Close</span>
+                                            <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     )
 }
