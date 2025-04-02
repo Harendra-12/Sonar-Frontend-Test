@@ -99,7 +99,7 @@ const RingGroup = () => {
                   <div className="col-6">
                     <div className="headingExtraInfo">
                       <div className="mx-auto">
-                        <span className="badge rounded-pill bg-primary" style={{ minWidth: '7vw' }}>
+                        <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}>
                           Active Calls:&nbsp;
                           {activeCallData.filter(
                             (e) =>
