@@ -304,7 +304,7 @@ export function LoginComponent() {
         }
 
 
-      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403 ) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
