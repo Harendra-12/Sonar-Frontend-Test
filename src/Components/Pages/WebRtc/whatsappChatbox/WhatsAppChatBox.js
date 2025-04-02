@@ -40,7 +40,7 @@ const WhatsAppChatBox = ({ initial }) => {
   useEffect(() => {
     if (whatsappContactRefresh > 0) {
       setWhatsappContactData(whatsappContact);
-      setActiveChat(whatsappContact[0]);
+      setActiveChat(whatsappContact?.[0]);
     } else {
       dispatch({
         type: "SET_WHATSAPPCONTACTREFRESH",
@@ -190,13 +190,7 @@ const WhatsAppChatBox = ({ initial }) => {
               <div className="newHeader">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                    <button
-                      className="clearButton2 text-dark"
-                      // onClick={() => featureUnderdevelopment()}
-                    >
-                      <i className="fa-solid fa-chevron-left fs-4"></i>
-                    </button>{" "}
-                    WhatsApp Chat box{" "}
+                    WhatsApp
                   </h3>
                 </div>
                 <div className="d-flex justify-content-end align-items-center">
@@ -309,9 +303,8 @@ const WhatsAppChatBox = ({ initial }) => {
                             {whatsappContactData &&
                               whatsappContactData.map((item, index) => (
                                 <div
-                                  className={`profile_wrap py-3 ${
-                                    activeChat === item && "isActive"
-                                  }`}
+                                  className={`profile_wrap py-3 ${activeChat === item && "isActive"
+                                    }`}
                                   key={index}
                                   onClick={() => setActiveChat(item)}
                                 >
@@ -389,7 +382,7 @@ const WhatsAppChatBox = ({ initial }) => {
                       </div>
                     </div>
                     <div class="col-lg-7 col-7">
-                      <div className="d-flex justify-content-between flex-column h-100">
+                      <div className="d-flex flex-column h-100">
                         <div>
                           <div className="chat_head ">
                             <div className="d-flex justify-content-start align-items-center gap-3">
@@ -441,30 +434,29 @@ const WhatsAppChatBox = ({ initial }) => {
                               <div
                                 className="chart_text"
 
-                                // style={{
-                                //   maxHeight: "calc(100vh - 200px)",
-                                //   overflowY: "auto",
-                                // }}
+                              // style={{
+                              //   maxHeight: "calc(100vh - 200px)",
+                              //   overflowY: "auto",
+                              // }}
                               >
                                 {activeChatMessages &&
                                   activeChatMessages.map((item, index) => (
                                     <div
-                                      className={`message_chatbox ${
-                                        item?.wp_receiver_id === activeChat
-                                          ? "sent"
-                                          : "received"
-                                      }`}
+                                      className={`message_chatbox ${item?.wp_receiver_id === activeChat
+                                        ? "sent"
+                                        : "received"
+                                        }`}
                                       key={index}
                                     >
                                       <p>{item?.message}</p>
                                       <span className="c_time">
                                         {formatTimeFromDate(item?.created_at)}
                                         {item?.delivery_status === "read" &&
-                                        item?.wp_receiver_id === activeChat ? (
+                                          item?.wp_receiver_id === activeChat ? (
                                           <i class="fa-solid fa-check-double read ms-2" />
                                         ) : item?.delivery_status === "sent" &&
                                           item?.wp_receiver_id ===
-                                            activeChat ? (
+                                          activeChat ? (
                                           <i class="fa-solid fa-check text-muted ms-2" />
                                         ) : (
                                           ""

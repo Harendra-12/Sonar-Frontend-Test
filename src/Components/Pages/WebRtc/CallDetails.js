@@ -105,15 +105,19 @@ function CallDetails({
     }
   };
 
-  async function handleTranscript  (url) {
+  async function handleTranscript(url) {
     const newUrl = url.split(".com/").pop();
     const presignData = await generatePreSignedUrl(newUrl);
     if (presignData?.status && presignData?.url) {
-      const trnascript = await generalPostFunction("/transcribe-audio",{src:presignData?.url});
+      const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
     }
   }
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     if (!audio) return;
     if (currentPlaying === audio) {
       if (thisAudioRef.current) {

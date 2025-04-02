@@ -15,7 +15,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
   const [duplicateData, setDuplicateData] = useState([]);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  const [showAudio,setShowAudio]=useState(false)
+  const [showAudio, setShowAudio] = useState(false)
   const thisAudioRef = useRef(null);
   const [ showDropDown,setShowDropdown]=useState(false)
     const [pageNumber, setPageNumber] = useState(1);
@@ -80,9 +80,13 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
 
 
   const handelOpenNotes = () => {
-setShowComment(true)
+    setShowComment(true)
   }
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
@@ -154,11 +158,11 @@ setShowComment(true)
  
   return (
 
-   <>
-   {showComment&&  <Comments id={selectedId} setId={setSelectedId} />} <div className="backdropContact " style={{zIndex: "11"}}>
-   <div className="addNewContactPopup w-auto">
+    <>
+      {showComment && <Comments id={selectedId} setId={setSelectedId} />} <div className="backdropContact " style={{ zIndex: "11" }}>
+        <div className="addNewContactPopup w-auto">
 
-     {/* <div className="col-12 heading mb-0">
+          {/* <div className="col-12 heading mb-0">
              <i className="fa-light fa-comment-dots" />
              <h5>Agent Note</h5>
          </div>
