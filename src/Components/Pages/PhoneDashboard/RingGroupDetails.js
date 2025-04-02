@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
+import { MdCurrencyBitcoin } from "react-icons/md";
 
 const RingGroup = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const RingGroup = () => {
   const activeCall = useSelector((state) => state.activeCall);
   const [activeCallData, setActiveCallData] = useState([]);
   const allCallDetails = useSelector((state) => state.allCallDetails);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -117,7 +119,7 @@ const RingGroup = () => {
                             (item) =>
                               item["Call-Direction"] == "missed" &&
                               item.application_state == "ringgroup"
-                          )[0]?.filter_count || 0}
+                          ).reduce((acc, current) => acc + (current.filter_count), 0) || 0}
                         </span>
                       </div>
                     </div>
@@ -131,7 +133,7 @@ const RingGroup = () => {
                             (item) =>
                               item["Call-Direction"] == "inbound" &&
                               item.application_state == "ringgroup"
-                          )[0]?.filter_count || 0}
+                          ).reduce((acc, current) => acc + (current.filter_count), 0) || 0}
                         </span>
                       </div>
                     </div>

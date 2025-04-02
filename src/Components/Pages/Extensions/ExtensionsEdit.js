@@ -1975,8 +1975,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         getDropdownValue={forwardToValue}
                                         value={watch().forward_to}
                                         {...register(
-                                          "forward_to",
-                                          requiredValidator
+                                          "forward_to"
                                         )}
                                       />
                                       {errors.forward_to && (
