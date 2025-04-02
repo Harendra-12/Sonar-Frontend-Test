@@ -417,7 +417,7 @@ const Dashboard = () => {
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/my-profile")}
+                            onClick={() => navigate("/users-profile")}
                             style={{ cursor: "pointer" }}
                           >
                             <div className="col-9">
@@ -513,7 +513,7 @@ const Dashboard = () => {
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/my-profile")}
+                            onClick={() => navigate("/users-profile")}
                             style={{ cursor: "pointer" }}
                           >
                             <div className="col-9">
@@ -548,7 +548,7 @@ const Dashboard = () => {
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/my-profile")}
+                            onClick={() => navigate("/users-profile")}
                             style={{ cursor: "pointer" }}
                           >
                             <div className="col-9">
