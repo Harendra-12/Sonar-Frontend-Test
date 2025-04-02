@@ -70,6 +70,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
   });
 
   console.log("All data extension",watch());
+  console.log("Error in extension", errors);
+  
   
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
