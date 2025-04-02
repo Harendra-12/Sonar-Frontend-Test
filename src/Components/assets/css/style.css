@@ -247,7 +247,9 @@ ul {
 }
 
 /* pls help */
-
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 .sliders {
   -webkit-appearance: none;
   width: 100%;

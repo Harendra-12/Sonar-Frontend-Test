@@ -454,7 +454,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             type="button"
                             effect="ripple"
                             className="panelButton"
-                            onClick={handleFormSubmit}
+                            onClick={()=>handleFormSubmit()}
                           >
                             <span className="text">Save</span>
                             <span className="icon">
