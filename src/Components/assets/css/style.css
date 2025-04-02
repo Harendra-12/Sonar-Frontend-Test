@@ -71,11 +71,12 @@
   --caller-color: #0a0d16;
   --color1: #360568;
   /* --color2: #3e8ef7; */
-  --color2: #3066BE;
-  --color2-trans: #3066BE30;
+  --color2: #62a7f8;
+  --color2-trans: #62a7f830;
   /* Accent Color */
   /* --ui-accent: #3e8ef7; */
-  --ui-accent: #3066BE;
+  /* --ui-accent: #3066BE; */
+  --ui-accent: #62a7f8;
   /* --ui-icon: #00a6fb; */
   --ui-icon: #fff;
   /* --ui-accent-green: #a5d02a;
