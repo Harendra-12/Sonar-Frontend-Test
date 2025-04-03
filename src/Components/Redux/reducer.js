@@ -83,6 +83,7 @@ var logout = 0;
 var dummyExtension = "";
 var dummyPassword = "";
 var accountBalance = 0;
+var refreshCalls=0;
 
 const initialState = {
   account,
@@ -168,6 +169,7 @@ const initialState = {
   dummyExtension,
   dummyPassword,
   accountBalance,
+  refreshCalls
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -225,8 +227,10 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
       return { ...state, callCenter: action.callCenter };
-    case "SET_CALLCENTERREFRESH":
-      return { ...state, callCenterRefresh: action.callCenterRefresh };
+      case "SET_CALLCENTERREFRESH":
+        return { ...state, callCenterRefresh: action.callCenterRefresh };  
+    case "SET_CALLREFRESH":
+      return { ...state, refreshCalls: action.refreshCalls };
     case "SET_ALLUSER":
       return { ...state, allUser: action.allUser };
     case "SET_ALLUSERREFRESH":

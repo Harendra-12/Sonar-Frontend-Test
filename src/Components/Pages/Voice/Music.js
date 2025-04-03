@@ -153,11 +153,12 @@ function Music() {
     } else {
       setCurrentPlaying(id); // Play selected audio
       const url = path.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
-      }
+      // if (res?.status && res?.url) {
+        setAudioURL(path);
+        // setAudioURL(res.url);
+      // }
     }
   };
 
