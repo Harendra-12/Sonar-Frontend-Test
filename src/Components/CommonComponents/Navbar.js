@@ -900,7 +900,9 @@ function Navbar() {
                                 "/whatsapp-config",
                                 "/whatsapp-config-edit",
                                 "/teams-config",
-                                "/all-third-party-apps"
+                                "/all-third-party-apps",
+                                "/all-addons",
+                                "/all-available-addons"
                               ])
                                 ? "true"
                                 : "false"
@@ -920,7 +922,9 @@ function Navbar() {
                               "/whatsapp-config",
                               "/whatsapp-config-edit",
                               "/teams-config",
-                              "/all-third-party-apps"
+                              "/all-third-party-apps",
+                              "/all-addons",
+                              "/all-available-addons"
                             ])
                               ? "show"
                               : ""
