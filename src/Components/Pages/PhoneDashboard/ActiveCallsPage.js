@@ -394,7 +394,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                             <div className="overviewTableChild">
                                 <div className="d-flex flex-wrap">
                                     <PanelGroup autoSaveId="example" direction="horizontal">
-                                        <Panel className='leftPanel' defaultSize={50} collapsible={true} minSize={25} ref={leftPanel}>
+                                        <Panel className='leftPanel' defaultSize={60} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
@@ -493,7 +493,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 <i className='fa-solid fa-arrows-rotate' />
                                             </button>
                                         </PanelResizeHandle>
-                                        <Panel className='rightPanel' defaultSize={50} collapsible={true} minSize={30} ref={rightPanel}>
+                                        <Panel className='rightPanel' defaultSize={40} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
