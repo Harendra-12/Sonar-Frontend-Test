@@ -163,6 +163,7 @@ import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import LiveChat from "./Components/Pages/Support/LiveChat";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
+import DialerCdrReport from "./Components/Pages/DialerModule/DialerCdrReport";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -810,6 +811,7 @@ function App() {
           {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
           <Route path="/call-desposition" element={<CallDesposition />} />
+          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
           {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
