@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import Tippy from "@tippyjs/react";
 
 
 function ActiveCalls({ isWebrtc, filter }) {
@@ -184,7 +185,7 @@ function ActiveCalls({ isWebrtc, filter }) {
             {filter === "all" && <th>Direction</th>}
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
-            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
+            {/* {isWebrtc !== false && <th className="text-align">Hang Up</th>} */}
           </tr>
         </thead>
         <tbody>
@@ -208,7 +209,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
-                      <select
+                      {/* <select
                         className="formItem"
                         onChange={(e) => {
                           setBargeStatus(e.target.value);
@@ -257,9 +258,83 @@ function ActiveCalls({ isWebrtc, filter }) {
                         >
                           Whisper callee
                         </option>
-                      </select>
+                      </select> */}
+                      <div className="d-flex justify-content-between">
+                        <Tippy content="Barge this Call">
+                          <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy4)' }}
+                            onClick={() => {
+                              setBargeStatus("barge");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-phone-plus" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Intercept this Call">
+                          <button className="tableButton warning"
+                            onClick={() => {
+                              setBargeStatus("intercept");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-object-intersect" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Eavesdrop this Call">
+                          <button className="tableButton edit"
+                            onClick={() => {
+                              setBargeStatus("eavesdrop");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-head-side-headphones" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Whisper Caller of this Call">
+                          <button className="tableButton"
+                            onClick={() => {
+                              setBargeStatus("whisper-bleg");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-ear-listen" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Whisper Callee of this Call">
+                          <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy3)' }}
+                            onClick={() => {
+                              setBargeStatus("whisper-aleg");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-ear-deaf" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Hangup / End this Call">
+                          <button className="tableButton delete"
+                            onClick={() => killCall(item.uuid)}
+                          >
+                            <i className=" fa-solid fa-phone-slash"></i>
+                          </button>
+                        </Tippy>
+                      </div>
                     </td>}
-                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
+                    {/* {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
                       <label
                         className="tableButton delete mx-auto"
                         style={{
@@ -268,7 +343,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                       >
                         <i className=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
-                    </td>}
+                    </td>} */}
                   </tr>
                 );
               })}
