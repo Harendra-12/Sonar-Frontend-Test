@@ -10,6 +10,7 @@ import {
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import axios from "axios";
 
 function CallDetails({
   clickedCall,
@@ -32,6 +33,8 @@ function CallDetails({
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
   // const [transcript,setTranscript]=useState("")
+  const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -107,10 +110,22 @@ function CallDetails({
 
   async function handleTranscript(url) {
     const newUrl = url.split(".com/").pop();
-    const presignData = await generatePreSignedUrl(newUrl);
-    if (presignData?.status && presignData?.url) {
-      const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
-    }
+    // const presignData = await generatePreSignedUrl(newUrl);
+    // if (presignData?.status && presignData?.url) {
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+      // }
+      console.log({url})
+      const trnascript = await axios.post(`${baseName}/transcribe-audio`,
+        { src: url },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Or 'multipart/form-data' if you're sending files
+            'Authorization': `Bearer ${token}`, // Example: API key authentication
+            // Add any other required headers here
+          },
+        }
+      );
   }
 
   const handlePlaying = async (audio) => {
@@ -131,10 +146,11 @@ function CallDetails({
 
     try {
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
+      // if (res?.status && res?.url) {
+        // setAudioURL(res.url);
+        setAudioURL(audio);
         setTimeout(() => {
           if (thisAudioRef.current) {
             thisAudioRef.current.load();
@@ -143,7 +159,7 @@ function CallDetails({
               .catch((error) => console.error("Audio play error:", error));
           }
         }, 100);
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
       setCurrentPlaying(null);

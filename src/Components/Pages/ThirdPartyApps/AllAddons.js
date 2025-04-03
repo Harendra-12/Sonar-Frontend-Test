@@ -95,6 +95,20 @@ const AllAddons = () => {
                                                         <i className="fa-solid fa-caret-left"></i>
                                                     </span>
                                                 </button>
+                                                <button
+                                                    onClick={() => {
+                                                        navigate('/all-available-addons');
+                                                        backToTop();
+                                                    }}
+                                                    type="button"
+                                                    effect="ripple"
+                                                    className="panelButton"
+                                                >
+                                                    <span className="text">Add</span>
+                                                    <span className="icon">
+                                                        <i className="fa-solid fa-plus"></i>
+                                                    </span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -103,97 +117,105 @@ const AllAddons = () => {
                                     <>
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <div className="product-container">
+                                                <div className="product-container row">
                                                     {/* Product 2 */}
                                                     {allConfigData && allConfigData.length > 0 ?
                                                         allConfigData.map((item, index) => {
                                                             return (
                                                                 <>
-                                                                    <div className={`product-cart`}>
-                                                                        <div className="product-image">
-                                                                            <img
-                                                                                src={`${require(`../../assets/images/icons/addons/${item?.platform}.webp`)}`}
-                                                                                onError={require('../../assets/images/placeholder-image.webp')}
-                                                                                alt={item.platform}
-                                                                            />
-                                                                        </div>
-                                                                        <div className='content_width'>
-                                                                            <div className="product-title mt-4">
-                                                                                <p style={{ textTransform: 'capitalize' }}>
-                                                                                    {item.platform} Integration
-                                                                                </p>
+                                                                    <div className='col-3'>
+                                                                        <div className={`product-cart`}>
+                                                                            <div className="product-image">
+                                                                                <img
+                                                                                    src={`${require(`../../assets/images/icons/addons/${item?.platform}.webp`)}`}
+                                                                                    onError={require('../../assets/images/placeholder-image.webp')}
+                                                                                    alt={item.platform}
+                                                                                />
                                                                             </div>
-                                                                            <div className="product-description">
-                                                                                <span className="text-smalls">Integrate {item.platform} in our platform and use it on-the-go</span>
+                                                                            <div className='content_width'>
+                                                                                <div className="product-title mt-4">
+                                                                                    <p style={{ textTransform: 'capitalize' }}>
+                                                                                        {item.platform} Integration
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div className="product-description">
+                                                                                    <span className="text-smalls">Integrate {item.platform} in our platform and use it on-the-go</span>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                            <button class="checkbox_wrapper edit"
-                                                                                onClick={() => handleConfigEdit(item.id, item.platform)}
-                                                                            >
-                                                                                <span className='cartSvg addonsBtn'>
-                                                                                    <i class="fa-solid fa-pencil"></i>
-                                                                                </span>
-                                                                                <span>Edit</span>
-                                                                            </button>
-                                                                            <button className="tableButton delete" onClick={() => handleDeleteConfig(item.id)}>
-                                                                                <i className="fa-solid fa-trash">                                                                            </i>
-                                                                            </button>
+                                                                            <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                                                <button class="checkbox_wrapper edit"
+                                                                                    onClick={() => handleConfigEdit(item.id, item.platform)}
+                                                                                >
+                                                                                    <span className='cartSvg addonsBtn'>
+                                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                                    </span>
+                                                                                    <span>Edit</span>
+                                                                                </button>
+                                                                                <button className="tableButton delete" onClick={() => handleDeleteConfig(item.id)}>
+                                                                                    <i className="fa-solid fa-trash">                                                                            </i>
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </>
                                                             )
                                                         }) : (
                                                             <>
-                                                                <div className={`product-cart`}>
-                                                                    <div className="product-image skeleton" ></div>
-                                                                    <div className='content_width'>
-                                                                        <div className="product-title mt-4">
-                                                                            <p style={{ textTransform: 'capitalize' }}>
-                                                                                <div className='skeleton skeleton-formLabel mx-auto' />
-                                                                            </p>
+                                                                <div className='col-3'>
+                                                                    <div className={`product-cart`}>
+                                                                        <div className="product-image skeleton" ></div>
+                                                                        <div className='content_width'>
+                                                                            <div className="product-title mt-4">
+                                                                                <p style={{ textTransform: 'capitalize' }}>
+                                                                                    <div className='skeleton skeleton-formLabel mx-auto' />
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="product-description mt-2">
+                                                                                <div className='skeleton skeleton-formLabel-small' />
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="product-description mt-2">
-                                                                            <div className='skeleton skeleton-formLabel-small' />
+                                                                        <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                                            <div className='skeleton skeleton-button'></div>
+                                                                            <div className='skeleton skeleton-button'></div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                        <div className='skeleton skeleton-button'></div>
-                                                                        <div className='skeleton skeleton-button'></div>
                                                                     </div>
                                                                 </div>
-                                                                <div className={`product-cart`}>
-                                                                    <div className="product-image skeleton" ></div>
-                                                                    <div className='content_width'>
-                                                                        <div className="product-title mt-4">
-                                                                            <p style={{ textTransform: 'capitalize' }}>
-                                                                                <div className='skeleton skeleton-formLabel mx-auto' />
-                                                                            </p>
+                                                                <div className='col-3'>
+                                                                    <div className={`product-cart`}>
+                                                                        <div className="product-image skeleton" ></div>
+                                                                        <div className='content_width'>
+                                                                            <div className="product-title mt-4">
+                                                                                <p style={{ textTransform: 'capitalize' }}>
+                                                                                    <div className='skeleton skeleton-formLabel mx-auto' />
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="product-description mt-2">
+                                                                                <div className='skeleton skeleton-formLabel-small' />
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="product-description mt-2">
-                                                                            <div className='skeleton skeleton-formLabel-small' />
+                                                                        <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                                            <div className='skeleton skeleton-button'></div>
+                                                                            <div className='skeleton skeleton-button'></div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                        <div className='skeleton skeleton-button'></div>
-                                                                        <div className='skeleton skeleton-button'></div>
                                                                     </div>
                                                                 </div>
-                                                                <div className={`product-cart`}>
-                                                                    <div className="product-image skeleton" ></div>
-                                                                    <div className='content_width'>
-                                                                        <div className="product-title mt-4">
-                                                                            <p style={{ textTransform: 'capitalize' }}>
-                                                                                <div className='skeleton skeleton-formLabel mx-auto' />
-                                                                            </p>
+                                                                <div className='col-3'>
+                                                                    <div className={`product-cart`}>
+                                                                        <div className="product-image skeleton" ></div>
+                                                                        <div className='content_width'>
+                                                                            <div className="product-title mt-4">
+                                                                                <p style={{ textTransform: 'capitalize' }}>
+                                                                                    <div className='skeleton skeleton-formLabel mx-auto' />
+                                                                                </p>
+                                                                            </div>
+                                                                            <div className="product-description mt-2">
+                                                                                <div className='skeleton skeleton-formLabel-small' />
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="product-description mt-2">
-                                                                            <div className='skeleton skeleton-formLabel-small' />
+                                                                        <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                                            <div className='skeleton skeleton-button'></div>
+                                                                            <div className='skeleton skeleton-button'></div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                        <div className='skeleton skeleton-button'></div>
-                                                                        <div className='skeleton skeleton-button'></div>
                                                                     </div>
                                                                 </div>
                                                             </>

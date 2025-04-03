@@ -27,6 +27,7 @@ function ActiveCallSidePanel({
   const [playMusic, setPlayMusic] = useState(false);
   //Keep track for previous call progress Id
   const [prevCallProgressId, setPrevCallProgressId] = useState(callProgressId);
+  const refreshCalls=useSelector((state)=>state.refreshCalls)
 
   // useEffect(() => {
   //   const audioElement = audioRef.current;
@@ -101,6 +102,10 @@ function ActiveCallSidePanel({
     //   type:"SET_VIDEOCALL",
     //   videoCall:false
     // })
+    dispatch({
+      type: "SET_CALLREFRESH",
+      refreshCalls: refreshCalls + 1,
+    });
     const updatedVideoCallMode = globalSession.find(
       (item) => item.id === callProgressId
     );

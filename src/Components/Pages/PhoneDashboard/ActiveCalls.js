@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
+import Tippy from "@tippyjs/react";
 
 
 function ActiveCalls({ isWebrtc, filter }) {
@@ -124,52 +125,52 @@ function ActiveCalls({ isWebrtc, filter }) {
     }
   }
 
-   const convertDurationToSeconds = (duration) => {
-          const [hours, minutes, seconds] = duration.split(":").map(Number);
-          return hours * 3600 + minutes * 60 + seconds;
-      };
-  
-      const formatTime = (seconds) => {
-          const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
-          const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
-          const s = (seconds % 60).toString().padStart(2, "0");
-          return `${h}:${m}:${s}`;
-      };
-  
-      const [updatedData, setUpdatedData] = useState([]);
-      const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
-      const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
-  
-      useEffect(() => {
-          filterCalls.forEach((item) => {
-              if (!startTimestampsRef.current.has(item.uuid)) {
-                  startTimestampsRef.current.set(item.uuid, Date.now());
-                  initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
-              }
-          });
-  
-          const interval = setInterval(() => {
-              setUpdatedData((prevData) => {
-                  return filterCalls.map((item) => {
-                      const startTimestamp = startTimestampsRef.current.get(item.uuid);
-                      const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
-                      const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
-  
-                      // Calculate the correct updated duration without double adding
-                      const newDuration = initialDuration + elapsedTime;
-  
-                      // Keep other properties unchanged except realTimeDuration
-                      return {
-                          ...item,
-                          realTimeDuration: formatTime(newDuration),
-                      };
-                  });
-              });
-          }, 1000);
-  
-          return () => clearInterval(interval);
-      }, [filterCalls]);
-  
+  const convertDurationToSeconds = (duration) => {
+    const [hours, minutes, seconds] = duration.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
+
+  const [updatedData, setUpdatedData] = useState([]);
+  const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
+  const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+
+  useEffect(() => {
+    filterCalls.forEach((item) => {
+      if (!startTimestampsRef.current.has(item.uuid)) {
+        startTimestampsRef.current.set(item.uuid, Date.now());
+        initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+      }
+    });
+
+    const interval = setInterval(() => {
+      setUpdatedData((prevData) => {
+        return filterCalls.map((item) => {
+          const startTimestamp = startTimestampsRef.current.get(item.uuid);
+          const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
+          const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+
+          // Calculate the correct updated duration without double adding
+          const newDuration = initialDuration + elapsedTime;
+
+          // Keep other properties unchanged except realTimeDuration
+          return {
+            ...item,
+            realTimeDuration: formatTime(newDuration),
+          };
+        });
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [filterCalls]);
+
   return (
     <>
       <table>
@@ -184,12 +185,10 @@ function ActiveCalls({ isWebrtc, filter }) {
             {filter === "all" && <th>Direction</th>}
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
-            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
+            {/* {isWebrtc !== false && <th className="text-align">Hang Up</th>} */}
           </tr>
         </thead>
         <tbody>
-          {console.log(filterCalls)
-          }
           {filterCalls &&
             updatedData
               .filter(
@@ -210,7 +209,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
-                      <select
+                      {/* <select
                         className="formItem"
                         onChange={(e) => {
                           setBargeStatus(e.target.value);
@@ -259,9 +258,83 @@ function ActiveCalls({ isWebrtc, filter }) {
                         >
                           Whisper callee
                         </option>
-                      </select>
+                      </select> */}
+                      <div className="d-flex justify-content-between">
+                        <Tippy content="Barge this Call">
+                          <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy4)' }}
+                            onClick={() => {
+                              setBargeStatus("barge");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-phone-plus" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Intercept this Call">
+                          <button className="tableButton warning"
+                            onClick={() => {
+                              setBargeStatus("intercept");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-object-intersect" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Eavesdrop this Call">
+                          <button className="tableButton edit"
+                            onClick={() => {
+                              setBargeStatus("eavesdrop");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-head-side-headphones" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Whisper Caller of this Call">
+                          <button className="tableButton"
+                            onClick={() => {
+                              setBargeStatus("whisper-bleg");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-ear-listen" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Whisper Callee of this Call">
+                          <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy3)' }}
+                            onClick={() => {
+                              setBargeStatus("whisper-aleg");
+                              setId(item.uuid);
+                              setDest(item?.dest.includes("set:valet_ticket")
+                                ? extractLastNumber(item?.accountcode)
+                                : extractLastNumber(item?.dest))
+                            }}
+                          >
+                            <i className="fa-regular fa-ear-deaf" />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Hangup / End this Call">
+                          <button className="tableButton delete"
+                            onClick={() => killCall(item.uuid)}
+                          >
+                            <i className=" fa-solid fa-phone-slash"></i>
+                          </button>
+                        </Tippy>
+                      </div>
                     </td>}
-                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
+                    {/* {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
                       <label
                         className="tableButton delete mx-auto"
                         style={{
@@ -270,7 +343,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                       >
                         <i className=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
-                    </td>}
+                    </td>} */}
                   </tr>
                 );
               })}

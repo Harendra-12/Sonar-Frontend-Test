@@ -900,7 +900,9 @@ function Navbar() {
                                 "/whatsapp-config",
                                 "/whatsapp-config-edit",
                                 "/teams-config",
-                                "/all-third-party-apps"
+                                "/all-third-party-apps",
+                                "/all-addons",
+                                "/all-available-addons"
                               ])
                                 ? "true"
                                 : "false"
@@ -920,7 +922,9 @@ function Navbar() {
                               "/whatsapp-config",
                               "/whatsapp-config-edit",
                               "/teams-config",
-                              "/all-third-party-apps"
+                              "/all-third-party-apps",
+                              "/all-addons",
+                              "/all-available-addons"
                             ])
                               ? "show"
                               : ""
@@ -931,7 +935,7 @@ function Navbar() {
                               <ul className="tabMenu">
                                 <li className="tabItem ">
                                   <NavLink
-                                    to="/all-third-party-apps"
+                                    to="/all-addons"
                                     onClick={() => backToTop()}
                                   >
                                     <div className="itemTitle">All Apps</div>
