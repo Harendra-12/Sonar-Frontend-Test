@@ -9,21 +9,6 @@
 }
 
 
-/* Product Grid */
-.product-container {
-    display: grid;
-    /* grid-template-columns: repeat(4, 1fr); */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    text-align: center;
-}
-
-@media (max-width: 340px) {
-    .product-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-}
-
 /* Image Styling */
 .product-container .product-image {
     width: 100px;
@@ -452,6 +437,10 @@
     transition: 0.3s ease-in-out;
 }
 
+.checkbox_wrapper:hover {
+    background-color: #003874;
+}
+
 .checkbox_wrapper.edit {
     background: #00ab2b;
     display: flex;
@@ -459,7 +448,7 @@
     align-items: center;
 }
 
-.checkbox_wrapper:hover {
+.checkbox_wrapper.edit:hover {
     background-color: #00701c;
 }
 
