@@ -1673,3 +1673,27 @@ input[type=number] {
     height: calc(100vh - 231px);
     background: rgba(0, 0, 0, .06);
 }
+
+.resizeHandle {
+    position: relative;
+    width: 5px;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-bottom: none;
+}
+
+.resizeHandle button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.leftPanel[data-panel-size="0.0"]>* {
+    display: none;
+}
+
+.rightPanel[data-panel-size="0.0"]>* {
+    display: none;
+}

@@ -124,52 +124,52 @@ function ActiveCalls({ isWebrtc, filter }) {
     }
   }
 
-   const convertDurationToSeconds = (duration) => {
-          const [hours, minutes, seconds] = duration.split(":").map(Number);
-          return hours * 3600 + minutes * 60 + seconds;
-      };
-  
-      const formatTime = (seconds) => {
-          const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
-          const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
-          const s = (seconds % 60).toString().padStart(2, "0");
-          return `${h}:${m}:${s}`;
-      };
-  
-      const [updatedData, setUpdatedData] = useState([]);
-      const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
-      const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
-  
-      useEffect(() => {
-          filterCalls.forEach((item) => {
-              if (!startTimestampsRef.current.has(item.uuid)) {
-                  startTimestampsRef.current.set(item.uuid, Date.now());
-                  initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
-              }
-          });
-  
-          const interval = setInterval(() => {
-              setUpdatedData((prevData) => {
-                  return filterCalls.map((item) => {
-                      const startTimestamp = startTimestampsRef.current.get(item.uuid);
-                      const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
-                      const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
-  
-                      // Calculate the correct updated duration without double adding
-                      const newDuration = initialDuration + elapsedTime;
-  
-                      // Keep other properties unchanged except realTimeDuration
-                      return {
-                          ...item,
-                          realTimeDuration: formatTime(newDuration),
-                      };
-                  });
-              });
-          }, 1000);
-  
-          return () => clearInterval(interval);
-      }, [filterCalls]);
-  
+  const convertDurationToSeconds = (duration) => {
+    const [hours, minutes, seconds] = duration.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600).toString().padStart(2, "0");
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
+
+  const [updatedData, setUpdatedData] = useState([]);
+  const startTimestampsRef = useRef(new Map()); // Store start timestamps for each UUID
+  const initialDurationsRef = useRef(new Map()); // Store initial durations from backend
+
+  useEffect(() => {
+    filterCalls.forEach((item) => {
+      if (!startTimestampsRef.current.has(item.uuid)) {
+        startTimestampsRef.current.set(item.uuid, Date.now());
+        initialDurationsRef.current.set(item.uuid, convertDurationToSeconds(item.duration)); // Store initial duration
+      }
+    });
+
+    const interval = setInterval(() => {
+      setUpdatedData((prevData) => {
+        return filterCalls.map((item) => {
+          const startTimestamp = startTimestampsRef.current.get(item.uuid);
+          const elapsedTime = Math.floor((Date.now() - startTimestamp) / 1000);
+          const initialDuration = initialDurationsRef.current.get(item.uuid) || 0; // Get initial duration
+
+          // Calculate the correct updated duration without double adding
+          const newDuration = initialDuration + elapsedTime;
+
+          // Keep other properties unchanged except realTimeDuration
+          return {
+            ...item,
+            realTimeDuration: formatTime(newDuration),
+          };
+        });
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [filterCalls]);
+
   return (
     <>
       <table>
@@ -188,8 +188,6 @@ function ActiveCalls({ isWebrtc, filter }) {
           </tr>
         </thead>
         <tbody>
-          {console.log(filterCalls)
-          }
           {filterCalls &&
             updatedData
               .filter(
