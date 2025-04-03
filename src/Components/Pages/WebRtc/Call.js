@@ -282,9 +282,10 @@ function Call({
     // Use the matching contact's name if found, otherwise default to the extension
     const displayName = matchingContact
       ? matchingContact.name
-      : item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"];
+      : item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
+        : item["Caller-Callee-ID-Number"] === extension
+          ? item["Caller-Caller-ID-Number"]
+          : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -328,9 +329,11 @@ function Call({
                   style={{ cursor: "pointer" }}
                 >
                   <h4>
-                    {item["Caller-Callee-ID-Number"] === extension
-                      ? item["Caller-Caller-ID-Number"]
-                      : item["Caller-Callee-ID-Number"]}
+                    {item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
+                      : item["Caller-Callee-ID-Number"] === extension
+                        ? item["Caller-Caller-ID-Number"]
+                        : item["Caller-Callee-ID-Number"]
+                    }
                   </h4>
                   <h5 style={{ paddingLeft: 20 }}>
                     {displayName
@@ -338,7 +341,6 @@ function Call({
                       : item.caller_user
                         ? item.caller_user.username
                         : "USER XYZ"}
-
                   </h5>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
@@ -915,7 +917,7 @@ function Call({
                       {loading ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
-                        sortKeys(Object.keys(groupedCalls)).map((date,key) => (
+                        sortKeys(Object.keys(groupedCalls)).map((date, key) => (
                           <div key={key}>
                             <div key={date} className="dateHeader" >
                               <p>{date}</p>

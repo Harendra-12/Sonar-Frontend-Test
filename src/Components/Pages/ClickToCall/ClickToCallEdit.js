@@ -230,35 +230,42 @@ function ClickToCallEdit() {
                                                                             <div className="formRow col-xl-12">
                                                                                 <div className="formLabel">
                                                                                     <label htmlFor="">Company Logo</label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Please enter your company name and
-                                                                                        logo.
+                                                                                    <label for="data" className="formItemDesc">
+                                                                                        Logo should be atleast <span className="text-danger fw-bold">100px x 100px</span> OR <span className="text-danger fw-bold">1:1</span> Dimension
                                                                                     </label>
                                                                                 </div>
 
                                                                                 <div className="col-7">
-                                                                                    <input
-                                                                                        type="file"
-                                                                                        name="did_id_view"
-                                                                                        className="formItem"
-                                                                                        accept="image/*"
-                                                                                        onChange={(e) => {
-                                                                                            const file = e.target.files[0];
-                                                                                            if (file) {
-                                                                                                // Check if the file type is MP3
+                                                                                    <div className="row">
+                                                                                        <div className="col-auto">
+                                                                                            <div className="imageHolder" style={{ width: '50px', height: '50px', border: '1px solid var(--border-color)', borderRadius: '5px' }}>
+                                                                                                <img src={selectedImage ? selectedImage : logo} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                                                                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                                                />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div className="col">
+                                                                                            <input
+                                                                                                type="file"
+                                                                                                name="did_id_view"
+                                                                                                className="formItem"
+                                                                                                accept="image/*"
+                                                                                                onChange={(e) => {
+                                                                                                    const file = e.target.files[0];
+                                                                                                    if (file) {
+                                                                                                        // Check if the file type is MP3
 
-                                                                                                const fileName = file.name.replace(/ /g, "-");
-                                                                                                const newFile = new File([file], fileName, {
-                                                                                                    type: file.type,
-                                                                                                });
-                                                                                                setNewFile(newFile);
-                                                                                                handleImageChange(e)
-                                                                                            }
-                                                                                        }}
-                                                                                    />
+                                                                                                        const fileName = file.name.replace(/ /g, "-");
+                                                                                                        const newFile = new File([file], fileName, {
+                                                                                                            type: file.type,
+                                                                                                        });
+                                                                                                        setNewFile(newFile);
+                                                                                                        handleImageChange(e)
+                                                                                                    }
+                                                                                                }}
+                                                                                            />
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="formRow col-xl-12">

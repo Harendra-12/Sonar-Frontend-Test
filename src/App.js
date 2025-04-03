@@ -162,6 +162,7 @@ import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
+import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -846,6 +847,7 @@ function App() {
           {/* ----------- Third Party Addons */}
           <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
           <Route path="/all-addons" element={<AllAddons />} />
+          <Route path="/all-available-addons" element={<AllAvailableAddons />} />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 
