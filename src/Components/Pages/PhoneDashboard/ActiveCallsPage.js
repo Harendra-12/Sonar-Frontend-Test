@@ -250,10 +250,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
 
     const resetResizeContent = () => {
         if (leftPanel.current && rightPanel.current) {
-            if (leftPanel.current.isCollapsed() || rightPanel.current.isCollapsed()) {
-                leftPanel.current.resize(50);
-                rightPanel.current.resize(50);
-            }
+            leftPanel.current.resize(50);
+            rightPanel.current.resize(50);
         }
     }
 
@@ -399,9 +397,14 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         <Panel className='leftPanel' defaultSize={50} collapsible={true} minSize={25} ref={leftPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
-                                                    <div className="content">
-                                                        <h4>Active Calls </h4>
-                                                        <p>You can see all of the active calls here</p>
+                                                    <div className='d-flex'>
+                                                        <button className='clearButton2 me-2' onClick={handleResizeLeft}>
+                                                            <i className="fa-solid fa-down-left-and-up-right-to-center" />
+                                                        </button>
+                                                        <div className="content">
+                                                            <h4>Active Calls </h4>
+                                                            <p>You can see all of the active calls here</p>
+                                                        </div>
                                                     </div>
                                                     <div className="content">
                                                         <p className='fw-bold'>Total Calls: {activeState.length}</p>
@@ -486,22 +489,21 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             </div>
                                         </Panel>
                                         <PanelResizeHandle className="resizeHandle">
-                                            <button className='clearButton2' onClick={handleResizeLeft} style={{ left: '-7px' }}>
-                                                <i className='fa-solid fa-chevron-left' />
-                                            </button>
-                                            {/* <button className='clearButton2' onClick={resetResizeContent}>
+                                            <button className='clearButton2' onClick={resetResizeContent}>
                                                 <i className='fa-solid fa-arrows-rotate' />
-                                            </button> */}
-                                            <button className='clearButton2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                <i className='fa-solid fa-chevron-right' />
                                             </button>
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={50} collapsible={true} minSize={30} ref={rightPanel}>
                                             <div className="col-12">
                                                 <div className="heading">
-                                                    <div className="content">
-                                                        <h4>Ringing Calls</h4>
-                                                        <p>You can see all of the ringing calls here</p>
+                                                    <div className='d-flex'>
+                                                        <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
+                                                            <i className="fa-solid fa-down-left-and-up-right-to-center" />
+                                                        </button>
+                                                        <div className="content">
+                                                            <h4>Ringing Calls</h4>
+                                                            <p>You can see all of the ringing calls here</p>
+                                                        </div>
                                                     </div>
                                                     <div className="content">
                                                         <p className='fw-bold'>Total Calls: {ringingState.length}</p>
