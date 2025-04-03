@@ -102,7 +102,7 @@ function Navbar() {
                       data-bs-target="#collapse8"
                       aria-expanded={
                         isChildActive([
-                          "/my-profile",
+                          "/users-profile",
                           "/change-password",
                           "/admin/package",
                           "/users",
@@ -128,7 +128,7 @@ function Navbar() {
                     <div
                       id="collapse8"
                       className={`accordion-collapse collapse ${isChildActive([
-                        "/my-profile",
+                        "/users-profile",
                         "/change-password",
                         "/admin/package",
                         "/users",

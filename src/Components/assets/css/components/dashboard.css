@@ -1,8 +1,18 @@
 :root {
     --funky-boy1: #ff0000;
     --funky-boy2: #4749e6;
-    --funky-boy3: #31c07d;
-    --funky-boy4: #ff2365;
+    --funky-boy3: #62A8AC;
+    --funky-boy4: #D35269;
+    --funky-boy4-trans: #ff999930;
+    /* --funky-boy3: #31c07d; */
+    /* --funky-boy4: #ff2365; */
+}
+
+:root.dark {
+    --funky-boy1: #ff00007c;
+    --funky-boy2: #4749e67c;
+    --funky-boy3: #62A8AC7c;
+    --funky-boy4: #D352697c;
     --funky-boy4-trans: #ff999930;
 }
 

@@ -159,6 +159,34 @@ function CdrFilterReport({ page }) {
     }
   };
 
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
+
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
     if (/^\d*$/.test(newValue) && newValue.length <= 5) {
@@ -235,9 +263,10 @@ function CdrFilterReport({ page }) {
           obj.hasOwnProperty("variable_start_stamp")
         ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"] = obj["variable_start_stamp"]?.split(" ")[1];
+          filteredObj["Time"] =formatTimeWithAMPM( obj["variable_start_stamp"]?.split(" ")[1])
         }
         if (obj.hasOwnProperty(key)) {
+
           filteredObj[key] = obj[key];
         }
       });
@@ -361,6 +390,10 @@ function CdrFilterReport({ page }) {
   }, [filterBy]);
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
@@ -1286,13 +1319,13 @@ function CdrFilterReport({ page }) {
                                           </td>
                                           <td>
                                             {item?.duplicated == 1 && <button
-                                              className={`tableButton ms-0`}
+                                              className={`tableButton edit ms-0`}
                                               onClick={
                                                 () => duplicateColumn(item)
                                               }
                                             >
-                                              <Tippy content={"View Note"}>
-                                                <i className="fa-solid fa-comment-dots"></i>
+                                              <Tippy content={"View Duplicate"}>
+                                                <i className="fa-solid fa-clone"></i>
                                               </Tippy>
                                             </button>}
                                           </td>

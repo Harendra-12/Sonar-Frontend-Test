@@ -18,6 +18,7 @@ const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
@@ -28,6 +29,8 @@ const CallCenter = ({ initial }) => {
   const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
+  console.log("callCenter", callCenter);
+  
   useEffect(() => {
     const getData = async () => {
       const apiData = await generalGetFunction("/call-center-agent/all");
@@ -201,7 +204,15 @@ const CallCenter = ({ initial }) => {
                             <button
                               disabled={loading}
                               onClick={() =>
-                                setRefreshCenter(refreshCenter + 1)
+                              {
+                                setRefreshCenter(refreshCenter + 1);
+                                setLoading(true);
+                                dispatch({
+                                  type: "SET_CALLCENTERREFRESH",
+                                  callCenterRefresh: callCenterRefresh+1,
+                                });
+                              }
+                                
                               }
                               className="clearButton2"
                             >

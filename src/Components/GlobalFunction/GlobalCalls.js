@@ -24,6 +24,12 @@ function GlobalCalls() {
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
+  const whatsappContactRefresh = useSelector(
+    (state) => state.whatsappContactRefresh
+  );
+  const whatsappMessageRefresh = useSelector(
+    (state) => state.whatsappMessageRefresh
+  );
   const logout = useSelector((state) => state.logout);
 
   const navigate = useNavigate();
@@ -363,6 +369,38 @@ function GlobalCalls() {
     }
   }, [deviceProvisioningRefresh]);
 
+  // Getting whatsapp contacts
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/whatsapp/get-contacts");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_WHATSAPPCONTACT",
+          whatsappContact: apiData?.data,
+        });
+      }
+    }
+    if (whatsappContactRefresh > 0) {
+      getData();
+    }
+  }, [whatsappContactRefresh]);
+
+  // Getting whatsapp messages
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/whatsapp/messages-all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_WHATSAPPMESSAGE",
+          whatsappMessage: apiData.data,
+        });
+      }
+    }
+    if (whatsappMessageRefresh > 0) {
+      getData();
+    }
+  }, [whatsappMessageRefresh]);
+
   // useEffect(() => {
   //   async function getData() {
   //     const apiData = await generalGetFunction(
@@ -399,6 +437,7 @@ function GlobalCalls() {
 
   useEffect(() => {
     async function logOut() {
+      const audioObj = document.querySelectorAll("audio");
       try {
         // First close all websocket connections
         if (window.socketInstances) {
@@ -412,6 +451,8 @@ function GlobalCalls() {
 
         // Clear token first to prevent new socket connections
         localStorage.removeItem("token");
+
+        audioObj.forEach((item) => item.pause());
 
         // Then make the logout API call
         const apiData = await generalGetFunction("/logout");

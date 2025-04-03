@@ -878,7 +878,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             </div>
                             <div className="col-6">
                               <input
-                                type="password"
+                                type="text"
                                 className="formItem"
                                 name=""
                                 value={password}

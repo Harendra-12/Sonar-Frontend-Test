@@ -218,14 +218,14 @@ function EFax() {
                               Logout
                             </div>
                           </li>
-                          <li onClick={() => navigate("/my-profile")}>
+                          {/* <li onClick={() => navigate("/my-profile")}>
                             <div
                               className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
                             </div>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

@@ -69,6 +69,10 @@ const ExtensionsEdit = ({ page, extensionData }) => {
     },
   });
 
+  console.log("All data extension",watch());
+  console.log("Error in extension", errors);
+  
+  
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
     if (!extensionData?.extension) {
@@ -242,6 +246,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
 
   const handleFormSubmit = handleSubmit(async (data, title) => {
+    console.log("Inside handleFormSubmit", data, title);
+    
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
         type: "manual",
@@ -673,7 +679,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   className="formItem"
                                   value={watch().user}
                                   {...register("user")}
-                                  id="selectFormRow"
                                 >
                                   <option value="" disabled>
                                     Select User
@@ -790,7 +795,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("record")}
                                   defaultValue={"D"}
                                 >
@@ -980,7 +984,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voicemailEnabled")}
                                   defaultValue={"N"}
                                 >
@@ -1038,7 +1041,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voiceMailFile", {})}
                                 >
                                   <option value="" disabled>
@@ -1075,7 +1077,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voiceMailkeepFile")}
                                   defaultValue={"false"}
                                 >
@@ -1181,7 +1182,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("directoryExtensionVisible")}
                                   defaultValue={"false"}
                                 >
@@ -1289,7 +1289,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("missedCall")}
                                   defaultValue={"none"}
                                 >
@@ -1396,7 +1395,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("onbusy")}
                                     defaultValue={0}
                                   >
@@ -1458,7 +1456,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("noanswer")}
                                     defaultValue={"Disabled"}
                                   >
@@ -1525,7 +1522,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("notregistered")}
                                   >
                                     <option value={1}>Enabled</option>
@@ -1579,7 +1575,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("followme")}
                                     defaultValue={"0"}
                                   >
@@ -1830,7 +1825,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                             ),
                                           }))
                                         }
-                                        id="selectFormRow"
                                       >
                                         {(() => {
                                           const numbers = [];
@@ -1864,7 +1858,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                             followMePrompt: e.target.value,
                                           }))
                                         }
-                                        id="selectFormRow"
                                         name="prompt"
                                       >
                                         <option className="status">
@@ -1894,7 +1887,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("dnd")}
                                     defaultValue={0}
                                   >
@@ -1914,7 +1906,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("callblocking")}
                                   >
                                     <option>Disabled</option>
@@ -1952,7 +1943,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   <select
                                     className="formItem"
                                     name="forward"
-                                    id="selectFormRow"
                                     {...register("forward")}
                                     defaultValue={"disabled"}
                                   >
@@ -1985,8 +1975,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                         getDropdownValue={forwardToValue}
                                         value={watch().forward_to}
                                         {...register(
-                                          "forward_to",
-                                          requiredValidator
+                                          "forward_to"
                                         )}
                                       />
                                       {errors.forward_to && (

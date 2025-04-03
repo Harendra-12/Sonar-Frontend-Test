@@ -41,6 +41,60 @@ useEffect(() => {
     }
   }, [startDateFlag, endDateFlag, filterBy]);
 
+  
+  useEffect(() => {
+    if (
+      filterBy === "7_days" ||
+      filterBy === "1_month" 
+    ) {
+      // featureUnderdevelopment();
+      getDateRange(filterBy);
+    }
+  }, [filterBy]);
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+ 
+  const getDateRange = (period) => {
+    const currentDate = new Date();
+    const formattedCurrentDate = formatDate(currentDate);
+
+    let startDate = new Date();
+
+    switch (period) {
+      case "7_days":
+        startDate.setDate(currentDate.getDate() - 7);
+        break;
+
+      case "1_month":
+        startDate.setMonth(currentDate.getMonth() - 1);
+        break;
+
+      case "3_month":
+        startDate.setMonth(currentDate.getMonth() - 3);
+        break;
+
+      default:
+        throw new Error(
+          "Invalid period. Use 'last7days', 'last1month', or 'last3months'."
+        );
+    }
+    const formattedStartDate = formatDate(startDate);
+    setStartDate(formattedStartDate);
+  
+    setEndDate(formattedCurrentDate);
+  
+    // return { currentDate: formattedCurrentDate, startDate: formattedStartDate };
+  };
+  
+
+ 
+
+
   const filterExportedData = () => {
 
     const buildUrl = (params) => {
@@ -66,8 +120,8 @@ useEffect(() => {
                             : page,
             variable_sip_from_user: debounceCallOriginFlag,
             variable_sip_to_user: debounceCallDestinationFlag,
-            start_date: startDateFlag,
-            end_date: endDateFlag,
+            start_date: startDate,
+            end_date: endDate,
             variable_DIALSTATUS: hangupCause,
             "Hangup-Cause": hangupStatus,
             call_cost: page === "billing" ? "give" : "",
@@ -136,6 +190,7 @@ useEffect(() => {
       };
       const handleExport = async () => {
         const queryParams=filterExportedData()
+        if(filterBy)
         setLoading(true);
        if(exportChecked==="mail"){
         try {
@@ -199,7 +254,7 @@ useEffect(() => {
                   <option value={"date_range"}>Date Range</option>
                   <option value={"7_days"}>Last 7 Days</option>
                   <option value={"1_month"}>Last 1 Month</option>
-                  <option value={"3_month"}>Last 3 Months</option>
+                  {/* <option value={"3_month"}>Last 3 Months</option> */}
                 </select>
               </div>
               {filterBy === "date" && (
