@@ -27,6 +27,8 @@ import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
 import AudioPlayer from "./AudioWaveForm";
 import DisplayFile from "./DisplayFile";
+import { numberValidator, requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function Messages({
   setSelectedModule,
@@ -101,6 +103,7 @@ function Messages({
   const thisAudioRef = useRef(null);
   // const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioUrl, setAudioURL] = useState("")
+  const [sendSMSPopup, setSendSMSPopup] = useState(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -125,6 +128,9 @@ function Messages({
   };
   const {
     formState: { errors },
+    register,
+    handleSubmit,
+    reset
   } = useForm();
 
   //  function to extract extension
@@ -1027,6 +1033,22 @@ function Messages({
   const example = []
   const newExample = []
 
+  const sendSMSMessage = handleSubmit(async (data) => {
+    const payload = { ...data };
+    try {
+      const apiData = await generalPostFunction("/send-sms", payload);
+      if (apiData.status) {
+        toast.success(apiData.message);
+      } else {
+        toast.error(apiData.message);
+      }
+      reset();
+      setSendSMSPopup(false);
+    } catch (err) {
+      console.error("Error sending SMS:", err);
+    }
+  })
+
   return (
     <>
       {addNewTagPopUp && <div className="addNewContactPopup">
@@ -1282,6 +1304,14 @@ function Messages({
                         data-category="incoming"
                       >
                         Group
+                      </button>
+                      <button
+                        onClick={() => setSendSMSPopup(true)}
+                        className="tabLink"
+                        effect="ripple"
+                        data-category="incoming"
+                      >
+                        SMS
                       </button>
                     </div>
                   </nav>
@@ -2840,6 +2870,75 @@ function Messages({
           ) : (
             ""
           )}
+          {sendSMSPopup &&
+            <div className="backdropContact">
+              <div className="addNewContactPopup">
+                <div className="row">
+                  <div className="col-12 heading">
+                    <i className="fa-light fa-message" />
+                    <h5>Send a SMS</h5>
+                    <p>
+                      Send a SMS to a DID / PSTN number.
+                    </p>
+                    <div className="border-bottom col-12" />
+                  </div>
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter Number</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="DID / PSTN"
+                        name="to_did"
+                        {...register("to_did", { ...requiredValidator, ...numberValidator })}
+                      />
+                      {errors.to_did && (
+                        <ErrorMessage text={errors.to_did.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12 mt-3">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter your messsage</label>
+                    </div>
+                    <div className="col-12">
+                      <textarea
+                        type="text"
+                        className="formItem h-auto"
+                        placeholder="Please enter your message"
+                        name="message"
+                        rows={3}
+                        {...register("message", {
+                          ...requiredValidator,
+                        })}
+                      />
+                      {errors.message && (
+                        <ErrorMessage text={errors.message.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12 mt-4">
+                    <div className="d-flex justify-content-between">
+                      <button className="panelButton gray ms-0" onClick={() => { reset(); setSendSMSPopup(false) }}>
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-caret-left" />
+                        </span>
+                      </button>
+                      <button className="panelButton me-0" onClick={sendSMSMessage}>
+                        <span className="text">Send</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-send" />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </section>
 
         {newGroupLoader ? (
