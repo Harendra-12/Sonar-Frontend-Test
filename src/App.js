@@ -163,6 +163,7 @@ import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import RateCardView from "./Components/Pages/RateCard/RateCardView";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -426,6 +427,10 @@ function App() {
           <Route path="/meeting-reports" element={<MeetingReports />} />
           <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
+
+          {/* Rate Card Path */}
+          <Route path="/rate-card" element={<RateCardView />} />
+          {/* Rate Card Path */}
 
           {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />

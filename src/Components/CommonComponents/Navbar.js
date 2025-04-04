@@ -603,6 +603,25 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                          {isCustomerAdmin && (< li className="tabItem ">
+                            <NavLink
+                              to="/rate-card"
+                              onClick={backToTop}
+                              type="button"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  [
+                                    "/rate-card",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Rate Card</div>
+                            </NavLink>
+                          </li>)}
                         </ul>
                       </div>
                     </div>
@@ -1859,8 +1878,8 @@ function Navbar() {
             </ul>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
 
