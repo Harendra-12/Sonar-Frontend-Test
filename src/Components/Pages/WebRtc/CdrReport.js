@@ -583,7 +583,7 @@ function CdrReport({ page }) {
                           <label>Storage</label><label>{storageInformation?.total_size} / {accountStorageInfo} GB</label>
                         </div>
                         <div class="progress">
-                          <Tippy content={`Storage Used: ${convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
+                          <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
                             <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                           <Tippy content={`Storage Left: ${accountStorageInfo - convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
