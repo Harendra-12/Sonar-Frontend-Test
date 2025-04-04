@@ -261,7 +261,7 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
-           <Route path="/groups" element={<GroupsList/>}/>
+           {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
