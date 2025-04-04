@@ -1038,13 +1038,12 @@ function Messages({
     try {
       const apiData = await generalPostFunction("/send-sms", payload);
       if (apiData.status) {
-        reset();
-        setSendSMSPopup(false);
         toast.success(apiData.message);
       } else {
-        reset();
         toast.error(apiData.message);
       }
+      reset();
+      setSendSMSPopup(false);
     } catch (err) {
       console.error("Error sending SMS:", err);
     }
