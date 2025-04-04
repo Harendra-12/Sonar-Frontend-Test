@@ -581,6 +581,7 @@
 
 .tangoNavs .nav-tabs .nav-link:hover {
     border-color: transparent;
+    background-color: transparent;
 }
 
 .chartWrapper .wrapper {
