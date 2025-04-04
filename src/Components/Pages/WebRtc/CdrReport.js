@@ -303,17 +303,17 @@ function CdrReport({ page }) {
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-        // setAudioURL(res.url); // Update audio URL state
-        setAudioURL(audio);
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
+      // setAudioURL(res.url); // Update audio URL state
+      setAudioURL(audio);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
       // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
@@ -446,6 +446,24 @@ function CdrReport({ page }) {
     getStorageInformation();
   }, [])
 
+  function convertToGB(param) {
+    const units = {
+      KB: 1 / (1024 * 1024),
+      MB: 1 / 1024,
+      GB: 1,
+      TB: 1024
+    };
+
+    let unit = param?.split(" ")[1]?.toUpperCase();
+    let size = param?.split(" ")[0];
+
+    if (units[unit] !== undefined) {
+      return (size * units[unit]).toFixed(2);
+    } else {
+      return "Invalid unit";
+    }
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -562,11 +580,14 @@ function CdrReport({ page }) {
                     {page === "callrecording" && (
                       <div style={{ width: '200px' }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>{accountStorageInfo === "" ? "N/A" : `${accountStorageInfo} GB`}</label>
+                          <label>Storage</label><label>{storageInformation?.total_size} / {accountStorageInfo} GB</label>
                         </div>
                         <div class="progress">
-                          <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
-                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          <Tippy content={`Storage Used: ${convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          </Tippy>
+                          <Tippy content={`Storage Left: ${accountStorageInfo - convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${((accountStorageInfo - convertToGB(storageInformation?.total_size)) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                         </div>
                       </div>
