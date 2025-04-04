@@ -62,7 +62,7 @@ function CdrReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [storageInformation, setStorageInformation] = useState([]);
-  const accountStorageInfo = useSelector((state) => state.accountDetails.package.device_storage);
+  const accountStorageInfo = useSelector((state) => state?.accountDetails?.package?.device_storage);
   const { confirm, ModalComponent } = PromptFunctionPopup();
 
   const thisAudioRef = useRef(null);
