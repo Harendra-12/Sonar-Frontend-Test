@@ -228,7 +228,7 @@ function PermissionConfigForUser() {
                           </div>
                         </div>
                       </form>
-                      <div className='col-xl-12 col-xxl-10'>
+                      <div className='col-xl-12 col-xxl-8'>
                         <div className='itemWrapper a shadow-none px-0 permissionsConfigWrapper'>
                           <div className="heading h-auto">
                             <h5>Accounts</h5>
@@ -238,8 +238,8 @@ function PermissionConfigForUser() {
                               <thead>
                                 <tr>
                                   <th>Page Name</th>
-                                  <th>View</th>
                                   <th>Utilities</th>
+                                  <th>View</th>
                                   <th>Add</th>
                                   <th>Edit</th>
                                   <th>Delete</th>
@@ -251,7 +251,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -259,7 +259,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -267,7 +267,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -275,7 +275,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -283,7 +283,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -294,7 +294,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -302,7 +302,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -310,7 +310,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -318,7 +318,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -326,7 +326,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -337,7 +337,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -345,7 +345,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -353,7 +353,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -361,7 +361,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -369,7 +369,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -388,8 +388,8 @@ function PermissionConfigForUser() {
                               <thead>
                                 <tr>
                                   <th>Page Name</th>
-                                  <th>View</th>
                                   <th>Utilities</th>
+                                  <th>View</th>
                                   <th>Add</th>
                                   <th>Edit</th>
                                   <th>Delete</th>
@@ -401,7 +401,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -409,7 +409,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -417,7 +417,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -425,7 +425,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -433,7 +433,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -444,7 +444,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -452,7 +452,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -460,7 +460,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -468,7 +468,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -476,7 +476,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -487,7 +487,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="utilities" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -495,7 +495,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="view" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -503,7 +503,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="add" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -511,7 +511,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="edit" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
@@ -519,7 +519,7 @@ function PermissionConfigForUser() {
                                   <td>
                                     <div class="my-auto position-relative mx-1">
                                       <label class="switch">
-                                        <input type="checkbox" id="showAllCheck" />
+                                        <input type="checkbox" id="showAllCheck" name="delete" />
                                         <span class="slider round"></span>
                                       </label>
                                     </div>
