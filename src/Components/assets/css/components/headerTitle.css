@@ -184,12 +184,45 @@
 }
 
 #detailsHeader .profileName {
-    /* color: #fff; */
-    display: inline-block;
-    align-items: center;
-    font-size: 1rem;
-    max-width: 110px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  /* color: #fff; */
+  display: inline-block;
+  align-items: center;
+  font-size: 1rem;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profilePhotoAddIcon {
+  position: absolute;
+  top: 2px;
+  right: -2px;
+  color: white;
+  background-color: green;
+  height: 23px;
+  width: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  font-weight: 600;
+  border: 2px solid white;
+  font-size: 10px;
+}
+.profilePhotoEditIcon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+  background-color: #3F51B5;
+  height: 23px;
+  width: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  font-weight: 600;
+  border: 2px solid white;
+  font-size: 10px;
 }
