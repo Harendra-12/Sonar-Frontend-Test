@@ -83,7 +83,7 @@ const AllAvailableAddons = () => {
                                             <div className="buttonGroup">
                                                 <button
                                                     onClick={() => {
-                                                        navigate('-1');
+                                                        navigate(-1);
                                                         backToTop()
                                                     }}
                                                     type="button"

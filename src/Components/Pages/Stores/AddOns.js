@@ -1,12 +1,13 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header';
 import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import ExtensionStore from './ExtensionStore';
 import SocialMediaStore from './SocialMediaStore';
 
 
 function AddOns() {
+    const navigate = useNavigate();
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -25,7 +26,10 @@ function AddOns() {
                                         </div>
                                         <div className="buttonGroup">
                                             <button
-                                                onClick={() => { Navigate('-1'); backToTop() }}
+                                                onClick={() => {
+                                                    navigate(-1);
+                                                    backToTop()
+                                                }}
                                                 type="button"
                                                 effect="ripple"
                                                 className="panelButton gray"
