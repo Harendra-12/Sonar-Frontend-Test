@@ -384,6 +384,7 @@ function Navbar() {
                           "/ring-groups",
                           "/ring-groups-add",
                           "/ring-groups-edit",
+                          "/groups",
                           "/cal-center-queue",
                           "/cal-center-queue-add",
                           "/cal-center-queue-edit",
@@ -538,7 +539,23 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-
+                         <li className="tabItem ">
+                            <Link
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Groups</div>
+                            </Link>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
                             permissions,
@@ -603,6 +620,25 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                          {isCustomerAdmin && (< li className="tabItem ">
+                            <NavLink
+                              to="/rate-card"
+                              onClick={backToTop}
+                              type="button"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  [
+                                    "/rate-card",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Rate Card</div>
+                            </NavLink>
+                          </li>)}
                         </ul>
                       </div>
                     </div>
@@ -1654,23 +1690,24 @@ function Navbar() {
                   </li>
                   {isCustomerAdmin && (
                     <>
-                      <li className="">
-                        <button
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse11"
-                          aria-expanded={
-                            isChildActive(["/add-ons", "/store-extension"])
-                              ? "true"
-                              : "false"
-                          }
-                          aria-controls="collapse11"
+                      <li className="dashboard ">
+                        <NavLink
+                          to="/add-ons"
+                          onClick={backToTop}
+                          type="button"
+                        // aria-expanded={
+                        //   isChildActive(["/add-ons", "/store-extension"])
+                        //     ? "true"
+                        //     : "false"
+                        // }
+                        // aria-controls="collapse11"
                         >
                           <div className="iconHolder">
                             <i className="fa-regular fa-store"></i>
                           </div>
                           <div className="itemTitle">Store</div>
-                        </button>
-                        <div
+                        </NavLink>
+                        {/* <div
                           id="collapse11"
                           className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
                             ? "show"
@@ -1753,7 +1790,7 @@ function Navbar() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                        </div> */}
                       </li>
                       <li className="">
                         <button
@@ -1858,8 +1895,8 @@ function Navbar() {
             </ul>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
 

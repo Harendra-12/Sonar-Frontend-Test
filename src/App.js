@@ -163,6 +163,9 @@ import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import RateCardView from "./Components/Pages/RateCard/RateCardView";
+import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -258,6 +261,7 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
+           {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -427,16 +431,20 @@ function App() {
           <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
-          {/*Addon path */}
+          {/* Rate Card Path */}
+          <Route path="/rate-card" element={<RateCardView />} />
+          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
+          {/* Rate Card Path */}
+
+          {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />
-          <Route path="/store-extension" element={<ExtensionStore />} />
+          {/*Store path */}
 
           {/*CallDashboardProvider */}
           <Route
             path="/call-dashboard-provider"
             element={<CallDashboardProvider />}
           />
-          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />

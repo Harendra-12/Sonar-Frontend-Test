@@ -52,6 +52,7 @@
 @import url('./components/store-extension.css');
 @import url('./components/twakto-new.css');
 @import url('./components/digitalClock.css');
+@import url('./components/globalPermissions.css');
 /* Responsive CSS */
 @import url('./common/responsive.css');
 
