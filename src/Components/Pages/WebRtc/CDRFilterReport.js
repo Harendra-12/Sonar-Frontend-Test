@@ -397,11 +397,11 @@ function CdrFilterReport({ page }) {
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
+      // if (res?.status && res?.url) {
+        // setAudioURL(res.url); // Update audio URL state
+        setAudioURL(audio);
         // Wait for React state update before accessing ref
         setTimeout(() => {
           if (thisAudioRef.current) {
@@ -411,7 +411,7 @@ function CdrFilterReport({ page }) {
             });
           }
         }, 100); // Reduced timeout to minimize delay
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }

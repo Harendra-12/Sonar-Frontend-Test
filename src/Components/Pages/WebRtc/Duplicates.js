@@ -29,8 +29,9 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
         "e_name",
         "Date",
         "Time",
-        "recording_path",
+        // "recording_path",
         "variable_billsec",
+        "Hangup-Cause"
       ]);
  
 
@@ -237,11 +238,14 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
       case "Time":
         headerText = "Time";
         break;
-      case "recording_path":
-        headerText = "Recordings";
-        break;
+      // case "recording_path":
+      //   headerText = "Recordings";
+      //   break;
       case "variable_billsec":
         headerText = "Duration";
+        break;
+      case "Hangup-Cause":
+        headerText ="Hangup Cause";
         break;
       default:
         // Handle other keys if necessary
@@ -309,72 +313,76 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
     } else if (key === "Time") {
       const time=formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
         return <td >{time}</td>;
-    } else if (key === "recording_path") {
-        return (
-            <td >
-                {call["recording_path"] !== null && call["variable_billsec"] > 0 && (
-                    <button
-                        className="tableButton"
-                        onClick={() => {
-                            if (currentPlaying === call["recording_path"]) {
-                                setCurrentPlaying("");
-                                setShowAudio(false);
-                            } else {
-                                setCurrentPlaying(call["recording_path"]);
-                                setShowDropdown(true);
-                                setShowAudio(false);
-                            }
-                        }}
-                    >
-                        {showDropDown && currentPlaying === call["recording_path"] ? (
-                            <ul className="dropdown-menu actionBtnDropdowns" key={index}>
-                                <>
-                                    <li className="dropdown-item">
-                                        <div
-                                            className="clearButton text-align-start"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (call.recording_path === currentPlaying) {
-                                                    setShowDropdown(false);
-                                                    setShowAudio(true);
-                                                    handlePlaying(call.recording_path);
-                                                }
-                                            }}
-                                        >
-                                            <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
-                                            Play
-                                        </div>
-                                    </li>
-                                    <li className="dropdown-item">
-                                        <div className="clearButton text-align-start">
-                                            <i className="fa-solid fa-bolt me-2"></i>
-                                            Transcript
-                                        </div>
-                                    </li>
-                                </>
-                                <>
-                                    <li className="dropdown-item">
-                                        <div className="clearButton text-align-start">
-                                            <i className="fa-regular fa-download"></i> Download
-                                        </div>
-                                    </li>
-                                </>
-                                <li className="dropdown-item"></li>
-                            </ul>
-                        ) : (
-                            <></>
-                        )}
-                        {currentPlaying === call["recording_path"] ? (
-                            <i className="fa-solid fa-stop"></i>
-                        ) : (
-                            <i className="fa-solid fa-play"></i>
-                        )}
-                    </button>
-                )}
-            </td>
-        );
-    } else if (key === "variable_billsec") {
+    } 
+    // else if (key === "recording_path") {
+    //     return (
+    //         <td >
+    //             {call["recording_path"] !== null && call["variable_billsec"] > 0 && (
+    //                 <button
+    //                     className="tableButton"
+    //                     onClick={() => {
+    //                         if (currentPlaying === call["recording_path"]) {
+    //                             setCurrentPlaying("");
+    //                             setShowAudio(false);
+    //                         } else {
+    //                             setCurrentPlaying(call["recording_path"]);
+    //                             setShowDropdown(true);
+    //                             setShowAudio(false);
+    //                         }
+    //                     }}
+    //                 >
+    //                     {showDropDown && currentPlaying === call["recording_path"] ? (
+    //                         <ul className="dropdown-menu actionBtnDropdowns" key={index}>
+    //                             <>
+    //                                 <li className="dropdown-item">
+    //                                     <div
+    //                                         className="clearButton text-align-start"
+    //                                         onClick={(e) => {
+    //                                             e.stopPropagation();
+    //                                             if (call.recording_path === currentPlaying) {
+    //                                                 setShowDropdown(false);
+    //                                                 setShowAudio(true);
+    //                                                 handlePlaying(call.recording_path);
+    //                                             }
+    //                                         }}
+    //                                     >
+    //                                         <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
+    //                                         Play
+    //                                     </div>
+    //                                 </li>
+    //                                 <li className="dropdown-item">
+    //                                     <div className="clearButton text-align-start">
+    //                                         <i className="fa-solid fa-bolt me-2"></i>
+    //                                         Transcript
+    //                                     </div>
+    //                                 </li>
+    //                             </>
+    //                             <>
+    //                                 <li className="dropdown-item">
+    //                                     <div className="clearButton text-align-start">
+    //                                         <i className="fa-regular fa-download"></i> Download
+    //                                     </div>
+    //                                 </li>
+    //                             </>
+    //                             <li className="dropdown-item"></li>
+    //                         </ul>
+    //                     ) : (
+    //                         <></>
+    //                     )}
+    //                     {currentPlaying === call["recording_path"] ? (
+    //                         <i className="fa-solid fa-stop"></i>
+    //                     ) : (
+    //                         <i className="fa-solid fa-play"></i>
+    //                     )}
+    //                 </button>
+    //             )}
+    //         </td>
+    //     );
+    // }
+     else if (key === "variable_billsec") {
         return <td>{formatTime(call["variable_billsec"])}</td>;
+    }else if(key==="Hangup-Cause"){
+      return <td>{call["Hangup-Cause"]}</td>
     }
     return null;
 })}
@@ -437,8 +445,9 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
                          <th>Ext/Dest</th>
                          <th>Date</th>
                          <th>Time</th>
-                         <th>Recordings</th>
+                         {/* <th>Recordings</th> */}
                          <th>Duration</th>
+                         <th>Hangup Cause</th>
                          <th>Comments</th>
                        </tr>
                  </thead>
