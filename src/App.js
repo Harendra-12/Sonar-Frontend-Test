@@ -427,16 +427,15 @@ function App() {
           <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
-          {/*Addon path */}
+          {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />
-          <Route path="/store-extension" element={<ExtensionStore />} />
+          {/*Store path */}
 
           {/*CallDashboardProvider */}
           <Route
             path="/call-dashboard-provider"
             element={<CallDashboardProvider />}
           />
-          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
