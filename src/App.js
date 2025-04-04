@@ -164,6 +164,8 @@ import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
+import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -430,6 +432,7 @@ function App() {
 
           {/* Rate Card Path */}
           <Route path="/rate-card" element={<RateCardView />} />
+          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
           {/* Rate Card Path */}
 
           {/*Store path */}

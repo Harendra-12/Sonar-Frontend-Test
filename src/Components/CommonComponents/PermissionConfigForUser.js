@@ -1,9 +1,13 @@
 import React from 'react'
+import { backToTop } from '../GlobalFunction/globalFunction';
+import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
-function PagePermissionForUser() {
+function PermissionConfigForUser() {
+  const navigate = useNavigate();
   return (
     <>
-      <div className='profileView p-0'>
+      {/* <div className='profileView p-0'>
         <div className='profileDetailsHolder position-relative p-0 shadow-none border-0'>
           <div class="col-xl-12">
             <div class="headerCommon d-flex align-items-center">
@@ -158,9 +162,384 @@ function PagePermissionForUser() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <main className="mainContent">
+        <section id="phonePage">
+          <div className="container-fluid">
+            <div className="row">
+              <Header title="Global Permissions" />
+              <div className="overviewTableWrapper">
+                <div className="overviewTableChild">
+                  <div className="d-flex flex-wrap">
+                    <div className="col-12">
+                      <div className="heading">
+                        <div className="content">
+                          <h4>Permissions</h4>
+                        </div>
+                        <div className="buttonGroup">
+                          <button
+                            effect="ripple"
+                            className="panelButton ms-0"
+                          >
+                            <span className="text">Refresh</span>
+                            <span className="icon">
+                              <i className="fa-regular fa-arrows-rotate fs-5"></i>
+                            </span>
+                          </button>
+                          <button
+                            effect="ripple"
+                            className="panelButton gray"
+                            onClick={() => {
+                              navigate(-1);
+                              backToTop();
+                            }}
+                          >
+                            <span className="text">Back</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-caret-left"></i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='col-12' style={{ padding: '25px 23px' }}>
+                      <form className="row mb-0">
+                        <div className="formRow col-xl-3">
+                          <div className='formLabel'>
+                            <label>
+                              Select Class Type
+                            </label>
+                          </div>
+                          <div className='col-6'>
+                            <div className='row'>
+                              <div className='col-6'>
+                                <select className='formItem'>
+                                  <option value={"group"}>Group</option>
+                                  <option value={"role"}>Role</option>
+                                </select>
+                              </div>
+                              <div className='col-6'>
+                                <select className='formItem'>
+                                  <option value={"group"}>Group</option>
+                                  <option value={"role"}>Role</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <div className='col-xl-12 col-xxl-10'>
+                        <div className='itemWrapper a shadow-none px-0 permissionsConfigWrapper'>
+                          <div className="heading h-auto">
+                            <h5>Accounts</h5>
+                          </div>
+                          <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Page Name</th>
+                                  <th>View</th>
+                                  <th>Utilities</th>
+                                  <th>Add</th>
+                                  <th>Edit</th>
+                                  <th>Delete</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Users</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Extensions</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Roles And Permissions</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div className='itemWrapper a shadow-none px-0 permissionsConfigWrapper'>
+                          <div className="heading h-auto">
+                            <h5>Number Management</h5>
+                          </div>
+                          <div className='tableContainer h-auto' style={{ minHeight: 'auto' }}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Page Name</th>
+                                  <th>View</th>
+                                  <th>Utilities</th>
+                                  <th>Add</th>
+                                  <th>Edit</th>
+                                  <th>Delete</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Users</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Extensions</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Roles And Permissions</td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="my-auto position-relative mx-1">
+                                      <label class="switch">
+                                        <input type="checkbox" id="showAllCheck" />
+                                        <span class="slider round"></span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </>
   )
 }
 
-export default PagePermissionForUser
+export default PermissionConfigForUser
