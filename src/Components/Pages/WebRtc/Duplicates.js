@@ -23,16 +23,16 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
     const [showKeys, setShowKeys] = useState([
         "Call-Direction",
         "variable_sip_from_user",
-        "tag",
-        "application_state",
-        "application_state_to_ext",
+        // "tag",
+        // "application_state",
+        // "application_state_to_ext",
         "e_name",
         "Date",
         "Time",
         // "recording_path",
         "variable_billsec",
-        "Hangup-Cause",
-        "variable_DIALSTATUS"
+        // "Hangup-Cause",
+        // "variable_DIALSTATUS"
       ]);
  
 
