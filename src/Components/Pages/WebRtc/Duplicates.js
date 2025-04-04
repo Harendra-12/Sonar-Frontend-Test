@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { generalGetFunction, generalPostFunction, generatePreSignedUrl } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
-import AudioPlayer from './AudioWaveForm';
 import Comments from './Comments';
+import AudioWaveformCommon from '../../CommonComponents/AudioWaveformCommon';
 
 export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData}) {
   const [selectedId,setSelectedId]=useState(duplicatePopUpData.id)
@@ -31,7 +31,8 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
         "Time",
         // "recording_path",
         "variable_billsec",
-        "Hangup-Cause"
+        "Hangup-Cause",
+        "variable_DIALSTATUS"
       ]);
  
 
@@ -248,7 +249,8 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
         headerText ="Hangup Cause";
         break;
       default:
-        // Handle other keys if necessary
+      case "variable_DIALSTATUS":
+        headerText="Hangup Status"
         break;
     }
 
@@ -384,7 +386,9 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
     }else if(key==="Hangup-Cause"){
       return <td>{call["Hangup-Cause"]}</td>
     }
-    return null;
+    else{
+      return <td>{call[key]}</td>
+    }
 })}
                         
                              <td className="px-4 py-3">
@@ -403,7 +407,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
                                         <tr>
                                           <td colspan="18">
                                             <div class="audio-container mx-2">
-                                            <AudioPlayer audioUrl={audioURL} />
+                                            <AudioWaveformCommon audioUrl={audioURL} />
                                             </div>
                                           </td>
                                         </tr>}
@@ -448,6 +452,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData})
                          {/* <th>Recordings</th> */}
                          <th>Duration</th>
                          <th>Hangup Cause</th>
+                         <th>Hangup Status</th>
                          <th>Comments</th>
                        </tr>
                  </thead>

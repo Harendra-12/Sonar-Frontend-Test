@@ -243,16 +243,16 @@ const WebrtcWrapper = () => {
       const isRefresh = performance.getEntriesByType("navigation")[0]?.type === "reload";
 
       if (!isRefresh && sessionStorage.getItem("tabSession") === "active" && token) {
-        // ✅ API call only on tab close
-        fetch(`${baseName}/logout`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          keepalive: true,
+        //API call only on tab close
+                 fetch(`${baseName}/logout?with_agents`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              keepalive: true,
         }).catch((err) => console.log("API call failed:", err));
-        localStorage.clear();
+            localStorage.clear(); 
       }
     };
 

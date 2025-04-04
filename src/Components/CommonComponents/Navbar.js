@@ -384,6 +384,7 @@ function Navbar() {
                           "/ring-groups",
                           "/ring-groups-add",
                           "/ring-groups-edit",
+                          "/groups",
                           "/cal-center-queue",
                           "/cal-center-queue-add",
                           "/cal-center-queue-edit",
@@ -538,7 +539,23 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-
+                         <li className="tabItem ">
+                            <Link
+                              // to="/extensions"
+                              onClick={() => featureUnderdevelopment()}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/extensions-add", "/extensions-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Groups</div>
+                            </Link>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
                             permissions,

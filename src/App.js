@@ -163,6 +163,7 @@ import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import GroupsList from "./Components/Pages/Groups/GroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -258,6 +259,7 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
+           <Route path="/groups" element={<GroupsList/>}/>
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 

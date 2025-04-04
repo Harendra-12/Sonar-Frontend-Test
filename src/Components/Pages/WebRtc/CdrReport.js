@@ -64,6 +64,9 @@ function CdrReport({ page }) {
   const [storageInformation, setStorageInformation] = useState([]);
   const accountStorageInfo = useSelector((state) => state.accountDetails.package.device_storage);
   const { confirm, ModalComponent } = PromptFunctionPopup();
+  const [ showDropDown,setShowDropdown]=useState(false)
+  const [showAudio, setShowAudio] = useState(false)
+
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -1074,17 +1077,14 @@ function CdrReport({ page }) {
                                                 <button
                                                   className="tableButton px-2 mx-0"
                                                   onClick={() => {
-                                                    if (
-                                                      item["recording_path"] ==
-                                                      currentPlaying
-                                                    ) {
-                                                      setCurrentPlaying("");
-                                                      setAudioURL("");
-                                                    } else {
-                                                      handlePlaying(
-                                                        item["recording_path"]
-                                                      );
-                                                    }
+                                                    if (currentPlaying === item["recording_path"]) {
+                                                                                  setCurrentPlaying("");
+                                                                                  setShowAudio(false);
+                                                                              } else {
+                                                                                  setCurrentPlaying(item["recording_path"]);
+                                                                                  setShowDropdown(true);
+                                                                                  setShowAudio(false);
+                                                                              }
                                                   }}
                                                 >
                                                   {currentPlaying ===
@@ -1094,6 +1094,46 @@ function CdrReport({ page }) {
                                                     <i className="fa-solid fa-play"></i>
                                                   )}
                                                 </button>
+                                                {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                      <ul className="" key={index}>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (item.recording_path === currentPlaying) {
+                                                                  setShowDropdown(false);
+                                                                  setShowAudio(true);
+                                                                  handlePlaying(item.recording_path);
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                                } me-2`}
+                                                              ></i>
+                                                              Play
+                                                            </div>
+                                                          </li>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-regular fa-download"></i> Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    )}
                                                 <label className="ms-2">{storageSize}</label>
                                               </div>
                                             </>
@@ -1202,12 +1242,12 @@ function CdrReport({ page }) {
                                           )}
                                       </td>
                                     </tr>
-                                    {currentPlaying ===
+                                    {/* {currentPlaying ===
                                       item["recording_path"] &&
                                       item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
-                                            <div className="audio-container mx-2">
+                                            <div className="audio-container mx-2"> */}
                                               {/* <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
@@ -1222,7 +1262,7 @@ function CdrReport({ page }) {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                              <AudioWaveformCommon audioUrl={audioURL} />
+                                              {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
                                               {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>
@@ -1236,10 +1276,19 @@ function CdrReport({ page }) {
                                               {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                            </div>
+                                            {/* </div>
                                           </td>
                                         </tr>
-                                      )}
+                                      )} */}
+                                         {currentPlaying ===
+                                          item["recording_path"] &&showAudio&&
+                                        <tr>
+                                          <td colspan="18">
+                                            <div class="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            </div>
+                                          </td>
+                                        </tr>}
                                   </>
                                 );
                               })}

@@ -70,6 +70,8 @@ function CdrFilterReport({ page }) {
   const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false)
   const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
   const [error, setError] = useState('');
+  const [showAudio, setShowAudio] = useState(false)
+  const [ showDropDown,setShowDropdown]=useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -1112,44 +1114,73 @@ function CdrFilterReport({ page }) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
-                                                    {item["recording_path"] &&
-                                                      item["variable_billsec"] >
-                                                      0 && (
-                                                        <button
-                                                          className="tableButton px-2 mx-0"
-                                                          onClick={() => {
-                                                            if (
-                                                              item[
-                                                              "recording_path"
-                                                              ] ===
-                                                              currentPlaying
-                                                            ) {
-                                                              setCurrentPlaying(
-                                                                ""
-                                                              );
-                                                              setAudioURL("");
-                                                            } else {
-                                                              handlePlaying(
-                                                                item[
-                                                                "recording_path"
-                                                                ]
-                                                              );
-                                                            }
-                                                          }}
-                                                        >
-                                                          {currentPlaying ===
-                                                            item[
-                                                            "recording_path"
-                                                            ] ? (
-                                                            <i className="fa-solid fa-stop"></i>
-                                                          ) : (
-                                                            <i className="fa-solid fa-play"></i>
-                                                          )}
-                                                        </button>
-                                                      )}
+                                                    {item["recording_path"] && item["variable_billsec"] > 0 && (
+                                                      <button
+                                                        className="tableButton px-2 mx-0"
+                                                        onClick={() => {
+                                              
+                                                          if (currentPlaying === item["recording_path"]) {
+                                                            setCurrentPlaying("");
+                                                            setShowAudio(false);
+                                                          
+                                                          } else {
+                                                            setCurrentPlaying(item["recording_path"]);
+                                                            setShowDropdown(true); // Open dropdown when playing
+                                                            setShowAudio(false);
+                                                          }
+                                                        }}
+                                                      >
+                                                        {currentPlaying === item["recording_path"] ? (
+                                                          <i className="fa-solid fa-stop"></i>
+                                                        ) : (
+                                                          <i className="fa-solid fa-play"></i>
+                                                        )}
+                                                      </button>
+                                                    )}
+                                              
+                                                    {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                      <ul className="" key={index}>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (item.recording_path === currentPlaying) {
+                                                                  setShowDropdown(false);
+                                                                  setShowAudio(true);
+                                                                  handlePlaying(item.recording_path);
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                                } me-2`}
+                                                              ></i>
+                                                              Play
+                                                            </div>
+                                                          </li>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-regular fa-download"></i> Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    )}
                                                   </td>
                                                 );
-                                              } else if (
+                                              }else if (
                                                 key === "Call-Direction"
                                               ) {
                                                 const callIcons = {
@@ -1333,7 +1364,7 @@ function CdrFilterReport({ page }) {
 
 
                                         {/* Audio Player Row */}
-                                        {currentPlaying ===
+                                        {/* {currentPlaying ===
                                           item["recording_path"] &&
                                           item["recording_path"] && (
                                             <tr>
@@ -1353,15 +1384,24 @@ function CdrFilterReport({ page }) {
                                                       type="audio/mpeg"
                                                     />
                                                   </audio> */}
-                                                  <AudioWaveformCommon audioUrl={audioURL} />
+                                                  {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
 
                                                   {/* <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
                                                   </button> */}
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          )}
+                                                {/* </div> */}
+                                              {/* </td> */}
+                                            {/* </tr> */}
+                                          {/* )}  */}
+                                             {currentPlaying ===
+                                                                                    item["recording_path"] &&showAudio&&
+                                                                                  <tr>
+                                                                                    <td colspan="18">
+                                                                                      <div class="audio-container mx-2">
+                                                                                      <AudioWaveformCommon audioUrl={audioURL} />
+                                                                                      </div>
+                                                                                    </td>
+                                                                                  </tr>}
                                       </React.Fragment>
                                     );
                                   })}
