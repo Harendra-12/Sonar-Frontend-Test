@@ -63,8 +63,8 @@ const Users = () => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter==="online"?"&online":""}`
-      );
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+    );    
       if (apiData?.status) {
         setUser(apiData.data);
         setFilterUser(apiData.data.data);
@@ -297,6 +297,8 @@ const Users = () => {
                             <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
                               <option value="all" disabled>Status</option>
                               <option value="online">Online</option>
+                              <option value="offline">Offline</option>
+                              <option value="all">All</option>
                               </select></th>
                             {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
                             <th>Status <span>

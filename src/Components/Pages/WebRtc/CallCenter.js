@@ -18,6 +18,7 @@ const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
@@ -25,9 +26,11 @@ const CallCenter = ({ initial }) => {
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-    const { sessionManager } = useSIPProvider();
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
 
+  console.log("callCenter", callCenter);
+  
   useEffect(() => {
     const getData = async () => {
       const apiData = await generalGetFunction("/call-center-agent/all");
@@ -66,21 +69,21 @@ const CallCenter = ({ initial }) => {
     }
   }, [Id, callCenter]);
   // Function to handle logout
- const handleLogOut = async () => {
-     setLoading(true);
-     try {
-       const apiResponses = await logout(
-         allCallCenterIds,
-         dispatch,
-         sessionManager
-       );
-     } catch (error) {
-       console.error("Unexpected error in handleLogOut:", error);
-       alert("Something went wrong. Please try again.");
-     } finally {
-       setLoading(false);
-     }
-   };
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -154,7 +157,7 @@ const CallCenter = ({ initial }) => {
                           />
                         </div>
                         <div className="profileName">
-                          {account.username}{" "}
+                          {account?.username}{" "}
                           <span className="status">Available</span>
                         </div>
                       </div>
@@ -201,7 +204,15 @@ const CallCenter = ({ initial }) => {
                             <button
                               disabled={loading}
                               onClick={() =>
-                                setRefreshCenter(refreshCenter + 1)
+                              {
+                                setRefreshCenter(refreshCenter + 1);
+                                setLoading(true);
+                                dispatch({
+                                  type: "SET_CALLCENTERREFRESH",
+                                  callCenterRefresh: callCenterRefresh+1,
+                                });
+                              }
+                                
                               }
                               className="clearButton2"
                             >
@@ -319,7 +330,7 @@ const CallCenterListItem = ({
       }
       return total;
     }, 0);
-    
+
     setTotalTime(totalBreakTimeInMs / 1000);
 
     const ongoingBreak = filteredData.find(

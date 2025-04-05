@@ -150,12 +150,22 @@ import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
 import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
-import Meta from "./Components/Pages/ThirdPartyIntegration/Meta/Meta";
-// import WhatsApp from "./Components/Pages/WhatsApp/WhatsApp";
-import MicrosoftTeams from "./Components/Pages/MicrosoftTeams/MicrosoftTeams";
 import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
-import AllAddons from "./Components/Pages/ThirdPartyIntegration/AllAddons/AllAddons";
-import WhatsApp from "./Components/Pages/ThirdPartyIntegration/WhatsApp/WhatsApp";
+import MetaConfig from "./Components/Pages/ThirdPartyApps/Meta/MetaConfig";
+import MicrosoftTeamsConfig from "./Components/Pages/ThirdPartyApps/MicrosoftTeams/MicrosoftTeamsConfig";
+import WhatsAppConfig from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfig";
+import AllThirdPartyConfig from "./Components/Pages/ThirdPartyApps/AllThirdPartyConfig";
+import MetaConfigEdit from "./Components/Pages/ThirdPartyApps/Meta/MetaConfigEdit";
+import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfigEdit";
+import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
+import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
+import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
+import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
+import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
+import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import RateCardView from "./Components/Pages/RateCard/RateCardView";
+import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -251,6 +261,7 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
+          {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -420,16 +431,20 @@ function App() {
           <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
-          {/*Addon path */}
+          {/* Rate Card Path */}
+          <Route path="/rate-card" element={<RateCardView />} />
+          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
+          {/* Rate Card Path */}
+
+          {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />
-          <Route path="/store-extension" element={<ExtensionStore />} />
+          {/*Store path */}
 
           {/*CallDashboardProvider */}
           <Route
             path="/call-dashboard-provider"
             element={<CallDashboardProvider />}
           />
-          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
@@ -462,6 +477,7 @@ function App() {
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />
           <Route path="/message" element={<Messages />} />
+          <Route path="/whatsapp-chatbox" element={<WhatsAppChatBox />} />
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />
@@ -836,13 +852,28 @@ function App() {
           {/* ------ Call Tracker */}
 
 
-          {/* ----------- meta */}
-            <Route path="/meta-config" element= { <Meta />} />
-            <Route path="/whatsapp-config" element= { <WhatsApp />} />
-            <Route path="/teams-config" element= { <MicrosoftTeams />} />
-            <Route path="/all-addons" element= { <AllAddons />} />
+          {/* ----------- Third Party Addons */}
+          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route path="/all-addons" element={<AllAddons />} />
+          <Route path="/all-available-addons" element={<AllAvailableAddons />} />
+          <Route path="/meta-config" element={<MetaConfig />} />
+          <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 
-          {/* ----------- meta */}
+          <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
+          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
+
+          <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
+
+          {/* ----------- Third Party Addons */}
+
+          {/* AI Routes */}
+          <Route path="/all-ai-agent" element={<AllAiAgent />} />
+          <Route path="/ai-agent-add" element={<AIAgentAdd />} />
+          <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
+          {/* AI Routes */}
+
+
+
 
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />

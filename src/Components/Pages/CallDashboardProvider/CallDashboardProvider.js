@@ -1,9 +1,10 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { backToTop } from '../../GlobalFunction/globalFunction';
 
 function CallDashboardProvider() {
+    const navigate = useNavigate();
     return (
         <>
             <main className="mainContent">
@@ -23,7 +24,7 @@ function CallDashboardProvider() {
                                             </div>
                                             <div className="buttonGroup">
                                                 <button
-                                                    onClick={() => { Navigate('-1'); backToTop() }}
+                                                    onClick={() => { navigate(-1); backToTop() }}
                                                     type="button"
                                                     effect="ripple"
                                                     className="panelButton gray">
@@ -68,7 +69,7 @@ function CallDashboardProvider() {
                                                     <div className="formLabel pe-2 col-2">
                                                         <label className="text-dark">Filter</label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                          Select filter type 
+                                                            Select filter type
                                                         </label>
                                                     </div>
                                                     <div className="col-6">
@@ -163,7 +164,7 @@ function CallDashboardProvider() {
                                                                 <div className="col-9">
                                                                     <h5>453</h5>
                                                                     <p>
-                                                                        Total count 
+                                                                        Total count
                                                                     </p>
                                                                 </div>
                                                                 <div className="col-3 text-end">
@@ -194,7 +195,7 @@ function CallDashboardProvider() {
                                                                 <div className="col-9">
                                                                     <h5>Title</h5>
                                                                     <p>
-                                                                        
+
                                                                     </p>
                                                                 </div>
                                                                 <div className="col-3 text-end">
@@ -225,7 +226,7 @@ function CallDashboardProvider() {
                                                                 <div className="col-9">
                                                                     <h5>453</h5>
                                                                     <p>
-                                                                        Total count 
+                                                                        Total count
                                                                     </p>
                                                                 </div>
                                                                 <div className="col-3 text-end">
@@ -256,7 +257,7 @@ function CallDashboardProvider() {
                                                                 <div className="col-9">
                                                                     <h5>453</h5>
                                                                     <p>
-                                                                        Total count 
+                                                                        Total count
                                                                     </p>
                                                                 </div>
                                                                 <div className="col-3 text-end">

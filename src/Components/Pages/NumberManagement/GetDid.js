@@ -59,6 +59,7 @@ function GetDid() {
       value: "voice",
     },
   ]);
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [popUp, setPopUp] = useState(false);
   const {
     register,
@@ -139,21 +140,23 @@ function GetDid() {
     if (paymentMethod === "wallet") {
       const parsedData = {
         companyId: account.account_id,
-        vendorId: selectedDid[0].vendorId,
+        // vendorId: selectedDid[0].vendorId,
         didQty: selectedDid.length,
         type: "wallet",
         didType: "random",
-        rate: Number(selectedDid[0].price) * selectedDid.length,
-        accountId: selectedDid[0].vendorAccountId,
+        // rate: Number(selectedDid[0].price) * selectedDid.length,
+        accountId: selectedDid.find((item) => (item.vendorAccountId))?.vendorAccountId,
         dids: selectedDid.map((item) => {
           return {
-            dids: item.id,
-          };
+            did: !item.id ? item.phone_number : item.id,
+            vendorId: item.vendorId
+          }
         }),
       };
       if (
         Number(accountDetails?.balance?.amount) <
-        Number(selectedDid[0].price) * selectedDid.length
+        // Number(selectedDid[0].price) * selectedDid.length
+        totalPrice
       ) {
         toast.error("Wallet balance is low");
       } else {
@@ -201,9 +204,20 @@ function GetDid() {
     return total + price;
   }, 0);
 
-  // Handle All Country Call
+  // Handle All Country Call & Basic API Call @ Page Start
   useEffect(() => {
     fetchAllCountry();
+
+    setValue('searchType', "tollfree");
+    setValue('quantity', 10);
+    setValue('searchBy', "npa");
+    setValue('country', "US");
+
+    const timer = setTimeout(() => {
+      handleSubmit(onSubmit)();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [])
 
   const fetchAllCountry = async () => {
@@ -211,11 +225,15 @@ function GetDid() {
       const apiData = await generalGetFunction("/available-countries");
       if (apiData?.status) {
         setAvailableCountries(apiData.data);
+        if (apiData.data.find(item => item.country_code === "US")) {
+          setValue('country', "US");
+        }
       }
     } catch (err) {
       console.log(err);
     }
   }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -263,7 +281,12 @@ function GetDid() {
                         )}
                       </div>
                       <div className="col-12">
-                        <select className="formItem" defaultValue="US">
+                        <select className="formItem"
+                          value={watch().country}
+                          {...register("country", {
+                            ...requiredValidator,
+                          })}
+                        >
                           {availableCountries.length > 0 ? availableCountries.map((item, key) => {
                             return (
                               <option key={key} value={item?.country_code}>
@@ -640,9 +663,6 @@ function GetDid() {
 
                             <div className="formRow col">
                               <div className="col-12">
-                                <div className="formLabel">
-                                  <label htmlFor=""></label>
-                                </div>
                                 <button
                                   effect="ripple"
                                   className="panelButton m-0"
@@ -653,10 +673,6 @@ function GetDid() {
                                     <i className="fa-solid fa-magnifying-glass"></i>
                                   </span>
                                 </button>
-                                <label
-                                  htmlFor="data"
-                                  className="formItemDesc text-start"
-                                ></label>
                               </div>
                             </div>
                           </form>
@@ -687,7 +703,7 @@ function GetDid() {
 
                                           return (
                                             <tr>
-                                              <td>{item.didSummary}</td>
+                                              <td>{item.friendly_name ? item.friendly_name : item.didSummary}</td>
                                               <td>
                                                 <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
                                                   {
@@ -754,7 +770,7 @@ function GetDid() {
                                     {selectedDid.map((item) => {
                                       return (
                                         <li>
-                                          {item.didSummary}{" "}
+                                          {item.friendly_name ? item.friendly_name : item.didSummary}{" "}
                                           <span className="float-end">${item.price}</span>
                                         </li>
                                       );
@@ -850,79 +866,85 @@ function GetDid() {
           </div>
         </div>
       </section>
-      {didBuyPopUP ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleBuyPopUp}
-                rechargeType={"buyDid"}
-                selectedDid={selectedDid}
-              />
+      {
+        didBuyPopUP ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleBuyPopUp}
+                  rechargeType={"buyDid"}
+                  selectedDid={selectedDid}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {rechargePopUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleRechargePopup}
-                rechargeType={"rechargeWallet"}
-              />
+        ) : (
+          ""
+        )
+      }
+      {
+        rechargePopUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleRechargePopup}
+                  rechargeType={"rechargeWallet"}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )
+      }
       {loading ? <CircularLoader /> : ""}
-      {popUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+      {
+        popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
-                    Are you sure you want to purchase{" "}
-                    {selectedDid?.length > 1 ? "these" : "this"} DID?
-                  </p>
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0 float-end"
-                      onClick={() => handlePayment()}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check" /></span>
-                    </button>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon"><i className="fa-solid fa-xmark" /></span>
-                    </button>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      Are you sure you want to purchase{" "}
+                      {selectedDid?.length > 1 ? "these" : "this"} DID?
+                    </p>
+                    <div className="mt-2 d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0 float-end"
+                        onClick={() => handlePayment()}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i className="fa-solid fa-check" /></span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon"><i className="fa-solid fa-xmark" /></span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )
+      }
+    </main >
   );
 }
 

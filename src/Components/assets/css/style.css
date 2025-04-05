@@ -52,6 +52,7 @@
 @import url('./components/store-extension.css');
 @import url('./components/twakto-new.css');
 @import url('./components/digitalClock.css');
+@import url('./components/globalPermissions.css');
 /* Responsive CSS */
 @import url('./common/responsive.css');
 
@@ -70,16 +71,23 @@
   --div-color: #161c31;
   --caller-color: #0a0d16;
   --color1: #360568;
-  --color2: #3e8ef7;
-  --color2-trans: #49c2ff30;
+  /* --color2: #3e8ef7; */
+  --color2: #62a7f8;
+  --color2-trans: #62a7f830;
   /* Accent Color */
-  --ui-accent: #3e8ef7;
+  /* --ui-accent: #3e8ef7; */
+  /* --ui-accent: #3066BE; */
+  --ui-accent: #62a7f8;
   /* --ui-icon: #00a6fb; */
   --ui-icon: #fff;
-  --ui-accent-green: #a5d02a;
+  /* --ui-accent-green: #a5d02a;
   --ui-accent-green-trans: #b7e92b30;
   --color3: #f17d01;
-  --color3-trans: #ffc46e30;
+  --color3-trans: #ffc46e30; */
+  --ui-accent-green: #62A8AC;
+  --ui-accent-green-trans: #62A8AC30;
+  --color3: #FF8C42;
+  --color3-trans: #FF8C4230;
   /* Highlight, Notification & Alert Color */
   --color-text: #fff;
   /* Contrast Text Color */
@@ -124,7 +132,6 @@
   --chat-input-bg: #ffffff;
   --chat-user-list: #ffffff;
   --chat-header: #f1f2f6;
-  --profile-border-color: #c8e7ff;
 }
 
 :root.dark {
@@ -150,26 +157,28 @@
   --searchBg: #383838;
   --webBG: var(--bg-color);
   --webCaller: var(--nav-color);
+  --chart-tab-bg: var(--formHeadingBloc);
 
   --webUtilGray: rgb(175, 175, 175);
   --immortalBlack: rgb(241, 241, 241);
-   /* =====  new */
-   --chat-bg-user-active: #2b3942;
-   --chat-bg-message-receive: #1f2c34;
-   --chat-bg-message-sent: #006049;
-   --chat-bg-icon: #454855;
-   --chat-icon: #b5b5b5;
-   --chat-bg-side-icon: #2b3a44;
-   --chat-bg-footer: #202b34;
-   --chat-bg-button: #1e2e39;
-   --chat-border: #484a59;
-   --chat-body: #0c131b;
-   --chat-body-left: #1f2c34;
-   --chat-input-bg: #2d3841;
-   --chat-user-list: #111b22;
-   --chat-header: #202b34;
-   /* --profile-border-color: #c8e7ff; */
-   --profile-border-color: #2d3d56;
+  /* =====  new */
+  --chat-bg-user-active: #2b3942;
+  --chat-bg-message-receive: #1f2c34;
+  --chat-bg-message-sent: #006049;
+  --chat-bg-icon: #454855;
+  --chat-icon: #b5b5b5;
+  --chat-bg-side-icon: #2b3a44;
+  --chat-bg-footer: #202b34;
+  --chat-bg-button: #1e2e39;
+  --chat-border: #484a59;
+  --chat-body: #0c131b;
+  --chat-body-left: #1f2c34;
+  --chat-input-bg: #2d3841;
+  --chat-user-list: #111b22;
+  --chat-header: #202b34;
+
+  --color3: #FF8C427c;
+  --ui-accent: #3e8ef77c;
 }
 
 :root.green {
@@ -369,18 +378,4 @@ ul {
 .formItem:autofill {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
-}
-
-.tableContainer .open-live {
-  height: 20px;
-  width: 100px;
-  /* border: 1px solid black; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  color: green;
-
-
-
 }

@@ -13,12 +13,14 @@ const ActionList = ({
   isDisabled = false,
   // label = "Set the action to perform when the max wait time is reached.",
 }) => {
+  console.log("category:", category);
   const dispatch = useDispatch();
 
   const [ringGroup, setRingGroup] = useState([]);
   const [extension, setExtension] = useState([]);
   const [callCenter, setCallCenter] = useState([]);
-  
+  const [aiAgents, setAiAgents] = useState([]);
+
   const [ivr, setIvr] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
@@ -29,6 +31,8 @@ const ActionList = ({
   const ringGroupArr = useSelector((state) => state.ringGroup);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
   const ivrArr = useSelector((state) => state.ivr);
+  const aiAgentsArr = useSelector((state) => state.aiAgents);
+  const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
 
   useEffect(() => {
     if (extensionRefresh > 0) {
@@ -63,7 +67,23 @@ const ActionList = ({
         ivrRefresh: ivrRefresh + 1,
       });
     }
-  }, [extensionArr, ringGroupArr, callCenterArr, ivrArr, ivrRefresh]);
+    if (aiAgentsRefresh > 0) {
+      setAiAgents(aiAgentsArr);
+    } else {
+      dispatch({
+        type: "SET_AIAGENTSREFRESH",
+        aiAgentsRefresh: aiAgentsRefresh + 1,
+      });
+    }
+  }, [
+    extensionArr,
+    ringGroupArr,
+    callCenterArr,
+    ivrArr,
+    ivrRefresh,
+    aiAgentsArr,
+    aiAgentsRefresh,
+  ]);
 
   // Backup for predefault
   let labelValue = "";
@@ -72,18 +92,26 @@ const ActionList = ({
     if (value) {
       if (category === "ivr") {
         labelValue = ivrArr.find((item) => `ivr_${item.id}` == value)?.ivr_name;
-      } else if(value.includes("ivr_")) {
+      } else if (category === "aiagent") {
+        labelValue = aiAgentsArr.find(
+          (item) => `aiagent_${item.ainumber}` == value
+        )?.name;
+      } else if (value.includes("ivr_")) {
         labelValue = ivrArr.find((item) => `ivr_${item.id}` == value)?.ivr_name;
-      }
-      else {
+      } else if (value.includes("aiagent_")) {
+        labelValue = aiAgentsArr.find(
+          (item) => `aiagent_${item.ainumber}` == value
+        )?.name;
+      } else {
         labelValue = value;
       }
+
       const defaultOption = { value: value, label: labelValue };
       setSelectedOption(defaultOption);
     } else {
       setSelectedOption("");
     }
-  }, [value, labelValue, category, ivrArr]);
+  }, [value, category, ivrArr, aiAgentsArr]);
 
   const allOptions = [
     {
@@ -114,10 +142,18 @@ const ActionList = ({
         label: item.ivr_name,
       })),
     },
+    {
+      label: "AI Agent",
+      options: aiAgents?.map((item) => ({
+        value: [`aiagent_${String(item.ainumber)}`, "aiagent"],
+        label: item.name,
+      })),
+    },
   ].filter(
     (option) =>
       category === undefined ||
-      option.label.toLowerCase() === category?.toLowerCase()
+      option.label.toLowerCase().replace(/\s+/g, "") ===
+        category?.toLowerCase().replace(/\s+/g, "")
   );
 
   const allOptionsRef = useRef(allOptions);

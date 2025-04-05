@@ -1,11 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
+import { backToTop, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction'
+import { useForm } from 'react-hook-form';
+import ErrorMessage from '../../../CommonComponents/ErrorMessage';
+import { requiredValidator } from '../../../validations/validation';
+import CircularLoader from '../../../Loader/CircularLoader';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-const Meta = () => {
+const MetaConfig = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const instagramConfigForm = useForm();
+
+  const {
+    register: instagramRegister,
+    formState: { errors: instagramErrors },
+    handleSubmit: instagramHandleSubmit,
+    reset: instagramReset,
+  } = instagramConfigForm;
+
+  const facebookConfigForm = useForm();
+
+  const {
+    register: facebookRegister,
+    formState: { errors: facebookErrors },
+    handleSubmit: facebookHandleSubmit,
+    reset: facebookReset,
+  } = facebookConfigForm;
+
+
+  // Instagram Config Setup
+  const handleFormSubmitForInstagram = instagramHandleSubmit(async (data) => {
+    setLoading(true);
+    const payload = { ...data };
+    const apiData = await generalPostFunction("/social-platforms/store", payload);
+    if (apiData?.status) {
+      setLoading(false);
+      instagramReset();
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+    }
+  });
+
+  // Facebook Config Setup
+  const handleFormSubmitForFacebook = facebookHandleSubmit(async (data) => {
+    setLoading(true);
+    const payload = { ...data };
+    const apiData = await generalPostFunction("/social-platforms/store", payload);
+    if (apiData?.status) {
+      setLoading(false);
+      facebookReset();
+      toast.success(apiData.message);
+    } else {
+      setLoading(false);
+    }
+  })
+
   return (
     <>
       <main className="mainContent">
         <section id="phonePage">
+          {loading ? (
+            <div colSpan={99}>
+              <CircularLoader />
+            </div>
+          ) : (
+            ""
+          )}
           <div className="container-fluid px-0">
             <Header title="Meta" />
           </div>
@@ -16,9 +80,9 @@ const Meta = () => {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>Meta</h4>
+                        <h4>Meta Config</h4>
                         <p>
-                          An extension is a destinations that can be called.
+                          You can setup and configure your Meta account to be used with our service
                         </p>
                       </div>
                       <div className="buttonGroup">
@@ -26,20 +90,14 @@ const Meta = () => {
                           type="button"
                           effect="ripple"
                           className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
                         >
                           <span className="text">Back</span>
                           <span className="icon">
                             <i className="fa-solid fa-caret-left"></i>
-                          </span>
-                        </button>
-                        <button
-                          type="button"
-                          effect="ripple"
-                          className="panelButton"
-                        >
-                          <span className="text">Save</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-floppy-disk"></i>
                           </span>
                         </button>
                       </div>
@@ -51,7 +109,7 @@ const Meta = () => {
                       padding: "25px 23px",
                     }}
                   >
-                    <form action="#" className="tangoNavs">
+                    <div className="tangoNavs">
                       <nav>
                         <div className="nav nav-tabs" id="nav-tab" role="tablist">
                           <button
@@ -88,34 +146,15 @@ const Meta = () => {
                           aria-labelledby="instagram-tab"
                           tabindex="0"
                         >
-                          <form className="row col-12 mx-auto">
-                            
+                          <form className="col-12 mx-auto">
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">
-                                App Id
+                                  App Id
                                   <span className="text-danger">*</span>
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                                </label>
-                              </div>
-                              <div className="col-xl-6 col-12">
-                                <input
-                                  type="number"
-                                  name="extension"
-                                  className="formItem"
-                                />
-                              </div>
-                            </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label htmlFor="">
-                                App Token
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                                  App id of the account that you want to configure
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -123,28 +162,69 @@ const Meta = () => {
                                   type="text"
                                   name="extension"
                                   className="formItem"
+                                  {...instagramRegister("app_id", {
+                                    ...requiredValidator,
+                                  })}
                                 />
+                                {instagramErrors.app_id && (
+                                  <ErrorMessage text={instagramErrors.app_id.message} />
+                                )}
                               </div>
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">
-                                Page Id
+                                  App Token
                                   <span className="text-danger">*</span>
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                                  App token of the account that you want to configure
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
                                 <input
-                                  type="number"
+                                  type="text"
                                   name="extension"
                                   className="formItem"
+                                  {...instagramRegister("app_token", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {instagramErrors.app_token && (
+                                  <ErrorMessage text={instagramErrors.app_token.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3 d-none">
+                              <div className="formLabel">
+                                <label htmlFor="">
+                                  Platform
+                                  <span className="text-danger">*</span>
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  value={"instagram"}
+                                  {...instagramRegister("platform")}
                                 />
                               </div>
                             </div>
-                            
+                            <div className="formRow col-xl-3">
+                              <button
+                                type="button"
+                                effect="ripple"
+                                className="panelButton ms-0"
+                                onClick={handleFormSubmitForInstagram}
+                              >
+                                <span className="text">Save</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-floppy-disk"></i>
+                                </span>
+                              </button>
+                            </div>
                           </form>
                         </div>
                         <div
@@ -154,33 +234,15 @@ const Meta = () => {
                           aria-labelledby="facebook-tab"
                           tabindex="0"
                         >
-                          <form className="row col-12 mx-auto">
+                          <form className="col-12 mx-auto">
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">
-                                App Id
+                                  App Id
                                   <span className="text-danger">*</span>
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
-                                </label>
-                              </div>
-                              <div className="col-xl-6 col-12">
-                                <input
-                                  type="number"
-                                  name="extension"
-                                  className="formItem"
-                                />
-                              </div>
-                            </div>
-                            <div className="formRow col-xl-3">
-                              <div className="formLabel">
-                                <label htmlFor="">
-                                App Token
-                                  <span className="text-danger">*</span>
-                                </label>
-                                <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                                  App id of the account that you want to configure
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
@@ -188,32 +250,74 @@ const Meta = () => {
                                   type="text"
                                   name="extension"
                                   className="formItem"
+                                  {...facebookRegister("app_id", {
+                                    ...requiredValidator,
+                                  })}
                                 />
+                                {facebookErrors.app_id && (
+                                  <ErrorMessage text={facebookErrors.app_id.message} />
+                                )}
                               </div>
                             </div>
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">
-                                Page Id
+                                  App Token
                                   <span className="text-danger">*</span>
                                 </label>
                                 <label htmlFor="data" className="formItemDesc">
-                                  There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain.
+                                  App token of the account that you want to configure
                                 </label>
                               </div>
                               <div className="col-xl-6 col-12">
                                 <input
-                                  type="number"
+                                  type="text"
                                   name="extension"
                                   className="formItem"
+                                  {...facebookRegister("app_token", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {facebookErrors.app_token && (
+                                  <ErrorMessage text={facebookErrors.app_token.message} />
+                                )}
+                              </div>
+                            </div>
+                            <div className="formRow col-xl-3 d-none">
+                              <div className="formLabel">
+                                <label htmlFor="">
+                                  Platform
+                                  <span className="text-danger">*</span>
+                                </label>
+                              </div>
+                              <div className="col-xl-6 col-12">
+                                <input
+                                  type="text"
+                                  name="extension"
+                                  className="formItem"
+                                  value={"facebook"}
+                                  {...facebookRegister("platform")}
                                 />
                               </div>
+                            </div>
+                            <div className="formRow col-xl-3">
+                              <button
+                                type="button"
+                                effect="ripple"
+                                className="panelButton ms-0"
+                                onClick={handleFormSubmitForFacebook}
+                              >
+                                <span className="text">Save</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-floppy-disk"></i>
+                                </span>
+                              </button>
                             </div>
                           </form>
                         </div>
                       </div>
                       <div />
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -225,4 +329,4 @@ const Meta = () => {
   )
 }
 
-export default Meta
+export default MetaConfig

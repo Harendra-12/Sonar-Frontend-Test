@@ -9,21 +9,6 @@
 }
 
 
-/* Product Grid */
-.product-container {
-    display: grid;
-    /* grid-template-columns: repeat(4, 1fr); */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    text-align: center;
-}
-
-@media (max-width: 340px) {
-    .product-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-}
-
 /* Image Styling */
 .product-container .product-image {
     width: 100px;
@@ -94,7 +79,8 @@
 .product-cart {
     position: relative;
     padding: 25px 20px;
-    background: #f1f1f1;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -102,10 +88,12 @@
     flex-direction: column;
     transition: all 0.3s ease-in-out;
 }
-.product-cart.active{
+
+.product-cart.active {
     border: 1px solid #00ab2b;
     background: #f2fff5;
 }
+
 .product-cart:hover .product-image {
     transform: scale(1.1);
 }
@@ -136,11 +124,11 @@
 
 }
 
-.product-container .product-title p:hover {
+/* .product-container .product-title p:hover {
     color: var(--primary-color);
     transition: 0.6s;
     cursor: pointer;
-}
+} */
 
 .product-container .product-title .text-smalls {
     color: var(--text-gray);
@@ -442,18 +430,28 @@
     background: #0056b3;
     color: #fff;
     border-radius: 25px;
-    padding-block: 5px;
-    padding-inline-start: 45px;
-    padding-inline-end: 25px;
+    padding: 5px 25px;
     position: relative;
     cursor: pointer;
+    border: none;
+    transition: 0.3s ease-in-out;
 }
-.checkbox_wrapper.edit{
+
+.checkbox_wrapper:hover {
+    background-color: #003874;
+}
+
+.checkbox_wrapper.edit {
     background: #00ab2b;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.checkbox_wrapper.edit:hover {
+    background-color: #00701c;
+}
+
 .product-container input {
     height: 15px;
     width: 15px;
@@ -461,15 +459,16 @@
     display: none;
     cursor: pointer;
 }
+
 .cartSvg {
-    position: absolute;
-    left: 20px;
-    top: 3px;
+    margin-right: 10px;
 }
+
 .cartSvg.addonsBtn {
     top: 6px;
 }
-.checkbox_wrapper.edit .cartSvg{
+
+.checkbox_wrapper.edit .cartSvg {
     top: 6px;
 }
 
@@ -477,6 +476,7 @@
     fill: #fff;
     font-size: 20px;
 }
+
 .cartSvg i {
     font-size: 12px;
 }
@@ -540,7 +540,8 @@
     height: 16px;
 
 }
-.content_width{
+
+.content_width {
     max-width: 200px;
     width: 100%;
 }

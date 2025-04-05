@@ -1,64 +1,58 @@
-/* .profileView {
+.profileView {
   padding: 10px;
-} */
-
-.profileView .profileDetailsHolder {
-    /* border: 1px solid #c9c9c970; */
-    padding: 10px;
-    border-radius: 10px;
-    background-color: var(--ele-color);
-    /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
-    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
-
 }
 
+.profileView .profileDetailsHolder {
+  /* border: 1px solid #c9c9c970; */
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--ele-color);
+  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 5px; */
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
 
 .profileView .baseDetails {
   display: flex;
+  padding: 15px;
   flex-wrap: wrap;
-  box-shadow: rgba(134, 144, 165, 0.212) 0 0 10px ;
-  border-radius: 15px;
 }
 
 .profilenames {
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* position: absolute;
     bottom: 3px;
     left: 127px; */
 }
 
 .profileicons i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ui-accent);
-    background-color: #e7f2ff;
-    height: 25px;
-    width: 25px;
-    font-size: 0.875rem;
-    border-radius: 50px
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ui-accent);
+  background-color: #e7f2ff;
+  height: 25px;
+  width: 25px;
+  font-size: 0.875rem;
+  border-radius: 50px;
 }
 
 .profileView .baseDetails .profilePicHolder {
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    overflow: hidden;
-    position: relative;
-    /* bottom: 49px; */
-    border: 9px solid var(--border-color);
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  /* bottom: 49px; */
+  border: 9px solid var(--border-color);
 }
 
-
-
-
 .profileView .baseDetails .profilePicHolder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* .profileView .baseDetails .content {
@@ -66,24 +60,24 @@
 } */
 
 .profileView .baseDetails .content h5 {
-    font-size: 1.0625rem !important;
-    margin-bottom: 5px;
+  font-size: 1.0625rem !important;
+  margin-bottom: 5px;
 }
 
 .profileView .baseDetails .content p {
   margin-bottom: 0;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--color-subtext);
 }
 
 .profileView .baseDetails .content p a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .profileView .baseDetails .content p span {
-    /* display: flex;
+  /* display: flex;
     align-items: center;
     justify-content: center;
     color: var(--ui-accent);
@@ -93,61 +87,60 @@
     border-radius: 50px; */
 }
 
-
 .imgwidth img {
-    width: 25px;
+  width: 25px;
 }
 
 .profileView .baseDetails .summaryDetails {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .profileView .baseDetails .summaryDetails .content p {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .profileView .profileDetailsHolder .qLinkContent {
-    padding: 15px;
+  padding: 15px;
 }
 
 .profileDetailsHolder .qLinkContent ul {
-    padding-left: 0;
-    list-style: none;
+  padding-left: 0;
+  list-style: none;
 }
 
 .qLinkContent ul li a {
-    text-decoration: none;
-    color: var(--color-subtext);
-    font-size: 0.75rem;
-    font-weight: 400;
+  text-decoration: none;
+  color: var(--color-subtext);
+  font-size: 0.75rem;
+  font-weight: 400;
 }
 
 .arrowicon i {
-    color: var(--color-subtext);
+  color: var(--color-subtext);
 }
 
 .qLinkContent h5 {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .qLinkContent p {
-    margin: 5px 0;
-    font-weight: 500;
-    font-size: 1rem;
-    font-family: 'Open Sans';
+  margin: 5px 0;
+  font-weight: 500;
+  font-size: 1rem;
+  font-family: "Open Sans";
 }
 
 .profileView .profileDetailsHolder .header {
-    /* border-right: 4px solid var(--ui-accent); */
-    /* margin-left: -10px; */
-    /* padding: 5px 10px; */
-    font-weight: 600;
-    font-size: 1rem;
+  /* border-right: 4px solid var(--ui-accent); */
+  /* margin-left: -10px; */
+  /* padding: 5px 10px; */
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 .profileView .profileDetailsHolder .header-left {
-    border-left: 4px solid var(--ui-accent);
-    font-weight: 500;
+  border-left: 4px solid var(--ui-accent);
+  font-weight: 500;
 }
 
 /* .profileView .permissionListWrapper .header {
@@ -157,169 +150,166 @@
 /* Progress Bar Start */
 
 .baseDetails .accountProgress {
-    width: 500px;
-    height: 5px;
-    background-color: #ababab;
-    margin: 20px auto 50px auto;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    border-radius: 50px;
+  width: 500px;
+  height: 5px;
+  background-color: #ababab;
+  margin: 20px auto 50px auto;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  border-radius: 50px;
 }
 
 .baseDetails .accountProgress .progressbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 5px;
-    background-color: green;
-    border-radius: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  background-color: green;
+  border-radius: 50px;
 }
 
 .progress {
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 .progressStepWrapper {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    position: absolute;
-    top: -20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: absolute;
+  top: -20px;
 }
 
 .progressStepWrapper .stepWrapper.success .step {
-    background-color: #198754 !important;
+  background-color: #198754 !important;
 }
 
 .progressStepWrapper .stepWrapper.pending .step {
-    background-color: #ffae00 !important;
+  background-color: #ffae00 !important;
 }
 
 .progressStepWrapper .stepWrapper.success .status {
-    background-color: #198754 !important;
+  background-color: #198754 !important;
 }
 
 .progressStepWrapper .stepWrapper.pending .status {
-    background-color: #ffae00 !important;
+  background-color: #ffae00 !important;
 }
 
 .progressStepWrapper .stepWrapper.success label {
-    color: #000 !important;
+  color: #000 !important;
 }
 
 .progressStepWrapper .stepWrapper {
-    text-align: center;
-    position: relative;
+  text-align: center;
+  position: relative;
 }
 
 .progressStepWrapper .step {
-    width: 55px;
-    height: 55px;
-    background-color: #ababab;
-    border-radius: 50%;
-    /* margin-top: -18px; */
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    cursor: pointer;
+  width: 55px;
+  height: 55px;
+  background-color: #ababab;
+  border-radius: 50%;
+  /* margin-top: -18px; */
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
 }
 
 .progressStepWrapper .step i {
-    color: #fff;
-    font-size: 1.125rem;
+  color: #fff;
+  font-size: 1.125rem;
 }
 
 .progressStepWrapper label {
-    /* position: absolute; */
-    bottom: -30px;
-    margin-top: 10px;
-    font-family: 'Open Sans';
-    font-weight: 500;
-    color: #7c7c7c;
-    text-wrap: nowrap;
+  /* position: absolute; */
+  bottom: -30px;
+  margin-top: 10px;
+  font-family: "Open Sans";
+  font-weight: 500;
+  color: #7c7c7c;
+  text-wrap: nowrap;
 }
 
 .progressStepWrapper .status {
-    position: absolute;
-    top: -25px;
-    left: 10px;
-    transform: translate(-50%);
-    color: #fff;
-    padding: 0px 5px;
-    border-radius: 0 10px;
-    width: 125px;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  transform: translate(-50%);
+  color: #fff;
+  padding: 0px 5px;
+  border-radius: 0 10px;
+  width: 125px;
 }
 
 .progressStepWrapper .status::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 15px solid rgb(80, 80, 80);
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 15px solid rgb(80, 80, 80);
 }
 
 .progressStepWrapper .stepWrapper.success .status::after {
-    border-top-color: #12603c;
+  border-top-color: #12603c;
 }
 
 .progressStepWrapper .stepWrapper.pending .status::after {
-    border-top-color: #cb8a00;
+  border-top-color: #cb8a00;
 }
 
-
-
 .float-end {
-    text-align: end;
+  text-align: end;
 }
 
 .no-wrap-text {
-    text-wrap: nowrap;
+  text-wrap: nowrap;
 }
-
 
 .profileView .baseDetails .profilePicHolders {
   width: 110px;
   height: 110px;
   border-radius: 55px;
   position: relative;
-  border: 6px solid var( --profile-border-color);
+  border: 6px solid var(--border-color);
   bottom: 60px;
   left: 10px;
 }
 
-
 .profileView .baseDetails .profilePicHolders img {
-    width: 100%;
-    height: 100%;
-    /* object-fit: cover; */
-    /* position: absolute; */
-    /* top: 20px; */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* position: absolute; */
+  /* top: 20px; */
+  border-radius: 50%;
 }
 
 .profileView .baseDetails .content .assigned {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    /* border: 1px solid green; */
-    border-radius: 5px;
-    color: green;
-    /* background-color: rgb(220, 221, 220); */
-    /* color: white !important; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* border: 1px solid green; */
+  border-radius: 5px;
+  color: green;
+  /* background-color: rgb(220, 221, 220); */
+  /* color: white !important; */
 }
 
-
 .profileView .baseDetails .content h4 {
-    font-size: 0.75rem !important;
-    text-wrap: nowrap;
+  font-size: 0.75rem !important;
+  text-wrap: nowrap;
 }
 
 .profileView .baseDetails .content .assigned i {
@@ -333,111 +323,4 @@
   color: rgb(247, 247, 247);
   background-color: green;
   font-size: 0.875rem;
-}
-
-.pro_bg{
-  width: 100%;
-  height: 200px;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-/* .pro_bg::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(62, 142, 247, 0.412);
-  z-index: 2;
-} */
-.pro_bg img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;  
-}
-
-.profile_info{
-  margin-top: -113px;
-  z-index: 5;
-  /* margin-inline: 15px; */
-  border-radius: 12px;
-  background: transparent;
-}
-
-.status_code{
-  position: absolute;
-  bottom: 2px;
-  right: 7px;
-  width: 15px;
-  height: 15px;
-  border-radius: 25px;
-  background: #008000;
-  border: 2px solid #ffffff;
-}
-
-.shadow_sm{
-  box-shadow: rgba(0, 0, 0, 0.161) 0 0 10px;
-}
-
-
-.new_buttonStyle {
-  max-width: 20%;
-  width: auto;
-  transition: all 0.5s ease-in-out;
-  padding: 5px;
-  position: relative;
-  transition: 0.5s;
-  font-size: 0.875rem;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-/* .new_buttonStyle p {
-  position: absolute;
-  top: 0.4em;
-  left: 1.2em;
-  margin: 0;
-  padding: 0;
-  transition: .5s;
-
-} */
-
-.new_buttonStyle i {
-  display: none;
-  /* transition: all 0.5s ease-in-out; */
-  fill: #fff;
-  font-size: 0.75rem;
-}
-.new_buttonStyle.active i{ 
-  display: block;
-}
-
-.new_buttonStyle:hover p {
-  left: 0.6em;
-  color: #fff
-}
-
-.new_buttonStyle:hover i {
-  display: block;
-}
-
-
-.btn.btn-success-light {
-  background-color: rgba(33, 206, 158, 0.102);
-  color: #21ce9e;
-  font-weight: 500;
-}
-.btn.btn-success-light:hover, .btn.btn-success-light:focus, .btn.btn-success-light:active {
-  background-color:#21ce9e;
-  color: #fff;
-  border-color: #21ce9e;
-  width: auto;
-}
-@media (max-width: 340px){
-  .btn.btn-success-light:hover, .btn.btn-success-light:focus, .btn.btn-success-light:active{
-    max-width: 30%;
-  }
 }

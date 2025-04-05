@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import { useNavigate } from 'react-router-dom';
 import { backToTop } from '../../../GlobalFunction/globalFunction';
+import PagePermissionForUser from '../../../CommonComponents/PermissionConfigForUser';
 
 function LeadEdit() {
     const navigate = useNavigate();
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const handleToggle = () => {
+        setIsExpanded(!isExpanded);
+    }
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -195,6 +202,9 @@ function LeadEdit() {
                                                 </div>
                                             </div>
                                         </form>
+                                        {/* <div className='col-6'>
+                                            <PagePermissionForUser />
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

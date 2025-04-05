@@ -86,9 +86,14 @@ export function LoginComponent() {
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
+  const [logOutToken, setLogOutToken] = useState("")
 
   // Handle login function
   async function handleLogin() {
+    // Reseting State before Loggin In
+    dispatch({ type: "RESET_STATE" });
+    localStorage.clear();
+
     const data = await login(userName, password);
     if (data) {
       if (data.status) {
@@ -169,23 +174,54 @@ export function LoginComponent() {
     }
   }
 
+  // function to handle time
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
+
+
   // function to logout from specific device
   async function handleLogoutFromSpecificDevice(token) {
     try {
+      setLoading(true);
       const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(logOut)
       if (logOut?.data?.status) {
         toast.success(logOut?.data?.message)
-        setLoading(true);
+        setLoading(false);
         setLoginDetails(logOut?.data?.data)
         setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
+      setLoading(false)
       toast.error(error?.response?.data?.message)
     }
   }
@@ -197,6 +233,10 @@ export function LoginComponent() {
     } else if (password === "") {
       toast.error("Password is required!");
     } else {
+      // Reseting State before Loggin In
+      dispatch({ type: "RESET_STATE" });
+      localStorage.clear();
+
       setLoading(true);
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
@@ -272,11 +312,12 @@ export function LoginComponent() {
         }
 
 
-      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403 ) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
         setLoading(false)
+        setLogOutToken(checkLogin?.response?.data?.data[0].token)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
         setLogInText("You are already login on different device!")
@@ -307,14 +348,25 @@ export function LoginComponent() {
 
   // Handle logout from all device and then login in current device
   async function handleLogoutAll() {
-    setLoading(true)
-    setPopUp(false)
-    const logoutAll = await generalGetFunction("logout?all")
-    if (logoutAll.status) {
-      handleLogin()
-    } else {
-      setLoading(false)
-      toast.error(logoutAll.message)
+    setLoading(true);
+    setPopUp(false);
+    try {
+      const logoutAll = await axios.get(`${baseName}/logout?all`, {
+        headers: {
+          Authorization: `Bearer ${logOutToken}`,
+        },
+      });
+
+      if (logoutAll.status >= 200 && logoutAll.status < 300) {
+        handleLogin();
+      } else {
+        setLoading(false);
+        toast.error(logoutAll.data?.message || "Logout failed");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Logout all error:", error);
+      toast.error(error.response?.data?.message || error.message || "An unexpected error occurred");
     }
   }
   return (
@@ -389,7 +441,7 @@ export function LoginComponent() {
                     return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
                       <div>
                         {item?.platform} - {item?.browser}
-                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}</p>
+                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
                       </div>
                       <div>
                         <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
@@ -429,7 +481,7 @@ export function LoginComponent() {
             </div>
           </div>
 
-{/* 
+          {/* 
           <div className="popupopen ">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">

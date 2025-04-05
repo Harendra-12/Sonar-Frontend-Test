@@ -5,9 +5,12 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  generalGetFunction,
+  generalPostFunction,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import axios from "axios";
 
 function CallDetails({
   clickedCall,
@@ -30,6 +33,8 @@ function CallDetails({
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
   // const [transcript,setTranscript]=useState("")
+  const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -103,12 +108,31 @@ function CallDetails({
     }
   };
 
-  const handleTranscript=()=>{
-
-
+  async function handleTranscript(url) {
+    const newUrl = url.split(".com/").pop();
+    // const presignData = await generatePreSignedUrl(newUrl);
+    // if (presignData?.status && presignData?.url) {
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+      // }
+      console.log({url})
+      const trnascript = await axios.post(`${baseName}/transcribe-audio`,
+        { src: url },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Or 'multipart/form-data' if you're sending files
+            'Authorization': `Bearer ${token}`, // Example: API key authentication
+            // Add any other required headers here
+          },
+        }
+      );
   }
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     if (!audio) return;
     if (currentPlaying === audio) {
       if (thisAudioRef.current) {
@@ -122,10 +146,11 @@ function CallDetails({
 
     try {
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
+      // if (res?.status && res?.url) {
+        // setAudioURL(res.url);
+        setAudioURL(audio);
         setTimeout(() => {
           if (thisAudioRef.current) {
             thisAudioRef.current.load();
@@ -134,7 +159,7 @@ function CallDetails({
               .catch((error) => console.error("Audio play error:", error));
           }
         }, 100);
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
       setCurrentPlaying(null);
@@ -633,8 +658,13 @@ function CallDetails({
                                         <li className="dropdown-item">
                                           <div
                                             className="clearButton text-align-start"
-                                            onClick={() =>
-                                              handleTranscript()
+                                            onClick={() => {
+                                              if (item?.recording_path) {
+                                                handleTranscript(
+                                                  item?.recording_path
+                                                );
+                                              }
+                                            }
                                             }
                                           >
                                             <i className="fa-solid fa-bolt me-2"></i>
@@ -671,8 +701,8 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        {/* <AudioPlayer audioUrl={audioURL} /> */}
-                                        <audio
+                                        <AudioWaveformCommon audioUrl={audioURL} />
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -684,7 +714,7 @@ function CallDetails({
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
 
                                         {/* <button
                                           className="audioCustomButton"

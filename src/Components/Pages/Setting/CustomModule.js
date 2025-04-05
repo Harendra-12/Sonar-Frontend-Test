@@ -33,97 +33,98 @@ function CustomModule() {
     }, [refresh])
     return (
         <main className="mainContent">
-            {loading ? <SkeletonFormLoader col={5} row={10} /> :
-                <section id="phonePage">
-                    <div className="container-fluid px-0">
-                        <Header title="Custom Module Integration" />
-                    </div>
-                    <div className='col-xl-12'>
-                        <div className="overviewTableWrapper">
-                            <div className="overviewTableChild">
-                                <div className="d-flex flex-wrap">
-                                    <div className="col-12">
-                                        <div className="heading">
-                                            <div className="content">
-                                                <h4>Select Modules</h4>
-                                                <p>Select the modules you want to include in your dashboard</p>
-                                            </div>
-                                            <div className="buttonGroup">
-                                                <button
-                                                    onClick={() => {
-                                                        navigate(-1);
-                                                        backToTop();
-                                                    }}
-                                                    type="button"
-                                                    effect="ripple"
-                                                    className="panelButton gray"
-                                                >
-                                                    <span className="text">Back</span>
-                                                    <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setAddNewMod(true); setSelectedModule(""); setPopup(true)
-                                                    }}
-                                                    type="button"
-                                                    effect="ripple"
-                                                    className="panelButton"
-                                                    disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "add"))}
-                                                >
-                                                    <span className="text">Add</span>
-                                                    <span className="icon"><i className="fa-solid fa-plus"></i></span>
-                                                </button>
-                                            </div>
+            <section id="phonePage">
+                <div className="container-fluid px-0">
+                    <Header title="Custom Module Integration" />
+                </div>
+                <div className='col-xl-12'>
+                    <div className="overviewTableWrapper">
+                        <div className="overviewTableChild">
+                            <div className="d-flex flex-wrap">
+                                <div className="col-12">
+                                    <div className="heading">
+                                        <div className="content">
+                                            <h4>Select Modules</h4>
+                                            <p>Select the modules you want to include in your dashboard</p>
+                                        </div>
+                                        <div className="buttonGroup">
+                                            <button
+                                                onClick={() => {
+                                                    navigate(-1);
+                                                    backToTop();
+                                                }}
+                                                type="button"
+                                                effect="ripple"
+                                                className="panelButton gray"
+                                            >
+                                                <span className="text">Back</span>
+                                                <span className="icon"><i className="fa-solid fa-caret-left"></i></span>
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setAddNewMod(true); setSelectedModule(""); setPopup(true)
+                                                }}
+                                                type="button"
+                                                effect="ripple"
+                                                className="panelButton"
+                                                disabled={!(checkViewSidebar("Usage", slugPermissions, account?.permissions, "add"))}
+                                            >
+                                                <span className="text">Add</span>
+                                                <span className="icon"><i className="fa-solid fa-plus"></i></span>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
-                                        <div className='tableContainer'>
-                                            <table>
-                                                <thead>
-                                                    <th>Module Name</th>
-                                                    <th>Category Name</th>
-                                                    <th>Category</th>
-                                                    <th>Tag</th>
-                                                    <th>Active</th>
-                                                    <th>Ringing</th>
-                                                    <th>Missed</th>
-                                                    <th>Total</th>
-                                                    {
-                                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
-                                                            <th>Edit</th> : ""
-                                                    }
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        customModule?.map((item, index) => {
-                                                            return (
-                                                                <tr>
-                                                                    <td>{item?.name}</td>
-                                                                    <td>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</td>
-                                                                    <td>{item?.model_type}</td>
-                                                                    <td>{item?.model?.tag}</td>
-                                                                    <td><i className={`fa-solid fa-${item?.active ? "check text-success" : "xmark text-danger"}`} /></td>
-                                                                    <td><i className={`fa-solid fa-${item?.ringing ? "check text-success" : "xmark text-danger"}`} /></td>
-                                                                    <td><i className={`fa-solid fa-${item?.missed ? "check text-success" : "xmark text-danger"}`} /></td>
-                                                                    <td><i className={`fa-solid fa-${item?.total ? "check text-success" : "xmark text-danger"}`} /></td>
-                                                                    {
-                                                                        checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
-                                                                            <td><button className='tableButton edit' onClick={() => { setSelectedModule(item); setAddNewMod(false); setPopup(true) }}><i className="fa-solid fa-pen-to-square" /></button></td> : ""
-                                                                    }
-                                                                </tr>
-                                                            )
-                                                        })
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                </div>
+                                <div className='col-12' style={{ overflow: 'auto', padding: '25px 20px 0px' }}>
+                                    <div className='tableContainer'>
+                                        <table>
+                                            <thead>
+                                                <th>Module Name</th>
+                                                <th>Category Name</th>
+                                                <th>Category</th>
+                                                <th>Tag</th>
+                                                <th>Active</th>
+                                                <th>Ringing</th>
+                                                <th>Missed</th>
+                                                <th>Total</th>
+                                                {
+                                                    checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
+                                                        <th>Edit</th> : ""
+                                                }
+                                            </thead>
+                                            <tbody>
+                                                {loading ? <SkeletonFormLoader col={9} row={10} /> :
+                                                    <>
+                                                        {
+                                                            customModule?.map((item, index) => {
+                                                                return (
+                                                                    <tr>
+                                                                        <td>{item?.name}</td>
+                                                                        <td>{item?.model_type === "CallCenterQueue" ? item?.model?.queue_name : item?.model_type === "Ringgroup" ? item?.model?.name : `${item?.model?.did}`}</td>
+                                                                        <td>{item?.model_type}</td>
+                                                                        <td>{item?.model?.tag}</td>
+                                                                        <td><i className={`fa-solid fa-${item?.active ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                        <td><i className={`fa-solid fa-${item?.ringing ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                        <td><i className={`fa-solid fa-${item?.missed ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                        <td><i className={`fa-solid fa-${item?.total ? "check text-success" : "xmark text-danger"}`} /></td>
+                                                                        {
+                                                                            checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit") ?
+                                                                                <td><button className='tableButton edit' onClick={() => { setSelectedModule(item); setAddNewMod(false); setPopup(true) }}><i className="fa-solid fa-pen-to-square" /></button></td> : ""
+                                                                        }
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </>}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-            }
+                </div>
+            </section>
             {
                 popup ? <CustomDashboardManage addNewMod={addNewMod} setSelectedModule={setSelectedModule} setAddNewMod={setAddNewMod} selectedModule={selectedModule} setRefresh={setRefresh} refresh={refresh} popup={popup} setPopup={setPopup} /> : ""
             }

@@ -350,5 +350,32 @@
         --size: 200px;
     }
 
+    .headingExtraInfo span.badge.rounded-pill {
+        font-size: 0.625rem;
+    }
 
+
+}
+
+
+
+@media (max-width: 767px){
+    .chat_menu{
+        display: block;
+    }
+    .chat_nav {
+        background: #fff;
+        position: absolute;
+        left: -1000%;
+        transition: all 0.4s ease-in-out;
+        z-index: 2;
+        opacity: 0;
+    }
+    .chat_nav.hidden {
+        left: 0;
+        opacity: 1;
+    }
+    .left_listClose{
+        display: block;
+    }
 }

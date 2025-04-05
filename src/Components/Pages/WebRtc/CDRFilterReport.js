@@ -4,6 +4,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
+
+
+
 import {
   backToTop,
   generalGetFunction,
@@ -11,7 +14,7 @@ import {
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -19,6 +22,9 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import Comments from "./Comments";
+import Duplicates from "./Duplicates";
+import ExportPopUp from "./ExportPopUp";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -59,8 +65,13 @@ function CdrFilterReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [exportPopup, setExportPopup] = useState(false);
-
+  const [calendarStartDate, setCalendarStartDate] = useState(new Date());
   const [filteredKeys, setFilteredKeys] = useState([]);
+  const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false)
+  const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
+  const [error, setError] = useState('');
+  const [showAudio, setShowAudio] = useState(false)
+  const [ showDropDown,setShowDropdown]=useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -81,6 +92,7 @@ function CdrFilterReport({ page }) {
     "call_cost",
     "id",
   ]);
+  const locationState = useLocation();
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -148,6 +160,34 @@ function CdrFilterReport({ page }) {
       }
     }
   };
+
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
 
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
@@ -225,9 +265,10 @@ function CdrFilterReport({ page }) {
           obj.hasOwnProperty("variable_start_stamp")
         ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"] = obj["variable_start_stamp"]?.split(" ")[1];
+          filteredObj["Time"] =formatTimeWithAMPM( obj["variable_start_stamp"]?.split(" ")[1])
         }
         if (obj.hasOwnProperty(key)) {
+
           filteredObj[key] = obj[key];
         }
       });
@@ -291,6 +332,7 @@ function CdrFilterReport({ page }) {
     itemsPerPage,
     page,
     createdAt,
+    locationState
   ]);
 
   const getDateRange = (period) => {
@@ -350,14 +392,18 @@ function CdrFilterReport({ page }) {
   }, [filterBy]);
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
+      // if (res?.status && res?.url) {
+        // setAudioURL(res.url); // Update audio URL state
+        setAudioURL(audio);
         // Wait for React state update before accessing ref
         setTimeout(() => {
           if (thisAudioRef.current) {
@@ -367,7 +413,7 @@ function CdrFilterReport({ page }) {
             });
           }
         }, 100); // Reduced timeout to minimize delay
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -412,6 +458,11 @@ function CdrFilterReport({ page }) {
     return `${hours}:${minutes}:${secs}`;
   }
 
+  const duplicateColumn = async (item) => {
+    setShowDuplicatePopUp(true)
+    setDuplicatePopUpData(item);
+
+  }
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -445,6 +496,7 @@ function CdrFilterReport({ page }) {
     URL.revokeObjectURL(url);
   }
 
+
   // function to handle export
   const handleExport = async () => {
     setLoading(true);
@@ -461,6 +513,21 @@ function CdrFilterReport({ page }) {
       toast.error("Error during export:", error?.message);
     }
   };
+
+  // Filter To Set when Navigating from PBX Dashboard
+  useEffect(() => {
+    if (locationState.state !== null) {
+      setLoading(true);
+      const { filter, direction } = locationState.state;
+
+      setHagupCause(filter === "missed" ? "Missed" : filter === "completed" ? "Answered" : "");
+      setCallDirection(direction === "all" ? "" : direction);
+
+      setTimeout(() => {
+        refreshCallData();
+      }, 100)
+    }
+  }, [locationState])
 
   return (
     <>
@@ -807,6 +874,7 @@ function CdrFilterReport({ page }) {
                                   setHagupCause(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                value={hangupCause}
                               >
                                 <option value={""}>All</option>
                                 <option value={"Answered"}>Answer</option>
@@ -996,6 +1064,7 @@ function CdrFilterReport({ page }) {
                                 })}
                                 <th>Block</th>
                                 <th>Note</th>
+                                <th>Duplicate</th>
                               </tr>
                             </thead>
 
@@ -1045,44 +1114,73 @@ function CdrFilterReport({ page }) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
-                                                    {item["recording_path"] &&
-                                                      item["variable_billsec"] >
-                                                      0 && (
-                                                        <button
-                                                          className="tableButton px-2 mx-0"
-                                                          onClick={() => {
-                                                            if (
-                                                              item[
-                                                              "recording_path"
-                                                              ] ===
-                                                              currentPlaying
-                                                            ) {
-                                                              setCurrentPlaying(
-                                                                ""
-                                                              );
-                                                              setAudioURL("");
-                                                            } else {
-                                                              handlePlaying(
-                                                                item[
-                                                                "recording_path"
-                                                                ]
-                                                              );
-                                                            }
-                                                          }}
-                                                        >
-                                                          {currentPlaying ===
-                                                            item[
-                                                            "recording_path"
-                                                            ] ? (
-                                                            <i className="fa-solid fa-stop"></i>
-                                                          ) : (
-                                                            <i className="fa-solid fa-play"></i>
-                                                          )}
-                                                        </button>
-                                                      )}
+                                                    {item["recording_path"] && item["variable_billsec"] > 0 && (
+                                                      <button
+                                                        className="tableButton px-2 mx-0"
+                                                        onClick={() => {
+                                              
+                                                          if (currentPlaying === item["recording_path"]) {
+                                                            setCurrentPlaying("");
+                                                            setShowAudio(false);
+                                                          
+                                                          } else {
+                                                            setCurrentPlaying(item["recording_path"]);
+                                                            setShowDropdown(true); // Open dropdown when playing
+                                                            setShowAudio(false);
+                                                          }
+                                                        }}
+                                                      >
+                                                        {currentPlaying === item["recording_path"] ? (
+                                                          <i className="fa-solid fa-stop"></i>
+                                                        ) : (
+                                                          <i className="fa-solid fa-play"></i>
+                                                        )}
+                                                      </button>
+                                                    )}
+                                              
+                                                    {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                      <ul className="" key={index}>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (item.recording_path === currentPlaying) {
+                                                                  setShowDropdown(false);
+                                                                  setShowAudio(true);
+                                                                  handlePlaying(item.recording_path);
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                                } me-2`}
+                                                              ></i>
+                                                              Play
+                                                            </div>
+                                                          </li>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-regular fa-download"></i> Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    )}
                                                   </td>
                                                 );
-                                              } else if (
+                                              }else if (
                                                 key === "Call-Direction"
                                               ) {
                                                 const callIcons = {
@@ -1250,16 +1348,29 @@ function CdrFilterReport({ page }) {
                                               </Tippy>
                                             </button>
                                           </td>
+                                          <td>
+                                            {item?.duplicated == 1 && <button
+                                              className={`tableButton edit ms-0`}
+                                              onClick={
+                                                () => duplicateColumn(item)
+                                              }
+                                            >
+                                              <Tippy content={"View Duplicate"}>
+                                                <i className="fa-solid fa-clone"></i>
+                                              </Tippy>
+                                            </button>}
+                                          </td>
                                         </tr>
 
+
                                         {/* Audio Player Row */}
-                                        {currentPlaying ===
+                                        {/* {currentPlaying ===
                                           item["recording_path"] &&
                                           item["recording_path"] && (
                                             <tr>
                                               <td colSpan={showKeys.length + 1}>
                                                 <div className="audio-container mx-2">
-                                                  <audio
+                                                  {/* <audio
                                                     controls={true}
                                                     ref={thisAudioRef}
                                                     autoPlay={true}
@@ -1272,15 +1383,25 @@ function CdrFilterReport({ page }) {
                                                       src={audioURL}
                                                       type="audio/mpeg"
                                                     />
-                                                  </audio>
+                                                  </audio> */}
+                                                  {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
 
-                                                  <button className="audioCustomButton">
+                                                  {/* <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
-                                                  </button>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                          )}
+                                                  </button> */}
+                                                {/* </div> */}
+                                              {/* </td> */}
+                                            {/* </tr> */}
+                                          {/* )}  */}
+                                             {currentPlaying ===
+                                                                                    item["recording_path"] &&showAudio&&
+                                                                                  <tr>
+                                                                                    <td colspan="18">
+                                                                                      <div class="audio-container mx-2">
+                                                                                      <AudioWaveformCommon audioUrl={audioURL} />
+                                                                                      </div>
+                                                                                    </td>
+                                                                                  </tr>}
                                       </React.Fragment>
                                     );
                                   })}
@@ -1369,335 +1490,14 @@ function CdrFilterReport({ page }) {
         ) : (
           ""
         )}
-        {exportPopup && (
-          <div className="addNewContactPopup" style={{ width: "500px" }}>
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-light fa-file-export" />
-                <h5>Export Options</h5>
-                <p>Choose what and how you want to export the call detail reports</p>
-              </div>
-              <div style={{ borderBottom: '1px solid var(--border-color)' }} />
-              <div className="col-12 my-2">
-                <div className="row">
-                  <h5 className="mb-0 d-flex justify-content-between align-items-center">CDR Filters <button className="tableButton delete"><i className="fa-solid fa-trash" /></button></h5>
-                  {filteredKeys.includes("variable_start_stamp") && (
-                    <>
-                      {" "}
-                      <div className="formRow border-0 col-4">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Date Filter
-                        </label>
-                        <select
-                          className="formItem"
-                          value={filterBy}
-                          onChange={(e) => {
-                            setFilterBy(e.target.value);
-                            setStartDateFlag("");
-                            setEndDateFlag("");
-                          }}
-                        >
-                          <option value={"date"}>Single Date</option>
-                          <option value={"date_range"}>Date Range</option>
-                          <option value={"7_days"}>Last 7 Days</option>
-                          <option value={"1_month"}>Last 1 Month</option>
-                          <option value={"3_month"}>Last 3 Months</option>
-                        </select>
-                      </div>
-                      {filterBy === "date" && (
-                        <div className="formRow border-0 col-4">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Choose Date
-                          </label>
-                          <input
-                            type="date"
-                            className="formItem"
-                            max={new Date()?.toISOString()?.split("T")[0]}
-                            value={startDateFlag}
-                            onChange={(e) => {
-                              setStartDateFlag(e.target.value);
-                              setPageNumber(1);
-                            }}
-                          />
-                        </div>
-                      )}
-                      {filterBy === "date_range" && (
-                        <>
-                          <div className="formRow border-0 col-4">
-                            <label className="formLabel text-start mb-0 w-100">
-                              From
-                            </label>
-                            <input
-                              type="date"
-                              className="formItem"
-                              max={
-                                new Date()?.toISOString()?.split("T")[0]
-                              }
-                              value={startDateFlag}
-                              onChange={(e) => {
-                                setStartDateFlag(e.target.value);
-                                setPageNumber(1);
-                              }}
-                            />
-                          </div>
-                          <div className="formRow border-0 col-4">
-                            <label className="formLabel text-start mb-0 w-100">
-                              To
-                            </label>
-                            <input
-                              type="date"
-                              className="formItem"
-                              max={
-                                new Date()?.toISOString()?.split("T")[0]
-                              }
-                              value={endDateFlag}
-                              onChange={(e) => {
-                                setEndDateFlag(e.target.value);
-                                setPageNumber(1);
-                              }}
-                              min={startDateFlag} // Prevent selecting an end date before the start date
-                            />
-                          </div>
-                        </>
-                      )}
-                    </>
-                  )}
-                  {filteredKeys.includes("variable_sip_from_user") && (
-                    <div className="formRow border-0 col-4">
-                      <label className="formLabel text-start mb-0 w-100">
-                        Call Origin
-                      </label>
-                      <input
-                        type="text"
-                        className="formItem"
-                        // value={debounceCallOrigin}
-                        value={debounceCallOriginFlag}
-                        // onChange={(e) => {
-                        //   setDebounceCallOrigin(e.target.value);
-                        //   setPageNumber(1);
-                        // }}
-                        // min={100}
-                        // max={99999}
-                        onChange={handleCallOriginChange}
-                      />
-                    </div>
-                  )}
-                  {filteredKeys.includes("variable_sip_to_user") && (
-                    <div className="formRow border-0 col-4">
-                      <label className="formLabel text-start mb-0 w-100">
-                        Call Destination
-                      </label>
-                      <input
-                        type="text"
-                        className="formItem"
-                        value={debounceCallDestinationFlag}
-                        // value={debounceCallDestination}
-                        // onChange={(e) => {
-                        //   setDebounceCallDestination(e.target.value);
-                        //   setPageNumber(1);
-                        // }}
-                        onChange={handleCallDestinationChange}
-                      />
-                    </div>
-                  )}
-
-                  {page === "all" &&
-                    filteredKeys.includes("variable_sip_to_user") ? (
-                    <>
-                      <div className="formRow border-0 col-4">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Call Direction
-                        </label>
-                        <select
-                          className="formItem"
-                          onChange={(e) => {
-                            setCallDirection(e.target.value);
-                            setPageNumber(1);
-                          }}
-                          value={callDirection}
-                        // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                        >
-                          <option value={""}>All Calls</option>
-                          <option value={"inbound"}>Inbound Calls</option>
-                          <option value={"outbound"}>
-                            Outbound Calls
-                          </option>
-                          {/* <option value={"missed"}>Missed Calls</option> */}
-                          <option value={"internal"}>
-                            Internal Calls
-                          </option>
-                          {/* <option value={"transfer"}>
-                                  Transfer Calls
-                                </option> */}
-                        </select>
-                      </div>
-                      <div className="formRow border-0 col-4">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Call Type
-                        </label>
-                        <select
-                          className="formItem"
-                          onChange={(e) => {
-                            setCallType(e.target.value);
-                            setPageNumber(1);
-                          }}
-                        >
-                          <option value={""}>All Calls</option>
-                          <option value={"extension"}>Extension</option>
-                          <option value={"voicemail"}>Voice Mail</option>
-                          <option value={"callcenter"}>
-                            Call Center
-                          </option>
-                          <option value={"ringgroup"}>Ring Group</option>
-                        </select>
-                      </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  {page === "callrecording" &&
-                    !filteredKeys.includes("Hangup-Cause") ? (
-                    ""
-                  ) : (
-                    <>
-                      <div className="formRow border-0 col-4">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Hangup Status
-                        </label>
-                        <select
-                          className="formItem"
-                          onChange={(e) => {
-                            setHagupCause(e.target.value);
-                            setPageNumber(1);
-                          }}
-                        >
-                          <option value={""}>All</option>
-                          <option value={"Answered"}>Answer</option>
-                          <option value={"Missed"}>Missed</option>
-                          <option value={"Voicemail"}>Voicemail</option>
-                          <option value={"Cancelled"}>Cancelled</option>
-                          <option value={"Failed"}>Failed</option>
-                        </select>
-                      </div>
-                      {filteredKeys.includes("Hangup-Cause") && (
-                        <div className="formRow border-0 pe-xl-0 col-3">
-                          <label className="formLabel text-start mb-0 w-100">
-                            Hangup Cause
-                          </label>
-                          <select
-                            className="formItem"
-                            onChange={(e) => {
-                              setHangupStatus(e.target.value);
-                              setPageNumber(1);
-                            }}
-                          >
-                            <option value={""}>All</option>
-                            <option value={"NORMAL_CLEARING"}>
-                              Normal Clearing
-                            </option>
-                            <option value={"ORIGINATOR_CANCEL"}>
-                              Originator Cancel
-                            </option>
-                            <option value={"MANAGER_REQUEST"}>
-                              Manager Request
-                            </option>
-                            <option value={"NO_ANSWER"}>No Answer</option>
-                            <option value={"INVALID_GATEWAY"}>
-                              Invalid Gateway
-                            </option>
-                            <option value={"SERVICE_UNAVAILABLE"}>
-                              Service Unavailable
-                            </option>
-                            <option value={"INCOMPATIBLE_DESTINATION"}>
-                              Incompatible Destination
-                            </option>
-                            <option value={"NO_USER_RESPONSE"}>
-                              No User Response
-                            </option>
-                            <option value={"MEDIA_TIMEOUT"}>
-                              Media Timeout
-                            </option>
-                            <option value={"LOSE_RACE"}>Lose Race</option>
-                            <option value={"NORMAL_UNSPECIFIED"}>
-                              Normal Unspecified
-                            </option>
-                            <option value={"USER_BUSY"}>User Busy</option>
-                            <option value={"RECOVERY_ON_TIMER_EXPIRE"}>
-                              Recovery On Timer Expire
-                            </option>
-                            <option value={"USER_NOT_REGISTERED"}>
-                              User Not Registered
-                            </option>
-                            <option value={"CALL_REJECTED"}>
-                              Call Rejected
-                            </option>
-                            <option value={"SUBSCRIBER_ABSENT"}>
-                              Subscriber Absent
-                            </option>
-                            <option value={"CHAN_NOT_IMPLEMENTED"}>
-                              Chan Not Implemented
-                            </option>
-                            <option value={"DESTINATION_OUT_OF_ORDER"}>
-                              Destination Out Of Order
-                            </option>
-                            <option value={"NORMAL_TEMPORARY_FAILURE"}>
-                              Normal Temporary Failure
-                            </option>
-                            <option value={"NO_ROUTE_DESTINATION"}>
-                              No Route Destination
-                            </option>
-                            <option value={"ALLOTTED_TIMEOUT"}>
-                              Allotted Timeout
-                            </option>
-                            <option value={"INVALID_NUMBER_FORMAT"}>
-                              Invalid Number Format
-                            </option>
-                          </select>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-              <div style={{ borderBottom: '1px solid var(--border-color)' }} />
-              <div className="col-12 mt-2">
-                <h5 className="mb-0 d-flex justify-content-between align-items-center">Format Options</h5>
-                <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked />
-                  <label class="formLabel" for="flexRadioDefault1">
-                    Export To CSV
-                  </label>
-                </div>
-                <div class="form-check mt-2">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                  <label class="formLabel" for="flexRadioDefault2">
-                    Send To Mail
-                  </label>
-                </div>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between">
-                  <button className="panelButton gray ms-0" onClick={() => setExportPopup(false)}>
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  <button className="panelButton me-0" onClick={() => { handleExport(); setExportPopup(false) }}>
-                    <span className="text">Export</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-file-export" />
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>)}
+        {exportPopup && (<ExportPopUp filteredKeys={filteredKeys} page={page} setExportPopup={setExportPopup} setLoading={setLoading} exportToCSV={exportToCSV} itemsPerPage={itemsPerPage} account={account} setCircularLoader={setCircularLoader} />
+        )}
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
         <Comments id={selectedCdr} setId={setSelectedCdr} />
       )}
+      {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
   );
 }

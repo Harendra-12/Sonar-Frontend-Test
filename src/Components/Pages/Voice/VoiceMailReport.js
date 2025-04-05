@@ -9,6 +9,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function VoiceMailReport() {
@@ -22,16 +23,22 @@ function VoiceMailReport() {
   const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio, setShowAudio] = useState(false)
+  const [ showDropDown,setShowDropdown]=useState(false)
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
+      // if (res?.status && res?.url) {
+        setAudioURL(audio); // Update audio URL state
+        // setAudioURL(res.url);
         // Wait for React state update before accessing ref
         setTimeout(() => {
           if (thisAudioRef.current) {
@@ -41,7 +48,7 @@ function VoiceMailReport() {
             });
           }
         }, 100); // Reduced timeout to minimize delay
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -177,34 +184,82 @@ function VoiceMailReport() {
                                     <button
                                       className="tableButton px-2 mx-0"
                                       onClick={() => {
-                                        if (
-                                          currentPlaying ==
-                                          item["recording_path"]
-                                        ) {
-                                          setCurrentPlaying(null);
-                                        } else {
-                                          handlePlaying(item["recording_path"]);
-                                        }
+                                        if (currentPlaying === item["recording_path"]) {
+                                          setCurrentPlaying("");
+                                          setShowAudio(false);
+                                      } else {
+                                          setCurrentPlaying(item["recording_path"]);
+                                          setShowDropdown(true);
+                                          setShowAudio(false);
+                                      }
+                                        // if (
+                                        //   currentPlaying ==
+                                        //   item["recording_path"]
+                                        // ) {
+                                        //   setCurrentPlaying(null);
+                                        // } else {
+                                        //   handlePlaying(item["recording_path"]);
+                                        // }
+
                                       }}
                                     >
                                       <i
-                                        className={`fa-duotone fa-${
-                                          currentPlaying ==
+                                        className={`fa-duotone fa-${currentPlaying ==
                                           item["recording_path"]
-                                            ? "stop"
-                                            : "play"
-                                        }`}
+                                          ? "stop"
+                                          : "play"
+                                          }`}
                                       ></i>
                                     </button>
+                                    {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                      <ul className="" key={index}>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (item.recording_path === currentPlaying) {
+                                                                  setShowDropdown(false);
+                                                                  setShowAudio(true);
+                                                                  handlePlaying(item.recording_path);
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                                } me-2`}
+                                                              ></i>
+                                                              Play
+                                                            </div>
+                                                          </li>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-regular fa-download"></i> Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    )}
                                   </td>
                                   <td>{item.duration}</td>
                                   <td>{extractDate(item.created_at)}</td>
                                 </tr>
-                                {currentPlaying == item["recording_path"] && (
+                                {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
-                                        <audio
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -216,7 +271,8 @@ function VoiceMailReport() {
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
+                                        {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -224,7 +280,16 @@ function VoiceMailReport() {
                                       </div>
                                     </td>
                                   </tr>
-                                )}
+                                )} */} 
+                                   {currentPlaying ===
+                                          item["recording_path"] &&showAudio&&
+                                        <tr>
+                                          <td colspan="18">
+                                            <div class="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            </div>
+                                          </td>
+                                        </tr>}
                               </>
                             );
                           })}

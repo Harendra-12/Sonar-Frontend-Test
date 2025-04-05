@@ -27,7 +27,6 @@ import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-
 const RingGroupAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -146,8 +145,7 @@ const RingGroupAdd = () => {
         extensionRefresh: extensionRefresh + 1,
       });
     }
-  }, [allUserArr, extension,]);
-
+  }, [allUserArr, extension]);
 
   // Function to handle click outside to close popup
   const divRef = useRef(null);
@@ -200,7 +198,6 @@ const RingGroupAdd = () => {
       });
     }
   };
-
   // Validating agent for listing
   const validateAgents = () => {
     const allFieldsFilled = destination.every(
@@ -225,7 +222,7 @@ const RingGroupAdd = () => {
     }
   };
 
-  // Function to validate destination 
+  // Function to validate destination
   const destinationValidation = () => {
     const allFilled = destination.every(
       (item) => item.destination.trim() !== ""
@@ -258,7 +255,24 @@ const RingGroupAdd = () => {
     setLoading(true);
     if (data.ring_back === "" || data.ring_back === "null") {
       delete data.ring_back;
-  }
+    }
+
+    // Validate priority values for sequence strategy
+    if (data.strategy === "sequence") {
+      const priorities = destination.map((item) => item.priority);
+      const uniquePriorities = new Set(priorities);
+      if (priorities.length !== uniquePriorities.size) {
+        toast.error("Each destination must have a unique priority value");
+        setLoading(false);
+        return;
+      }
+      if (priorities.some((p) => !p)) {
+        toast.error("All destinations must have a priority value");
+        setLoading(false);
+        return;
+      }
+    }
+
     const payLoad = {
       ...data,
       ...{
@@ -271,7 +285,8 @@ const RingGroupAdd = () => {
             if (item.destination.length > 0) {
               return {
                 destination: item.destination,
-                delay_order: item.delay,
+                [data.strategy === "sequence" ? "priority" : "delay_order"]:
+                  data.strategy === "sequence" ? item.priority : item.delay,
                 destination_timeout: item.timeOut,
                 status: item.status,
                 created_by: account.account_id,
@@ -305,10 +320,9 @@ const RingGroupAdd = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
-      toast.error(apiData.error)
+      toast.error(apiData.error);
     }
   });
-
 
   // Open popup for upload new music
   const handleAddMusic = () => {
@@ -316,7 +330,7 @@ const RingGroupAdd = () => {
     setShowMusic(true);
   };
 
-  // Handle chek box for bulk edit 
+  // Handle chek box for bulk edit
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
@@ -376,7 +390,7 @@ const RingGroupAdd = () => {
     setSelectAll(false);
   };
 
-  // In bulk add option search funcnality to rearrage the data 
+  // In bulk add option search funcnality to rearrage the data
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -390,7 +404,7 @@ const RingGroupAdd = () => {
         .includes(searchQuery.toLowerCase())
   );
 
-  // The user which is not assign 
+  // The user which is not assign
   const availableUsers = filteredUsers?.filter(
     (user) =>
       !destination.some(
@@ -467,7 +481,6 @@ const RingGroupAdd = () => {
       <section id="phonePage">
         <div className="container-fluid px-0">
           <Header title="Ring Groups" />
-
         </div>
         <>
           {loading ? (
@@ -603,12 +616,15 @@ const RingGroupAdd = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
-                              }`}
+                            className={`col-${
+                              showTimeoutDestinationToggle ? "4" : "12"
+                            }`}
                           >
-                            {showTimeoutDestinationToggle && <div className="formLabel">
-                              <label className="formItemDesc">Type</label>
-                            </div>}
+                            {showTimeoutDestinationToggle && (
+                              <div className="formLabel">
+                                <label className="formItemDesc">Type</label>
+                              </div>
+                            )}
                             <select
                               className="formItem"
                               {...register("destination_type", {
@@ -647,7 +663,9 @@ const RingGroupAdd = () => {
                             <>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label className="formItemDesc">Destination</label>
+                                  <label className="formItemDesc">
+                                    Destination
+                                  </label>
                                 </div>
                                 {showTimeoutDestinationToggle ? (
                                   timeoutDestPstnToggle ? (
@@ -679,7 +697,9 @@ const RingGroupAdd = () => {
                               </div>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label className="formItemDesc">Call Timeout</label>
+                                  <label className="formItemDesc">
+                                    Call Timeout
+                                  </label>
                                 </div>
                                 <input
                                   type="text"
@@ -690,7 +710,8 @@ const RingGroupAdd = () => {
                                     ...(watch("call_timeout") !== "" &&
                                       minValidator(
                                         destination.reduce(
-                                          (max, obj) => Math.max(max, obj.delay),
+                                          (max, obj) =>
+                                            Math.max(max, obj.delay),
                                           0
                                         )
                                       )),
@@ -698,7 +719,9 @@ const RingGroupAdd = () => {
                                   onKeyDown={restrictToNumbers}
                                 />
                                 {errors.call_timeout && (
-                                  <ErrorMessage text={errors.call_timeout.message} />
+                                  <ErrorMessage
+                                    text={errors.call_timeout.message}
+                                  />
                                 )}
                               </div>
                             </>
@@ -823,7 +846,7 @@ const RingGroupAdd = () => {
                     <div className="buttonGroup">
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                          selectedAgentToEdit.length != destination.length ? (
+                        selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             className="panelButton"
@@ -932,14 +955,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                            destination[index]?.destination ||
+                                              destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                item1.extension.extension &&
+                                                  item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -968,38 +991,88 @@ const RingGroupAdd = () => {
                                   </select>
                                 </div>
                               </div>
-                              <div className="col-2 pe-2">
-                                {index === 0 ? (
-                                  <div className="formLabel">
-                                    <label htmlFor="">Delay</label>
-                                  </div>
-                                ) : (
-                                  ""
-                                )}
-                                <select
-                                  className="formItem me-0"
-                                  style={{ width: "100%" }}
-                                  name="delay"
-                                  id="selectFormRow"
-                                  value={item.delay}
-                                  onChange={(e) => {
-                                    handleDestinationChange(index, e);
-                                  }}
-                                >
-                                  <option>Delay</option>
-                                  {(() => {
-                                    const numbers = [];
-                                    for (let i = 0; i <= 100; i++) {
-                                      if (i % 5 === 0) {
-                                        numbers.push(<span key={i}>{i}</span>);
+                              {watch("strategy") === "sequence" ? (
+                                <div className="col-2 pe-2">
+                                  {index === 0 ? (
+                                    <div className="formLabel">
+                                      <label htmlFor="">Priority</label>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="priority"
+                                    id="selectFormRow"
+                                    value={item.priority}
+                                    onChange={(e) => {
+                                      handleDestinationChange(index, e);
+                                    }}
+                                  >
+                                    <option value="">Select Priority</option>
+                                    {(() => {
+                                      const numbers = [];
+                                      for (
+                                        let i = 1;
+                                        i <= destination.length;
+                                        i++
+                                      ) {
+                                        // Only show priority numbers that aren't used by other destinations
+                                        const isPriorityUsed = destination.some(
+                                          (dest, idx) =>
+                                            idx !== index &&
+                                            dest.priority === i.toString()
+                                        );
+                                        if (!isPriorityUsed) {
+                                          numbers.push(
+                                            <option key={i} value={i}>
+                                              {i}
+                                            </option>
+                                          );
+                                        }
                                       }
-                                    }
-                                    return numbers.map((item) => {
-                                      return <option>{item}</option>;
-                                    });
-                                  })()}
-                                </select>
-                              </div>
+                                      return numbers;
+                                    })()}
+                                  </select>
+                                </div>
+                              ) : (
+                                <div className="col-2 pe-2">
+                                  {index === 0 ? (
+                                    <div className="formLabel">
+                                      <label htmlFor="">Delay</label>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <select
+                                    className="formItem me-0"
+                                    style={{ width: "100%" }}
+                                    name="delay"
+                                    id="selectFormRow"
+                                    value={item.delay}
+                                    onChange={(e) => {
+                                      handleDestinationChange(index, e);
+                                    }}
+                                  >
+                                    <option>Delay</option>
+                                    {(() => {
+                                      const numbers = [];
+                                      for (let i = 0; i <= 100; i++) {
+                                        if (i % 5 === 0) {
+                                          numbers.push(
+                                            <span key={i}>{i}</span>
+                                          );
+                                        }
+                                      }
+                                      return numbers.map((item) => {
+                                        return <option>{item}</option>;
+                                      });
+                                    })()}
+                                  </select>
+                                </div>
+                              )}
+
                               <div className="col-2 pe-2">
                                 {index === 0 ? (
                                   <div className="formLabel">
@@ -1060,8 +1133,9 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
-                                    }-auto`}
+                                  className={`me-2 h-100 m${
+                                    index === 0 ? "t" : "y"
+                                  }-auto`}
                                 >
                                   <button
                                     type="button"
@@ -1171,7 +1245,7 @@ const RingGroupAdd = () => {
                           !destination.some(
                             (agent) =>
                               user.extension.extension == agent.destination
-                          ) && user.usages==="pbx"
+                          ) && user.usages === "pbx"
                       )
                       .map((item, index) => {
                         return (
@@ -1238,17 +1312,37 @@ const RingGroupAdd = () => {
             </div>
             <div>
               <div className="d-flex justify-content-between mb-2">
-                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                <h5
+                  style={{
+                    color: "var(--color-subtext)",
+                    fontSize: 14,
+                    marginBottom: 5,
+                    marginTop: 5,
+                  }}
+                >
                   Affected user:{" "}
                 </h5>
-                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+                <div className="searchBoxWrapper">
+                  <input
+                    className="searchBar"
+                    type="text"
+                    value={searchEditAllUser}
+                    onChange={(e) => setSearchEditAllUser(e.target.value)}
+                  />
+                </div>
               </div>
 
               <ul>
                 {selectedAgentToEdit
-                  .map((item) => destination.find((user) => item.id == user.id)).filter((item) => item.destination.includes(searchEditAllUser.trim()))
+                  .map((item) => destination.find((user) => item.id == user.id))
+                  .filter((item) =>
+                    item.destination.includes(searchEditAllUser.trim())
+                  )
                   .map((items) => (
-                    <li><i className="fa-regular fa-user me-2" />{items?.destination}</li>
+                    <li>
+                      <i className="fa-regular fa-user me-2" />
+                      {items?.destination}
+                    </li>
                   ))}
               </ul>
             </div>
@@ -1256,39 +1350,41 @@ const RingGroupAdd = () => {
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
             <div className="mt-3 d-flex">
-              <div className="col-4 pe-2">
-                <div className="formLabel">
-                  <label htmlFor="">Delay</label>
-                </div>
+              {watch("strategy") !== "sequence" && (
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Delay</label>
+                  </div>
 
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="delay"
-                  id="selectFormRow"
-                  value={settingsForBulkEdit.delay}
-                  onChange={(e) => {
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      delay: e.target.value,
-                    });
-                  }}
-                  defaultValue={0}
-                >
-                  <option>Delay</option>
-                  {(() => {
-                    const numbers = [];
-                    for (let i = 0; i <= 100; i++) {
-                      if (i % 5 === 0) {
-                        numbers.push(<span key={i}>{i}</span>);
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={settingsForBulkEdit.delay}
+                    onChange={(e) => {
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        delay: e.target.value,
+                      });
+                    }}
+                    defaultValue={0}
+                  >
+                    <option>Delay</option>
+                    {(() => {
+                      const numbers = [];
+                      for (let i = 0; i <= 100; i++) {
+                        if (i % 5 === 0) {
+                          numbers.push(<span key={i}>{i}</span>);
+                        }
                       }
-                    }
-                    return numbers.map((item) => {
-                      return <option>{item}</option>;
-                    });
-                  })()}
-                </select>
-              </div>
+                      return numbers.map((item) => {
+                        return <option>{item}</option>;
+                      });
+                    })()}
+                  </select>
+                </div>
+              )}
               <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>

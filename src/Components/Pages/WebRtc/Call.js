@@ -30,11 +30,31 @@ function Call({
   setactivePage,
   allContact,
   setExtensionFromCdrMessage,
+  data,
+  filterBy,
+  currentPage,
+  startDate,
+  endDate,
+  searchQuery,
+  clickStatus,
+  refreshCalls,
+  allApiData,
+  rawData,
+  setCurrentPage,
+  setStartDate,
+  setEndDate,
+  setSearchQuery,
+  setFilterBy,
+  setIsLoading,
+  setLoading,
+  loading,
+  isLoading
+
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const [dialpadShow, setDialpadShow] = useState(false);
-  const [clickStatus, setClickStatus] = useState("all");
+  // const [clickStatus, setClickStatus] = useState("all");
   const videoCall = useSelector((state) => state.videoCall);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -43,24 +63,24 @@ function Call({
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [allApiData, setAllApiData] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [loading, setLoading] = useState(true);
+  // const [allApiData, setAllApiData] = useState([]);
   const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
-  const [refreshCalls, setRefreshCalls] = useState(0);
+  // const [refreshCalls, setRefreshCalls] = useState(0);
   const [clickedExtension, setClickedExtension] = useState(null);
   const targetRef = useRef(null); // Reference to the target div
-  const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [rawData, setRawData] = useState([]);
-  const [filterBy, setFilterBy] = useState("date");
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [data, setData] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [rawData, setRawData] = useState([]);
+  // const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
-  const [startDate, setStartDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
@@ -69,43 +89,43 @@ function Call({
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  useEffect(() => {
-    async function fetchData() {
-      if (currentPage === 1) {
-        setLoading(true);
-      } else {
-        setIsLoading(false);
-      }
-      const basePaths = {
-        all: "/call-details-phone",
-        incoming: "/cdr/inbound",
-        outgoing: "/cdr/outbound",
-        missed: "/cdr/missed",
-      };
-      const basePath = basePaths[clickStatus] || "";
-      if (basePath) {
-        const dateParam =
-          filterBy === "date" || startDate == "" || endDate == ""
-            ? `date=${startDate}`
-            : `date_range=${startDate},${endDate}`;
-        const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
-        const apiData = await generalGetFunction(url);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if (currentPage === 1) {
+  //       setLoading(true);
+  //     } else {
+  //       setIsLoading(false);
+  //     }
+  //     const basePaths = {
+  //       all: "/call-details-phone",
+  //       incoming: "/cdr/inbound",
+  //       outgoing: "/cdr/outbound",
+  //       missed: "/cdr/missed",
+  //     };
+  //     const basePath = basePaths[clickStatus] || "";
+  //     if (basePath) {
+  //       const dateParam =
+  //         filterBy === "date" || startDate == "" || endDate == ""
+  //           ? `date=${startDate}`
+  //           : `date_range=${startDate},${endDate}`;
+  //       const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
+  //       const apiData = await generalGetFunction(url);
 
-        if (apiData.status) {
-          setAllApiData(apiData.data.data?.reverse());
-          const result = apiData.data.data?.reverse() || [];
-          setRawData(apiData.data);
-          setData([...data, ...result]);
-          setLoading(false);
-          setIsLoading(false);
-        } else {
-          setLoading(false);
-          setIsLoading(false);
-        }
-      }
-    }
-    fetchData();
-  }, [currentPage, startDate, endDate, searchQuery, clickStatus, refreshCalls]);
+  //       if (apiData.status) {
+  //         setAllApiData(apiData.data.data?.reverse());
+  //         const result = apiData.data.data?.reverse() || [];
+  //         setRawData(apiData.data);
+  //         setData([...data, ...result]);
+  //         setLoading(false);
+  //         setIsLoading(false);
+  //       } else {
+  //         setLoading(false);
+  //         setIsLoading(false);
+  //       }
+  //     }
+  //   }
+  //   fetchData();
+  // }, [currentPage, startDate, endDate, searchQuery, clickStatus, refreshCalls]);
 
   const callListRef = useRef(null);
   const handleScroll = () => {
@@ -262,9 +282,10 @@ function Call({
     // Use the matching contact's name if found, otherwise default to the extension
     const displayName = matchingContact
       ? matchingContact.name
-      : item["Caller-Callee-ID-Number"] === extension
-        ? item["Caller-Caller-ID-Number"]
-        : item["Caller-Callee-ID-Number"];
+      : item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
+        : item["Caller-Callee-ID-Number"] === extension
+          ? item["Caller-Caller-ID-Number"]
+          : item["Caller-Callee-ID-Number"];
 
     const matchingCalleeContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Callee-ID-Number"]
@@ -308,9 +329,11 @@ function Call({
                   style={{ cursor: "pointer" }}
                 >
                   <h4>
-                    {item["Caller-Callee-ID-Number"] === extension
-                      ? item["Caller-Caller-ID-Number"]
-                      : item["Caller-Callee-ID-Number"]}
+                    {item["Call-Direction"] === "outbound" ? item["variable_sip_to_user"]
+                      : item["Caller-Callee-ID-Number"] === extension
+                        ? item["Caller-Caller-ID-Number"]
+                        : item["Caller-Callee-ID-Number"]
+                    }
                   </h4>
                   <h5 style={{ paddingLeft: 20 }}>
                     {displayName
@@ -318,7 +341,6 @@ function Call({
                       : item.caller_user
                         ? item.caller_user.username
                         : "USER XYZ"}
-
                   </h5>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
@@ -640,7 +662,10 @@ function Call({
                         className="clearButton2"
                         onClick={() => {
                           if (!loading) {
-                            setRefreshCalls(refreshCalls + 1);
+                            dispatch({
+                              type: "SET_CALLREFRESH",
+                              refreshCalls: refreshCalls + 1,
+                            });
                           }
                         }}
                       >
@@ -892,7 +917,7 @@ function Call({
                       {loading ? (
                         <ContentLoader />
                       ) : Object.keys(groupedCalls).length > 0 ? (
-                        sortKeys(Object.keys(groupedCalls)).map((date,key) => (
+                        sortKeys(Object.keys(groupedCalls)).map((date, key) => (
                           <div key={key}>
                             <div key={date} className="dateHeader" >
                               <p>{date}</p>

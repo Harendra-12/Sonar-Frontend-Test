@@ -14,6 +14,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 
 
 function Music() {
@@ -35,6 +36,8 @@ function Music() {
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio, setShowAudio] = useState(false)
+  const [ showDropDown,setShowDropdown]=useState(false)
 
   // Get all previous music data
   useEffect(() => {
@@ -146,17 +149,18 @@ function Music() {
 
   // function to play the music
   const handlePlayMusic = async (id, path) => {
-    if (currentPlaying === id) {
+    if (showAudio&&currentPlaying === id) {
       setCurrentPlaying(null); // Pause if already playing
       setAudioURL(null);
     } else {
       setCurrentPlaying(id); // Play selected audio
       const url = path.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
-      }
+      // if (res?.status && res?.url) {
+        setAudioURL(path);
+        // setAudioURL(res.url);
+      // }
     }
   };
 
@@ -315,7 +319,7 @@ function Music() {
                           ) : (
                             <>
                               {music &&
-                                music.map((item) => {
+                                music.map((item,index) => {
                                   const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
 
                                   return (
@@ -327,12 +331,17 @@ function Music() {
                                         <td>
                                           <button
                                             className="tableButton play"
-                                            onClick={() =>
-                                              handlePlayMusic(
-                                                item.id,
-                                                item.path
-                                              )
-                                            }
+                                            onClick={() =>{
+                
+                                              if (isCurrent) {
+                                                                            setCurrentPlaying("");
+                                                                            setShowAudio(false);
+                                                                        } else {
+                                                                            setCurrentPlaying(item.id);
+                                                                            setShowDropdown(true);
+                                                                            setShowAudio(false);
+                                                                        }
+                                            }}
                                           >
                                             {isCurrent ? (
                                               <i className="fa-solid fa-stop"></i>
@@ -340,6 +349,49 @@ function Music() {
                                               <i className="fa-solid fa-play"></i>
                                             )}
                                           </button>
+                                          {showDropDown && isCurrent && ( 
+                                                      <ul className="" key={index} >
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div
+                                                              className="clearButton text-align-start"
+                                                              onClick={(e) => {                                                       
+                                                                e.stopPropagation();
+                                                                if (isCurrent) {
+                                                                  setShowDropdown(false);
+                                                                  setShowAudio(true);
+                                                                  handlePlayMusic(
+                                                                    item.id,
+                                                                    item.path
+                                                                  )
+                                                                }
+                                                              }}
+                                                            >
+                                                              <i
+                                                                className={`fa-solid fa-${
+                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                                } me-2`}
+                                                              ></i>
+                                                              Play
+                                                            </div>
+                                                          </li>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-solid fa-bolt me-2"></i>
+                                                              Transcript
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <>
+                                                          <li className="dropdown-item">
+                                                            <div className="clearButton text-align-start">
+                                                              <i className="fa-regular fa-download"></i> Download
+                                                            </div>
+                                                          </li>
+                                                        </>
+                                                        <li className="dropdown-item"></li>
+                                                      </ul>
+                                                    )}
                                         </td>
                                         <td>
                                           <button
@@ -366,11 +418,12 @@ function Music() {
                                           </button>
                                         </td>
                                       </tr>
-                                      {isCurrent && (
+                                      {/* {isCurrent && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
-                                              <audio
+                                              <AudioWaveformCommon audioUrl={audioURL} />
+                                              {/* <audio
                                                 controls
                                                 autoPlay
                                                 onPlay={() =>
@@ -388,7 +441,7 @@ function Music() {
                                                   src={audioURL}
                                                   type="audio/mpeg"
                                                 />
-                                              </audio>
+                                              </audio> */}
                                               {/* <button
                                               className="audioCustomButton"
                                               onClick={() => {
@@ -404,10 +457,18 @@ function Music() {
                                             >
                                               <i className="fa-sharp fa-solid fa-download"></i>
                                             </button> */}
-                                            </div>
+                                            {/* </div>
                                           </td>
                                         </tr>
-                                      )}
+                                      )} */} 
+                                         {isCurrent &&showAudio&&
+                                        <tr>
+                                          <td colspan="18">
+                                            <div class="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            </div>
+                                          </td>
+                                        </tr>}
                                     </React.Fragment>
                                   );
                                 })}
