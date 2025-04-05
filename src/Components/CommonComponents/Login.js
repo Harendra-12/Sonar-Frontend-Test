@@ -424,6 +424,7 @@ export function LoginComponent() {
       </form>
       {popUp ? (
         <>
+        {/* Log out of multiple devices */}
           <div className="addNewContactPopup">
             <div className="row">
               <div className="col-12 heading mb-0">

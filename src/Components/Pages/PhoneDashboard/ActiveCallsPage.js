@@ -399,7 +399,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 <div className="heading">
                                                     <div className='d-flex'>
                                                         <button className='clearButton2 me-2' onClick={handleResizeLeft}>
-                                                            <i className="fa-solid fa-down-left-and-up-right-to-center" />
+                                                            <i className="fa-regular fa-arrows-maximize" />
                                                         </button>
                                                         <div className="content">
                                                             <h4>Active Calls </h4>
@@ -490,7 +490,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         </Panel>
                                         <PanelResizeHandle className="resizeHandle">
                                             <button className='clearButton2' onClick={resetResizeContent}>
-                                                <i className='fa-solid fa-arrows-rotate' />
+                                                {/* <i className='fa-solid fa-arrows-rotate' /> */}
+                                                <i class="fa-regular fa-arrows-left-right"></i>
                                             </button>
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={40} collapsible={true} minSize={25} ref={rightPanel}>
@@ -498,7 +499,8 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                 <div className="heading">
                                                     <div className='d-flex'>
                                                         <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                            <i className="fa-solid fa-down-left-and-up-right-to-center" />
+                                                            {/* <i className="fa-solid fa-down-left-and-up-right-to-center" /> */}
+                                                            <i class="fa-regular fa-arrows-maximize"></i>
                                                         </button>
                                                         <div className="content">
                                                             <h4>Ringing Calls</h4>

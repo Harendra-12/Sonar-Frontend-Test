@@ -604,3 +604,26 @@ form.tangoNavs .nav-tabs {
     background: #e5ffe5;
     border-color: #168700 !important;
 }
+
+.badge-soft-primary {
+    color: var(--text-badge-accent);
+    background-color: var(--bg-badge-accent);
+    /* border: 1px solid var(--bg-badge-accent-border); */
+}
+
+.badge-soft-secondary {
+    color: var(--text-badge-secondary);
+    background-color: var(--bg-badge-secondary);
+    /* border: 1px solid var(--bg-badge-/secondary-border); */
+}
+
+.badge-soft-success {
+    color: var(--text-badge-success);
+    background-color: var(--bg-badge-success);
+    /* border: 1px solid var(--bg-badge-success-border); */
+}
+.badge-soft-danger {
+    color: var(--text-badge-danger);
+    background-color: var(--bg-badge-danger);
+    /* border: 1px solid var(--bg-badge-danger-border); */
+}

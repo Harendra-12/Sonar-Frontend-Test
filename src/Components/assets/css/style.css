@@ -78,6 +78,7 @@
   /* --ui-accent: #3e8ef7; */
   /* --ui-accent: #3066BE; */
   --ui-accent: #62a7f8;
+
   /* --ui-icon: #00a6fb; */
   --ui-icon: #fff;
   /* --ui-accent-green: #a5d02a;
@@ -132,6 +133,24 @@
   --chat-input-bg: #ffffff;
   --chat-user-list: #ffffff;
   --chat-header: #f1f2f6;
+  /* ==== new badge color */
+  --bg-badge-accent: rgba(0, 239, 255, 0.129);
+  /* --bg-badge-accent-border: #d9f6f8; */
+  --text-badge-accent: #02c0ce;
+
+  --bg-badge-secondary: rgba(0, 17, 255, 0.129);
+  /* --bg-badge-secondary-border: #ebecfa; */
+  --text-badge-secondary: #777edd;
+
+  --bg-badge-success: rgba(0, 255, 179, 0.161);
+  /* --bg-badge-success-border: #daf8ef; */
+  --text-badge-success: #0acf97;
+
+  --bg-badge-danger: rgba(255, 0, 140, 0.212);
+  /* --bg-badge-danger-border: #fde6e9; */
+  --text-badge-danger: #bb036a;
+  
+  --text-blue-dark: #15264b;
 }
 
 :root.dark {
@@ -176,9 +195,27 @@
   --chat-input-bg: #2d3841;
   --chat-user-list: #111b22;
   --chat-header: #202b34;
-
   --color3: #FF8C427c;
-  --ui-accent: #3e8ef77c;
+  /* --ui-accent: #3e8ef77c; */
+
+   /* ==== new badge color */
+   /* --bg-badge-accent: rgba(217, 246, 248, 0);
+   --bg-badge-accent-border: #02c0ce;
+   --text-badge-accent: #02c0ce;
+   
+   --bg-badge-secondary: rgba(235, 236, 250, 0);
+   --bg-badge-secondary-border: #8c76f0;
+   --text-badge-secondary: #8c76f0;
+
+   --bg-badge-success: rgba(218, 248, 239, 0);
+   --bg-badge-success-border: #0acf97;
+   --text-badge-success: #0acf97;
+
+   --bg-badge-danger: lab(93.17% 8.33 1.38 / 0);
+   --bg-badge-danger-border: #f1556c;
+   --text-badge-danger: #f1556c;
+    */
+    --text-blue-dark: #d6e3ff;
 }
 
 :root.green {

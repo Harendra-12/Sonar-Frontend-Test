@@ -213,10 +213,10 @@
 
 .profilePhotoEditIcon {
   position: absolute;
-  top: 2px;
-  right: -2px;
+  bottom: 0;
+  right: 0;
   color: white;
-  background-color: rgb(240, 52, 215);
+  background-color: #3F51B5;
   height: 23px;
   width: 23px;
   display: flex;
