@@ -166,6 +166,7 @@ import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAd
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
 import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import GroupsList from "./Components/Pages/Groups/GroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
