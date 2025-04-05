@@ -1186,12 +1186,14 @@ input[type=number] {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: -10px;
+    left: -0;
+    padding: 3px;
     height: 200px;
     border-radius: 5px 0 0 5px;
     backdrop-filter: blur(5px);
     transition: 0.3s ease-in-out;
     color: #fff;
+    font-size: 10px;
 }
 
 .callDashParkedCalls button:hover {
