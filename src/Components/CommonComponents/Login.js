@@ -498,7 +498,7 @@ export function LoginComponent() {
                   <div>
                     <button
                       disabled={loading}
-                      className="panelButton delete static m-0 px-2 bg-transparent shadow-none logoutBtn"
+                      className="panelButton delete static m-0 px-2 bg-transparent shadow-none logout__Btn"
                       onClick={handleLogoutAll}
                     >
 
