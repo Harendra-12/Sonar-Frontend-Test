@@ -540,12 +540,11 @@ function Navbar() {
                             </li>
                           ) : null}
                          <li className="tabItem ">
-                            <Link
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                            <Link  to="/groups"         
+                              onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/groups", "/groups-add"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )

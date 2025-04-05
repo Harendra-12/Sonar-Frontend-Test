@@ -167,6 +167,8 @@ import RateCardView from "./Components/Pages/RateCard/RateCardView";
 import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
+import GroupsList from "./Components/Pages/Groups/GroupsList";
+import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -262,7 +264,9 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
-           {/* <Route path="/groups" element={<GroupsList/>}/> */}
+          {/* Groups path start */}
+           <Route path="/groups" element={<GroupsList/>}/>
+           <Route path="/groups-add" element={<AddGroupsList/>}/>
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
