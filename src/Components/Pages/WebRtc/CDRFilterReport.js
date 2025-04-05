@@ -72,7 +72,7 @@ function CdrFilterReport({ page }) {
   const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
   const [error, setError] = useState('');
   const [showAudio, setShowAudio] = useState(false)
-  const [ showDropDown,setShowDropdown]=useState(false)
+  const [showDropDown, setShowDropdown] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -266,7 +266,7 @@ function CdrFilterReport({ page }) {
           obj.hasOwnProperty("variable_start_stamp")
         ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"] =formatTimeWithAMPM( obj["variable_start_stamp"]?.split(" ")[1])
+          filteredObj["Time"] = formatTimeWithAMPM(obj["variable_start_stamp"]?.split(" ")[1])
         }
         if (obj.hasOwnProperty(key)) {
 
@@ -403,17 +403,17 @@ function CdrFilterReport({ page }) {
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-        // setAudioURL(res.url); // Update audio URL state
-        setAudioURL(audio);
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
+      // setAudioURL(res.url); // Update audio URL state
+      setAudioURL(audio);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
       // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
@@ -1119,11 +1119,11 @@ function CdrFilterReport({ page }) {
                                                       <button
                                                         className="tableButton px-2 mx-0"
                                                         onClick={() => {
-                                              
+
                                                           if (currentPlaying === item["recording_path"]) {
                                                             setCurrentPlaying("");
                                                             setShowAudio(false);
-                                                          
+
                                                           } else {
                                                             setCurrentPlaying(item["recording_path"]);
                                                             setShowDropdown(true); // Open dropdown when playing
@@ -1138,15 +1138,15 @@ function CdrFilterReport({ page }) {
                                                         )}
                                                       </button>
                                                     )}
-                                              
+
                                                     {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
-                                                   <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
-                                                   setShowDropdown={setShowDropdown} setShowAudio={setShowAudio} 
-                                                   handlePlaying={handlePlaying}/>
+                                                      <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
+                                                        setShowDropdown={setShowDropdown} setShowAudio={setShowAudio}
+                                                        handlePlaying={handlePlaying} />
                                                     )}
                                                   </td>
                                                 );
-                                              }else if (
+                                              } else if (
                                                 key === "Call-Direction"
                                               ) {
                                                 const callIcons = {
@@ -1350,24 +1350,24 @@ function CdrFilterReport({ page }) {
                                                       type="audio/mpeg"
                                                     />
                                                   </audio> */}
-                                                  {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
+                                        {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
 
-                                                  {/* <button className="audioCustomButton">
+                                        {/* <button className="audioCustomButton">
                                                     <i className="fa-sharp fa-solid fa-download" />
                                                   </button> */}
-                                                {/* </div> */}
-                                              {/* </td> */}
-                                            {/* </tr> */}
-                                          {/* )}  */}
-                                             {currentPlaying ===
-                                                                                    item["recording_path"] &&showAudio&&
-                                                                                  <tr>
-                                                                                    <td colspan="18">
-                                                                                      <div class="audio-container mx-2">
-                                                                                      <AudioWaveformCommon audioUrl={audioURL} />
-                                                                                      </div>
-                                                                                    </td>
-                                                                                  </tr>}
+                                        {/* </div> */}
+                                        {/* </td> */}
+                                        {/* </tr> */}
+                                        {/* )}  */}
+                                        {currentPlaying ===
+                                          item["recording_path"] && showAudio &&
+                                          <tr>
+                                            <td colspan="18">
+                                              <div class="audio-container mx-2">
+                                                <AudioWaveformCommon audioUrl={audioURL} />
+                                              </div>
+                                            </td>
+                                          </tr>}
                                       </React.Fragment>
                                     );
                                   })}
