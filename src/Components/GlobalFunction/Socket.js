@@ -113,6 +113,10 @@ const Socket = () => {
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
+            case "logout_warning":
+              console.log("Logout warning received:", result);
+              break;
+
             case "screenShare":
               dispatch({
                 type: "SET_CONFERENCESCREENSHARESTATUS",
