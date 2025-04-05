@@ -21,6 +21,7 @@ import Tippy from "@tippyjs/react";
 import Comments from "./Comments";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
 
 
 function CdrReport({ page }) {
@@ -1116,44 +1117,9 @@ function CdrReport({ page }) {
                                                   )}
                                                 </button>
                                                 {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
-                                                      <ul className="" key={index}>
-                                                        <>
-                                                          <li className="dropdown-item">
-                                                            <div
-                                                              className="clearButton text-align-start"
-                                                              onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                if (item.recording_path === currentPlaying) {
-                                                                  setShowDropdown(false);
-                                                                  setShowAudio(true);
-                                                                  handlePlaying(item.recording_path);
-                                                                }
-                                                              }}
-                                                            >
-                                                              <i
-                                                                className={`fa-solid fa-${
-                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
-                                                                } me-2`}
-                                                              ></i>
-                                                              Play
-                                                            </div>
-                                                          </li>
-                                                          <li className="dropdown-item">
-                                                            <div className="clearButton text-align-start">
-                                                              <i className="fa-solid fa-bolt me-2"></i>
-                                                              Transcript
-                                                            </div>
-                                                          </li>
-                                                        </>
-                                                        <>
-                                                          <li className="dropdown-item">
-                                                            <div className="clearButton text-align-start">
-                                                              <i className="fa-regular fa-download"></i> Download
-                                                            </div>
-                                                          </li>
-                                                        </>
-                                                        <li className="dropdown-item"></li>
-                                                      </ul>
+                                                         <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
+                                                                                                         setShowDropdown={setShowDropdown} setShowAudio={setShowAudio} 
+                                                                                                         handlePlaying={handlePlaying}/>
                                                     )}
                                                 <label className="ms-2">{storageSize}</label>
                                               </div>
