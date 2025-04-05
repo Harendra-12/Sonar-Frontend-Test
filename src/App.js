@@ -166,6 +166,7 @@ import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAd
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
 import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -224,7 +225,7 @@ function App() {
 
         <Routes>
           <Route path="/click-to-call" element={<ClickToCall />} />
-
+          <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />

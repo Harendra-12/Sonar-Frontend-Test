@@ -32,9 +32,9 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  // const [transcript,setTranscript]=useState("")
-  const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
-  const token = localStorage.getItem("token");
+  const [transcript, setTranscript] = useState("")
+  const [transcribeLoading, setTranscribeLoading] = useState(false)
+  const [transcribeLink, setTranscribeLink] = useState("")
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -109,23 +109,22 @@ function CallDetails({
   };
 
   async function handleTranscript(url) {
+    setTranscribeLoading(true)
     const newUrl = url.split(".com/").pop();
-    // const presignData = await generatePreSignedUrl(newUrl);
-    // if (presignData?.status && presignData?.url) {
-      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
-      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
-      // }
-      console.log({url})
-      const trnascript = await axios.post(`${baseName}/transcribe-audio`,
-        { src: url },
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data', // Or 'multipart/form-data' if you're sending files
-            'Authorization': `Bearer ${token}`, // Example: API key authentication
-            // Add any other required headers here
-          },
-        }
-      );
+    const presignData = await generatePreSignedUrl(newUrl);
+    if (presignData?.status && presignData?.url) {
+      const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      if (trnascript?.status) {
+        setTranscribeLoading(false)
+        setTranscript(trnascript?.data);
+      } else {
+        setTranscribeLoading(false)
+        setTranscript()
+      }
+    } else {
+      setTranscribeLoading(false)
+      setTranscript()
+    }
   }
 
   const handlePlaying = async (audio) => {
@@ -149,16 +148,16 @@ function CallDetails({
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-        // setAudioURL(res.url);
-        setAudioURL(audio);
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load();
-            thisAudioRef.current
-              .play()
-              .catch((error) => console.error("Audio play error:", error));
-          }
-        }, 100);
+      // setAudioURL(res.url);
+      setAudioURL(audio);
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load();
+          thisAudioRef.current
+            .play()
+            .catch((error) => console.error("Audio play error:", error));
+        }
+      }, 100);
       // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
@@ -663,6 +662,7 @@ function CallDetails({
                                                 handleTranscript(
                                                   item?.recording_path
                                                 );
+                                                setTranscribeLink(item?.recording_path)
                                               }
                                             }
                                             }
@@ -733,28 +733,27 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
-                              {/* <tr
-                                className="show"
-                                id={`voiceMail${item?.id}`}
-                              >
-                                <td colSpan={5}>
-                                  <div className="audio-container">
-                                    <div className="transcriptWrap">
-                                      <div className="textContent col">
-                                        <p>Consectetur cupidatat adipisicing eiusmod officia eiusmod culpa minim eiusmod aliqua sunt duis consectetur. Aliqua cupidatat do amet aliqua amet aute cupidatat ex ullamco enim occaecat.</p>
+                              {
+                                transcribeLink === item?.recording_path ?
+                                  <tr
+                                    className="show"
+                                    id={`voiceMail${item?.id}`}
+                                  >
+                                    <td colSpan={5}>
+                                      <div className="audio-container">
+                                        <div className="transcriptWrap col-12">
+                                          <div className="textContent col-12">
+                                            {
+                                              transcribeLoading ? <div className='skeleton skeleton-text'/> :
+                                                <p>{transcript}</p>
+                                            }
+                                          </div>
+                                        </div>
                                       </div>
-                                      <div className="btnWrap col-auto">
-                                        <button className="clearButton2">
-                                          <i className="fa-sharp fa-chevron-left"></i>
-                                        </button>
-                                        <button className="clearButton2 ms-1">
-                                          <i className="fa-sharp fa-chevron-right"></i>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr> */}
+                                    </td>
+                                  </tr>
+                                  : ""
+                              }
                             </>
                           ))}
                         </tbody>
