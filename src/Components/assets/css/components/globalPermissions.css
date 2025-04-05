@@ -38,3 +38,20 @@
 .permissionsConfigWrapper table tr>* {
     padding: 15px;
 }
+
+.permissionsConfigWrapper table ul {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--ele-color);
+}
+
+.permissionsConfigWrapper table ul li p {
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.permissionsConfigWrapper table ul li {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
