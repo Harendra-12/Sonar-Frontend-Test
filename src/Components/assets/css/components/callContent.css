@@ -411,16 +411,22 @@
     transform: translate(-50%, -50%);
     max-width: 480px;
     width: 100%;
-    min-height: 500px;
+    /* min-height: 500px; */
     border-radius: 10px;
     background-color: var(--ele-color);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    /* padding: 20px; */
+    padding: 20px;
     z-index: 10;
+}
+.addNewContactPopup.logoutPopup {
+    max-width: 480px;
+    width: 100%;
+    min-height: 500px;
+    padding: 0px;
     border-radius: 20px;
     overflow: hidden;
 }
-.warning_img{
+.addNewContactPopup.logoutPopup .warning_img{
     width: 60px;
     height: 60px;
     position: absolute;
@@ -429,7 +435,7 @@
     top: 50px;
     margin-inline: auto;
 }
-.warning_img img{
+.addNewContactPopup.logoutPopup .warning_img img{
     width: 100%;
 }
 .addNewContactPopup .heading {
@@ -553,12 +559,23 @@
     flex-wrap: wrap;
     padding: 0;
     margin: 0;
+    max-height: 180px;
+    overflow-y: scroll;
+    /* border: 1px solid var(--border-color); */
+    /* border-radius: 10px;
+    padding: 0 10px 10px; */
+}
+.addNewContactPopup.logoutPopup ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
     max-height: 300px;
     overflow-y: scroll;
     /* border: 1px solid var(--border-color); */
     border-radius: 10px;
     padding: 0 10px 10px;
-
 }
 
 .addNewContactPopup ul li {
@@ -606,7 +623,7 @@
     color: #ff5000 !important;
 }
 
-.btn2 {
+.logoutPopup .btn2 {
     font-size: 14px;
     /* font-weight: 600; */
     background-color: #e28000;
@@ -618,14 +635,14 @@
     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
     border: 0 !important;
   }
-  .btn2 .text {
+  .logoutPopup .btn2 .text {
     color: #fff;
     line-height: 1;
     position: relative;
     z-index: 5;
     margin-right: 20px;
   }
-  .btn2 i {
+  .logoutPopup .btn2 i {
     display: inline-block;
     position: relative;
     z-index: 5;
@@ -634,7 +651,7 @@
     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
     color: #dddddd;
   }
-  .btn2::before {
+  .logoutPopup .btn2::before {
     content: '';
     background-color: rgba(255, 220, 83, 0.18);
     width: 25px;
@@ -654,17 +671,17 @@
   /* .btn2.light::before {
     background-color: #154633;
   } */
-  .btn2:hover i {
+ .logoutPopup .btn2:hover i {
     transform: rotate(334deg) translateX(-7px) translateY(-2px);
   }
-  .btn2:hover::before {
+ .logoutPopup .btn2:hover::before {
     content: '';
     width: 100%;
     height: 100%;
     right: 0;
     background-color: #62a7f8;
   }
-  .popup_close{
+.logoutPopup  .popup_close{
     color: #fff;
     position: absolute;
     right: 15px;
@@ -673,7 +690,7 @@
     border: 0;
     background: transparent;
   }
-  .logout__Btn{
+ .logoutPopup .logout__Btn{
     display: block;
     width: 100%;
     margin: 0;
