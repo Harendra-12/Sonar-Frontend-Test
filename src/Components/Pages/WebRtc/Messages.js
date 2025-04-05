@@ -1041,7 +1041,13 @@ function Messages({
       if (apiData.status) {
         toast.success(apiData.message);
       } else {
-        toast.error(apiData.message);
+        if (apiData.errors.from_did) {
+          toast.error(apiData.errors.from_did[0]);
+        } else if (apiData.errors.to_did) {
+          toast.error(apiData.errors.to_did[0]);
+        } else {
+          toast.error(apiData.message);
+        }
       }
       reset();
       setSendSMSPopup(false);
@@ -2900,7 +2906,7 @@ function Messages({
                       )}
                     </div>
                   </div>
-                  <div className="col-xl-12">
+                  <div className="col-xl-12 mt-2">
                     <div className="formLabel">
                       <label htmlFor="">Enter Receiver Number</label>
                     </div>
@@ -2917,7 +2923,7 @@ function Messages({
                       )}
                     </div>
                   </div>
-                  <div className="col-xl-12 mt-3">
+                  <div className="col-xl-12 mt-2">
                     <div className="formLabel">
                       <label htmlFor="">Enter your messsage</label>
                     </div>
