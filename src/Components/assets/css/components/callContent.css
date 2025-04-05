@@ -409,15 +409,29 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 370px;
-    /* min-height: 400px; */
+    max-width: 480px;
+    width: 100%;
+    min-height: 500px;
     border-radius: 10px;
     background-color: var(--ele-color);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 20px;
+    /* padding: 20px; */
     z-index: 10;
+    border-radius: 20px;
+    overflow: hidden;
 }
-
+.warning_img{
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50px;
+    margin-inline: auto;
+}
+.warning_img img{
+    width: 100%;
+}
 .addNewContactPopup .heading {
     display: flex;
     align-items: center;
@@ -539,18 +553,23 @@
     flex-wrap: wrap;
     padding: 0;
     margin: 0;
-
-    max-height: 140px;
+    max-height: 300px;
     overflow-y: scroll;
-    border: 1px solid var(--border-color);
+    /* border: 1px solid var(--border-color); */
     border-radius: 10px;
-    padding: 10px;
+    padding: 0 10px 10px;
+
 }
 
 .addNewContactPopup ul li {
     width: 50%;
     padding-bottom: 5px;
     font-size: 0.875rem;
+    font-size: 0.875rem;
+    background: rgba(255, 119, 0, 0.102);
+    border-radius: 25px;
+    padding: 5px 15px;
+    margin-block: 10px;
 }
 
 .addNewContactPopup ul li i {
@@ -583,3 +602,82 @@
     top: 0;
     right: 5px;
 }
+.text_warning{
+    color: #ff5000 !important;
+}
+
+.btn2 {
+    font-size: 14px;
+    /* font-weight: 600; */
+    background-color: #e28000;
+    padding: 2px 15px;
+    display: flex;
+    align-items: center;
+    border-radius: 99px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    border: 0 !important;
+  }
+  .btn2 .text {
+    color: #fff;
+    line-height: 1;
+    position: relative;
+    z-index: 5;
+    margin-right: 20px;
+  }
+  .btn2 i {
+    display: inline-block;
+    position: relative;
+    z-index: 5;
+    transform: rotate(0deg) translateX(6px);
+    transform-origin: left;
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    color: #dddddd;
+  }
+  .btn2::before {
+    content: '';
+    background-color: rgba(255, 220, 83, 0.18);
+    width: 25px;
+    height: 25px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    border-radius: 99px;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  /* .btn2.light {
+    background-color: #21ce9e;
+  } */
+  /* .btn2.light::before {
+    background-color: #154633;
+  } */
+  .btn2:hover i {
+    transform: rotate(334deg) translateX(-7px) translateY(-2px);
+  }
+  .btn2:hover::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    right: 0;
+    background-color: #62a7f8;
+  }
+  .popup_close{
+    color: #fff;
+    position: absolute;
+    right: 15px;
+    top: 8px;
+    z-index: 5;
+    border: 0;
+    background: transparent;
+  }
+  .logoutBtn{
+    display: block;
+    width: 100%;
+    margin: 0;
+    background: #ffe2e2 !important;
+    border-radius: 25px;
+    padding: 5px 15px !important;
+  }

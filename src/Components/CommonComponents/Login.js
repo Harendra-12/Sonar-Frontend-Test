@@ -312,7 +312,7 @@ export function LoginComponent() {
         }
 
 
-      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403 ) {
+      } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
@@ -424,59 +424,90 @@ export function LoginComponent() {
       </form>
       {popUp ? (
         <>
-        {/* Log out of multiple devices */}
-          <div className="addNewContactPopup">
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-solid fa-triangle-exclamation"></i>
-                <h5>Warning!</h5>
+          {/* Log out of multiple devices */}
+          <div className="backdropContact">
+            <div className="addNewContactPopup position-relative">
+              <button className="popup_close" onClick={() => {
+                    setPopUp(false);}}>
+              <i class="fa-solid fa-xmark"></i>
+              </button>
+              <div className=" position-relative">
+                <img className="w-100 " src={require('../assets/images/login-cruve.png')} />
+              {/* <div className="warning_img">
+                <img className=" " src={require('../assets/images/crisis.png')} />
+              </div> */}
               </div>
-              <p>
-                {logInText}
-              </p>
+              <div className="p-3">
+                <h5 className="text-center fs-5">Warning!</h5>
+                {/* <div className="col-12 heading mb-0">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+              </div> */}
+                <p className="text-center mb-1">
+                  {logInText}
+                </p>
+                <p className="text-center fs-6 text_warning ">You are logged in from the specific devices: </p>
 
-              {logInDetails?.length > 0 &&
-                <ul className="mb-3 d-block">
-                  <p>You are logged in from the specific devices: </p>
-                  {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
-                      <div>
-                        {item?.platform} - {item?.browser}
-                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
-                      </div>
-                      <div>
-                        <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
-                      </div>
-                    </li>
-                  })}
-                </ul>
-              }
-              <div className="d-flex justify-content-between px-0">
-                <button
-                  className="panelButton m-0 float-end"
-                  onClick={() => {
+                {logInDetails?.length > 0 &&
+                  <ul className="mb-3 d-block">
+                    {logInDetails?.map((item) => {
+                      return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
+                        <div>
+                          {item?.platform} - {item?.browser}
+                          <p style={{ fontSize: '0.75rem', marginBottom: '0' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
+                        </div>
+                        <div>
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                        </div>
+                      </li>
+                    })}
+                  </ul>
+                }
+                <div className="d-flex justify-content-between px-0">
+                  {/* <button
+                    className="panelButton m-0 float-end"
+                    onClick={() => {
+                      setPopUp(false);
+                      setLoading(true)
+                      handleLogin()
+                    }}
+                  >
+                    <span className="text">Login</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button> */}
+
+                  {/* <button onClick={() => {
                     setPopUp(false);
                     setLoading(true)
                     handleLogin()
-                  }}
-                >
-                  <span className="text">Login</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check"></i>
-                  </span>
-                </button>
+                  }} type="button" class="btn btn-success-light btn-wave " >
+                    <span>Login</span> <i
+                      className="fa-solid fa-check"
+                    ></i></button> */}
 
-                <div>
-                  <button
-                    disabled={loading}
-                    className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
-                    onClick={handleLogoutAll}
-                  >
-                    <span className="text text-danger">Logout All Devices</span>
-                    {/* <span className="icon">
+                  <button class="btn2" onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }}>
+                    <span class="text">Login</span>
+                    <i class="fa-solid fa-paper-plane-top"></i>
+                  </button>
+
+                  <div>
+                    <button
+                      disabled={loading}
+                      className="panelButton delete static m-0 px-2 bg-transparent shadow-none logoutBtn"
+                      onClick={handleLogoutAll}
+                    >
+
+                      <span className="text text-danger">Logout All Devices</span>
+                      {/* <span className="icon">
                         <i className="fa-solid fa-power-off"></i>
                       </span> */}
-                  </button>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
