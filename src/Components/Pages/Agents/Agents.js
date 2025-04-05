@@ -27,6 +27,8 @@ function Agents({ type }) {
   const slugPermissions = useSelector((state) => state?.permissions);
   const { confirm, ModalComponent } = PromptFunctionPopup();
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
+  const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
+  const [agentLogOutToken, setAgentLogOutToken] = useState("");
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -67,31 +69,30 @@ function Agents({ type }) {
 
   // Handle Agent Logout Function
   const handleAgentLogout = async (token) => {
-    if (token) {
-      const userConfirmed = await confirm();
-      if (userConfirmed) {
-        setLoading(true);
-        try {
-          const logOut = await axios.get(`${baseName}/logout?all`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          console.log(logOut);
-
-          if (logOut?.data.status) {
-            toast.success(logOut?.data.message);
-            setLoading(false);
-            getData();
-          } else {
-            toast.error(logOut?.data.message || logOut?.data.error);
+    setIsAgentLogoutPopup(false);
+    if (agentLogOutToken) {
+      // const userConfirmed = await confirm();
+      // if (userConfirmed) {
+      setLoading(true);
+      try {
+        const logOut = await axios.get(`${baseName}/logout?all`, {
+          headers: {
+            Authorization: `Bearer ${agentLogOutToken}`
           }
-        } catch (err) {
-          console.log(err);
-          toast.error(err);
+        });
+        if (logOut?.data.status) {
+          toast.success(logOut?.data.message);
           setLoading(false);
+          getData();
+        } else {
+          toast.error(logOut?.data.message || logOut?.data.error);
         }
+      } catch (err) {
+        console.log(err);
+        toast.error(err);
+        setLoading(false);
       }
+      // }
     }
   }
 
@@ -226,7 +227,8 @@ function Agents({ type }) {
                                         <button
                                           className="tableButton delete"
                                           onClick={() => {
-                                            handleAgentLogout(item.token);
+                                            setIsAgentLogoutPopup(true);
+                                            setAgentLogOutToken(item.token);
                                           }}
                                         >
                                           <i className="fa-solid fa-power-off"></i>
@@ -346,7 +348,48 @@ function Agents({ type }) {
             ) : (
                 ""
             )} */}
-      <ModalComponent task={"logout"} reference={"agent"} />
+      {/* <ModalComponent task={"logout"} reference={"agent"} /> */}
+      {isAgentLogoutPopup &&
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure, you want to logout this agent?
+                  </p>
+                  <div className="mt-2 d-flex justify-content-between">
+                    <button
+                      className="panelButton m-0"
+                      onClick={() => handleAgentLogout(true)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => setIsAgentLogoutPopup(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </main>
   );
 }
