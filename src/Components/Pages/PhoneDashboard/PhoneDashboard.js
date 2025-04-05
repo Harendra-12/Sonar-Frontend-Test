@@ -352,9 +352,9 @@ function PhoneDashboard() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid">
+        <Header title="Call Dashboard" />
+        <div className="container-fluid pe-3">
           <div className="row ">
-            <Header title="Call Dashboard" />
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

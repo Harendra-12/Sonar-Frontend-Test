@@ -12,6 +12,8 @@ import {
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Dialpad from "./Dialpad";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import Comments from "./Comments";
 
 function OngoingCall({
   setHangupRefresh,
@@ -85,7 +87,7 @@ function OngoingCall({
   // Logic to toggle hold and unhold
   async function holdCall(type) {
     console.log("Inside hold setp 1");
-    
+
     if (canHold) {
       console.log("Inside hold setp 2");
       if (type === "hold" && !holdProcessing) {
@@ -512,6 +514,36 @@ function OngoingCall({
       toast.error("Invalid destination number");
     }
   }
+
+  const [duplicateData, setDuplicateData] = useState([]);
+  const [showDuplicateData, setShowDuplicateData] = useState(false);
+
+  async function getDuplicateData() {
+    let response;
+
+    // Internal Calls wont call the API
+    // if (globalSession[0].destination.length < 6) {
+    //   return;
+    // }
+
+    try {
+      if (session.outgoingInviteRequest) {
+        response = await generalGetFunction(`/cdr-comments-user?destination=${globalSession[0].destination}`)
+      } else {
+        response = await generalGetFunction(`/cdr-comments-user?source=${globalSession[0].destination}`)
+      }
+      if (response.status && response.data.length > 0) {
+        setDuplicateData(response.data);
+        setShowDuplicateData(true);
+      }
+    } catch (error) {
+
+    }
+  }
+
+  useEffect(() => {
+    getDuplicateData();
+  }, [globalSession])
   return (
     <>
       <div className="audioCall position-relative">
@@ -1156,6 +1188,9 @@ function OngoingCall({
           ""
         )}
       </div>
+      {showDuplicateData &&
+        <ShowDuplicateCallData duplicateData={duplicateData} />
+      }
       {
         dialpadShow && (
           <Dialpad
@@ -1168,8 +1203,250 @@ function OngoingCall({
           />
         )
       }
+
     </>
   );
 }
 
 export default OngoingCall;
+
+// Duplicate Data Component
+export function ShowDuplicateCallData({ duplicateData }) {
+  const [showKeys, setShowKeys] = useState([
+    "Call-Direction",
+    "variable_sip_from_user",
+    // "tag",
+    // "application_state",
+    // "application_state_to_ext",
+    "e_name",
+    "Date",
+    "Time",
+    // "recording_path",
+    "variable_billsec",
+    // "Hangup-Cause",
+    // "variable_DIALSTATUS"
+  ]);
+  // Get Duplicate Data for the Caller / Callee
+  function getCallIcon(item) {
+    const callIcons = {
+      inbound: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-phone-arrow-down-left",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--funky-boy3)",
+        label: "Inbound",
+      },
+      outbound: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-phone-arrow-up-right",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--color3)",
+        label: "Outbound",
+      },
+      internal: {
+        icon:
+          item.variable_DIALSTATUS === "Missed"
+            ? "fa-solid fa-phone-missed"
+            : "fa-headset",
+        color:
+          item.variable_DIALSTATUS === "Missed"
+            ? "var(--funky-boy4)"
+            : "var(--color2)",
+        label: "Internal",
+      },
+    };
+
+    return callIcons[item["Call-Direction"]] || callIcons.internal;
+  }
+
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
+  function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const secs = (seconds % 60).toString().padStart(2, "0");
+    return `${hours}:${minutes}:${secs}`;
+  }
+
+  return (
+    <>
+      <div className="duplicateWrapper">
+        <div className="overviewTableWrapper">
+          <div className="overviewTableChild border-0 shadow-none">
+            <div className="col-xl-12">
+              <div className="tableContainer m-0 p-0">
+                <table>
+                  <thead>
+                    <th>#</th>
+                    {showKeys.map((key) => {
+                      let headerText = key; // Default to the key itself
+
+                      switch (key) {
+                        case "Call-Direction":
+                          headerText = "Call Direction";
+                          break;
+                        case "Caller-Orig-Caller-ID-Name":
+                          headerText = "Caller No.";
+                          break;
+                        case "variable_sip_from_user":
+                          headerText = "Caller No.";
+                          break;
+                        case "tag":
+                          headerText = "Tag";
+                          break;
+                        case "application_state":
+                          headerText = "Via/Route";
+                          break;
+                        case "application_state_to_ext":
+                          headerText = "Ext/Dest";
+                          break;
+                        case "e_name":
+                          headerText = "User Name"; // or whatever mapping is needed
+                          break;
+                        case "Date":
+                          headerText = "Date";
+                          break;
+                        case "Time":
+                          headerText = "Time";
+                          break;
+                        // case "recording_path":
+                        //   headerText = "Recordings";
+                        //   break;
+                        case "variable_billsec":
+                          headerText = "Duration";
+                          break;
+                        case "Hangup-Cause":
+                          headerText = "Hangup Cause";
+                          break;
+                        default:
+                        case "variable_DIALSTATUS":
+                          headerText = "Hangup Status"
+                          break;
+                      }
+
+                      return <th key={key}>{headerText}</th>;
+                    })}
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    {duplicateData?.map((call, index) => {
+                      const callIcon = getCallIcon(call); // Call the getCallIcon function
+                      return <React.Fragment key={index}>
+                        <tr
+                        >
+                          <td>
+                            {index + 1}
+                          </td>
+                          {showKeys.map((key, keyIndex) => {
+                            if (key === "Call-Direction") {
+                              return (
+                                <td>
+                                  <i
+                                    className={`fa-solid ${callIcon.icon} me-1`}
+                                    style={{ color: callIcon.color }}
+                                  ></i>
+                                  {callIcon.label}
+                                </td>
+                              );
+                            } else if (key === "e_name") {
+                              return <td >{call["e_name"]}</td>;
+                            } else if (key === "variable_sip_from_user") {
+                              return <td >{call["variable_sip_from_user"]}</td>;
+                            } else if (key === "tag") {
+                              return <td >{call["tag"]}</td>;
+                            } else if (key === "application_state") {
+                              return <td>
+                                {[
+                                  "intercept",
+                                  "eavesdrop",
+                                  "whisper",
+                                  "barge",
+                                ].includes(
+                                  call["application_state"]
+                                )
+                                  ? call[
+                                  "other_leg_destination_number"
+                                  ]
+                                  : call[
+                                  "Caller-Callee-ID-Number"
+                                  ]}{" "}
+                                {call[
+                                  "application_state_name"
+                                ] &&
+                                  `(${call["application_state_name"]})`}
+                              </td>
+                            } else if (key === "application_state_to_ext") {
+                              return <td>{call["application_state_to_ext"]}</td>;
+                            } else if (key === "Date") {
+                              return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
+                            } else if (key === "Time") {
+                              const time = formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
+                              return <td >{time}</td>;
+                            }
+                            else if (key === "variable_billsec") {
+                              return <td>{formatTime(call["variable_billsec"])}</td>;
+                            } else if (key === "Hangup-Cause") {
+                              return <td>{call["Hangup-Cause"]}</td>
+                            }
+                            else {
+                              return <td>{call[key]}</td>
+                            }
+                          })}
+                          {/* <td className="px-4 py-3">
+                            <button
+                              className="tableButton"
+                              onClick={() => handelOpenNotes(item?.id)}
+                            >
+                              <i className="fa-solid fa-comment-dots"></i>
+                            </button>
+                          </td> */}
+                        </tr>
+                      </React.Fragment>
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}

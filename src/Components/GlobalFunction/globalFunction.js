@@ -65,6 +65,8 @@ export async function generalGetFunction(endpoint) {
       });
       if (err.response?.status === 401) {
         handleNavigation("/");
+        localStorage.clear();
+        setAuthToken(null);
         return err?.response?.data;
       } else if (err?.response?.status === 429) {
         toast.error("Too many attempts. Please wait before trying again.");
@@ -100,6 +102,8 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         // handleNavigation("/");
         return err.response.data;
       } else {
@@ -129,6 +133,8 @@ export async function generalPutFunction(endpoint, data) {
         toast.error(err.response.data.message);
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         handleNavigation("/");
         return err.response.data;
       } else {
@@ -160,6 +166,8 @@ export async function generalDeleteFunction(endpoint) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         handleNavigation("/");
         return err.response.data;
       } else {
@@ -224,6 +232,8 @@ export async function generatePreSignedUrl(name) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         // handleNavigation("/");
         return err.response.data;
       } else {
