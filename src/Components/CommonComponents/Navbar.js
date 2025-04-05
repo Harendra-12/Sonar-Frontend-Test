@@ -114,6 +114,9 @@ function Navbar() {
                           "/extensions",
                           "/extensions-edit",
                           "/extensions-add",
+                          "/all-devices",
+                          "/device-provisioning-add",
+                          "/device-provisioning-edit",
                         ])
                           ? "true"
                           : "false"
@@ -140,6 +143,7 @@ function Navbar() {
                         "/extensions",
                         "/extensions-edit",
                         "/extensions-add",
+                        "/all-devices",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                       ])
@@ -205,6 +209,7 @@ function Navbar() {
                                     [
                                       "/extensions-add",
                                       "/extensions-edit",
+                                      "/all-devices",
                                       "/device-provisioning-add",
                                       "/device-provisioning-edit",
                                     ].some((path) =>
@@ -378,13 +383,14 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/phone-dashboard",
+                          "/agent-dashboard",
+
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
                           "/ring-groups",
                           "/ring-groups-add",
                           "/ring-groups-edit",
-                          "/groups",
                           "/cal-center-queue",
                           "/cal-center-queue-add",
                           "/cal-center-queue-edit",
@@ -394,6 +400,7 @@ function Navbar() {
                           "/agents-add",
                           "/agents-edit",
                           "/agents-pbx-add",
+                          "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
                         ])
@@ -412,8 +419,6 @@ function Navbar() {
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
                         "/agent-dashboard",
-                        "/device-provisioning-add",
-                        "/device-provisioning-edit",
                         "/did-listing-pbx",
                         "/did-config",
                         "/did-add",
@@ -539,7 +544,7 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-                         <li className="tabItem ">
+                          <li className="tabItem ">
                             <Link
                               // to="/extensions"
                               onClick={() => featureUnderdevelopment()}
@@ -1575,6 +1580,7 @@ function Navbar() {
                         "/call-recording-settings",
                         "/voice-music",
                         "/custom-module",
+                        "/global-permission-config"
                       ])
                         ? "show"
                         : ""
@@ -1664,6 +1670,19 @@ function Navbar() {
                               >
                                 <div className="itemTitle">
                                   Custom Module Integration
+                                </div>
+                              </NavLink>
+                            </li>
+                          }
+                          {
+                            isCustomerAdmin &&
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/global-permission-config"
+                                onClick={() => backToTop()}
+                              >
+                                <div className="itemTitle">
+                                  Global Permissions
                                 </div>
                               </NavLink>
                             </li>
