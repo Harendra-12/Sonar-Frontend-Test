@@ -1033,6 +1033,7 @@ function Messages({
   const example = []
   const newExample = []
 
+  // Send SMS Function
   const sendSMSMessage = handleSubmit(async (data) => {
     const payload = { ...data };
     try {
@@ -2884,7 +2885,24 @@ function Messages({
                   </div>
                   <div className="col-xl-12">
                     <div className="formLabel">
-                      <label htmlFor="">Enter Number</label>
+                      <label htmlFor="">Enter Sender Number</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="DID / PSTN"
+                        name="from_did"
+                        {...register("from_did", { ...requiredValidator, ...numberValidator })}
+                      />
+                      {errors.from_did && (
+                        <ErrorMessage text={errors.from_did.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter Receiver Number</label>
                     </div>
                     <div className="col-12">
                       <input
