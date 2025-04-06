@@ -4,6 +4,8 @@ import WaveSurfer from "wavesurfer.js";
 import Hover from 'wavesurfer.js/dist/plugins/hover.esm.js'
 
 const AudioWaveformCommon = ({ audioUrl }) => {
+    console.log("Inside waveform");
+    
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);

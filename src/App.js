@@ -164,11 +164,11 @@ import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
-import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
 import GroupsList from "./Components/Pages/Groups/GroupsList";
 import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
+import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -192,6 +192,7 @@ const DispatchSetter = () => {
 };
 
 function App() {
+  const adminLogout = useSelector((state) => state?.adminLogout);
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
@@ -216,10 +217,16 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
+  console.log(adminLogout,"Hey");
+  
   return (
     <>
+
       <GoogleTranslate />
       <Router>
+        {
+          adminLogout && <AdminLogoutPopUp />
+        }
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -265,8 +272,8 @@ function App() {
             <Navigate to="/dashboard" replace />
           )} />
           {/* Groups path start */}
-           <Route path="/groups" element={<GroupsList/>}/>
-           <Route path="/groups-add" element={<AddGroupsList/>}/>
+          <Route path="/groups" element={<GroupsList />} />
+          <Route path="/groups-add" element={<AddGroupsList />} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -911,6 +918,7 @@ function App() {
           theme="dark"
         />
       </Router>
+
     </>
   );
 }

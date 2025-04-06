@@ -5,7 +5,6 @@ import Header from "../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
-  featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,

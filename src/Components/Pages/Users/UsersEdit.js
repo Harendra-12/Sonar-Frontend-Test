@@ -59,7 +59,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
   const [profilePicPopup, setProfilePicPopup] = useState(false);
   const [newImage, setNewImage] = useState();
   const [isCustomerAdmin, setIsCustomerAdmin] = useState(
-    locationState?.user_role == "Company"
+    locationState?.usertype == "Company"
   );
   const [profileImage, setProfileImage] = useState(null);
   const {
@@ -454,6 +454,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                             type="button"
                             effect="ripple"
                             className="panelButton"
+                            disabled={isCustomerAdmin}
                             onClick={handleFormSubmit}
                           >
                             <span className="text">Save</span>

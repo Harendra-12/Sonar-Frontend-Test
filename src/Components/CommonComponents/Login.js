@@ -8,7 +8,7 @@ import {
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
@@ -79,7 +79,7 @@ export default Login;
 export function LoginComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const permissionRefresh = useSelector((state) => state.permissionRefresh.permissionRefresh);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -261,6 +261,8 @@ export function LoginComponent() {
               "accountDetails",
               JSON.stringify(accountData.data)
             );
+
+            // Checking if the user is a temporary user or not
             if (Number(accountData.data.company_status) < 6) {
               dispatch({
                 type: "SET_BILLINGLISTREFRESH",
@@ -285,6 +287,10 @@ export function LoginComponent() {
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
+              });
+              dispatch({
+                type: "SET_PERMISSION_REFRESH",
+                permissionRefresh: permissionRefresh + 1,
               });
               // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
               if (profile.data.user_role?.roles?.name === "Agent") {

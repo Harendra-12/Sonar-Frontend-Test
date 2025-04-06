@@ -26,6 +26,7 @@ import Duplicates from "./Duplicates";
 import ExportPopUp from "./ExportPopUp";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
+import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ function CdrFilterReport({ page }) {
   const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
   const [error, setError] = useState('');
   const [showAudio, setShowAudio] = useState(false)
+  const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -1142,7 +1144,7 @@ function CdrFilterReport({ page }) {
                                                     {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
                                                       <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
                                                         setShowDropdown={setShowDropdown} setShowAudio={setShowAudio}
-                                                        handlePlaying={handlePlaying} />
+                                                        handlePlaying={handlePlaying} setTranscribeLink={setTranscribeLink} />
                                                     )}
                                                   </td>
                                                 );
@@ -1327,38 +1329,6 @@ function CdrFilterReport({ page }) {
                                             </button>}
                                           </td>
                                         </tr>
-
-
-                                        {/* Audio Player Row */}
-                                        {/* {currentPlaying ===
-                                          item["recording_path"] &&
-                                          item["recording_path"] && (
-                                            <tr>
-                                              <td colSpan={showKeys.length + 1}>
-                                                <div className="audio-container mx-2">
-                                                  {/* <audio
-                                                    controls={true}
-                                                    ref={thisAudioRef}
-                                                    autoPlay={true}
-                                                    onEnded={() => {
-                                                      setCurrentPlaying(null);
-                                                      setAudioURL("");
-                                                    }}
-                                                  >
-                                                    <source
-                                                      src={audioURL}
-                                                      type="audio/mpeg"
-                                                    />
-                                                  </audio> */}
-                                        {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
-
-                                        {/* <button className="audioCustomButton">
-                                                    <i className="fa-sharp fa-solid fa-download" />
-                                                  </button> */}
-                                        {/* </div> */}
-                                        {/* </td> */}
-                                        {/* </tr> */}
-                                        {/* )}  */}
                                         {currentPlaying ===
                                           item["recording_path"] && showAudio &&
                                           <tr>
@@ -1368,6 +1338,18 @@ function CdrFilterReport({ page }) {
                                               </div>
                                             </td>
                                           </tr>}
+                                        {
+                                          transcribeLink === item?.recording_path ?
+                                            <tr
+                                              className="show"
+                                              id={`voiceMail${item?.id}`}
+                                            >
+                                              <td colspan="18">
+                                                <AudioTranscribe url={transcribeLink} />
+                                              </td>
+                                            </tr>
+                                            : ""
+                                        }
                                       </React.Fragment>
                                     );
                                   })}
