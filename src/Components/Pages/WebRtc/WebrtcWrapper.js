@@ -29,7 +29,6 @@ import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
 import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
-import AdminLogoutPopUp from "./AdminLogoutPopUp";
 import SmsChat from "./SmsChat";
 
 const WebrtcWrapper = () => {
