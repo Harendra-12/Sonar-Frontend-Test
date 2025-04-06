@@ -19,6 +19,7 @@ function SmsChat({ setLoading, loading }) {
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
 
   const [allSmsLogs, setAllSmsLogs] = useState([]);
+  const [iconLoading, setIconLoading] = useState(false);
 
   const {
     formState: { errors },
@@ -49,13 +50,16 @@ function SmsChat({ setLoading, loading }) {
   }, []);
 
   const getAllSMSData = async () => {
+    setIconLoading(true);
     try {
       const response = await generalGetFunction(`get-all-sms`);
       if (response.status) {
         setAllSmsLogs(response.data);
+        setIconLoading(false);
       }
     } catch (err) {
       console.log(err);
+      setIconLoading(false);
     }
   }
 
@@ -66,6 +70,7 @@ function SmsChat({ setLoading, loading }) {
       const apiData = await generalPostFunction("/send-sms", payload);
       if (apiData.status) {
         toast.success(apiData.message);
+        getAllSMSData();
       } else {
         if (apiData.errors.from_did) {
           toast.error(apiData.errors.from_did[0]);
@@ -109,7 +114,7 @@ function SmsChat({ setLoading, loading }) {
                       SMS {" "}
                       <button className="clearButton2" onClick={getAllSMSData}>
                         <i
-                          className="fa-regular fa-arrows-rotate fs-5"
+                          className={`fa-regular fa-arrows-rotate fs-5 ${iconLoading ? 'fa-spin' : ''}`}
                           style={{ color: "var(--webUtilGray)" }}
                         />
                       </button>
@@ -245,13 +250,16 @@ function SmsChat({ setLoading, loading }) {
                                     <i className="fa-light fa-user fs-5" />
                                   </div>
                                   <div
-                                    className="col-3 my-auto ms-2 ms-xl-3"
+                                    className="col-2 my-auto ms-2 ms-xl-3"
                                     style={{ cursor: "pointer" }}
                                   >
                                     <h4>{item?.from_did}</h4>
                                   </div>
+                                  <div class="callIconAdmin">
+                                    <i class={`fa-solid fa-circle-${item?.delivery_status === 'rejected' ? 'x' : 'check'} mx-2`} style={{ color: item?.delivery_status === 'rejected' ? 'var(--funky-boy4)' : "var(--ui-accent)" }}></i>
+                                  </div>
                                   <div
-                                    className="col-3 my-auto ms-2 ms-xl-3"
+                                    className="col-2 my-auto ms-2 ms-xl-3"
                                     style={{ cursor: "pointer" }}
                                   >
                                     <h4>{item?.to_did}</h4>
@@ -297,40 +305,6 @@ function SmsChat({ setLoading, loading }) {
                           </>
                         )
                       })}
-                      <div data-bell="" className="callListItem outgoing0">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-12 d-flex">
-                            <div className="profileHolder">
-                              <i className="fa-light fa-user fs-5" />
-                            </div>
-                            <div
-                              className="col-3 my-auto ms-1 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-
-                            </div>
-                            <div
-                              className="col-3 my-auto ms-1 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-
-                            </div>
-                            <div className="col-3 mx-auto">
-                              <div className="contactTags  mt-2">
-                                <span data-id={0}>Active</span>
-                              </div>
-                              {/* <h5 style={{ fontWeight: 400 }}>
-                            <i className="fa-light fa-paperclip" /> 1 Attachment
-                          </h5> */}
-                            </div>
-                            <div className="col-1 text-end ms-auto">
-                              <p className="timeAgo">12:46pm</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
