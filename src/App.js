@@ -228,7 +228,7 @@ function App() {
       <GoogleTranslate />
       <Router>
         {
-          !adminLogout && <AdminLogoutPopUp />
+          adminLogout && <AdminLogoutPopUp />
         }
         <NavigationSetter />
         <DispatchSetter />
