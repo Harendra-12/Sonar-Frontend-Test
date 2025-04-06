@@ -42,7 +42,7 @@
 } */
 
 .eFaxCompose .newMessageWrapper {
-    /* height: calc(100vh - 330px); */
+    height: calc(100vh - 195px);
     background-color: var(--ele-color);
     border-radius: 10px;
     width: 100%;
