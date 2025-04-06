@@ -1212,6 +1212,7 @@ export default OngoingCall;
 
 // Duplicate Data Component
 export function ShowDuplicateCallData({ duplicateData }) {
+  const [collapse, setCollapse] = useState(false);
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "variable_sip_from_user",
@@ -1226,6 +1227,10 @@ export function ShowDuplicateCallData({ duplicateData }) {
     // "Hangup-Cause",
     // "variable_DIALSTATUS"
   ]);
+  // Comments Modal Variables
+  const [selectedId, setSelectedId] = useState();
+  const [showComment, setShowComment] = useState(false);
+
   // Get Duplicate Data for the Caller / Callee
   function getCallIcon(item) {
     const callIcons = {
@@ -1305,148 +1310,161 @@ export function ShowDuplicateCallData({ duplicateData }) {
     return `${hours}:${minutes}:${secs}`;
   }
 
+  const handelOpenNotes = (id) => {
+    setSelectedId(id);
+    setShowComment(true);
+  }
   return (
     <>
-      <div className="duplicateWrapper">
-        <div className="overviewTableWrapper">
-          <div className="overviewTableChild border-0 shadow-none">
-            <div className="col-xl-12">
-              <div className="tableContainer m-0 p-0">
-                <table>
-                  <thead>
-                    <th>#</th>
-                    {showKeys.map((key) => {
-                      let headerText = key; // Default to the key itself
+      <div className="duplicateBody">
+        <div className="duplicateWrapper" style={{ width: collapse ? '0' : '700px' }}>
+          <div className="overviewTableWrapper p-2">
+            <div className="overviewTableChild border-0 shadow-none">
+              <div className="col-xl-12">
+                <div className="tableContainer m-0 p-0">
+                  <table>
+                    <thead>
+                      <th>#</th>
+                      {showKeys.map((key) => {
+                        let headerText = key; // Default to the key itself
 
-                      switch (key) {
-                        case "Call-Direction":
-                          headerText = "Call Direction";
-                          break;
-                        case "Caller-Orig-Caller-ID-Name":
-                          headerText = "Caller No.";
-                          break;
-                        case "variable_sip_from_user":
-                          headerText = "Caller No.";
-                          break;
-                        case "tag":
-                          headerText = "Tag";
-                          break;
-                        case "application_state":
-                          headerText = "Via/Route";
-                          break;
-                        case "application_state_to_ext":
-                          headerText = "Ext/Dest";
-                          break;
-                        case "e_name":
-                          headerText = "User Name"; // or whatever mapping is needed
-                          break;
-                        case "Date":
-                          headerText = "Date";
-                          break;
-                        case "Time":
-                          headerText = "Time";
-                          break;
-                        // case "recording_path":
-                        //   headerText = "Recordings";
-                        //   break;
-                        case "variable_billsec":
-                          headerText = "Duration";
-                          break;
-                        case "Hangup-Cause":
-                          headerText = "Hangup Cause";
-                          break;
-                        default:
-                        case "variable_DIALSTATUS":
-                          headerText = "Hangup Status"
-                          break;
-                      }
+                        switch (key) {
+                          case "Call-Direction":
+                            headerText = "Call Direction";
+                            break;
+                          case "Caller-Orig-Caller-ID-Name":
+                            headerText = "Caller No.";
+                            break;
+                          case "variable_sip_from_user":
+                            headerText = "Caller No.";
+                            break;
+                          case "tag":
+                            headerText = "Tag";
+                            break;
+                          case "application_state":
+                            headerText = "Via/Route";
+                            break;
+                          case "application_state_to_ext":
+                            headerText = "Ext/Dest";
+                            break;
+                          case "e_name":
+                            headerText = "User Name"; // or whatever mapping is needed
+                            break;
+                          case "Date":
+                            headerText = "Date";
+                            break;
+                          case "Time":
+                            headerText = "Time";
+                            break;
+                          // case "recording_path":
+                          //   headerText = "Recordings";
+                          //   break;
+                          case "variable_billsec":
+                            headerText = "Duration";
+                            break;
+                          case "Hangup-Cause":
+                            headerText = "Hangup Cause";
+                            break;
+                          default:
+                          case "variable_DIALSTATUS":
+                            headerText = "Hangup Status"
+                            break;
+                        }
 
-                      return <th key={key}>{headerText}</th>;
-                    })}
-                    <th></th>
-                  </thead>
-                  <tbody>
-                    {duplicateData?.map((call, index) => {
-                      const callIcon = getCallIcon(call); // Call the getCallIcon function
-                      return <React.Fragment key={index}>
-                        <tr
-                        >
-                          <td>
-                            {index + 1}
-                          </td>
-                          {showKeys.map((key, keyIndex) => {
-                            if (key === "Call-Direction") {
-                              return (
-                                <td>
-                                  <i
-                                    className={`fa-solid ${callIcon.icon} me-1`}
-                                    style={{ color: callIcon.color }}
-                                  ></i>
-                                  {callIcon.label}
+                        return <th key={key}>{headerText}</th>;
+                      })}
+                      <th>Comments</th>
+                    </thead>
+                    <tbody>
+                      {duplicateData?.map((call, index) => {
+                        const callIcon = getCallIcon(call); // Call the getCallIcon function
+                        return <React.Fragment key={index}>
+                          <tr
+                          >
+                            <td>
+                              {index + 1}
+                            </td>
+                            {showKeys.map((key, keyIndex) => {
+                              if (key === "Call-Direction") {
+                                return (
+                                  <td>
+                                    <i
+                                      className={`fa-solid ${callIcon.icon} me-1`}
+                                      style={{ color: callIcon.color }}
+                                    ></i>
+                                    {callIcon.label}
+                                  </td>
+                                );
+                              } else if (key === "e_name") {
+                                return <td >{call["e_name"]}</td>;
+                              } else if (key === "variable_sip_from_user") {
+                                return <td >{call["variable_sip_from_user"]}</td>;
+                              } else if (key === "tag") {
+                                return <td >{call["tag"]}</td>;
+                              } else if (key === "application_state") {
+                                return <td>
+                                  {[
+                                    "intercept",
+                                    "eavesdrop",
+                                    "whisper",
+                                    "barge",
+                                  ].includes(
+                                    call["application_state"]
+                                  )
+                                    ? call[
+                                    "other_leg_destination_number"
+                                    ]
+                                    : call[
+                                    "Caller-Callee-ID-Number"
+                                    ]}{" "}
+                                  {call[
+                                    "application_state_name"
+                                  ] &&
+                                    `(${call["application_state_name"]})`}
                                 </td>
-                              );
-                            } else if (key === "e_name") {
-                              return <td >{call["e_name"]}</td>;
-                            } else if (key === "variable_sip_from_user") {
-                              return <td >{call["variable_sip_from_user"]}</td>;
-                            } else if (key === "tag") {
-                              return <td >{call["tag"]}</td>;
-                            } else if (key === "application_state") {
-                              return <td>
-                                {[
-                                  "intercept",
-                                  "eavesdrop",
-                                  "whisper",
-                                  "barge",
-                                ].includes(
-                                  call["application_state"]
-                                )
-                                  ? call[
-                                  "other_leg_destination_number"
-                                  ]
-                                  : call[
-                                  "Caller-Callee-ID-Number"
-                                  ]}{" "}
-                                {call[
-                                  "application_state_name"
-                                ] &&
-                                  `(${call["application_state_name"]})`}
-                              </td>
-                            } else if (key === "application_state_to_ext") {
-                              return <td>{call["application_state_to_ext"]}</td>;
-                            } else if (key === "Date") {
-                              return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
-                            } else if (key === "Time") {
-                              const time = formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
-                              return <td >{time}</td>;
-                            }
-                            else if (key === "variable_billsec") {
-                              return <td>{formatTime(call["variable_billsec"])}</td>;
-                            } else if (key === "Hangup-Cause") {
-                              return <td>{call["Hangup-Cause"]}</td>
-                            }
-                            else {
-                              return <td>{call[key]}</td>
-                            }
-                          })}
-                          {/* <td className="px-4 py-3">
-                            <button
-                              className="tableButton"
-                              onClick={() => handelOpenNotes(item?.id)}
-                            >
-                              <i className="fa-solid fa-comment-dots"></i>
-                            </button>
-                          </td> */}
-                        </tr>
-                      </React.Fragment>
-                    })}
-                  </tbody>
-                </table>
+                              } else if (key === "application_state_to_ext") {
+                                return <td>{call["application_state_to_ext"]}</td>;
+                              } else if (key === "Date") {
+                                return <td >{call["variable_start_stamp"]?.split(" ")[0]}</td>;
+                              } else if (key === "Time") {
+                                const time = formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
+                                return <td >{time}</td>;
+                              }
+                              else if (key === "variable_billsec") {
+                                return <td>{formatTime(call["variable_billsec"])}</td>;
+                              } else if (key === "Hangup-Cause") {
+                                return <td>{call["Hangup-Cause"]}</td>
+                              }
+                              else {
+                                return <td>{call[key]}</td>
+                              }
+                            })}
+                            <td className="px-4 py-3">
+                              <button
+                                className="tableButton"
+                                onClick={() => handelOpenNotes(call?.id)}
+                              >
+                                <i className="fa-solid fa-comment-dots"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </React.Fragment>
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <button className="tableButton"
+          onClick={() => setCollapse(!collapse)}
+          style={{ position: 'absolute', right: '-35px', top: '50%', transform: 'translateY(-50%)' }}
+        >
+          <i className={`fa-solid fa-chevron-${collapse ? 'right' : 'left'}`} />
+        </button>
       </div>
+      {showComment && <Comments id={selectedId} setId={setSelectedId} setShowComment={setShowComment} />}
     </>
   )
 }

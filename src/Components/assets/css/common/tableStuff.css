@@ -12,6 +12,7 @@ table th {
     padding: 10px 10px;
     font-size: 0.875rem;
     background-color: var(--table-head);
+    white-space: nowrap;
 }
 
 table thead tr {
