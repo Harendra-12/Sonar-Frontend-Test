@@ -1035,27 +1035,27 @@ function Messages({
   const newExample = []
 
   // Send SMS Function
-  const sendSMSMessage = handleSubmit(async (data) => {
-    const payload = { ...data };
-    try {
-      const apiData = await generalPostFunction("/send-sms", payload);
-      if (apiData.status) {
-        toast.success(apiData.message);
-      } else {
-        if (apiData.errors.from_did) {
-          toast.error(apiData.errors.from_did[0]);
-        } else if (apiData.errors.to_did) {
-          toast.error(apiData.errors.to_did[0]);
-        } else {
-          toast.error(apiData.message);
-        }
-      }
-      reset();
-      setSendSMSPopup(false);
-    } catch (err) {
-      console.error("Error sending SMS:", err);
-    }
-  })
+  // const sendSMSMessage = handleSubmit(async (data) => {
+  //   const payload = { ...data };
+  //   try {
+  //     const apiData = await generalPostFunction("/send-sms", payload);
+  //     if (apiData.status) {
+  //       toast.success(apiData.message);
+  //     } else {
+  //       if (apiData.errors.from_did) {
+  //         toast.error(apiData.errors.from_did[0]);
+  //       } else if (apiData.errors.to_did) {
+  //         toast.error(apiData.errors.to_did[0]);
+  //       } else {
+  //         toast.error(apiData.message);
+  //       }
+  //     }
+  //     reset();
+  //     setSendSMSPopup(false);
+  //   } catch (err) {
+  //     console.error("Error sending SMS:", err);
+  //   }
+  // })
 
   return (
     <>
@@ -1314,14 +1314,14 @@ function Messages({
                       >
                         Group
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setSendSMSPopup(true)}
                         className="tabLink"
                         effect="ripple"
                         data-category="incoming"
                       >
                         SMS
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   {activeTab === "all" ? (
@@ -2880,7 +2880,7 @@ function Messages({
           ) : (
             ""
           )}
-          {sendSMSPopup &&
+          {/* {sendSMSPopup &&
             <div className="backdropContact">
               <div className="addNewContactPopup">
                 <div className="row">
@@ -2965,7 +2965,7 @@ function Messages({
                 </div>
               </div>
             </div>
-          }
+          } */}
         </section>
 
         {newGroupLoader ? (
