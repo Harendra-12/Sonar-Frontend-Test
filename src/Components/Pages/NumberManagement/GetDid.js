@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable eqeqeq */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
@@ -276,8 +276,8 @@ function GetDid() {
                         style={{ width: "100%" }}
                       >
                         <label htmlFor="quantity">Country</label>
-                        {errors.quantity && (
-                          <ErrorMessage text={errors.quantity.message} />
+                        {errors.country && (
+                          <ErrorMessage text={errors.country.message} />
                         )}
                       </div>
                       <div className="col-12">
@@ -398,6 +398,8 @@ function GetDid() {
                                     ...noSpecialCharactersValidator,
                                   })}
                                   onKeyDown={restrictToNumbers}
+                                  style={{ color: 'transparent' }}
+                                  onFocus={(e) => e.target.style.color = 'var(--form-input-text)'}
                                 />
                                 <label htmlFor="data" className="formItemDesc text-start">
                                   Input the quantity
@@ -683,77 +685,85 @@ function GetDid() {
                           <div className={`col-${selectedDid.length === 0 ? '12' : '9'}`}>
                             {did && (
                               <div className="tableContainer mt-0" style={{ borderRadius: '10px' }}>
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Number</th>
-                                      <th>Capabilities</th>
-                                      <th>Cost</th>
-                                      <th style={{ width: '100px' }}>Add To Cart</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {did.length === 0 ? (
+                                <div style={{ height: 'calc(100% - 51px)', overflowY: 'auto' }}>
+                                  <table>
+                                    <thead>
                                       <tr>
-                                        <td colSpan={99}>No TFN Available</td>
+                                        <th>Number</th>
+                                        <th>Capabilities</th>
+                                        <th>Cost</th>
+                                        <th style={{ width: '100px' }}>Add To Cart</th>
                                       </tr>
-                                    ) : (
-                                      <>
-                                        {did.map((item) => {
+                                    </thead>
+                                    <tbody>
+                                      {did.length === 0 ? (
+                                        <tr>
+                                          <td colSpan={99}>No TFN Available</td>
+                                        </tr>
+                                      ) : (
+                                        <>
+                                          {did.map((item) => {
 
-                                          return (
-                                            <tr>
-                                              <td>{item.friendly_name ? item.friendly_name : item.didSummary}</td>
-                                              <td>
-                                                <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
-                                                  {
-                                                    selectedUsage.map((item, key) => {
-                                                      if (item.label === "Voice") {
-                                                        return (
-                                                          <i className="fa-solid m-1 fa-phone" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Text") {
-                                                        return (
-                                                          <i className="fa-regular m-1 fa-comments" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Fax") {
-                                                        return (
-                                                          <i className="fa-solid m-1 fa-fax" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Emergency") {
-                                                        return (
-                                                          <i className="fa-regular m-1 fa-light-emergency-on" key={key}></i>
-                                                        )
-                                                      }
-                                                    })
-                                                  }
-                                                </div>
-                                              </td>
-                                              <td>{item.price} - {item.currency}</td>
-                                              <td>
-                                                <button
-                                                  style={{ cursor: "pointer" }}
-                                                  onClick={() => selectedDid.includes(item) ? removeDid(item) : addSelect(item)}
-                                                  className={
-                                                    selectedDid.includes(item)
-                                                      ? "tableButton delete float-end"
-                                                      : "tableButton float-end"
-                                                  }
-                                                >
-                                                  {selectedDid.includes(item) ? (
-                                                    <i className="fa-solid fa-xmark"></i>
-                                                  ) : (
-                                                    <i className="fa-solid fa-plus"></i>
-                                                  )}{" "}
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                      </>
-                                    )}
-                                  </tbody>
-                                </table>
+                                            return (
+                                              <tr>
+                                                <td>{item.friendly_name ? item.friendly_name : item.didSummary}</td>
+                                                <td>
+                                                  <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
+                                                    {
+                                                      selectedUsage.map((item, key) => {
+                                                        if (item.label === "Voice") {
+                                                          return (
+                                                            <i className="fa-solid m-1 fa-phone" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Text") {
+                                                          return (
+                                                            <i className="fa-regular m-1 fa-comments" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Fax") {
+                                                          return (
+                                                            <i className="fa-solid m-1 fa-fax" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Emergency") {
+                                                          return (
+                                                            <i className="fa-regular m-1 fa-light-emergency-on" key={key}></i>
+                                                          )
+                                                        }
+                                                      })
+                                                    }
+                                                  </div>
+                                                </td>
+                                                <td>{item.price} - {item.currency}</td>
+                                                <td>
+                                                  <button
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => selectedDid.includes(item) ? removeDid(item) : addSelect(item)}
+                                                    className={
+                                                      selectedDid.includes(item)
+                                                        ? "tableButton delete float-end"
+                                                        : "tableButton float-end"
+                                                    }
+                                                  >
+                                                    {selectedDid.includes(item) ? (
+                                                      <i className="fa-solid fa-xmark"></i>
+                                                    ) : (
+                                                      <i className="fa-solid fa-plus"></i>
+                                                    )}{" "}
+                                                  </button>
+                                                </td>
+                                              </tr>
+                                            );
+                                          })}
+                                        </>
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div className="py-2">
+                                  <button className="panelButton mx-auto" onClick={handleSubmit(onSubmit)}>
+                                    <span className="text">Refresh</span>
+                                    <span className="icon"><i className="fa-solid fa-arrows-rotate" /></span>
+                                  </button>
+                                </div>
                               </div>
                             )}
                           </div>
