@@ -426,7 +426,7 @@ export function LoginComponent() {
         <>
           {/* Log out of multiple devices */}
           <div className="backdropContact">
-            <div className="addNewContactPopup position-relative">
+            <div className="addNewContactPopup position-relative logoutPopup">
               <button className="popup_close" onClick={() => {
                     setPopUp(false);}}>
               <i class="fa-solid fa-xmark"></i>
