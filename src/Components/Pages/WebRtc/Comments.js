@@ -49,7 +49,7 @@ function Comments({ id, setId, }) {
         }
     }
     return (
-        <div className="backdropContact ">
+        <div className="backdropContact" style={{ zIndex: 15 }}>
             <div className="addNewContactPopup">
                 <div className="formRow px-0 pb-0 row">
                     {/* <div className="col-12 heading mb-0">
