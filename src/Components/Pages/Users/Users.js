@@ -334,9 +334,9 @@ const Users = () => {
                                     account.email === item.email;
 
                                   // Skip rendering the row if isCustomerAdmin is true
-                                  if (isCustomerAdmin) {
-                                    return null; // Return null to avoid rendering the row
-                                  }
+                                  // if (isCustomerAdmin) {
+                                  //   return null; // Return null to avoid rendering the row
+                                  // }
 
                                   return (
                                     <tr key={index}>
@@ -444,8 +444,8 @@ const Users = () => {
                           pageNumber={(e) => setPageNumber(e)}
                           totalPage={user.last_page}
                           from={(pageNumber - 1) * user.per_page + 1}
-                          to={user.to - 1} // -1 because customeradmin user is removed form the list
-                          total={user.total - 1} // -1 because customeradmin user is removed form the list
+                          to={user.to } 
+                          total={user.total } 
                         />
                       ) : (
                         ""

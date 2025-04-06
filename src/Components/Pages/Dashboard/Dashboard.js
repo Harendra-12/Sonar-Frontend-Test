@@ -33,6 +33,27 @@ const Dashboard = () => {
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
   const slugPermissions = useSelector((state) => state?.permissions);
+  const didAll = useSelector((state) => state.didAll);
+  const [allDID, setAllDID] = useState([]);
+
+  // Getting all DID from did listing
+  useEffect(() => {
+    if (didAll.length > 0) {
+      setAllDID(didAll)
+    } else {
+      async function getData() {
+        const apiData = await generalGetFunction(`/did/all`);
+        if (apiData?.status) {
+          setAllDID(apiData.data);
+          dispatch({
+            type: "SET_DIDALL",
+            didAll: apiData.data,
+          });
+        }
+      }
+      getData();
+    }
+  }, [])
 
   // Setting clock for the selected timnezone
   useEffect(() => {
@@ -916,26 +937,32 @@ const Dashboard = () => {
                                     <li>
                                       Total DID Purchasd{" "}
                                       <span className="float-end">
-                                        {accountDetails?.dids?.length}
+                                        {allDID?.length}
                                       </span>
                                     </li>
                                     <li>
                                       Default Outbound Number{" "}
                                       <span className="float-end">
-                                        {accountDetails?.dids?.filter((item) => item.default_outbound == 1)[0]?.did}
+                                        {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
                                       </span>
                                     </li>
                                     <li>
                                       Default Fax Number{" "}
-                                      <span className="float-end">N/A</span>
+                                      <span className="float-end">
+                                        {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
+                                      </span>
                                     </li>
                                     <li>
                                       Default SMS{" "}
-                                      <span className="float-end">N/A</span>
+                                      <span className="float-end">
+                                        {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
+                                      </span>
                                     </li>
                                     <li>
                                       Default WhatsApp{" "}
-                                      <span className="float-end">N/A</span>
+                                      <span className="float-end">
+                                        {didAll?.filter((item) => item.default_whatsapp == 1)[0]?.did}
+                                      </span>
                                     </li>
                                   </ul>
                                 </div>

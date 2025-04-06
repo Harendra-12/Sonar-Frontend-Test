@@ -166,12 +166,12 @@ import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppC
 import DialerCdrReport from "./Components/Pages/DialerModule/DialerCdrReport";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
-import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
 import GroupsList from "./Components/Pages/Groups/GroupsList";
 import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 import SmsChat from "./Components/Pages/WebRtc/SmsChat";
+import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -195,6 +195,7 @@ const DispatchSetter = () => {
 };
 
 function App() {
+  const adminLogout = useSelector((state) => state?.adminLogout);
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
@@ -219,10 +220,16 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
+  console.log(adminLogout, "Hey");
+
   return (
     <>
+
       <GoogleTranslate />
       <Router>
+        {
+          adminLogout && <AdminLogoutPopUp />
+        }
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -517,7 +524,7 @@ function App() {
             element={<CdrFilterReport page="billing" />}
           />
           <Route path="/efax" element={<EFax />} />
-     
+
           {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
@@ -919,6 +926,7 @@ function App() {
           theme="dark"
         />
       </Router>
+
     </>
   );
 }

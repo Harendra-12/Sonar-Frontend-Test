@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function DropdownForAudio({ item, index, currentPlaying, setShowDropdown, setShowAudio, handlePlaying }) {
+export default function DropdownForAudio({ item, index, currentPlaying, setShowDropdown, setShowAudio, handlePlaying, setTranscribeLink }) {
   return (
     <div>
       <ul className="actionBtnDropdowns" key={index} style={{ position: "absolute", zIndex: 1 }}>
@@ -24,7 +24,7 @@ export default function DropdownForAudio({ item, index, currentPlaying, setShowD
               Play
             </div>
           </li>
-          <li className="dropdown-item">
+          <li className="dropdown-item" onClick={() => {setTranscribeLink(item?.recording_path); setShowDropdown(false);}}>
             <div className="clearButton text-align-start">
               <i className="fa-solid fa-bolt me-2"></i>
               Transcript

@@ -69,7 +69,7 @@ const Socket = () => {
       };
 
       socket.onmessage = (event) => {
-        const parsedData = JSON.parse(event.data);
+        const parsedData = (event.data);
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result, current_time } = message;
@@ -115,8 +115,9 @@ const Socket = () => {
               break;
             case "logout_warning":
               console.log("Logout warning received:", result);
+              
+              dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
               break;
-
             case "screenShare":
               dispatch({
                 type: "SET_CONFERENCESCREENSHARESTATUS",

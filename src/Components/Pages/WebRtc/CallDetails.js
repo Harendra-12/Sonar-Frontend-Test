@@ -5,12 +5,9 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
-  generalGetFunction,
-  generalPostFunction,
-  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
-import axios from "axios";
+import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 
 function CallDetails({
   clickedCall,
@@ -32,8 +29,6 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  const [transcript, setTranscript] = useState("")
-  const [transcribeLoading, setTranscribeLoading] = useState(false)
   const [transcribeLink, setTranscribeLink] = useState("")
 
   useEffect(() => {
@@ -108,25 +103,6 @@ function CallDetails({
     }
   };
 
-  async function handleTranscript(url) {
-    setTranscribeLoading(true)
-    const newUrl = url.split(".com/").pop();
-    const presignData = await generatePreSignedUrl(newUrl);
-    if (presignData?.status && presignData?.url) {
-      const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
-      if (trnascript?.status) {
-        setTranscribeLoading(false)
-        setTranscript(trnascript?.data);
-      } else {
-        setTranscribeLoading(false)
-        setTranscript()
-      }
-    } else {
-      setTranscribeLoading(false)
-      setTranscript()
-    }
-  }
-
   const handlePlaying = async (audio) => {
     // Reseting state before Playing
     setCurrentPlaying("");
@@ -144,7 +120,7 @@ function CallDetails({
     setCurrentPlaying(audio);
 
     try {
-      const url = audio.split(".com/").pop();
+      // const url = audio.split(".com/").pop();
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
@@ -659,9 +635,6 @@ function CallDetails({
                                             className="clearButton text-align-start"
                                             onClick={() => {
                                               if (item?.recording_path) {
-                                                handleTranscript(
-                                                  item?.recording_path
-                                                );
                                                 setTranscribeLink(item?.recording_path)
                                               }
                                             }
@@ -740,16 +713,7 @@ function CallDetails({
                                     id={`voiceMail${item?.id}`}
                                   >
                                     <td colSpan={5}>
-                                      <div className="audio-container">
-                                        <div className="transcriptWrap col-12">
-                                          <div className="textContent col-12">
-                                            {
-                                              transcribeLoading ? <div className='skeleton skeleton-text'/> :
-                                                <p>{transcript}</p>
-                                            }
-                                          </div>
-                                        </div>
-                                      </div>
+                                      <AudioTranscribe url={transcribeLink} />
                                     </td>
                                   </tr>
                                   : ""
