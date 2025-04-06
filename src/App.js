@@ -161,13 +161,16 @@ import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
 import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
 import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
 import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
+import LiveChat from "./Components/Pages/Support/LiveChat";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
+import DialerCdrReport from "./Components/Pages/DialerModule/DialerCdrReport";
 import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
 import RateCardView from "./Components/Pages/RateCard/RateCardView";
 import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
 import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
 import GroupsList from "./Components/Pages/Groups/GroupsList";
 import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
+import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 
 // Unlock this if want push notification
@@ -217,8 +220,8 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
-  console.log(adminLogout,"Hey");
-  
+  console.log(adminLogout, "Hey");
+
   return (
     <>
 
@@ -274,6 +277,7 @@ function App() {
           {/* Groups path start */}
           <Route path="/groups" element={<GroupsList />} />
           <Route path="/groups-add" element={<AddGroupsList />} />
+          {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -490,6 +494,8 @@ function App() {
           <Route path="/webrtc" element={<WebrtcWrapper />} />
           <Route path="/message" element={<Messages />} />
           <Route path="/whatsapp-chatbox" element={<WhatsAppChatBox />} />
+          <Route path="/sms-chat" element={<SmsChat />} />
+
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />
@@ -518,6 +524,7 @@ function App() {
             element={<CdrFilterReport page="billing" />}
           />
           <Route path="/efax" element={<EFax />} />
+
           {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
@@ -830,6 +837,7 @@ function App() {
           {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
           <Route path="/call-desposition" element={<CallDesposition />} />
+          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
           {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
@@ -840,7 +848,7 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          {/* <Route path="/ticket" element={<Ticket />} /> */}
+          <Route path="/live-chat" element={<LiveChat />} />
           <Route path="/ticket" element={<Ticket />} />
           <Route path="/view-massage" element={<ViewMessages />} />
 

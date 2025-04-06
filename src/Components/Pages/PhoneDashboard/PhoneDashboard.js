@@ -353,8 +353,8 @@ function PhoneDashboard() {
     <main className="mainContent">
       <section id="phonePage">
         <Header title="Call Dashboard" />
-        <div className="container-fluid pe-3">
-          <div className="row ">
+        <div className="container-fluid px-3">
+          <div className="row">
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -370,11 +370,11 @@ function PhoneDashboard() {
               <AllCallsDetails />
               <div className="row my-3 gx-xxl-3 gx-lg-2">
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper a">
+                  <div className="itemWrapper a d_card1">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>Extensions</h5>
+                          <h5>Extensions250</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
                         <div
@@ -385,6 +385,20 @@ function PhoneDashboard() {
                         </div>
                       </div>
                     </div>
+                    {/* <div className="heading h-auto">
+                      <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        <div className="col-10">
+                          <h5>Extensions</h5>
+                         // <p>7 October, 2024</p>
+                        </div>
+                        <div
+                          className="col-2"
+                          onClick={() => navigate("/extensions")}
+                        >
+                          <i className="fa-duotone fa-phone-office"></i>
+                        </div>
+                      </div>
+                    </div> */}
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -399,18 +413,24 @@ function PhoneDashboard() {
                             Available
                           </p>
                         </div>
-                        <div className="col-2">
+                        {/* <div className="col-2">
                           <img
                             src={require("../../assets/images/icons/diagram.png")}
                             alt="diagram"
                           />
-                        </div>
+                        </div> */}
                       </div>
+                    </div>
+                    <div className="d_chartImg">
+                      <img
+                        src={require("../../assets/images/d-chart1.png")}
+                        alt="diagram"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper b">
+                  <div className="itemWrapper b d_card2 position-relative">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -424,11 +444,12 @@ function PhoneDashboard() {
                           <i className="fa-duotone fa-clock"></i>
                         </div>
                       </div>
+
                     </div>
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>{callCenter.length}</h5>
+                          <h4>{callCenter.length}</h4>
                           <p>
                             {activeCall.length > 0 ? activeCall
                               .filter((item) => item.application_state === "callcenter" && (item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length : 0}{" "}
@@ -442,18 +463,24 @@ function PhoneDashboard() {
                             Calls Missed */}
                           </p>
                         </div>
-                        <div className="col-2">
+                        {/* <div className="col-2">
                           <img
-                            src={require("../../assets/images/icons/diagram.png")}
+                            src={require("../../assets/images/d-chart.png")}
                             alt="diagram"
                           />
-                        </div>
+                        </div> */}
                       </div>
+                    </div>
+                    <div className="d_chartImg">
+                      <img
+                        src={require("../../assets/images/d-chart2.png")}
+                        alt="diagram"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper c">
+                  <div className="itemWrapper c d_card3">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -485,18 +512,24 @@ function PhoneDashboard() {
                             Calls Missed
                           </p>
                         </div>
-                        <div className="col-2">
+                        {/* <div className="col-2">
                           <img
                             src={require("../../assets/images/icons/diagram.png")}
                             alt="diagram"
                           />
-                        </div>
+                        </div> */}
                       </div>
+                    </div>
+                    <div className="d_chartImg">
+                      <img
+                        src={require("../../assets/images/d-chart3.png")}
+                        alt="diagram"
+                      />
                     </div>
                   </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 col-md-6 mb-xl-2 mb-lg-2 mb-md-2">
-                  <div className="itemWrapper d">
+                  <div className="itemWrapper d d_card4">
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
@@ -526,13 +559,19 @@ function PhoneDashboard() {
                             Active Users.
                           </p>
                         </div>
-                        <div className="col-2">
+                        {/* <div className="col-2">
                           <img
                             alt=""
                             src={require("../../assets/images/icons/diagram.png")}
                           />
-                        </div>
+                        </div> */}
                       </div>
+                    </div>
+                    <div className="d_chartImg">
+                      <img
+                        src={require("../../assets/images/d-chart2.png")}
+                        alt="diagram"
+                      />
                     </div>
                   </div>
                 </div>

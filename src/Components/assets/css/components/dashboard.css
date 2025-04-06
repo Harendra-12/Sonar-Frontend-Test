@@ -777,3 +777,63 @@
     left: 0;
     opacity: 0;
 }
+
+.form-iselect {
+    background-color: transparent;
+}
+
+.itemWrapper.a.d_card1 {
+    background: rgba(185, 196, 243, 0.302);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.itemWrapper.a.d_card1 h5 {
+    color: var(--text-blue-dark);
+}
+
+.itemWrapper.b.d_card2 {
+    background: rgba(0, 255, 14, 0.078);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.itemWrapper.b.d_card2 h5,
+.itemWrapper.b.d_card2 h4 {
+    color: var(--text-blue-dark);
+}
+
+.itemWrapper.b.d_card2 h5,
+.itemWrapper.b.d_card2 h4 {
+    color: var(--text-blue-dark);
+}
+
+.itemWrapper.c.d_card3 {
+    background: rgba(255, 230, 0, 0.09);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.itemWrapper.c.d_card3 h5,
+.itemWrapper.c.d_card3 h4 {
+    color: var(--text-blue-dark);
+}
+
+.itemWrapper.d.d_card4 {
+    background: rgba(255, 0, 204, 0.051);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.itemWrapper.d.d_card4 h5,
+.itemWrapper.d.d_card4 h4 {
+    color: var(--text-blue-dark);
+}
+
+.d_chartImg {
+    position: absolute;
+    top: 57px;
+    right: 0;
+    z-index: -1;
+    opacity: 0.4;
+}

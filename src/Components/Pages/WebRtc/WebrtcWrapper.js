@@ -29,6 +29,7 @@ import AgentFeedback from "./AgentFeedback";
 import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
 import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
+import SmsChat from "./SmsChat";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -70,18 +71,18 @@ const WebrtcWrapper = () => {
   const agentDeposition = useSelector((state) => state.agentDeposition);
   const [initailCallCenterPopup, setInitailCallCenterPopup] = useState(true);
   const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
-   const [callCurrentPage, setCallCurrentPage] = useState(1);
-   const [callstartDate, setCallStartDate] = useState("");
-   const [callendDate, setCallEndDate] = useState("");
-   const [callsearchQuery, setCallSearchQuery] = useState("");
-   const [callclickStatus, setCallClickStatus] = useState("all");
-  const refreshCalls=useSelector((state)=>state.refreshCalls)
+  const [callCurrentPage, setCallCurrentPage] = useState(1);
+  const [callstartDate, setCallStartDate] = useState("");
+  const [callendDate, setCallEndDate] = useState("");
+  const [callsearchQuery, setCallSearchQuery] = useState("");
+  const [callclickStatus, setCallClickStatus] = useState("all");
+  const refreshCalls = useSelector((state) => state.refreshCalls)
   const [callfilterBy, setCallFilterBy] = useState("date");
-   const [callallApiData, setCallAllApiData] = useState([]);
+  const [callallApiData, setCallAllApiData] = useState([]);
   const [callrawData, setCallRawData] = useState([]);
   const [calldata, setCallData] = useState([]);
-   const [callloading, setCallLoading] = useState(true);
-   const [isCallLoading, setIsCallLoading] = useState(false);
+  const [callloading, setCallLoading] = useState(true);
+  const [isCallLoading, setIsCallLoading] = useState(false);
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -244,15 +245,15 @@ const WebrtcWrapper = () => {
 
       if (!isRefresh && sessionStorage.getItem("tabSession") === "active" && token) {
         //API call only on tab close
-                 fetch(`${baseName}/logout?with_agents`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              keepalive: true,
+        fetch(`${baseName}/logout?with_agents`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          keepalive: true,
         }).catch((err) => console.log("API call failed:", err));
-            localStorage.clear(); 
+        localStorage.clear();
       }
     };
 
@@ -265,43 +266,43 @@ const WebrtcWrapper = () => {
     };
   }, [token]);
 
-   useEffect(() => {
-      async function fetchData() {
-        if (callCurrentPage === 1) {
-          setCallLoading(true);
+  useEffect(() => {
+    async function fetchData() {
+      if (callCurrentPage === 1) {
+        setCallLoading(true);
+      } else {
+        setIsCallLoading(false);
+      }
+      const basePaths = {
+        all: "/call-details-phone",
+        incoming: "/cdr/inbound",
+        outgoing: "/cdr/outbound",
+        missed: "/cdr/missed",
+      };
+      const basePath = basePaths[callclickStatus] || "";
+      if (basePath) {
+        const dateParam =
+          callfilterBy === "date" || callstartDate == "" || callendDate == ""
+            ? `date=${callstartDate}`
+            : `date_range=${callstartDate},${callendDate}`;
+        const url = `${basePath}?page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
+        const apiData = await generalGetFunction(url);
+
+        if (apiData.status) {
+          setCallAllApiData(apiData.data.data?.reverse());
+          const result = apiData.data.data?.reverse() || [];
+          setCallRawData(apiData.data);
+          setCallData([...calldata, ...result]);
+          setCallLoading(false);
+          setIsCallLoading(false);
         } else {
+          setCallLoading(false);
           setIsCallLoading(false);
         }
-        const basePaths = {
-          all: "/call-details-phone",
-          incoming: "/cdr/inbound",
-          outgoing: "/cdr/outbound",
-          missed: "/cdr/missed",
-        };
-        const basePath = basePaths[callclickStatus] || "";
-        if (basePath) {
-          const dateParam =
-            callfilterBy === "date" || callstartDate == "" ||callendDate == ""
-              ? `date=${callstartDate}`
-              : `date_range=${callstartDate},${callendDate}`;
-          const url = `${basePath}?page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
-          const apiData = await generalGetFunction(url);
-  
-          if (apiData.status) {
-            setCallAllApiData(apiData.data.data?.reverse());
-            const result = apiData.data.data?.reverse() || [];
-            setCallRawData(apiData.data);
-            setCallData([...calldata, ...result]);
-            setCallLoading(false);
-            setIsCallLoading(false);
-          } else {
-            setCallLoading(false);
-            setIsCallLoading(false);
-          }
-        }
       }
-      fetchData();
-    }, [callCurrentPage, callstartDate, callendDate, callsearchQuery,callclickStatus, refreshCalls]);
+    }
+    fetchData();
+  }, [callCurrentPage, callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
 
   return (
     <>
@@ -325,6 +326,8 @@ const WebrtcWrapper = () => {
         <div className="d-none">
           {extension && <SipRegister options={options} />}
         </div>
+        {activePage === "sms-chatbox" && <SmsChat loading={callloading} isLoading={isCallLoading} />}
+
         {activePage === "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
@@ -350,10 +353,10 @@ const WebrtcWrapper = () => {
             rawData={callrawData}
             setCurrentPage={setCallCurrentPage}
             setEndDate={setCallEndDate}
-            setStartDate ={setCallStartDate}
+            setStartDate={setCallStartDate}
             setSearchQuery={setCallSearchQuery}
             setFilterBy={setCallFilterBy}
-            setLoading = {setCallLoading}
+            setLoading={setCallLoading}
             setisLoading={setIsCallLoading}
             loading={callloading}
             isLoading={isCallLoading}
@@ -367,6 +370,7 @@ const WebrtcWrapper = () => {
             setAllContactLoading={setAllContactLoading}
           />
         )}
+
         {activePage === "call-center" && <CallCenter />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
@@ -431,8 +435,10 @@ const WebrtcWrapper = () => {
               }}
               minWidth={"300px"}
               minHeight={"450px"}
-              maxWidth={"600px"}
-              maxHeight={"600px"}
+              // maxWidth={"600px"}
+              // maxHeight={"600px"}
+              maxWidth={"300px"}
+              maxHeight={"450px"}
               dragHandleClassName="drag-handle" // Specify draggable area
             >
               <div

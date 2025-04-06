@@ -52,8 +52,7 @@
   margin: 0px 10px;
   width: 100%;
   color: #fff;
-  background: var(--bg-color) url("../../images/search_b.png") no-repeat 7px
-    center / 17px 17px;
+  background: var(--bg-color) url("../../images/search_b.png") no-repeat 7px center / 17px 17px;
 }
 
 #headerTitle #headerSearch::placeholder {
@@ -211,12 +210,13 @@
   border: 2px solid white;
   font-size: 10px;
 }
+
 .profilePhotoEditIcon {
   position: absolute;
-  top: 2px;
-  right: -2px;
+  bottom: 0;
+  right: 0;
   color: white;
-  background-color: rgb(240, 52, 215);
+  background-color: #3F51B5;
   height: 23px;
   width: 23px;
   display: flex;

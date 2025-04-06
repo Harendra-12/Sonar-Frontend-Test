@@ -353,3 +353,32 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   }, 100);
   sessionManager.disconnect();
 }
+
+// Function to Format Time to AM/PM
+export function formatTimeWithAMPM(timeString) {
+  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+    return "Invalid time format";
+  }
+
+  let period = 'AM';
+  let formattedHours = hours;
+
+  if (hours >= 12) {
+    period = 'PM';
+    if (hours > 12) {
+      formattedHours -= 12;
+    }
+  }
+
+  if (formattedHours === 0) {
+    formattedHours = 12; // Midnight is 12 AM
+  }
+
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedSeconds = seconds.toString().padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+}
+

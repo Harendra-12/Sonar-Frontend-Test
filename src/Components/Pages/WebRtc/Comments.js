@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 
-function Comments({ id, setId, }) {
+function Comments({ id, setId, setShowComment }) {
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
     const [commentData, setCommentData] = useState([]);
@@ -48,8 +48,14 @@ function Comments({ id, setId, }) {
 
         }
     }
+
+    const handlePopupClose = () => {
+        setComment("");
+        setId("");
+        setShowComment(false);
+    }
     return (
-        <div className="backdropContact ">
+        <div className="backdropContact" style={{ zIndex: 15 }}>
             <div className="addNewContactPopup">
                 <div className="formRow px-0 pb-0 row">
                     {/* <div className="col-12 heading mb-0">
@@ -106,7 +112,7 @@ function Comments({ id, setId, }) {
                         </div>
                         <div className="col-xl-12 mt-2">
                             <div className="d-flex justify-content-between align-items-center">
-                                <button className="panelButton gray mx-0" onClick={() => { setComment(""); setId("") }}>
+                                <button className="panelButton gray mx-0" onClick={handlePopupClose}>
                                     <span className="text">Close</span>
                                     <span className="icon">
                                         <i className="fa-solid fa-caret-left" />

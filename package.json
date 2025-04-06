@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@firebase/messaging": "^0.12.9",
     "@mui/material": "^5.15.16",
     "@radix-ui/react-dialog": "^1.1.6",

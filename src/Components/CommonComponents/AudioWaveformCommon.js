@@ -2,10 +2,13 @@ import Tippy from "@tippyjs/react";
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Hover from 'wavesurfer.js/dist/plugins/hover.esm.js'
+import AudioTranscribe from "./AudioTranscribe";
+import { featureUnderdevelopment } from "../GlobalFunction/globalFunction";
 
 const AudioWaveformCommon = ({ audioUrl }) => {
     console.log("Inside waveform");
-    
+
+    const [transcribeLink, setTranscribeLink] = useState()
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -145,7 +148,7 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                             <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
                             <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
                         </div>
-                        <div className="customAudioControls" style={{ width: '25%' }}>
+                        <div className="customAudioControls" style={{ width: 'auto' }}>
                             {/* <button
                                 className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
                                     }`}
@@ -173,7 +176,14 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                                     </label>
                                 </div>
                             </div>
+                            <button onClick={() => setTranscribeLink(audioUrl)}>
+                                <i className={`fa-solid fa-language`}></i>
+                            </button>
+                            <button onClick={() => featureUnderdevelopment()}>
+                                <i className={`fa-solid fa-download`}></i>
+                            </button>
                         </div>
+                        {audioUrl === transcribeLink && <AudioTranscribe url={transcribeLink} />}
                     </>
                 )}
         </div>

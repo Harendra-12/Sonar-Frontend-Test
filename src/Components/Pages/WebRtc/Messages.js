@@ -34,6 +34,7 @@ function Messages({
   setSelectedModule,
   isMicOn,
   isVideoOn,
+  setactivePage,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
 }) {
@@ -1034,27 +1035,27 @@ function Messages({
   const newExample = []
 
   // Send SMS Function
-  const sendSMSMessage = handleSubmit(async (data) => {
-    const payload = { ...data };
-    try {
-      const apiData = await generalPostFunction("/send-sms", payload);
-      if (apiData.status) {
-        toast.success(apiData.message);
-      } else {
-        if (apiData.errors.from_did) {
-          toast.error(apiData.errors.from_did[0]);
-        } else if (apiData.errors.to_did) {
-          toast.error(apiData.errors.to_did[0]);
-        } else {
-          toast.error(apiData.message);
-        }
-      }
-      reset();
-      setSendSMSPopup(false);
-    } catch (err) {
-      console.error("Error sending SMS:", err);
-    }
-  })
+  // const sendSMSMessage = handleSubmit(async (data) => {
+  //   const payload = { ...data };
+  //   try {
+  //     const apiData = await generalPostFunction("/send-sms", payload);
+  //     if (apiData.status) {
+  //       toast.success(apiData.message);
+  //     } else {
+  //       if (apiData.errors.from_did) {
+  //         toast.error(apiData.errors.from_did[0]);
+  //       } else if (apiData.errors.to_did) {
+  //         toast.error(apiData.errors.to_did[0]);
+  //       } else {
+  //         toast.error(apiData.message);
+  //       }
+  //     }
+  //     reset();
+  //     setSendSMSPopup(false);
+  //   } catch (err) {
+  //     console.error("Error sending SMS:", err);
+  //   }
+  // })
 
   return (
     <>
@@ -1177,8 +1178,9 @@ function Messages({
                         >
                           <div className="profileHolder" id="profileOnlineNav">
                             <img
-                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              src={account?.profile_picture}
                               alt="profile"
+                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
                           </div>
                           <div className="profileName">
@@ -1312,14 +1314,14 @@ function Messages({
                       >
                         Group
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setSendSMSPopup(true)}
                         className="tabLink"
                         effect="ripple"
                         data-category="incoming"
                       >
                         SMS
-                      </button>
+                      </button> */}
                     </div>
                   </nav>
                   {activeTab === "all" ? (
@@ -1406,7 +1408,7 @@ function Messages({
                                       return newState;
                                     });
                                   }}
-                                  className="row justify-content-between"
+                                  className="row justify-content-between d-grid"
                                 >
                                   <div className="col-xl-12 d-flex">
                                     <div
@@ -2360,7 +2362,8 @@ function Messages({
                                     role="tab"
                                     aria-controls="nav-whatsapp"
                                     aria-selected="false"
-                                    onClick={() => featureUnderdevelopment()}
+                                    // onClick={() => featureUnderdevelopment()}
+                                    onClick={() => setactivePage("whatsapp-chartbox")}
                                   >
                                     WhatsApp
                                   </button>
@@ -2877,7 +2880,7 @@ function Messages({
           ) : (
             ""
           )}
-          {sendSMSPopup &&
+          {/* {sendSMSPopup &&
             <div className="backdropContact">
               <div className="addNewContactPopup">
                 <div className="row">
@@ -2962,7 +2965,7 @@ function Messages({
                 </div>
               </div>
             </div>
-          }
+          } */}
         </section>
 
         {newGroupLoader ? (

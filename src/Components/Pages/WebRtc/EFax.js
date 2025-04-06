@@ -200,8 +200,9 @@ function EFax() {
                         >
                           <div className="profileHolder" id="profileOnlineNav">
                             <img
-                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              src={account?.profile_picture}
                               alt="profile"
+                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
                           </div>
                           <div className="profileName">
@@ -466,8 +467,7 @@ function EFax() {
 
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
-                <div
-                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -624,8 +624,7 @@ function EFax() {
 
               {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
               {showUserHistory && (
-                <div
-                  className="col-12 col-xxl-6 col-xl-7 callDetails eFaxCompose"
+                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >

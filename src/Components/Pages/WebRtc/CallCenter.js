@@ -30,7 +30,7 @@ const CallCenter = ({ initial }) => {
   const Id = account?.id || "";
 
   console.log("callCenter", callCenter);
-  
+
   useEffect(() => {
     const getData = async () => {
       const apiData = await generalGetFunction("/call-center-agent/all");
@@ -152,8 +152,9 @@ const CallCenter = ({ initial }) => {
                       >
                         <div className="profileHolder" id="profileOnlineNav">
                           <img
-                            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                            src={account?.profile_picture}
                             alt="profile"
+                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                           />
                         </div>
                         <div className="profileName">
@@ -203,16 +204,15 @@ const CallCenter = ({ initial }) => {
                             Call Center Queue{" "}
                             <button
                               disabled={loading}
-                              onClick={() =>
-                              {
+                              onClick={() => {
                                 setRefreshCenter(refreshCenter + 1);
                                 setLoading(true);
                                 dispatch({
                                   type: "SET_CALLCENTERREFRESH",
-                                  callCenterRefresh: callCenterRefresh+1,
+                                  callCenterRefresh: callCenterRefresh + 1,
                                 });
                               }
-                                
+
                               }
                               className="clearButton2"
                             >
