@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { numberValidator, requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import Tippy from "@tippyjs/react";
 
 function SmsChat({ setLoading, loading }) {
   const dispatch = useDispatch();
@@ -239,7 +240,7 @@ function SmsChat({ setLoading, loading }) {
                           <>
                             <div data-bell="" className="callListItem incomingm" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
                               <div className="row justify-content-between">
-                                <div className="col-xl-12 d-flex">
+                                <div className="col-xl-12 d-flex align-items-center">
                                   <div className="profileHolder">
                                     <i className="fa-light fa-user fs-5" />
                                   </div>
@@ -255,24 +256,27 @@ function SmsChat({ setLoading, loading }) {
                                   >
                                     <h4>{item?.to_did}</h4>
                                   </div>
-                                  <div className="col-3 mx-auto my-auto">
-                                    <div className="contactTags">
-                                      <span data-id={1}>{item?.delivery_status}</span>
-                                    </div>
-                                    {item?.additional_info &&
+                                  <div className="col-2 mx-auto my-auto">
+                                    <Tippy content={item?.additional_info || ''}>
+                                      <div className="contactTags">
+                                        <span data-id={item?.delivery_status === 'rejected' ? 2 : 1} style={{ textTransform: 'capitalize' }}>{item?.delivery_status}</span>
+                                      </div>
+                                    </Tippy>
+                                    {/* {item?.additional_info &&
                                       <h5 className="mt-2" style={{ fontWeight: 400 }}>
                                         <i className="fa-light fa-info" /> {item?.additional_info}
                                       </h5>
-                                    }
+                                    } */}
                                   </div>
-                                  <div className="col-1 text-end ms-auto">
-                                    <p className="timeAgo">{formatTimeWithAMPM(item?.created_at)}</p>
+                                  <div className="col-auto text-end ms-auto">
+                                    <p className="timeAgo">{new Date(item?.created_at).toLocaleTimeString()}</p>
+                                    {item?.message && <button className="clearButton2"><i className="fa-regular fa-comment" /></button>}
                                   </div>
                                 </div>
                               </div>
                             </div>
                             {item?.message &&
-                              <div className="collapse px-2" id="messageCollapse">
+                              <div className="collapse p-2" id={`messageCollapse${index}`}>
                                 <div className="back-comment">
                                   <span>
                                     <img
@@ -285,7 +289,7 @@ function SmsChat({ setLoading, loading }) {
                                   <span className="username-cmt ms-2"> {item?.from_did}</span>
                                   <div className="d-flex align-items-end justify-content-between mt-1">
                                     <span className="name-comment ms-1"> {item?.message}</span>
-                                    <span className="date-small"> {formatTimeWithAMPM(item?.created_at)}</span>
+                                    <span className="date-small"> {new Date(item?.created_at).toLocaleTimeString()}</span>
                                   </div>
                                 </div>
                               </div>
