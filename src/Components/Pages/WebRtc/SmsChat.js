@@ -329,21 +329,16 @@ function SmsChat({ setLoading, loading }) {
                       <div className="col-12" style={{ padding: "0px 20px" }}>
                         <div className="newMessageWrapper mb-3">
                           <div>
-                            <div className="messageTo">
+                            <div className="messageSubject">
                               <label>Enter Sender Number</label>
-                              <div className="d-flex flex-wrap">
-                                <div className="col-auto my-auto">
-                                  <input
-                                    type="text"
-                                    className="border-0 mb-0"
-                                    name="from_did"
-                                    {...register("from_did", { ...requiredValidator, ...numberValidator })}
-                                  />
-                                  {errors.from_did && (
-                                    <ErrorMessage text={errors.from_did.message} />
-                                  )}
-                                </div>
-                              </div>
+                              <input
+                                type="text"
+                                name="from_did"
+                                {...register("from_did", { ...requiredValidator, ...numberValidator })}
+                              />
+                              {errors.from_did && (
+                                <ErrorMessage text={errors.from_did.message} />
+                              )}
                             </div>
                             <div className="messageSubject">
                               <label>Enter Receiver Number</label>
