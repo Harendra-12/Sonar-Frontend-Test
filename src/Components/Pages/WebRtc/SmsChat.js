@@ -108,9 +108,6 @@ function SmsChat({ setLoading, loading }) {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0px 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: 0 }}>
-                      <button className="clearButton2 text-dark">
-                        <i className="fa-solid fa-chevron-left fs-4" />
-                      </button>{" "}
                       SMS {" "}
                       <button className="clearButton2" onClick={getAllSMSData}>
                         <i
