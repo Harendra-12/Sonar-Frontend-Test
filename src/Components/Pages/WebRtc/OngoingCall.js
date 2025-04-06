@@ -12,7 +12,7 @@ import {
 import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import Dialpad from "./Dialpad";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import Comments from "./Comments";
 
 function OngoingCall({
@@ -1270,33 +1270,6 @@ export function ShowDuplicateCallData({ duplicateData }) {
     };
 
     return callIcons[item["Call-Direction"]] || callIcons.internal;
-  }
-
-  function formatTimeWithAMPM(timeString) {
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
-
-    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
-      return "Invalid time format";
-    }
-
-    let period = 'AM';
-    let formattedHours = hours;
-
-    if (hours >= 12) {
-      period = 'PM';
-      if (hours > 12) {
-        formattedHours -= 12;
-      }
-    }
-
-    if (formattedHours === 0) {
-      formattedHours = 12; // Midnight is 12 AM
-    }
-
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = seconds.toString().padStart(2, '0');
-
-    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
   }
 
   function formatTime(seconds) {

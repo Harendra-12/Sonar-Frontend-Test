@@ -409,18 +409,15 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 480px;
-    width: 100%;
-    min-height: 500px;
+    width: 370px;
     border-radius: 10px;
     background-color: var(--ele-color);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    /* padding: 20px; */
+    padding: 20px;
     z-index: 10;
-    border-radius: 20px;
-    overflow: hidden;
 }
-.warning_img{
+
+.warning_img {
     width: 60px;
     height: 60px;
     position: absolute;
@@ -429,9 +426,11 @@
     top: 50px;
     margin-inline: auto;
 }
-.warning_img img{
+
+.warning_img img {
     width: 100%;
 }
+
 .addNewContactPopup .heading {
     display: flex;
     align-items: center;
@@ -602,7 +601,8 @@
     top: 0;
     right: 5px;
 }
-.text_warning{
+
+.text_warning {
     color: #ff5000 !important;
 }
 
@@ -617,15 +617,17 @@
     position: relative;
     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
     border: 0 !important;
-  }
-  .btn2 .text {
+}
+
+.btn2 .text {
     color: #fff;
     line-height: 1;
     position: relative;
     z-index: 5;
     margin-right: 20px;
-  }
-  .btn2 i {
+}
+
+.btn2 i {
     display: inline-block;
     position: relative;
     z-index: 5;
@@ -633,8 +635,9 @@
     transform-origin: left;
     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
     color: #dddddd;
-  }
-  .btn2::before {
+}
+
+.btn2::before {
     content: '';
     background-color: rgba(255, 220, 83, 0.18);
     width: 25px;
@@ -647,24 +650,27 @@
     right: 6px;
     transform: translateY(-50%);
     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-  }
-  /* .btn2.light {
+}
+
+/* .btn2.light {
     background-color: #21ce9e;
   } */
-  /* .btn2.light::before {
+/* .btn2.light::before {
     background-color: #154633;
   } */
-  .btn2:hover i {
+.btn2:hover i {
     transform: rotate(334deg) translateX(-7px) translateY(-2px);
-  }
-  .btn2:hover::before {
+}
+
+.btn2:hover::before {
     content: '';
     width: 100%;
     height: 100%;
     right: 0;
     background-color: #62a7f8;
-  }
-  .popup_close{
+}
+
+.popup_close {
     color: #fff;
     position: absolute;
     right: 15px;
@@ -672,12 +678,13 @@
     z-index: 5;
     border: 0;
     background: transparent;
-  }
-  .logout__Btn{
+}
+
+.logout__Btn {
     display: block;
     width: 100%;
     margin: 0;
     background: #ffe2e2 !important;
     border-radius: 25px;
     padding: 5px 15px !important;
-  }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { featureUnderdevelopment, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction, generalPostFunction, logout } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
@@ -236,40 +236,61 @@ function SmsChat({ setLoading, loading }) {
                   </div> */}
                       {allSmsLogs?.map((item, index) => {
                         return (
-                          <div data-bell="" className="callListItem incomingm" key={index}>
-                            <div className="row justify-content-between">
-                              <div className="col-xl-12 d-flex">
-                                <div className="profileHolder">
-                                  <i className="fa-light fa-user fs-5" />
-                                </div>
-                                <div
-                                  className="col-3 my-auto ms-2 ms-xl-3"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <h4>{item?.from}</h4>
-                                </div>
-                                <div
-                                  className="col-3 my-auto ms-2 ms-xl-3"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <h4>{item?.to}</h4>
-                                </div>
-                                <div className="col-3 mx-auto">
-                                  <div className="contactTags mt-2">
-                                    <span data-id={1}>{item?.status}</span>
+                          <>
+                            <div data-bell="" className="callListItem incomingm" key={index} data-bs-toggle="collapse" href={`#messageCollapse${index}`} role="button">
+                              <div className="row justify-content-between">
+                                <div className="col-xl-12 d-flex">
+                                  <div className="profileHolder">
+                                    <i className="fa-light fa-user fs-5" />
                                   </div>
-                                  {item?.error &&
-                                    <h5 style={{ fontWeight: 400 }}>
-                                      <i className="fa-light fa-paperclip" /> {item?.error}
-                                    </h5>
-                                  }
-                                </div>
-                                <div className="col-1 text-end ms-auto">
-                                  <p className="timeAgo">{item.time}</p>
+                                  <div
+                                    className="col-3 my-auto ms-2 ms-xl-3"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <h4>{item?.from_did}</h4>
+                                  </div>
+                                  <div
+                                    className="col-3 my-auto ms-2 ms-xl-3"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <h4>{item?.to_did}</h4>
+                                  </div>
+                                  <div className="col-3 mx-auto my-auto">
+                                    <div className="contactTags">
+                                      <span data-id={1}>{item?.delivery_status}</span>
+                                    </div>
+                                    {item?.additional_info &&
+                                      <h5 className="mt-2" style={{ fontWeight: 400 }}>
+                                        <i className="fa-light fa-info" /> {item?.additional_info}
+                                      </h5>
+                                    }
+                                  </div>
+                                  <div className="col-1 text-end ms-auto">
+                                    <p className="timeAgo">{formatTimeWithAMPM(item?.created_at)}</p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                            {item?.message &&
+                              <div className="collapse px-2" id="messageCollapse">
+                                <div className="back-comment">
+                                  <span>
+                                    <img
+                                      src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                      alt="img"
+                                      height={30}
+                                      width={30}
+                                    />
+                                  </span>
+                                  <span className="username-cmt ms-2"> {item?.from_did}</span>
+                                  <div className="d-flex align-items-end justify-content-between mt-1">
+                                    <span className="name-comment ms-1"> {item?.message}</span>
+                                    <span className="date-small"> {formatTimeWithAMPM(item?.created_at)}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            }
+                          </>
                         )
                       })}
                       <div data-bell="" className="callListItem outgoing0">
@@ -333,7 +354,7 @@ function SmsChat({ setLoading, loading }) {
                               <label>Enter Sender Number</label>
                               <input
                                 type="text"
-                                name="from_did"
+                                defaultValue={""}
                                 {...register("from_did", { ...requiredValidator, ...numberValidator })}
                               />
                               {errors.from_did && (
@@ -344,7 +365,7 @@ function SmsChat({ setLoading, loading }) {
                               <label>Enter Receiver Number</label>
                               <input
                                 type="text"
-                                name="to_did"
+                                defaultValue={""}
                                 {...register("to_did", { ...requiredValidator, ...numberValidator })}
                               />
                               {errors.to_did && (
@@ -356,7 +377,7 @@ function SmsChat({ setLoading, loading }) {
                               <textarea
                                 type="text"
                                 rows={3}
-                                name="message"
+                                defaultValue={""}
                                 {...register("message", {
                                   ...requiredValidator,
                                 })}
@@ -383,7 +404,6 @@ function SmsChat({ setLoading, loading }) {
             </div>
           </div>
         </section>
-
       </main>
     </>
   );
