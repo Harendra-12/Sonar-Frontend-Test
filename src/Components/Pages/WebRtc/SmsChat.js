@@ -246,17 +246,17 @@ function SmsChat({ setLoading, loading }) {
                                   className="col-3 my-auto ms-2 ms-xl-3"
                                   style={{ cursor: "pointer" }}
                                 >
-                                  <h4>{item?.from}</h4>
+                                  <h4>{item?.from_did}</h4>
                                 </div>
                                 <div
                                   className="col-3 my-auto ms-2 ms-xl-3"
                                   style={{ cursor: "pointer" }}
                                 >
-                                  <h4>{item?.to}</h4>
+                                  <h4>{item?.to_did}</h4>
                                 </div>
                                 <div className="col-3 mx-auto">
                                   <div className="contactTags mt-2">
-                                    <span data-id={1}>{item?.status}</span>
+                                    <span data-id={1}>{item?.delivery_status}</span>
                                   </div>
                                   {item?.error &&
                                     <h5 style={{ fontWeight: 400 }}>
@@ -265,7 +265,7 @@ function SmsChat({ setLoading, loading }) {
                                   }
                                 </div>
                                 <div className="col-1 text-end ms-auto">
-                                  <p className="timeAgo">{item.time}</p>
+                                  <p className="timeAgo">{item.created_at}</p>
                                 </div>
                               </div>
                             </div>
