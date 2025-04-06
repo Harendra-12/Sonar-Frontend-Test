@@ -23,7 +23,7 @@ const WhatsAppConfigEdit = () => {
           if (apiData.status) {
             const { app_id, app_token } = apiData?.data;
             reset({ app_id, app_token });
-            setLoading(true);
+            setLoading(false);
           }
         } catch (err) {
           console.log(err);

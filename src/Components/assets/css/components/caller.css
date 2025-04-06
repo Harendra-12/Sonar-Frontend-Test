@@ -301,3 +301,23 @@
     color: #fff;
     margin-bottom: 5px;
 }
+
+.react-draggable .duplicateWrapper {
+    position: absolute;
+    top: 0;
+    left: 320px;
+    z-index: 1;
+}
+
+.duplicateWrapper {
+    width: 700px;
+    height: 450px;
+    background-color: var(--webCaller);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    overflow: hidden;
+}
+
+.duplicateWrapper .tableContainer {
+    height: 390px;
+}

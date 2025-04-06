@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
 
 
 function VoiceMailReport() {
@@ -23,6 +24,8 @@ function VoiceMailReport() {
   const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio, setShowAudio] = useState(false)
+  const [ showDropDown,setShowDropdown]=useState(false)
 
   const handlePlaying = async (audio) => {
     // Reseting state before Playing
@@ -32,11 +35,11 @@ function VoiceMailReport() {
     try {
       setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
+      // if (res?.status && res?.url) {
+        setAudioURL(audio); // Update audio URL state
+        // setAudioURL(res.url);
         // Wait for React state update before accessing ref
         setTimeout(() => {
           if (thisAudioRef.current) {
@@ -46,7 +49,7 @@ function VoiceMailReport() {
             });
           }
         }, 100); // Reduced timeout to minimize delay
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -182,14 +185,23 @@ function VoiceMailReport() {
                                     <button
                                       className="tableButton px-2 mx-0"
                                       onClick={() => {
-                                        if (
-                                          currentPlaying ==
-                                          item["recording_path"]
-                                        ) {
-                                          setCurrentPlaying(null);
-                                        } else {
-                                          handlePlaying(item["recording_path"]);
-                                        }
+                                        if (currentPlaying === item["recording_path"]) {
+                                          setCurrentPlaying("");
+                                          setShowAudio(false);
+                                      } else {
+                                          setCurrentPlaying(item["recording_path"]);
+                                          setShowDropdown(true);
+                                          setShowAudio(false);
+                                      }
+                                        // if (
+                                        //   currentPlaying ==
+                                        //   item["recording_path"]
+                                        // ) {
+                                        //   setCurrentPlaying(null);
+                                        // } else {
+                                        //   handlePlaying(item["recording_path"]);
+                                        // }
+
                                       }}
                                     >
                                       <i
@@ -200,11 +212,16 @@ function VoiceMailReport() {
                                           }`}
                                       ></i>
                                     </button>
+                                    {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                        <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
+                                                                                                        setShowDropdown={setShowDropdown} setShowAudio={setShowAudio} 
+                                                                                                        handlePlaying={handlePlaying}/>
+                                                    )}
                                   </td>
                                   <td>{item.duration}</td>
                                   <td>{extractDate(item.created_at)}</td>
                                 </tr>
-                                {currentPlaying == item["recording_path"] && (
+                                {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
@@ -221,7 +238,7 @@ function VoiceMailReport() {
                                             type="audio/mpeg"
                                           />
                                         </audio> */}
-                                        <AudioWaveformCommon audioUrl={audioURL} />
+                                        {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -229,7 +246,16 @@ function VoiceMailReport() {
                                       </div>
                                     </td>
                                   </tr>
-                                )}
+                                )} */} 
+                                   {currentPlaying ===
+                                          item["recording_path"] &&showAudio&&
+                                        <tr>
+                                          <td colspan="18">
+                                            <div class="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            </div>
+                                          </td>
+                                        </tr>}
                               </>
                             );
                           })}

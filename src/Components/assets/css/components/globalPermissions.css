@@ -1,0 +1,57 @@
+.roleGroupCard {
+    box-sizing: border-box;
+    width: 190px;
+    height: 254px;
+    background: rgba(217, 217, 217, 0.58);
+    border: 1px solid white;
+    box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px);
+    border-radius: 17px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    font-weight: bolder;
+    color: black;
+}
+
+.roleGroupCard:hover {
+    border: 1px solid black;
+    transform: scale(1.05);
+}
+
+.roleGroupCard:active {
+    transform: scale(0.95) rotateZ(1.7deg);
+}
+
+.permissionsConfigWrapper {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.permissionsConfigWrapper table tr {
+    text-align: left;
+}
+
+.permissionsConfigWrapper table tr>* {
+    padding: 15px;
+}
+
+.permissionsConfigWrapper table ul {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--ele-color);
+}
+
+.permissionsConfigWrapper table ul li p {
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
+.permissionsConfigWrapper table ul li {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}

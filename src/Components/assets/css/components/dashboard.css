@@ -565,7 +565,7 @@
 .tangoNavs .nav-tabs .nav-link {
     /* color: var(--ele-color); */
     color: var(--color-subtext);
-    padding: 10px 10px;
+    padding: 10px 5px;
     font-size: 0.875rem;
 }
 
@@ -581,6 +581,7 @@
 
 .tangoNavs .nav-tabs .nav-link:hover {
     border-color: transparent;
+    background-color: transparent;
 }
 
 .chartWrapper .wrapper {

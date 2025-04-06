@@ -114,6 +114,9 @@ function Navbar() {
                           "/extensions",
                           "/extensions-edit",
                           "/extensions-add",
+                          "/all-devices",
+                          "/device-provisioning-add",
+                          "/device-provisioning-edit",
                         ])
                           ? "true"
                           : "false"
@@ -140,6 +143,7 @@ function Navbar() {
                         "/extensions",
                         "/extensions-edit",
                         "/extensions-add",
+                        "/all-devices",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                       ])
@@ -205,6 +209,7 @@ function Navbar() {
                                     [
                                       "/extensions-add",
                                       "/extensions-edit",
+                                      "/all-devices",
                                       "/device-provisioning-add",
                                       "/device-provisioning-edit",
                                     ].some((path) =>
@@ -378,6 +383,8 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/phone-dashboard",
+                          "/agent-dashboard",
+
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
@@ -393,6 +400,7 @@ function Navbar() {
                           "/agents-add",
                           "/agents-edit",
                           "/agents-pbx-add",
+                          "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
                         ])
@@ -411,8 +419,6 @@ function Navbar() {
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
                         "/agent-dashboard",
-                        "/device-provisioning-add",
-                        "/device-provisioning-edit",
                         "/did-listing-pbx",
                         "/did-config",
                         "/did-add",
@@ -538,7 +544,22 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-
+                         <li className="tabItem ">
+                            <Link  to="/groups"         
+                              onClick={backToTop}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/groups", "/groups-add"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Groups</div>
+                            </Link>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
                             permissions,
@@ -603,6 +624,25 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                          {isCustomerAdmin && (< li className="tabItem ">
+                            <NavLink
+                              to="/rate-card"
+                              onClick={backToTop}
+                              type="button"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  [
+                                    "/rate-card",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Rate Card</div>
+                            </NavLink>
+                          </li>)}
                         </ul>
                       </div>
                     </div>
@@ -900,7 +940,9 @@ function Navbar() {
                                 "/whatsapp-config",
                                 "/whatsapp-config-edit",
                                 "/teams-config",
-                                "/all-third-party-apps"
+                                "/all-third-party-apps",
+                                "/all-addons",
+                                "/all-available-addons"
                               ])
                                 ? "true"
                                 : "false"
@@ -920,7 +962,9 @@ function Navbar() {
                               "/whatsapp-config",
                               "/whatsapp-config-edit",
                               "/teams-config",
-                              "/all-third-party-apps"
+                              "/all-third-party-apps",
+                              "/all-addons",
+                              "/all-available-addons"
                             ])
                               ? "show"
                               : ""
@@ -931,7 +975,7 @@ function Navbar() {
                               <ul className="tabMenu">
                                 <li className="tabItem ">
                                   <NavLink
-                                    to="/all-third-party-apps"
+                                    to="/all-addons"
                                     onClick={() => backToTop()}
                                   >
                                     <div className="itemTitle">All Apps</div>
@@ -1535,6 +1579,7 @@ function Navbar() {
                         "/call-recording-settings",
                         "/voice-music",
                         "/custom-module",
+                        "/global-permission-config"
                       ])
                         ? "show"
                         : ""
@@ -1628,6 +1673,19 @@ function Navbar() {
                               </NavLink>
                             </li>
                           }
+                          {
+                            isCustomerAdmin &&
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/global-permission-config"
+                                onClick={() => backToTop()}
+                              >
+                                <div className="itemTitle">
+                                  Global Permissions
+                                </div>
+                              </NavLink>
+                            </li>
+                          }
                           {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
@@ -1650,23 +1708,24 @@ function Navbar() {
                   </li>
                   {isCustomerAdmin && (
                     <>
-                      <li className="">
-                        <button
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse11"
-                          aria-expanded={
-                            isChildActive(["/add-ons", "/store-extension"])
-                              ? "true"
-                              : "false"
-                          }
-                          aria-controls="collapse11"
+                      <li className="dashboard ">
+                        <NavLink
+                          to="/add-ons"
+                          onClick={backToTop}
+                          type="button"
+                        // aria-expanded={
+                        //   isChildActive(["/add-ons", "/store-extension"])
+                        //     ? "true"
+                        //     : "false"
+                        // }
+                        // aria-controls="collapse11"
                         >
                           <div className="iconHolder">
                             <i className="fa-regular fa-store"></i>
                           </div>
                           <div className="itemTitle">Store</div>
-                        </button>
-                        <div
+                        </NavLink>
+                        {/* <div
                           id="collapse11"
                           className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
                             ? "show"
@@ -1749,7 +1808,7 @@ function Navbar() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                        </div> */}
                       </li>
                       <li className="">
                         <button
@@ -1902,8 +1961,8 @@ function Navbar() {
             </ul>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
 

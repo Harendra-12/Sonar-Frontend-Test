@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable eqeqeq */
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,11 +6,16 @@ const Socket = () => {
   const ip = process.env.REACT_APP_BACKEND_IP;
   const port = process.env.REACT_APP_BACKEND_SOCKET_PORT;
   const account = useSelector((state) => state.account);
-  const token = localStorage.getItem("token");
-  const socketRef = useRef(null);
   const RoomID = useSelector((state) => state.RoomID);
   const isLogOut = useSelector((state) => state.logout);
-  // Function to send messages
+
+  const socketRef = useRef(null);
+  const connectingRef = useRef(false);
+  const reconnectAttemptsRef = useRef(0);
+  const prevTokenRef = useRef(null);
+
+  const token = localStorage.getItem("token");
+
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data));
@@ -22,18 +25,47 @@ const Socket = () => {
   };
 
   useEffect(() => {
-    let reconnectAttempts = 0;
-
     const connectWebSocket = () => {
+      const currentToken = localStorage.getItem("token");
 
-      if (isLogOut == 1 || !localStorage.getItem("token")) {
+      // Abort if user is logged out or token is missing
+      if (isLogOut === 1 || !currentToken) {
+        console.warn("WebSocket connection aborted: User is logged out or token is missing.");
         return;
       }
 
-      const socket = new WebSocket(`wss://${ip}:${port}?token=${token}`);
+      // Don't reconnect if the socket is already open and token hasn’t changed
+      if (
+        socketRef.current &&
+        socketRef.current.readyState === WebSocket.OPEN &&
+        prevTokenRef.current === currentToken
+      ) {
+        console.log("WebSocket is already connected with the same token.");
+        return;
+      }
+
+      // Prevent multiple parallel connection attempts
+      if (connectingRef.current) {
+        console.log("WebSocket connection already in progress.");
+        return;
+      }
+
+      // Close existing socket if token changed or socket not open
+      if (socketRef.current) {
+        console.log("Closing existing WebSocket connection...");
+        socketRef.current.close();
+      }
+
+      console.log("Connecting WebSocket with token:", currentToken);
+      connectingRef.current = true;
+
+      const socket = new WebSocket(`wss://${ip}:${port}?token=${currentToken}`);
 
       socket.onopen = () => {
-        reconnectAttempts = 0; // Reset reconnect attempts
+        console.log("WebSocket connected.");
+        reconnectAttemptsRef.current = 0;
+        connectingRef.current = false;
+        prevTokenRef.current = currentToken;
       };
 
       socket.onmessage = (event) => {
@@ -41,6 +73,7 @@ const Socket = () => {
         if (typeof parsedData === "string") {
           const message = JSON.parse(parsedData);
           const { key, result, current_time } = message;
+
           switch (key) {
             case "UserRegister":
               dispatch({
@@ -60,25 +93,30 @@ const Socket = () => {
               dispatch({ type: "SET_CALLSTATE", callState: result });
               break;
             case "ChannelHangupComplete":
-              dispatch({
-                type: "SET_CHANNELHANGUP",
-                channelHangupComplete: result,
-              });
+              dispatch({ type: "SET_CHANNELHANGUP", channelHangupComplete: result });
               if (Number(result.account_id) === Number(account.account_id)) {
                 dispatch({ type: "SET_BALANCE", balance: message.balance });
               }
               break;
             case "activeCalls":
               dispatch({
-                type: "SET_ACTIVECALL", activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({
-                  ...item,
-                  "serverTime": current_time
-                }))
+                type: "SET_ACTIVECALL",
+                activeCall: result
+                  .filter(
+                    (item) =>
+                      item.application_state !== "conference" &&
+                      item.account_id == account.account_id
+                  )
+                  .map((item) => ({ ...item, serverTime: current_time })),
               });
               break;
             case "Conference":
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
+            case "logout_warning":
+              console.log("Logout warning received:", result);
+              break;
+
             case "screenShare":
               dispatch({
                 type: "SET_CONFERENCESCREENSHARESTATUS",
@@ -86,46 +124,37 @@ const Socket = () => {
               });
               break;
             case "broadcastGroupMessage":
-              dispatch({
-                type: "SET_GROUPMESSAGE",
-                groupMessage: result
-              })
+              dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
               break;
             case "conferenceMessage":
-              if (
-                result["room_id"] == RoomID) {
-                // Store conference message as an object with previous data
-                dispatch({
-                  type: "SET_CONFERENCEMESSAGE",
-                  conferenceMessage: result
-                })
+              if (result["room_id"] == RoomID) {
+                dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result });
               }
               break;
             case "progressive":
-              dispatch({
-                type: "SET_PREVIEWDIALER",
-                previewDialer: result,
-              });
+              dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
               break;
-
             default:
+              break;
           }
-        } else {
         }
       };
 
-      socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
+      socket.onerror = (err) => {
+        console.error("WebSocket error:", err);
+        connectingRef.current = false;
       };
 
       socket.onclose = () => {
-        if (reconnectAttempts < 5) {
-          reconnectAttempts++;
-          setTimeout(connectWebSocket, 5000); // Retry after 5 seconds
+        console.warn("WebSocket closed.");
+        connectingRef.current = false;
+        if (reconnectAttemptsRef.current < 5 && !isLogOut) {
+          reconnectAttemptsRef.current++;
+          setTimeout(connectWebSocket, 5000);
         }
       };
 
-      socketRef.current = socket; // Update the WebSocket reference
+      socketRef.current = socket;
     };
 
     if (account && account.account_id) {
@@ -134,10 +163,11 @@ const Socket = () => {
 
     return () => {
       if (socketRef.current) {
+        console.log("Cleaning up WebSocket connection.");
         socketRef.current.close();
       }
     };
-  }, [account, dispatch, token, ip, port]);
+  }, [account, ip, port, isLogOut]);
 
   return { sendMessage };
 };

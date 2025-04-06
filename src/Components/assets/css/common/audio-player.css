@@ -45,6 +45,8 @@ audio {
 
 .audio-container .transcriptWrap .textContent {
   white-space: break-spaces;
+  max-height: 90px;
+  overflow-y: scroll;
 }
 
 .audio-container .transcriptWrap .textContent>* {

@@ -352,9 +352,9 @@ function PhoneDashboard() {
   return (
     <main className="mainContent">
       <section id="phonePage">
-        <div className="container-fluid">
+        <Header title="Call Dashboard" />
+        <div className="container-fluid pe-3">
           <div className="row ">
-            <Header title="Call Dashboard" />
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -1024,6 +1024,7 @@ function PhoneDashboard() {
                                   <th>Name</th>
                                   <th>Direction</th>
                                   <th>Origin</th>
+                                  <th>Dest</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1031,25 +1032,31 @@ function PhoneDashboard() {
                                   allUser?.data?.filter((agent) => agent?.extension_id !== null)
                                     .filter((agent) => onlineUser.includes(agent?.id))
                                     .map((agent, index) => {
-                                      const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension);
+                                      const activeCallsForAgent = activeCall.filter((call) => call?.dest || call?.cid_name === agent?.extension?.extension);
+
                                       const getCallStatus = () => {
-                                        const activeCall = activeCallsForAgent[0];
+                                        if (activeCallsForAgent.length === 0) return null;
+
+                                        const activeCall = activeCallsForAgent.filter((call) => !(call?.b_callstate !== "ACTIVE" && call?.callstate === "ACTIVE"));
+
                                         if (!activeCall) return null;
 
-                                        if (activeCall.b_callstate === "ACTIVE") {
+                                        if (activeCall[0]?.b_callstate === "ACTIVE") {
                                           return {
                                             status: "In Call",
-                                            direction: activeCall.direction,
-                                            duration: activeCall.duration,
-                                            with: activeCall.direction === "internal" ?
-                                              activeCall.cid_name :
-                                              activeCall.callee_num
+                                            direction: activeCall[0]?.direction,
+                                            duration: activeCall[0]?.duration,
+                                            from: activeCall[0]?.cid_name ?
+                                              activeCall[0]?.cid_name :
+                                              activeCall[0]?.b_cid_num,
+                                            to: activeCall[0]?.dest
                                           };
                                         }
                                         return null;
                                       };
 
                                       const callStatus = getCallStatus();
+
                                       return (
                                         <tr>
                                           <td>
@@ -1068,7 +1075,8 @@ function PhoneDashboard() {
                                               </>
                                             )}
                                           </td>
-                                          <td>{callStatus?.with}</td>
+                                          <td>{callStatus?.from}</td>
+                                          <td>{callStatus?.to}</td>
                                         </tr>
                                       )
                                     })}

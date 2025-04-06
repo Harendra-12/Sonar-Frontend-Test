@@ -164,6 +164,13 @@ import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
 import LiveChat from "./Components/Pages/Support/LiveChat";
 import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
 import DialerCdrReport from "./Components/Pages/DialerModule/DialerCdrReport";
+import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import RateCardView from "./Components/Pages/RateCard/RateCardView";
+import PagePermissionForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
+import GroupsList from "./Components/Pages/Groups/GroupsList";
+import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -222,7 +229,7 @@ function App() {
 
         <Routes>
           <Route path="/click-to-call" element={<ClickToCall />} />
-
+          <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
@@ -259,6 +266,9 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
+          {/* Groups path start */}
+          <Route path="/groups" element={<GroupsList />} />
+          <Route path="/groups-add" element={<AddGroupsList />} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -428,16 +438,20 @@ function App() {
           <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
-          {/*Addon path */}
+          {/* Rate Card Path */}
+          <Route path="/rate-card" element={<RateCardView />} />
+          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
+          {/* Rate Card Path */}
+
+          {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />
-          <Route path="/store-extension" element={<ExtensionStore />} />
+          {/*Store path */}
 
           {/*CallDashboardProvider */}
           <Route
             path="/call-dashboard-provider"
             element={<CallDashboardProvider />}
           />
-          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
@@ -849,6 +863,7 @@ function App() {
           {/* ----------- Third Party Addons */}
           <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
           <Route path="/all-addons" element={<AllAddons />} />
+          <Route path="/all-available-addons" element={<AllAvailableAddons />} />
           <Route path="/meta-config" element={<MetaConfig />} />
           <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
 

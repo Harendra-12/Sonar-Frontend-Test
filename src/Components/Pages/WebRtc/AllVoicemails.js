@@ -48,11 +48,11 @@ function AllVoicemails({ isCustomerAdmin }) {
       try {
         setCurrentPlaying(audio);
         const url = audio.split(".com/").pop();
-        const res = await generatePreSignedUrl(url);
+        // const res = await generatePreSignedUrl(url);
 
-        if (res?.status && res?.url) {
-          setAudioURL(res.url); // Update audio URL state
-
+        // if (res?.status && res?.url) {
+          setAudioURL(audio); // Update audio URL state
+          // setAudioURL(res.url);
           // Wait for React state update before accessing ref
           setTimeout(() => {
             if (thisAudioRef.current) {
@@ -62,7 +62,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               });
             }
           }, 100); // Reduced timeout to minimize delay
-        }
+        // }
       } catch (error) {
         console.error("Error in handlePlaying:", error);
       }
@@ -309,10 +309,11 @@ function AllVoicemails({ isCustomerAdmin }) {
 
     try {
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
+      // if (res?.status && res?.url) {
+        setAudioURL(audio);
+        // setAudioURL(res.url);
         setTimeout(() => {
           if (thisAudioRef.current) {
             thisAudioRef.current.load();
@@ -321,7 +322,7 @@ function AllVoicemails({ isCustomerAdmin }) {
               .catch((error) => console.error("Audio play error:", error));
           }
         }, 100);
-      }
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
       setCurrentPlaying(null);

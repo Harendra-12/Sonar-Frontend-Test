@@ -21,6 +21,7 @@ import Tippy from "@tippyjs/react";
 import Comments from "./Comments";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
 
 
 function CdrReport({ page }) {
@@ -62,8 +63,11 @@ function CdrReport({ page }) {
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
   const [storageInformation, setStorageInformation] = useState([]);
-  const accountStorageInfo = useSelector((state) => state.accountDetails.package.device_storage);
+  const accountStorageInfo = useSelector((state) => state?.accountDetails?.package?.device_storage);
   const { confirm, ModalComponent } = PromptFunctionPopup();
+  const [ showDropDown,setShowDropdown]=useState(false)
+  const [showAudio, setShowAudio] = useState(false)
+
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -300,21 +304,21 @@ function CdrReport({ page }) {
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
-      }
+      // if (res?.status && res?.url) {
+      // setAudioURL(res.url); // Update audio URL state
+      setAudioURL(audio);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -446,6 +450,24 @@ function CdrReport({ page }) {
     getStorageInformation();
   }, [])
 
+  function convertToGB(param) {
+    const units = {
+      KB: 1 / (1024 * 1024),
+      MB: 1 / 1024,
+      GB: 1,
+      TB: 1024
+    };
+
+    let unit = param?.split(" ")[1]?.toUpperCase();
+    let size = param?.split(" ")[0];
+
+    if (units[unit] !== undefined) {
+      return (size * units[unit]).toFixed(2);
+    } else {
+      return "Invalid unit";
+    }
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -562,11 +584,14 @@ function CdrReport({ page }) {
                     {page === "callrecording" && (
                       <div style={{ width: '200px' }}>
                         <div className="showEntries">
-                          <label>Storage</label><label>{accountStorageInfo === "" ? "N/A" : `${accountStorageInfo} GB`}</label>
+                          <label>Storage</label><label>{storageInformation?.total_size} / {accountStorageInfo} GB</label>
                         </div>
                         <div class="progress">
                           <Tippy content={`Storage Used: ${storageInformation?.total_size || 'N/A'}`}>
-                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${(convertToGB(storageInformation?.total_size) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                          </Tippy>
+                          <Tippy content={`Storage Left: ${accountStorageInfo - convertToGB(storageInformation?.total_size) + ' GB' || 'N/A'}`}>
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Segment one" style={{ width: `${((accountStorageInfo - convertToGB(storageInformation?.total_size)) / accountStorageInfo) * 100}%` }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                           </Tippy>
                         </div>
                       </div>
@@ -1074,17 +1099,14 @@ function CdrReport({ page }) {
                                                 <button
                                                   className="tableButton px-2 mx-0"
                                                   onClick={() => {
-                                                    if (
-                                                      item["recording_path"] ==
-                                                      currentPlaying
-                                                    ) {
-                                                      setCurrentPlaying("");
-                                                      setAudioURL("");
-                                                    } else {
-                                                      handlePlaying(
-                                                        item["recording_path"]
-                                                      );
-                                                    }
+                                                    if (currentPlaying === item["recording_path"]) {
+                                                                                  setCurrentPlaying("");
+                                                                                  setShowAudio(false);
+                                                                              } else {
+                                                                                  setCurrentPlaying(item["recording_path"]);
+                                                                                  setShowDropdown(true);
+                                                                                  setShowAudio(false);
+                                                                              }
                                                   }}
                                                 >
                                                   {currentPlaying ===
@@ -1094,6 +1116,11 @@ function CdrReport({ page }) {
                                                     <i className="fa-solid fa-play"></i>
                                                   )}
                                                 </button>
+                                                {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
+                                                         <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
+                                                                                                         setShowDropdown={setShowDropdown} setShowAudio={setShowAudio} 
+                                                                                                         handlePlaying={handlePlaying}/>
+                                                    )}
                                                 <label className="ms-2">{storageSize}</label>
                                               </div>
                                             </>
@@ -1202,12 +1229,12 @@ function CdrReport({ page }) {
                                           )}
                                       </td>
                                     </tr>
-                                    {currentPlaying ===
+                                    {/* {currentPlaying ===
                                       item["recording_path"] &&
                                       item["recording_path"] && (
                                         <tr>
                                           <td colSpan={99}>
-                                            <div className="audio-container mx-2">
+                                            <div className="audio-container mx-2"> */}
                                               {/* <audio
                                                 controls={true}
                                                 ref={thisAudioRef}
@@ -1222,7 +1249,7 @@ function CdrReport({ page }) {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                              <AudioWaveformCommon audioUrl={audioURL} />
+                                              {/* <AudioWaveformCommon audioUrl={audioURL} /> */}
                                               {/* <button
                                                 className="audioCustomButton"
                                               // onClick={() =>
@@ -1236,10 +1263,19 @@ function CdrReport({ page }) {
                                               {/* <button className="audioCustomButton ms-1">
                               <i className="fa-sharp fa-solid fa-box-archive" />
                             </button> */}
-                                            </div>
+                                            {/* </div>
                                           </td>
                                         </tr>
-                                      )}
+                                      )} */}
+                                         {currentPlaying ===
+                                          item["recording_path"] &&showAudio&&
+                                        <tr>
+                                          <td colspan="18">
+                                            <div class="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                            </div>
+                                          </td>
+                                        </tr>}
                                   </>
                                 );
                               })}

@@ -596,12 +596,13 @@ const UsersAdd = () => {
                             <label htmlFor="">Profile Picture</label>
                           </div>
                           <div className="col-6">
-                            <div className="profileView">
+                            <div className="profileView p-0">
                               <button
                                 style={{
                                   border: "none",
                                   backgroundColor: "transparent",
                                   cursor: "pointer",
+                                  padding: '0'
                                 }}
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -615,6 +616,8 @@ const UsersAdd = () => {
                                     width: "50px",
                                     position: "relative",
                                     cursor: "pointer",
+                                    borderRadius: "50%",
+                                    border: '2px solid var(--border-color)'
                                   }}
                                 >
                                   {profileImage ? (
@@ -627,7 +630,7 @@ const UsersAdd = () => {
                                       profileImage
                                         ? URL.createObjectURL(profileImage)
                                         : profileImage ||
-                                          "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                                     }
                                     alt="profile"
                                     style={{
@@ -987,22 +990,24 @@ const UsersAdd = () => {
                   <div className="card-body">
                     {newImage ? (
                       // Show image preview if a file is uploaded
-                      <div className="image-container mx-2 text-center">
+                      <div className="image-container mx-2 text-center position-relative">
                         <img
                           src={URL.createObjectURL(newImage)}
                           alt="Profile Preview"
                           style={{
-                            maxWidth: "100%",
-                            maxHeight: "200px",
-                            objectFit: "contain",
+                            width: "200px",
+                            height: "200px",
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                            border: "5px solid var(--border-color)",
                           }}
                         />
                         <button
-                          className="audioCustomButton ms-2"
+                          className="clearButton2 xl ms-2"
+                          style={{ position: "absolute", top: "0px", right: "0px" }}
                           onClick={() => setNewImage(null)}
                         >
-                          <i className="fa-sharp fa-solid fa-rotate-left" />{" "}
-                          Reset
+                          <i className="fa-sharp fa-solid fa-trash" />
                         </button>
                       </div>
                     ) : (
@@ -1110,30 +1115,28 @@ const UsersAdd = () => {
                   </div>
                   <div className="card-footer">
                     <div className="d-flex justify-content-between">
-                      <div className="d-flex">
-                        <button
-                          className="panelButton m-0"
-                          onClick={handleNewImage}
-                          disabled={!newImage}
-                        >
-                          <span className="text">Confirm</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        </button>
-                        <button
-                          className="panelButton gray"
-                          onClick={() => {
-                            setProfilePicPopup(false);
-                            setNewImage(null);
-                          }}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-xmark"></i>
-                          </span>
-                        </button>
-                      </div>
+                      <button
+                        className="panelButton m-0"
+                        onClick={handleNewImage}
+                        disabled={!newImage}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray"
+                        onClick={() => {
+                          setProfilePicPopup(false);
+                          setNewImage(null);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
                     </div>
                   </div>
                 </div>
