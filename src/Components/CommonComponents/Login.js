@@ -164,7 +164,7 @@ export function LoginComponent() {
           }
         } else {
           setLoading(false);
-          toast.error("unauthorized access!");
+          // toast.error("unauthorized access!");
         }
       } else {
         setLoading(false);
@@ -314,7 +314,7 @@ export function LoginComponent() {
           }
         } else {
           setLoading(false);
-          toast.error("unauthorized access!");
+          // toast.error("unauthorized access!");
         }
 
 
@@ -440,7 +440,7 @@ export function LoginComponent() {
               <i class="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
-                <img className="w-100 " src={require('../assets/images/login-cruve.png')} />
+                <img className="w-100 " src={require('../assets/images/login-cruve2.png')} />
               {/* <div className="warning_img">
                 <img className=" " src={require('../assets/images/crisis.png')} />
               </div> */}

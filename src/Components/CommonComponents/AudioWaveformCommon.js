@@ -140,16 +140,19 @@ const AudioWaveformCommon = ({ audioUrl }) => {
     }, [playBackSpeed])
 
     return (
-        <div className="d-flex justify-content-center align-items-center p-2" style={{ width: '100%' }}>
+        <div className="row py-3 mx-auto" style={{ width: '100%' }}>
             {error ? <div className="text-red-500 my-2">{error}</div> :
                 (
                     <>
-                        <div ref={waveformRef} style={{ width: '75%', position: "relative" }}>
-                            <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
-                            <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
+                        <div className="col-8">
+                            <div ref={waveformRef} style={{ position: "relative", backgroundColor: 'var(--ele-color)', border: '1px solid var(--border-color)', borderRadius: '10px' }}>
+                                <div style={{ position: "absolute", left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{currentTime}</div>
+                                <div style={{ position: "absolute", right: 0, top: '50%', transform: 'translateY(-50%)', fontSize: "11px", background: "rgba(0, 0, 0, 0.75)", padding: "2px", color: "#ddd", zIndex: 3 }}>{duration}</div>
+                            </div>
                         </div>
-                        <div className="customAudioControls" style={{ width: 'auto' }}>
-                            {/* <button
+                        <div className="col-4">
+                            <div className="customAudioControls" style={{ width: 'auto' }}>
+                                {/* <button
                                 className={`mt-2 px-4 py-2 text-white rounded ${error || !wavesurfer.current?.isReady ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
                                     }`}
                                 onClick={togglePlay}
@@ -157,33 +160,36 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                             >
                                 {isPlaying ? "Pause" : "Play"}
                             </button> */}
-                            <button className="clearButton2 xl" onClick={handlePlayPause}>
-                                <i className={`fa-solid fa-${isPlaying ? 'pause' : 'play'}`}></i>
-                            </button>
-                            <div className="d-flex align-items-center">
-                                <div className="me-4">
-                                    <div className="d-flex justify-content-between">
-                                        <label class="form-label mb-0">0.5x</label>
-                                        <label class="form-label mb-0 fw-bold">{playBackSpeed}x</label>
-                                        <label class="form-label mb-0">4x</label>
+                                <button className="clearButton2 xl" onClick={handlePlayPause}>
+                                    <i className={`fa-solid fa-${isPlaying ? 'pause' : 'play'}`}></i>
+                                </button>
+                                <div className="d-flex align-items-center">
+                                    <div className="me-4">
+                                        <div className="d-flex justify-content-between">
+                                            <label class="form-label mb-0">0.5x</label>
+                                            <label class="form-label mb-0 fw-bold">{playBackSpeed}x</label>
+                                            <label class="form-label mb-0">4x</label>
+                                        </div>
+                                        <input type="range" class="form-range" min="0.5" max="4" step="0.5" onChange={(e) => setPlayBackSpeed(e.target.value)} value={playBackSpeed} />
                                     </div>
-                                    <input type="range" class="form-range" min="0.5" max="4" step="0.5" onChange={(e) => setPlayBackSpeed(e.target.value)} value={playBackSpeed} />
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" onChange={(e) => handlePitchPreserve(e)} defaultChecked={true} />
+                                        <label class="form-check-label">
+                                            Preserve Pitch
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" onChange={(e) => handlePitchPreserve(e)} defaultChecked={true} />
-                                    <label class="form-check-label">
-                                        Preserve Pitch
-                                    </label>
+                                <div>
+                                    <button className="clearButton2 xl" onClick={() => setTranscribeLink(audioUrl)}>
+                                        <i className={`fa-solid fa-language`}></i>
+                                    </button>
+                                    <button className="clearButton2 xl ms-2" onClick={() => featureUnderdevelopment()}>
+                                        <i className={`fa-solid fa-download`}></i>
+                                    </button>
                                 </div>
                             </div>
-                            <button onClick={() => setTranscribeLink(audioUrl)}>
-                                <i className={`fa-solid fa-language`}></i>
-                            </button>
-                            <button onClick={() => featureUnderdevelopment()}>
-                                <i className={`fa-solid fa-download`}></i>
-                            </button>
                         </div>
-                        {audioUrl === transcribeLink && <AudioTranscribe url={transcribeLink} />}
+                        {audioUrl === transcribeLink && <div className="col-12"><AudioTranscribe url={transcribeLink} /></div>}
                     </>
                 )}
         </div>

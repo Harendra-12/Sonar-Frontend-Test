@@ -1699,3 +1699,34 @@ input[type=number] {
 .rightPanel[data-panel-size="0.0"]>* {
     display: none;
 }
+
+
+/* ========================== warning logged popup */
+
+.loggedPopupSm .iconWrapper.log__warning{
+    width: 62px;
+    height: 62px;
+}
+
+.loggedPopupSm .iconWrapper.log__warning img{
+    width: 100%;
+}
+
+
+.btn_info {
+    background-color: #2e5ee7;
+    border: 1px solid #2e5ee7;
+    color: #fff;
+    padding-inline: 16px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn_info:hover{
+    background-color: transparent;
+    border: 1px solid #2e5ee7;
+    color: #2e5ee7;
+    
+}
