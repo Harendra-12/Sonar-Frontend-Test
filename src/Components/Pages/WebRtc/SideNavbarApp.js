@@ -197,6 +197,22 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </div>
             </li>
 
+
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("sms-chatbox")}
+                  className={
+                    activePage === "sms-chatbox" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                  <i class="fa-solid fa-comment-sms"></i>
+                  </div>
+                  <div className="itemTitle">SMS</div>
+                </div>
+              </li>
+
           </ul>
         </div>
       </div>
