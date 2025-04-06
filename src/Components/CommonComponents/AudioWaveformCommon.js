@@ -2,10 +2,13 @@ import Tippy from "@tippyjs/react";
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Hover from 'wavesurfer.js/dist/plugins/hover.esm.js'
+import AudioTranscribe from "./AudioTranscribe";
+import { featureUnderdevelopment } from "../GlobalFunction/globalFunction";
 
 const AudioWaveformCommon = ({ audioUrl }) => {
     console.log("Inside waveform");
-    
+
+    const [transcribeLink, setTranscribeLink] = useState()
     const waveformRef = useRef(null);
     const wavesurfer = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -173,7 +176,14 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                                     </label>
                                 </div>
                             </div>
+                            <button onClick={() => setTranscribeLink(audioUrl)}>
+                                <i className={`fa-solid fa-language`}></i>
+                            </button>
+                            <button onClick={() => featureUnderdevelopment()}>
+                                <i className={`fa-solid fa-download`}></i>
+                            </button>
                         </div>
+                        {audioUrl === transcribeLink && <AudioTranscribe url={transcribeLink} />}
                     </>
                 )}
         </div>
