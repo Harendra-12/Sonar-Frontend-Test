@@ -83,7 +83,8 @@ var logout = 0;
 var dummyExtension = "";
 var dummyPassword = "";
 var accountBalance = 0;
-var refreshCalls=0;
+var refreshCalls = 0;
+var adminLogout = false; // Flag to track admin logout
 
 const initialState = {
   account,
@@ -169,7 +170,8 @@ const initialState = {
   dummyExtension,
   dummyPassword,
   accountBalance,
-  refreshCalls
+  refreshCalls,
+  adminLogout,
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -227,8 +229,8 @@ const counterReducer = (state = initialState, action) => {
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
       return { ...state, callCenter: action.callCenter };
-      case "SET_CALLCENTERREFRESH":
-        return { ...state, callCenterRefresh: action.callCenterRefresh };  
+    case "SET_CALLCENTERREFRESH":
+      return { ...state, callCenterRefresh: action.callCenterRefresh };
     case "SET_CALLREFRESH":
       return { ...state, refreshCalls: action.refreshCalls };
     case "SET_ALLUSER":
@@ -426,6 +428,11 @@ const counterReducer = (state = initialState, action) => {
       return {
         ...state,
         dummyPassword: action.dummyPassword,
+      };
+    case "SET_ADMIN_LOGOUT":
+      return {
+        ...state,
+        adminLogout: action.adminLogout,
       };
     case "RESET_STATE":
       return {

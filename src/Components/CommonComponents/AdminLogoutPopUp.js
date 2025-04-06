@@ -10,6 +10,7 @@ function AdminLogoutPopUp() {
     function handleLogout() {
         localStorage.clear();
         dispatch({ type: "RESET_STATE" });
+        dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: false });
         navigate("/");
     }
     return (

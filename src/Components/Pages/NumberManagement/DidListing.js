@@ -35,7 +35,7 @@ function DidListing({ page }) {
   const slugPermissions = useSelector((state) => state?.permissions);
   useEffect(() => {
     if (didAll) {
-      // setLoading(false);
+      setLoading(true);
       if (page === "number") {
         setDid(didAll);
       } else if (page === "pbx") {
@@ -66,6 +66,7 @@ function DidListing({ page }) {
       }
       getData();
     } else {
+      setLoading(true);
       async function getData() {
         const apiData = await generalGetFunction(`/did/all`);
         if (apiData?.status) {
@@ -118,19 +119,15 @@ function DidListing({ page }) {
     }
   };
 
-  async function handleClickDefault(id) {
+  async function handleClickDefault(id,action) {
     setLoading(true);
     const parsedData = {
       id: id,
     };
-    const apiData = await generalPostFunction(`/did/set-default`, parsedData);
+    const apiData = await generalPostFunction(`/did/set-default?${action?action:""}`, parsedData);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
-      // const newData = await generalGetFunction(`/did/all`);
-      // if (newData?.status) {
-      //   setDid(newData.data);
-      // }
       setRefreshDid(refreshDid + 1)
     } else {
       setLoading(false);
@@ -193,7 +190,15 @@ function DidListing({ page }) {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>All DID</h4>
+                        <h4>All DID
+                          <button
+                            className="clearButton"
+                            onClick={() => setRefreshDid(refreshDid + 1)}
+                            disabled={loading}
+                          >
+                            <i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? "fa-spin" : ""}`}></i>
+                          </button>
+                        </h4>
                         <p>Add a new DID</p>
                       </div>
                       <div className="buttonGroup">
@@ -344,12 +349,21 @@ function DidListing({ page }) {
                                 <th>Usages</th>
                               </> : ""
                             }
+                            <th style={{  textAlign: "center" }}>
+                              Default WhatsApp DID
+                            </th>
+                            <th style={{  textAlign: "center" }}>
+                              Default E-fax DID
+                            </th>
+                            <th style={{textAlign: "center" }}>
+                              Default SMS DID
+                            </th>
                             {page === "pbx" ? <>
-                              <th style={{ width: 135, textAlign: "center" }}>
+                              <th style={{ textAlign: "center" }}>
                                 Default Caller DID
                               </th>
                             </> : ""}
-                            <th style={{ width: 80, textAlign: "center" }}>
+                            <th style={{  textAlign: "center" }}>
                               Options
                             </th>
                             {/* <th>Delete</th> */}
@@ -357,7 +371,7 @@ function DidListing({ page }) {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={6} row={15} />
+                            <SkeletonTableLoader col={9} row={15} />
                           ) : (
                             <>
                               {did &&
@@ -383,6 +397,81 @@ function DidListing({ page }) {
                                           </td>
                                         </>
                                         : ""}
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_whatsapp === 1
+                                              ? "This DID is set as default for WhatsApp"
+                                              : "Set this DID default for WhatsApp"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_whatsapp === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_whatsapp === 0) {
+                                                handleClickDefault(item.id,"default_whatsapp");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_eFax === 1
+                                              ? "This DID is set as default for E-fax"
+                                              : "Set this DID default for E-fax"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_eFax === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_eFax === 0) {
+                                                handleClickDefault(item.id,"default_eFax");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_sms === 1
+                                              ? "This DID is set as default for SMS"
+                                              : "Set this DID default for SMS"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_sms === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_sms === 0) {
+                                                handleClickDefault(item.id,"default_sms");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
                                       {page === "pbx" ? <>
                                         <td style={{ cursor: "default" }}>
                                           <Tippy
