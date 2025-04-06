@@ -98,7 +98,9 @@ const CallQueueDetails = () => {
                   <div className="col-6">
                     <div className="headingExtraInfo">
                       <div className="mx-auto">
-                        <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}>
+                        <span className="badge badge-soft-primary rounded-pill" 
+                        // style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}>
+                        style={{ minWidth: '7vw',}}>
                           Active Calls:&nbsp;
                           {activeCallData.filter((e) => e.b_callstate === "ACTIVE" || e.b_callstate === "HELD").length}
                         </span>
@@ -106,7 +108,9 @@ const CallQueueDetails = () => {
                     </div>
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
-                        <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}>
+                        <span className="badge badge-soft-secondary rounded-pill" 
+                        style={{ minWidth: '7vw', }}>
+                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
                           Missed Calls:&nbsp;
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
@@ -120,7 +124,9 @@ const CallQueueDetails = () => {
                   <div className="col-6">
                     <div className="headingExtraInfo">
                       <div className="mx-auto">
-                        <span className="badge rounded-pill " style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}>
+                        <span className="badge badge-soft-success rounded-pill " 
+                        style={{ minWidth: '7vw',}}>
+                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}> */}
                           Completed Calls:&nbsp;
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
@@ -132,7 +138,9 @@ const CallQueueDetails = () => {
                     </div>
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
-                        <span className="badge rounded-pill" style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}>
+                        <span className="badge badge-soft-danger rounded-pill" 
+                        style={{ minWidth: '7vw', }}>
+                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}
                           Total Calls:&nbsp;
                           {allCallDetails?.filter_count
                             ?.filter((item) => {

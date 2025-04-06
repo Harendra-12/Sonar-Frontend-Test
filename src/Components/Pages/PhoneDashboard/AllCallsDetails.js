@@ -40,10 +40,14 @@ function AllCallsDetails() {
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--ui-accent)' }}>Active: {activeCall.length}</span>
+                            <span className="badge badge-soft-primary rounded-pill" 
+                            // style={{ backgroundColor: 'var(--ui-accent)' }}
+                            >Active: {activeCall.length}</span>
                           </div>
                           <div className="ms-1">
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--ui-accent)' }}>Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
+                            <span className="badge badge-soft-primary rounded-pill" 
+                            // style={{ backgroundColor: 'var(--ui-accent)' }}
+                            >Total:&nbsp;{callDetails?.totalCalls || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
@@ -162,10 +166,14 @@ function AllCallsDetails() {
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy3)' }}>Active: {activeCall.length}</span>
+                            <span className="badge badge-soft-secondary rounded-pill" 
+                            // style={{ backgroundColor: 'var(--funky-boy3)' }}
+                            >Active: {activeCall.length}</span>
                           </div>
                           <div className="ms-1">
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy3)' }}>Total:&nbsp;{callDetails?.inbound?.total || 'N/A'}</span>
+                            <span className="badge badge-soft-secondary rounded-pill" 
+                            // style={{ backgroundColor: 'var(--funky-boy3)' }}
+                            >Total:&nbsp;{callDetails?.inbound?.total || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
@@ -290,10 +298,14 @@ function AllCallsDetails() {
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--color3)' }}>Active: {activeCall.length}</span>
+                            <span className="badge badge-soft-success rounded-pill"
+                            //  style={{ backgroundColor: 'var(--color3)' }}
+                            >Active: {activeCall.length}</span>
                           </div>
                           <div className="ms-1">
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--color3)' }}>Total:&nbsp;{callDetails?.outbound?.total || 'N/A'}</span>
+                            <span className="badge badge-soft-success rounded-pill" 
+                            // style={{ backgroundColor: 'var(--color3)' }}
+                            >Total:&nbsp;{callDetails?.outbound?.total || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
@@ -416,10 +428,14 @@ function AllCallsDetails() {
                       <div className="col-xxl-auto col-xl-12 mt-xxl-0 mt-xl-3">
                         <div className="headingExtraInfo" style={{ marginRight: '2.2rem' }}>
                           <div>
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy4)' }}>Active: {activeCall.length}</span>
+                            <span className="badge badge-soft-danger rounded-pill" 
+                            // style={{ backgroundColor: 'var(--funky-boy4)' }}
+                            >Active: {activeCall.length}</span>
                           </div>
                           <div className="ms-1">
-                            <span className="badge rounded-pill" style={{ backgroundColor: 'var(--funky-boy4)' }}>Total:&nbsp;{callDetails?.internal?.total || 'N/A'}</span>
+                            <span className="badge badge-soft-danger rounded-pill" 
+                            // style={{ backgroundColor: 'var(--funky-boy4)' }}
+                            >Total:&nbsp;{callDetails?.internal?.total || 'N/A'}</span>
                           </div>
                         </div>
                       </div>

@@ -34,6 +34,7 @@ function Messages({
   setSelectedModule,
   isMicOn,
   isVideoOn,
+  setactivePage,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
 }) {
@@ -2360,7 +2361,8 @@ function Messages({
                                     role="tab"
                                     aria-controls="nav-whatsapp"
                                     aria-selected="false"
-                                    onClick={() => featureUnderdevelopment()}
+                                    // onClick={() => featureUnderdevelopment()}
+                                    onClick={() => setactivePage("whatsapp-chartbox")}
                                   >
                                     WhatsApp
                                   </button>

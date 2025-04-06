@@ -605,48 +605,26 @@ form.tangoNavs .nav-tabs {
     border-color: #168700 !important;
 }
 
-
-
-.overviewTableWrapper .headingExtraInfo .activecalls{
-    background-color:#2a85fc;
-    color:  #d8e4ff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 400;
-    border-radius: 5px;
+.badge-soft-primary {
+    color: var(--text-badge-accent);
+    background-color: var(--bg-badge-accent);
+    /* border: 1px solid var(--bg-badge-accent-border); */
 }
 
-.overviewTableWrapper .headingExtraInfo .ringscalls{
-    background-color: #f84238 !important;
-    color:  rgb(235, 221, 221);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 500;
-    border-radius: 5px;
+.badge-soft-secondary {
+    color: var(--text-badge-secondary);
+    background-color: var(--bg-badge-secondary);
+    /* border: 1px solid var(--bg-badge-/secondary-border); */
 }
-.overviewTableWrapper .headingExtraInfo .completecalls{
-    background-color: #00a08b !important;
-    color:  #feffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 400;
-    border-radius: 5px;
-    padding-left: 6px;
-    padding-right: 6px;
+
+.badge-soft-success {
+    color: var(--text-badge-success);
+    background-color: var(--bg-badge-success);
+    /* border: 1px solid var(--bg-badge-success-border); */
 }
-.overviewTableWrapper .headingExtraInfo .totalcalls{
-    background-color: #fa9d11 !important;
-    color:  #fdfcfa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 400;
-    border-radius: 5px;
+
+.badge-soft-danger {
+    color: var(--text-badge-danger);
+    background-color: var(--bg-badge-danger);
+    /* border: 1px solid var(--bg-badge-danger-border); */
 }

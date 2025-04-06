@@ -269,6 +269,7 @@ function App() {
           {/* Groups path start */}
           <Route path="/groups" element={<GroupsList />} />
           <Route path="/groups-add" element={<AddGroupsList />} />
+          {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
