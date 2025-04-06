@@ -531,7 +531,7 @@ const Dashboard = () => {
                             <div className="col-9">
                               <h5>{account?.name}</h5>
                               <p>Username: {account?.username}</p>
-                              <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }}>Email: {account?.email}</p>
+                              <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }} title={account?.email}>Email: {account?.email}</p>
                             </div>
                             <div className="col-3">
                               <img
