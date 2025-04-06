@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
 import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
 import AdminLogoutPopUp from "./AdminLogoutPopUp";
+import SmsChat from "./SmsChat";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -303,7 +304,8 @@ const WebrtcWrapper = () => {
       }
       fetchData();
     }, [callCurrentPage, callstartDate, callendDate, callsearchQuery,callclickStatus, refreshCalls]);
-
+ console.log(activePage);
+ 
   return (
     <>
       <style>
@@ -326,6 +328,8 @@ const WebrtcWrapper = () => {
         <div className="d-none">
           {extension && <SipRegister options={options} />}
         </div>
+        {activePage === "sms-chatbox" &&<SmsChat/>}
+
         {activePage === "call" && (
           <Call
             setHangupRefresh={setHangupRefresh}
@@ -368,6 +372,7 @@ const WebrtcWrapper = () => {
             setAllContactLoading={setAllContactLoading}
           />
         )}
+
         {activePage === "call-center" && <CallCenter />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (

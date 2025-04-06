@@ -171,6 +171,7 @@ import PermissionConfigForUser from "./Components/CommonComponents/PermissionCon
 import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
 import GroupsList from "./Components/Pages/Groups/GroupsList";
 import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
+import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -485,6 +486,8 @@ function App() {
           <Route path="/webrtc" element={<WebrtcWrapper />} />
           <Route path="/message" element={<Messages />} />
           <Route path="/whatsapp-chatbox" element={<WhatsAppChatBox />} />
+          <Route path="/sms-chat" element={<SmsChat />} />
+
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />
@@ -513,6 +516,7 @@ function App() {
             element={<CdrFilterReport page="billing" />}
           />
           <Route path="/efax" element={<EFax />} />
+     
           {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
