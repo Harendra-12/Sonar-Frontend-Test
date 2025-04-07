@@ -172,6 +172,7 @@ import GroupsList from "./Components/Pages/Groups/GroupsList";
 import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
+import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -277,6 +278,7 @@ function App() {
           {/* Groups path start */}
           <Route path="/groups" element={<GroupsList />} />
           <Route path="/groups-add" element={<AddGroupsList />} />
+          <Route path="/groups-edit" element={<EditGroupsList />} />
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}

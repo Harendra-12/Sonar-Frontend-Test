@@ -38,7 +38,7 @@ function Music() {
   const [selecetdMusicType, setSelectedMusicType] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [showAudio, setShowAudio] = useState(false)
-  const [ showDropDown,setShowDropdown]=useState(false)
+  const [showDropDown, setShowDropdown] = useState(false)
 
   // Get all previous music data
   useEffect(() => {
@@ -150,7 +150,7 @@ function Music() {
 
   // function to play the music
   const handlePlayMusic = async (id, path) => {
-    if (showAudio&&currentPlaying === id) {
+    if (showAudio && currentPlaying === id) {
       setCurrentPlaying(null); // Pause if already playing
       setAudioURL(null);
     } else {
@@ -159,8 +159,8 @@ function Music() {
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-        setAudioURL(path);
-        // setAudioURL(res.url);
+      setAudioURL(path);
+      // setAudioURL(res.url);
       // }
     }
   };
@@ -320,7 +320,7 @@ function Music() {
                           ) : (
                             <>
                               {music &&
-                                music.map((item,index) => {
+                                music.map((item, index) => {
                                   const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
 
                                   return (
@@ -331,68 +331,36 @@ function Music() {
                                         <td>{item.created_at.split("T")[0]}</td>
                                         <td>
                                           <button
-                                            className="tableButton play"
-                                            onClick={() =>{
-                
-                                              if (isCurrent) {
-                                                                            setCurrentPlaying("");
-                                                                            setShowAudio(false);
-                                                                        } else {
-                                                                            setCurrentPlaying(item.id);
-                                                                            setShowDropdown(true);
-                                                                            setShowAudio(false);
-                                                                        }
+                                            className="tableButton px-2 mx-0"
+                                            onClick={() => {
+                                              if (
+                                                item[
+                                                "recording_path"
+                                                ] ===
+                                                currentPlaying
+                                              ) {
+                                                setCurrentPlaying(
+                                                  ""
+                                                );
+                                                setAudioURL("");
+                                              } else {
+                                                handlePlayMusic(
+                                                  item[
+                                                  "recording_path"
+                                                  ]
+                                                );
+                                              }
                                             }}
                                           >
-                                            {isCurrent ? (
+                                            {currentPlaying ===
+                                              item[
+                                              "recording_path"
+                                              ] ? (
                                               <i className="fa-solid fa-stop"></i>
                                             ) : (
                                               <i className="fa-solid fa-play"></i>
                                             )}
                                           </button>
-                                          {showDropDown && isCurrent && ( 
-                                                      <ul className="" key={index} >
-                                                        <>
-                                                          <li className="dropdown-item">
-                                                            <div
-                                                              className="clearButton text-align-start"
-                                                              onClick={(e) => {                                                       
-                                                                e.stopPropagation();
-                                                                if (isCurrent) {
-                                                                  setShowDropdown(false);
-                                                                  setShowAudio(true);
-                                                                  handlePlayMusic(
-                                                                    item.id,
-                                                                    item.path
-                                                                  )
-                                                                }
-                                                              }}
-                                                            >
-                                                              <i
-                                                                className={`fa-solid fa-${
-                                                                  item?.recording_path !== null ? "play" : "triangle-exclamation"
-                                                                } me-2`}
-                                                              ></i>
-                                                              Play
-                                                            </div>
-                                                          </li>
-                                                          <li className="dropdown-item">
-                                                            <div className="clearButton text-align-start">
-                                                              <i className="fa-solid fa-bolt me-2"></i>
-                                                              Transcript
-                                                            </div>
-                                                          </li>
-                                                        </>
-                                                        <>
-                                                          <li className="dropdown-item">
-                                                            <div className="clearButton text-align-start">
-                                                              <i className="fa-regular fa-download"></i> Download
-                                                            </div>
-                                                          </li>
-                                                        </>
-                                                        <li className="dropdown-item"></li>
-                                                      </ul>
-                                                    )}
                                         </td>
                                         <td>
                                           <button
@@ -443,7 +411,7 @@ function Music() {
                                                   type="audio/mpeg"
                                                 />
                                               </audio> */}
-                                              {/* <button
+                                      {/* <button
                                               className="audioCustomButton"
                                               onClick={() => {
                                                 const link =
@@ -458,18 +426,21 @@ function Music() {
                                             >
                                               <i className="fa-sharp fa-solid fa-download"></i>
                                             </button> */}
-                                            {/* </div>
+                                      {/* </div>
                                           </td>
                                         </tr>
-                                      )} */} 
-                                         {isCurrent &&showAudio&&
-                                        <tr>
-                                          <td colspan="18">
-                                            <div class="audio-container mx-2">
-                                            <AudioWaveformCommon audioUrl={audioURL} />
-                                            </div>
-                                          </td>
-                                        </tr>}
+                                      )} */}
+                                      {currentPlaying ===
+                                        item["recording_path"] &&
+                                        item["recording_path"] && (
+                                          <tr>
+                                            <td colSpan={99}>
+                                              <div className="audio-container mx-2">
+                                                <AudioWaveformCommon audioUrl={audioURL} />
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )}
                                     </React.Fragment>
                                   );
                                 })}

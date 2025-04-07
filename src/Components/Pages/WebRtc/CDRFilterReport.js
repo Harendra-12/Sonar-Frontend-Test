@@ -73,7 +73,7 @@ function CdrFilterReport({ page }) {
   const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
   const [error, setError] = useState('');
   const [showAudio, setShowAudio] = useState(false)
-  const [transcribeLink, setTranscribeLink] = useState()
+  // const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
@@ -1117,35 +1117,39 @@ function CdrFilterReport({ page }) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
-                                                    {item["recording_path"] && item["variable_billsec"] > 0 && (
+                                                    {item["recording_path"] && item["variable_billsec"] > 0 &&
                                                       <button
                                                         className="tableButton px-2 mx-0"
                                                         onClick={() => {
-
-                                                          if (currentPlaying === item["recording_path"]) {
-                                                            setCurrentPlaying("");
-                                                            setShowAudio(false);
-
+                                                          if (
+                                                            item[
+                                                            "recording_path"
+                                                            ] ===
+                                                            currentPlaying
+                                                          ) {
+                                                            setCurrentPlaying(
+                                                              ""
+                                                            );
+                                                            setAudioURL("");
                                                           } else {
-                                                            setCurrentPlaying(item["recording_path"]);
-                                                            setShowDropdown(true); // Open dropdown when playing
-                                                            setShowAudio(false);
+                                                            handlePlaying(
+                                                              item[
+                                                              "recording_path"
+                                                              ]
+                                                            );
                                                           }
                                                         }}
                                                       >
-                                                        {currentPlaying === item["recording_path"] ? (
+                                                        {currentPlaying ===
+                                                          item[
+                                                          "recording_path"
+                                                          ] ? (
                                                           <i className="fa-solid fa-stop"></i>
                                                         ) : (
                                                           <i className="fa-solid fa-play"></i>
                                                         )}
                                                       </button>
-                                                    )}
-
-                                                    {showDropDown && currentPlaying === item["recording_path"] && ( // Conditional Rendering
-                                                      <DropdownForAudio item={item} index={index} currentPlaying={currentPlaying}
-                                                        setShowDropdown={setShowDropdown} setShowAudio={setShowAudio}
-                                                        handlePlaying={handlePlaying} setTranscribeLink={setTranscribeLink} />
-                                                    )}
+                                                    }
                                                   </td>
                                                 );
                                               } else if (
@@ -1330,15 +1334,17 @@ function CdrFilterReport({ page }) {
                                           </td>
                                         </tr>
                                         {currentPlaying ===
-                                          item["recording_path"] && showAudio &&
-                                          <tr>
-                                            <td colspan="18">
-                                              <div class="audio-container mx-2">
-                                                <AudioWaveformCommon audioUrl={audioURL} />
-                                              </div>
-                                            </td>
-                                          </tr>}
-                                        {
+                                          item["recording_path"] &&
+                                          item["recording_path"] && (
+                                            <tr>
+                                              <td colSpan={showKeys.length + 1}>
+                                                <div className="audio-container mx-2">
+                                                  <AudioWaveformCommon audioUrl={audioURL} />
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          )}
+                                        {/* {
                                           transcribeLink === item?.recording_path ?
                                             <tr
                                               className="show"
@@ -1349,7 +1355,7 @@ function CdrFilterReport({ page }) {
                                               </td>
                                             </tr>
                                             : ""
-                                        }
+                                        } */}
                                       </React.Fragment>
                                     );
                                   })}

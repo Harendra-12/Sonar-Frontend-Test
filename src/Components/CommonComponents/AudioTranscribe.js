@@ -33,7 +33,7 @@ function AudioTranscribe({ url }) {
         }
     }, [url])
     return (
-        <div className="audio-container">
+        <div className="audio-container mb-0">
             <div className="transcriptWrap col-12">
                 <div className="textContent col-12">
                     {
