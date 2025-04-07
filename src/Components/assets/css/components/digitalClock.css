@@ -76,3 +76,58 @@
     width: 100%;
     background-color: #1f2937;
 }
+
+
+/* ========================== new clock */
+
+
+.digital__clock {
+  /* font-family: "Share Tech Mono", monospace; */
+  /* color: var(--text-timer-color); */
+  text-align: center;
+  background: rgba(139, 139, 139, 0.29);
+  position: relative;
+  padding: 5px 10px;
+  border-radius: 8px;
+  text-shadow: 0 0 20px #004dff;
+  isolation: isolate;
+}
+.digital__clock::before{
+    content: '';
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffec00;
+    filter: blur(40px);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+.digital__clock::after{
+    content: '';
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #00e1ff;
+    filter: blur(25px);
+    position: absolute;
+    top: 0;
+    right: 30px;
+    z-index: -1;
+}
+.digital__clock .d_time {
+  letter-spacing: 0.05em;
+  font-size: 20px !important;
+  color: #fff !important;
+  font-weight: 600;
+    letter-spacing: 3px;
+}
+.digital__clock .d_date {
+  letter-spacing: 0.1em;
+  font-size: 24px !important;
+}
+.digital__clock .text {
+  letter-spacing: 0.1em;
+  font-size: 12px !important;
+  padding: 20px 0 0;
+}

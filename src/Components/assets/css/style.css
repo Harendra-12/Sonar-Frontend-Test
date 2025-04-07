@@ -74,6 +74,7 @@
   --color1: #360568;
   /* --color2: #3e8ef7; */
   --color2: #62a7f8;
+  
   --color2-trans: #62a7f830;
   /* Accent Color */
   /* --ui-accent: #3e8ef7; */
@@ -86,9 +87,11 @@
   --ui-accent-green-trans: #b7e92b30;
   --color3: #f17d01;
   --color3-trans: #ffc46e30; */
-  --ui-accent-green: #62A8AC;
+  /* --ui-accent-green: #62A8AC; */
+  --ui-accent-green: #00a498;
   --ui-accent-green-trans: #62A8AC30;
   --color3: #FF8C42;
+
   --color3-trans: #FF8C4230;
   /* Highlight, Notification & Alert Color */
   --color-text: #fff;
@@ -137,22 +140,31 @@
   --chat-header: #f1f2f6;
   /* ==== new badge color */
   --bg-badge-accent: rgba(0, 239, 255, 0.129);
-  /* --bg-badge-accent-border: #d9f6f8; */
+  --bg-badge-accent-border: #d9f6f8;
   --text-badge-accent: #02c0ce;
 
   --bg-badge-secondary: rgba(0, 17, 255, 0.129);
-  /* --bg-badge-secondary-border: #ebecfa; */
+  --bg-badge-secondary-border: #ebecfa;
   --text-badge-secondary: #777edd;
 
   --bg-badge-success: rgba(0, 255, 179, 0.161);
-  /* --bg-badge-success-border: #daf8ef; */
+  --bg-badge-success-border: #daf8ef;
   --text-badge-success: #0acf97;
 
   --bg-badge-danger: rgba(255, 0, 140, 0.212);
-  /* --bg-badge-danger-border: #fde6e9; */
+  --bg-badge-danger-border: #fde6e9;
   --text-badge-danger: #bb036a;
   
   --text-blue-dark: #15264b;
+  --text-timer-color: #192ea2;
+  --dash-listing-bg: #d6dcff;
+  --dash-listing-text: #013d7a;
+  --dash-listing-border: #2747f3;
+  --dash-listing-hover-border: #0063c5;
+  --dash-listing-hover-text: #0065a8;
+  --header-dark-gray: #9fd4ff;
+  --listing-color3: #ff490a;
+  --listing-color2: #106edc;
 }
 
 :root.dark {
@@ -197,11 +209,11 @@
   --chat-input-bg: #2d3841;
   --chat-user-list: #111b22;
   --chat-header: #202b34;
-  --color3: #FF8C427c;
+  --color3: #ff8c42;
   /* --ui-accent: #3e8ef77c; */
 
    /* ==== new badge color */
-   /* --bg-badge-accent: rgba(217, 246, 248, 0);
+   --bg-badge-accent: rgba(217, 246, 248, 0);
    --bg-badge-accent-border: #02c0ce;
    --text-badge-accent: #02c0ce;
    
@@ -216,8 +228,19 @@
    --bg-badge-danger: lab(93.17% 8.33 1.38 / 0);
    --bg-badge-danger-border: #f1556c;
    --text-badge-danger: #f1556c;
-    */
+   
     --text-blue-dark: #d6e3ff;
+    --text-timer-color: #fff;
+
+    --listing-color2: #a8d0ff;
+    --listing-color3: #ff8c42;
+    --ui-accent-green: #91fff7;
+    --dash-listing-bg: #383a48;
+    --dash-listing-text: #fff;
+    --dash-listing-border: #00ddff;
+    --dash-listing-hover-border: #00ddff;
+    --dash-listing-hover-text: #d1edff;
+    --header-dark-gray: #3d4851;
 }
 
 :root.green {
@@ -417,4 +440,7 @@ ul {
 .formItem:autofill {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
+}
+.formItem.active{
+  background: transparent !important;
 }
