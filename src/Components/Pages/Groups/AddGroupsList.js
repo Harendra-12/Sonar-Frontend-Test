@@ -3,8 +3,10 @@ import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import Header from "../../CommonComponents/Header";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 export default function AddGroupsList() {
   const [loading, setLoading] = useState(false);
@@ -67,8 +69,8 @@ export default function AddGroupsList() {
                       <div className="d-flex align-items-center">
                         <button
                           onClick={() => {
-                            // navigate(-1);
-                            // backToTop();
+                             Navigate(-1);
+                                                        backToTop();
                           }}
                           type="button"
                           effect="ripple"
