@@ -70,7 +70,7 @@ export default function AddGroupsList() {
                         <button
                           onClick={() => {
                              Navigate(-1);
-                                                        backToTop();
+                             backToTop();
                           }}
                           type="button"
                           effect="ripple"
