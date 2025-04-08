@@ -12,6 +12,12 @@ const AllAddons = () => {
     const [loading, setLoading] = useState(false);
     const { confirm, ModalComponent } = PromptFunctionPopup();
 
+    const currentAddons = [
+        { name: "WhatsApp", platform: "whatsapp" },
+        { name: "Instagram", platform: "instagram" },
+        { name: "Facebook", platform: "facebook" },
+    ]
+
     useEffect(() => {
         fetchAllConfig();
     }, [])
@@ -53,6 +59,14 @@ const AllAddons = () => {
             navigate('/meta-config-edit', { state: { id: id, platform: platform } });
         } else if (platform.toLowerCase() === "whatsapp") {
             navigate('/whatsapp-config-edit', { state: { id: id } });
+        }
+    }
+
+    const handleAddEdit = async (platform) => {
+        if (platform.toLowerCase() === "instagram" || platform.toLowerCase() === "facebook") {
+            navigate('/meta-config');
+        } else if (platform.toLowerCase() === "whatsapp") {
+            navigate('/whatsapp-config');
         }
     }
 
@@ -120,45 +134,57 @@ const AllAddons = () => {
                                                 <div className="product-container row">
                                                     {/* Product 2 */}
                                                     {allConfigData && allConfigData.length > 0 ?
-                                                        allConfigData.map((item, index) => {
+                                                        currentAddons.map((addon, index) => {
+                                                            const configuredItem = allConfigData.find(config => config.platform === addon.platform);
+
                                                             return (
-                                                                <>
-                                                                    <div className='col-3'>
-                                                                        <div className={`product-cart`}>
-                                                                            <div className="product-image">
-                                                                                <img
-                                                                                    src={`${require(`../../assets/images/icons/addons/${item?.platform}.webp`)}`}
-                                                                                    onError={require('../../assets/images/placeholder-image.webp')}
-                                                                                    alt={item.platform}
-                                                                                />
+                                                                <div className='col-3' key={index}>
+                                                                    <div className='product-cart'>
+                                                                        <div className="product-image">
+                                                                            <img
+                                                                                src={require(`../../assets/images/icons/addons/${addon.platform}.webp`)}
+                                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                                alt={addon.platform}
+                                                                            />
+                                                                        </div>
+                                                                        <div className='content_width'>
+                                                                            <div className="product-title mt-4">
+                                                                                <p style={{ textTransform: 'capitalize' }}>
+                                                                                    {addon.platform} Integration
+                                                                                </p>
                                                                             </div>
-                                                                            <div className='content_width'>
-                                                                                <div className="product-title mt-4">
-                                                                                    <p style={{ textTransform: 'capitalize' }}>
-                                                                                        {item.platform} Integration
-                                                                                    </p>
-                                                                                </div>
-                                                                                <div className="product-description">
-                                                                                    <span className="text-smalls">Integrate {item.platform} in our platform and use it on-the-go</span>
-                                                                                </div>
+                                                                            <div className="product-description">
+                                                                                <span className="text-smalls">
+                                                                                    Integrate {addon.platform} in our platform and use it on-the-go
+                                                                                </span>
                                                                             </div>
+                                                                        </div>
+
+                                                                        {configuredItem ? (
                                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                                <button class="checkbox_wrapper edit"
-                                                                                    onClick={() => handleConfigEdit(item.id, item.platform)}
-                                                                                >
+                                                                                <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem.id, addon.platform)}>
                                                                                     <span className='cartSvg addonsBtn'>
-                                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                                        <i className="fa-solid fa-pencil"></i>
                                                                                     </span>
                                                                                     <span>Edit</span>
                                                                                 </button>
-                                                                                <button className="tableButton delete" onClick={() => handleDeleteConfig(item.id)}>
-                                                                                    <i className="fa-solid fa-trash">                                                                            </i>
+                                                                                <button className="tableButton delete" onClick={() => handleDeleteConfig(configuredItem.id)}>
+                                                                                    <i className="fa-solid fa-trash"></i>
                                                                                 </button>
                                                                             </div>
-                                                                        </div>
+                                                                        ) : (
+                                                                            <div className="mt-3">
+                                                                                <button className="checkbox_wrapper" onClick={() => handleAddEdit(addon.platform)}>
+                                                                                    <span className='cartSvg addonsBtn'>
+                                                                                        <i className="fa-solid fa-pencil"></i>
+                                                                                    </span>
+                                                                                    <span>Add</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
-                                                                </>
-                                                            )
+                                                                </div>
+                                                            );
                                                         }) : (
                                                             <>
                                                                 <div className='col-3'>
