@@ -1251,6 +1251,9 @@ input[type=number] {
     height: 28px;
     border-color: transparent;
     /* background-color: #f4f7f9 !important; */
+    font-size: 0.875rem;
+    padding: 0;
+    background-color: var(--table-head);
 }
 
 .popupopen ul {
@@ -1703,12 +1706,12 @@ input[type=number] {
 
 /* ========================== warning logged popup */
 
-.loggedPopupSm .iconWrapper.log__warning{
+.loggedPopupSm .iconWrapper.log__warning {
     width: 62px;
     height: 62px;
 }
 
-.loggedPopupSm .iconWrapper.log__warning img{
+.loggedPopupSm .iconWrapper.log__warning img {
     width: 100%;
 }
 
@@ -1724,9 +1727,9 @@ input[type=number] {
     gap: 10px;
 }
 
-.btn_info:hover{
+.btn_info:hover {
     background-color: transparent;
     border: 1px solid #2e5ee7;
     color: #2e5ee7;
-    
+
 }

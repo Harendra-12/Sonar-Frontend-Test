@@ -185,9 +185,8 @@ function Agents({ type }) {
                             <tr>
                               <th>Name</th>
                               <th>Extension</th>
-                              {/* <th>Account ID</th> */}
-                              {/* <th>Role</th> */}
-                              {/* <th>Domain</th> */}
+                              <th>Role</th>
+                              <th>Recording</th>
                               <th>Online</th>
                               {checkViewSidebar(
                                 "CallCenterAgent",
@@ -209,7 +208,8 @@ function Agents({ type }) {
                                   <tr>
                                     <td>{item.name}</td>
                                     <td>{item.extension.extension}</td>
-                                    {/* <td>{item.account_id}</td> */}
+                                    <td>{item.user_role.roles.name}</td>
+                                    <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
                                     <td>
                                       <span
                                         className={

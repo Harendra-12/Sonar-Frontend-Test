@@ -434,7 +434,7 @@ const Dashboard = () => {
                 >
                   <div className="row">
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper a dashboard_cardWrap ">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -458,62 +458,41 @@ const Dashboard = () => {
                           </div>
                         </div>
 
-                        <div className="data-number2">
+                        <div className="data-number2 mt-0">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col">
-                              <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
-                              <p>Language: {account?.language}</p>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
+                                <p>Language: {account?.language}</p>
+                              </div>
+                              <div className="digital__clock">
                               <p>
-                                TimeZone:{" "}
-                                {
-                                  timeZone.filter(
-                                    (item) => item.id === account?.timezone_id
-                                  )[0]?.name
-                                }
-                              </p>
-                            </div>
-                            <div className="col-auto">
-                              <div className="clock-wrapper">
-                                {/* left timer */}
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
-                                </div>
-                                {/* right timer */}
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{String(new Date(time).getMinutes()).padStart(2, "0")}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
-                                </div>
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
+                                  TimeZone:{" "}
+                                  {
+                                    timeZone.filter(
+                                      (item) => item.id === account?.timezone_id
+                                    )[0]?.name
+                                  }
+                                </p>
+                                <div className="d-flex justify-content-center align-items-center">
+                                <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
                                 </div>
                               </div>
-                              {/* <Clock
+                              <div>
+
+                               
+                              </div>
+                            </div>
+                            {/* <div className="col-auto "> */}
+                            {/* <div className="digital__clock">
+                                <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
+                              </div> */}
+
+                            {/* <Clock
                                 value={time}
                                 size={50}
                                 secondHandWidth={1}
@@ -524,13 +503,13 @@ const Dashboard = () => {
                                 minuteHandWidth={1}
                               /> */}
 
-                            </div>
+                            {/* </div> */}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper b d_card2 dashboard_cardWrap">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -554,18 +533,24 @@ const Dashboard = () => {
                               <p>Username: {account?.username}</p>
                               <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }} title={account?.email}>Email: {account?.email}</p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart1.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper c dashboard_cardWrap d_card3">
                         <div className="heading">
                           <div
                             className="d-flex flex-wrap justify-content-between"
@@ -581,7 +566,6 @@ const Dashboard = () => {
                             </div>
                           </div>
                         </div>
-
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -594,18 +578,24 @@ const Dashboard = () => {
                                 Extensions / {accountDetails?.dids?.length} DIDs
                               </p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart2.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper d">
+                      <div className="itemWrapper d d_card4 dashboard_cardWrap ">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -632,17 +622,22 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart3.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
-
                     <div className="col-xl-12 mt-xl-4 chartWrapper">
                       <div className="row">
                         {/* <div className="col-xl-4 mb-3 mb-xl-0">
@@ -782,7 +777,7 @@ const Dashboard = () => {
                         {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
-                              <div className="heading">
+                              <div className="heading dashboard_headerPart">
                                 <div
                                   className="d-flex flex-wrap justify-content-between"
                                   onClick={() => navigate("/extensions")}
@@ -815,7 +810,7 @@ const Dashboard = () => {
                                     >
                                       {accountDetails?.extensions?.map(
                                         (item, index) => (
-                                          <li
+                                          <li className="d_extension_listing"
                                             key={index}
                                             onClick={() =>
                                               navigate(
@@ -913,7 +908,7 @@ const Dashboard = () => {
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
                           <div className="itemWrapper d">
-                            <div className="heading">
+                            <div className="heading dashboard_headerPart">
                               <div
                                 className="d-flex flex-wrap justify-content-between"
                                 style={{ cursor: "pointer" }}
@@ -934,31 +929,31 @@ const Dashboard = () => {
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Total DID Purchasd{" "}
                                       <span className="float-end">
                                         {allDID?.length}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default Outbound Number{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default Fax Number{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default SMS{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default WhatsApp{" "}
                                       <span className="float-end">
                                         {didAll?.filter((item) => item.default_whatsapp == 1)[0]?.did}

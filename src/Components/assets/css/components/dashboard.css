@@ -2,7 +2,8 @@
     --funky-boy1: #ff0000;
     --funky-boy2: #4749e6;
     --funky-boy3: #62A8AC;
-    --funky-boy4: #D35269;
+    /* --funky-boy4: #D35269; */
+    --funky-boy4: #f73658;
     --funky-boy4-trans: #ff999930;
     /* --funky-boy3: #31c07d; */
     /* --funky-boy4: #ff2365; */
@@ -12,7 +13,7 @@
     --funky-boy1: #ff00007c;
     --funky-boy2: #4749e67c;
     --funky-boy3: #62A8AC7c;
-    --funky-boy4: #D352697c;
+    --funky-boy4: #d35269;
     --funky-boy4-trans: #ff999930;
 }
 
@@ -836,4 +837,74 @@
     right: 0;
     z-index: -1;
     opacity: 0.4;
+}
+
+.d_extension_listing {
+    background: var(--dash-listing-bg);
+    color: var(--dash-listing-text);
+    padding: 8px 10px !important;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    /* border-left: 3px solid var(--dash-listing-border); */
+    border-left: 3px solid var(--ui-accent);
+    border-bottom: 0 !important;
+    transition: all 0.4s ease-in-out;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing:hover {
+    /* border-left: 8px solid var(--dash-listing-hover-border); */
+    border-left: 8px solid var(--ui-accent);
+    border-bottom: 0 !important;
+    color: var(--dash-listing-hover-text);
+}
+
+.dashboard_headerPart {
+    border: 1px solid var(--header-dark-gray) !important;
+    border-radius: 8px;
+    padding: 10px !important;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing {
+    font-size: 0.8rem;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing:last-child {
+    margin-bottom: 0;
+}
+
+.itemWrapper.dashboard_cardWrap.a .heading i {
+    color: #fff;
+    background: rgba(225, 236, 249, 0.369);
+}
+
+.itemWrapper.dashboard_cardWrap.c .heading i,
+.itemWrapper.c i {
+    color: var(--listing-color3);
+}
+
+.itemWrapper.dashboard_cardWrap.a {
+    background: #005b70 !important;
+}
+
+.itemWrapper.dashboard_cardWrap.a h5,
+.itemWrapper.dashboard_cardWrap.a p {
+    color: #fff;
+}
+
+.dashboard_cardWrap .d_chartImg {
+    opacity: 0.3;
+    top: 100px;
+}
+
+.itemWrapper.d.dashboard_cardWrap .data-number2 h5 {
+    color: var(--funky-boy4) !important;
+}
+
+.itemWrapper.c.dashboard_cardWrap .data-number2 h5 {
+    color: var(--color3) !important;
+}
+
+.itemWrapper.b.dashboard_cardWrap .data-number2 h5 {
+    color: var(--ui-accent-green) !important;
 }
