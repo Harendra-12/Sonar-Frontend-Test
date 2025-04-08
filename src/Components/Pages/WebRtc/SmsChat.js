@@ -323,7 +323,7 @@ function SmsChat({ setLoading, loading }) {
                         </div>
                       </div>
                       <div className="col-12" style={{ padding: "0px 20px" }}>
-                        <div className="newMessageWrapper mb-3">
+                        <div className="newMessageWrapper  mb-3">
                           <div>
                             <div className="messageSubject">
                               <label>Enter Sender Number</label>
@@ -336,8 +336,8 @@ function SmsChat({ setLoading, loading }) {
                                 <ErrorMessage text={errors.from_did.message} />
                               )}
                             </div>
-                            <div className="messageSubject">
-                              <label>Enter Receiver Number</label>
+                            <div className="messageSubject mt-3">
+                              <label className="mt-3">Enter Receiver Number</label>
                               <input
                                 type="text"
                                 defaultValue={""}
@@ -347,7 +347,7 @@ function SmsChat({ setLoading, loading }) {
                                 <ErrorMessage text={errors.to_did.message} />
                               )}
                             </div>
-                            <div className="messageBody">
+                            <div className="messageBody mt-5">
                               <label>Enter your messsage</label>
                               <textarea
                                 type="text"

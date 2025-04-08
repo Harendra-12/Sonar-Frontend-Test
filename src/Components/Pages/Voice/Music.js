@@ -361,6 +361,48 @@ function Music() {
                                               <i className="fa-solid fa-play"></i>
                                             )}
                                           </button>
+                                          {showDropDown && isCurrent && (
+                                            <ul className="dropdown-menu d-block  actionBtnDropdowns" key={index} >
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div
+                                                    className="clearButton text-align-start"
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      if (isCurrent) {
+                                                        setShowDropdown(false);
+                                                        setShowAudio(true);
+                                                        handlePlayMusic(
+                                                          item.id,
+                                                          item.path
+                                                        )
+                                                      }
+                                                    }}
+                                                  >
+                                                    <i
+                                                      className={`fa-solid fa-${item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                        } me-2`}
+                                                    ></i>
+                                                    Play
+                                                  </div>
+                                                </li>
+                                                <li className="dropdown-item">
+                                                  <div className="clearButton text-align-start">
+                                                    <i className="fa-solid fa-bolt me-2"></i>
+                                                    Transcript
+                                                  </div>
+                                                </li>
+                                              </>
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div className="clearButton text-align-start">
+                                                    <i className="fa-regular fa-download"></i> Download
+                                                  </div>
+                                                </li>
+                                              </>
+                                              <li className="dropdown-item"></li>
+                                            </ul>
+                                          )}
                                         </td>
                                         <td>
                                           <button
