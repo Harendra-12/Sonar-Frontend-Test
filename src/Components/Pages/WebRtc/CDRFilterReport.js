@@ -1144,9 +1144,9 @@ function CdrFilterReport({ page }) {
                                                           item[
                                                           "recording_path"
                                                           ] ? (
-                                                          <i className="fa-solid fa-stop"></i>
+                                                          <i className="fa-solid fa-chevron-up"></i>
                                                         ) : (
-                                                          <i className="fa-solid fa-play"></i>
+                                                          <i className="fa-solid fa-chevron-down"></i>
                                                         )}
                                                       </button>
                                                     }
