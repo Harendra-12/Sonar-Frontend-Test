@@ -974,7 +974,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="itemWrapper d">
+                          <div className="itemWrapper a">
                             <div className="heading dashboard_headerPart">
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-9">
