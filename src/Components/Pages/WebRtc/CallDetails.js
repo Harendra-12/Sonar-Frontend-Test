@@ -158,14 +158,14 @@ function CallDetails({
     }
   };
 
-  const handleAudioDownload = (src) => {
-    const link = document.createElement("a");
-    link.href = src;
-    link.download = "audio-file.wav";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // const handleAudioDownload = (src) => {
+  //   const link = document.createElement("a");
+  //   link.href = src;
+  //   link.download = "audio-file.wav";
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   useEffect(() => {
     if (callDetails) {
@@ -611,7 +611,24 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <div className="dropdown">
+                                  <button
+                                    className="tableButton px-2 mx-0"
+                                    onClick={() => {
+                                      if (item?.recording_path === currentPlaying) {
+                                        setCurrentPlaying("");
+                                        setAudioURL("");
+                                      } else {
+                                        handlePlaying(item?.recording_path);
+                                      }
+                                    }}
+                                  >
+                                    {currentPlaying === item?.recording_path ? (
+                                      <i className="fa-solid fa-chevron-up"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-chevron-down"></i>
+                                    )}
+                                  </button>
+                                  {/* <div className="dropdown">
                                     <div
                                       className={`tableButton`}
                                       href="#"
@@ -680,7 +697,7 @@ function CallDetails({
                                       </>
                                       <li className="dropdown-item"></li>
                                     </ul>
-                                  </div>
+                                  </div> */}
                                 </td>
                               </tr>
                               {item?.recording_path &&
@@ -723,7 +740,7 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
-                              {
+                              {/* {
                                 transcribeLink === item?.recording_path ?
                                   <tr
                                     className="show"
@@ -734,7 +751,7 @@ function CallDetails({
                                     </td>
                                   </tr>
                                   : ""
-                              }
+                              } */}
                             </>
                           ))}
                         </tbody>

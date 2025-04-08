@@ -98,7 +98,7 @@ function VoiceMailReport() {
                         <p>Here are all the Voicemail Reportsss</p>
                       </div>
                       <div className="buttonGroup">
-                      
+
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -209,9 +209,9 @@ function VoiceMailReport() {
                                         item[
                                         "recording_path"
                                         ] ? (
-                                        <i className="fa-solid fa-stop"></i>
+                                        <i className="fa-solid fa-chevron-up"></i>
                                       ) : (
-                                        <i className="fa-solid fa-play"></i>
+                                        <i className="fa-solid fa-chevron-down"></i>
                                       )}
                                     </button>
                                   </td>

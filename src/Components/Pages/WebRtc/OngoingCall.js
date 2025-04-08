@@ -522,9 +522,9 @@ function OngoingCall({
     let response;
 
     // Internal Calls wont call the API
-    // if (globalSession[0].destination.length < 6) {
-    //   return;
-    // }
+    if (globalSession[0].destination.length < 6) {
+      return;
+    }
 
     try {
       if (session.outgoingInviteRequest) {
@@ -1294,6 +1294,9 @@ export function ShowDuplicateCallData({ duplicateData }) {
           <div className="overviewTableWrapper p-2">
             <div className="overviewTableChild border-0 shadow-none">
               <div className="col-xl-12">
+                <div className="heading p-0 border-0" style={{ whiteSpace: 'nowrap' }}>
+                  <h5>Duplicate Call Data</h5>
+                </div>
                 <div className="tableContainer m-0 p-0">
                   <table>
                     <thead>
@@ -1346,7 +1349,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
 
                         return <th key={key}>{headerText}</th>;
                       })}
-                      <th>Comments</th>
+                      <th>Note</th>
                     </thead>
                     <tbody>
                       {duplicateData?.map((call, index) => {
@@ -1412,7 +1415,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
                                 return <td>{call[key]}</td>
                               }
                             })}
-                            <td className="px-4 py-3">
+                            <td>
                               <button
                                 className="tableButton"
                                 onClick={() => handelOpenNotes(call?.id)}
@@ -1430,7 +1433,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
             </div>
           </div>
         </div>
-        <button className="tableButton"
+        <button className="tableButton edit"
           onClick={() => setCollapse(!collapse)}
           style={{ position: 'absolute', right: '-35px', top: '50%', transform: 'translateY(-50%)' }}
         >
