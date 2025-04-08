@@ -56,12 +56,13 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             formData.append('sharedMessage', selectedFile);
             
             const res = await fileUploadFunction("/upload-file", formData);
+            // console.log({res})
             if (res?.status) {
                 toast.success("File uploaded successfully");
-                setSelectedUrl(res?.data?.file_url);
+                setSelectedUrl(res?.file_url);
                 setFileUpload(null)
             } else {
-                toast.error(res?.data?.errors?.sharedMessage?.[0] || "Upload failed");
+                toast.error(res?.errors?.sharedMessage?.[0] || "Upload failed");
             }
         } catch (error) {
             console.error("Error uploading file:", error);

@@ -18,7 +18,7 @@ const DisplayFile = ({ item }) => {
     if (!selectedUrl) return null;
   
     //  Remove query parameters and get the base URL
-    const fileUrl = selectedUrl.split("?")[0];
+    const fileUrl = selectedUrl;
     const fileName = fileUrl.split("/").pop();
   
     if (fileName) {
@@ -34,7 +34,7 @@ const DisplayFile = ({ item }) => {
         const params = new URLSearchParams(queryParams);
         // Look for common extension indicators in query params (customize as needed)
         for (const [value] of params) {
-          const lowerValue = value.toLowerCase();
+          const lowerValue = selectedUrl.toLowerCase();
           if (lowerValue.includes("png")) return "png";
           if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
           if (lowerValue.includes("pdf")) return "pdf";

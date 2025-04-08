@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
+  generalGetFunctionWithToken,
+  generalPostFunctionWithToken,
   login,
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
@@ -212,21 +213,18 @@ export function LoginComponent() {
   async function handleLogoutFromSpecificDevice(token) {
     try {
       setLoading(true);
-      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (logOut?.data?.status) {
-        toast.success(logOut?.data?.message)
+      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token },token);
+      // console.log({logOut})
+      if (logOut?.status) {
+        toast.success(logOut?.message)
         setLoading(false);
-        setLoginDetails(logOut?.data?.data)
+        setLoginDetails(logOut?.data)
         setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
       setLoading(false)
-      toast.error(error?.response?.data?.message)
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -361,22 +359,18 @@ export function LoginComponent() {
     setLoading(true);
     setPopUp(false);
     try {
-      const logoutAll = await axios.get(`${baseName}/logout?all`, {
-        headers: {
-          Authorization: `Bearer ${logOutToken}`,
-        },
-      });
-
-      if (logoutAll.status >= 200 && logoutAll.status < 300) {
+      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`,logOutToken);
+      console.log({logoutAll})
+      if (logoutAll.status) {
         handleLogin();
       } else {
         setLoading(false);
-        toast.error(logoutAll.data?.message || "Logout failed");
+        toast.error(logoutAll.message || "Logout failed");
       }
     } catch (error) {
       setLoading(false);
       console.error("Logout all error:", error);
-      toast.error(error.response?.data?.message || error.message || "An unexpected error occurred");
+      toast.error(error.response?.message || error.message || "An unexpected error occurred");
     }
   }
   return (
