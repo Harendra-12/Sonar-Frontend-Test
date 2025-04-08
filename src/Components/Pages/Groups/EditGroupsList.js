@@ -33,14 +33,38 @@ export default function EditGroupsList() {
     formState: { errors },
   } = useForm();
 
+  async function getUsers() {
+    // debugger   
+    try {
+      const res = await generalGetFunction("/user/all");
+      const users=[...res?.data?.data]
+      // console.log(selectedGroup.groupusers,{users})
+      const updatedusers = users.filter((user) => {
+        return selectedGroup.groupusers.every((groupuser) => {
+          return groupuser.user_id !== user.id;
+        });
+      });
+    //  console.log({updatedusers})
+      setUsers(updatedusers);
+      setLoading(false)
+      return users;
+    } catch (error) {}
+  }
   // addition of users
   const onSubmit = async(data) => {
     const payload={ "group_name": 
      data.name
   ,
   "user_id": [
-     ...selectedUsers.map((user)=>user.user_id)
+     ...selectedUsers.map((user)=>{
+      if(user.user_id){
+        return user.user_id
+      }else{
+        return Number(user.id)
+      }
+     })
   ]}
+  // console.log({payload},{selectedUsers})
   setLoading(true)
     try {
       const res=await generalPutFunction(`groups/update/${id}`,payload)
@@ -64,22 +88,7 @@ export default function EditGroupsList() {
        
       });
       setSelectedUsers([...selectedGroup.groupusers])
-    async function getUsers() {
-      // debugger   
-      try {
-        const res = await generalGetFunction("/user/all");
-        const users=[...res?.data?.data]
-        // console.log(selectedGroup.groupusers,{users})
-        const updatedusers = users.filter((user) => {
-          return selectedGroup.groupusers.every((groupuser) => {
-            return groupuser.user_id !== user.id;
-          });
-        });
-      //  console.log({updatedusers})
-        setUsers(updatedusers);
-        setLoading(false)
-      } catch (error) {}
-    }
+    
     getUsers();
   }, []);
   const handleFormSubmit = handleSubmit(onSubmit);
@@ -115,10 +124,7 @@ export default function EditGroupsList() {
 
     
   // Function to delete a destination
-  const deleteDestination = (id) => {
-    const updatedDestination = selectedUsers.filter((item) => ( item?.id) !== id);
-
-    setSelectedUsers(updatedDestination);
+  const deleteDestination = async(id) => {
   
     const isIdInAddedUI = addedUISelectedUsers?.some(
       (user) => user?.user_id === id || user?.id === id
@@ -127,11 +133,29 @@ export default function EditGroupsList() {
     if (!isIdInAddedUI) {
       try {
         setLoading(true);
-        generalDeleteFunction(`group-users/destroy/${id}`)
+     const res= await  generalDeleteFunction(`group-users/destroy/${id}`)
           .then((res) => {
             if (res?.status) {
+            
+              const updatedDestination = selectedUsers.filter((item) => ( item?.id) !== id);
+              const users=getUsers();
+              const newusers=users.filter((user)=>{
+                const checkExist=updatedDestination.every((dest)=>{
+                  if(dest.user_id){
+                    return dest.user_id !== user.id;
+                  }else{
+                    return dest.id !==user.id
+                  }
+                });
+                return checkExist
+              })
+              // console.log({newusers})
+              setUsers([...newusers])
+
+              setSelectedUsers(updatedDestination);
               setLoading(false);
               // console.log({res})
+              toast.success(res?.message)
             } else {
               setLoading(false);
             }
@@ -348,6 +372,7 @@ export default function EditGroupsList() {
             type="button"
             className="panelButton"
             onClick={() => {
+              console.log({users},users.length,{selectedUsers},selectedUsers.length)
                            if (users.length>0&&users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
                            else toast.warn("All Users selected");
                          
