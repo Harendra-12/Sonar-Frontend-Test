@@ -139,6 +139,10 @@ export function LoginComponent() {
               navigate("/temporary-dashboard");
             } else {
               dispatch({
+                type: "SET_PERMISSION_REFRESH",
+                permissionRefresh: permissionRefresh + 1,
+              });
+              dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
               });
