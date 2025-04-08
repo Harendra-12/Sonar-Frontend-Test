@@ -5,7 +5,7 @@ import AllCallsDetails from "./AllCallsDetails";
 import CallQueueDetails from "./CallQueueDetails";
 import RingGroup from "./RingGroupDetails";
 import { useNavigate } from "react-router-dom";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../CommonComponents/Header";
 import GraphChart from "../../CommonComponents/GraphChart";
@@ -594,7 +594,15 @@ function PhoneDashboard() {
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
-                          <h5>Total Call Per Hour</h5>
+                          <h5 className="d-flex">Total Call Per Hour
+                            <div class="my-auto position-relative ms-3">
+                              <label class="switch">
+                                <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
+                                <span class="slider round">
+                                </span>
+                              </label>
+                            </div>
+                          </h5>
                         </div>
                         <div className="col-auto">
                           <ul class="chart_tabs" >
@@ -712,7 +720,15 @@ function PhoneDashboard() {
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
-                          <h5>Number of Call</h5>
+                          <h5 className="d-flex">Number of Call
+                            <div class="my-auto position-relative ms-3">
+                              <label class="switch">
+                                <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
+                                <span class="slider round">
+                                </span>
+                              </label>
+                            </div>
+                          </h5>
                         </div>
                         <div className="col-auto">
                           <div className="formRow border-0 p-0" style={{ minHeight: 'revert' }}>
@@ -812,7 +828,15 @@ function PhoneDashboard() {
                     <div className='heading h-auto'>
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className='col-auto'>
-                          <h5>Call Cost Per Hour</h5>
+                          <h5 className="d-flex">Call Cost Per Hour
+                            <div class="my-auto position-relative ms-3">
+                              <label class="switch">
+                                <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
+                                <span class="slider round">
+                                </span>
+                              </label>
+                            </div>
+                          </h5>
                         </div>
                         <div className="col-auto">
                           <ul class="chart_tabs" >
