@@ -226,11 +226,12 @@ function App() {
   return (
     <>
 
-      <GoogleTranslate />
+     
       <Router>
         {
           adminLogout && <AdminLogoutPopUp />
         }
+         <GoogleTranslate />
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />

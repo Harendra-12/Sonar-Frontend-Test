@@ -405,7 +405,7 @@ function Navbar() {
                           "/voicemail-report",
                           "/groups",
                           "/groups-add",
-                          "/groups-edit"
+                          "/groups-edit",
                         ])
                           ? "true"
                           : "false"
@@ -630,7 +630,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-                          {isCustomerAdmin && (< li className="tabItem ">
+                          {/* {isCustomerAdmin && (< li className="tabItem ">
                             <NavLink
                               to="/rate-card"
                               onClick={backToTop}
@@ -648,7 +648,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">Rate Card</div>
                             </NavLink>
-                          </li>)}
+                          </li>)} */}
                         </ul>
                       </div>
                     </div>
@@ -1424,7 +1424,8 @@ function Navbar() {
                           "/card-transaction-list",
                           "/wallet-transaction-list",
                           "/billing-report",
-                          "/subscription-management"
+                          "/subscription-management",
+                          "/rate-card"
                         ])
                           ? "true"
                           : "false"
@@ -1504,23 +1505,25 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          <li className="tabItem ">
-                            <Link
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                          {isCustomerAdmin && (< li className="tabItem ">
+                            <NavLink
+                              to="/rate-card"
+                              onClick={backToTop}
+                              type="button"
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
+                                  [
+                                    "/rate-card",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
                                   )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
                             >
                               <div className="itemTitle">Rate Card</div>
-                            </Link>
-                          </li>
+                            </NavLink>
+                          </li>)}
                           <li className="tabItem ">
                             <NavLink
                               to="/subscription-management"
