@@ -79,7 +79,7 @@ export default Login;
 export function LoginComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const permissionRefresh = useSelector((state) => state.permissionRefresh.permissionRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -87,7 +87,7 @@ export function LoginComponent() {
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("")
-
+  
   // Handle login function
   async function handleLogin() {
     // Reseting State before Loggin In
@@ -98,6 +98,12 @@ export function LoginComponent() {
     if (data) {
       if (data.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -138,10 +144,7 @@ export function LoginComponent() {
               window.scrollTo(0, 0);
               navigate("/temporary-dashboard");
             } else {
-              dispatch({
-                type: "SET_PERMISSION_REFRESH",
-                permissionRefresh: permissionRefresh + 1,
-              });
+
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
@@ -246,6 +249,12 @@ export function LoginComponent() {
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -291,10 +300,6 @@ export function LoginComponent() {
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
-              });
-              dispatch({
-                type: "SET_PERMISSION_REFRESH",
-                permissionRefresh: permissionRefresh + 1,
               });
               // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
               if (profile.data.user_role?.roles?.name === "Agent") {
@@ -438,12 +443,13 @@ export function LoginComponent() {
           <div className="backdropContact">
             <div className="addNewContactPopup position-relative logoutPopup">
               <button className="popup_close" onClick={() => {
-                    setPopUp(false);}}>
-              <i class="fa-solid fa-xmark"></i>
+                setPopUp(false);
+              }}>
+                <i class="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
                 <img className="w-100 " src={require('../assets/images/login-cruve2.png')} />
-              {/* <div className="warning_img">
+                {/* <div className="warning_img">
                 <img className=" " src={require('../assets/images/crisis.png')} />
               </div> */}
               </div>
