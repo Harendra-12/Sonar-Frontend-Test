@@ -2,15 +2,28 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header'
 import { useNavigate } from 'react-router-dom';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
-import { backToTop, generalDeleteFunction, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generalPostFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
 import CircularLoader from '../../Loader/CircularLoader';
+import ErrorMessage from '../../CommonComponents/ErrorMessage';
+import { useForm } from 'react-hook-form';
+import { requiredValidator } from '../../validations/validation';
 
 const AllAddons = () => {
     const navigate = useNavigate();
     const [allConfigData, setAllConfigData] = useState();
     const [loading, setLoading] = useState(false);
     const { confirm, ModalComponent } = PromptFunctionPopup();
+    const [addonEditPopup, setAddonEditPopup] = useState(false);
+    const [addonAddPopup, setAddonAddPopup] = useState(false);
+    const [platform, setPlatform] = useState("");
+    const [addonEditID, setAddonEditID] = useState("");
+
+    const currentAddons = [
+        { name: "WhatsApp", platform: "whatsapp" },
+        { name: "Instagram", platform: "instagram" },
+        { name: "Facebook", platform: "facebook" },
+    ]
 
     useEffect(() => {
         fetchAllConfig();
@@ -49,11 +62,14 @@ const AllAddons = () => {
     }
 
     const handleConfigEdit = async (id, platform) => {
-        if (platform.toLowerCase() === "instagram" || platform.toLowerCase() === "facebook") {
-            navigate('/meta-config-edit', { state: { id: id, platform: platform } });
-        } else if (platform.toLowerCase() === "whatsapp") {
-            navigate('/whatsapp-config-edit', { state: { id: id } });
-        }
+        setAddonEditID(id);
+        setPlatform(platform);
+        setAddonEditPopup(true);
+    }
+
+    const handleConfigAdd = async (platform) => {
+        setPlatform(platform);
+        setAddonAddPopup(true);
     }
 
     return (
@@ -96,17 +112,14 @@ const AllAddons = () => {
                                                     </span>
                                                 </button>
                                                 <button
-                                                    onClick={() => {
-                                                        navigate('/all-available-addons');
-                                                        backToTop();
-                                                    }}
+                                                    onClick={fetchAllConfig}
                                                     type="button"
                                                     effect="ripple"
                                                     className="panelButton"
                                                 >
-                                                    <span className="text">Add</span>
+                                                    <span className="text">Refresh</span>
                                                     <span className="icon">
-                                                        <i className="fa-solid fa-plus"></i>
+                                                        <i className={`fa-solid fa-arrows-rotate ${loading ? 'fa-spin' : ''}`}></i>
                                                     </span>
                                                 </button>
                                             </div>
@@ -114,51 +127,69 @@ const AllAddons = () => {
                                     </div>
                                 </div>
                                 <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
+                                    <div className='tableHeader justify-content-end mb-3'>
+                                        <div class="searchBox position-relative">
+                                            <label>Search:</label>
+                                            <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />
+                                        </div>
+                                    </div>
                                     <>
                                         <div className="row">
                                             <div className="col-md-12">
                                                 <div className="product-container row">
                                                     {/* Product 2 */}
                                                     {allConfigData && allConfigData.length > 0 ?
-                                                        allConfigData.map((item, index) => {
+                                                        currentAddons.map((addon, index) => {
+                                                            const configuredItem = allConfigData.find(config => config.platform === addon.platform);
+
                                                             return (
-                                                                <>
-                                                                    <div className='col-3'>
-                                                                        <div className={`product-cart`}>
-                                                                            <div className="product-image">
-                                                                                <img
-                                                                                    src={`${require(`../../assets/images/icons/addons/${item?.platform}.webp`)}`}
-                                                                                    onError={require('../../assets/images/placeholder-image.webp')}
-                                                                                    alt={item.platform}
-                                                                                />
+                                                                <div className='col-3' key={index}>
+                                                                    <div className='product-cart'>
+                                                                        <div className="product-image">
+                                                                            <img
+                                                                                src={require(`../../assets/images/icons/addons/${addon.platform}.webp`)}
+                                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                                alt={addon.platform}
+                                                                            />
+                                                                        </div>
+                                                                        <div className='content_width'>
+                                                                            <div className="product-title mt-4">
+                                                                                <p style={{ textTransform: 'capitalize' }}>
+                                                                                    {addon.platform} Integration
+                                                                                </p>
                                                                             </div>
-                                                                            <div className='content_width'>
-                                                                                <div className="product-title mt-4">
-                                                                                    <p style={{ textTransform: 'capitalize' }}>
-                                                                                        {item.platform} Integration
-                                                                                    </p>
-                                                                                </div>
-                                                                                <div className="product-description">
-                                                                                    <span className="text-smalls">Integrate {item.platform} in our platform and use it on-the-go</span>
-                                                                                </div>
+                                                                            <div className="product-description">
+                                                                                <span className="text-smalls">
+                                                                                    Integrate {addon.platform} in our platform and use it on-the-go
+                                                                                </span>
                                                                             </div>
+                                                                        </div>
+
+                                                                        {configuredItem ? (
                                                                             <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                                                <button class="checkbox_wrapper edit"
-                                                                                    onClick={() => handleConfigEdit(item.id, item.platform)}
-                                                                                >
+                                                                                <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem.id, addon.platform)}>
                                                                                     <span className='cartSvg addonsBtn'>
-                                                                                        <i class="fa-solid fa-pencil"></i>
+                                                                                        <i className="fa-solid fa-pencil"></i>
                                                                                     </span>
                                                                                     <span>Edit</span>
                                                                                 </button>
-                                                                                <button className="tableButton delete" onClick={() => handleDeleteConfig(item.id)}>
-                                                                                    <i className="fa-solid fa-trash">                                                                            </i>
+                                                                                <button className="tableButton delete" onClick={() => handleDeleteConfig(configuredItem.id)}>
+                                                                                    <i className="fa-solid fa-trash"></i>
                                                                                 </button>
                                                                             </div>
-                                                                        </div>
+                                                                        ) : (
+                                                                            <div className="mt-3">
+                                                                                <button className="checkbox_wrapper" onClick={() => handleConfigAdd(addon.platform)}>
+                                                                                    <span className='cartSvg addonsBtn'>
+                                                                                        <i className="fa-solid fa-pencil"></i>
+                                                                                    </span>
+                                                                                    <span>Add</span>
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
-                                                                </>
-                                                            )
+                                                                </div>
+                                                            );
                                                         }) : (
                                                             <>
                                                                 <div className='col-3'>
@@ -267,8 +298,22 @@ const AllAddons = () => {
                             </div>
                         </div>
                     </div>
+                    {addonEditPopup &&
+                        <div className='backdropContact'>
+                            <div className='addNewContactPopup'>
+                                <AddonEdit platform={platform} addonEditID={addonEditID} setAddonEditPopup={setAddonEditPopup} setLoading={setLoading} fetchAllConfig={fetchAllConfig} />
+                            </div>
+                        </div>
+                    }
+                    {addonAddPopup &&
+                        <div className='backdropContact'>
+                            <div className='addNewContactPopup'>
+                                <AddonAdd platform={platform} setAddonAddPopup={setAddonAddPopup} setLoading={setLoading} fetchAllConfig={fetchAllConfig} />
+                            </div>
+                        </div>
+                    }
                 </section>
-                <ModalComponent />
+                <ModalComponent task={'delete'} reference={'addon configuration'} />
 
             </main>
         </>
@@ -276,3 +321,232 @@ const AllAddons = () => {
 }
 
 export default AllAddons
+
+export function AddonAdd({ platform, setAddonAddPopup, setLoading, fetchAllConfig }) {
+    const { register, formState: { errors }, reset, handleSubmit } = useForm();
+
+    // Handle Config Setup
+    const handleFormSubmit = handleSubmit(async (data) => {
+        setLoading(true);
+        const payload = { ...data };
+        const apiData = await generalPostFunction("/social-platforms/store", payload);
+        if (apiData?.status) {
+            setLoading(false);
+            reset();
+            toast.success(apiData.message);
+            setAddonAddPopup(false);
+            fetchAllConfig();
+        } else {
+            setLoading(false);
+            toast.error(apiData.message);
+        }
+    });
+
+    return (
+        <div className="row">
+            <div className="col-12 heading">
+                <i className={`fa-brands fa-${platform}`} />
+                <h5 style={{ textTransform: 'capitalize' }}>{platform} Integration</h5>
+                <p>
+                    Integrate {platform} in our platform and use it on-the-go
+                </p>
+                <div className="border-bottom col-12" />
+            </div>
+            <div className="col-xl-12">
+                <div className="formLabel">
+                    <label htmlFor="">App ID</label>
+                </div>
+                <div className="col-12">
+                    <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        defaultValue={""}
+                        {...register("app_id", { ...requiredValidator, })}
+                    />
+                    {errors.app_id && (
+                        <ErrorMessage text={errors.app_id.message} />
+                    )}
+                </div>
+            </div>
+            <div className="col-xl-12 mt-3">
+                <div className="formLabel">
+                    <label htmlFor="">App Token</label>
+                </div>
+                <div className="col-12">
+                    <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        defaultValue={""}
+                        {...register("app_token", {
+                            ...requiredValidator,
+                        })}
+                    />
+                    {errors.app_token && (
+                        <ErrorMessage text={errors.app_token.message} />
+                    )}
+                </div>
+            </div>
+            <div className="col-xl-6 col-12 d-none">
+                <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={platform}
+                    {...register("platform")}
+                />
+            </div>
+            <div className="col-xl-12 mt-4">
+                <div className="d-flex justify-content-between">
+                    <button
+                        type="button"
+                        effect="ripple"
+                        className="panelButton gray ms-0"
+                        onClick={() => setAddonAddPopup(false)}
+                    >
+                        <span className="text">Close</span>
+                        <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                        </span>
+                    </button>
+                    <button
+                        type="button"
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={handleFormSubmit}
+                    >
+                        <span className="text">Save</span>
+                        <span className="icon">
+                            <i className="fa-solid fa-floppy-disk"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export function AddonEdit({ platform, addonEditID, setAddonEditPopup, setLoading, fetchAllConfig }) {
+    const { register, formState: { errors }, reset, handleSubmit } = useForm();
+
+    useEffect(() => {
+        async function getData() {
+            if (addonEditID) {
+                setLoading(true);
+                try {
+                    const apiData = await generalGetFunction(`/social-platforms/show/${addonEditID}`)
+                    if (apiData.status) {
+                        const { app_id, app_token } = apiData?.data;
+                        reset({ app_id, app_token });
+                        setLoading(false);
+                    }
+                } catch (err) {
+                    console.log(err);
+                    setLoading(true);
+                }
+            }
+        }
+        getData()
+    }, [])
+
+    // Handle WhatsApp Config Setup
+    const handleFormSubmit = handleSubmit(async (data) => {
+        setLoading(true);
+        const payload = { ...data };
+        const apiData = await generalPutFunction(`/social-platforms/${addonEditID}`, payload);
+        if (apiData?.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+            setAddonEditPopup(false);
+            fetchAllConfig();
+        } else {
+            setLoading(false);
+            toast.error(apiData.message);
+        }
+    });
+
+    return (
+        <div className="row">
+            <div className="col-12 heading">
+                <i className={`fa-brands fa-${platform}`} />
+                <h5 style={{ textTransform: 'capitalize' }}>{platform} Integration</h5>
+                <p>
+                    Integrate {platform} in our platform and use it on-the-go
+                </p>
+                <div className="border-bottom col-12" />
+            </div>
+            <div className="col-xl-12">
+                <div className="formLabel">
+                    <label htmlFor="">App ID</label>
+                </div>
+                <div className="col-12">
+                    <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        defaultValue={""}
+                        {...register("app_id", { ...requiredValidator, })}
+                    />
+                    {errors.app_id && (
+                        <ErrorMessage text={errors.app_id.message} />
+                    )}
+                </div>
+            </div>
+            <div className="col-xl-12 mt-3">
+                <div className="formLabel">
+                    <label htmlFor="">App Token</label>
+                </div>
+                <div className="col-12">
+                    <input
+                        type="text"
+                        name="extension"
+                        className="formItem"
+                        defaultValue={""}
+                        {...register("app_token", {
+                            ...requiredValidator,
+                        })}
+                    />
+                    {errors.app_token && (
+                        <ErrorMessage text={errors.app_token.message} />
+                    )}
+                </div>
+            </div>
+            <div className="col-xl-6 col-12 d-none">
+                <input
+                    type="text"
+                    name="extension"
+                    className="formItem"
+                    value={platform}
+                    {...register("platform")}
+                />
+            </div>
+            <div className="col-xl-12 mt-4">
+                <div className="d-flex justify-content-between">
+                    <button
+                        type="button"
+                        effect="ripple"
+                        className="panelButton gray ms-0"
+                        onClick={() => setAddonEditPopup(false)}
+                    >
+                        <span className="text">Close</span>
+                        <span className="icon">
+                            <i className="fa-solid fa-xmark"></i>
+                        </span>
+                    </button>
+                    <button
+                        type="button"
+                        effect="ripple"
+                        className="panelButton"
+                        onClick={handleFormSubmit}
+                    >
+                        <span className="text">Save</span>
+                        <span className="icon">
+                            <i className="fa-solid fa-floppy-disk"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
