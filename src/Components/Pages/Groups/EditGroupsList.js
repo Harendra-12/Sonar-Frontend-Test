@@ -65,30 +65,24 @@ export default function EditGroupsList() {
       });
       setSelectedUsers([...selectedGroup.groupusers])
     async function getUsers() {
+      // debugger   
       try {
         const res = await generalGetFunction("/user/all");
         const users=[...res?.data?.data]
-       
-        setUsers(users);
+        // console.log(selectedGroup.groupusers,{users})
+        const updatedusers = users.filter((user) => {
+          return selectedGroup.groupusers.every((groupuser) => {
+            return groupuser.user_id !== user.id;
+          });
+        });
+      //  console.log({updatedusers})
+        setUsers(updatedusers);
         setLoading(false)
       } catch (error) {}
     }
     getUsers();
   }, []);
-  // useEffect(()=>{
-  //   const addusers = users.filter(user => {
-  //     // Check if the current user's id exists in the selectedUsers array
-  //     const isSelected = selectedUsers.some(selectedUser => selectedUser.user_id === user.id);
-  //    console.log({isSelected})
-  //     // If the user is NOT selected (isSelected is false), keep them in addusers
-  //     return !isSelected;
-  //   })
-  //   setUsers([...addusers])
-
-  // },[selectedUsers,users])
-//  console.log({users})
   const handleFormSubmit = handleSubmit(onSubmit);
-
     // Select all for bulk edit
     const handleSelectAll = () => {
       const newSelectAllState = !selectAll; // Toggle Select All state
@@ -227,6 +221,12 @@ export default function EditGroupsList() {
       // console.log("00000",{newDestinations},{selectedUsers})
      setAddedUISelectedUsers([...newDestinations])
       setSelectedUsers((prev) => [...prev, ...newDestinations]); // Replace the entire destination state
+      const newusers=users.filter((user)=>{
+        const checkExist=newDestinations.every((dest)=>dest.id!==user.id);
+        return checkExist
+      })
+      // console.log({newusers})
+      setUsers([...newusers])
     } else {
       // const newDestinations = [...users]; // Copy the current destination array
 
@@ -268,8 +268,8 @@ export default function EditGroupsList() {
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div
-                 className="d-flex flex-wrap"
-                 style={{ position: "sticky", top: "0", zIndex: "9" }}
+                className="d-flex flex-wrap"
+                style={{ position: "sticky", top: "0", zIndex: "9" }}
               >
                 <div className="col-12">
                   <div className="heading">
@@ -312,13 +312,8 @@ export default function EditGroupsList() {
                   </div>
                 </div>
               </div>
-              <div  className="col-12"
-                  style={{
-                    padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
-                  }}>
               <form className="row mb-0">
-                <div className=" col-xl-4 col-12 col-md-6">
+                <div className="col-12 col-md-6">
                   <div className="formRow">
                     <div className="formLabel">
                       <label htmlFor="">
@@ -342,8 +337,8 @@ export default function EditGroupsList() {
                   </div>
                 </div>
               </form>
-              </div>
-                  <div className="col-12">
+            </div>
+            <div className="col-12">
         <div className="heading bg-transparent border-bottom-0">
           <div className="content">
             <h4>List of Users</h4>
@@ -353,16 +348,11 @@ export default function EditGroupsList() {
             type="button"
             className="panelButton"
             onClick={() => {
-              if (users.length>0 && users?.length === selectedUsers?.length) toast.warn("All Users selected");
-              else setBulkAddPopUp(true);
-              const addusers = users.filter(user => {
-                // Check if the current user's id exists in the selectedUsers array
-                const isSelected = selectedUsers.some(selectedUser => selectedUser.user_id === user.id);
-              //  console.log({isSelected})
-                // If the user is NOT selected (isSelected is false), keep them in addusers
-                return !isSelected;
-              })
-              setUsers([...addusers])
+                           if (users.length>0&&users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
+                           else toast.warn("All Users selected");
+                         
+             
+              
             }}
           >
             <span className="text">Add</span>
@@ -625,8 +615,6 @@ export default function EditGroupsList() {
           </form>
         )}
       </div>
-            </div>
-        
           </div>
         )}
       </>

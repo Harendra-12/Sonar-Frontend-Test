@@ -338,6 +338,7 @@ function Messages({
   // Logic to send message
   const sendSingleMessage = () => {
     // Only proceed if there's either a URL or message text
+    // debugger
     if (!selectedUrl && messageInput.trim() === "") {
       return;
     }
@@ -349,7 +350,7 @@ function Messages({
       if (target) {
         let messager;
         try {
-          const messageContent = messageInput.trim() || selectedUrl;
+          const messageContent = messageInput.trim();
           //  message if any file is selected
           messager = new Messager(userAgent, target, messageContent);
 
@@ -2390,11 +2391,11 @@ function Messages({
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
-                                {selectedFile && (
+                                {/* {selectedFile && (
                                   <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
                                     📎 {selectedFile.name}
                                   </div>
-                                )}
+                                )} */}
 
                                 <textarea
                                   type="text"

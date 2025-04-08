@@ -5,6 +5,10 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  fileUploadFunction,
+  generalGetFunction,
+  generalPostFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
@@ -102,6 +106,19 @@ function CallDetails({
       setactivePage("messages");
     }
   };
+
+  async function handleTranscript(url) {
+    const newUrl = url.split(".com/").pop();
+    // const presignData = await generatePreSignedUrl(newUrl);
+    // if (presignData?.status && presignData?.url) {
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+      // }
+      console.log({url})
+      const trnascript = await fileUploadFunction(`transcribe-audio`,
+        { src: url },
+      );
+  }
 
   const handlePlaying = async (audio) => {
     // Reseting state before Playing

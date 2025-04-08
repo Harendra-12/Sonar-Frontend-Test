@@ -78,6 +78,38 @@ export async function generalGetFunction(endpoint) {
     });
 }
 
+// general get function with token
+export async function generalGetFunctionWithToken(endpoint, token) {
+  handleDispatch({
+    type: "SET_LOADING",
+    loading: true,
+  });
+
+  const headersWithToken = {
+    ...axiosInstance.defaults.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return axiosInstance
+    .get(endpoint, { headers: headersWithToken })
+    .then((res) => {
+      handleDispatch({
+        type: "SET_LOADING",
+        loading: false,
+      });
+      return res.data;
+    })
+    .catch((err) => {
+      handleDispatch({
+        type: "SET_LOADING",
+        loading: false,
+      });
+      
+        return err;
+      
+    })
+}
+
 // General Post function
 export async function generalPostFunction(endpoint, data) {
   return axiosInstance
@@ -110,6 +142,25 @@ export async function generalPostFunction(endpoint, data) {
         return err.response.data;
       }
     });
+}
+
+// General Post function with token
+export async function generalPostFunctionWithToken(endpoint, data, token) {
+  const headersWithToken = {
+    ...axiosInstance.defaults.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return axiosInstance
+    .post(endpoint, data, { headers: headersWithToken })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+     
+        return err.response?.data;
+      })
+    
 }
 
 // General Put function
