@@ -117,7 +117,7 @@
     font-weight: 500;
     font-family: Roboto;
     color: var(--bgdark-color);
-    height: 60px;
+    height: 65px;
     padding: 0;
     width: 100%;
     background: transparent;
@@ -191,7 +191,7 @@
     justify-content: center;
 }
 
-.itemWrapper .heading:hover i {
+.itemWrapper .heading i:hover {
     box-shadow: none
 }
 

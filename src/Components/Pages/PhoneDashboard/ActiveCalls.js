@@ -185,7 +185,7 @@ function ActiveCalls({ isWebrtc, filter }) {
             {filter === "all" && <th>Direction</th>}
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
-            {/* {isWebrtc !== false && <th className="text-align">Hang Up</th>} */}
+            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
           </tr>
         </thead>
         <tbody>
@@ -209,7 +209,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
-                      {/* <select
+                      <select
                         className="formItem"
                         onChange={(e) => {
                           setBargeStatus(e.target.value);
@@ -258,8 +258,8 @@ function ActiveCalls({ isWebrtc, filter }) {
                         >
                           Whisper callee
                         </option>
-                      </select> */}
-                      <div className="d-flex justify-content-between">
+                      </select>
+                      {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
                           <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy4)' }}
                             onClick={() => {
@@ -332,9 +332,9 @@ function ActiveCalls({ isWebrtc, filter }) {
                             <i className=" fa-solid fa-phone-slash"></i>
                           </button>
                         </Tippy>
-                      </div>
+                      </div> */}
                     </td>}
-                    {/* {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
+                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
                       <label
                         className="tableButton delete mx-auto"
                         style={{
@@ -343,7 +343,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                       >
                         <i className=" fa-solid fa-phone-slash"></i>{" "}
                       </label>
-                    </td>} */}
+                    </td>}
                   </tr>
                 );
               })}

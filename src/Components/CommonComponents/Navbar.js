@@ -403,6 +403,9 @@ function Navbar() {
                           "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
+                          "/groups",
+                          "/groups-add",
+                          "/groups-edit"
                         ])
                           ? "true"
                           : "false"
@@ -437,6 +440,9 @@ function Navbar() {
                         "/call-dashboard",
                         "/active-calls",
                         "/voicemail-report",
+                        "/groups",
+                        "/groups-add",
+                        "/groups-edit"
                       ])
                         ? "show"
                         : ""
@@ -544,12 +550,12 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-                         <li className="tabItem ">
-                            <Link  to="/groups"         
+                          <li className="tabItem ">
+                            <NavLink to="/groups"
                               onClick={backToTop}
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/groups", "/groups-add"].some(
+                                  ["/groups", "/groups-add", "/groups-edit"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -558,7 +564,7 @@ function Navbar() {
                               }
                             >
                               <div className="itemTitle">Groups</div>
-                            </Link>
+                            </NavLink>
                           </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
@@ -1855,9 +1861,9 @@ function Navbar() {
                                 </NavLink>
                               </li>
                               <li className="tabItem ">
-                    
 
-                            <NavLink
+
+                                <NavLink
                                   to="/ticket"
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
@@ -1870,14 +1876,14 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">
-                                  Submit a Ticket
+                                    Submit a Ticket
                                   </div>
                                 </NavLink>
-             
-                                  {/* // to="/ticket" */}
 
-                              
- 
+                                {/* // to="/ticket" */}
+
+
+
                                 {/* <Link
                                   
 =======
@@ -1915,7 +1921,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">
-                                  Live chat support
+                                    Live chat support
                                   </div>
                                 </NavLink>
                               </li>

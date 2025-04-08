@@ -7,13 +7,13 @@ import {
   backToTop,
   checkViewSidebar,
   generalGetFunction,
+  generalGetFunctionWithToken,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import { toast } from "react-toastify";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
-import axios from "axios";
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
@@ -75,17 +75,13 @@ function Agents({ type }) {
       // if (userConfirmed) {
       setLoading(true);
       try {
-        const logOut = await axios.get(`${baseName}/logout?all`, {
-          headers: {
-            Authorization: `Bearer ${agentLogOutToken}`
-          }
-        });
-        if (logOut?.data.status) {
-          toast.success(logOut?.data.message);
+        const logOut = await generalGetFunctionWithToken(`${baseName}/logout?all`, agentLogOutToken)
+        if (logOut?.status) {
+          toast.success(logOut?.message);
           setLoading(false);
           getData();
         } else {
-          toast.error(logOut?.data.message || logOut?.data.error);
+          toast.error(logOut?.error || logOut?.error.message);
         }
       } catch (err) {
         console.log(err);
