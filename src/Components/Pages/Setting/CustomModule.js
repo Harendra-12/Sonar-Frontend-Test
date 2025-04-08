@@ -5,6 +5,7 @@ import { backToTop, checkViewSidebar, generalGetFunction } from '../../GlobalFun
 import Header from '../../CommonComponents/Header';
 import CustomDashboardManage from './CustomDashboardManage';
 import { useSelector } from 'react-redux';
+import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 
 function CustomModule() {
     const account = useSelector((state) => state.account);
@@ -93,7 +94,7 @@ function CustomModule() {
                                                 }
                                             </thead>
                                             <tbody>
-                                                {loading ? <SkeletonFormLoader col={9} row={10} /> :
+                                                {loading ? <SkeletonTableLoader col={9} row={10} /> :
                                                     <>
                                                         {
                                                             customModule?.map((item, index) => {
