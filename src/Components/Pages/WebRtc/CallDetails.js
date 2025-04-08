@@ -108,36 +108,26 @@ function CallDetails({
     setCurrentPlaying("");
     setAudioURL("");
 
-    if (!audio) return;
-    if (currentPlaying === audio) {
-      if (thisAudioRef.current) {
-        thisAudioRef.current.pause();
-      }
-      setCurrentPlaying(null);
-      return;
-    }
-
-    setCurrentPlaying(audio);
-
     try {
-      // const url = audio.split(".com/").pop();
+      setCurrentPlaying(audio);
+      const url = audio?.split(".com/").pop();
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-      // setAudioURL(res.url);
+      // setAudioURL(res.url); // Update audio URL state
       setAudioURL(audio);
+      // Wait for React state update before accessing ref
       setTimeout(() => {
         if (thisAudioRef.current) {
-          thisAudioRef.current.load();
-          thisAudioRef.current
-            .play()
-            .catch((error) => console.error("Audio play error:", error));
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
         }
-      }, 100);
+      }, 100); // Reduced timeout to minimize delay
       // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
-      setCurrentPlaying(null);
     }
   };
 

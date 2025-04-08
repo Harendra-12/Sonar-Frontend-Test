@@ -281,6 +281,7 @@ function CdrReport({ page }) {
   };
 
   function refreshCallData() {
+    setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
   }
