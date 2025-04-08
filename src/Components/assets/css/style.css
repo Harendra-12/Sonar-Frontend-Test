@@ -157,7 +157,8 @@
 
   --text-blue-dark: #15264b;
   --text-timer-color: #192ea2;
-  --dash-listing-bg: #d6dcff;
+  /* --dash-listing-bg: #d6dcff; */
+  --dash-listing-bg: #d6dcff87;
   --dash-listing-text: #013d7a;
   --dash-listing-border: #2747f3;
   --dash-listing-hover-border: #0063c5;
