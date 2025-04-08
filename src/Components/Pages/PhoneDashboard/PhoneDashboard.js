@@ -353,7 +353,7 @@ function PhoneDashboard() {
     <main className="mainContent">
       <section id="phonePage">
         <Header title="Call Dashboard" />
-        <div className="container-fluid px-3">
+        <div className="container-fluid pe-4">
           <div className="row">
             <div id="detailsHeader" className="p-0">
               <div className="headerBgWave">
@@ -374,7 +374,7 @@ function PhoneDashboard() {
                     <div className="heading h-auto">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h5>Extensions250</h5>
+                          <h5>Extensions</h5>
                           {/* <p>7 October, 2024</p> */}
                         </div>
                         <div

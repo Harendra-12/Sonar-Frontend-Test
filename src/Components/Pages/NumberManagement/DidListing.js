@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   checkViewSidebar,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -119,12 +120,12 @@ function DidListing({ page }) {
     }
   };
 
-  async function handleClickDefault(id,action) {
+  async function handleClickDefault(id, action) {
     setLoading(true);
     const parsedData = {
       id: id,
     };
-    const apiData = await generalPostFunction(`/did/set-default?${action?action:""}`, parsedData);
+    const apiData = await generalPostFunction(`/did/set-default?${action ? action : ""}`, parsedData);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
@@ -336,6 +337,21 @@ function DidListing({ page }) {
                     className="col-12"
                     style={{ overflow: "auto", padding: "25px 20px 0" }}
                   >
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select className="formItem" onChange={() => featureUnderdevelopment()}>
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input type="search" name="Search" className="formItem" onChange={() => featureUnderdevelopment()} />
+                      </div>
+                    </div>
                     <div className="tableContainer">
                       <table>
                         <thead>
@@ -349,13 +365,13 @@ function DidListing({ page }) {
                                 <th>Usages</th>
                               </> : ""
                             }
-                            <th style={{  textAlign: "center" }}>
+                            <th style={{ textAlign: "center" }}>
                               Default WhatsApp DID
                             </th>
-                            <th style={{  textAlign: "center" }}>
+                            <th style={{ textAlign: "center" }}>
                               Default E-fax DID
                             </th>
-                            <th style={{textAlign: "center" }}>
+                            <th style={{ textAlign: "center" }}>
                               Default SMS DID
                             </th>
                             {page === "pbx" ? <>
@@ -363,7 +379,7 @@ function DidListing({ page }) {
                                 Default Caller DID
                               </th>
                             </> : ""}
-                            <th style={{  textAlign: "center" }}>
+                            <th style={{ textAlign: "center" }}>
                               Options
                             </th>
                             {/* <th>Delete</th> */}
@@ -414,7 +430,7 @@ function DidListing({ page }) {
                                             style={{ cursor: "pointer" }}
                                             onClick={() => {
                                               if (item.default_whatsapp === 0) {
-                                                handleClickDefault(item.id,"default_whatsapp");
+                                                handleClickDefault(item.id, "default_whatsapp");
                                               }
                                             }}
                                           >
@@ -439,7 +455,7 @@ function DidListing({ page }) {
                                             style={{ cursor: "pointer" }}
                                             onClick={() => {
                                               if (item.default_eFax === 0) {
-                                                handleClickDefault(item.id,"default_eFax");
+                                                handleClickDefault(item.id, "default_eFax");
                                               }
                                             }}
                                           >
@@ -464,7 +480,7 @@ function DidListing({ page }) {
                                             style={{ cursor: "pointer" }}
                                             onClick={() => {
                                               if (item.default_sms === 0) {
-                                                handleClickDefault(item.id,"default_sms");
+                                                handleClickDefault(item.id, "default_sms");
                                               }
                                             }}
                                           >

@@ -379,6 +379,7 @@ function CdrFilterReport({ page }) {
   };
 
   function refreshCallData() {
+    setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
   }
@@ -1037,6 +1038,8 @@ function CdrFilterReport({ page }) {
                                       key === "Caller-Orig-Caller-ID-Name"
                                     ) {
                                       formattedKey = "Caller Name";
+                                    } else if (key === "recording_path") {
+                                      formattedKey = "Recording";
                                     } else if (key === "variable_billsec") {
                                       formattedKey = "Duration";
                                     } else if (key === "application_state") {
@@ -1337,7 +1340,7 @@ function CdrFilterReport({ page }) {
                                           item["recording_path"] &&
                                           item["recording_path"] && (
                                             <tr>
-                                              <td colSpan={showKeys.length + 1}>
+                                              <td colSpan="17">
                                                 <div className="audio-container mx-2">
                                                   <AudioWaveformCommon audioUrl={audioURL} />
                                                 </div>

@@ -97,6 +97,12 @@ function AddOns() {
                                             >
                                                 Utilities
                                             </button>
+                                            <div className='tableHeader justify-content-end ms-auto'>
+                                                <div class="searchBox position-relative">
+                                                    <label>Search:</label>
+                                                    <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </nav>
                                     <div className="tab-content mt-4" id="nav-tabContent">
