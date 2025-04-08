@@ -278,21 +278,22 @@ function SmsChat({ setLoading, loading }) {
                             <div className="profileHolder">
                               <i className="fa-light fa-user fs-5" />
                             </div>
+                            <div  className="col-2 my-auto ms-1 ms-xl-2" style={{ cursor: "pointer" }}>
+                              <h4>AUSER XYZ</h4>
+
+                            </div>
+
+                            <div className="callIconAdmin"><i class="fa-solid fa-circle-check mx-2" style={{color:"var(--ui-accent)"}}></i></div>
+                            {/* <i class="fa-regular fa-circle-check"></i> */}
+                            {/* <i class="fa-solid fa-circle-check"></i> */}
                             <div
-                              className="col-3 my-auto ms-1 ms-xl-3"
+                              className="col-2 my-auto ms-1 ms-xl-3"
                               style={{ cursor: "pointer" }}
                             >
                               <h4>AUSER XYZ</h4>
 
                             </div>
-                            <div
-                              className="col-3 my-auto ms-1 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-
-                            </div>
-                            <div className="col-3 mx-auto">
+                            <div className="col-2 mx-auto">
                               <div className="contactTags  mt-2">
                                 <span data-id={0}>Active</span>
                               </div>
@@ -327,9 +328,9 @@ function SmsChat({ setLoading, loading }) {
                         </div>
                       </div>
                       <div className="col-12" style={{ padding: "0px 20px" }}>
-                        <div className="newMessageWrapper mb-3">
+                        <div className="newMessageWrapper  mb-3">
                           <div>
-                            <div className="messageTo">
+                            <div className="messageTo mt-3">
                               <label>Enter Sender Number</label>
                               <div className="d-flex flex-wrap">
                                 <div className="col-auto my-auto">
@@ -345,8 +346,8 @@ function SmsChat({ setLoading, loading }) {
                                 </div>
                               </div>
                             </div>
-                            <div className="messageSubject">
-                              <label>Enter Receiver Number</label>
+                            <div className="messageSubject mt-3">
+                              <label className="mt-3">Enter Receiver Number</label>
                               <input
                                 type="text"
                                 name="to_did"
@@ -356,7 +357,7 @@ function SmsChat({ setLoading, loading }) {
                                 <ErrorMessage text={errors.to_did.message} />
                               )}
                             </div>
-                            <div className="messageBody">
+                            <div className="messageBody mt-5">
                               <label>Enter your messsage</label>
                               <textarea
                                 type="text"

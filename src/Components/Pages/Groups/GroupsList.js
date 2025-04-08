@@ -232,7 +232,7 @@ export default function GroupsList() {
                       ) : ( */}
                         <>
                           {loading ? (
-                            <SkeletonTableLoader col={8} row={15} />
+                            <SkeletonTableLoader col={4} row={10} />
                           ) : (
                             <>
                            {groups &&
