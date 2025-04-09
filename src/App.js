@@ -549,7 +549,7 @@ function App() {
           <Route path="/add-vendor" element={<AddVendors />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/edit-vendor" element={<EditVendor />} />
-          <Route path="/rate-card" element={<RateCharge />} />
+          {/* <Route path="/rate-card" element={<RateCharge />} /> */}
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
