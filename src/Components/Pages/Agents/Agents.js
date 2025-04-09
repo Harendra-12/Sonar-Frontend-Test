@@ -66,11 +66,15 @@ function Agents({ type }) {
     //   }, 1000);
     //   return () => clearTimeout(timer);
     // }
+    getData();
+  }, [entriesPerPage, pageNumber, type]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       getData();
     }, 1000);
     return () => clearTimeout(timer);
-  }, [entriesPerPage, pageNumber, type, userInput]);
+  }, [userInput])
 
 
   // Handle Agent Logout Function
