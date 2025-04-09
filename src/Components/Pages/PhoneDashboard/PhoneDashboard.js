@@ -1128,7 +1128,21 @@ function PhoneDashboard() {
                                               <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
                                             </div>
                                           </td>
-                                          <td>{agent?.name}</td>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <div className="tableProfilePicHolder">
+                                                {agent?.profile_picture ? (
+                                                  <img
+                                                    src={agent?.profile_picture}
+                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                  />
+                                                ) : (
+                                                  <i className="fa-light fa-user" />
+                                                )}
+                                              </div>
+                                              <div className="ms-2">{agent?.name}</div>
+                                            </div>
+                                          </td>
                                           <td style={{ textTransform: 'capitalize' }}>
                                             {callStatus && (
                                               <>
@@ -1176,7 +1190,21 @@ function PhoneDashboard() {
                                               <span className="ms-1">Offline</span>
                                             </div>
                                           </td>
-                                          <td>{agent?.name}</td>
+                                          <td>
+                                            <div className="d-flex align-items-center">
+                                              <div className="tableProfilePicHolder">
+                                                {agent?.profile_picture ? (
+                                                  <img
+                                                    src={agent?.profile_picture}
+                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                  />
+                                                ) : (
+                                                  <i className="fa-light fa-user" />
+                                                )}
+                                              </div>
+                                              <div className="ms-2">{agent?.name}</div>
+                                            </div>
+                                          </td>
                                           <td>{agent?.extension?.extension}</td>
                                         </tr>
                                       )

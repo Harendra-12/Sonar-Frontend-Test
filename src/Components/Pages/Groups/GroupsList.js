@@ -260,7 +260,16 @@ export default function GroupsList() {
                                               {item?.groupusers?.slice(0, 4).map((user, index) => {
                                                 // console.log(user?.user?.name)
                                                 return (
-                                                  <Tippy key={index} content={user?.user?.name}><i className="fa-light fa-user"></i></Tippy>
+                                                  <Tippy key={index} content={user?.user?.name}>
+                                                    {user?.user?.profile_picture ? (
+                                                      <img
+                                                        src={user?.user?.profile_picture}
+                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                      />
+                                                    ) : (
+                                                      <i className="fa-light fa-user"></i>
+                                                    )}
+                                                  </Tippy>
                                                 )
                                               })}
                                               {item?.groupusers

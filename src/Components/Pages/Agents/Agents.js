@@ -15,6 +15,7 @@ import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import { toast } from "react-toastify";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
@@ -204,10 +205,32 @@ function Agents({ type }) {
                                 checkViewSidebar(
                                   "CallCenterAgent",
                                   slugPermissions,
-                                  account?.permissions, "read") && agents?.data?.map((item, index) => {
+                                  account?.permissions, "read") ? agents?.data?.length === 0 ?
+                                  <tr>
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Agent"
+                                      />
+                                    </td>
+                                  </tr>
+                                  : agents?.data?.map((item, index) => {
                                     return (
                                       <tr>
-                                        <td>{item.name}</td>
+                                        <td>
+                                          <div className="d-flex align-items-center">
+                                            <div className="tableProfilePicHolder">
+                                              {item.profile_picture ? (
+                                                <img
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                />
+                                              ) : (
+                                                <i className="fa-light fa-user" />
+                                              )}
+                                            </div>
+                                            <div className="ms-2">{item.name}</div>
+                                          </div>
+                                        </td>
                                         <td>{item.extension.extension}</td>
                                         <td>{item.user_role.roles.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
@@ -277,7 +300,19 @@ function Agents({ type }) {
                                 </td> */}
                                       </tr>
                                     );
-                                  })}
+                                  }) : (
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>No Permission</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                  </tr>
+                                )
+                              }
                             </>
                           )}
                         </tbody>

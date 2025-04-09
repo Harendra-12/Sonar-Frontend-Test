@@ -341,7 +341,19 @@ const Users = () => {
                                     return (
                                       <tr key={index}>
                                         <td>
-                                          {item.username}
+                                          <div className="d-flex align-items-center">
+                                            <div className="tableProfilePicHolder">
+                                              {item.profile_picture ? (
+                                                <img
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                />
+                                              ) : (
+                                                <i className="fa-light fa-user" />
+                                              )}
+                                            </div>
+                                            <div className="ms-2">{item.username}</div>
+                                          </div>
                                         </td>
                                         <td>
                                           {item.extension?.extension || "N/A"}
