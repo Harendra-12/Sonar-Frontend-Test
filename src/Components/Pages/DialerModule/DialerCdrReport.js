@@ -110,7 +110,6 @@ function DialerCdrReport() {
                         <input
                           type="search"
                           name="Search"
-                          placeholder="Search"
                           value={searchQuery}
                           className="formItem"
                           onChange={(e) => setSearchQuery(e.target.value)}
