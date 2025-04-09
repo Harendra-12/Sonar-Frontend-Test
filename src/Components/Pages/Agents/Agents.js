@@ -31,6 +31,7 @@ function Agents({ type }) {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
   const [agentLogOutToken, setAgentLogOutToken] = useState("");
+  const allDID = useSelector((state) => state.didAll);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -185,6 +186,7 @@ function Agents({ type }) {
                         <thead>
                           <tr>
                             <th>Name</th>
+                            <th>Caller ID</th>
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Recording</th>
@@ -202,7 +204,7 @@ function Agents({ type }) {
                         </thead>
                         <tbody className="">
                           {loading ? (
-                            <SkeletonTableLoader col={7} row={15} />
+                            <SkeletonTableLoader col={8} row={15} />
                           ) : (
                             <>
                               {
@@ -235,6 +237,7 @@ function Agents({ type }) {
                                             <div className="ms-2">{item.name}</div>
                                           </div>
                                         </td>
+                                        <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
                                         <td>{item.extension.extension}</td>
                                         <td>{item.user_role.roles.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
