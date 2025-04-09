@@ -8,6 +8,7 @@ import CustomDashboardManage from '../Setting/CustomDashboardManage';
 import { useLocation } from 'react-router-dom';
 // import CircularLoader from '../../Loader/CircularLoader';
 import { getPanelElement, getResizeHandleElement, Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import AllActiveAgentStatus from './AllActiveAgentStatus';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -274,6 +275,9 @@ function ActiveCallsPage({ isParentWebRtc }) {
             }
         }
     }
+
+    const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+
 
     return (
         <main className={`mainContent ${isParentWebRtc ? ' ms-0' : ''}`}>
@@ -776,6 +780,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                 </div>
                             </div>
                         </div>
+                        <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} />
                     </div>
                 </div>
             </section>
