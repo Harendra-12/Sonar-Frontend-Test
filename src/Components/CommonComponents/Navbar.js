@@ -285,6 +285,7 @@ function Navbar() {
                           "/port-number-add",
                           "/port-number-edit",
                           "/did-listing",
+                          "/management-get-did",
                         ])
                           ? "true"
                           : "false"
@@ -304,6 +305,7 @@ function Navbar() {
                         "/port-number-add",
                         "/port-number-edit",
                         "/did-listing",
+                        "/management-get-did",
                       ])
                         ? "show"
                         : ""
@@ -370,6 +372,16 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+
+                          <li className="tabItem">
+                            <NavLink
+                              to="/management-get-did"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="itemTitle">New Get DID</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>

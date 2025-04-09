@@ -628,3 +628,8 @@ form.tangoNavs .nav-tabs {
     background-color: var(--bg-badge-danger);
     border: 1px solid var(--bg-badge-danger-border);
 }
+.badge-soft-primary {
+    color: var(--badge-primary-text);
+    /* background-color: var(--bg-badge-danger); */
+    border: 1px solid var(--badge-primary-border);
+}
