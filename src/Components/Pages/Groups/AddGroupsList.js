@@ -3,7 +3,11 @@ import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import Header from "../../CommonComponents/Header";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
-import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import {
+  backToTop,
+  generalGetFunction,
+  generalPostFunction,
+} from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -14,11 +18,11 @@ export default function AddGroupsList() {
   const [bulkAddPopUp, setBulkAddPopUp] = useState(false);
   const [bulkUploadSelectedAgents, setBulkUploadSelectedAgents] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectAll, setSelectAll] = useState(false);
-    const [bulkEditPopup, setBulkEditPopup] = useState(false);
-    const account=useSelector((state)=>state.account)
-    const navigate=useNavigate()
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectAll, setSelectAll] = useState(false);
+  const [bulkEditPopup, setBulkEditPopup] = useState(false);
+  const account = useSelector((state) => state.account);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,32 +31,29 @@ export default function AddGroupsList() {
   } = useForm();
 
   // addition of users
-  const onSubmit = async(data) => {
-    const payload={ "group_name": 
-     data.name
-  ,
-  "user_id": [
-     ...selectedUsers.map((user)=>user.id)
-  ]}
+  const onSubmit = async (data) => {
+    const payload = {
+      group_name: data.name,
+      user_id: [...selectedUsers.map((user) => user.id)],
+    };
     try {
-      setLoading(true)
-      const res=await generalPostFunction(`groups/store`,payload)
+      setLoading(true);
+      const res = await generalPostFunction(`groups/store`, payload);
       console.log(res);
-      if(res.status){
-        setLoading(false)
-        toast.success("Added Users Successfully")
-        navigate("/groups")
-      }else{
-        setLoading(false)
-        toast.error(res?.message)
-        toast.error("Please try different group name or add users")
+      if (res.status) {
+        setLoading(false);
+        toast.success("Added Users Successfully");
+        navigate("/groups");
+      } else {
+        setLoading(false);
+        toast.error(res?.message);
+        toast.error("Please try different group name or add users");
       }
-      
     } catch (error) {
-      setLoading(false)
-      toast.error(error.message)
+      setLoading(false);
+      toast.error(error.message);
     }
-  }
+  };
   //   console.log({errors})
 
   //  get users details
@@ -60,46 +61,44 @@ export default function AddGroupsList() {
     async function getUsers() {
       try {
         const users = await generalGetFunction("/user/all");
-        setUsers([ ...users?.data?.data]);
-        setLoading(false)
+        setUsers([...users?.data?.data]);
+        setLoading(false);
       } catch (error) {}
     }
     getUsers();
   }, []);
 
-
   const handleFormSubmit = handleSubmit(onSubmit);
-    // Select all for bulk edit
-    const handleSelectAll = () => {
-      const newSelectAllState = !selectAll; // Toggle Select All state
-      setSelectAll(newSelectAllState);
-  
-      if (newSelectAllState) {
-        // Add all visible users to bulkUploadSelectedAgents
-        users.forEach((item) => {
-          if (
-            !bulkUploadSelectedAgents.some(
-              (agent) => agent?.extension?.extension == item?.extension?.extension
-            )
-          ) {
-            handleCheckboxChange(item);
-          }
-        });
-      } else {
-        // Remove all visible users from bulkUploadSelectedAgents
-        users.forEach((item) => {
-          if (
-            bulkUploadSelectedAgents.some(
-              (agent) => agent?.extension?.extension == item?.extension?.extension
-            )
-          ) {
-            handleCheckboxChange(item);
-          }
-        });
-      }
-    };
+  // Select all for bulk edit
+  const handleSelectAll = () => {
+    const newSelectAllState = !selectAll; // Toggle Select All state
+    setSelectAll(newSelectAllState);
 
-    
+    if (newSelectAllState) {
+      // Add all visible users to bulkUploadSelectedAgents
+      users.forEach((item) => {
+        if (
+          !bulkUploadSelectedAgents.some(
+            (agent) => agent?.extension?.extension == item?.extension?.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    } else {
+      // Remove all visible users from bulkUploadSelectedAgents
+      users.forEach((item) => {
+        if (
+          bulkUploadSelectedAgents.some(
+            (agent) => agent?.extension?.extension == item?.extension?.extension
+          )
+        ) {
+          handleCheckboxChange(item);
+        }
+      });
+    }
+  };
+
   // Function to delete a destination
   const deleteDestination = (id) => {
     const updatedDestination = selectedUsers.filter((item) => item.id !== id);
@@ -108,10 +107,9 @@ export default function AddGroupsList() {
     //   clearErrors("destinations");
     // }
   };
-  
 
-   // Handle chek box for bulk edit
-   const handleCheckboxChange = (item) => {
+  // Handle chek box for bulk edit
+  const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
         prevSelected.some(
@@ -128,51 +126,51 @@ export default function AddGroupsList() {
       }
     });
   };
-    // // Function to handle changes in destination fields
-    const handleDestinationChange = (index, event) => {
-      // debugger
-      const { name, value } = event.target;
-  
-      const allowedCharacters = /^[A-Za-z0-9\s]*$/;
-  
-      if (name === "destination" && !allowedCharacters.test(value)) {
-        return;
-      }
-      const newDestination = [...users];
-      newDestination[index][name] = value;
-      setUsers(newDestination);
-  
-      // if (destinationValidation()) {
-      //   clearErrors("destinations");
-      // } else {
-      //   setError("destinations", {
-      //     type: "manual",
-      //     message: "All fields are required",
-      //   });
-  
-      // if (!validateUniqueAgents()) {
-      //   setError("destinations", {
-      //     type: "manual",
-      //     message: "Same agent can't be selected for two or more fields",
-      //   });
-      // } else if (validateAgents()) {
-      //   clearErrors("destinations");
-      // } else {
-      //   setError("destinations", {
-      //     type: "manual",
-      //     message: "Agent name required in all rows",
-      //   });
-      // }
-    };
+  // // Function to handle changes in destination fields
+  const handleDestinationChange = (index, event) => {
+    // debugger
+    const { name, value } = event.target;
+
+    const allowedCharacters = /^[A-Za-z0-9\s]*$/;
+
+    if (name === "destination" && !allowedCharacters.test(value)) {
+      return;
+    }
+    const newDestination = [...users];
+    newDestination[index][name] = value;
+    setUsers(newDestination);
+
+    // if (destinationValidation()) {
+    //   clearErrors("destinations");
+    // } else {
+    //   setError("destinations", {
+    //     type: "manual",
+    //     message: "All fields are required",
+    //   });
+
+    // if (!validateUniqueAgents()) {
+    //   setError("destinations", {
+    //     type: "manual",
+    //     message: "Same agent can't be selected for two or more fields",
+    //   });
+    // } else if (validateAgents()) {
+    //   clearErrors("destinations");
+    // } else {
+    //   setError("destinations", {
+    //     type: "manual",
+    //     message: "Agent name required in all rows",
+    //   });
+    // }
+  };
 
   // Logic to upload bulk destination
   const handleBulkDestinationUpload = (selectedDestinations) => {
     // debugger
-    console.log({selectedDestinations})
-    if (users.length> 0 ) {
+    console.log({ selectedDestinations });
+    if (users.length > 0) {
       const newDestinations = selectedDestinations.map(
         (selectedDestination) => ({
-          id:selectedDestination?.id ,
+          id: selectedDestination?.id,
           name: selectedDestination?.name,
           // delay: 0,
           // timeOut: "30",
@@ -181,20 +179,18 @@ export default function AddGroupsList() {
       );
       // console.log("00000",{newDestinations},{selectedUsers})
       setSelectedUsers((prev) => [...prev, ...newDestinations]); // Replace the entire destination state
-      const newusers=users.filter((user)=>{
-        const checkExist=newDestinations.every((dest)=>dest.id!==user.id);
-        return checkExist
-      })
+      const newusers = users.filter((user) => {
+        const checkExist = newDestinations.every((dest) => dest.id !== user.id);
+        return checkExist;
+      });
       // console.log({newusers})
-      setUsers([...newusers])
+      setUsers([...newusers]);
     } else {
       // const newDestinations = [...users]; // Copy the current destination array
-
       // selectedDestinations.forEach((selectedDestination) => {
       //   const existingDestinationIndex = newDestinations.findIndex(
       //     (d) => d.name === selectedDestination.name
       //   );
-
       //   if (existingDestinationIndex === -1) {
       //     // Add new destination if it doesn't already exist
       //     newDestinations.push({
@@ -202,7 +198,6 @@ export default function AddGroupsList() {
       //       destination: selectedDestination?.extension?.extension,
       //       delay: 0,
       //       timeOut: "30",
-
       //       status: "active",
       //     });
       //   }
@@ -213,7 +208,7 @@ export default function AddGroupsList() {
     setBulkUploadSelectedAgents([]);
     setSelectAll(false);
   };
-// console.log({bulkUploadSelectedAgents})
+  // console.log({bulkUploadSelectedAgents})
   return (
     <div className="mainContent">
       <div className="container-fluid px-0">
@@ -273,8 +268,12 @@ export default function AddGroupsList() {
                 </div>
               </div>
               <form className="row mb-0">
-                <div className="col-12 col-md-6">
-                  <div className="formRow">
+                <div className="col-12 col-md-12" >
+                 <div  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}>
+                 <div className="formRow  col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">
                         Name <span className="text-danger">*</span>
@@ -295,125 +294,132 @@ export default function AddGroupsList() {
                       )}
                     </div>
                   </div>
+                 </div>
                 </div>
               </form>
-            </div>
-            <div className="col-12">
-        <div className="heading bg-transparent border-bottom-0">
-          <div className="content">
-            <h4>List of Users</h4>
-            <p>You can see the list of users in this group.</p>
-          </div>{" "}
-          <button
-            type="button"
-            className="panelButton"
-            onClick={() => {
-              if (users.length>0&&users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
-              else toast.warn("All Users selected");
-            }}
-          >
-            <span className="text">Add</span>
-            <span className="icon">
-              <i className="fa-solid fa-plus"></i>
-            </span>
-          </button>
-        </div>
-        {selectedUsers.length > 0 && (
-          <form className="row" style={{ padding: "0px 23px 20px" }}>
-            <div className="formRow col-xl-12">
-              {selectedUsers.map((item, index) => {
-                return (
-                  <div className="col-12 d-flex justify-content-start mb-2">
-                    <div
-                      className="formLabel pe-2 d-flex justify-content-between"
-                      style={
-                        index === 0
-                          ? { marginTop: 32, width: 50 }
-                          : { width: 50 }
-                      }
-                    >
-                      <div>
-                        {/* <input
+              <div className="col-12">
+                <div className="heading bg-transparent border-bottom-0">
+                  <div className="content">
+                    <h4>List of Users</h4>
+                    <p>You can see the list of users in this group.</p>
+                  </div>{" "}
+                  <button
+                    type="button"
+                    className="panelButton"
+                    onClick={() => {
+                      if (
+                        users.length > 0 &&
+                        users?.length !== selectedUsers?.length
+                      )
+                        setBulkAddPopUp(true);
+                      else toast.warn("All Users selected");
+                    }}
+                  >
+                    <span className="text">Add</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+                {selectedUsers.length > 0 && (
+                  <form className="row" style={{ padding: "0px 23px 20px" }}>
+                    <div className="formRow col-xl-12">
+                      {selectedUsers.map((item, index) => {
+                        return (
+                          <div className="col-12 d-flex justify-content-start mb-2">
+                            <div
+                              className="formLabel pe-2 d-flex justify-content-between"
+                              style={
+                                index === 0
+                                  ? { marginTop: 32, width: 50 }
+                                  : { width: 50 }
+                              }
+                            >
+                              <div>
+                                {/* <input
                           type="checkbox"
                         //   onChange={() => handleSelectUserToEdit(item)}
                           checked={selectedAgentToEdit.some(
                             (agent) => agent.destination == item.destination
                           )}
                         ></input> */}
-                      </div>
-                      <label>{index + 1}.</label>
-                    </div>
-                    <div className="col-3 pe-2">
-                      {index === 0 ? (
-                        <div className="formLabel">
-                          <label htmlFor="">
-                            Name<span className="text-danger">*</span>
-                          </label>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      <div className="position-relative">
-                        <select
-                          disabled
-                          type="text"
-                          name="destination"
-                          value={item?.id}
-                          onChange={(e) => {
-                            const selectedValue = e.target.value;
-                            if (selectedValue === "addUser") {
-                              navigate("/users-add");
-                            } else {
-                              handleDestinationChange(index, e);
-                            }
-                          }}
-                          className="formItem"
-                          placeholder="Destination"
-                        >
-                          <option value={item.id} disabled>
-                            {item.name}
-                          </option>
-
-                          {users &&
-                            users
-                              .filter((item1) => {
-                                return (
-                                  item1?.extension?.extension ==
-                                  selectedUsers[index]?.destination ||
-                                  !selectedUsers.some(
-                                    (destinationItem, destinationIndex) =>
-                                      destinationItem?.destination ==
-                                        item1?.extension?.extension &&
-                                      destinationIndex != index
-                                  )
-                                );
-                              })
-                              .map((item) => {
-                                return (
-                                  <option
-                                    value={item?.extension?.extension}
-                                    key={item?.id}
-                                  >
-                                    {item.alias
-                                      ? `${item?.alias} - ${item?.extension?.extension}`
-                                      : `${item?.name} - ${item?.extension?.extension}`}
-                                    {item.name}(
-                                                                                      {item?.extension?.extension})
+                              </div>
+                              <label>{index + 1}.</label>
+                            </div>
+                            <div className="col-3 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Name<span className="text-danger">*</span>
+                                  </label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <div className="position-relative">
+                                <select
+                                  disabled
+                                  type="text"
+                                  name="destination"
+                                  value={item?.id}
+                                  onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === "addUser") {
+                                      navigate("/users-add");
+                                    } else {
+                                      handleDestinationChange(index, e);
+                                    }
+                                  }}
+                                  className="formItem"
+                                  placeholder="Destination"
+                                >
+                                  <option value={item.id} disabled>
+                                    {item.name}
                                   </option>
-                                );
-                              })}
-                          <option
-                            value="addUser"
-                            className="addmusic"
-                            style={{ cursor: "pointer" }}
-                          >
-                            Add User
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    
-                    {/* {watch("strategy") === "sequence" ? (
+
+                                  {users &&
+                                    users
+                                      .filter((item1) => {
+                                        return (
+                                          item1?.extension?.extension ==
+                                            selectedUsers[index]?.destination ||
+                                          !selectedUsers.some(
+                                            (
+                                              destinationItem,
+                                              destinationIndex
+                                            ) =>
+                                              destinationItem?.destination ==
+                                                item1?.extension?.extension &&
+                                              destinationIndex != index
+                                          )
+                                        );
+                                      })
+                                      .map((item) => {
+                                        return (
+                                          <option
+                                            value={item?.extension?.extension}
+                                            key={item?.id}
+                                          >
+                                            {item.alias
+                                              ? `${item?.alias} - ${item?.extension?.extension}`
+                                              : `${item?.name} - ${item?.extension?.extension}`}
+                                            {item.name}(
+                                            {item?.extension?.extension})
+                                          </option>
+                                        );
+                                      })}
+                                  <option
+                                    value="addUser"
+                                    className="addmusic"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    Add User
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+
+                            {/* {watch("strategy") === "sequence" ? (
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
@@ -541,37 +547,38 @@ export default function AddGroupsList() {
                         <option value="inactive">False</option>
                       </select>
                     </div> */}
-                    {selectedUsers.length == 1 ? (
-                      ""
-                    ) : (
-                      <div
-                        className={`me-2 h-100 m${
-                          index === 0 ? "t" : "y"
-                        }-auto`}
-                      >
-                        <button
-                          type="button"
-                          onClick={() => deleteDestination(item.id)}
-                          className="tableButton delete"
-                        >
-                          <i className="fa-solid fa-trash"></i>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-              {errors.destinations && (
-                <ErrorMessage text={errors.destinations.message} />
-              )}
+                            {selectedUsers.length == 1 ? (
+                              ""
+                            ) : (
+                              <div
+                                className={`me-2 h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
+                              >
+                                <button
+                                  type="button"
+                                  onClick={() => deleteDestination(item.id)}
+                                  className="tableButton delete"
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                      {errors.destinations && (
+                        <ErrorMessage text={errors.destinations.message} />
+                      )}
 
-              <label htmlFor="data" className="formItemDesc">
-                Add destinations and parameters to the group.
-              </label>
+                      <label htmlFor="data" className="formItemDesc">
+                        Add destinations and parameters to the group.
+                      </label>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
-          </form>
-        )}
-      </div>
           </div>
         )}
       </>
@@ -590,11 +597,11 @@ export default function AddGroupsList() {
                   placeholder="Search"
                   name="name"
                   value={searchQuery}
-                //   onChange={handleSearchChange}
+                  //   onChange={handleSearchChange}
                 />
                 <button
                   className="tableButton ms-2"
-                //   onClick={() => navigate("/users-add")}
+                  //   onClick={() => navigate("/users-add")}
                 >
                   <i className="fa-solid fa-user-plus"></i>
                 </button>
@@ -621,7 +628,8 @@ export default function AddGroupsList() {
                     </tr>
                   </thead>
                   <tbody>
-                    {users?.sort((a, b) => {
+                    {users
+                      ?.sort((a, b) => {
                         const aMatches =
                           a.name
                             .toLowerCase()
