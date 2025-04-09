@@ -155,8 +155,10 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
+  console.log(startDateFlag, endDateFlag, filterBy);
+  
   useEffect(() => {
-    if (filterBy === "date" && startDateFlag !== "") {
+    if (filterBy === "date") {
       setStartDate(startDateFlag);
       setEndDate(startDateFlag);
     } else if (

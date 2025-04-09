@@ -127,10 +127,10 @@ export default function EditGroupsList() {
 
   // Function to delete a destination
   const deleteDestination = async (id) => {
-    if(true){
-      featureUnderdevelopment()
-      return
-    }
+    // if(true){
+    //   featureUnderdevelopment()
+    //   return
+    // }
 
     const isIdInAddedUI = addedUISelectedUsers?.some(
       (user) => user?.user_id === id || user?.id === id
@@ -143,19 +143,19 @@ export default function EditGroupsList() {
         if (res?.status) {
 
           const updatedDestination = selectedUsers.filter((item) => (item?.id) !== id);
-          const users = getUsers();
-          const newusers = users.filter((user) => {
-            const checkExist = updatedDestination.every((dest) => {
-              if (dest.user_id) {
-                return dest.user_id !== user.id;
-              } else {
-                return dest.id !== user.id
-              }
-            });
-            return checkExist
-          })
+          // const users = getUsers();
+          // const newusers = users.filter((user) => {
+          //   const checkExist = updatedDestination.every((dest) => {
+          //     if (dest.user_id) {
+          //       return dest.user_id !== user.id;
+          //     } else {
+          //       return dest.id !== user.id
+          //     }
+          //   });
+          //   return checkExist
+          // })
           // console.log({newusers})
-          setUsers([...newusers])
+          // setUsers([...newusers])
 
           setSelectedUsers(updatedDestination);
           setLoading(false);

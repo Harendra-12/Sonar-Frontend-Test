@@ -40,18 +40,27 @@ const NODE_TYPES = [
   },
 ];
 
+// Function to check added nodes and add its position on the UI
+
+function checkAddedNodes(nodeType) {
+  if(nodeType === "pressDigit"){
+    return ({ x: 86, y: 354 })
+  }
+}
+
 const ConversationOptions = () => {
   const { setNodes } = useReactFlow();
 
   const onNodeClick = (nodeType) => {
     const location = Math.random() * 500;
-
+    console.log("Node clicked:", nodeType);
+    
     setNodes((prevNodes) => [
       ...prevNodes,
       {
-        id: uuid4(),
+        id: nodeType.code,
         type: nodeType.type,
-        position: { x: location, y: location },
+        position: checkAddedNodes(nodeType.code) || { x: location, y: location },
         data: {
           label: nodeType.name,
           description: nodeType.description,
