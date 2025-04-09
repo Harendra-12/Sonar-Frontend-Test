@@ -780,7 +780,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                 </div>
                             </div>
                         </div>
-                        <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} />
+                        {!isParentWebRtc && <AllActiveAgentStatus isActiveAgentsOpen={isActiveAgentsOpen} setIsActiveAgentsOpen={setIsActiveAgentsOpen} />}
                     </div>
                 </div>
             </section>
