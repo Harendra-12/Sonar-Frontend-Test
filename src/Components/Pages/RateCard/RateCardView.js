@@ -102,7 +102,6 @@ function RateCardView() {
                                                 <input
                                                     type="search"
                                                     name="Search"
-                                                    placeholder="Search"
                                                     className="formItem"
                                                     value={userInput}
                                                     onChange={(e) => setuserInput(e.target.value)}

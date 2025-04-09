@@ -97,7 +97,7 @@ function Campaigns() {
                         </div>
                         <div className="searchBox">
                           <label>Search:</label>
-                          <input type="text" className="formItem" value="" />
+                          <input type="search" className="formItem" value="" />
                         </div>
                       </div>
                       <div className='tableContainer'>
