@@ -1,9 +1,10 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable eqeqeq */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   backToTop,
+  generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
@@ -49,6 +50,7 @@ function GetDid() {
   const [selectedDid, setSelectedDid] = useState([]);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("wallet");
+  const [availableCountries, setAvailableCountries] = useState([]);
   const [didBuyPopUP, setDidBuyPopUp] = useState(false);
   const [rechargePopUp, setRechargePopUp] = useState(false);
   const [selectedUsage, setSelectedUsage] = useState([
@@ -57,6 +59,7 @@ function GetDid() {
       value: "voice",
     },
   ]);
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [popUp, setPopUp] = useState(false);
   const {
     register,
@@ -92,7 +95,7 @@ function GetDid() {
       setDid(apiData.data);
     } else {
       setDid([]);
-      toast.error(apiData.message)
+      // toast.error(apiData.message)
     }
   };
 
@@ -137,21 +140,23 @@ function GetDid() {
     if (paymentMethod === "wallet") {
       const parsedData = {
         companyId: account.account_id,
-        vendorId: selectedDid[0].vendorId,
+        // vendorId: selectedDid[0].vendorId,
         didQty: selectedDid.length,
         type: "wallet",
         didType: "random",
-        rate: Number(selectedDid[0].price) * selectedDid.length,
-        accountId: selectedDid[0].vendorAccountId,
+        // rate: Number(selectedDid[0].price) * selectedDid.length,
+        accountId: selectedDid.find((item) => (item.vendorAccountId))?.vendorAccountId,
         dids: selectedDid.map((item) => {
           return {
-            dids: item.id,
-          };
+            did: !item.id ? item.phone_number : item.id,
+            vendorId: item.vendorId
+          }
         }),
       };
       if (
         Number(accountDetails?.balance?.amount) <
-        Number(selectedDid[0].price) * selectedDid.length
+        // Number(selectedDid[0].price) * selectedDid.length
+        totalPrice
       ) {
         toast.error("Wallet balance is low");
       } else {
@@ -198,6 +203,37 @@ function GetDid() {
     const price = parseFloat(item.price) || 0; // Convert price string to a number
     return total + price;
   }, 0);
+
+  // Handle All Country Call & Basic API Call @ Page Start
+  useEffect(() => {
+    fetchAllCountry();
+
+    setValue('searchType', "tollfree");
+    setValue('quantity', 10);
+    setValue('searchBy', "npa");
+    setValue('country', "US");
+
+    const timer = setTimeout(() => {
+      handleSubmit(onSubmit)();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [])
+
+  const fetchAllCountry = async () => {
+    try {
+      const apiData = await generalGetFunction("/available-countries");
+      if (apiData?.status) {
+        setAvailableCountries(apiData.data);
+        if (apiData.data.find(item => item.country_code === "US")) {
+          setValue('country', "US");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -240,15 +276,29 @@ function GetDid() {
                         style={{ width: "100%" }}
                       >
                         <label htmlFor="quantity">Country</label>
-                        {errors.quantity && (
-                          <ErrorMessage text={errors.quantity.message} />
+                        {errors.country && (
+                          <ErrorMessage text={errors.country.message} />
                         )}
                       </div>
                       <div className="col-12">
-                        <div className="formItem d-flex align-items-center">
-                          <img src='https://cdn-icons-png.flaticon.com/512/11105/11105310.png' style={{ width: 'auto', height: '100%', marginRight: '10px' }} alt="" />
-                          <label>(+1) United States - US</label>
-                        </div>
+                        <select className="formItem"
+                          value={watch().country}
+                          {...register("country", {
+                            ...requiredValidator,
+                          })}
+                        >
+                          {availableCountries.length > 0 ? availableCountries.map((item, key) => {
+                            return (
+                              <option key={key} value={item?.country_code}>
+                                <div>
+                                  <label>{item?.country} - {item?.country_code}</label>
+                                </div>
+                              </option>
+                            )
+                          }) : (
+                            <option>No Country Found!</option>
+                          )}
+                        </select>
                         <label htmlFor="data" className="formItemDesc text-start">
                           Input your preferred country
                         </label>
@@ -348,6 +398,8 @@ function GetDid() {
                                     ...noSpecialCharactersValidator,
                                   })}
                                   onKeyDown={restrictToNumbers}
+                                  style={{ color: 'transparent' }}
+                                  onFocus={(e) => e.target.style.color = 'var(--form-input-text)'}
                                 />
                                 <label htmlFor="data" className="formItemDesc text-start">
                                   Input the quantity
@@ -469,14 +521,16 @@ function GetDid() {
                             {
                               (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
                                 <div className={`formRow col-${did ? '12' : '3'}`}>
-                                  <div
-                                    className="formLabel d-flex justify-content-between"
-                                    style={{ width: "100%" }}
-                                  >
-                                    <label htmlFor="npa">First 3 Digits</label>
-                                    {errors.npa && (
-                                      <ErrorMessage text={errors.npa.message} />
-                                    )}
+                                  <div className="col-12">
+                                    <div
+                                      className="formLabel d-flex justify-content-between"
+                                      style={{ maxWidth: "100%" }}
+                                    >
+                                      <label htmlFor="npa">First 3 Digits</label>
+                                      {errors.npa && (
+                                        <ErrorMessage text={errors.npa.message} />
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="col-12">
                                     <input
@@ -484,7 +538,7 @@ function GetDid() {
                                       name="npa"
                                       className={`formItem ${errors.npa ? "error" : ""}`}
                                       {...register("npa", {
-                                        ...requiredValidator,
+                                        ...(watch("searchBy") === "npanxx" ? requiredValidator : {}),
                                         ...lengthValidator(3, 3),
                                         ...noSpecialCharactersValidator,
                                       })}
@@ -500,14 +554,16 @@ function GetDid() {
                             {
                               (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
                                 <div className={`formRow col-${did ? '12' : '3'}`}>
-                                  <div
-                                    className="formLabel d-flex justify-content-between"
-                                    style={{ width: "100%" }}
-                                  >
-                                    <label htmlFor="nxx">Next 3 Digits</label>
-                                    {errors.nxx && (
-                                      <ErrorMessage text={errors.nxx.message} />
-                                    )}
+                                  <div className="col-12">
+                                    <div
+                                      className="formLabel d-flex justify-content-between"
+                                      style={{ maxWidth: "100%" }}
+                                    >
+                                      <label htmlFor="nxx">Next 3 Digits</label>
+                                      {errors.nxx && (
+                                        <ErrorMessage text={errors.nxx.message} />
+                                      )}
+                                    </div>
                                   </div>
                                   <div className="col-12">
                                     <input
@@ -609,9 +665,6 @@ function GetDid() {
 
                             <div className="formRow col">
                               <div className="col-12">
-                                <div className="formLabel">
-                                  <label htmlFor=""></label>
-                                </div>
                                 <button
                                   effect="ripple"
                                   className="panelButton m-0"
@@ -622,10 +675,6 @@ function GetDid() {
                                     <i className="fa-solid fa-magnifying-glass"></i>
                                   </span>
                                 </button>
-                                <label
-                                  htmlFor="data"
-                                  className="formItemDesc text-start"
-                                ></label>
                               </div>
                             </div>
                           </form>
@@ -636,76 +685,85 @@ function GetDid() {
                           <div className={`col-${selectedDid.length === 0 ? '12' : '9'}`}>
                             {did && (
                               <div className="tableContainer mt-0" style={{ borderRadius: '10px' }}>
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>Number</th>
-                                      <th>Capabilities</th>
-                                      <th>Cost</th>
-                                      <th style={{ width: '100px' }}>Add To Cart</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {did.length === 0 ? (
+                                <div style={{ height: 'calc(100% - 51px)', overflowY: 'auto' }}>
+                                  <table>
+                                    <thead>
                                       <tr>
-                                        <td colSpan={99}>No TFN Available</td>
+                                        <th>Number</th>
+                                        <th>Capabilities</th>
+                                        <th>Cost</th>
+                                        <th style={{ width: '100px' }}>Add To Cart</th>
                                       </tr>
-                                    ) : (
-                                      <>
-                                        {did.map((item) => {
-                                          return (
-                                            <tr>
-                                              <td>{item.didSummary}</td>
-                                              <td>
-                                                <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
-                                                  {
-                                                    selectedUsage.map((item, key) => {
-                                                      if (item.label === "Voice") {
-                                                        return (
-                                                          <i className="fa-solid m-1 fa-phone" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Text") {
-                                                        return (
-                                                          <i className="fa-regular m-1 fa-comments" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Fax") {
-                                                        return (
-                                                          <i className="fa-solid m-1 fa-fax" key={key}></i>
-                                                        )
-                                                      } else if (item.label === "Emergency") {
-                                                        return (
-                                                          <i className="fa-regular m-1 fa-light-emergency-on" key={key}></i>
-                                                        )
-                                                      }
-                                                    })
-                                                  }
-                                                </div>
-                                              </td>
-                                              <td>{item.price} - {item.currency}</td>
-                                              <td>
-                                                <button
-                                                  style={{ cursor: "pointer" }}
-                                                  onClick={() => selectedDid.includes(item) ? removeDid(item) : addSelect(item)}
-                                                  className={
-                                                    selectedDid.includes(item)
-                                                      ? "tableButton delete float-end"
-                                                      : "tableButton float-end"
-                                                  }
-                                                >
-                                                  {selectedDid.includes(item) ? (
-                                                    <i className="fa-solid fa-xmark"></i>
-                                                  ) : (
-                                                    <i className="fa-solid fa-plus"></i>
-                                                  )}{" "}
-                                                </button>
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                      </>
-                                    )}
-                                  </tbody>
-                                </table>
+                                    </thead>
+                                    <tbody>
+                                      {did.length === 0 ? (
+                                        <tr>
+                                          <td colSpan={99}>No TFN Available</td>
+                                        </tr>
+                                      ) : (
+                                        <>
+                                          {did.map((item) => {
+
+                                            return (
+                                              <tr>
+                                                <td>{item.friendly_name ? item.friendly_name : item.didSummary}</td>
+                                                <td>
+                                                  <div className="d-flex align-items-center" style={{ color: "var(--ui-accent)" }}>
+                                                    {
+                                                      selectedUsage.map((item, key) => {
+                                                        if (item.label === "Voice") {
+                                                          return (
+                                                            <i className="fa-solid m-1 fa-phone" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Text") {
+                                                          return (
+                                                            <i className="fa-regular m-1 fa-comments" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Fax") {
+                                                          return (
+                                                            <i className="fa-solid m-1 fa-fax" key={key}></i>
+                                                          )
+                                                        } else if (item.label === "Emergency") {
+                                                          return (
+                                                            <i className="fa-regular m-1 fa-light-emergency-on" key={key}></i>
+                                                          )
+                                                        }
+                                                      })
+                                                    }
+                                                  </div>
+                                                </td>
+                                                <td>{item.price} - {item.currency}</td>
+                                                <td>
+                                                  <button
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => selectedDid.includes(item) ? removeDid(item) : addSelect(item)}
+                                                    className={
+                                                      selectedDid.includes(item)
+                                                        ? "tableButton delete float-end"
+                                                        : "tableButton float-end"
+                                                    }
+                                                  >
+                                                    {selectedDid.includes(item) ? (
+                                                      <i className="fa-solid fa-xmark"></i>
+                                                    ) : (
+                                                      <i className="fa-solid fa-plus"></i>
+                                                    )}{" "}
+                                                  </button>
+                                                </td>
+                                              </tr>
+                                            );
+                                          })}
+                                        </>
+                                      )}
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div className="py-2">
+                                  <button className="panelButton mx-auto" onClick={handleSubmit(onSubmit)}>
+                                    <span className="text">Refresh</span>
+                                    <span className="icon"><i className="fa-solid fa-arrows-rotate" /></span>
+                                  </button>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -722,7 +780,7 @@ function GetDid() {
                                     {selectedDid.map((item) => {
                                       return (
                                         <li>
-                                          {item.didSummary}{" "}
+                                          {item.friendly_name ? item.friendly_name : item.didSummary}{" "}
                                           <span className="float-end">${item.price}</span>
                                         </li>
                                       );
@@ -771,7 +829,7 @@ function GetDid() {
                                         <span className="checkmark"></span>
                                       </li>
                                       {totalPrice > Number(accountBalance) ? <div className="col-auto">
-                                        <button className="tableButton edit" onClick={()=>setRechargePopUp(true)}>
+                                        <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
                                           <i className="fa-solid fa-dollar-sign" />
                                         </button>
                                       </div> : ""
@@ -818,79 +876,85 @@ function GetDid() {
           </div>
         </div>
       </section>
-      {didBuyPopUP ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleBuyPopUp}
-                rechargeType={"buyDid"}
-                selectedDid={selectedDid}
-              />
+      {
+        didBuyPopUP ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleBuyPopUp}
+                  rechargeType={"buyDid"}
+                  selectedDid={selectedDid}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-      {rechargePopUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <RechargeWalletPopup
-                closePopup={handleRechargePopup}
-                rechargeType={"rechargeWallet"}
-              />
+        ) : (
+          ""
+        )
+      }
+      {
+        rechargePopUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <RechargeWalletPopup
+                  closePopup={handleRechargePopup}
+                  rechargeType={"rechargeWallet"}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )
+      }
       {loading ? <CircularLoader /> : ""}
-      {popUp ? (
-        <div className="popup">
-          <div className="container h-100">
-            <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
-                <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+      {
+        popUp ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
                   </div>
-                </div>
-                <div className="col-10 ps-0">
-                  <h4>Warning!</h4>
-                  <p>
-                    Are you sure you want to purchase{" "}
-                    {selectedDid?.length > 1 ? "these" : "this"} DID?
-                  </p>
-                  <div className="mt-2 d-flex justify-content-between">
-                    <button
-                      className="panelButton m-0 float-end"
-                      onClick={() => handlePayment()}
-                    >
-                      <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check" /></span>
-                    </button>
-                    <button
-                      className="panelButton gray m-0 float-end"
-                      onClick={() => {
-                        setPopUp(false);
-                      }}
-                    >
-                      <span className="text">Cancel</span>
-                      <span className="icon"><i className="fa-solid fa-xmark" /></span>
-                    </button>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      Are you sure you want to purchase{" "}
+                      {selectedDid?.length > 1 ? "these" : "this"} DID?
+                    </p>
+                    <div className="mt-2 d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0 float-end"
+                        onClick={() => handlePayment()}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon"><i className="fa-solid fa-check" /></span>
+                      </button>
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => {
+                          setPopUp(false);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon"><i className="fa-solid fa-xmark" /></span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </main>
+        ) : (
+          ""
+        )
+      }
+    </main >
   );
 }
 

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   checkViewSidebar,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -33,9 +34,11 @@ function DidListing({ page }) {
   const [previousUsages, setPreviousUsages] = useState('')
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     if (didAll) {
-      // setLoading(false);
+      setLoading(true);
       if (page === "number") {
         setDid(didAll);
       } else if (page === "pbx") {
@@ -43,53 +46,35 @@ function DidListing({ page }) {
       } else if (page === "dialer") {
         setDid(didAll.filter((item) => item.usage === "dialer"));
       }
-
-      async function getData() {
-        const apiData = await generalGetFunction(`/did/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          if (page === "number") {
-            setDid(apiData.data);
-          } else if (page === "pbx") {
-            setDid(apiData.data.filter((item) => item.usages === "pbx"));
-          } else if (page === "dialer") {
-            setDid(apiData.data.filter((item) => item.usages === "dialer"));
-          }
-          dispatch({
-            type: "SET_DIDALL",
-            didAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
       getData();
     } else {
-      async function getData() {
-        const apiData = await generalGetFunction(`/did/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          if (page === "number") {
-            setDid(apiData.data);
-          } else if (page === "pbx") {
-            setDid(apiData.data.filter((item) => item.usages === "pbx"));
-          } else if (page === "dialer") {
-            setDid(apiData.data.filter((item) => item.usages === "dialer"));
-          }
-          dispatch({
-            type: "SET_DIDALL",
-            didAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshDid, page]);
+
+  // Fetch ALL DID
+  async function getData() {
+    setLoading(true);
+    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}`);
+    if (apiData?.status) {
+      setLoading(false);
+      if (page === "number") {
+        setDid(apiData.data);
+      } else if (page === "pbx") {
+        setDid(apiData.data.filter((item) => item.usages === "pbx"));
+      } else if (page === "dialer") {
+        setDid(apiData.data.filter((item) => item.usages === "dialer"));
+      }
+      dispatch({
+        type: "SET_DIDALL",
+        didAll: apiData.data,
+      });
+    } else {
+      setLoading(false);
+      navigate(-1);
+    }
+  }
 
   const handleClick = async (id) => {
     setLoading(true);
@@ -98,15 +83,18 @@ function DidListing({ page }) {
         `/did/configure/destroy/${id}`
       );
       if (apiData?.status) {
-        const newData = await generalGetFunction(`/did/all`);
-        if (newData?.status) {
-          setDid(newData.data);
-          toast.success(apiData.message);
-          setRefreshDid(refreshDid + 1);
-        } else {
-          toast.error(apiData.message);
-          // navigate(-1);
-        }
+        setLoading(false);
+        toast.success(apiData.message);
+        setRefreshDid(refreshDid + 1);
+        // const newData = await generalGetFunction(`/did/all`);
+        // if (newData?.status) {
+        //   setDid(newData.data);
+        //   toast.success(apiData.message);
+        //   setRefreshDid(refreshDid + 1);
+        // } else {
+        //   toast.error(apiData.message);
+        //   // navigate(-1);
+        // }
       }
     } catch (error) {
       console.error(error);
@@ -115,19 +103,16 @@ function DidListing({ page }) {
     }
   };
 
-  async function handleClickDefault(id) {
+  async function handleClickDefault(id, action) {
     setLoading(true);
     const parsedData = {
       id: id,
     };
-    const apiData = await generalPostFunction(`/did/set-default`, parsedData);
+    const apiData = await generalPostFunction(`/did/set-default?${action ? action : ""}`, parsedData);
     if (apiData?.status) {
       setLoading(false);
       toast.success(apiData.message);
-      const newData = await generalGetFunction(`/did/all`);
-      if (newData?.status) {
-        setDid(newData.data);
-      }
+      setRefreshDid(refreshDid + 1)
     } else {
       setLoading(false);
     }
@@ -176,6 +161,16 @@ function DidListing({ page }) {
       // toast.error(apiData.message)
     }
   }
+
+  // Debounce Search Function
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      getData();
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [searchQuery]);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -189,7 +184,15 @@ function DidListing({ page }) {
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
-                        <h4>All DID</h4>
+                        <h4>All DID
+                          <button
+                            className="clearButton"
+                            onClick={() => setRefreshDid(refreshDid + 1)}
+                            disabled={loading}
+                          >
+                            <i class={`fa-regular fa-arrows-rotate fs-5 ${loading ? "fa-spin" : ""}`}></i>
+                          </button>
+                        </h4>
                         <p>Add a new DID</p>
                       </div>
                       <div className="buttonGroup">
@@ -206,11 +209,11 @@ function DidListing({ page }) {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                     {  checkViewSidebar(
-                            'DidConfigure',
-                            slugPermissions,
-                            account?.permissions,"add"
-                          )&&   <button
+                        {checkViewSidebar(
+                          'DidConfigure',
+                          slugPermissions,
+                          account?.permissions, "add"
+                        ) && <button
                           type="button"
                           className="panelButton"
                           onClick={() => {
@@ -221,11 +224,11 @@ function DidListing({ page }) {
                             }
                           }}
                         >
-                          <span className="text">Add</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-plus"></i>
-                          </span>
-                        </button>}
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>}
                       </div>
                     </div>
                   </div>
@@ -327,6 +330,21 @@ function DidListing({ page }) {
                     className="col-12"
                     style={{ overflow: "auto", padding: "25px 20px 0" }}
                   >
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select className="formItem" onChange={() => featureUnderdevelopment()}>
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                        </select>
+                        <label>entries</label>
+                      </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input type="search" name="Search" className="formItem" onChange={(e) => setSearchQuery(e.target.value)} />
+                      </div>
+                    </div>
                     <div className="tableContainer">
                       <table>
                         <thead>
@@ -340,12 +358,21 @@ function DidListing({ page }) {
                                 <th>Usages</th>
                               </> : ""
                             }
+                            <th style={{ textAlign: "center" }}>
+                              Default WhatsApp DID
+                            </th>
+                            <th style={{ textAlign: "center" }}>
+                              Default E-fax DID
+                            </th>
+                            <th style={{ textAlign: "center" }}>
+                              Default SMS DID
+                            </th>
                             {page === "pbx" ? <>
-                              <th style={{ width: 135, textAlign: "center" }}>
+                              <th style={{ textAlign: "center" }}>
                                 Default Caller DID
                               </th>
                             </> : ""}
-                            <th style={{ width: 80, textAlign: "center" }}>
+                            <th style={{ textAlign: "center" }}>
                               Options
                             </th>
                             {/* <th>Delete</th> */}
@@ -353,7 +380,7 @@ function DidListing({ page }) {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={6} row={15} />
+                            <SkeletonTableLoader col={9} row={15} />
                           ) : (
                             <>
                               {did &&
@@ -379,6 +406,81 @@ function DidListing({ page }) {
                                           </td>
                                         </>
                                         : ""}
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_whatsapp === 1
+                                              ? "This DID is set as default for WhatsApp"
+                                              : "Set this DID default for WhatsApp"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_whatsapp === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_whatsapp === 0) {
+                                                handleClickDefault(item.id, "default_whatsapp");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_eFax === 1
+                                              ? "This DID is set as default for E-fax"
+                                              : "Set this DID default for E-fax"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_eFax === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_eFax === 0) {
+                                                handleClickDefault(item.id, "default_eFax");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
+                                      <td style={{ cursor: "default" }}>
+                                        <Tippy
+                                          content={
+                                            item.default_sms === 1
+                                              ? "This DID is set as default for SMS"
+                                              : "Set this DID default for SMS"
+                                          }
+                                        >
+                                          <button
+                                            className={
+                                              item.default_sms === 1
+                                                ? "tableButton edit mx-auto"
+                                                : "tableButton empty mx-auto"
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => {
+                                              if (item.default_sms === 0) {
+                                                handleClickDefault(item.id, "default_sms");
+                                              }
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-headset"></i>
+                                          </button>
+                                        </Tippy>
+                                      </td>
                                       {page === "pbx" ? <>
                                         <td style={{ cursor: "default" }}>
                                           <Tippy

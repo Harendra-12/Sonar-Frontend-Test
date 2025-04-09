@@ -18,6 +18,7 @@ const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
   const callCenter = useSelector((state) => state.callCenter);
+  const callCenterRefresh = useSelector((state) => state.callCenterRefresh);
   const account = useSelector((state) => state.account) || {};
   const [assignerCallcenter, setAssignerCallcenter] = useState([]);
   const [refreshCenter, setRefreshCenter] = useState(0);
@@ -25,8 +26,10 @@ const CallCenter = ({ initial }) => {
   const [callCenterDetailData, setCallCenterDetailData] = useState([]);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-    const { sessionManager } = useSIPProvider();
+  const { sessionManager } = useSIPProvider();
   const Id = account?.id || "";
+
+  console.log("callCenter", callCenter);
 
   useEffect(() => {
     const getData = async () => {
@@ -66,21 +69,21 @@ const CallCenter = ({ initial }) => {
     }
   }, [Id, callCenter]);
   // Function to handle logout
- const handleLogOut = async () => {
-     setLoading(true);
-     try {
-       const apiResponses = await logout(
-         allCallCenterIds,
-         dispatch,
-         sessionManager
-       );
-     } catch (error) {
-       console.error("Unexpected error in handleLogOut:", error);
-       alert("Something went wrong. Please try again.");
-     } finally {
-       setLoading(false);
-     }
-   };
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -149,12 +152,13 @@ const CallCenter = ({ initial }) => {
                       >
                         <div className="profileHolder" id="profileOnlineNav">
                           <img
-                            src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                            src={account?.profile_picture}
                             alt="profile"
+                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                           />
                         </div>
                         <div className="profileName">
-                          {account.username}{" "}
+                          {account?.username}{" "}
                           <span className="status">Available</span>
                         </div>
                       </div>
@@ -200,8 +204,15 @@ const CallCenter = ({ initial }) => {
                             Call Center Queue{" "}
                             <button
                               disabled={loading}
-                              onClick={() =>
-                                setRefreshCenter(refreshCenter + 1)
+                              onClick={() => {
+                                setRefreshCenter(refreshCenter + 1);
+                                setLoading(true);
+                                dispatch({
+                                  type: "SET_CALLCENTERREFRESH",
+                                  callCenterRefresh: callCenterRefresh + 1,
+                                });
+                              }
+
                               }
                               className="clearButton2"
                             >
@@ -319,7 +330,7 @@ const CallCenterListItem = ({
       }
       return total;
     }, 0);
-    
+
     setTotalTime(totalBreakTimeInMs / 1000);
 
     const ongoingBreak = filteredData.find(

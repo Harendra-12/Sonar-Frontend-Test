@@ -102,7 +102,7 @@ function Navbar() {
                       data-bs-target="#collapse8"
                       aria-expanded={
                         isChildActive([
-                          "/my-profile",
+                          "/users-profile",
                           "/change-password",
                           "/admin/package",
                           "/users",
@@ -114,6 +114,9 @@ function Navbar() {
                           "/extensions",
                           "/extensions-edit",
                           "/extensions-add",
+                          "/all-devices",
+                          "/device-provisioning-add",
+                          "/device-provisioning-edit",
                         ])
                           ? "true"
                           : "false"
@@ -128,7 +131,7 @@ function Navbar() {
                     <div
                       id="collapse8"
                       className={`accordion-collapse collapse ${isChildActive([
-                        "/my-profile",
+                        "/users-profile",
                         "/change-password",
                         "/admin/package",
                         "/users",
@@ -140,6 +143,7 @@ function Navbar() {
                         "/extensions",
                         "/extensions-edit",
                         "/extensions-add",
+                        "/all-devices",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
                       ])
@@ -205,6 +209,7 @@ function Navbar() {
                                     [
                                       "/extensions-add",
                                       "/extensions-edit",
+                                      "/all-devices",
                                       "/device-provisioning-add",
                                       "/device-provisioning-edit",
                                     ].some((path) =>
@@ -378,6 +383,8 @@ function Navbar() {
                       aria-expanded={
                         isChildActive([
                           "/phone-dashboard",
+                          "/agent-dashboard",
+
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
@@ -392,8 +399,13 @@ function Navbar() {
                           "/agents",
                           "/agents-add",
                           "/agents-edit",
+                          "/agents-pbx-add",
+                          "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
+                          "/groups",
+                          "/groups-add",
+                          "/groups-edit"
                         ])
                           ? "true"
                           : "false"
@@ -409,8 +421,7 @@ function Navbar() {
                       id="collapseOne"
                       className={`accordion-collapse collapse ${isChildActive([
                         "/phone-dashboard",
-                        "/device-provisioning-add",
-                        "/device-provisioning-edit",
+                        "/agent-dashboard",
                         "/did-listing-pbx",
                         "/did-config",
                         "/did-add",
@@ -425,9 +436,13 @@ function Navbar() {
                         "/agents",
                         "/agents-add",
                         "/agents-edit",
+                        "/agents-pbx-add",
                         "/call-dashboard",
                         "/active-calls",
                         "/voicemail-report",
+                        "/groups",
+                        "/groups-add",
+                        "/groups-edit"
                       ])
                         ? "show"
                         : ""
@@ -482,6 +497,11 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+                          <li className="tabItem ">
+                            <NavLink to="/agent-dashboard">
+                              <div className="itemTitle">Agent Dashboard</div>
+                            </NavLink>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterAgent",
                             permissions,
@@ -493,7 +513,7 @@ function Navbar() {
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
-                                      ["/agents-add", "/agents-edit"].some((path) =>
+                                      ["/agents-add", "/agents-edit", "/agents-pbx-add"].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
                                       ? "nav-link active"
@@ -530,7 +550,22 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-
+                          <li className="tabItem ">
+                            <NavLink to="/groups"
+                              onClick={backToTop}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/groups", "/groups-add", "/groups-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Groups</div>
+                            </NavLink>
+                          </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
                             permissions,
@@ -595,6 +630,7 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+
                         </ul>
                       </div>
                     </div>
@@ -722,7 +758,7 @@ function Navbar() {
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/agents",
+                                        "/agents-dialer",
                                         "/agents-edit",
                                         "/agents-add",
                                       ].some((path) =>
@@ -880,6 +916,30 @@ function Navbar() {
                           </div>
                         </div>
                       </li>
+                      {isCustomerAdmin &&
+                        <li className="dashboard ">
+                          <NavLink
+                            to="/all-addons"
+                            onClick={backToTop}
+                            type="button"
+                            className={({ isActive }) =>
+                              isActive ||
+                                ["/ivr-add", "/ivr-edit"].some((path) =>
+                                  window.location.pathname.includes(path)
+                                )
+                                ? "nav-link active"
+                                : "nav-link"
+                            }
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-regular fa-box-open"></i>
+                            </div>
+                            <div className="itemTitle">
+                              Third Party Integration
+                            </div>
+                          </NavLink>
+                        </li>
+                      }
                     </>
                   )}
                   {checkViewSidebar(
@@ -910,110 +970,124 @@ function Navbar() {
                       </NavLink>
                     </li>
                   ) : null}
-
-                  <li className="">
-                    <button
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapse14"
-                      aria-expanded={
-                        isChildActive([
-                          "/ai-dashboard",
+                  {isCustomerAdmin &&
+                    <li className="">
+                      <button
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse14"
+                        aria-expanded={
+                          isChildActive([
+                            "/all-ai-agent",
+                            "/ai-agent-add",
+                            "/ai-agent-edit"
+                          ])
+                            ? "true"
+                            : "false"
+                        }
+                        aria-controls="collapse14"
+                      >
+                        <div className="iconHolder">
+                          <i className="fa-regular fa-microchip-ai"></i>
+                        </div>
+                        <div className="itemTitle">AI</div>
+                      </button>
+                      <div
+                        id="collapse14"
+                        className={`accordion-collapse collapse ${isChildActive([
+                          "/all-ai-agent",
+                          "/ai-agent-add",
+                          "/ai-agent-edit"
                         ])
-                          ? "true"
-                          : "false"
-                      }
-                      aria-controls="collapse14"
-                    >
-                      <div className="iconHolder">
-                        <i className="fa-regular fa-microchip-ai"></i>
+                          ? "show"
+                          : ""
+                          }`}
+                        data-bs-parent="#sidenNav"
+                      >
+                        <div className="menuWrapper">
+                          <ul className="tabMenu">
+                            <li className="tabItem ">
+                              <Link
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/did-listing-tracker"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">Dashboard</div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">
+                                  Number Configuration
+                                </div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/all-ai-agent"
+                                onClick={() => backToTop()}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    ["/all-ai-agent", "/ai-agent-add", "/ai-agent-edit"].some((path) =>
+                                      window.location.pathname.includes(path)
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">
+                                  Agents
+                                </div>
+                              </NavLink>
+                            </li>
+                            <li className="tabItem ">
+                              <Link
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">
+                                  Call Reports
+                                </div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">
+                                  Analytics
+                                </div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">
+                                  Billing
+                                </div>
+                              </Link>
+                            </li>
+                            <li className="tabItem ">
+                              <Link
+                                onClick={() => featureUnderdevelopment()}
+                              >
+                                <div className="itemTitle">
+                                  Knowledge Base
+                                </div>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                      <div className="itemTitle">AI</div>
-                    </button>
-                    <div
-                      id="collapse14"
-                      className={`accordion-collapse collapse ${isChildActive([
-                        "/ai-dashboard",
-                      ])
-                        ? "show"
-                        : ""
-                        }`}
-                      data-bs-parent="#sidenNav"
-                    >
-                      <div className="menuWrapper">
-                        <ul className="tabMenu">
-                          <li className="tabItem ">
-                            <Link
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/did-listing-tracker"].some((path) =>
-                                    window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">Dashboard</div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Number Configuration
-                              </div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Agents
-                              </div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Call Reports
-                              </div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Analytics
-                              </div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Billing
-                              </div>
-                            </Link>
-                          </li>
-                          <li className="tabItem ">
-                            <Link
-                              onClick={() => featureUnderdevelopment()}
-                            >
-                              <div className="itemTitle">
-                                Knowledge Base
-                              </div>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  }
 
                   {isCustomerAdmin && (
                     <>
@@ -1246,7 +1320,8 @@ function Navbar() {
                           "/card-transaction-list",
                           "/wallet-transaction-list",
                           "/billing-report",
-                          "/subscription-management"
+                          "/subscription-management",
+                          "/rate-card"
                         ])
                           ? "true"
                           : "false"
@@ -1265,7 +1340,8 @@ function Navbar() {
                         "/card-transaction-list",
                         "/wallet-transaction-list",
                         "/billing-report",
-                        "/subscription-management"
+                        "/subscription-management",
+                        "/rate-card"
                       ])
                         ? "show"
                         : ""
@@ -1326,23 +1402,25 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          <li className="tabItem ">
-                            <Link
-                              // to="/extensions"
-                              onClick={() => featureUnderdevelopment()}
+                          {isCustomerAdmin && (< li className="tabItem ">
+                            <NavLink
+                              to="/rate-card"
+                              onClick={backToTop}
+                              type="button"
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
+                                  [
+                                    "/rate-card",
+                                  ].some((path) =>
+                                    window.location.pathname.includes(path)
                                   )
                                   ? "nav-link active"
                                   : "nav-link"
                               }
                             >
                               <div className="itemTitle">Rate Card</div>
-                            </Link>
-                          </li>
+                            </NavLink>
+                          </li>)}
                           <li className="tabItem ">
                             <NavLink
                               to="/subscription-management"
@@ -1407,6 +1485,7 @@ function Navbar() {
                         "/call-recording-settings",
                         "/voice-music",
                         "/custom-module",
+                        "/global-permission-config"
                       ])
                         ? "show"
                         : ""
@@ -1500,6 +1579,19 @@ function Navbar() {
                               </NavLink>
                             </li>
                           }
+                          {
+                            isCustomerAdmin &&
+                            <li className="tabItem ">
+                              <NavLink
+                                to="/global-permission-config"
+                                onClick={() => backToTop()}
+                              >
+                                <div className="itemTitle">
+                                  Global Permissions
+                                </div>
+                              </NavLink>
+                            </li>
+                          }
                           {/* <li className="tabItem ">
                               <NavLink
                                 to="/call-recording-settings"
@@ -1522,23 +1614,24 @@ function Navbar() {
                   </li>
                   {isCustomerAdmin && (
                     <>
-                      <li className="">
-                        <button
-                          data-bs-toggle="collapse"
-                          data-bs-target="#collapse11"
-                          aria-expanded={
-                            isChildActive(["/add-ons", "/store-extension"])
-                              ? "true"
-                              : "false"
-                          }
-                          aria-controls="collapse11"
+                      <li className="dashboard ">
+                        <NavLink
+                          to="/add-ons"
+                          onClick={backToTop}
+                          type="button"
+                        // aria-expanded={
+                        //   isChildActive(["/add-ons", "/store-extension"])
+                        //     ? "true"
+                        //     : "false"
+                        // }
+                        // aria-controls="collapse11"
                         >
                           <div className="iconHolder">
                             <i className="fa-regular fa-store"></i>
                           </div>
                           <div className="itemTitle">Store</div>
-                        </button>
-                        <div
+                        </NavLink>
+                        {/* <div
                           id="collapse11"
                           className={`accordion-collapse collapse ${isChildActive(["/add-ons", "/store-extension"])
                             ? "show"
@@ -1621,14 +1714,14 @@ function Navbar() {
                               </li>
                             </ul>
                           </div>
-                        </div>
+                        </div> */}
                       </li>
                       <li className="">
                         <button
                           data-bs-toggle="collapse"
                           data-bs-target="#collapse12"
                           aria-expanded={
-                            isChildActive(["/knowledge-base", "/live-chat"])
+                            isChildActive(["/knowledge-base", "/ticket", "/view-massage"])
                               ? "true"
                               : "false"
                           }
@@ -1641,7 +1734,7 @@ function Navbar() {
                         </button>
                         <div
                           id="collapse12"
-                          className={`accordion-collapse collapse ${isChildActive(["/knowledge-base", "/live-chat"])
+                          className={`accordion-collapse collapse ${isChildActive(["/knowledge-base", "/ticket", "/view-massage"])
                             ? "show"
                             : ""
                             }`}
@@ -1668,14 +1761,40 @@ function Navbar() {
                                 </NavLink>
                               </li>
                               <li className="tabItem ">
+
+
+                                <NavLink
+                                  to="/ticket"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/ticket"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">
+                                    Submit a Ticket
+                                  </div>
+                                </NavLink>
+
+                                {/* // to="/ticket" */}
+
+
+
+                                {/* <Link
+                                  
+=======
                                 <Link
-                                  // to="/extensions"
+                                  // to="/ticket"
+>>>>>>> 58f23a9cba051b7df48f14373b604f6b4a334397
                                   onClick={() => featureUnderdevelopment()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/extensions-add",
-                                        "/extensions-edit",
+                                        "/view-massage",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -1686,13 +1805,34 @@ function Navbar() {
                                   <div className="itemTitle">
                                     Submit a Ticket
                                   </div>
-                                </Link>
+                                </Link> */}
                               </li>
-                              {account?.permissions?.includes(248) ||
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/live-chat"
+                                  onClick={() => backToTop()}
+                                  className={({ isActive }) =>
+                                    isActive ||
+                                      ["/live-chat"].some((path) =>
+                                        window.location.pathname.includes(path)
+                                      )
+                                      ? "nav-link active"
+                                      : "nav-link"
+                                  }
+                                >
+                                  <div className="itemTitle">
+                                    Live chat support
+                                  </div>
+                                </NavLink>
+                              </li>
+
+
+
+                              {/* {account?.permissions?.includes(248) ||
                                 account?.permissions?.includes(250) ? (
                                 <li className="tabItem ">
                                   <NavLink
-                                    to="/live-chat"
+                                    to="/live-chat" 
                                     onClick={backToTop}
                                     type="button"
                                   >
@@ -1701,7 +1841,7 @@ function Navbar() {
                                     </div>
                                   </NavLink>
                                 </li>
-                              ) : null}
+                              ) : null} */}
                             </ul>
                           </div>
                         </div>
@@ -1727,8 +1867,8 @@ function Navbar() {
             </ul>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
 

@@ -5,9 +5,13 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  fileUploadFunction,
+  generalGetFunction,
+  generalPostFunction,
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
-import AudioPlayer from "./AudioWaveForm";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 
 function CallDetails({
   clickedCall,
@@ -29,7 +33,7 @@ function CallDetails({
   const thisAudioRef = useRef(null);
   const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  // const [transcript,setTranscript]=useState("")
+  const [transcribeLink, setTranscribeLink] = useState("")
 
   useEffect(() => {
     setCallDetails(clickedCall);
@@ -103,52 +107,55 @@ function CallDetails({
     }
   };
 
-  const handleTranscript=()=>{
-
-
+  async function handleTranscript(url) {
+    const newUrl = url.split(".com/").pop();
+    // const presignData = await generatePreSignedUrl(newUrl);
+    // if (presignData?.status && presignData?.url) {
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+      // }
+      console.log({url})
+      const trnascript = await fileUploadFunction(`transcribe-audio`,
+        { src: url },
+      );
   }
 
   const handlePlaying = async (audio) => {
-    if (!audio) return;
-    if (currentPlaying === audio) {
-      if (thisAudioRef.current) {
-        thisAudioRef.current.pause();
-      }
-      setCurrentPlaying(null);
-      return;
-    }
-
-    setCurrentPlaying(audio);
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
 
     try {
-      const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      setCurrentPlaying(audio);
+      const url = audio?.split(".com/").pop();
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load();
-            thisAudioRef.current
-              .play()
-              .catch((error) => console.error("Audio play error:", error));
-          }
-        }, 100);
-      }
+      // if (res?.status && res?.url) {
+      // setAudioURL(res.url); // Update audio URL state
+      setAudioURL(audio);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
-      setCurrentPlaying(null);
     }
   };
 
-  const handleAudioDownload = (src) => {
-    const link = document.createElement("a");
-    link.href = src;
-    link.download = "audio-file.wav";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // const handleAudioDownload = (src) => {
+  //   const link = document.createElement("a");
+  //   link.href = src;
+  //   link.download = "audio-file.wav";
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   useEffect(() => {
     if (callDetails) {
@@ -594,7 +601,24 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <div className="dropdown">
+                                  <button
+                                    className="tableButton px-2 mx-0"
+                                    onClick={() => {
+                                      if (item?.recording_path === currentPlaying) {
+                                        setCurrentPlaying("");
+                                        setAudioURL("");
+                                      } else {
+                                        handlePlaying(item?.recording_path);
+                                      }
+                                    }}
+                                  >
+                                    {currentPlaying === item?.recording_path ? (
+                                      <i className="fa-solid fa-chevron-up"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-chevron-down"></i>
+                                    )}
+                                  </button>
+                                  {/* <div className="dropdown">
                                     <div
                                       className={`tableButton`}
                                       href="#"
@@ -633,8 +657,11 @@ function CallDetails({
                                         <li className="dropdown-item">
                                           <div
                                             className="clearButton text-align-start"
-                                            onClick={() =>
-                                              handleTranscript()
+                                            onClick={() => {
+                                              if (item?.recording_path) {
+                                                setTranscribeLink(item?.recording_path)
+                                              }
+                                            }
                                             }
                                           >
                                             <i className="fa-solid fa-bolt me-2"></i>
@@ -660,7 +687,7 @@ function CallDetails({
                                       </>
                                       <li className="dropdown-item"></li>
                                     </ul>
-                                  </div>
+                                  </div> */}
                                 </td>
                               </tr>
                               {item?.recording_path &&
@@ -671,8 +698,8 @@ function CallDetails({
                                   >
                                     <td colSpan={5}>
                                       <div className="audio-container">
-                                        {/* <AudioPlayer audioUrl={audioURL} /> */}
-                                        <audio
+                                        <AudioWaveformCommon audioUrl={audioURL} />
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -684,7 +711,7 @@ function CallDetails({
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
 
                                         {/* <button
                                           className="audioCustomButton"
@@ -703,28 +730,18 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
-                              {/* <tr
-                                className="show"
-                                id={`voiceMail${item?.id}`}
-                              >
-                                <td colSpan={5}>
-                                  <div className="audio-container">
-                                    <div className="transcriptWrap">
-                                      <div className="textContent col">
-                                        <p>Consectetur cupidatat adipisicing eiusmod officia eiusmod culpa minim eiusmod aliqua sunt duis consectetur. Aliqua cupidatat do amet aliqua amet aute cupidatat ex ullamco enim occaecat.</p>
-                                      </div>
-                                      <div className="btnWrap col-auto">
-                                        <button className="clearButton2">
-                                          <i className="fa-sharp fa-chevron-left"></i>
-                                        </button>
-                                        <button className="clearButton2 ms-1">
-                                          <i className="fa-sharp fa-chevron-right"></i>
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr> */}
+                              {/* {
+                                transcribeLink === item?.recording_path ?
+                                  <tr
+                                    className="show"
+                                    id={`voiceMail${item?.id}`}
+                                  >
+                                    <td colSpan={5}>
+                                      <AudioTranscribe url={transcribeLink} />
+                                    </td>
+                                  </tr>
+                                  : ""
+                              } */}
                             </>
                           ))}
                         </tbody>

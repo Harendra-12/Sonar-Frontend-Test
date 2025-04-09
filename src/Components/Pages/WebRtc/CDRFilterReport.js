@@ -4,6 +4,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
+
+
+
 import {
   backToTop,
   generalGetFunction,
@@ -11,7 +14,7 @@ import {
   generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
@@ -19,6 +22,11 @@ import { toast } from "react-toastify";
 import Tippy from "@tippyjs/react";
 import CircularLoader from "../../Loader/CircularLoader";
 import Comments from "./Comments";
+import Duplicates from "./Duplicates";
+import ExportPopUp from "./ExportPopUp";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
+import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
@@ -58,8 +66,15 @@ function CdrFilterReport({ page }) {
   const [audioURL, setAudioURL] = useState("");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
-
+  const [exportPopup, setExportPopup] = useState(false);
+  const [calendarStartDate, setCalendarStartDate] = useState(new Date());
   const [filteredKeys, setFilteredKeys] = useState([]);
+  const [showDuplicatePopUp, setShowDuplicatePopUp] = useState(false)
+  const [duplicatePopUpData, setDuplicatePopUpData] = useState({})
+  const [error, setError] = useState('');
+  const [showAudio, setShowAudio] = useState(false)
+  // const [transcribeLink, setTranscribeLink] = useState()
+  const [showDropDown, setShowDropdown] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -80,6 +95,7 @@ function CdrFilterReport({ page }) {
     "call_cost",
     "id",
   ]);
+  const locationState = useLocation();
 
   const thisAudioRef = useRef(null);
   useEffect(() => {
@@ -147,6 +163,34 @@ function CdrFilterReport({ page }) {
       }
     }
   };
+
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
 
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
@@ -224,9 +268,10 @@ function CdrFilterReport({ page }) {
           obj.hasOwnProperty("variable_start_stamp")
         ) {
           filteredObj["Date"] = obj["variable_start_stamp"]?.split(" ")[0];
-          filteredObj["Time"] = obj["variable_start_stamp"]?.split(" ")[1];
+          filteredObj["Time"] = formatTimeWithAMPM(obj["variable_start_stamp"]?.split(" ")[1])
         }
         if (obj.hasOwnProperty(key)) {
+
           filteredObj[key] = obj[key];
         }
       });
@@ -290,6 +335,7 @@ function CdrFilterReport({ page }) {
     itemsPerPage,
     page,
     createdAt,
+    locationState
   ]);
 
   const getDateRange = (period) => {
@@ -333,6 +379,7 @@ function CdrFilterReport({ page }) {
   };
 
   function refreshCallData() {
+    setCurrentPlaying("");
     setContentLoader(true);
     setRefrehsh(refresh + 1);
   }
@@ -349,24 +396,28 @@ function CdrFilterReport({ page }) {
   }, [filterBy]);
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio?.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
-      }
+      // if (res?.status && res?.url) {
+      // setAudioURL(res.url); // Update audio URL state
+      setAudioURL(audio);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -411,6 +462,11 @@ function CdrFilterReport({ page }) {
     return `${hours}:${minutes}:${secs}`;
   }
 
+  const duplicateColumn = async (item) => {
+    setShowDuplicatePopUp(true)
+    setDuplicatePopUpData(item);
+
+  }
   function exportToCSV(data, filename = "data.csv") {
     if (!data || !data.length) {
       console.error("No data to export.");
@@ -444,6 +500,7 @@ function CdrFilterReport({ page }) {
     URL.revokeObjectURL(url);
   }
 
+
   // function to handle export
   const handleExport = async () => {
     setLoading(true);
@@ -461,6 +518,21 @@ function CdrFilterReport({ page }) {
     }
   };
 
+  // Filter To Set when Navigating from PBX Dashboard
+  useEffect(() => {
+    if (locationState.state !== null) {
+      setLoading(true);
+      const { filter, direction } = locationState.state;
+
+      setHagupCause(filter === "missed" ? "Missed" : filter === "completed" ? "Answered" : "");
+      setCallDirection(direction === "all" ? "" : direction);
+
+      setTimeout(() => {
+        refreshCallData();
+      }, 100)
+    }
+  }, [locationState])
+
   return (
     <>
       {circularLoader && <CircularLoader />}
@@ -469,14 +541,14 @@ function CdrFilterReport({ page }) {
           <div className="container-fluid px-0 position-relative">
             <Header
               title={`${page === "billing"
-                  ? "Billing Reports"
-                  : page === "callcenter"
-                    ? "Call Center Reports"
-                    : page === "ringgroup"
-                      ? "Ring Group Reports"
-                      : page === "callrecording"
-                        ? "Call Recordings"
-                        : "CDR Reports"
+                ? "Billing Reports"
+                : page === "callcenter"
+                  ? "Call Center Reports"
+                  : page === "ringgroup"
+                    ? "Ring Group Reports"
+                    : page === "callrecording"
+                      ? "Call Recordings"
+                      : "CDR Reports"
                 }`}
             />
             <div className="overviewTableWrapper">
@@ -540,17 +612,34 @@ function CdrFilterReport({ page }) {
                             ></i>
                           </span>
                         </button>
-                        <button
-                          effect="ripple"
-                          className="panelButton"
-                          onClick={() => handleExport()}
-                          disabled={loading}
-                        >
-                          <span className="text">Export</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-file-export"></i>
-                          </span>
-                        </button>
+                        <div className="dropdown">
+                          <button
+                            effect="ripple"
+                            className="panelButton"
+                            disabled={loading}
+                            onClick={() => setExportPopup(true)}
+                          // type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                          >
+                            <span className="text">Export</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-file-export"></i>
+                            </span>
+                          </button>
+                          {/* <ul
+                            className="dropdown-menu actionBtnDropdowns"
+                          >
+                            <li className="dropdown-item">
+                              <button className="clearButton text-align-start" onClick={() => handleExport()}>
+                                <i className="fa-regular fa-file-csv me-2" /> Export To CSV
+                              </button>
+                            </li>
+                            <li className="dropdown-item">
+                              <button className="clearButton text-align-start">
+                                <i className="fa-regular fa-envelope-open-text me-2" /> Send To Email
+                              </button>
+                            </li>
+                          </ul> */}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -789,6 +878,7 @@ function CdrFilterReport({ page }) {
                                   setHagupCause(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                value={hangupCause}
                               >
                                 <option value={""}>All</option>
                                 <option value={"Answered"}>Answer</option>
@@ -948,6 +1038,8 @@ function CdrFilterReport({ page }) {
                                       key === "Caller-Orig-Caller-ID-Name"
                                     ) {
                                       formattedKey = "Caller Name";
+                                    } else if (key === "recording_path") {
+                                      formattedKey = "Recording";
                                     } else if (key === "variable_billsec") {
                                       formattedKey = "Duration";
                                     } else if (key === "application_state") {
@@ -978,6 +1070,7 @@ function CdrFilterReport({ page }) {
                                 })}
                                 <th>Block</th>
                                 <th>Note</th>
+                                <th>Duplicate</th>
                               </tr>
                             </thead>
 
@@ -1027,41 +1120,39 @@ function CdrFilterReport({ page }) {
                                               if (key === "recording_path") {
                                                 return (
                                                   <td key={key}>
-                                                    {item["recording_path"] &&
-                                                      item["variable_billsec"] >
-                                                      0 && (
-                                                        <button
-                                                          className="tableButton px-2 mx-0"
-                                                          onClick={() => {
-                                                            if (
-                                                              item[
-                                                              "recording_path"
-                                                              ] ===
-                                                              currentPlaying
-                                                            ) {
-                                                              setCurrentPlaying(
-                                                                ""
-                                                              );
-                                                              setAudioURL("");
-                                                            } else {
-                                                              handlePlaying(
-                                                                item[
-                                                                "recording_path"
-                                                                ]
-                                                              );
-                                                            }
-                                                          }}
-                                                        >
-                                                          {currentPlaying ===
+                                                    {item["recording_path"] && item["variable_billsec"] > 0 &&
+                                                      <button
+                                                        className="tableButton px-2 mx-0"
+                                                        onClick={() => {
+                                                          if (
                                                             item[
                                                             "recording_path"
-                                                            ] ? (
-                                                            <i className="fa-solid fa-stop"></i>
-                                                          ) : (
-                                                            <i className="fa-solid fa-play"></i>
-                                                          )}
-                                                        </button>
-                                                      )}
+                                                            ] ===
+                                                            currentPlaying
+                                                          ) {
+                                                            setCurrentPlaying(
+                                                              ""
+                                                            );
+                                                            setAudioURL("");
+                                                          } else {
+                                                            handlePlaying(
+                                                              item[
+                                                              "recording_path"
+                                                              ]
+                                                            );
+                                                          }
+                                                        }}
+                                                      >
+                                                        {currentPlaying ===
+                                                          item[
+                                                          "recording_path"
+                                                          ] ? (
+                                                          <i className="fa-solid fa-chevron-up"></i>
+                                                        ) : (
+                                                          <i className="fa-solid fa-chevron-down"></i>
+                                                        )}
+                                                      </button>
+                                                    }
                                                   </td>
                                                 );
                                               } else if (
@@ -1232,37 +1323,42 @@ function CdrFilterReport({ page }) {
                                               </Tippy>
                                             </button>
                                           </td>
+                                          <td>
+                                            {item?.duplicated == 1 && <button
+                                              className={`tableButton edit ms-0`}
+                                              onClick={
+                                                () => duplicateColumn(item)
+                                              }
+                                            >
+                                              <Tippy content={"View Duplicate"}>
+                                                <i className="fa-solid fa-clone"></i>
+                                              </Tippy>
+                                            </button>}
+                                          </td>
                                         </tr>
-
-                                        {/* Audio Player Row */}
                                         {currentPlaying ===
                                           item["recording_path"] &&
                                           item["recording_path"] && (
                                             <tr>
-                                              <td colSpan={showKeys.length + 1}>
+                                              <td colSpan="17">
                                                 <div className="audio-container mx-2">
-                                                  <audio
-                                                    controls={true}
-                                                    ref={thisAudioRef}
-                                                    autoPlay={true}
-                                                    onEnded={() => {
-                                                      setCurrentPlaying(null);
-                                                      setAudioURL("");
-                                                    }}
-                                                  >
-                                                    <source
-                                                      src={audioURL}
-                                                      type="audio/mpeg"
-                                                    />
-                                                  </audio>
-
-                                                  <button className="audioCustomButton">
-                                                    <i className="fa-sharp fa-solid fa-download" />
-                                                  </button>
+                                                  <AudioWaveformCommon audioUrl={audioURL} />
                                                 </div>
                                               </td>
                                             </tr>
                                           )}
+                                        {/* {
+                                          transcribeLink === item?.recording_path ?
+                                            <tr
+                                              className="show"
+                                              id={`voiceMail${item?.id}`}
+                                            >
+                                              <td colspan="18">
+                                                <AudioTranscribe url={transcribeLink} />
+                                              </td>
+                                            </tr>
+                                            : ""
+                                        } */}
                                       </React.Fragment>
                                     );
                                   })}
@@ -1351,11 +1447,14 @@ function CdrFilterReport({ page }) {
         ) : (
           ""
         )}
+        {exportPopup && (<ExportPopUp filteredKeys={filteredKeys} page={page} setExportPopup={setExportPopup} setLoading={setLoading} exportToCSV={exportToCSV} itemsPerPage={itemsPerPage} account={account} setCircularLoader={setCircularLoader} />
+        )}
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
         <Comments id={selectedCdr} setId={setSelectedCdr} />
       )}
+      {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
   );
 }

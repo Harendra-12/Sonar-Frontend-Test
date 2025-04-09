@@ -27,11 +27,14 @@ import LogOutPopUp from "./LogOutPopUp";
 import FileUpload from "./FileUpload";
 import AudioPlayer from "./AudioWaveForm";
 import DisplayFile from "./DisplayFile";
+import { numberValidator, requiredValidator } from "../../validations/validation";
+import ErrorMessage from "../../CommonComponents/ErrorMessage";
 
 function Messages({
   setSelectedModule,
   isMicOn,
   isVideoOn,
+  setactivePage,
   extensionFromCdrMessage,
   setExtensionFromCdrMessage,
 }) {
@@ -94,13 +97,14 @@ function Messages({
   const [fileUpload, setFileUpload] = useState(false)
   const [fileType, setFileType] = useState("")
   const [addNewTagPopUp, setAddNewTagPopUp] = useState(false)
-  const [selectedUrl,setSelectedUrl]=useState(null)
+  const [selectedUrl, setSelectedUrl] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null);
   const tagDropdownRef = useRef();
-  const [selectFileExtension,setSelectFileExtension]=useState(null)
-  const thisAudioRef = useRef(null); 
+  const [selectFileExtension, setSelectFileExtension] = useState(null)
+  const thisAudioRef = useRef(null);
   // const [currentPlaying, setCurrentPlaying] = useState("");
-  const [audioUrl,setAudioURL]=useState("")
+  const [audioUrl, setAudioURL] = useState("")
+  const [sendSMSPopup, setSendSMSPopup] = useState(false);
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -125,24 +129,27 @@ function Messages({
   };
   const {
     formState: { errors },
+    register,
+    handleSubmit,
+    reset
   } = useForm();
 
-//  function to extract extension
+  //  function to extract extension
   const extractFileExtension = (selectedUrl) => {
     // debugger
     if (!selectedUrl) return null;
-  
+
     // Step 1: Remove query parameters and get the base URL
     const fileUrl = selectedUrl.split("?")[0];
     const fileName = fileUrl.split("/").pop();
-  
+
     if (fileName) {
       // Step 2: Try extracting extension from the filename
       const fileParts = fileName.split(".");
       if (fileParts.length > 1) {
         return fileParts.pop().toLowerCase(); // Standard case: return the extension
       }
-  
+
       // Step 3: Fallback - Check query parameters for extension hints
       const queryParams = selectedUrl.split("?")[1];
       if (queryParams) {
@@ -156,7 +163,7 @@ function Messages({
           // Add more extensions as needed
         }
       }
-  
+
       // Step 4: Fallback - Decode URL-encoded filename and retry
       const decodedFileName = decodeURIComponent(fileName);
       const decodedParts = decodedFileName.split(".");
@@ -164,17 +171,17 @@ function Messages({
         return decodedParts.pop().toLowerCase();
       }
     }
-  
+
     return null; // No extension found
   };
   useEffect(() => {
-   if(selectedUrl){
-    const extension=extractFileExtension(selectedUrl);
-    setSelectFileExtension(extension);
-   }
+    if (selectedUrl) {
+      const extension = extractFileExtension(selectedUrl);
+      setSelectFileExtension(extension);
+    }
   }, [selectedUrl]);
 
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -276,8 +283,8 @@ function Messages({
     }
   }
 
-  console.log(recipient,loadMore);
-  
+  console.log(recipient, loadMore);
+
   // Getting messages based on pagination
   useEffect(() => {
     async function getData(pageNumb) {
@@ -317,13 +324,13 @@ function Messages({
           getData(chatHistory[recipient[0]].pageNumber + 1);
           setIsFreeSwitchMessage(false);
           console.log("from first");
-          
+
         }
       } else {
         getData(1);
         setIsFreeSwitchMessage(true);
         console.log("from second");
-        
+
       }
     }
   }, [recipient, loadMore]);
@@ -331,21 +338,22 @@ function Messages({
   // Logic to send message
   const sendSingleMessage = () => {
     // Only proceed if there's either a URL or message text
-    if(!selectedUrl && messageInput.trim() === "") {
+    // debugger
+    if (!selectedUrl && messageInput.trim() === "") {
       return;
     }
     if (isSIPReady) {
       const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
       const userAgent = sipProvider?.sessionManager?.userAgent;
-      
+
       const target = UserAgent.makeURI(targetURI);
       if (target) {
         let messager;
         try {
-          const messageContent = messageInput.trim() || selectedUrl;
-            //  message if any file is selected
+          const messageContent = messageInput.trim();
+          //  message if any file is selected
           messager = new Messager(userAgent, target, messageContent);
-        
+
           messager.message();
           const time = formatDateTime(new Date());
           setIsFreeSwitchMessage(true);
@@ -355,7 +363,7 @@ function Messages({
               ...(prevState[recipient[0]] || []),
               { from: extension, body: messageInput, time },
             ],
-          }));     
+          }));
           // Update contact last message
           const contactIndex = contact.findIndex(
             (contact) => contact.extension === recipient[0]
@@ -367,14 +375,14 @@ function Messages({
             setContact(newContact);
           }
           setActiveTab("all");
-          
+
           const extensionExists = contact.some(
             (contact) => contact.extension === recipient[0]
           );
           const agentDetails = agents.find(
             (agent) => agent.extension.extension === recipient[0]
           );
-          
+
           if (!extensionExists) {
             contact.unshift({
               name: agentDetails.username,
@@ -947,12 +955,12 @@ function Messages({
   // console.log("000allMessage",allMessage?.[recipient[0]])
 
   // function to add display logic in messages
- 
+
   // Logic to send group messages
   function sendGroupMessage() {
     debugger
     const messageContent = messageInput.trim() || selectedUrl;
-  
+
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
@@ -962,25 +970,25 @@ function Messages({
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
-    
+
     const time = formatDateTime(new Date());
-    
+
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[0]]: [
         ...(prevState[recipient[0]] || []),
-        { 
-          from: account.name, 
-          body: messageContent , // Show appropriate text in the message history
-          time 
+        {
+          from: account.name,
+          body: messageContent, // Show appropriate text in the message history
+          time
         },
       ],
     }));
-    
+
     // Clear both message input and selected file
     setMessageInput("");
     setSelectedUrl(null);
-  
+
   }
 
   // Recieve group message
@@ -1026,6 +1034,29 @@ function Messages({
   }
   const example = []
   const newExample = []
+
+  // Send SMS Function
+  // const sendSMSMessage = handleSubmit(async (data) => {
+  //   const payload = { ...data };
+  //   try {
+  //     const apiData = await generalPostFunction("/send-sms", payload);
+  //     if (apiData.status) {
+  //       toast.success(apiData.message);
+  //     } else {
+  //       if (apiData.errors.from_did) {
+  //         toast.error(apiData.errors.from_did[0]);
+  //       } else if (apiData.errors.to_did) {
+  //         toast.error(apiData.errors.to_did[0]);
+  //       } else {
+  //         toast.error(apiData.message);
+  //       }
+  //     }
+  //     reset();
+  //     setSendSMSPopup(false);
+  //   } catch (err) {
+  //     console.error("Error sending SMS:", err);
+  //   }
+  // })
 
   return (
     <>
@@ -1148,12 +1179,13 @@ function Messages({
                         >
                           <div className="profileHolder" id="profileOnlineNav">
                             <img
-                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              src={account?.profile_picture}
                               alt="profile"
+                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
                           </div>
                           <div className="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
@@ -1202,7 +1234,7 @@ function Messages({
                     <span>
                       {account && extension ? (
                         <span>
-                          {account.username} - {account && extension}
+                          {account?.username} - {account && extension}
                         </span>
                       ) : (
                         <span className="text-danger">
@@ -1283,6 +1315,14 @@ function Messages({
                       >
                         Group
                       </button>
+                      {/* <button
+                        onClick={() => setSendSMSPopup(true)}
+                        className="tabLink"
+                        effect="ripple"
+                        data-category="incoming"
+                      >
+                        SMS
+                      </button> */}
                     </div>
                   </nav>
                   {activeTab === "all" ? (
@@ -1369,7 +1409,7 @@ function Messages({
                                       return newState;
                                     });
                                   }}
-                                  className="row justify-content-between"
+                                  className="row justify-content-between d-grid"
                                 >
                                   <div className="col-xl-12 d-flex">
                                     <div
@@ -2226,12 +2266,12 @@ function Messages({
                                             </h6>
                                             <div className="">
                                               {/* function to display the message */}
-                                       <DisplayFile item={item.body}/>
+                                              <DisplayFile item={item.body} />
                                             </div>
                                           </div>
                                         </div>
                                       ) : (
-                                        
+
                                         <div className="messageItem receiver">
                                           <div className="second">
                                             <h6>
@@ -2245,7 +2285,7 @@ function Messages({
                                               </span>
                                             </h6>
                                             <div className="">
-                                            <DisplayFile item={item.body}/>
+                                              <DisplayFile item={item.body} />
                                             </div>
                                           </div>
                                         </div>
@@ -2323,7 +2363,8 @@ function Messages({
                                     role="tab"
                                     aria-controls="nav-whatsapp"
                                     aria-selected="false"
-                                    onClick={() => featureUnderdevelopment()}
+                                    // onClick={() => featureUnderdevelopment()}
+                                    onClick={() => setactivePage("whatsapp-chartbox")}
                                   >
                                     WhatsApp
                                   </button>
@@ -2350,11 +2391,11 @@ function Messages({
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
-                                {selectedFile && (
-    <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
-      📎 {selectedFile.name}
-    </div>
-  )}
+                                {/* {selectedFile && (
+                                  <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
+                                    📎 {selectedFile.name}
+                                  </div>
+                                )} */}
 
                                 <textarea
                                   type="text"
@@ -2364,7 +2405,7 @@ function Messages({
                                   value={messageInput}
                                   onChange={(e) =>
                                     setMessageInput(e.target.value)
-                                    }
+                                  }
                                   onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                       if (recipient[2] === "groupChat") {
@@ -2840,6 +2881,92 @@ function Messages({
           ) : (
             ""
           )}
+          {/* {sendSMSPopup &&
+            <div className="backdropContact">
+              <div className="addNewContactPopup">
+                <div className="row">
+                  <div className="col-12 heading">
+                    <i className="fa-light fa-message" />
+                    <h5>Send a SMS</h5>
+                    <p>
+                      Send a SMS to a DID / PSTN number.
+                    </p>
+                    <div className="border-bottom col-12" />
+                  </div>
+                  <div className="col-xl-12">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter Sender Number</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="DID / PSTN"
+                        name="from_did"
+                        {...register("from_did", { ...requiredValidator, ...numberValidator })}
+                      />
+                      {errors.from_did && (
+                        <ErrorMessage text={errors.from_did.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12 mt-2">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter Receiver Number</label>
+                    </div>
+                    <div className="col-12">
+                      <input
+                        type="text"
+                        className="formItem"
+                        placeholder="DID / PSTN"
+                        name="to_did"
+                        {...register("to_did", { ...requiredValidator, ...numberValidator })}
+                      />
+                      {errors.to_did && (
+                        <ErrorMessage text={errors.to_did.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12 mt-2">
+                    <div className="formLabel">
+                      <label htmlFor="">Enter your messsage</label>
+                    </div>
+                    <div className="col-12">
+                      <textarea
+                        type="text"
+                        className="formItem h-auto"
+                        placeholder="Please enter your message"
+                        name="message"
+                        rows={3}
+                        {...register("message", {
+                          ...requiredValidator,
+                        })}
+                      />
+                      {errors.message && (
+                        <ErrorMessage text={errors.message.message} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-xl-12 mt-4">
+                    <div className="d-flex justify-content-between">
+                      <button className="panelButton gray ms-0" onClick={() => { reset(); setSendSMSPopup(false) }}>
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-caret-left" />
+                        </span>
+                      </button>
+                      <button className="panelButton me-0" onClick={sendSMSMessage}>
+                        <span className="text">Send</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-send" />
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } */}
         </section>
 
         {newGroupLoader ? (
@@ -2850,7 +2977,7 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading}/>
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} />
         }
       </main>
     </>

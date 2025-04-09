@@ -16,7 +16,7 @@ function SubscriptionManagement() {
                             <Header title="Subscription Management" />
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">
-                                    <div className="d-flex flex-wrap">
+                                    <div className="row">
                                         <div className="col-12">
                                             <div className="heading">
                                                 <div className="content">
@@ -44,106 +44,97 @@ function SubscriptionManagement() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-12" style={{ overflow: "auto", padding: "25px 20px 0" }}>
-                                            <div className='row'>
-                                                <div className='col-6'>
-                                                    <div className="profileView px-0">
-                                                        <div className="profileDetailsHolder p-0 shadow-none">
-                                                            <div className="row" style={{ padding: 5 }}>
-                                                                <div className="header">Subscription Details</div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Package Name</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={accountDetails.package.name}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Package Price</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={`$${accountDetails.package.offer_price}`}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Package Type</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={accountDetails.package.subscription_type}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Subscription Start</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={accountDetails?.subscription?.[0].start_date}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Subscription End</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={accountDetails?.subscription?.[0].end_date}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="formRow col-xl-12">
-                                                                    <div className="formLabel">
-                                                                        <label htmlFor="data">Time of Payment</label>
-                                                                    </div>
-                                                                    <div className="col-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="formItem"
-                                                                            value={accountDetails?.payments[0].transaction_date}
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                                <div className="col-12 mt-2">
-                                                                    <div className='row'>
-                                                                        <button className="panelButton edit" style={{ height: 34 }}>
-                                                                            <span className="text">Renew</span>
-                                                                            <span className="icon">
-                                                                                <i className="fa-solid fa-repeat" />
-                                                                            </span>
-                                                                        </button>
-                                                                        <button className="panelButton delete ms-auto me-2" style={{ height: 34 }}>
-                                                                            <span className="text">Cancel</span>
-                                                                            <span className="icon">
-                                                                                <i className="fa-solid fa-xmark" />
-                                                                            </span>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                        <div className="col-12 formScroller" style={{ padding: "25px 23px" }}>
+                                            <form className='col-12'>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Package Name</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={accountDetails.package.name}
+                                                        />
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Package Price</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={`$${accountDetails.package.offer_price}`}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Package Type</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={accountDetails.package.subscription_type}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Subscription Start</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={accountDetails?.subscription?.[0].start_date}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Subscription End</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={accountDetails?.subscription?.[0].end_date}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className="formLabel">
+                                                        <label htmlFor="data">Time of Payment</label>
+                                                    </div>
+                                                    <div className="col-md-8 col-12">
+                                                        <input
+                                                            type="text"
+                                                            className="formItem"
+                                                            value={accountDetails?.payments[0].transaction_date}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="formRow col-xl-6">
+                                                    <div className='d-flex justify-content-between align-items-center'>
+                                                        <button className="panelButton edit mx-0" style={{ height: 34 }}>
+                                                            <span className="text">Renew</span>
+                                                            <span className="icon">
+                                                                <i className="fa-solid fa-repeat" />
+                                                            </span>
+                                                        </button>
+                                                        <button className="panelButton delete mx-0" style={{ height: 34 }}>
+                                                            <span className="text">Cancel</span>
+                                                            <span className="icon">
+                                                                <i className="fa-solid fa-xmark" />
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

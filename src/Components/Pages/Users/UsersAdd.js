@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   backToTop,
+  fileUploadFunction,
   generalGetFunction,
   generalPostFunction,
 } from "../../GlobalFunction/globalFunction";
@@ -45,7 +46,10 @@ const UsersAdd = () => {
   const account = useSelector((state) => state.account);
   const [parentChecked, setParentChecked] = useState({});
   const [selectedExtension, setSelectedExtension] = useState("");
-  const [allChecked,setAllChecked]=useState(false)
+  const [allChecked, setAllChecked] = useState(false);
+  const [profilePicPopup, setProfilePicPopup] = useState(false);
+  const [newImage, setNewImage] = useState();
+  const [profileImage, setProfileImage] = useState(null);
 
   const {
     register,
@@ -125,10 +129,7 @@ const UsersAdd = () => {
         value: extension.id,
         label: extension.extension,
       }));
-      setFilterExtensions([
-        { value: null, label: "None" },
-        ...options,
-      ]);
+      setFilterExtensions([{ value: null, label: "None" }, ...options]);
     }
   }, [accountDetails, user, extension]);
 
@@ -163,6 +164,22 @@ const UsersAdd = () => {
     };
   }, [watch().username]);
 
+  //   Handle new music function to add new music
+  async function handleNewImage() {
+    if (newImage) {
+      const maxSizeInMB = 2;
+      const fileSizeInMB = newImage.size / (1024 * 1024);
+      if (fileSizeInMB > maxSizeInMB) {
+        toast.error(`Please choose a file less than ${maxSizeInMB}MB.`);
+      } else {
+        setProfilePicPopup(false);
+        setProfileImage(newImage);
+      }
+    } else {
+      toast.error("Please choose a file");
+    }
+  }
+
   // Creating user
   const handleFormSubmit = handleSubmit(async (data) => {
     if (data.cPassword !== data.password) {
@@ -194,9 +211,12 @@ const UsersAdd = () => {
         account_id: account.account_id,
         permissions: selectedPermission,
       },
+      ...{
+        profile_picture: profileImage,
+      },
     };
     setLoading(true);
-    const addUser = await generalPostFunction("/user/create", payload);
+    const addUser = await fileUploadFunction("/user/create", payload);
     if (addUser?.status) {
       reset();
       setSelectedPermission([]);
@@ -242,16 +262,16 @@ const UsersAdd = () => {
   // Initialize parentChecked state
   useEffect(() => {
     const initialParentChecked = {};
-    
+
     Object.keys(filteredPermission).forEach((item) => {
       initialParentChecked[item] = filteredPermission[item].every((innerItem) =>
         selectedPermission.includes(innerItem.id)
       );
     });
-    if(Object.values(initialParentChecked).every(value => value === true)){
-      setAllChecked(true)
-    }else{
-      setAllChecked(false)
+    if (Object.values(initialParentChecked).every((value) => value === true)) {
+      setAllChecked(true);
+    } else {
+      setAllChecked(false);
     }
     setParentChecked(initialParentChecked);
   }, [selectedPermission]);
@@ -276,38 +296,36 @@ const UsersAdd = () => {
 
   // function to handle select All
   const handleAllParentCheckboxChange = (isChecked) => {
-     // Initialize an empty array to store all the ids
- if(isChecked){
-  const allIds = []; 
-  // Loop through each key in the permissions object
-  Object.keys(filteredPermission).forEach(key => {
-    // For each key, loop through its array items
-    filteredPermission[key].forEach(item => {
-      // Add the id of each item to the allIds array
-      allIds.push(item.id);
-    });
-  });
-  const updatedParentChecked = { ...parentChecked };
-  
-  // Set all values to true
-  Object.keys(updatedParentChecked).forEach(key => {
-    parentChecked[key] = true;
-  });
-  setSelectedPermission( allIds);
-  setParentChecked(allChecked)
- }else{
-  setSelectedPermission( []);
-  setParentChecked([])
- }
-    };
-    
+    // Initialize an empty array to store all the ids
+    if (isChecked) {
+      const allIds = [];
+      // Loop through each key in the permissions object
+      Object.keys(filteredPermission).forEach((key) => {
+        // For each key, loop through its array items
+        filteredPermission[key].forEach((item) => {
+          // Add the id of each item to the allIds array
+          allIds.push(item.id);
+        });
+      });
+      const updatedParentChecked = { ...parentChecked };
+
+      // Set all values to true
+      Object.keys(updatedParentChecked).forEach((key) => {
+        parentChecked[key] = true;
+      });
+      setSelectedPermission(allIds);
+      setParentChecked(allChecked);
+    } else {
+      setSelectedPermission([]);
+      setParentChecked([]);
+    }
+  };
 
   // Handle parent checkbox change
   const handleParentCheckboxChange = (item) => {
     const newParentChecked = !parentChecked[item];
     const newSelectedPermission = [...selectedPermission];
-    console.log("00filtere",{filteredPermission},{parentChecked})
-  
+
     filteredPermission[item].forEach((innerItem) => {
       const index = newSelectedPermission.indexOf(innerItem.id);
       if (newParentChecked) {
@@ -322,7 +340,7 @@ const UsersAdd = () => {
   };
   const handleSelectInputChange = (inputValue, { action }) => {
     if (action === "input-change") {
-      const numericInput = inputValue.replace(/[^0-9]/g, '');
+      const numericInput = inputValue.replace(/[^0-9]/g, "");
       // setSelectedExtension(numericInput)
       return numericInput;
     }
@@ -575,6 +593,60 @@ const UsersAdd = () => {
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
+                            <label htmlFor="">Profile Picture</label>
+                          </div>
+                          <div className="col-6">
+                            <div className="profileView p-0">
+                              <button
+                                style={{
+                                  border: "none",
+                                  backgroundColor: "transparent",
+                                  cursor: "pointer",
+                                  padding: '0'
+                                }}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setProfilePicPopup(!profilePicPopup);
+                                }}
+                              >
+                                <div
+                                  className="profileHolder"
+                                  style={{
+                                    height: "50px",
+                                    width: "50px",
+                                    position: "relative",
+                                    cursor: "pointer",
+                                    borderRadius: "50%",
+                                    border: '2px solid var(--border-color)'
+                                  }}
+                                >
+                                  {profileImage ? (
+                                    <i className="fa-solid fa-pen profilePhotoEditIcon"></i>
+                                  ) : (
+                                    <i className="fa-solid fa-plus profilePhotoAddIcon"></i>
+                                  )}
+                                  <img
+                                    src={
+                                      profileImage
+                                        ? URL.createObjectURL(profileImage)
+                                        : profileImage ||
+                                        "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                    }
+                                    alt="profile"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                      borderRadius: "50%",
+                                    }}
+                                  />
+                                </div>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="formRow col-xl-12">
+                          <div className="formLabel">
                             <label htmlFor="selectFormRow">
                               Time Zone <span className="text-danger">*</span>
                             </label>
@@ -603,8 +675,10 @@ const UsersAdd = () => {
                                   );
                                 })}
                             </select>
-                            {errors&& (
-                              <ErrorMessage text={errors?.timezone_id?.message} />
+                            {errors.timezone_id && (
+                              <ErrorMessage
+                                text={errors?.timezone_id?.message}
+                              />
                             )}
                           </div>
                         </div>
@@ -719,7 +793,11 @@ const UsersAdd = () => {
                               options={filterExtensions}
                               placeholder="Available Extensions"
                               isClearable={false}
-                              defaultValue={{ value: "0", label: "Select Extension" }} // Default selected option
+                              className="form-iselect"
+                              defaultValue={{
+                                value: "0",
+                                label: "Select Extension",
+                              }} // Default selected option
                               onInputChange={handleSelectInputChange}
                               onChange={(e) => {
                                 setSelectedExtension(String(e.value));
@@ -742,19 +820,19 @@ const UsersAdd = () => {
                                 singleValue: (provided) => ({
                                   ...provided,
                                   fontSize: "14px",
-                                }),
+                                }), 
                                 option: (provided, state) => ({
                                   ...provided,
                                   paddingLeft: "15px",
                                   paddingTop: 0,
                                   paddingBottom: 0,
-                                  backgroundColor: state.isSelected
-                                    ? "#5a9fff"
-                                    : "transparent",
-                                  "&:hover": {
-                                    backgroundColor: "#0055cc",
-                                    color: "#fff",
-                                  },
+                                  // backgroundColor: state.isSelected
+                                  //   ? "#5a9fff"
+                                  //   : "transparent",
+                                  // "&:hover": {
+                                  //   backgroundColor: "#0055cc",
+                                  //   color: "#fff",
+                                  // },
                                   fontSize: "14px",
                                 }),
                                 menu: (provided) => ({
@@ -899,6 +977,175 @@ const UsersAdd = () => {
             </div>
           </div>
         </section>
+        {profilePicPopup ? (
+          <div className="popup music">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="card px-0 col-xl-4 col-md-6">
+                  <div className="header">
+                    <h5 className="card-title fs14 border-bootm fw700">
+                      Upload Profile Picture
+                    </h5>
+                  </div>
+                  <div className="card-body">
+                    {newImage ? (
+                      // Show image preview if a file is uploaded
+                      <div className="image-container mx-2 text-center position-relative">
+                        <img
+                          src={URL.createObjectURL(newImage)}
+                          alt="Profile Preview"
+                          style={{
+                            width: "200px",
+                            height: "200px",
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                            border: "5px solid var(--border-color)",
+                          }}
+                        />
+                        <button
+                          className="clearButton2 xl ms-2"
+                          style={{ position: "absolute", top: "0px", right: "0px" }}
+                          onClick={() => setNewImage(null)}
+                        >
+                          <i className="fa-sharp fa-solid fa-trash" />
+                        </button>
+                      </div>
+                    ) : (
+                      // Show upload options if no file is uploaded
+                      <div
+                        className="popup-border text-center p-2"
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.add("drag-over");
+                        }}
+                        onDragLeave={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.remove("drag-over");
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          e.currentTarget.classList.remove("drag-over");
+
+                          const file = e.dataTransfer.files[0];
+                          if (file) {
+                            if (
+                              ![
+                                "image/jpeg",
+                                "image/jpg",
+                                "image/png",
+                                "image/gif",
+                              ].includes(file.type)
+                            ) {
+                              toast.error(
+                                "Only JPG, JPEG, PNG & GIF files are allowed."
+                              );
+                              return;
+                            }
+
+                            const fileSizeInMB = file.size / (1024 * 1024);
+                            if (fileSizeInMB > 2) {
+                              toast.error("File size must be less than 2MB");
+                              return;
+                            }
+
+                            const fileName = file.name.replace(/ /g, "-");
+                            const newFile = new File([file], fileName, {
+                              type: file.type,
+                            });
+                            setNewImage(newFile);
+                          }
+                        }}
+                      >
+                        <input
+                          type="file"
+                          className="form-control-file d-none"
+                          id="fileInput"
+                          accept=".jpg,.jpeg,.png,.gif"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              if (
+                                ![
+                                  "image/jpeg",
+                                  "image/jpg",
+                                  "image/png",
+                                  "image/gif",
+                                ].includes(file.type)
+                              ) {
+                                toast.error(
+                                  "Only JPG, JPEG, PNG & GIF files are allowed."
+                                );
+                                return;
+                              }
+
+                              const fileSizeInMB = file.size / (1024 * 1024);
+                              if (fileSizeInMB > 2) {
+                                toast.error("File size must be less than 2MB");
+                                return;
+                              }
+
+                              const fileName = file.name.replace(/ /g, "-");
+                              const newFile = new File([file], fileName, {
+                                type: file.type,
+                              });
+                              setNewImage(newFile);
+                            }
+                          }}
+                        />
+                        <label htmlFor="fileInput" className="d-block">
+                          <div className="test-user text-center">
+                            <i
+                              style={{ fontSize: 30 }}
+                              className="fa-solid fa-cloud-arrow-up"
+                            />
+                            <p className="mb-0 mt-2 text-center">
+                              Drag and Drop or <span>Click on upload</span>
+                            </p>
+                            <span>
+                              Supports formats: JPG, JPEG, PNG, GIF (Max Size:
+                              2MB)
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-footer">
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="panelButton m-0"
+                        onClick={handleNewImage}
+                        disabled={!newImage}
+                      >
+                        <span className="text">Confirm</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      </button>
+                      <button
+                        className="panelButton gray"
+                        onClick={() => {
+                          setProfilePicPopup(false);
+                          setNewImage(null);
+                        }}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         {loading ? (
           <div colSpan={99}>
             <CircularLoader />

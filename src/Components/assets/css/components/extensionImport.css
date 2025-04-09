@@ -35,6 +35,10 @@
     min-height: 50px;
 }
 
+.management_fomr .formRow {
+    padding: 7px 20px;
+}
+
 /* #detailsContent .formRow   */
 .formLabel {
     font-size: 0.875rem;
@@ -543,4 +547,84 @@ form.tangoNavs .nav-tabs {
     font-size: 0.875rem;
     font-weight: 500;
 
+}
+
+.overviewTableWrapper .accordion-button:not(.collapsed) .heading {
+    border-radius: 10px 10px 0 0;
+}
+
+.overviewTableWrapper .accordion-button .heading {
+    border-radius: 10px;
+}
+
+.headingExtraInfo {
+    display: flex;
+}
+
+.headingExtraInfo p {
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-subtext);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.headingExtraInfo span.badge.rounded-pill {
+    font-size: 0.75rem;
+}
+
+.image_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.image_box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100px;
+    height: auto;
+}
+
+.image_box img {
+    width: 100%;
+}
+
+.addWrap .card {
+    height: 100%;
+    background: #efefef;
+    border-color: #a3a3a3 !important;
+}
+
+.addWrap .card.active {
+    background: #e5ffe5;
+    border-color: #168700 !important;
+}
+
+.badge-soft-primary {
+    color: var(--text-badge-accent);
+    background-color: var(--bg-badge-accent);
+    border: 1px solid var(--bg-badge-accent-border);
+}
+
+.badge-soft-secondary {
+    color: var(--text-badge-secondary);
+    background-color: var(--bg-badge-secondary);
+    border: 1px solid var(--bg-badge-secondary-border);
+}
+
+.badge-soft-success {
+    color: var(--text-badge-success);
+    background-color: var(--bg-badge-success);
+    border: 1px solid var(--bg-badge-success-border);
+}
+
+.badge-soft-danger {
+    color: var(--text-badge-danger);
+    background-color: var(--bg-badge-danger);
+    border: 1px solid var(--bg-badge-danger-border);
 }

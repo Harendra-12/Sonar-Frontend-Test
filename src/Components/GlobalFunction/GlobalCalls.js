@@ -23,6 +23,13 @@ function GlobalCalls() {
   const extensionAllRefresh = useSelector((state) => state.extensionAllRefresh);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
   const ivrRefresh = useSelector((state) => state.ivrRefresh);
+  const aiAgentsRefresh = useSelector((state) => state.aiAgentsRefresh);
+  const whatsappContactRefresh = useSelector(
+    (state) => state.whatsappContactRefresh
+  );
+  const whatsappMessageRefresh = useSelector(
+    (state) => state.whatsappMessageRefresh
+  );
   const logout = useSelector((state) => state.logout);
 
   const navigate = useNavigate();
@@ -35,12 +42,14 @@ function GlobalCalls() {
   // );
   const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
- 
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (account && account?.account_id) {
       async function getData() {
-        const apiData = await generalGetFunction(`/call-details?account=${account.account_id}`);
+        const apiData = await generalGetFunction(
+          `/call-details?account=${account.account_id}`
+        );
         if (apiData?.status) {
           dispatch({
             type: "SET_ALLCALL",
@@ -48,10 +57,8 @@ function GlobalCalls() {
           });
           dispatch({
             type: "SET_ALLCALLDETAILS",
-            allCallDetails: apiData?.cdr_filters
-            ,
+            allCallDetails: apiData?.cdr_filters,
           });
-          
         }
       }
 
@@ -150,7 +157,7 @@ function GlobalCalls() {
         const AssignedCallcenter = [...details].filter((queue) =>
           queue.agents.some((agent) => Number(agent.agent_name) == Id)
         );
-        let CallerId = null; 
+        let CallerId = null;
         if (AssignedCallcenter.length > 0) {
           dispatch({
             type: "SET_OPEN_CALLCENTER_POPUP",
@@ -301,14 +308,16 @@ function GlobalCalls() {
           type: "SET_PERMISSIONS",
           permissions: permissionData.data,
         });
-        localStorage.setItem("permissions",JSON.stringify(permissionData.data))
+        localStorage.setItem(
+          "permissions",
+          JSON.stringify(permissionData.data)
+        );
       }
     }
     if (permissionRefresh > 0 && localStorage.getItem("token")) {
       getData();
     }
   }, [permissionRefresh]);
-
 
   // Getting ivr details
   useEffect(() => {
@@ -328,6 +337,22 @@ function GlobalCalls() {
     }
   }, [ivrRefresh]);
 
+  // Getting aiAgents details
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/ainumber/all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_AIAGENTS",
+          aiAgents: apiData.data,
+        });
+      }
+    }
+    if (aiAgentsRefresh > 0) {
+      getData();
+    }
+  }, [aiAgentsRefresh]);
+
   // Getting device provisioning details
   useEffect(() => {
     async function getData() {
@@ -343,6 +368,38 @@ function GlobalCalls() {
       getData();
     }
   }, [deviceProvisioningRefresh]);
+
+  // Getting whatsapp contacts
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/whatsapp/get-contacts");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_WHATSAPPCONTACT",
+          whatsappContact: apiData?.data,
+        });
+      }
+    }
+    if (whatsappContactRefresh > 0) {
+      getData();
+    }
+  }, [whatsappContactRefresh]);
+
+  // Getting whatsapp messages
+  useEffect(() => {
+    async function getData() {
+      const apiData = await generalGetFunction("/whatsapp/messages-all");
+      if (apiData?.status) {
+        dispatch({
+          type: "SET_WHATSAPPMESSAGE",
+          whatsappMessage: apiData.data,
+        });
+      }
+    }
+    if (whatsappMessageRefresh > 0) {
+      getData();
+    }
+  }, [whatsappMessageRefresh]);
 
   // useEffect(() => {
   //   async function getData() {
@@ -378,27 +435,50 @@ function GlobalCalls() {
     }
   }, []);
 
-
- 
   useEffect(() => {
     async function logOut() {
-      const apiData = await generalGetFunction("/logout");
-      // localStorage.clear();
-      navigate("/");
-      if (apiData?.status) {
-        localStorage.clear();
-        dispatch({
-          type: "SET_ACCOUNT",
-          account: null,
-        });
-        dispatch({ type: "SET_LOGOUT", logout: 0 })
+      const audioObj = document.querySelectorAll("audio");
+      try {
+        // First close all websocket connections
+        if (window.socketInstances) {
+          window.socketInstances.forEach((socket) => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.close(1000, "Logging out");
+            }
+          });
+          window.socketInstances = [];
+        }
 
+        // Clear token first to prevent new socket connections
+        localStorage.removeItem("token");
+
+        audioObj.forEach((item) => item.pause());
+
+        // Then make the logout API call
+        const apiData = await generalGetFunction("/logout");
+
+        // Clear remaining localStorage and Redux state
+        localStorage.clear();
+
+        // Reset Redux state before navigation
+        dispatch({ type: "RESET_STATE" });
+        dispatch({ type: "SET_ACCOUNT", account: null });
+        dispatch({ type: "SET_LOGOUT", logout: 0 });
+
+        // Navigate last
+        navigate("/");
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Still clear everything even if API call fails
+        localStorage.clear();
+        dispatch({ type: "RESET_STATE" });
+        navigate("/");
       }
     }
     if (logout > 0) {
-      logOut()
+      logOut();
     }
-  }, [logout])
+  }, [logout]);
   return <div></div>;
 }
 

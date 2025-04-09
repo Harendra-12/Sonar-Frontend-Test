@@ -5,8 +5,9 @@
   /* padding: 20px; */
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f7f7f7;
+  background-color: var(--bg-color);
   display: flex;
+  overflow: hidden;
 }
 
 /* Style for the audio player itself */
@@ -41,10 +42,13 @@ audio {
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
+  background-color: var(--ele-color);
 }
 
 .audio-container .transcriptWrap .textContent {
   white-space: break-spaces;
+  max-height: 90px;
+  overflow-y: scroll;
 }
 
 .audio-container .transcriptWrap .textContent>* {
@@ -54,4 +58,18 @@ audio {
 .audio-container .transcriptWrap .btnWrap {
   display: flex;
   align-items: center;
+}
+
+.audio-container canvas {
+  width: 100%;
+}
+
+.customAudioControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--ele-color);
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  padding: 10px 10px;
 }

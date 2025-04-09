@@ -42,7 +42,7 @@
 } */
 
 .eFaxCompose .newMessageWrapper {
-    /* height: calc(100vh - 330px); */
+    height: calc(100vh - 195px);
     background-color: var(--ele-color);
     border-radius: 10px;
     width: 100%;
@@ -189,4 +189,35 @@
 
 .callDetailsList table td {
     font-weight: 500;
+}
+
+
+.eFaxCompose .messageOverlay{
+    border-left: 1px solid var(--border-color) !important;
+}
+
+.eFaxCompose .allticketshow{
+    padding: 20px;
+}
+
+.eFaxCompose .allticketshow .border-btmo{
+    /* border-bottom: 1px solid gray; */
+    border-bottom: 1px solid #c9c9c970;
+padding: 10px;
+ 
+}
+
+.eFaxCompose .allticketshow .border-btmo p{
+    margin: 0px;
+    padding:  0px;
+    font-weight: 600;
+
+}
+
+.eFaxCompose .allticketshow .border-btmo span{
+    margin: 0px;
+    padding:  0px;
+    font-size: 13px;
+    font-weight: 400
+
 }

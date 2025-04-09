@@ -27,7 +27,6 @@ import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-
 const RingGroupEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -91,6 +90,7 @@ const RingGroupEdit = () => {
       delay: 0,
       timeOut: "30",
       status: "active",
+      priority: "",
     },
   ]);
   const [searchEditAllUser, setSearchEditAllUser] = useState("");
@@ -147,10 +147,13 @@ const RingGroupEdit = () => {
           if (ring_group_destination.length > 0) {
             setDestination(
               ring_group_destination.map((item) => {
+                // For sequence strategy, map delay_order to priority
+                const isSequence = editData.strategy === "sequence";
                 return {
                   destination: item.destination,
-                  delay: item.delay_order,
-                  // prompt: item.prompt,
+                  delay: isSequence ? 0 : item.delay_order,
+                  // If priority exists in API response use it, otherwise use delay_order for sequence
+                  priority: isSequence ? item.priority || item.delay_order : "",
                   timeOut: item.destination_timeout,
                   status: item.status,
                   id: item.id,
@@ -241,8 +244,7 @@ const RingGroupEdit = () => {
 
   // Function to handle click outside to close popup
   useEffect(() => {
-    const handleClickOutside = (event) => {
-    };
+    const handleClickOutside = (event) => {};
 
     document.addEventListener("click", handleClickOutside);
 
@@ -255,7 +257,7 @@ const RingGroupEdit = () => {
     setValue("timeout_destination", value[0]);
   };
 
-  // In bulk add option search funcnality to rearrage the data 
+  // In bulk add option search funcnality to rearrage the data
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -316,13 +318,12 @@ const RingGroupEdit = () => {
     setDestination([
       ...destination,
       {
-        // id: destination.length + 10000,
         id: Math.floor(Math.random() * 10000),
         destination: "",
         delay: 0,
         timeOut: "30",
-        // prompt: "",
         status: "active",
+        priority: "", // Keep priority empty for new additions
       },
     ]);
   };
@@ -365,7 +366,7 @@ const RingGroupEdit = () => {
     }
   }
 
-  // Function to validate destination 
+  // Function to validate destination
   const destinationValidation = () => {
     const allFilled = destination.every(
       (item) => item.destination.trim() !== ""
@@ -387,13 +388,26 @@ const RingGroupEdit = () => {
       toast.error("Please add at least one destination");
       return;
     }
-    // if (data.timeout_destination != "" && !data.call_timeout) {
-    //   toast.error("Please Mention call timeout for timeout destination");
-    //   return;
-    // }
     if (data.ring_back === "" || data.ring_back === "null") {
       delete data.ring_back;
-  }
+    }
+
+    // Validate priority values for sequence strategy
+    if (data.strategy === "sequence") {
+      const priorities = destination.map((item) => item.priority);
+      const uniquePriorities = new Set(priorities);
+      if (priorities.length !== uniquePriorities.size) {
+        toast.error("Each destination must have a unique priority value");
+        setLoading(false);
+        return;
+      }
+      if (priorities.some((p) => !p)) {
+        toast.error("All destinations must have a priority value");
+        setLoading(false);
+        return;
+      }
+    }
+
     const payLoad = {
       ...data,
       ...{
@@ -401,22 +415,21 @@ const RingGroupEdit = () => {
         recording_enabled: data.recording_enabled === "true" ? 1 : 0,
         followme: data.followme === "true" ? true : false,
         status: data.status == true ? "active" : "inactive",
-        // call_timeout: data.call_timeout !== null ? call_timeout : "",
         destination: destination
           .map((item) => {
-            // Call checkPrevDestination with the current item
             const hasId = checkPrevDestination(item.id);
 
             if (item.destination.length > 0) {
-              // Return the object with or without 'id' based on hasId
               return {
                 destination: item.destination,
-                delay_order: item.delay,
-                // prompt: item.prompt,
+                [data.strategy === "sequence" ? "priority" : "delay_order"]:
+                  data.strategy === "sequence"
+                    ? parseInt(item.priority)
+                    : parseInt(item.delay),
                 destination_timeout: item.timeOut,
                 status: item.status,
                 created_by: account.account_id,
-                ...(hasId ? { id: item.id } : {}), // Conditionally add 'id' field
+                ...(hasId ? { id: item.id } : {}),
               };
             } else {
               return null;
@@ -429,19 +442,16 @@ const RingGroupEdit = () => {
     const apiData = await generalPutFunction(`/ringgroup/${value}`, payLoad);
     if (apiData.status) {
       setLoading(false);
-      // toast.success(apiData.message);
       setGetAllDataRefresh(getAllDataRefresh + 1);
       setSuccessMessage(apiData.message);
       dispatch({
         type: "SET_RINGGROUPREFRESH",
         ringGroupRefresh: ringGroupRefresh + 1,
       });
-      // navigate("/ring-groups");
     } else {
       setLoading(false);
     }
   });
-
 
   // Open popup for upload new music
   const handleAddMusic = () => {
@@ -449,7 +459,7 @@ const RingGroupEdit = () => {
     setShowMusic(true);
   };
 
-  // Handle chek box for bulk edit 
+  // Handle chek box for bulk edit
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (prevSelected.some((agent) => agent.name === item.name)) {
@@ -471,7 +481,7 @@ const RingGroupEdit = () => {
         .includes(searchQuery.toLowerCase())
   );
 
-  // The user which is not assign 
+  // The user which is not assign
   const availableUsers = filteredUsers?.filter(
     (user) =>
       !destination.some(
@@ -487,12 +497,13 @@ const RingGroupEdit = () => {
           id: Math.floor(Math.random() * 10000),
           destination: selectedDestination?.extension?.extension,
           delay: 0,
+          priority: "",
           timeOut: "30",
           status: "active",
         })
       );
 
-      setDestination(newDestinations); // Replace the entire destination state
+      setDestination(newDestinations);
     } else {
       const newDestinations = [...destination]; // Copy the current destination array
 
@@ -507,8 +518,8 @@ const RingGroupEdit = () => {
             id: Math.floor(Math.random() * 10000),
             destination: selectedDestination?.extension?.extension,
             delay: 0,
+            priority: "",
             timeOut: "30",
-
             status: "active",
           });
         }
@@ -742,12 +753,15 @@ const RingGroupEdit = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
-                              }`}
+                            className={`col-${
+                              showTimeoutDestinationToggle ? "4" : "12"
+                            }`}
                           >
-                            {showTimeoutDestinationToggle && <div className="formLabel">
-                              <label className="formItemDesc">Type</label>
-                            </div>}
+                            {showTimeoutDestinationToggle && (
+                              <div className="formLabel">
+                                <label className="formItemDesc">Type</label>
+                              </div>
+                            )}
                             <select
                               className="formItem"
                               {...register("destination_type", {
@@ -786,7 +800,9 @@ const RingGroupEdit = () => {
                             <>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label className="formItemDesc">Destination</label>
+                                  <label className="formItemDesc">
+                                    Destination
+                                  </label>
                                 </div>
                                 {showTimeoutDestinationToggle ? (
                                   timeoutDestPstnToggle ? (
@@ -818,7 +834,9 @@ const RingGroupEdit = () => {
                               </div>
                               <div className="col-4">
                                 <div className="formLabel">
-                                  <label className="formItemDesc">Call Timeout</label>
+                                  <label className="formItemDesc">
+                                    Call Timeout
+                                  </label>
                                 </div>
                                 <input
                                   type="text"
@@ -829,7 +847,8 @@ const RingGroupEdit = () => {
                                     ...(watch("call_timeout") !== "" &&
                                       minValidator(
                                         destination.reduce(
-                                          (max, obj) => Math.max(max, obj.delay),
+                                          (max, obj) =>
+                                            Math.max(max, obj.delay),
                                           0
                                         )
                                       )),
@@ -837,7 +856,9 @@ const RingGroupEdit = () => {
                                   onKeyDown={restrictToNumbers}
                                 />
                                 {errors.call_timeout && (
-                                  <ErrorMessage text={errors.call_timeout.message} />
+                                  <ErrorMessage
+                                    text={errors.call_timeout.message}
+                                  />
                                 )}
                               </div>
                             </>
@@ -964,7 +985,7 @@ const RingGroupEdit = () => {
                     </div>
                     <div className="d-flex">
                       {selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != destination.length ? (
+                      selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
                           className="panelButton ms-auto"
@@ -1064,14 +1085,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1?.extension?.extension ==
-                                          destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                              item1?.extension?.extension &&
+                                                item1?.extension?.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1107,38 +1128,91 @@ const RingGroupEdit = () => {
                                 </select>
                               </div>
                             </div>
-                            <div className="col-2 pe-2">
-                              {index === 0 ? (
-                                <div className="formLabel">
-                                  <label htmlFor="">Delay</label>
-                                </div>
-                              ) : (
-                                ""
-                              )}
-                              <select
-                                className="formItem me-0"
-                                style={{ width: "100%" }}
-                                name="delay"
-                                id="selectFormRow"
-                                value={item.delay}
-                                onChange={(e) => {
-                                  handleDestinationChange(index, e);
-                                }}
-                              >
-                                <option>Delay</option>
-                                {(() => {
-                                  const numbers = [];
-                                  for (let i = 0; i <= 100; i++) {
-                                    if (i % 5 === 0) {
-                                      numbers.push(<span key={i}>{i}</span>);
+                            {watch("strategy") === "sequence" ? (
+                              <div className="col-2 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">Priority</label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="priority"
+                                  id="selectFormRow"
+                                  value={item.priority}
+                                  onChange={(e) => {
+                                    handleDestinationChange(index, e);
+                                  }}
+                                >
+                                  <option value="">Select Priority</option>
+                                  {(() => {
+                                    const numbers = [];
+                                    // Get all currently used priorities except the current item's priority
+                                    const usedPriorities = destination
+                                      .filter(
+                                        (dest, idx) =>
+                                          idx !== index && dest.priority
+                                      )
+                                      .map((dest) => dest.priority.toString());
+
+                                    // Only show numbers from 1 to the total number of destinations
+                                    for (
+                                      let i = 1;
+                                      i <= destination.length;
+                                      i++
+                                    ) {
+                                      // Only add numbers that aren't used (except the current item's priority)
+                                      if (
+                                        !usedPriorities.includes(i.toString())
+                                      ) {
+                                        numbers.push(
+                                          <option key={i} value={i}>
+                                            {i}
+                                          </option>
+                                        );
+                                      }
                                     }
-                                  }
-                                  return numbers.map((item) => {
-                                    return <option>{item}</option>;
-                                  });
-                                })()}
-                              </select>
-                            </div>
+                                    return numbers;
+                                  })()}
+                                </select>
+                              </div>
+                            ) : (
+                              <div className="col-2 pe-2">
+                                {index === 0 ? (
+                                  <div className="formLabel">
+                                    <label htmlFor="">Delay</label>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                                <select
+                                  className="formItem me-0"
+                                  style={{ width: "100%" }}
+                                  name="delay"
+                                  id="selectFormRow"
+                                  value={item.delay}
+                                  onChange={(e) => {
+                                    handleDestinationChange(index, e);
+                                  }}
+                                >
+                                  <option>Delay</option>
+                                  {(() => {
+                                    const numbers = [];
+                                    for (let i = 0; i <= 100; i++) {
+                                      if (i % 5 === 0) {
+                                        numbers.push(<span key={i}>{i}</span>);
+                                      }
+                                    }
+                                    return numbers.map((item) => {
+                                      return <option>{item}</option>;
+                                    });
+                                  })()}
+                                </select>
+                              </div>
+                            )}
                             <div className="col-2 pe-2">
                               {index === 0 ? (
                                 <div className="formLabel">
@@ -1199,8 +1273,9 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
-                                  }-auto`}
+                                className={`col-auto h-100 m${
+                                  index === 0 ? "t" : "y"
+                                }-auto`}
                               >
                                 <button
                                   type="button"
@@ -1376,16 +1451,36 @@ const RingGroupEdit = () => {
             </div>
             <div>
               <div className="d-flex justify-content-between mb-2">
-                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                <h5
+                  style={{
+                    color: "var(--color-subtext)",
+                    fontSize: 14,
+                    marginBottom: 5,
+                    marginTop: 5,
+                  }}
+                >
                   Affected user:{" "}
                 </h5>
-                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+                <div className="searchBoxWrapper">
+                  <input
+                    className="searchBar"
+                    type="text"
+                    value={searchEditAllUser}
+                    onChange={(e) => setSearchEditAllUser(e.target.value)}
+                  />
+                </div>
               </div>
               <ul>
                 {selectedAgentToEdit
-                  .map((item) => destination.find((user) => item.id == user.id)).filter((item) => item.destination.includes(searchEditAllUser.trim()))
+                  .map((item) => destination.find((user) => item.id == user.id))
+                  .filter((item) =>
+                    item.destination.includes(searchEditAllUser.trim())
+                  )
                   .map((items) => (
-                    <li><i className="fa-regular fa-user me-2" />{items?.destination}</li>
+                    <li>
+                      <i className="fa-regular fa-user me-2" />
+                      {items?.destination}
+                    </li>
                   ))}
               </ul>
             </div>
@@ -1393,39 +1488,41 @@ const RingGroupEdit = () => {
               <div className="col-12 d-flex justify-content-between align-items-center"></div>
             </div>
             <div className="mt-3 d-flex">
-              <div className="col-4 pe-2">
-                <div className="formLabel">
-                  <label htmlFor="">Delay</label>
-                </div>
+              {watch("strategy") !== "sequence" && (
+                <div className="col-4 pe-2">
+                  <div className="formLabel">
+                    <label htmlFor="">Delay</label>
+                  </div>
 
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="delay"
-                  id="selectFormRow"
-                  value={settingsForBulkEdit.delay}
-                  onChange={(e) => {
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      delay: e.target.value,
-                    });
-                  }}
-                  defaultValue={0}
-                >
-                  <option>Delay</option>
-                  {(() => {
-                    const numbers = [];
-                    for (let i = 0; i <= 100; i++) {
-                      if (i % 5 === 0) {
-                        numbers.push(<span key={i}>{i}</span>);
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="delay"
+                    id="selectFormRow"
+                    value={settingsForBulkEdit.delay}
+                    onChange={(e) => {
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        delay: e.target.value,
+                      });
+                    }}
+                    defaultValue={0}
+                  >
+                    <option>Delay</option>
+                    {(() => {
+                      const numbers = [];
+                      for (let i = 0; i <= 100; i++) {
+                        if (i % 5 === 0) {
+                          numbers.push(<span key={i}>{i}</span>);
+                        }
                       }
-                    }
-                    return numbers.map((item) => {
-                      return <option>{item}</option>;
-                    });
-                  })()}
-                </select>
-              </div>
+                      return numbers.map((item) => {
+                        return <option>{item}</option>;
+                      });
+                    })()}
+                  </select>
+                </div>
+              )}
               <div className="col-4 pe-2">
                 <div className="formLabel">
                   <label htmlFor="">Timeout</label>

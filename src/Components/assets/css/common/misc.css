@@ -41,10 +41,12 @@
     height: 15px;
     border-radius: 50%;
     background-color: red;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .extensionStatus.online {
-    background-color: green;
+    /* background-color: green; */
+    background-color: #00d700;
 }
 
 .extensionStatus.onCall {
@@ -612,6 +614,8 @@ input[type=number] {
     font-weight: 400 !important;
     margin: 0px 10px 0 0 !important;
     cursor: pointer;
+
+    position: relative;
 }
 
 .contactTags span[data-id="0"] {
@@ -637,6 +641,12 @@ input[type=number] {
 .contactTags span[data-id="4"] {
     background-color: #ddb8ea;
     color: #9300ff !important;
+}
+
+.contactTags span[data-id="none"] {
+    background-color: #c1c1c1;
+    color: #000 !important;
+    opacity: 0.5;
 }
 
 .contactTags span.more {
@@ -706,6 +716,7 @@ input[type=number] {
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -1171,7 +1182,7 @@ input[type=number] {
     top: 50%;
     transform: translate(0, -50%);
     z-index: 9999;
-    transition: 1s linear;
+    transition: 0.5s linear;
 }
 
 .callDashParkedCalls .overviewTableWrapper {
@@ -1179,21 +1190,24 @@ input[type=number] {
     border-radius: 10px;
 }
 
-.callDashParkedCalls button {
+.callDashParkedCalls button.callDashParkedCallsBtn {
     border: 0;
-    background-color: #0000001a;
+    background-color: #0075ff96;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: -10px;
+    left: -0;
+    padding: 3px;
     height: 200px;
     border-radius: 5px 0 0 5px;
     backdrop-filter: blur(5px);
     transition: 0.3s ease-in-out;
+    color: #fff;
+    font-size: 10px;
 }
 
 .callDashParkedCalls button:hover {
-    background-color: #3c3c3c30;
+    background-color: var(--color2);
 }
 
 #google_translate_element select {
@@ -1247,6 +1261,9 @@ input[type=number] {
     height: 28px;
     border-color: transparent;
     /* background-color: #f4f7f9 !important; */
+    font-size: 0.875rem;
+    padding: 0;
+    background-color: var(--table-head);
 }
 
 .popupopen ul {
@@ -1272,3 +1289,457 @@ input[type=number] {
 /* .popupopen ul li i {
     color: var(--ui-accent);
 } */
+
+.popup .videoContainer {
+    width: 80%;
+    height: 80%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+.popup .videoContainer video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* ======================================= whatsapp chat box */
+.chartBox {
+    height: calc(100vh - 100px);
+    position: relative;
+    overflow: hidden;
+}
+
+.chat_sideNav {
+    border-right: 1px solid var(--chat-border);
+}
+
+.chat_sideNav .leftBox {
+    border-right: 1px solid var(--chat-border);
+    height: calc(100vh - 100px);
+    max-width: 59px;
+    flex-shrink: 0;
+    background: var(--chat-body-left);
+}
+
+.chat_sideNav ul li {
+    list-style-type: none;
+    margin-bottom: 5px;
+}
+
+.chat_sideNav ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat_sideNav ul li button {
+    background: transparent;
+    border-radius: 25px;
+    padding: 8px;
+    border: none;
+    width: 35px;
+    height: 35px;
+    /* color: #575353; */
+    transition: all 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.chat_sideNav ul li button i {
+    color: var(--chat-icon);
+}
+
+.chat_sideNav ul li:hover button {
+    background: var(--chat-bg-side-icon);
+    /* color: #575353; */
+}
+
+.chat_sideNav ul li.active button {
+    background: var(--chat-bg-side-icon);
+}
+
+.profileBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #000;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.profileBox img {
+    width: 100%;
+}
+
+.profile_text {
+    font-size: 0.75rem;
+}
+
+.profile_text span {
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.borderGray {
+    border-bottom: 1px solid var(--chat-border);
+}
+
+.profile_wrap {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--chat-border);
+    padding-inline: 15px;
+}
+
+.profile_wrap.isActive {
+    background: var(--chat-bg-user-active);
+}
+
+.user_info p {
+    font-size: 0.75rem;
+}
+
+.read {
+    color: #03a9f4;
+}
+
+.un_Read {
+    color: #15aa85;
+}
+
+.message_record {
+    width: fit-content;
+    border-radius: 50%;
+    background-color: #15aa85;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 4px;
+    font-weight: 600;
+}
+
+.message_chatbox p {
+    margin-bottom: 5px;
+}
+
+.search-box {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.input-search {
+    height: 35px;
+    width: 35px;
+    border-style: none;
+    /* padding: 10px; */
+    font-size: 1rem;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+    background-color: var(-- --chat-bg-icon);
+    padding-right: 27px;
+    /* color:#180505; */
+}
+
+.left_listClose i {
+    color: var(--chat-icon);
+}
+
+.input-search::placeholder {
+    color: rgba(255, 255, 255, .5);
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 100;
+}
+
+.btn-search {
+    /* width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none; */
+    cursor: pointer;
+    /* border-radius: 50%; */
+    position: absolute;
+    right: 0px;
+    color: #110101;
+    background-color: transparent;
+    pointer-events: painted;
+}
+
+.btn-search:focus~.input-search {
+    width: 300px;
+    padding-left: 15px;
+    /* border-radius: 0px; */
+    background-color: var(--chat-bg-button);
+    border-bottom: 1px solid var(--chat-border);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.input-search:focus {
+    width: 300px;
+    /* border-radius: 0px; */
+    background-color: var(--chat-bg-button);
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.chat_button {
+    width: 35px;
+    height: 35px;
+    background: var(--chat-bg-button);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.chat_button i {
+    font-size: 0.875rem;
+    color: var(--chat-icon);
+}
+
+.chat_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--chat-border);
+    background: var(--chat-header);
+}
+
+.chart_body {
+    padding: 20px;
+    height: calc(100vh - 235px);
+}
+
+.chart_text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.message_chatbox {
+    /* width: 100%; */
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.message_chatbox.received {
+    background: var(--chat-bg-message-receive);
+    margin-right: auto;
+    border-top-left-radius: 0;
+}
+
+.message_chatbox.sent {
+    background: var(--chat-bg-message-sent);
+    margin-left: auto;
+    border-top-right-radius: 0;
+}
+
+.chat_head {
+    padding: 11px;
+}
+
+.c_time {
+    font-size: 0.75rem;
+    text-align: end;
+    display: block;
+}
+
+.chat-input {
+    background-color: var(--chat-bg-footer);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--chat-border);
+}
+
+.send_btn {
+    width: 30px;
+    height: 30px;
+    background: #15aa85;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+
+}
+
+.send_btn.plus {
+    background: var(--chat-bg-side-icon);
+}
+
+.send_btn.plus i {
+    color: var(--chat-icon);
+}
+
+.chat-input input {
+    width: 100%;
+    border-radius: 25px !important;
+    padding-left: 20px;
+}
+
+.user_Search {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+}
+
+.send_btn i {
+    font-size: 0.875rem;
+    color: #fff;
+}
+
+.searchInput {
+    padding-inline: 40px !important;
+    border-radius: 25px;
+    background: var(--chat-input-bg);
+    box-shadow: rgba(0, 0, 0, .06) 0 0 10px;
+    border: 0;
+}
+
+.user_list {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    /* gap: 20px; */
+    height: calc(100vh - 164px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    cursor: pointer;
+    background: var(--chat-user-list);
+}
+
+.chart_body {
+    gap: 20px;
+    height: calc(100vh - 231px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--chat-body);
+}
+
+.chat_menu {
+    display: none;
+    border: 0;
+    background: transparent;
+
+}
+
+.left_listClose {
+    display: none;
+    background: transparent;
+    border: 0;
+    color: #575353;
+    position: absolute;
+    top: 11px;
+    left: 18px;
+}
+
+.left_listClose button i {
+    color: #575353;
+}
+
+.chat-input .formItem {
+    background: var(--chat-input-bg);
+    box-shadow: rgba(0, 0, 0, .06) 0 0 10px;
+    border: 0;
+}
+
+.notSend {
+    width: 16px;
+    height: 16px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border: 1px solid red;
+    color: red;
+    font-size: 0.75rem;
+}
+
+.searchBar_userList {
+    background: var(--chat-header);
+}
+
+.w_loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    height: calc(100vh - 231px);
+    background: rgba(0, 0, 0, .06);
+}
+
+.resizeHandle {
+    position: relative;
+    width: 5px;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-bottom: none;
+}
+
+.resizeHandle button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.leftPanel[data-panel-size="0.0"]>* {
+    display: none;
+}
+
+.rightPanel[data-panel-size="0.0"]>* {
+    display: none;
+}
+
+
+/* ========================== warning logged popup */
+
+.loggedPopupSm .iconWrapper.log__warning {
+    width: 62px;
+    height: 62px;
+}
+
+.loggedPopupSm .iconWrapper.log__warning img {
+    width: 100%;
+}
+
+
+.btn_info {
+    background-color: #2e5ee7;
+    border: 1px solid #2e5ee7;
+    color: #fff;
+    padding-inline: 16px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn_info:hover {
+    background-color: transparent;
+    border: 1px solid #2e5ee7;
+    color: #2e5ee7;
+
+}

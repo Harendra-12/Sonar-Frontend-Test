@@ -16,7 +16,6 @@ if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
-
 const setAuthToken = (token) => {
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -66,17 +65,49 @@ export async function generalGetFunction(endpoint) {
       });
       if (err.response?.status === 401) {
         handleNavigation("/");
-        return err
-          ?.response?.data;
+        localStorage.clear();
+        setAuthToken(null);
+        return err?.response?.data;
       } else if (err?.response?.status === 429) {
-        toast.error("Too many attempts. Please wait before trying again.")
-      }
-      else if (err.response?.status >= 500) {
+        toast.error("Too many attempts. Please wait before trying again.");
+      } else if (err.response?.status >= 500) {
         toast.error("Something went wrong. Please try again later.");
       } else {
         return err;
       }
     });
+}
+
+// general get function with token
+export async function generalGetFunctionWithToken(endpoint, token) {
+  handleDispatch({
+    type: "SET_LOADING",
+    loading: true,
+  });
+
+  const headersWithToken = {
+    ...axiosInstance.defaults.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return axiosInstance
+    .get(endpoint, { headers: headersWithToken })
+    .then((res) => {
+      handleDispatch({
+        type: "SET_LOADING",
+        loading: false,
+      });
+      return res.data;
+    })
+    .catch((err) => {
+      handleDispatch({
+        type: "SET_LOADING",
+        loading: false,
+      });
+      
+        return err;
+      
+    })
 }
 
 // General Post function
@@ -103,12 +134,33 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         // handleNavigation("/");
         return err.response.data;
       } else {
         return err.response.data;
       }
     });
+}
+
+// General Post function with token
+export async function generalPostFunctionWithToken(endpoint, data, token) {
+  const headersWithToken = {
+    ...axiosInstance.defaults.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return axiosInstance
+    .post(endpoint, data, { headers: headersWithToken })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+     
+        return err.response?.data;
+      })
+    
 }
 
 // General Put function
@@ -132,6 +184,8 @@ export async function generalPutFunction(endpoint, data) {
         toast.error(err.response.data.message);
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         handleNavigation("/");
         return err.response.data;
       } else {
@@ -163,6 +217,8 @@ export async function generalDeleteFunction(endpoint) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         handleNavigation("/");
         return err.response.data;
       } else {
@@ -227,6 +283,8 @@ export async function generatePreSignedUrl(name) {
         );
       }
       if (err.response.status === 401) {
+        localStorage.clear();
+        setAuthToken(null);
         // handleNavigation("/");
         return err.response.data;
       } else {
@@ -241,7 +299,12 @@ export const backToTop = () => {
 };
 
 // show sidebar on the base of action
-export function checkViewSidebar(slug, permissions, userPermissions, action = undefined) {
+export function checkViewSidebar(
+  slug,
+  permissions,
+  userPermissions,
+  action = undefined
+) {
   const allPermission = [];
   for (let key in permissions) {
     if (Array.isArray(permissions[key])) {
@@ -257,15 +320,16 @@ export function checkViewSidebar(slug, permissions, userPermissions, action = un
     }
   }
   if (!action) {
-    const actionPresent = allPermission.find((item) => item.model === slug)
+    const actionPresent = allPermission.find((item) => item.model === slug);
     if (actionPresent) return true;
   } else if (action) {
-    const actionPresent = allPermission.find((item) => item.model === slug && item.action === action)
+    const actionPresent = allPermission.find(
+      (item) => item.model === slug && item.action === action
+    );
     if (actionPresent) return true;
   }
   return false;
 }
-
 
 export function featureUnderdevelopment() {
   let popup = document.getElementById("globalPopup");
@@ -306,7 +370,6 @@ export function featureUnderdevelopment() {
   }
 }
 
-
 // General logout Function
 export async function logout(allCallCenterIds, dispatch, sessionManager) {
   if (allCallCenterIds.length > 0) {
@@ -337,7 +400,36 @@ export async function logout(allCallCenterIds, dispatch, sessionManager) {
   // Dispatch logout action and disconnect session
   dispatch({ type: "SET_LOGOUT", logout: 1 });
   setTimeout(() => {
-    dispatch({ type: "RESET_STATE" })
+    dispatch({ type: "RESET_STATE" });
   }, 100);
   sessionManager.disconnect();
 }
+
+// Function to Format Time to AM/PM
+export function formatTimeWithAMPM(timeString) {
+  const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+  if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+    return "Invalid time format";
+  }
+
+  let period = 'AM';
+  let formattedHours = hours;
+
+  if (hours >= 12) {
+    period = 'PM';
+    if (hours > 12) {
+      formattedHours -= 12;
+    }
+  }
+
+  if (formattedHours === 0) {
+    formattedHours = 12; // Midnight is 12 AM
+  }
+
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedSeconds = seconds.toString().padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+}
+

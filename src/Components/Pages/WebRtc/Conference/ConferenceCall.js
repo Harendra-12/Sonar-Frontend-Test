@@ -653,7 +653,7 @@ export const ConferenceCall = ({
                                   />
                                 </div>
                                 <div className="profileName">
-                                  {account.username}{" "}
+                                  {account?.username}{" "}
                                   <span className="status">Available</span>
                                 </div>
                               </div>

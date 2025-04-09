@@ -154,8 +154,9 @@ function Header(props) {
             onClick={() => setDropDown(!dropDown)}
           >
             <img
-              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+              src={account?.profile_picture}
               alt="profile"
+              onError={(e) => e.target.src = require('../assets/images/placeholder-image.webp')}
             />
             {/* <span onclick="togglePhoneSidenav()"><i className="fa-light fa-xmark fs-4" style="display: none"></i></span> */}
           </div>
@@ -175,18 +176,18 @@ function Header(props) {
               <Link to={"/change-password"}>Change Password</Link>
             </div> */}
             <div className="dropdown-item">
+              <Link to={"/users-profile"} className="clearButton">
+                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
+                My Profile
+              </Link>
+            </div>
+            <div className="dropdown-item">
               <Link
                 onClick={() => setPopUp(true)}
                 className="clearButton text-align-start"
               >
                 <i className="fa-regular fa-lock me-2"></i>
                 Change Password
-              </Link>
-            </div>
-            <div className="dropdown-item">
-              <Link to={"/users-profile"} className="clearButton">
-                <i className="fa-regular fa-user me-2" aria-hidden="true"></i>
-                My Profile
               </Link>
             </div>
             <div

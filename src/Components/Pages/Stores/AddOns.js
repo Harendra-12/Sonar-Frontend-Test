@@ -1,15 +1,18 @@
 import React from 'react'
 import Header from '../../CommonComponents/Header';
-import { backToTop } from '../../GlobalFunction/globalFunction';
-import { Navigate } from 'react-router-dom';
+import { backToTop, featureUnderdevelopment } from '../../GlobalFunction/globalFunction';
+import { Navigate, useNavigate } from 'react-router-dom';
+import ExtensionStore from './ExtensionStore';
+import SocialMediaStore from './SocialMediaStore';
 
 
 function AddOns() {
+    const navigate = useNavigate();
     return (
         <main className="mainContent">
             <section id="phonePage">
                 <div className="container-fluid px-0">
-                    <Header title="Add Ons" />
+                    <Header title="Store" />
                 </div>
                 <div className="col-xl-12" style={{ overflow: "auto" }}>
                     <div className="overviewTableWrapper">
@@ -18,12 +21,15 @@ function AddOns() {
                                 <div className="col-12">
                                     <div className="heading">
                                         <div className="content">
-                                            <h4>AddOns</h4>
-                                            <p>Edit user information and group membership.</p>
+                                            <h4>Store</h4>
+                                            <p>Select addons, plugins or upgrade your package here!</p>
                                         </div>
                                         <div className="buttonGroup">
                                             <button
-                                                onClick={() => { Navigate('-1'); backToTop() }}
+                                                onClick={() => {
+                                                    navigate(-1);
+                                                    backToTop()
+                                                }}
                                                 type="button"
                                                 effect="ripple"
                                                 className="panelButton gray"
@@ -39,253 +45,96 @@ function AddOns() {
                             </div>
                             <div className="col-12 formScroller" style={{ padding: '25px 23px' }}>
                                 <>
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="product-container">
-                                                {/* Product 1 */}
-                                                <div className="product-cart">
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/office/voip-phone/devices/Unify_CP700-png-rendition.webp"
-                                                        alt="Click to Call"
-                                                        // className="product-image"
-                                                    />
-                                                    </div>
-                                                    <div className="product-title hover mt-4">
-                                                        <p>
-                                                            Click to Call <span className="text-smalls">(Poly CCX 700)</span>
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="product-description mt-2">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
-                                                </div>
-
-                                                {/* Product 2 */}
-                                                <div className='product-cart'>
-                                                <div className="product-image">
-                                                    <img
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-                                                        alt="Click to Call"
-                                                        // className="product-image" 
-                                                        />
-                                                        </div>
-                                                    <div className="product-title mt-4">
-                                                        <p>
-                                                            WhatsApp Integration
-                                                            <span className="text-smalls"> (Messenger)</span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
-                                                </div>
-                                                {/* Product 3 */}
-                                                <div className='product-cart'>
-                                                    <div className="product-image">
-                                                        <img
-                                                            src="https://cyclr.com/wp-content/uploads/2022/03/ext-477.png"
-                                                            alt="Click to Call"
-                                                        // className="product-image"
-                                                        />
-                                                        </div>
-                                                    <div className="product-title  mt-4">
-                                                        <p>
-                                                            Messenger Integration
-                                                            <span className="text-smalls"> (facebook)</span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
-                                                </div>
-                                                {/* Product 4 */}
-                                                <div className='product-cart'>
-                                                    <div className="product-image">
-                                                        <img
-                                                            src="https://upload.wikimedia.org/wikipedia/commons/6/60/Skype_logo_%282019%E2%80%93present%29.svg"
-                                                            alt="Click to Call"
-                                                            className="product-image"
-                                                        />
-                                                    </div>
-                                                    <div className="product-title  mt-4">
-                                                        <p>
-                                                            Skype Integration<span className="text-smalls"> (facebook)</span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
-                                                </div>
-                                                {/* Product 5 */}
-                                                <div className='product-cart'>
-                                                    <div className="product-image">
-                                                        <img
-                                                            src="https://5.imimg.com/data5/SELLER/Default/2023/6/318550307/WD/YP/AO/6017711/teamviewer-software-solution-500x500.png"
-                                                            alt="Click to Call"
-                                                        // className="product-image"
-                                                        />
-                                                    </div>
-                                                    <div className="product-title  mt-4">
-                                                        <p>
-                                                            Team Collaboration
-                                                            <span className="text-smalls"> (facebook)</span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
-                                                </div>
-                                                {/* Product 6 */}
-                                                <div className='product-cart'>
-                                                    <div className="product-image">
-                                                        <img
-                                                            src="https://www.koolmetrix.gr/wp-content/uploads/2019/05/rtanalytics.png"
-                                                            alt="Click to Call"
-                                                        // className="product-image"
-                                                        />
-                                                    </div>
-
-                                                    <div className="product-title  mt-4">
-                                                        <p>
-                                                            Real-Time Reporting
-                                                            <span className="text-smalls"> (facebook)</span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description">
-                                                        Make instant calls directly from the platform.
-                                                    </div>
-                                                    <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                                        <div>
-                                                            <div className="product-price me-2">$50.00</div>
-                                                        </div>
-                                                        <div>
-                                                            <span className="borders-left-small " />
-                                                        </div>
-                                                        <div>
-                                                            <div className="total-price-month ms-2 me-2">
-                                                                <span> $29/month</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Add to Cart (Initially Hidden) */}
-                                                    <div className="add-to-cart-container">
-                                                        <div data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                                                            <input className="checkbox" type="checkbox" />
-                                                        </div>
-                                                        <h4 className='mb-0 p-1'> Add to cart </h4>
-                                                    </div>
+                                    <nav className="tangoNavs">
+                                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <button
+                                                className="nav-link active px-2"
+                                                id="nav-social-tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#nav-social"
+                                                type="button"
+                                                role="tab"
+                                                aria-controls="nav-social"
+                                                aria-selected="true"
+                                            >
+                                                Social Media Integration
+                                            </button>
+                                            <button
+                                                className="nav-link px-2"
+                                                id="nav-exten-tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#nav-exten"
+                                                type="button"
+                                                role="tab"
+                                                aria-controls="nav-exten"
+                                                aria-selected="false"
+                                            >
+                                                Extensions
+                                            </button>
+                                            <button
+                                                className="nav-link px-2"
+                                                // id="nav-package-tab"
+                                                // data-bs-toggle="tab"
+                                                data-bs-target="#nav-package"
+                                                type="button"
+                                                role="tab"
+                                                aria-controls="nav-package"
+                                                aria-selected="true"
+                                                onClick={() => featureUnderdevelopment()}
+                                            >
+                                                Packages
+                                            </button>
+                                            <button
+                                                className="nav-link px-2"
+                                                id="nav-provision-tab"
+                                                // data-bs-toggle="tab"
+                                                // data-bs-target="#nav-util"
+                                                type="button"
+                                                role="tab"
+                                                aria-controls="nav-util"
+                                                aria-selected="false"
+                                                onClick={() => featureUnderdevelopment()}
+                                            >
+                                                Utilities
+                                            </button>
+                                            <div className='tableHeader justify-content-end ms-auto'>
+                                                <div class="searchBox position-relative">
+                                                    <label>Search:</label>
+                                                    <input type="search" name="Search" class="formItem" onChange={() => featureUnderdevelopment()} />
                                                 </div>
                                             </div>
                                         </div>
+                                    </nav>
+                                    <div className="tab-content mt-4" id="nav-tabContent">
+                                        <div
+                                            className="tab-pane fade show active"
+                                            id="nav-social"
+                                            role="tabpanel"
+                                            aria-labelledby="nav-social-tab"
+                                            tabindex="0"
+                                        >
+                                            <SocialMediaStore />
+                                        </div>
+                                        <div
+                                            className="tab-pane fade"
+                                            id="nav-exten"
+                                            role="tabpanel"
+                                            aria-labelledby="nav-exten-tab"
+                                            tabindex="0"
+                                        >
+                                            <ExtensionStore />
+                                        </div>
+                                        <div
+                                            className="tab-pane fade"
+                                            id="nav-util"
+                                            role="tabpanel"
+                                            aria-labelledby="nav-util-tab"
+                                            tabindex="0"
+                                        >
+
+                                        </div>
                                     </div>
+
                                     <div
                                         className="offcanvas offcanvas-end offcanvas-custom"
                                         tabIndex={-1}
@@ -293,12 +142,12 @@ function AddOns() {
                                         aria-labelledby="offcanvasRightLabel"
                                     >
                                         <div className="offcanvas-header">
-                                            <h5 className="offcanvas-title" id="offcanvasRightLabel">
+                                            <h5 className="offcanvas-title text-white fs-4" id="offcanvasRightLabel">
                                                 Click to call
                                             </h5>
                                             <button
                                                 type="button"
-                                                className="btn-close"
+                                                className="btn-close offcanvas_close"
                                                 data-bs-dismiss="offcanvas"
                                                 aria-label="Close" />
                                         </div>
@@ -314,7 +163,7 @@ function AddOns() {
                                                 <div className="offcanvas-text-side">
                                                     <div className='d-flex align-items-center justify-content-between'>
                                                         <div>
-                                                            <p className=' m-0 p-0'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
+                                                            <p className=' m-0 p-0 fs-5  fw-semibold'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
                                                             <div className="test-number m-0 p-0">
                                                                 <p className="">$50.00 <span>$29/month</span></p>
                                                             </div>
@@ -323,7 +172,7 @@ function AddOns() {
                                                             <button
                                                                 effect="ripple"
                                                                 className="panelButton" >
-                                                                <span className="text">Buy</span>
+                                                                <span className="text fs-6">Buy</span>
                                                                 <span className="icon">
                                                                     <i className="fa-solid fa-cart-shopping"></i>
                                                                 </span>
@@ -340,9 +189,9 @@ function AddOns() {
                                                         simplicity, as well as the high-quality audio you expect.
                                                     </p>
                                                 </div>
-                                                <div className="">
+                                                <div className="canvas_list">
                                                     <ul>
-                                                        <li>Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
+                                                        <li> Color graphical display, 6 line TFT (800*480 pixel), 5’’</li>
                                                         <li>
                                                             Notification LED (green, amber, red), visible from front and
                                                             behind
@@ -366,7 +215,6 @@ function AddOns() {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {/* {popUp ? (
 <div className="popup">

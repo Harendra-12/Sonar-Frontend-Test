@@ -26,13 +26,13 @@ import ActionList from "../../CommonComponents/ActionList";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
-const ExtensionsEdit = ({ page }) => {
+const ExtensionsEdit = ({ page, extensionData }) => {
   const navigate = useNavigate();
   const acount = useSelector((state) => state.account);
   const location = useLocation();
   const showHeader = location.pathname == "/extensions-edit";
   const queryParams = new URLSearchParams(useLocation().search);
-  const value = queryParams.get("id");
+  const navValue = queryParams.get("id");
   const [users, setUsers] = useState();
   const [popUp, setPopUp] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -50,6 +50,7 @@ const ExtensionsEdit = ({ page }) => {
     followMePrompt: "Prompt",
     followMeId: "",
   });
+  const [value, setValuee] = useState("");
 
   // React Hook Form for handling form in efficient way
   const {
@@ -67,6 +68,21 @@ const ExtensionsEdit = ({ page }) => {
       callTimeOut: `${160}`,
     },
   });
+
+  console.log("All data extension",watch());
+  console.log("Error in extension", errors);
+  
+  
+  useEffect(() => {
+    // Guard clause to prevent destructuring undefined
+    if (!extensionData?.extension) {
+      setValuee(navValue);
+      return;
+    }
+
+    const { id } = extensionData.extension;
+    setValuee(id || navValue);
+  }, [extensionData, navValue]);
 
   // Getting extension data and manage its state locally
   useEffect(() => {
@@ -228,9 +244,10 @@ const ExtensionsEdit = ({ page }) => {
   };
 
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
-  
- 
+
   const handleFormSubmit = handleSubmit(async (data, title) => {
+    console.log("Inside handleFormSubmit", data, title);
+    
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
         type: "manual",
@@ -309,31 +326,31 @@ const ExtensionsEdit = ({ page }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination_type: callSetting.followMeDestinationType,
-                  destination: data?.destination_forward_to,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  id: callSetting.followMeId,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -384,31 +401,31 @@ const ExtensionsEdit = ({ page }) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-              data: [
-                {
-                  destination_type: callSetting.followMeDestinationType,
-                  destination: data?.destination_forward_to,
-                  delay: callSetting.followMeDelay,
-                  timeout: callSetting.followMeTimeOut,
-                  extension_id: value,
-                  id: callSetting.followMeId,
-                  prompt: callSetting.followMePrompt,
-                },
-              ],
-            }
+                data: [
+                  {
+                    destination_type: callSetting.followMeDestinationType,
+                    destination: data?.destination_forward_to,
+                    delay: callSetting.followMeDelay,
+                    timeout: callSetting.followMeTimeOut,
+                    extension_id: value,
+                    id: callSetting.followMeId,
+                    prompt: callSetting.followMePrompt,
+                  },
+                ],
+              }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-                ? 1
-                : 0,
+              ? 1
+              : 0,
           description: data.description,
           password: data.password,
           ...(data.user === "" || data.user === null
@@ -451,16 +468,18 @@ const ExtensionsEdit = ({ page }) => {
     setValue("destination_forward_to", value[0]);
   };
 
-  useEffect(()=>{
-    if(watch().followme == "0"){
-      if(Object.keys(watch()).includes("destination_forward_to")){
+  useEffect(() => {
+    if (watch().followme == "0") {
+      if (Object.keys(watch()).includes("destination_forward_to")) {
         unregister("destination_forward_to");
       }
     }
-  },[watch()])
+  }, [watch()]);
 
   return (
-    <main className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}>
+    <main
+      className={page === "agents" ? "mainContentAgents ms-0" : "mainContent"}
+    >
       <section id="phonePage">
         {showHeader && (
           <div className="container-fluid px-0">
@@ -476,7 +495,10 @@ const ExtensionsEdit = ({ page }) => {
           ) : (
             <div className="overviewTableWrapper">
               <div className="overviewTableChild">
-                <div className="d-flex flex-wrap" style={{ position: "sticky", top: "0", zIndex: "9" }}>
+                <div
+                  className="d-flex flex-wrap"
+                  style={{ position: "sticky", top: "0", zIndex: "9" }}
+                >
                   <div className="col-12">
                     <div className="heading">
                       <div className="content">
@@ -522,7 +544,11 @@ const ExtensionsEdit = ({ page }) => {
                   >
                     <form action="#" className="tangoNavs">
                       <nav>
-                        <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                        <div
+                          className="nav nav-tabs"
+                          id="nav-tab"
+                          role="tablist"
+                        >
                           <button
                             className="nav-link active"
                             id="nav-gen-tab"
@@ -536,11 +562,11 @@ const ExtensionsEdit = ({ page }) => {
                             General{" "}
                             {(errors?.password?.message ||
                               errors?.extension?.message) && (
-                                <i
-                                  className="fa fa-exclamation-circle text-danger"
-                                  aria-hidden="true"
-                                ></i>
-                              )}
+                              <i
+                                className="fa fa-exclamation-circle text-danger"
+                                aria-hidden="true"
+                              ></i>
+                            )}
                           </button>
                           <button
                             className="nav-link"
@@ -653,7 +679,6 @@ const ExtensionsEdit = ({ page }) => {
                                   className="formItem"
                                   value={watch().user}
                                   {...register("user")}
-                                  id="selectFormRow"
                                 >
                                   <option value="" disabled>
                                     Select User
@@ -770,7 +795,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("record")}
                                   defaultValue={"D"}
                                 >
@@ -960,7 +984,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voicemailEnabled")}
                                   defaultValue={"N"}
                                 >
@@ -1018,7 +1041,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voiceMailFile", {})}
                                 >
                                   <option value="" disabled>
@@ -1055,7 +1077,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("voiceMailkeepFile")}
                                   defaultValue={"false"}
                                 >
@@ -1161,7 +1182,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("directoryExtensionVisible")}
                                   defaultValue={"false"}
                                 >
@@ -1269,7 +1289,6 @@ const ExtensionsEdit = ({ page }) => {
                                 <select
                                   className="formItem"
                                   name=""
-                                  id="selectFormRow"
                                   {...register("missedCall")}
                                   defaultValue={"none"}
                                 >
@@ -1368,13 +1387,14 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div className="formLabel">
-                                    <label className="formItemDesc">Status</label>
+                                    <label className="formItemDesc">
+                                      Status
+                                    </label>
                                   </div>
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("onbusy")}
                                     defaultValue={0}
                                   >
@@ -1387,7 +1407,9 @@ const ExtensionsEdit = ({ page }) => {
                                 ) : (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label className="formItemDesc">Destinations</label>
+                                      <label className="formItemDesc">
+                                        Destinations
+                                      </label>
 
                                       {errors.onbusyTo ? (
                                         <ErrorMessage
@@ -1426,13 +1448,14 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div className="formLabel">
-                                    <label className="formItemDesc">Status</label>
+                                    <label className="formItemDesc">
+                                      Status
+                                    </label>
                                   </div>
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("noanswer")}
                                     defaultValue={"Disabled"}
                                   >
@@ -1445,7 +1468,9 @@ const ExtensionsEdit = ({ page }) => {
                                   <>
                                     <div className="col-3">
                                       <div className="formLabel">
-                                        <label className="formItemDesc">Destinations</label>
+                                        <label className="formItemDesc">
+                                          Destinations
+                                        </label>
 
                                         {errors.noanswerTo ? (
                                           <ErrorMessage
@@ -1489,13 +1514,14 @@ const ExtensionsEdit = ({ page }) => {
                                   }
                                 >
                                   <div className="formLabel">
-                                    <label className="formItemDesc">Status</label>
+                                    <label className="formItemDesc">
+                                      Status
+                                    </label>
                                   </div>
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("notregistered")}
                                   >
                                     <option value={1}>Enabled</option>
@@ -1507,7 +1533,9 @@ const ExtensionsEdit = ({ page }) => {
                                 ) : (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label className="formItemDesc">Destinations</label>
+                                      <label className="formItemDesc">
+                                        Destinations
+                                      </label>
                                       {errors.notregisteredTo ? (
                                         <ErrorMessage
                                           text={errors.notregisteredTo.message}
@@ -1539,13 +1567,14 @@ const ExtensionsEdit = ({ page }) => {
                                 </div>
                                 <div className="col-6">
                                   <div className="formLabel">
-                                    <label className="formItemDesc">Status</label>
+                                    <label className="formItemDesc">
+                                      Status
+                                    </label>
                                   </div>
                                   <select
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("followme")}
                                     defaultValue={"0"}
                                   >
@@ -1553,7 +1582,8 @@ const ExtensionsEdit = ({ page }) => {
                                     <option value={"0"}>Disabled</option>
                                   </select>
                                 </div>
-                                {watch().followme === "0" || watch().followme === 0 ? (
+                                {watch().followme === "0" ||
+                                watch().followme === 0 ? (
                                   ""
                                 ) : (
                                   <div className="formRow col-xl-12 px-0 border-0">
@@ -1596,12 +1626,14 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label className="formItemDesc">Destination</label>
+                                        <label className="formItemDesc">
+                                          Destination
+                                        </label>
                                       </div>
                                       {callSetting.followMeDestinationType ? (
                                         <>
                                           {callSetting.followMeDestinationType !==
-                                            "pstn" ? (
+                                          "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={
@@ -1621,14 +1653,14 @@ const ExtensionsEdit = ({ page }) => {
                                                     required:
                                                       "This field is required",
                                                     ...(callSetting.followMeDestinationType !==
-                                                      "pstn"
+                                                    "pstn"
                                                       ? {
-                                                        minLength: {
-                                                          value: 4,
-                                                          message:
-                                                            "Must be at least 4 digits",
-                                                        },
-                                                      }
+                                                          minLength: {
+                                                            value: 4,
+                                                            message:
+                                                              "Must be at least 4 digits",
+                                                          },
+                                                        }
                                                       : {}),
                                                   }
                                                 )}
@@ -1663,14 +1695,14 @@ const ExtensionsEdit = ({ page }) => {
                                                         "Only digits are allowed",
                                                     },
                                                     ...(callSetting.followMeDestinationType ===
-                                                      "pstn"
+                                                    "pstn"
                                                       ? {
-                                                        minLength: {
-                                                          value: 10,
-                                                          message:
-                                                            "Must be at least 10 digits",
-                                                        },
-                                                      }
+                                                          minLength: {
+                                                            value: 10,
+                                                            message:
+                                                              "Must be at least 10 digits",
+                                                          },
+                                                        }
                                                       : {}),
                                                   }
                                                 )}
@@ -1699,7 +1731,7 @@ const ExtensionsEdit = ({ page }) => {
                                       ) : (
                                         <>
                                           {watch("destinationType") !==
-                                            "pstn" ? (
+                                          "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={watch(
@@ -1776,7 +1808,9 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label className="formItemDesc">Timeout</label>
+                                        <label className="formItemDesc">
+                                          Timeout
+                                        </label>
                                       </div>
                                       <select
                                         className="formItem me-0"
@@ -1791,7 +1825,6 @@ const ExtensionsEdit = ({ page }) => {
                                             ),
                                           }))
                                         }
-                                        id="selectFormRow"
                                       >
                                         {(() => {
                                           const numbers = [];
@@ -1810,7 +1843,9 @@ const ExtensionsEdit = ({ page }) => {
                                     </div>
                                     <div className="col-3 pe-2">
                                       <div className="formLabel">
-                                        <label className="formItemDesc">Prompt</label>
+                                        <label className="formItemDesc">
+                                          Prompt
+                                        </label>
                                       </div>
 
                                       <select
@@ -1823,7 +1858,6 @@ const ExtensionsEdit = ({ page }) => {
                                             followMePrompt: e.target.value,
                                           }))
                                         }
-                                        id="selectFormRow"
                                         name="prompt"
                                       >
                                         <option className="status">
@@ -1853,7 +1887,6 @@ const ExtensionsEdit = ({ page }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("dnd")}
                                     defaultValue={0}
                                   >
@@ -1873,7 +1906,6 @@ const ExtensionsEdit = ({ page }) => {
                                     className="formItem me-0"
                                     style={{ width: "100%" }}
                                     name="delay"
-                                    id="selectFormRow"
                                     {...register("callblocking")}
                                   >
                                     <option>Disabled</option>
@@ -1895,20 +1927,22 @@ const ExtensionsEdit = ({ page }) => {
                                   </label>
                                 </div>
                                 <div
-                                  className={`col-${forwardStatus != "disabled"
-                                    ? "3 pe-2 ms-auto"
-                                    : "6"
-                                    }`}
+                                  className={`col-${
+                                    forwardStatus != "disabled"
+                                      ? "3 pe-2 ms-auto"
+                                      : "6"
+                                  }`}
                                 >
                                   {forwardStatus != "disabled" && (
                                     <div className="formLabel">
-                                      <label className="formItemDesc">Type</label>
+                                      <label className="formItemDesc">
+                                        Type
+                                      </label>
                                     </div>
                                   )}
                                   <select
                                     className="formItem"
                                     name="forward"
-                                    id="selectFormRow"
                                     {...register("forward")}
                                     defaultValue={"disabled"}
                                   >
@@ -1930,7 +1964,9 @@ const ExtensionsEdit = ({ page }) => {
                                   watch("forward") !== "disabled" && (
                                     <div className="col-3">
                                       <div className="formLabel">
-                                        <label className="formItemDesc">Extension</label>
+                                        <label className="formItemDesc">
+                                          Extension
+                                        </label>
                                       </div>
                                       <ActionList
                                         category={watch().forward}
@@ -1939,8 +1975,7 @@ const ExtensionsEdit = ({ page }) => {
                                         getDropdownValue={forwardToValue}
                                         value={watch().forward_to}
                                         {...register(
-                                          "forward_to",
-                                          requiredValidator
+                                          "forward_to"
                                         )}
                                       />
                                       {errors.forward_to && (
@@ -1953,7 +1988,9 @@ const ExtensionsEdit = ({ page }) => {
                                 {watch("forward") === "pstn" && (
                                   <div className="col-3">
                                     <div className="formLabel">
-                                      <label className="formItemDesc">PSTN</label>
+                                      <label className="formItemDesc">
+                                        PSTN
+                                      </label>
                                     </div>
                                     <input
                                       type="number"

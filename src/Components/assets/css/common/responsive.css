@@ -189,6 +189,7 @@
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 15px;
+        font-size: 0.7rem;
     }
 
     .mainContentApp .tabLink {
@@ -253,6 +254,7 @@
 
     .tangoNavs .nav-tabs .nav-link {
         padding: 10px 10px;
+        font-size: 0.7rem;
     }
 
     .formItem {
@@ -348,5 +350,32 @@
         --size: 200px;
     }
 
+    .headingExtraInfo span.badge.rounded-pill {
+        font-size: 0.625rem;
+    }
 
+
+}
+
+
+
+@media (max-width: 767px){
+    .chat_menu{
+        display: block;
+    }
+    .chat_nav {
+        background: #fff;
+        position: absolute;
+        left: -1000%;
+        transition: all 0.4s ease-in-out;
+        z-index: 2;
+        opacity: 0;
+    }
+    .chat_nav.hidden {
+        left: 0;
+        opacity: 1;
+    }
+    .left_listClose{
+        display: block;
+    }
 }

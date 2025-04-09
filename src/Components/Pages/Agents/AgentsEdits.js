@@ -3,13 +3,16 @@ import Header from "../../CommonComponents/Header";
 import UsersEdit from "../Users/UsersEdit";
 import ExtensionsEdit from "../Extensions/ExtensionsEdit";
 import { useLocation } from "react-router-dom";
+import AvailableDeviceList from "../DeviceProvisioning/AvailableDeviceList";
 
 function AgentsEdits() {
- const location=useLocation();
- const [usersDetails, setUsersDetails] = useState({
-     user_id: "",
-     role_id: "",
-   });
+  const location = useLocation();
+  const [usersDetails, setUsersDetails] = useState({
+    user_id: "",
+    role_id: "",
+  });
+
+  const userData = location.state;
 
   return (
     <>
@@ -87,6 +90,18 @@ function AgentsEdits() {
                       >
                         Extension Configuration
                       </button>
+                      <button
+                        className="nav-link"
+                        id="nav-provision-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-exten-1"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-exten-1"
+                        aria-selected="false"
+                      >
+                        Device Provisioning
+                      </button>
                     </div>
                   </nav>
                   <div
@@ -105,7 +120,10 @@ function AgentsEdits() {
                       aria-labelledby="nav-user-tab"
                       tabindex="0"
                     >
-                      <UsersEdit page="marginleftAdjust" setUsersDetails={setUsersDetails }/>
+                      <UsersEdit
+                        page="marginleftAdjust"
+                        setUsersDetails={setUsersDetails}
+                      />
                     </div>
                     <div
                       className="tab-pane fade"
@@ -114,7 +132,19 @@ function AgentsEdits() {
                       aria-labelledby="nav-exten-tab"
                       tabindex="0"
                     >
-                      <ExtensionsEdit page="agents" />
+                      <ExtensionsEdit page="agents" extensionData={userData} />
+                    </div>
+                    <div
+                      className="tab-pane fade"
+                      id="nav-exten-1"
+                      role="tabpanel"
+                      aria-labelledby="nav-provision-tab"
+                      tabindex="0"
+                    >
+                      <AvailableDeviceList
+                        header={false}
+                        extensionData={userData}
+                      />
                     </div>
                   </div>
                 </div>

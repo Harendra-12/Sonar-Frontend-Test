@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 
@@ -14,6 +14,8 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useSelector, useDispatch } from "react-redux";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
 
 
 function Music() {
@@ -35,6 +37,9 @@ function Music() {
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio, setShowAudio] = useState(false);
+  const [showDropDown, setShowDropdown] = useState(false);
+  const thisAudioRef = useRef(null);
 
   // Get all previous music data
   useEffect(() => {
@@ -144,19 +149,21 @@ function Music() {
     }
   }
 
-  // function to play the music
-  const handlePlayMusic = async (id, path) => {
-    if (currentPlaying === id) {
-      setCurrentPlaying(null); // Pause if already playing
-      setAudioURL(null);
-    } else {
-      setCurrentPlaying(id); // Play selected audio
-      const url = path.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
-
-      if (res?.status && res?.url) {
-        setAudioURL(res.url);
-      }
+  // Common Function to Play Music - Use this function for everywhere
+  const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+    try {
+      setCurrentPlaying(audio);
+      const url = audio?.split(".com/").pop();
+      // const res = await generatePreSignedUrl(url);
+      // if (res?.status && res?.url) {
+      // setAudioURL(res.url); // Update audio URL state
+      // }
+      setAudioURL(audio);
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
     }
   };
 
@@ -315,7 +322,7 @@ function Music() {
                           ) : (
                             <>
                               {music &&
-                                music.map((item) => {
+                                music.map((item, index) => {
                                   const isCurrent = currentPlaying === item.id; // Use item.id as a unique identifier
 
                                   return (
@@ -326,20 +333,65 @@ function Music() {
                                         <td>{item.created_at.split("T")[0]}</td>
                                         <td>
                                           <button
-                                            className="tableButton play"
-                                            onClick={() =>
-                                              handlePlayMusic(
-                                                item.id,
-                                                item.path
-                                              )
-                                            }
+                                            className="tableButton px-2 mx-0"
+                                            onClick={() => {
+                                              if (item.path === currentPlaying) {
+                                                setCurrentPlaying("");
+                                                setAudioURL("");
+                                              } else {
+                                                handlePlaying(item.path);
+                                              }
+                                            }}
                                           >
-                                            {isCurrent ? (
-                                              <i className="fa-solid fa-stop"></i>
+                                            {currentPlaying ===
+                                              item.path ? (
+                                              <i className="fa-solid fa-chevron-up"></i>
                                             ) : (
-                                              <i className="fa-solid fa-play"></i>
+                                              <i className="fa-solid fa-chevron-down"></i>
                                             )}
                                           </button>
+                                          {/* {showDropDown && isCurrent && (
+                                            <ul className="dropdown-menu d-block  actionBtnDropdowns" key={index} >
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div
+                                                    className="clearButton text-align-start"
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      if (isCurrent) {
+                                                        setShowDropdown(false);
+                                                        setShowAudio(true);
+                                                        handlePlayMusic(
+                                                          item.id,
+                                                          item.path
+                                                        )
+                                                      }
+                                                    }}
+                                                  >
+                                                    <i
+                                                      className={`fa-solid fa-${item?.recording_path !== null ? "play" : "triangle-exclamation"
+                                                        } me-2`}
+                                                    ></i>
+                                                    Play
+                                                  </div>
+                                                </li>
+                                                <li className="dropdown-item">
+                                                  <div className="clearButton text-align-start">
+                                                    <i className="fa-solid fa-bolt me-2"></i>
+                                                    Transcript
+                                                  </div>
+                                                </li>
+                                              </>
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div className="clearButton text-align-start">
+                                                    <i className="fa-regular fa-download"></i> Download
+                                                  </div>
+                                                </li>
+                                              </>
+                                              <li className="dropdown-item"></li>
+                                            </ul>
+                                          )} */}
                                         </td>
                                         <td>
                                           <button
@@ -366,11 +418,12 @@ function Music() {
                                           </button>
                                         </td>
                                       </tr>
-                                      {isCurrent && (
+                                      {/* {isCurrent && (
                                         <tr>
                                           <td colSpan={99}>
                                             <div className="audio-container mx-2">
-                                              <audio
+                                              <AudioWaveformCommon audioUrl={audioURL} />
+                                              {/* <audio
                                                 controls
                                                 autoPlay
                                                 onPlay={() =>
@@ -388,8 +441,8 @@ function Music() {
                                                   src={audioURL}
                                                   type="audio/mpeg"
                                                 />
-                                              </audio>
-                                              {/* <button
+                                              </audio> */}
+                                      {/* <button
                                               className="audioCustomButton"
                                               onClick={() => {
                                                 const link =
@@ -404,10 +457,21 @@ function Music() {
                                             >
                                               <i className="fa-sharp fa-solid fa-download"></i>
                                             </button> */}
-                                            </div>
+                                      {/* </div>
                                           </td>
                                         </tr>
-                                      )}
+                                      )} */}
+                                      {currentPlaying ===
+                                        item.path &&
+                                        item.path && (
+                                          <tr>
+                                            <td colSpan={99}>
+                                              <div className="audio-container mx-2">
+                                                <AudioWaveformCommon audioUrl={audioURL} />
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        )}
                                     </React.Fragment>
                                   );
                                 })}

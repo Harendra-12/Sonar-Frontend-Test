@@ -9,6 +9,8 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
+import DropdownForAudio from "../../DropdownForAudio";
 
 
 function VoiceMailReport() {
@@ -22,26 +24,32 @@ function VoiceMailReport() {
   const [searchValue, setSearchValue] = useState("");
   const [rowPerPage, setRowPerPage] = useState(20);
   const [audioURL, setAudioURL] = useState("");
+  const [showAudio, setShowAudio] = useState(false)
+  const [showDropDown, setShowDropdown] = useState(false)
 
   const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+
     try {
       setCurrentPlaying(audio);
       const url = audio.split(".com/").pop();
-      const res = await generatePreSignedUrl(url);
+      // const res = await generatePreSignedUrl(url);
 
-      if (res?.status && res?.url) {
-        setAudioURL(res.url); // Update audio URL state
-
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
-      }
+      // if (res?.status && res?.url) {
+      setAudioURL(audio); // Update audio URL state
+      // setAudioURL(res.url);
+      // Wait for React state update before accessing ref
+      setTimeout(() => {
+        if (thisAudioRef.current) {
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
+        }
+      }, 100); // Reduced timeout to minimize delay
+      // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
     }
@@ -87,9 +95,10 @@ function VoiceMailReport() {
                     <div className="heading">
                       <div className="content">
                         <h4>Voicemail Reports</h4>
-                        <p>Here are all the Voicemail Reports</p>
+                        <p>Here are all the Voicemail Reportsss</p>
                       </div>
                       <div className="buttonGroup">
+
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -178,33 +187,42 @@ function VoiceMailReport() {
                                       className="tableButton px-2 mx-0"
                                       onClick={() => {
                                         if (
-                                          currentPlaying ==
-                                          item["recording_path"]
+                                          item[
+                                          "recording_path"
+                                          ] ===
+                                          currentPlaying
                                         ) {
-                                          setCurrentPlaying(null);
+                                          setCurrentPlaying(
+                                            ""
+                                          );
+                                          setAudioURL("");
                                         } else {
-                                          handlePlaying(item["recording_path"]);
+                                          handlePlaying(
+                                            item[
+                                            "recording_path"
+                                            ]
+                                          );
                                         }
                                       }}
                                     >
-                                      <i
-                                        className={`fa-duotone fa-${
-                                          currentPlaying ==
-                                          item["recording_path"]
-                                            ? "stop"
-                                            : "play"
-                                        }`}
-                                      ></i>
+                                      {currentPlaying ===
+                                        item[
+                                        "recording_path"
+                                        ] ? (
+                                        <i className="fa-solid fa-chevron-up"></i>
+                                      ) : (
+                                        <i className="fa-solid fa-chevron-down"></i>
+                                      )}
                                     </button>
                                   </td>
                                   <td>{item.duration}</td>
                                   <td>{extractDate(item.created_at)}</td>
                                 </tr>
-                                {currentPlaying == item["recording_path"] && (
+                                {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
-                                        <audio
+                                        {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}
                                           autoPlay={true}
@@ -216,7 +234,8 @@ function VoiceMailReport() {
                                             src={audioURL}
                                             type="audio/mpeg"
                                           />
-                                        </audio>
+                                        </audio> */}
+                                {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -224,7 +243,18 @@ function VoiceMailReport() {
                                       </div>
                                     </td>
                                   </tr>
-                                )}
+                                )} */}
+                                {currentPlaying ===
+                                  item["recording_path"] &&
+                                  item["recording_path"] && (
+                                    <tr>
+                                      <td colSpan={99}>
+                                        <div className="audio-container mx-2">
+                                          <AudioWaveformCommon audioUrl={audioURL} />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
                               </>
                             );
                           })}

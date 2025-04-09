@@ -274,11 +274,19 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: 2px solid #fff;
+    border: 2px solid var(--ele-color);
 }
 
-.avatar-container i:not(:first-child) {
+.avatar-container>*:not(:first-child) {
     margin-left: -13px;
+}
+
+.avatar-container img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #fff;
 }
 
 .avatar-container span {

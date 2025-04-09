@@ -24,7 +24,7 @@ function CallRecording() {
                                             </div>
                                             <div className="buttonGroup">
                                                 <button
-                                                    onClick={() => { navigate('-1'); backToTop() }}
+                                                    onClick={() => { navigate(-1); backToTop() }}
                                                     type="button"
                                                     effect="ripple"
                                                     className="panelButton gray"

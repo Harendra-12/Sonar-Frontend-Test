@@ -37,7 +37,7 @@ const Users = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [refreshData, setRefreshData] = useState(0);
-  const [onlineFilter,setonlineFilter]=useState("all")
+  const [onlineFilter, setonlineFilter] = useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
   // Setting up online users to display when user is logged in
   useEffect(() => {
@@ -63,7 +63,7 @@ const Users = () => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter==="online"?"&online":""}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -225,7 +225,7 @@ const Users = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {  checkViewSidebar("User", slugPermissions, account?.permissions,"add")? (
+                        {checkViewSidebar("User", slugPermissions, account?.permissions, "add") ? (
                           <Link
                             // to="/users-add"
                             // onClick={backToTop}
@@ -294,24 +294,26 @@ const Users = () => {
                             {/* <th>Account ID</th> */}
                             <th>Role</th>
                             <th>Usage</th>
-                            <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                            <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
                               <option value="all" disabled>Status</option>
                               <option value="online">Online</option>
-                              </select></th>
-                            {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<th>Edit</th>}
-                            <th>Status <span>
-                            
-                              </span></th>
+                              <option value="offline">Offline</option>
+                              <option value="all">All</option>
+                            </select></th>
+                            {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                            <th>Activation <span>
+
+                            </span></th>
                             <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody className="">
-                          {noPermissionToRead &&   checkViewSidebar(
+                          {noPermissionToRead && checkViewSidebar(
                             "User",
                             slugPermissions,
                             account?.permissions,
                             "read"
-                          )? (
+                          ) ? (
                             // <div className="">
                             <tr>
                               <td></td>
@@ -322,29 +324,41 @@ const Users = () => {
                               <td></td>
                             </tr>
                           ) : // </div>
-                          loading ? (
-                            <SkeletonTableLoader col={8} row={15} />
-                          ) : (
-                            <>
-                              {user &&
-                                filterUser?.map((item, index) => {
-                                  const isCustomerAdmin =
-                                    account.email === item.email;
+                            loading ? (
+                              <SkeletonTableLoader col={8} row={15} />
+                            ) : (
+                              <>
+                                {user &&
+                                  filterUser?.map((item, index) => {
+                                    const isCustomerAdmin =
+                                      account.email === item.email;
 
-                                  // Skip rendering the row if isCustomerAdmin is true
-                                  if (isCustomerAdmin) {
-                                    return null; // Return null to avoid rendering the row
-                                  }
+                                    // Skip rendering the row if isCustomerAdmin is true
+                                    // if (isCustomerAdmin) {
+                                    //   return null; // Return null to avoid rendering the row
+                                    // }
 
-                                  return (
-                                    <tr key={index}>
-                                      <td>
-                                        {item.username}
-                                      </td>
-                                      <td>
-                                        {item.extension?.extension || "N/A"}
-                                      </td>
-                                      {/* <td
+                                    return (
+                                      <tr key={index}>
+                                        <td>
+                                          <div className="d-flex align-items-center">
+                                            <div className="tableProfilePicHolder">
+                                              {item.profile_picture ? (
+                                                <img
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                />
+                                              ) : (
+                                                <i className="fa-light fa-user" />
+                                              )}
+                                            </div>
+                                            <div className="ms-2">{item.username}</div>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          {item.extension?.extension || "N/A"}
+                                        </td>
+                                        {/* <td
                                           onClick={() =>
                                             navigate(`/users-edit`, {
                                               state: item,
@@ -353,78 +367,78 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                      <td>
-                                        {item?.user_role?.roles?.name}
-                                      </td>
-                                      <td
-                                        onClick={() =>
-                                          navigate(`/users-config`, {
-                                            state: item,
-                                          })
-                                        }
-                                      >
-                                        {item?.usages}
-                                      </td>
-                                      <td >
-                                        <span
-                                          className={
-                                            onlineUser.includes(item.id)
-                                              ? "extensionStatus online"
-                                              : "extensionStatus"
-                                          }
-                                        ></span>
-                                      </td>
-                                      {  checkViewSidebar("User", slugPermissions, account?.permissions,"edit")&&<td>
-                                        <button
-                                          className="tableButton edit"
+                                        <td>
+                                          {item?.user_role?.roles?.name}
+                                        </td>
+                                        <td
                                           onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
                                             })
                                           }
                                         >
-                                          <i className="fa-solid fa-pencil"></i>
-                                        </button>
-                                      </td>}
-                                      <td
-                                      // onClick={() =>
-                                      //   handleStatusChange(item.id, item.status)
-                                      // }
-                                      >
-                                        {/* {item.status === "E"
+                                          {item?.usages}
+                                        </td>
+                                        <td >
+                                          <span
+                                            className={
+                                              onlineUser.includes(item.id)
+                                                ? "extensionStatus online"
+                                                : "extensionStatus"
+                                            }
+                                          ></span>
+                                        </td>
+                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <td>
+                                          <button
+                                            className="tableButton edit"
+                                            onClick={() =>
+                                              navigate(`/users-config`, {
+                                                state: item,
+                                              })
+                                            }
+                                          >
+                                            <i className="fa-solid fa-pencil"></i>
+                                          </button>
+                                        </td>}
+                                        <td
+                                        // onClick={() =>
+                                        //   handleStatusChange(item.id, item.status)
+                                        // }
+                                        >
+                                          {/* {item.status === "E"
                                             ? "Enabled"
                                             : "Disabled"} */}
-                                        <div className="my-auto position-relative mx-1">
-                                          <label className="switch">
-                                            <input
-                                              type="checkbox"
-                                              checked={item.status === "E"}
-                                              onClick={(e) => {
-                                                setSelectedUser(item);
-                                                setPopUp(true);
-                                              }}
-                                              id="showAllCheck"
-                                            />
-                                            <span className="slider round" />
-                                          </label>
-                                        </div>
-                                      </td>
-                                      {  checkViewSidebar("User", slugPermissions, account?.permissions,"delete")&&<td>
-                                        <button
-                                          className="tableButton delete"
-                                          onClick={() => {
-                                            setPopUp(true);
-                                            setDeleteId(item.id);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-trash" />
-                                        </button>
-                                      </td>}
-                                    </tr>
-                                  );
-                                })}
-                            </>
-                          )}
+                                          <div className="my-auto position-relative mx-1">
+                                            <label className="switch">
+                                              <input
+                                                type="checkbox"
+                                                checked={item.status === "E"}
+                                                onClick={(e) => {
+                                                  setSelectedUser(item);
+                                                  setPopUp(true);
+                                                }}
+                                                id="showAllCheck"
+                                              />
+                                              <span className="slider round" />
+                                            </label>
+                                          </div>
+                                        </td>
+                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td>
+                                          <button
+                                            className="tableButton delete"
+                                            onClick={() => {
+                                              setPopUp(true);
+                                              setDeleteId(item.id);
+                                            }}
+                                          >
+                                            <i className="fa-solid fa-trash" />
+                                          </button>
+                                        </td>}
+                                      </tr>
+                                    );
+                                  })}
+                              </>
+                            )}
 
                           {user && user.length === 0 ? (
                             <td colSpan={99}>
@@ -442,8 +456,8 @@ const Users = () => {
                           pageNumber={(e) => setPageNumber(e)}
                           totalPage={user.last_page}
                           from={(pageNumber - 1) * user.per_page + 1}
-                          to={user.to - 1} // -1 because customeradmin user is removed form the list
-                          total={user.total - 1} // -1 because customeradmin user is removed form the list
+                          to={user.to}
+                          total={user.total}
                         />
                       ) : (
                         ""
@@ -475,10 +489,9 @@ const Users = () => {
                     {error
                       ? error
                       : selectedUser?.id
-                      ? `Are you sure you want to ${
-                          selectedUser?.status === "E" ? "disable" : "enable"
+                        ? `Are you sure you want to ${selectedUser?.status === "E" ? "disable" : "enable"
                         } ${selectedUser?.username}?`
-                      : ""}
+                        : ""}
                   </p>
                   <div className="d-flex justify-content-between">
                     <button

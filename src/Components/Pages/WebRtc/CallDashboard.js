@@ -18,7 +18,7 @@ function CallDashboard() {
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const [isParkedCallsOpen, setIsParkedCallsOpen] = useState(false);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const { sessionManager } = useSIPProvider();
 
 
@@ -134,12 +134,13 @@ function CallDashboard() {
                         >
                           <div className="profileHolder" id="profileOnlineNav">
                             <img
-                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
+                              src={account?.profile_picture}
                               alt="profile"
+                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
                           </div>
                           <div className="profileName">
-                            {account.username}{" "}
+                            {account?.username}{" "}
                             <span className="status">Available</span>
                           </div>
                         </div>
@@ -160,14 +161,14 @@ function CallDashboard() {
                               Logout
                             </div>
                           </li>
-                          <li onClick={() => navigate("/my-profile")}>
+                          {/* <li onClick={() => navigate("/my-profile")}>
                             <div
                               className="dropdown-item"
                               style={{ cursor: "pointer" }}
                             >
                               Profile
                             </div>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -253,7 +254,7 @@ function CallDashboard() {
               </div> */}
               <ActiveCallsPage isParentWebRtc={true} />
               <div className="callDashParkedCalls" style={{ transform: isParkedCallsOpen ? 'translate(0, -50%)' : 'translate(97%, -50%)' }}>
-                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)}>
+                <button onClick={() => setIsParkedCallsOpen(!isParkedCallsOpen)} className="callDashParkedCallsBtn">
                   <i className={`fa-solid fa-chevron-${isParkedCallsOpen ? "right" : "left"}`} />
                 </button>
                 <div className="overviewTableWrapper p-0">

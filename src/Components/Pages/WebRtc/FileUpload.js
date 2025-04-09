@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import axios from 'axios';
-
-const token = localStorage.getItem("token");
+import { fileUploadFunction } from '../../GlobalFunction/globalFunction';
 function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile, setCircularLoading}) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -57,24 +55,14 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             const formData = new FormData();
             formData.append('sharedMessage', selectedFile);
             
-            const res = await axios.post(
-                'https://testing.webvio.in/backend/api/upload-file',
-                formData,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'multipart/form-data',
-                        'Accept': 'application/json'
-                    }
-                }
-            );
-            
+            const res = await fileUploadFunction("/upload-file", formData);
+            // console.log({res})
             if (res?.status) {
                 toast.success("File uploaded successfully");
-                setSelectedUrl(res?.data?.file_url);
+                setSelectedUrl(res?.file_url);
                 setFileUpload(null)
             } else {
-                toast.error(res?.data?.errors?.sharedMessage?.[0] || "Upload failed");
+                toast.error(res?.errors?.sharedMessage?.[0] || "Upload failed");
             }
         } catch (error) {
             console.error("Error uploading file:", error);

@@ -18,6 +18,10 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     const [allUser, setAllUser] = useState([]);
     const [userId, setUserId] = useState("");
     const slugPermissions = useSelector((state) => state?.permissions);
+    const [usages, setUsages] = useState("")
+    const [selecetdUsages, setSelecetdUsages] = useState("");
+    const [allGroups, setAllGroups] = useState([])
+    const [allRoles, setAllRoles] = useState([])
     // const [selectedUser,setSelecteduser]=useState("")
 
     // Handel fetaure change
@@ -34,17 +38,24 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
     // fetching api to get all user data
     useEffect(() => {
         async function getAllUser() {
-            try {
-                const res = await generalGetFunction("/agents?usages=pbx&allagents");
+            const res = await generalGetFunction("/agents?usages=pbx&allagents");
+            const groupData = await generalGetFunction("/groups/all")
+            const roleData = await generalGetFunction("/role/all")
+            if (res.status) {
                 const data = res.data.map((item) => ({
                     name: item.name,
                     id: item.id,
                 }));
                 setAllUser(data);
                 setUserId(selectedModule?.user_id)
-            } catch (error) {
-                console.error("Error fetching agents:", error);
             }
+            if (groupData.status) {
+                setAllGroups(groupData.data)
+            }
+            if (roleData.status) {
+                setAllRoles(roleData.data)
+            }
+
         }
         getAllUser()
     }, [])
@@ -85,7 +96,10 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
         function getData() {
             if (selectedModule) {
                 setFeature([]);
-                setCustomType(selectedModule?.model_type); setCustomId(selectedModule?.model?.id); setAddNewMod(false); setName(selectedModule?.name); if (selectedModule.missed) {
+                setCustomType(selectedModule?.model_type); setCustomId(selectedModule?.model?.id); setAddNewMod(false);
+                 setName(selectedModule?.name);
+                 setUsages(selectedModule?.usage_type); setSelecetdUsages(selectedModule?.usage_type==="group"?selectedModule?.group_id :selectedModule?.role_id);
+                 if (selectedModule.missed) {
                     setFeature((prev) => {
                         return [...prev, "missed"]
                     })
@@ -118,12 +132,20 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             toast.error("Please enter a name")
             return
         }
+        if (usages !== "" && selecetdUsages === "") {
+            toast.error("Please select group or role")
+            return
+        }
         if (customId === "") {
             toast.error("Please select a custom module")
             return
         }
+        if (feature.length === 0) {
+            toast.error("Please select at least one feature")
+            return
+        }
         setLoading(true)
-        const apiData = await generalPostFunction("usage/store", { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPostFunction("/usage/store", { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed"), usage_type: usages, group_id: usages === "group" ? selecetdUsages : "", role_id: usages === "role" ? selecetdUsages : "" })
         if (apiData.status) {
             toast.success("Successfully created new custom filter")
             setLoading(false)
@@ -141,8 +163,20 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
             toast.error("Please enter a name")
             return
         }
+        if (usages !== "" && selecetdUsages === "") {
+            toast.error("Please select group or role")
+            return
+        }
+        if (customId === "") {
+            toast.error("Please select a custom module")
+            return
+        }
+        if (feature.length === 0) {
+            toast.error("Please select at least one feature")
+            return
+        }
         setLoading(true)
-        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed") })
+        const apiData = await generalPutFunction(`/usage/${selectedModule?.id}`, { model_type: customType, model_id: customId, user_id: userId, name: name, active: feature.includes("active"), ringing: feature.includes("ringing"), total: feature.includes("total"), missed: feature.includes("missed"), usage_type: usages, group_id: usages === "group" ? selecetdUsages : "", role_id: usages === "role" ? selecetdUsages : ""  })
         if (apiData.status) {
             toast.success(apiData.message)
             setLoading(false)
@@ -246,30 +280,60 @@ function CustomDashboardManage({ addNewMod, selectedModule, setRefresh, refresh,
                                                     </div>
                                                     <div className="formRow">
                                                         <div className="formLabel">
-                                                            <label className="text-dark">Select User</label>
+                                                            <label className="text-dark">Select Usages</label>
                                                             <label htmlFor="data" className="formItemDesc">
-                                                                Please select the user for which you want to
+                                                                Please select the usages for which you want to
                                                                 enable the module.
                                                             </label>
                                                         </div>
-                                                        <div className="col-6">
-                                                            <select
-                                                                className="formItem"
-                                                                value={userId}
-                                                                onChange={(e) => {
-                                                                    // const selectedUserObject = allUser.find(user => user.id == e.target.value);
-                                                                    // const selectedName = selectedUserObject ? selectedUserObject.name : '';
-                                                                    // setSelecteduser(selectedName);
-                                                                    return setUserId(e.target.value);
-                                                                }}
-                                                            >
-                                                                <option>Select User</option>
-                                                                {allUser.map((item) => (
-                                                                    <option key={item.id} value={item.id}>
-                                                                        {item.name}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
+                                                        <div className='col-6'>
+                                                            <div className='row'>
+                                                                <div className={`col-${usages === "" ? 12 : 6}`}>
+                                                                    <select
+                                                                        className="formItem"
+                                                                        value={usages}
+                                                                        onChange={(e) => setUsages(e.target.value)}
+                                                                    >
+                                                                        <option value="">Select Usages</option>
+                                                                        <option value="group">Group</option>
+                                                                        <option value="role">Role</option>
+                                                                    </select>
+                                                                </div>
+                                                                {
+                                                                    usages !== "" &&
+                                                                    <div className="col-6">
+                                                                        <select
+                                                                            className="formItem"
+                                                                            value={selecetdUsages}
+                                                                            onChange={(e) => {
+                                                                                setSelecetdUsages(e.target.value);
+                                                                            }}
+                                                                        >
+                                                                            <option>Select {usages}</option>
+                                                                            {
+                                                                                usages === "group" ?
+                                                                                    <>
+                                                                                        {
+                                                                                            allGroups?.map((item, key) => {
+                                                                                                return (
+                                                                                                    <option key={key} value={item.id}>{item.group_name}</option>
+                                                                                                )
+                                                                                            })
+                                                                                        }
+                                                                                    </> : <>
+                                                                                        {
+                                                                                            allRoles?.map((item, key) => {
+                                                                                                return (
+                                                                                                    <option key={key} value={item.id}>{item.name}</option>
+                                                                                                )
+                                                                                            })
+                                                                                        }
+                                                                                    </>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="formRow">

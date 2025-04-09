@@ -150,6 +150,29 @@ import BuyerAdd from "./Components/Pages/CallTracker/BuyerAdd";
 import Source from "./Components/Pages/Source/Source";
 import SourceEdit from "./Components/Pages/Source/SourceEdit";
 import SourceAdd from "./Components/Pages/Source/SourceAdd";
+import AgentDashboard from "./Components/Pages/AgentDashboard/AgentDashboard";
+import MetaConfig from "./Components/Pages/ThirdPartyApps/Meta/MetaConfig";
+import MicrosoftTeamsConfig from "./Components/Pages/ThirdPartyApps/MicrosoftTeams/MicrosoftTeamsConfig";
+import WhatsAppConfig from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfig";
+import AllThirdPartyConfig from "./Components/Pages/ThirdPartyApps/AllThirdPartyConfig";
+import MetaConfigEdit from "./Components/Pages/ThirdPartyApps/Meta/MetaConfigEdit";
+import WhatsAppConfigEdit from "./Components/Pages/ThirdPartyApps/WhatsApp/WhatsAppConfigEdit";
+import AllAiAgent from "./Components/Pages/AIAgentConfig/AllAiAgent";
+import AIAgentAdd from "./Components/Pages/AIAgentConfig/AIAgentAdd";
+import AIAgentEdit from "./Components/Pages/AIAgentConfig/AIAgentEdit";
+import AllAddons from "./Components/Pages/ThirdPartyApps/AllAddons";
+import LiveChat from "./Components/Pages/Support/LiveChat";
+import WhatsAppChatBox from "./Components/Pages/WebRtc/whatsappChatbox/WhatsAppChatBox";
+import DialerCdrReport from "./Components/Pages/DialerModule/DialerCdrReport";
+import AllAvailableAddons from "./Components/Pages/ThirdPartyApps/AllAvailableAddons";
+import RateCardView from "./Components/Pages/RateCard/RateCardView";
+import PermissionConfigForUser from "./Components/CommonComponents/PermissionConfigForUser";
+import Reactflow from "./Components/Pages/ReactFlow/Reactflow";
+import GroupsList from "./Components/Pages/Groups/GroupsList";
+import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
+import SmsChat from "./Components/Pages/WebRtc/SmsChat";
+import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
+import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -173,6 +196,7 @@ const DispatchSetter = () => {
 };
 
 function App() {
+  const adminLogout = useSelector((state) => state?.adminLogout);
   // const dispatch = useDispatch();
   // const domainRefresh = useSelector((state) => state.domainRefresh);
   const account = useSelector((state) => state?.account);
@@ -197,10 +221,16 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
+  console.log(adminLogout, "Hey");
+
   return (
     <>
+
       <GoogleTranslate />
       <Router>
+        {
+          adminLogout && <AdminLogoutPopUp />
+        }
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -208,13 +238,12 @@ function App() {
 
         <Routes>
           <Route path="/click-to-call" element={<ClickToCall />} />
-
+          <Route path="/call-flow" element={<Reactflow />} />
           <Route path="/" element={<Login />} />
           <Route path="/conference" element={<ConferenceJoin />} />
           <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
-          <Route path="/campaign-edit" element={<CampaignEdit />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -245,6 +274,11 @@ function App() {
           <Route path="/custom-module" element={checkViewSidebar("Usage", slugPermissions, account?.permissions) ? (<CustomModule />) : (
             <Navigate to="/dashboard" replace />
           )} />
+          {/* Groups path start */}
+          <Route path="/groups" element={<GroupsList />} />
+          <Route path="/groups-add" element={<AddGroupsList />} />
+          <Route path="/groups-edit" element={<EditGroupsList />} />
+          {/* <Route path="/groups" element={<GroupsList/>}/> */}
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
@@ -308,6 +342,21 @@ function App() {
           />
           <Route
             path="/users-add"
+            element={
+              checkViewSidebar(
+                "User",
+                slugPermissions,
+                account?.permissions,
+                "add"
+              ) ? (
+                <UsersAdd />
+              ) : (
+                <Navigate to="/dashboard" replace />
+              )
+            }
+          />
+          <Route
+            path="/agents-pbx-add"
             element={
               checkViewSidebar(
                 "User",
@@ -396,18 +445,23 @@ function App() {
           <Route path="/agents-edit-dialer" element={<AgentsEdits />} />
           <Route path="/agents-add" element={<AgentsAdd />} />
           <Route path="/meeting-reports" element={<MeetingReports />} />
+          <Route path="/agent-dashboard" element={<AgentDashboard />} />
           {/*Agents path */}
 
-          {/*Addon path */}
+          {/* Rate Card Path */}
+          <Route path="/rate-card" element={<RateCardView />} />
+          <Route path="/global-permission-config" element={<PermissionConfigForUser />} />
+          {/* Rate Card Path */}
+
+          {/*Store path */}
           <Route path="/add-ons" element={<AddOns />} />
-          <Route path="/store-extension" element={<ExtensionStore />} />
+          {/*Store path */}
 
           {/*CallDashboardProvider */}
           <Route
             path="/call-dashboard-provider"
             element={<CallDashboardProvider />}
           />
-          {/* <Route path="/store-extension" element={<Extension />} /> */}
 
           {/* Settings Path */}
           <Route path="/fax-settings" element={<FaxSettings />} />
@@ -440,6 +494,9 @@ function App() {
           {/* WebRtc path start */}
           <Route path="/webrtc" element={<WebrtcWrapper />} />
           <Route path="/message" element={<Messages />} />
+          <Route path="/whatsapp-chatbox" element={<WhatsAppChatBox />} />
+          <Route path="/sms-chat" element={<SmsChat />} />
+
           {/* <Route path="/call" element={<CallPage />} />
           <Route path="/all-contacts" element={<AllContactPage />} />
           <Route path="/call-center" element={<CallCenterPage />} />
@@ -468,6 +525,7 @@ function App() {
             element={<CdrFilterReport page="billing" />}
           />
           <Route path="/efax" element={<EFax />} />
+
           {/*<Route path="/call-dashboard" element={<CallDashboardPage />} /> */}
           {/* <Route path="/video-call" element={<VideoCall />} />
           <Route path="/conference-call" element={<ConferenceCall />} /> */}
@@ -490,7 +548,7 @@ function App() {
           <Route path="/add-vendor" element={<AddVendors />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/edit-vendor" element={<EditVendor />} />
-          <Route path="/rate-card" element={<RateCharge />} />
+          {/* <Route path="/rate-card" element={<RateCharge />} /> */}
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
@@ -777,10 +835,8 @@ function App() {
 
           {/* Dialer Modules */}
 
-          {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
           <Route path="/call-desposition" element={<CallDesposition />} />
-          {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />
@@ -790,7 +846,7 @@ function App() {
 
           {/* ------ Support  */}
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          {/* <Route path="/ticket" element={<Ticket />} /> */}
+          <Route path="/live-chat" element={<LiveChat />} />
           <Route path="/ticket" element={<Ticket />} />
           <Route path="/view-massage" element={<ViewMessages />} />
 
@@ -800,6 +856,8 @@ function App() {
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
+          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}
@@ -813,10 +871,34 @@ function App() {
           <Route path="/buyer-add" element={<BuyerAdd />} />
           {/* ------ Call Tracker */}
 
+
+          {/* ----------- Third Party Addons */}
+          <Route path="/all-third-party-apps" element={<AllThirdPartyConfig />} />
+          <Route path="/all-addons" element={<AllAddons />} />
+          <Route path="/all-available-addons" element={<AllAvailableAddons />} />
+          <Route path="/meta-config" element={<MetaConfig />} />
+          <Route path="/meta-config-edit" element={<MetaConfigEdit />} />
+
+          <Route path="/whatsapp-config" element={<WhatsAppConfig />} />
+          <Route path="/whatsapp-config-edit" element={<WhatsAppConfigEdit />} />
+
+          <Route path="/teams-config" element={<MicrosoftTeamsConfig />} />
+
+          {/* ----------- Third Party Addons */}
+
+          {/* AI Routes */}
+          <Route path="/all-ai-agent" element={<AllAiAgent />} />
+          <Route path="/ai-agent-add" element={<AIAgentAdd />} />
+          <Route path="/ai-agent-edit" element={<AIAgentEdit />} />
+          {/* AI Routes */}
+
+
+
+
           {/* ---------------- source */}
-            <Route  path="source" element={<Source />} />
-            <Route  path="source-edit" element={<SourceEdit />} />
-            <Route  path="source-add" element={<SourceAdd />} />
+          <Route path="source" element={<Source />} />
+          <Route path="source-edit" element={<SourceEdit />} />
+          <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
 
           {/* ------ Reports */}
@@ -844,6 +926,7 @@ function App() {
           theme="dark"
         />
       </Router>
+
     </>
   );
 }

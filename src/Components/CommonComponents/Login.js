@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
+  generalGetFunctionWithToken,
+  generalPostFunctionWithToken,
   login,
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
@@ -79,20 +80,31 @@ export default Login;
 export function LoginComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [popUp, setPopUp] = useState(false)
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
-
+  const [logOutToken, setLogOutToken] = useState("")
+  
   // Handle login function
   async function handleLogin() {
+    // Reseting State before Loggin In
+    dispatch({ type: "RESET_STATE" });
+    localStorage.clear();
+
     const data = await login(userName, password);
     if (data) {
       if (data.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -133,6 +145,7 @@ export function LoginComponent() {
               window.scrollTo(0, 0);
               navigate("/temporary-dashboard");
             } else {
+
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
@@ -159,7 +172,7 @@ export function LoginComponent() {
           }
         } else {
           setLoading(false);
-          toast.error("unauthorized access!");
+          // toast.error("unauthorized access!");
         }
       } else {
         setLoading(false);
@@ -169,24 +182,52 @@ export function LoginComponent() {
     }
   }
 
+  // function to handle time
+  function formatTimeWithAMPM(timeString) {
+    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      return "Invalid time format";
+    }
+
+    let period = 'AM';
+    let formattedHours = hours;
+
+    if (hours >= 12) {
+      period = 'PM';
+      if (hours > 12) {
+        formattedHours -= 12;
+      }
+    }
+
+    if (formattedHours === 0) {
+      formattedHours = 12; // Midnight is 12 AM
+    }
+
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
+  }
+
+
+
   // function to logout from specific device
   async function handleLogoutFromSpecificDevice(token) {
     try {
-      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log(logOut)
-      if (logOut?.data?.status) {
-        toast.success(logOut?.data?.message)
-        setLoading(true);
-        setLoginDetails(logOut?.data?.data)
+      setLoading(true);
+      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token },token);
+      // console.log({logOut})
+      if (logOut?.status) {
+        toast.success(logOut?.message)
+        setLoading(false);
+        setLoginDetails(logOut?.data)
         setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
-      toast.error(error?.response?.data?.message)
+      setLoading(false)
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -197,11 +238,21 @@ export function LoginComponent() {
     } else if (password === "") {
       toast.error("Password is required!");
     } else {
+      // Reseting State before Loggin In
+      dispatch({ type: "RESET_STATE" });
+      localStorage.clear();
+
       setLoading(true);
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -221,6 +272,8 @@ export function LoginComponent() {
               "accountDetails",
               JSON.stringify(accountData.data)
             );
+
+            // Checking if the user is a temporary user or not
             if (Number(accountData.data.company_status) < 6) {
               dispatch({
                 type: "SET_BILLINGLISTREFRESH",
@@ -268,7 +321,7 @@ export function LoginComponent() {
           }
         } else {
           setLoading(false);
-          toast.error("unauthorized access!");
+          // toast.error("unauthorized access!");
         }
 
 
@@ -277,6 +330,7 @@ export function LoginComponent() {
         toast.error(checkLogin?.response?.data?.message)
       } else {
         setLoading(false)
+        setLogOutToken(checkLogin?.response?.data?.data[0].token)
         setPopUp(true)
         setLoginDetails(checkLogin?.response?.data?.data)
         setLogInText("You are already login on different device!")
@@ -307,14 +361,21 @@ export function LoginComponent() {
 
   // Handle logout from all device and then login in current device
   async function handleLogoutAll() {
-    setLoading(true)
-    setPopUp(false)
-    const logoutAll = await generalGetFunction("logout?all")
-    if (logoutAll.status) {
-      handleLogin()
-    } else {
-      setLoading(false)
-      toast.error(logoutAll.message)
+    setLoading(true);
+    setPopUp(false);
+    try {
+      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`,logOutToken);
+      console.log({logoutAll})
+      if (logoutAll.status) {
+        handleLogin();
+      } else {
+        setLoading(false);
+        toast.error(logoutAll.message || "Logout failed");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Logout all error:", error);
+      toast.error(error.response?.message || error.message || "An unexpected error occurred");
     }
   }
   return (
@@ -372,64 +433,97 @@ export function LoginComponent() {
       </form>
       {popUp ? (
         <>
-          <div className="addNewContactPopup">
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-solid fa-triangle-exclamation"></i>
-                <h5>Warning!</h5>
+          {/* Log out of multiple devices */}
+          <div className="backdropContact">
+            <div className="addNewContactPopup position-relative logoutPopup">
+              <button className="popup_close" onClick={() => {
+                setPopUp(false);
+              }}>
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <div className=" position-relative">
+                <img className="w-100 " src={require('../assets/images/login-cruve2.png')} />
+                {/* <div className="warning_img">
+                <img className=" " src={require('../assets/images/crisis.png')} />
+              </div> */}
               </div>
-              <p>
-                {logInText}
-              </p>
+              <div className="p-3">
+                <h5 className="text-center fs-5">Warning!</h5>
+                {/* <div className="col-12 heading mb-0">
+                <i className="fa-solid fa-triangle-exclamation"></i>
+              </div> */}
+                <p className="text-center mb-1">
+                  {logInText}
+                </p>
+                <p className="text-center fs-6 text_warning ">You are logged in from the specific devices: </p>
 
-              {logInDetails?.length > 0 &&
-                <ul className="mb-3 d-block">
-                  <p>You are logged in from the specific devices: </p>
-                  {logInDetails?.map((item) => {
-                    return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
-                      <div>
-                        {item?.platform} - {item?.browser}
-                        <p style={{ fontSize: '0.75rem', marginBottom: '5px' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {item.created_at.split("T")[1].split(".")[0]}</p>
-                      </div>
-                      <div>
-                        <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
-                      </div>
-                    </li>
-                  })}
-                </ul>
-              }
-              <div className="d-flex justify-content-between px-0">
-                <button
-                  className="panelButton m-0 float-end"
-                  onClick={() => {
+                {logInDetails?.length > 0 &&
+                  <ul className="mb-3 d-block">
+                    {logInDetails?.map((item) => {
+                      return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
+                        <div>
+                          {item?.platform} - {item?.browser}
+                          <p style={{ fontSize: '0.75rem', marginBottom: '0' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
+                        </div>
+                        <div>
+                          <button className="clearButton2 ms-2" onClick={() => handleLogoutFromSpecificDevice(item?.token)}><i className="fa-solid fa-power-off text-danger" /></button>
+                        </div>
+                      </li>
+                    })}
+                  </ul>
+                }
+                <div className="d-flex justify-content-between px-0">
+                  {/* <button
+                    className="panelButton m-0 float-end"
+                    onClick={() => {
+                      setPopUp(false);
+                      setLoading(true)
+                      handleLogin()
+                    }}
+                  >
+                    <span className="text">Login</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button> */}
+
+                  {/* <button onClick={() => {
                     setPopUp(false);
                     setLoading(true)
                     handleLogin()
-                  }}
-                >
-                  <span className="text">Login</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check"></i>
-                  </span>
-                </button>
+                  }} type="button" class="btn btn-success-light btn-wave " >
+                    <span>Login</span> <i
+                      className="fa-solid fa-check"
+                    ></i></button> */}
 
-                <div>
-                  <button
-                    disabled={loading}
-                    className="panelButton delete static m-0 px-2 bg-transparent shadow-none"
-                    onClick={handleLogoutAll}
-                  >
-                    <span className="text text-danger">Logout All Devices</span>
-                    {/* <span className="icon">
+                  <button class="btn2" onClick={() => {
+                    setPopUp(false);
+                    setLoading(true)
+                    handleLogin()
+                  }}>
+                    <span class="text">Login</span>
+                    <i class="fa-solid fa-paper-plane-top"></i>
+                  </button>
+
+                  <div>
+                    <button
+                      disabled={loading}
+                      className="panelButton delete static m-0 px-2 bg-transparent shadow-none logout__Btn"
+                      onClick={handleLogoutAll}
+                    >
+
+                      <span className="text text-danger">Logout All Devices</span>
+                      {/* <span className="icon">
                         <i className="fa-solid fa-power-off"></i>
                       </span> */}
-                  </button>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-{/* 
+          {/* 
           <div className="popupopen ">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
