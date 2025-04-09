@@ -55,6 +55,9 @@ function CampaignCreate() {
   const [campaignRefresh, setcampaignRefresh] = useState(0);
   const [matchIdAgent, setmatchIdAgent] = useState([]);
   const [unmatchIdAgent, setunmatchIdAgent] = useState([]);
+  const [dispoState, setDispoState] = useState([
+    { name: "", id: "", state: "" }
+  ]);
 
   const {
     register,
@@ -1337,7 +1340,28 @@ function CampaignCreate() {
                                                 </div>
                                               </div>
                                               <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
-                                              <div className="contactTags"><span data-id="1">Final</span></div>
+                                              <div className="contactTags">
+                                                <span data-id={dispoState.state === 'retry' ? '0' : "none"}>
+                                                  Retry
+                                                  <input type="radio" name={`dispoState${index}`}
+                                                    style={{ width: '100%', height: '100%', opacity: '0', position: 'absolute', top: '0', left: '0' }}
+                                                    value="retry"
+                                                    checked={dispoState.state === 'retry'}
+                                                    onChange={(e) => setDispoState((prev) => ({ ...prev, name: item.name, id: item.id, state: e.target.value }))}
+                                                  />
+                                                </span>
+                                                <span data-id={dispoState.state === 'final' ? '1' : "none"}>
+                                                  Final
+                                                  <input type="radio" name={`dispoState${index}`}
+                                                    style={{ width: '100%', height: '100%', opacity: '0', position: 'absolute', top: '0', left: '0' }}
+                                                    value="final"
+                                                    checked={dispoState.state === 'final'}
+                                                    onChange={(e) => setDispoState((prev) => ({ ...prev, name: item.name, id: item.id, state: e.target.value }))}
+                                                  />
+                                                </span>
+                                                {console.log(dispoState)
+                                                }
+                                              </div>
                                             </div>
                                           </div>
                                         )

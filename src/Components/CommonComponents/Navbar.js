@@ -651,6 +651,7 @@ function Navbar() {
                               "/agents-dialer",
                               "/call-desposition",
                               "/agent-disposition-manage",
+                              "/dialer-cdr-report"
                             ])
                               ? "true"
                               : "false"
@@ -673,6 +674,7 @@ function Navbar() {
                             "/agents-dialer",
                             "/call-desposition",
                             "/agent-disposition-manage",
+                            "/dialer-cdr-report"
                           ])
                             ? "show"
                             : ""
@@ -787,6 +789,16 @@ function Navbar() {
                                 >
                                   <div className="itemTitle">
                                     Call Desposition
+                                  </div>
+                                </NavLink>
+                              </li>
+                              <li className="tabItem ">
+                                <NavLink
+                                  to="/dialer-cdr-report"
+                                  onClick={() => backToTop()}
+                                >
+                                  <div className="itemTitle">
+                                    CDR Report
                                   </div>
                                 </NavLink>
                               </li>

@@ -322,9 +322,8 @@ function CallCenterQueue() {
                         <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
-                            type="text"
+                            type="search"
                             name="Search"
-                            placeholder="Search"
                             value={searchValue}
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}

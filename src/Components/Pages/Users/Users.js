@@ -279,7 +279,6 @@ const Users = () => {
                           type="search"
                           name="Search"
                           className="formItem"
-                          placeholder="Search"
                           value={userInput}
                           onChange={(e) => setuserInput(e.target.value)}
                         />
