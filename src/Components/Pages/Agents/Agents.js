@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import { toast } from "react-toastify";
 import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
@@ -29,6 +31,7 @@ function Agents({ type }) {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
   const [agentLogOutToken, setAgentLogOutToken] = useState("");
+  const allDID = useSelector((state) => state.didAll);
 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -55,16 +58,24 @@ function Agents({ type }) {
   };
 
   useEffect(() => {
+    // getData();
+    // if (userInput.trim().length === 0) {
+    //   getData();
+    // } else {
+    //   const timer = setTimeout(() => {
+    //     getData();
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }
     getData();
-    if (userInput.trim().length === 0) {
+  }, [entriesPerPage, pageNumber, type]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
       getData();
-    } else {
-      const timer = setTimeout(() => {
-        getData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [entriesPerPage, pageNumber, type, userInput]);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [userInput])
 
 
   // Handle Agent Logout Function
@@ -98,154 +109,178 @@ function Agents({ type }) {
         <div className="container-fluid">
           <div className="row">
             <Header title="Agents" />
-            {loading ? (
-              <div colSpan={99}>
-                <SkeletonFormLoader />
-              </div>
-            ) : (
-              <div className="overviewTableWrapper">
-                <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
-                    <div className="col-12">
-                      <div className="heading">
-                        <div className="content">
-                          <h4>Agent List</h4>
-                          <p>List of all agents</p>
-                        </div>
-                        <div className="buttonGroup">
-                          <button
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>Agent List</h4>
+                        <p>List of all agents</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+
+                        {checkViewSidebar(
+                          "CallCenterAgent",
+                          slugPermissions,
+                          account?.permissions, "add") && <button
                             onClick={() => {
-                              navigate(-1);
+                              navigate("/agents-pbx-add");
                               backToTop();
                             }}
-                            effect="ripple"
-                            className="panelButton gray"
+                            className="panelButton"
                           >
-                            <span className="text">Back</span>
+                            <span className="text">Add</span>
                             <span className="icon">
-                              <i className="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
-                          </button>
-
-                          {checkViewSidebar(
-                            "CallCenterAgent",
-                            slugPermissions,
-                            account?.permissions, "add") && <button
-                              onClick={() => {
-                                navigate("/agents-pbx-add");
-                                backToTop();
-                              }}
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>}
-                        </div>
+                          </button>}
                       </div>
                     </div>
-                    <div
-                      className="col-12"
-                      style={{ overflow: "auto", padding: "25px 20px 0" }}
-                    >
-                      <div className="tableHeader">
-                        <div className="showEntries">
-                          <label>Show</label>
-                          <select
-                            value={entriesPerPage}
-                            onChange={(e) => setEntriesPerPage(e.target.value)}
-                            className="formItem"
-                          >
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={30}>30</option>
-                          </select>
-                          <label>entries</label>
-                        </div>
-
-                        <div className="searchBox position-relative">
-                          <label>Search:</label>
-                          <input
-                            type="search"
-                            name="Search"
-                            className="formItem"
-                            value={userInput}
-                            onChange={(e) => setuserInput(e.target.value)}
-                          />
-                        </div>
+                  </div>
+                  <div
+                    className="col-12"
+                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  >
+                    <div className="tableHeader">
+                      <div className="showEntries">
+                        <label>Show</label>
+                        <select
+                          value={entriesPerPage}
+                          onChange={(e) => setEntriesPerPage(e.target.value)}
+                          className="formItem"
+                        >
+                          <option value={10}>10</option>
+                          <option value={20}>20</option>
+                          <option value={30}>30</option>
+                        </select>
+                        <label>entries</label>
                       </div>
-                      <div className="tableContainer">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Extension</th>
-                              <th>Role</th>
-                              <th>Recording</th>
-                              <th>Online</th>
-                              {checkViewSidebar(
-                                "CallCenterAgent",
-                                slugPermissions,
-                                account?.permissions, "edit") && <th>LogOut</th>}
-                              {checkViewSidebar(
-                                "CallCenterAgent",
-                                slugPermissions,
-                                account?.permissions, "edit") && <th>Edit</th>}
-                              {/* <th>Status</th> */}
-                            </tr>
-                          </thead>
-                          <tbody className="">
+
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          className="formItem"
+                          value={userInput}
+                          onChange={(e) => setuserInput(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="tableContainer">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Caller ID</th>
+                            <th>Extension</th>
+                            <th>Role</th>
+                            <th>Recording</th>
+                            <th>Online</th>
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
-                              account?.permissions, "read") && agents?.data?.map((item, index) => {
-                                return (
+                              account?.permissions, "edit") && <th>LogOut</th>}
+                            {checkViewSidebar(
+                              "CallCenterAgent",
+                              slugPermissions,
+                              account?.permissions, "edit") && <th>Edit</th>}
+                            {/* <th>Status</th> */}
+                          </tr>
+                        </thead>
+                        <tbody className="">
+                          {loading ? (
+                            <SkeletonTableLoader col={8} row={15} />
+                          ) : (
+                            <>
+                              {
+                                checkViewSidebar(
+                                  "CallCenterAgent",
+                                  slugPermissions,
+                                  account?.permissions, "read") ? agents?.data?.length === 0 ?
                                   <tr>
-                                    <td>{item.name}</td>
-                                    <td>{item.extension.extension}</td>
-                                    <td>{item.user_role.roles.name}</td>
-                                    <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
-                                    <td>
-                                      <span
-                                        className={
-                                          onlineUsers.includes(item.id)
-                                            ? "extensionStatus online"
-                                            : "extensionStatus"
-                                        }
-                                      ></span>
+                                    <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Agent"
+                                      />
                                     </td>
-                                    {(checkViewSidebar(
-                                      "CallCenterAgent",
-                                      slugPermissions,
-                                      account?.permissions, "edit")) && (onlineUsers.includes(item.id) && item.token != null) ?
-                                      <td>
-                                        <button
-                                          className="tableButton delete"
-                                          onClick={() => {
-                                            setIsAgentLogoutPopup(true);
-                                            setAgentLogOutToken(item.token);
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-power-off"></i>
-                                        </button>
-                                      </td> : <td></td>}
-                                    {checkViewSidebar(
-                                      "CallCenterAgent",
-                                      slugPermissions,
-                                      account?.permissions, "edit") && <td>
-                                        <button
-                                          className="tableButton edit"
-                                          onClick={() => {
-                                            navigate(`/agents-edit?id=${item.id}`, {
-                                              state: item,
-                                            });
-                                          }}
-                                        >
-                                          <i className="fa-solid fa-pencil"></i>
-                                        </button>
-                                      </td>}
-                                    {/* <td>
+                                  </tr>
+                                  : agents?.data?.map((item, index) => {
+                                    return (
+                                      <tr>
+                                        <td>
+                                          <div className="d-flex align-items-center">
+                                            <div className="tableProfilePicHolder">
+                                              {item.profile_picture ? (
+                                                <img
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                />
+                                              ) : (
+                                                <i className="fa-light fa-user" />
+                                              )}
+                                            </div>
+                                            <div className="ms-2">{item.name}</div>
+                                          </div>
+                                        </td>
+                                        <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
+                                        <td>{item.extension.extension}</td>
+                                        <td>{item.user_role.roles.name}</td>
+                                        <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
+                                        <td>
+                                          <span
+                                            className={
+                                              onlineUsers.includes(item.id)
+                                                ? "extensionStatus online"
+                                                : "extensionStatus"
+                                            }
+                                          ></span>
+                                        </td>
+                                        {(checkViewSidebar(
+                                          "CallCenterAgent",
+                                          slugPermissions,
+                                          account?.permissions, "edit")) && (onlineUsers.includes(item.id) && item.token != null) ?
+                                          <td>
+                                            <button
+                                              className="tableButton delete"
+                                              onClick={() => {
+                                                setIsAgentLogoutPopup(true);
+                                                setAgentLogOutToken(item.token);
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-power-off"></i>
+                                            </button>
+                                          </td> : <td></td>}
+                                        {checkViewSidebar(
+                                          "CallCenterAgent",
+                                          slugPermissions,
+                                          account?.permissions, "edit") && <td>
+                                            <button
+                                              className="tableButton edit"
+                                              onClick={() => {
+                                                navigate(`/agents-edit?id=${item.id}`, {
+                                                  state: item,
+                                                });
+                                              }}
+                                            >
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>}
+                                        {/* <td>
                             account?.permissions,"edit")&& <td>
                             <button
                               className="tableButton edit"
@@ -270,26 +305,40 @@ function Agents({ type }) {
                                     </label>
                                   </div>
                                 </td> */}
+                                      </tr>
+                                    );
+                                  }) : (
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>No Permission</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                   </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className="tableHeader mb-3">
-                        <PaginationComponent
-                          pageNumber={(e) => setPageNumber(e)}
-                          totalPage={agents.last_page}
-                          from={(pageNumber - 1) * agents.per_page + 1}
-                          to={agents.to}
-                          total={agents.total}
-                        />
-                      </div>
+                                )
+                              }
+                            </>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="tableHeader mb-3">
+                      <PaginationComponent
+                        pageNumber={(e) => setPageNumber(e)}
+                        totalPage={agents.last_page}
+                        from={(pageNumber - 1) * agents.per_page + 1}
+                        to={agents.to}
+                        total={agents.total}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
+
           </div>
         </div>
       </section>

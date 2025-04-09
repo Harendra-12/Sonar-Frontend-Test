@@ -614,6 +614,8 @@ input[type=number] {
     font-weight: 400 !important;
     margin: 0px 10px 0 0 !important;
     cursor: pointer;
+
+    position: relative;
 }
 
 .contactTags span[data-id="0"] {
@@ -639,6 +641,12 @@ input[type=number] {
 .contactTags span[data-id="4"] {
     background-color: #ddb8ea;
     color: #9300ff !important;
+}
+
+.contactTags span[data-id="none"] {
+    background-color: #c1c1c1;
+    color: #000 !important;
+    opacity: 0.5;
 }
 
 .contactTags span.more {

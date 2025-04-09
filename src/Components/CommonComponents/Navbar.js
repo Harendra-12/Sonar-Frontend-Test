@@ -757,7 +757,7 @@ function Navbar() {
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/agents",
+                                        "/agents-dialer",
                                         "/agents-edit",
                                         "/agents-add",
                                       ].some((path) =>

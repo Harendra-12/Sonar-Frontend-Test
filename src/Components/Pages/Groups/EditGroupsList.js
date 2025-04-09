@@ -127,10 +127,10 @@ export default function EditGroupsList() {
 
   // Function to delete a destination
   const deleteDestination = async (id) => {
-    if(true){
-      featureUnderdevelopment()
-      return
-    }
+    // if(true){
+    //   featureUnderdevelopment()
+    //   return
+    // }
 
     const isIdInAddedUI = addedUISelectedUsers?.some(
       (user) => user?.user_id === id || user?.id === id
@@ -143,19 +143,19 @@ export default function EditGroupsList() {
         if (res?.status) {
 
           const updatedDestination = selectedUsers.filter((item) => (item?.id) !== id);
-          const users = getUsers();
-          const newusers = users.filter((user) => {
-            const checkExist = updatedDestination.every((dest) => {
-              if (dest.user_id) {
-                return dest.user_id !== user.id;
-              } else {
-                return dest.id !== user.id
-              }
-            });
-            return checkExist
-          })
+          // const users = getUsers();
+          // const newusers = users.filter((user) => {
+          //   const checkExist = updatedDestination.every((dest) => {
+          //     if (dest.user_id) {
+          //       return dest.user_id !== user.id;
+          //     } else {
+          //       return dest.id !== user.id
+          //     }
+          //   });
+          //   return checkExist
+          // })
           // console.log({newusers})
-          setUsers([...newusers])
+          // setUsers([...newusers])
 
           setSelectedUsers(updatedDestination);
           setLoading(false);
@@ -334,8 +334,12 @@ export default function EditGroupsList() {
                 </div>
               </div>
               <form className="row mb-0">
-                <div className="col-12 col-md-6">
-                  <div className="formRow">
+                <div className="col-12 col-md-12" >
+                    <div  style={{
+                    padding: "25px 23px",
+                    borderBottom: "1px solid #ddd",
+                  }}>
+                    <div className="formRow  col-xl-3">
                     <div className="formLabel">
                       <label htmlFor="">
                         Name <span className="text-danger">*</span>
@@ -356,10 +360,11 @@ export default function EditGroupsList() {
                       )}
                     </div>
                   </div>
+                    </div>
+                  
                 </div>
               </form>
-            </div>
-            <div className="col-12">
+              <div className="col-12">
               <div className="heading bg-transparent border-bottom-0">
                 <div className="content">
                   <h4>List of Users</h4>
@@ -636,6 +641,8 @@ export default function EditGroupsList() {
                 </form>
               )}
             </div>
+            </div>
+           
           </div>
         )}
       </>

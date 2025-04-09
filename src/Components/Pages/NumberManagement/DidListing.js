@@ -34,6 +34,8 @@ function DidListing({ page }) {
   const [previousUsages, setPreviousUsages] = useState('')
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     if (didAll) {
       setLoading(true);
@@ -44,54 +46,35 @@ function DidListing({ page }) {
       } else if (page === "dialer") {
         setDid(didAll.filter((item) => item.usage === "dialer"));
       }
-
-      async function getData() {
-        const apiData = await generalGetFunction(`/did/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          if (page === "number") {
-            setDid(apiData.data);
-          } else if (page === "pbx") {
-            setDid(apiData.data.filter((item) => item.usages === "pbx"));
-          } else if (page === "dialer") {
-            setDid(apiData.data.filter((item) => item.usages === "dialer"));
-          }
-          dispatch({
-            type: "SET_DIDALL",
-            didAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
       getData();
     } else {
-      setLoading(true);
-      async function getData() {
-        const apiData = await generalGetFunction(`/did/all`);
-        if (apiData?.status) {
-          setLoading(false);
-          if (page === "number") {
-            setDid(apiData.data);
-          } else if (page === "pbx") {
-            setDid(apiData.data.filter((item) => item.usages === "pbx"));
-          } else if (page === "dialer") {
-            setDid(apiData.data.filter((item) => item.usages === "dialer"));
-          }
-          dispatch({
-            type: "SET_DIDALL",
-            didAll: apiData.data,
-          });
-        } else {
-          setLoading(false);
-          navigate(-1);
-        }
-      }
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshDid, page]);
+
+  // Fetch ALL DID
+  async function getData() {
+    setLoading(true);
+    const apiData = await generalGetFunction(`/did/all?search=${searchQuery}`);
+    if (apiData?.status) {
+      setLoading(false);
+      if (page === "number") {
+        setDid(apiData.data);
+      } else if (page === "pbx") {
+        setDid(apiData.data.filter((item) => item.usages === "pbx"));
+      } else if (page === "dialer") {
+        setDid(apiData.data.filter((item) => item.usages === "dialer"));
+      }
+      dispatch({
+        type: "SET_DIDALL",
+        didAll: apiData.data,
+      });
+    } else {
+      setLoading(false);
+      navigate(-1);
+    }
+  }
 
   const handleClick = async (id) => {
     setLoading(true);
@@ -178,6 +161,16 @@ function DidListing({ page }) {
       // toast.error(apiData.message)
     }
   }
+
+  // Debounce Search Function
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      getData();
+    }, 500);
+
+    return () => clearTimeout(delay);
+  }, [searchQuery]);
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -349,7 +342,7 @@ function DidListing({ page }) {
                       </div>
                       <div className="searchBox position-relative">
                         <label>Search:</label>
-                        <input type="search" name="Search" className="formItem" onChange={() => featureUnderdevelopment()} />
+                        <input type="search" name="Search" className="formItem" onChange={(e) => setSearchQuery(e.target.value)} />
                       </div>
                     </div>
                     <div className="tableContainer">

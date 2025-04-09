@@ -28,7 +28,7 @@ const Extensions = () => {
   const dispatch = useDispatch();
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [onlineFilter,setonlineFilter]=useState("all")
+  const [onlineFilter, setonlineFilter] = useState("all")
   const [searchValue, setSearchValue] = useState("");
   const showKeys = [
     "extension",
@@ -72,6 +72,7 @@ const Extensions = () => {
     .map((user) => ({
       name: user?.username,
       extension: user.extension.extension, // Access the nested extension value
+      profile_picture: user.profile_picture,
     }));
 
   // Getting list of all users by various filters like page number, items per page and search keys
@@ -142,7 +143,7 @@ const Extensions = () => {
         return () => clearTimeout(timer);
       }
     }
-  }, [navigate, pageNumber, account, itemsPerPage, searchValue,onlineFilter]);
+  }, [navigate, pageNumber, account, itemsPerPage, searchValue, onlineFilter]);
 
   return (
     <main className="mainContent">
@@ -217,11 +218,11 @@ const Extensions = () => {
                     <div className="tableContainer">
                       <table>
                         <tbody>
-                          {noPermissionToRead &&  checkViewSidebar(
+                          {noPermissionToRead && checkViewSidebar(
                             "Extension",
                             slugPermissions,
-                            account?.permissions,"read"
-                          )? (
+                            account?.permissions, "read"
+                          ) ? (
                             <tr>
                               <td></td>
                               <td></td>
@@ -281,9 +282,9 @@ const Extensions = () => {
                                                 );
                                               })}
                                               <th className="text-center">
-                                            
+
                                                 <span>
-                                                  <select className="formItem f-select-width" value={onlineFilter} onChange={(e)=>setonlineFilter(e.target.value)}>
+                                                  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
                                                     <option value="all" disabled>Status</option>
                                                     <option value="online">Online</option>
                                                     <option value="offline">Offline</option>
@@ -297,10 +298,10 @@ const Extensions = () => {
                                                 account?.permissions,
                                                 "edit"
                                               ) && (
-                                                <th className="text-center">
-                                                  Edit
-                                                </th>
-                                              )}
+                                                  <th className="text-center">
+                                                    Edit
+                                                  </th>
+                                                )}
                                               <th className="text-center">
                                                 Add Devices
                                               </th>
@@ -322,7 +323,22 @@ const Extensions = () => {
                                                       <td key={key}>
                                                         {key === "user"
                                                           ? foundUser
-                                                            ? foundUser.name
+                                                            ?
+                                                            <div className="d-flex align-items-center">
+                                                              <div className="tableProfilePicHolder">
+                                                                {foundUser.profile_picture ? (
+                                                                  <img
+                                                                    src={foundUser.profile_picture}
+                                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                  />
+                                                                ) : (
+                                                                  <i className="fa-light fa-user" />
+                                                                )}
+                                                              </div>
+                                                              {console.log(foundUser)
+                                                              }
+                                                              <div className="ms-2">{foundUser.name}</div>
+                                                            </div>
                                                             : ""
                                                           : item[key]}
                                                       </td>
@@ -344,23 +360,23 @@ const Extensions = () => {
                                                       account?.permissions,
                                                       "edit"
                                                     ) && (
-                                                      <td
-                                                        style={{
-                                                          cursor: "default",
-                                                        }}
-                                                      >
-                                                        <button
-                                                          className="tableButton edit mx-auto"
-                                                          onClick={() =>
-                                                            navigate(
-                                                              `/extensions-edit?id=${item.id}`
-                                                            )
-                                                          }
+                                                        <td
+                                                          style={{
+                                                            cursor: "default",
+                                                          }}
                                                         >
-                                                          <i className="fa-solid fa-pencil"></i>
-                                                        </button>
-                                                      </td>
-                                                    )}
+                                                          <button
+                                                            className="tableButton edit mx-auto"
+                                                            onClick={() =>
+                                                              navigate(
+                                                                `/extensions-edit?id=${item.id}`
+                                                              )
+                                                            }
+                                                          >
+                                                            <i className="fa-solid fa-pencil"></i>
+                                                          </button>
+                                                        </td>
+                                                      )}
                                                     <td
                                                       style={{
                                                         cursor: "default",
@@ -386,23 +402,23 @@ const Extensions = () => {
                                                           <i className="fa-solid fa-phone-office"></i>
                                                         </button>
                                                       ) : ( */}
-                                                        <button
-                                                          className="tableButton mx-auto"
-                                                          onClick={() =>
-                                                            navigate(
-                                                              "/all-devices",
-                                                              {
-                                                                state: {
-                                                                  extension:
-                                                                    item.extension,
-                                                                  id: item.id,
-                                                                },
-                                                              }
-                                                            )
-                                                          }
-                                                        >
-                                                          <i className="fa-solid fa-plus"></i>
-                                                        </button>
+                                                      <button
+                                                        className="tableButton mx-auto"
+                                                        onClick={() =>
+                                                          navigate(
+                                                            "/all-devices",
+                                                            {
+                                                              state: {
+                                                                extension:
+                                                                  item.extension,
+                                                                id: item.id,
+                                                              },
+                                                            }
+                                                          )
+                                                        }
+                                                      >
+                                                        <i className="fa-solid fa-plus"></i>
+                                                      </button>
                                                       {/* )} */}
                                                     </td>
                                                   </tr>
