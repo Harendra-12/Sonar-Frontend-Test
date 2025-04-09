@@ -78,7 +78,7 @@ function Source() {
                             <tr>
                               <th>
                                 <div>
-                                  <input type="checkbox" />
+                                  #
                                 </div>
                               </th>
                               <th>
@@ -105,7 +105,7 @@ function Source() {
                             <tr>
                               <td>
                                 <div>
-                                  <input type="checkbox" />
+                                  1
                                 </div>
                               </td>
                               <td>
@@ -197,7 +197,7 @@ function Source() {
                             <tr>
                               <td>
                                 <div>
-                                  <input type="checkbox" />
+                                  2
                                 </div>
                               </td>
                               <td>
@@ -291,7 +291,7 @@ function Source() {
                             <tr>
                               <td>
                                 <div>
-                                  <input type="checkbox" />
+                                 3
                                 </div>
                               </td>
                               <td>
