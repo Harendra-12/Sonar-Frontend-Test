@@ -40,7 +40,10 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       : "profileOfflineNav"
                   }
                 >
-                  <i className="fa-light fa-user"></i>
+                  {account?.profile_picture ?
+                    <img src={account?.profile_picture} /> : (
+                      <i className="fa-light fa-user"></i>
+                    )}
                   {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                 </div>
                 <div className="userTitle">
@@ -199,19 +202,19 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
 
 
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("sms-chatbox")}
-                  className={
-                    activePage === "sms-chatbox" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
+            <li style={{ cursor: "pointer" }}>
+              <div
+                onClick={() => setactivePage("sms-chatbox")}
+                className={
+                  activePage === "sms-chatbox" ? "navItem active" : "navItem"
+                }
+              >
+                <div className="iconHolder">
                   <i class="fa-solid fa-comment-sms"></i>
-                  </div>
-                  <div className="itemTitle">SMS</div>
                 </div>
-              </li>
+                <div className="itemTitle">SMS</div>
+              </div>
+            </li>
 
           </ul>
         </div>

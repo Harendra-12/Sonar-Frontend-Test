@@ -367,12 +367,12 @@ function Call({
                       {item["variable_billsec"] > 0 ? (
                         <i
                           className="fa-solid fa-phone mx-2"
-                          style={{ color: "var(--ui-accent)" }}
+                          style={{ color: "#fff" }}
                         ></i>
                       ) : (
                         <i
                           className="fa-solid fa-phone-xmark mx-2"
-                          style={{ color: "red" }}
+                          style={{ color: "#fff", background: 'red' }}
                         ></i>
                       )}
                     </div>

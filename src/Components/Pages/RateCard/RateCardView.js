@@ -31,7 +31,16 @@ function RateCardView() {
 
     useEffect(() => {
         getRateCard();
-    }, [pageNumber, itemsPerPage, userInput])
+    }, [pageNumber, itemsPerPage])
+
+    // Debounce Search Function
+    useEffect(() => {
+        const delay = setTimeout(() => {
+            getRateCard();
+        }, 500);
+        return () => clearTimeout(delay);
+    }, [userInput]);
+
     return (
         <main className="mainContent">
             <section id="phonePage">
