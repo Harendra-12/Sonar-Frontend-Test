@@ -244,7 +244,6 @@ function App() {
           <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
-          <Route path="/campaign-edit" element={<CampaignEdit />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -836,11 +835,8 @@ function App() {
 
           {/* Dialer Modules */}
 
-          {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
           <Route path="/call-desposition" element={<CallDesposition />} />
-          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
-          {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />
@@ -860,6 +856,8 @@ function App() {
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
+          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}
