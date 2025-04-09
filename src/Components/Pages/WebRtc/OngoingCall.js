@@ -1440,7 +1440,7 @@ export function ShowDuplicateCallData({ duplicateData }) {
           <i className={`fa-solid fa-chevron-${collapse ? 'right' : 'left'}`} />
         </button>
       </div>
-      {showComment && <Comments id={selectedId} setId={setSelectedId} setShowComment={setShowComment} />}
+      {showComment && <Comments id={selectedId} setId={setSelectedId} setShowComment={setShowComment} webrtc={true} />}
     </>
   )
 }
