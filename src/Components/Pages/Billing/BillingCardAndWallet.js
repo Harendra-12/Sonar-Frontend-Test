@@ -64,37 +64,21 @@ const BillingCardAndWallet = () => {
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th>Card Holder's Name</th>
-                                                            <th>Card Number</th>
-                                                            <th>Payment Date</th>
+                                                            {/* <th>Card Holder's Name</th>
+                                                            <th>Card Number</th>*/}
                                                             <th>Transaction ID</th>
-                                                            <th>Transaction Amount</th>
+                                                            <th>Transaction Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Wallet Balance</th>
+                                                            <th>Date</th> 
                                                             <th>Description</th>
-                                                            <th>Type</th>
                                                             <th>Download</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>developer</td>
+                                                         
                                                             <td>4242424242424242</td>
-                                                            <td>
-                                                                2025-04-10
-                                                            </td>
-                                                            <td>pi_3RCHqRP2K5GdGJju1vMau9eb</td>
-                                                            <td>
-                                                                <label
-                                                                // className={
-                                                                //     item.transaction_type === "credit"
-                                                                //         ? "tableLabel success"
-                                                                //         : "tableLabel fail"
-                                                                // }
-                                                                >
-                                                                    {/* ${item.amount_subtotal} */}
-                                                                    2558
-                                                                </label>
-                                                            </td>
-                                                            <td>	Wallet balance added</td>
                                                             <td>
                                                                 <button class="badge badge-subtle badge-border border-0">
                                                                     <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1'>Card</span>
@@ -106,6 +90,19 @@ const BillingCardAndWallet = () => {
                                                                     </div>
                                                                 </button>
                                                             </td>
+                                                            <td>
+                                                            $2558
+                                                            </td>
+                                                            <td className=' align-middle'>
+                                                                <span className=' badge badge-border text-success bg-success-subtle text-center '>+2580</span>
+                                                                <span className=' badge badge-border-danger text-danger bg-danger-subtle text-center '>-2580</span>
+                                                            </td>
+                                                            <td>
+                                                                2025-04-10
+                                                            </td>
+                                                            <td>pi_3RCHqRP2K5GdGJju1vMau9eb</td>
+                                                          
+                                                         
                                                             <td>
                                                                 <button
                                                                     className="tableButton"

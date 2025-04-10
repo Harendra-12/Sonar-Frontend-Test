@@ -635,7 +635,10 @@ form.tangoNavs .nav-tabs {
 }
 
 .badge-border {
-    border-left: 2px solid #0ab39c; 
+    border: 1px solid #00993b; 
+}
+.badge-border-danger {
+    border: 1px solid #e90059; 
 }
 .badge-subtle {
     background-color: #0ab39c;
