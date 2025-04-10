@@ -359,13 +359,13 @@ function DidListing({ page }) {
                               </> : ""
                             }
                             <th style={{ textAlign: "center" }}>
-                              Default WhatsApp DID
+                              WhatsApp DID
                             </th>
                             <th style={{ textAlign: "center" }}>
-                              Default E-fax DID
+                              E-fax DID
                             </th>
                             <th style={{ textAlign: "center" }}>
-                              Default SMS DID
+                              SMS DID
                             </th>
                             {page === "pbx" ? <>
                               <th style={{ textAlign: "center" }}>
@@ -411,24 +411,49 @@ function DidListing({ page }) {
                                           content={
                                             item.default_whatsapp === 1
                                               ? "This DID is set as default for WhatsApp"
-                                              : "Set this DID default for WhatsApp"
+                                              : item.is_secondary_whatsapp === 1 ? "This DID is set as secondary for WhatsApp"
+                                                : "Set this DID default for WhatsApp"
                                           }
                                         >
-                                          <button
-                                            className={
-                                              item.default_whatsapp === 1
-                                                ? "tableButton edit mx-auto"
-                                                : "tableButton empty mx-auto"
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                              if (item.default_whatsapp === 0) {
-                                                handleClickDefault(item.id, "default_whatsapp");
+                                          <div className="dropdown w-100">
+                                            <button
+                                              data-bs-toggle="dropdown"
+                                              className={
+                                                item.default_whatsapp === 1
+                                                  ? "tableButton edit mx-auto"
+                                                  : item.is_secondary_whatsapp === 1 ? "tableButton warning mx-auto"
+                                                    : "tableButton empty mx-auto"
                                               }
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-headset"></i>
-                                          </button>
+                                              style={{ cursor: "pointer" }}
+
+                                            >
+                                              <i className="fa-brands fa-whatsapp"></i>
+                                            </button>
+                                            <ul className="dropdown-menu actionBtnDropdowns">
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.default_whatsapp === 0) {
+                                                      handleClickDefault(item.id, "default_whatsapp");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-brands fa-whatsapp me-2" /> Default
+                                                </button>
+                                              </li>
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.is_secondary_whatsapp === 0) {
+                                                      handleClickDefault(item.id, "is_secondary_whatsapp");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-brands fa-whatsapp me-2" /> Secondary
+                                                </button>
+                                              </li>
+                                            </ul>
+                                          </div>
                                         </Tippy>
                                       </td>
                                       <td style={{ cursor: "default" }}>
@@ -436,24 +461,49 @@ function DidListing({ page }) {
                                           content={
                                             item.default_eFax === 1
                                               ? "This DID is set as default for E-fax"
-                                              : "Set this DID default for E-fax"
+                                              : item.is_secondary_eFax === 1 ? "This DID is set as secondary for E-fax"
+                                                : "Set this DID default for E-fax"
                                           }
                                         >
-                                          <button
-                                            className={
-                                              item.default_eFax === 1
-                                                ? "tableButton edit mx-auto"
-                                                : "tableButton empty mx-auto"
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                              if (item.default_eFax === 0) {
-                                                handleClickDefault(item.id, "default_eFax");
+                                          <div className="dropdown w-100">
+                                            <button
+                                              data-bs-toggle="dropdown"
+                                              className={
+                                                item.default_eFax === 1
+                                                  ? "tableButton edit mx-auto"
+                                                  : item.is_secondary_eFax === 1 ? "tableButton warning mx-auto"
+                                                    : "tableButton empty mx-auto"
                                               }
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-headset"></i>
-                                          </button>
+                                              style={{ cursor: "pointer" }}
+
+                                            >
+                                              <i className="fa-solid fa-fax"></i>
+                                            </button>
+                                            <ul className="dropdown-menu actionBtnDropdowns">
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.default_eFax === 0) {
+                                                      handleClickDefault(item.id, "default_eFax");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-fax me-2" /> Default
+                                                </button>
+                                              </li>
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.is_secondary_eFax === 0) {
+                                                      handleClickDefault(item.id, "is_secondary_eFax");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-fax me-2" /> Secondary
+                                                </button>
+                                              </li>
+                                            </ul>
+                                          </div>
                                         </Tippy>
                                       </td>
                                       <td style={{ cursor: "default" }}>
@@ -461,24 +511,49 @@ function DidListing({ page }) {
                                           content={
                                             item.default_sms === 1
                                               ? "This DID is set as default for SMS"
-                                              : "Set this DID default for SMS"
+                                              : item.is_secondary_sms === 1 ? "This DID is set as secondary for SMS"
+                                                : "Set this DID default for SMS"
                                           }
                                         >
-                                          <button
-                                            className={
-                                              item.default_sms === 1
-                                                ? "tableButton edit mx-auto"
-                                                : "tableButton empty mx-auto"
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                              if (item.default_sms === 0) {
-                                                handleClickDefault(item.id, "default_sms");
+                                          <div className="dropdown w-100">
+                                            <button
+                                              data-bs-toggle="dropdown"
+                                              className={
+                                                item.default_sms === 1
+                                                  ? "tableButton edit mx-auto"
+                                                  : item.is_secondary_sms === 1 ? "tableButton warning mx-auto"
+                                                    : "tableButton empty mx-auto"
                                               }
-                                            }}
-                                          >
-                                            <i className="fa-solid fa-headset"></i>
-                                          </button>
+                                              style={{ cursor: "pointer" }}
+
+                                            >
+                                              <i className="fa-solid fa-comment-sms"></i>
+                                            </button>
+                                            <ul className="dropdown-menu actionBtnDropdowns">
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.default_sms === 0) {
+                                                      handleClickDefault(item.id, "default_sms");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-comment-sms me-2" /> Default
+                                                </button>
+                                              </li>
+                                              <li className="dropdown-item">
+                                                <button className="clearButton text-align-start"
+                                                  onClick={() => {
+                                                    if (item.is_secondary_sms === 0) {
+                                                      handleClickDefault(item.id, "is_secondary_sms");
+                                                    }
+                                                  }}
+                                                >
+                                                  <i className="fa-solid fa-comment-sms me-2" /> Secondary
+                                                </button>
+                                              </li>
+                                            </ul>
+                                          </div>
                                         </Tippy>
                                       </td>
                                       {page === "pbx" ? <>

@@ -210,7 +210,7 @@ const WhatsAppChatBox = ({ initial }) => {
                     </button>
                   </div>
                   {/* <DarkModeToggle marginLeft={"2"} /> */}
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <div className="dropdown">
                       <div
                         className="myProfileWidget"
@@ -232,13 +232,13 @@ const WhatsAppChatBox = ({ initial }) => {
                       </div>
                       <ul className="dropdown-menu">
                         <li
-                        // onClick={() => {
-                        //     if (allCallCenterIds.length > 0) {
-                        //         setAllLogOut(true);
-                        //     } else {
-                        //         handleLogOut();
-                        //     }
-                        // }}
+                        onClick={() => {
+                            if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                            } else {
+                                handleLogOut();
+                            }
+                        }}
                         >
                           <div
                             className="dropdown-item"
@@ -247,17 +247,9 @@ const WhatsAppChatBox = ({ initial }) => {
                             Logout
                           </div>
                         </li>
-                        {/* <li onClick={() => navigate("/my-profile")}>
-                          <div
-                            className="dropdown-item"
-                            style={{ cursor: "pointer" }}
-                          >
-                            Profile
-                          </div>
-                        </li> */}
                       </ul>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
