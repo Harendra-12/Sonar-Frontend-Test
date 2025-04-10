@@ -1345,7 +1345,8 @@ function Navbar() {
                           "/wallet-transaction-list",
                           "/billing-report",
                           "/subscription-management",
-                          "/rate-card"
+                          "/rate-card",
+                          "/billing-card-and-wallet"
                         ])
                           ? "true"
                           : "false"
@@ -1365,7 +1366,8 @@ function Navbar() {
                         "/wallet-transaction-list",
                         "/billing-report",
                         "/subscription-management",
-                        "/rate-card"
+                        "/rate-card",
+                        "/billing-card-and-wallet"
                       ])
                         ? "show"
                         : ""
@@ -1453,6 +1455,15 @@ function Navbar() {
                               <div className="itemTitle">Subscription</div>
                             </NavLink>
                           </li>
+                          <li className="tabItem">
+                              <NavLink
+                                to="/billing-card-and-wallet"
+                                onClick={backToTop}
+                                className="nav-link"
+                              >
+                                <div className="itemTitle">Card and Wallet</div>
+                              </NavLink>
+                            </li>
                           {checkViewSidebar(
                             "ChannelHangupComplete",
                             permissions,
