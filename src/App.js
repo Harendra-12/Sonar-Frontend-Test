@@ -173,6 +173,8 @@ import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
+import NewGetDid from "./Components/Pages/NumberManagement/NewGetDid";
+import AddNumber from "./Components/Pages/NumberManagement/AddNumber";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -554,6 +556,8 @@ function App() {
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
+          <Route path="/management-get-did" element={<NewGetDid />} />
+          <Route path="/add-number" element={<AddNumber />} />
           <Route
             path="/port-number"
             element={

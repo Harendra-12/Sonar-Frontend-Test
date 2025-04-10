@@ -155,6 +155,9 @@
   --bg-badge-danger-border: #fde6e9;
   --text-badge-danger: #bb036a;
 
+  --badge-primary-border: #405189;
+  --badge-primary-text: #405189;
+
   --text-blue-dark: #15264b;
   --text-timer-color: #192ea2;
   /* --dash-listing-bg: #d6dcff; */
@@ -166,6 +169,10 @@
   --header-dark-gray: #9fd4ff;
   --listing-color3: #ff490a;
   --listing-color2: #106edc;
+  --avatar-border: #dce7ff;
+  --border-light-subtle: #e0e0e0; 
+  --shadow-gray: rgba(99, 99, 99, 0.2);
+
 }
 
 :root.dark {
@@ -230,8 +237,12 @@
   --bg-badge-danger-border: #f1556c;
   --text-badge-danger: #f1556c;
 
+  --badge-primary-border: #8ba6fc;
+  --badge-primary-text: #acbdf5;
+
   --text-blue-dark: #d6e3ff;
   --text-timer-color: #fff;
+
 
   --listing-color2: #a8d0ff;
   --listing-color3: #ff8c42;
@@ -242,6 +253,9 @@
   --dash-listing-hover-border: #00ddff;
   --dash-listing-hover-text: #d1edff;
   --header-dark-gray: #3d4851;
+  --avatar-border: rgba(230, 248, 255, 0.161);
+  --border-light-subtle: #3e3f44;
+  --shadow-gray: rgba(16, 18, 23, 0.188);
 }
 
 :root.green {
