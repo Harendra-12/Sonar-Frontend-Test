@@ -707,18 +707,21 @@ function OngoingCall({
                       />
                     </button>
                   </Tippy>
-                  <Tippy content="Merge Call">
-                    <button
-                      onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false); setSelectedSessions([]) }}
-                      className={` ${showActiveSessions
-                        ? "appPanelButtonCaller active"
-                        : "appPanelButtonCaller"
-                        } `}
-                      effect="ripple"
-                    >
-                      <i className="fa-solid fa-merge"></i>
-                    </button>
-                  </Tippy>
+                  {
+                    globalSession.length > 1 &&
+                    <Tippy content="Merge Call">
+                      <button
+                        onClick={() => { setShowActiveSessions(!showActiveSessions); setAttendShow(false); setShowTranferableList(false); setShowParkList(false); setSelectedSessions([]) }}
+                        className={` ${showActiveSessions
+                          ? "appPanelButtonCaller active"
+                          : "appPanelButtonCaller"
+                          } `}
+                        effect="ripple"
+                      >
+                        <i className="fa-solid fa-merge"></i>
+                      </button>
+                    </Tippy>
+                  }
                   <Tippy content="Toggle Dialpad">
                     <button
                       onClick={() => {
@@ -1433,9 +1436,9 @@ export function ShowDuplicateCallData({ duplicateData }) {
             </div>
           </div>
         </div>
-        <button className="tableButton edit"
+        <button className="collpaseBtn"
           onClick={() => setCollapse(!collapse)}
-          style={{ position: 'absolute', right: '-35px', top: '50%', transform: 'translateY(-50%)' }}
+          style={{right: collapse ? '-7px' : '-13px'}}
         >
           <i className={`fa-solid fa-chevron-${collapse ? 'right' : 'left'}`} />
         </button>
