@@ -668,3 +668,24 @@ form.tangoNavs .nav-tabs {
 .card_info ul li{
     list-style-type: none;
 }
+
+
+.getPopup.checkout input[type="radio"] {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    cursor: pointer;
+}
+.getPopup.checkout input[type="radio"]:checked~.checkmark {
+    border: 1px solid var(--ui-accent);
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+}
