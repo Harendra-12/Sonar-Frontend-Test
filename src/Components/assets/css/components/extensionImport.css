@@ -633,3 +633,35 @@ form.tangoNavs .nav-tabs {
     /* background-color: var(--bg-badge-danger); */
     border: 1px solid var(--badge-primary-border);
 }
+
+.badge-border {
+    border-left: 2px solid #0ab39c; 
+}
+.badge-subtle {
+    background-color: #0ab39c;
+    color: #fff;
+    font-size: 0.625rem;
+    transition: all 0.4s ease-in-out;
+    position: relative;
+}
+.badge-subtle:hover .card_info{
+    opacity: 1;
+}
+.card_info{
+    position: absolute;
+    top: 0;
+    right: 48px;
+    z-index: 11;
+    background: var(--hover-bg);
+    box-shadow: var(--shadow-gray) 0 0 10px;
+    /* width: 100%; */
+    max-width: 200px;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--form-label);
+    text-align: start;
+    opacity: 0;
+}
+.card_info ul li{
+    list-style-type: none;
+}

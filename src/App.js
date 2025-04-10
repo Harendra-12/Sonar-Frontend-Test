@@ -175,6 +175,7 @@ import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
 import NewGetDid from "./Components/Pages/NumberManagement/NewGetDid";
 import AddNumber from "./Components/Pages/NumberManagement/AddNumber";
+import BillingCardAndWallet from "./Components/Pages/Billing/BillingCardAndWallet";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -697,6 +698,7 @@ function App() {
           />
           <Route path="/invoice-list" element={<InvoiceList />} />
           <Route path="/expense-list" element={<ExpenseList />} />
+          <Route path="/billing-card-and-wallet" element={<BillingCardAndWallet />} />
           <Route
             path="/card-transaction-list"
             element={

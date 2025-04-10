@@ -158,6 +158,9 @@
   --badge-primary-border: #405189;
   --badge-primary-text: #405189;
 
+  --badge-info-bg-subtle: #daf4f0;
+  --badge-info-text-subtle: #0ab39c;
+
   --text-blue-dark: #15264b;
   --text-timer-color: #192ea2;
   /* --dash-listing-bg: #d6dcff; */
@@ -171,7 +174,8 @@
   --listing-color2: #106edc;
   --avatar-border: #dce7ff;
   --border-light-subtle: #e0e0e0; 
-  --shadow-gray: rgba(99, 99, 99, 0.2);
+  --shadow-gray: rgba(99, 99, 99, 0.388);
+  --hover-bg: #fff;
 
 }
 
@@ -255,7 +259,8 @@
   --header-dark-gray: #3d4851;
   --avatar-border: rgba(230, 248, 255, 0.161);
   --border-light-subtle: #3e3f44;
-  --shadow-gray: rgba(16, 18, 23, 0.188);
+  --shadow-gray: rgb(13, 19, 24);
+  --hover-bg: #3a3b4b;
 }
 
 :root.green {
