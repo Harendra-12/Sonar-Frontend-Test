@@ -45,7 +45,7 @@ const AddNumber = () => {
         formState: { errors },
         watch,
         setValue,
-      } = useForm();
+    } = useForm();
 
     return (
         <>
@@ -78,10 +78,8 @@ const AddNumber = () => {
                                 </div>
                             </div>
                             <div className='card-body '>
-                              
                                 <div className='border border-light-subtle rounded-3 p-3 mb-3'>
                                     {/* <h4 className='card_title'>Top countries</h4> */}
-
                                     <div className='country_card_group numberListGroup'>
                                         {getNumber.map((item, index) => (
                                             <div className='card country_box'

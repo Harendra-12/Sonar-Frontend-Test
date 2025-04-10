@@ -557,7 +557,7 @@ function App() {
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
           <Route path="/management-get-did" element={<NewGetDid />} />
-          <Route path="/add-number" element={<AddNumber />} />
+          {/* <Route path="/add-number" element={<AddNumber />} /> */}
           <Route
             path="/port-number"
             element={
