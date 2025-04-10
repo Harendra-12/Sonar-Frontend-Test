@@ -51,6 +51,14 @@ function CdrFilterReport({ page }) {
   const [hangupStatus, setHangupStatus] = useState("");
   const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
+  const [timeFlag, setTimeFlag] = useState({
+    startTime: "",
+    endTime: "",
+  });
+  const [timeFilter, setTimeFilter] = useState({
+    startTime: "",
+    endTime: "",
+  });
   const [startDate, setStartDate] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
@@ -119,6 +127,24 @@ function CdrFilterReport({ page }) {
       setCreatedAt("");
     }
   }, [startDateFlag, endDateFlag, filterBy]);
+
+  useEffect(() => {
+    if (filterBy === "date" && timeFlag.startTime !== "") {
+      setTimeFilter((prev) => ({
+        ...prev,
+        startTime: timeFlag.startTime,
+      }))
+
+    } else if (filterBy === "date_range") {
+      if (timeFlag.startTime !== "" && timeFlag.endTime !== "") {
+        setTimeFilter((prev) => ({
+          ...prev,
+          startTime: timeFlag.startTime,
+          endTime: timeFlag.endTime,
+        }));
+      }
+    }
+  }, [timeFlag])
 
   useEffect(() => {
     let timer = setTimeout(() => {
@@ -251,6 +277,8 @@ function CdrFilterReport({ page }) {
         variable_sip_to_user: callDestination,
         start_date: startDate,
         end_date: endDate,
+        start_time: timeFilter.startTime,
+        end_time: timeFilter.endTime,
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
@@ -329,6 +357,7 @@ function CdrFilterReport({ page }) {
     callDestination,
     startDate,
     endDate,
+    timeFlag,
     hangupCause,
     hangupStatus,
     refresh,
@@ -533,6 +562,28 @@ function CdrFilterReport({ page }) {
     }
   }, [locationState])
 
+  // Reset All Filters
+  const resetAllFilters = () => {
+    setHagupCause("");
+    setHangupStatus("");
+    setCallDirection("");
+    setCallType("");
+    setDebounceCallOriginFlag("");
+    setCallOrigin("");
+    setDebounceCallDestinationFlag("");
+    setCallDestination("");
+    setFilterBy("date");
+    setStartDateFlag("");
+    setEndDateFlag("");
+    setCreatedAt("");
+    setTimeFlag({ startTime: "", endTime: "" });
+    setTimeFilter({ startTime: "", endTime: "" });
+
+    setTimeout(() => {
+      refreshCallData();
+    })
+  };
+
   return (
     <>
       {circularLoader && <CircularLoader />}
@@ -596,6 +647,16 @@ function CdrFilterReport({ page }) {
                           </span>
                         </button>
                         <button
+                          onClick={resetAllFilters}
+                          className="panelButton delete"
+                          disabled={loading}
+                        >
+                          <span className="text">Reset</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-trash" />
+                          </span>
+                        </button>
+                        <button
                           effect="ripple"
                           className="panelButton"
                           onClick={refreshCallData}
@@ -606,8 +667,8 @@ function CdrFilterReport({ page }) {
                             <i
                               className={
                                 contentLoader
-                                  ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                  : "fa-regular fa-arrows-rotate fs-5"
+                                  ? "fa-regular fa-arrows-rotate fa-spin"
+                                  : "fa-regular fa-arrows-rotate"
                               }
                             ></i>
                           </span>
@@ -694,18 +755,29 @@ function CdrFilterReport({ page }) {
                             {filterBy === "date" && (
                               <div className="formRow border-0">
                                 <label className="formLabel text-start mb-0 w-100">
-                                  Choose Date
+                                  Choose Date And / Or Time
                                 </label>
-                                <input
-                                  type="datetime-local"
-                                  className="formItem"
-                                  max={new Date()?.toISOString()?.split("T")[0]}
-                                  value={startDateFlag}
-                                  onChange={(e) => {
-                                    setStartDateFlag(e.target.value);
-                                    setPageNumber(1);
-                                  }}
-                                />
+                                <div className="d-flex w-100">
+                                  <input
+                                    type="date"
+                                    className="formItem"
+                                    max={new Date()?.toISOString()?.split("T")[0]}
+                                    value={startDateFlag}
+                                    onChange={(e) => {
+                                      setStartDateFlag(e.target.value);
+                                      setPageNumber(1);
+                                    }}
+                                  />
+                                  <input
+                                    type="time"
+                                    className="formItem ms-2"
+                                    value={timeFlag.startTime}
+                                    onChange={(e) => {
+                                      setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                      setPageNumber(1);
+                                    }}
+                                  />
+                                </div>
                               </div>
                             )}
                             {filterBy === "date_range" && (
@@ -714,36 +786,58 @@ function CdrFilterReport({ page }) {
                                   <label className="formLabel text-start mb-0 w-100">
                                     From
                                   </label>
-                                  <input
-                                    type="datetime-local"
-                                    className="formItem"
-                                    max={
-                                      new Date()?.toISOString()?.split("T")[0]
-                                    }
-                                    value={startDateFlag}
-                                    onChange={(e) => {
-                                      setStartDateFlag(e.target.value);
-                                      setPageNumber(1);
-                                    }}
-                                  />
+                                  <div className="d-flex w-100">
+                                    <input
+                                      type="date"
+                                      className="formItem"
+                                      max={
+                                        new Date()?.toISOString()?.split("T")[0]
+                                      }
+                                      value={startDateFlag}
+                                      onChange={(e) => {
+                                        setStartDateFlag(e.target.value);
+                                        setPageNumber(1);
+                                      }}
+                                    />
+                                    <input
+                                      type="time"
+                                      className="formItem ms-2"
+                                      value={timeFlag.startTime}
+                                      onChange={(e) => {
+                                        setTimeFlag((prev) => ({ ...prev, startTime: `${e.target.value}:00` }));
+                                        setPageNumber(1);
+                                      }}
+                                    />
+                                  </div>
                                 </div>
                                 <div className="formRow border-0">
                                   <label className="formLabel text-start mb-0 w-100">
                                     To
                                   </label>
-                                  <input
-                                    type="datetime-local"
-                                    className="formItem"
-                                    max={
-                                      new Date()?.toISOString()?.split("T")[0]
-                                    }
-                                    value={endDateFlag}
-                                    onChange={(e) => {
-                                      setEndDateFlag(e.target.value);
-                                      setPageNumber(1);
-                                    }}
-                                    min={startDateFlag} // Prevent selecting an end date before the start date
-                                  />
+                                  <div className="d-flex w-100">
+                                    <input
+                                      type="date"
+                                      className="formItem"
+                                      max={
+                                        new Date()?.toISOString()?.split("T")[0]
+                                      }
+                                      value={endDateFlag}
+                                      onChange={(e) => {
+                                        setEndDateFlag(e.target.value);
+                                        setPageNumber(1);
+                                      }}
+                                      min={startDateFlag} // Prevent selecting an end date before the start date
+                                    />
+                                    <input
+                                      type="time"
+                                      className="formItem ms-2"
+                                      value={timeFlag.endTime}
+                                      onChange={(e) => {
+                                        setTimeFlag((prev) => ({ ...prev, endTime: `${e.target.value}:00` }));
+                                        setPageNumber(1);
+                                      }}
+                                    />
+                                  </div>
                                 </div>
                               </>
                             )}
@@ -849,6 +943,7 @@ function CdrFilterReport({ page }) {
                                   setCallType(e.target.value);
                                   setPageNumber(1);
                                 }}
+                                value={callType}
                               >
                                 <option value={""}>All Calls</option>
                                 <option value={"extension"}>Extension</option>
@@ -899,6 +994,7 @@ function CdrFilterReport({ page }) {
                                     setHangupStatus(e.target.value);
                                     setPageNumber(1);
                                   }}
+                                  value={hangupStatus}
                                 >
                                   <option value={""}>All</option>
                                   <option value={"NORMAL_CLEARING"}>
