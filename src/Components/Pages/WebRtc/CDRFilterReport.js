@@ -697,7 +697,7 @@ function CdrFilterReport({ page }) {
                                   Choose Date
                                 </label>
                                 <input
-                                  type="date"
+                                  type="datetime-local"
                                   className="formItem"
                                   max={new Date()?.toISOString()?.split("T")[0]}
                                   value={startDateFlag}
@@ -715,7 +715,7 @@ function CdrFilterReport({ page }) {
                                     From
                                   </label>
                                   <input
-                                    type="date"
+                                    type="datetime-local"
                                     className="formItem"
                                     max={
                                       new Date()?.toISOString()?.split("T")[0]
@@ -732,7 +732,7 @@ function CdrFilterReport({ page }) {
                                     To
                                   </label>
                                   <input
-                                    type="date"
+                                    type="datetime-local"
                                     className="formItem"
                                     max={
                                       new Date()?.toISOString()?.split("T")[0]
