@@ -681,9 +681,9 @@ const NewGetDid = () => {
 
                             <div>
                                 <div className="heading mb-2 px-0 py-1 bg-transparent">
-                                    <h5>Order Summary</h5>
+                                    <h5 className='mb-0'>Order Summary</h5>
                                 </div>
-                                <div className='d-flex justify-content-between'>
+                                <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2'>
                                     <div>
                                         {selectedDid.friendly_name ? selectedDid.friendly_name : selectedDid.didSummary}
                                     </div>
@@ -694,60 +694,62 @@ const NewGetDid = () => {
                             </div>
 
                             <div className="heading mb-2 px-0 py-1 bg-transparent">
-                                <h5>Payment Method</h5>
+                                <h5 className='mb-0'>Payment Method</h5>
                             </div>
-                            <div className="wrapper">
-                                <ul>
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <li className="me-2 col mb-0">
+                            <div className='getPopup checkout'>
+                                <div className="wrapper ">
+                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2'>
+                                        <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
+                                            <li className="my-0 col mb-0 position-relative">
+                                                <i
+                                                    className="fa-duotone fa-wallet me-2"
+                                                    style={{ color: "var(--ui-accent)" }}
+                                                ></i>{" "}
+                                                Wallet{" "}
+                                                <span style={{ float: 'inline-end', fontSize: '14px' }}>${accountBalance}</span>
+                                                <input
+                                                    type="radio"
+                                                    checked={
+                                                        paymentMethod === "wallet" ? true : false
+                                                    }
+                                                    name="fav_language"
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            setPaymentMethod("wallet");
+                                                        }
+                                                    }}
+                                                ></input>{" "}
+                                                <span className="checkmark"></span>
+                                            </li>
+                                            {Number(selectedDid.price) > Number(accountBalance) ? <div className="col-auto">
+                                                <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
+                                                    <i className="fa-solid fa-dollar-sign" />
+                                                </button>
+                                            </div> : ""
+                                            }
+
+                                        </div>
+                                        <li className='my-0 w-100 position-relative'>
                                             <i
-                                                className="fa-duotone fa-wallet me-2"
+                                                className="fa-duotone fa-credit-card me-2"
                                                 style={{ color: "var(--ui-accent)" }}
                                             ></i>{" "}
-                                            Wallet{" "}
-                                            <span style={{ float: 'inline-end', fontSize: '14px' }}>${accountBalance}</span>
+                                            Credit Card{" "}
                                             <input
                                                 type="radio"
-                                                checked={
-                                                    paymentMethod === "wallet" ? true : false
-                                                }
+                                                checked={paymentMethod === "card" ? true : false}
                                                 name="fav_language"
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        setPaymentMethod("wallet");
+                                                        setPaymentMethod("card");
                                                     }
                                                 }}
                                             ></input>{" "}
                                             <span className="checkmark"></span>
                                         </li>
-                                        {Number(selectedDid.price) > Number(accountBalance) ? <div className="col-auto">
-                                            <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
-                                                <i className="fa-solid fa-dollar-sign" />
-                                            </button>
-                                        </div> : ""
-                                        }
+                                    </ul>
 
-                                    </div>
-                                    <li>
-                                        <i
-                                            className="fa-duotone fa-credit-card me-2"
-                                            style={{ color: "var(--ui-accent)" }}
-                                        ></i>{" "}
-                                        Credit Card{" "}
-                                        <input
-                                            type="radio"
-                                            checked={paymentMethod === "card" ? true : false}
-                                            name="fav_language"
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setPaymentMethod("card");
-                                                }
-                                            }}
-                                        ></input>{" "}
-                                        <span className="checkmark"></span>
-                                    </li>
-                                </ul>
-
+                                </div>
                             </div>
 
                             <div className="col-xl-12 mt-4">
