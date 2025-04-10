@@ -581,7 +581,7 @@ const NewGetDid = () => {
                                                                 <div className='card country_box' key={index} onClick={() => setSelectedDid(item)}>
                                                                     <div className='card-body flex-row gap-3 justify-content-start w-100'>
                                                                         <div className='avatar_img mb-0'>
-                                                                            <img src={`https://flagsapi.com/${watch().country}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                            <img src={`https://flagsapi.com/${watch().country}/shiny/64.png`} alt='logout' style={{ width: 'auto' }} />
                                                                         </div>
                                                                         <div className='card_details'>
                                                                             <p className='country_name text-start'>{item.friendly_name ? item.friendly_name : item.didSummary}</p>
@@ -644,7 +644,7 @@ const NewGetDid = () => {
                                                             <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
                                                                 <div className='card-body'>
                                                                     <div className='avatar_img'>
-                                                                        <img src={`https://flagsapi.com/${item?.country_code}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                        <img src={`https://flagsapi.com/${item?.country_code}/shiny/64.png`} alt='logout' style={{ width: 'auto' }} />
                                                                     </div>
                                                                     <div className='card_details'>
                                                                         <p className='country_name'>{item?.country}</p>
