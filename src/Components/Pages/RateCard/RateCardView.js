@@ -118,8 +118,8 @@ function RateCardView() {
                                                         <th>Vendor Name</th>
                                                         <th>Country</th>
                                                         <th>Selling Billing Block</th>
-                                                        <th>Out Rate</th>
-                                                        <th>In Rate</th>
+                                                        <th>Outbound Rate</th>
+                                                        <th>Inbound Rate</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
