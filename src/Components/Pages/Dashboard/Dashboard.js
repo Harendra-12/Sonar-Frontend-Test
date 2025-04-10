@@ -29,7 +29,9 @@ const Dashboard = () => {
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
   const registerUser = useSelector((state) => state.registerUser || []);
-  const [onlineExtension, setOnlineExtension] = useState([0]);
+  const [onlineExtension, setOnlineExtension] = useState([]);
+  console.log("onlineExtension", registerUser);
+  
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
   const slugPermissions = useSelector((state) => state?.permissions);
@@ -117,7 +119,7 @@ const Dashboard = () => {
         })
       );
     } else {
-      setOnlineExtension([0]);
+      setOnlineExtension([]);
     }
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);

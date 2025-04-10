@@ -76,6 +76,7 @@ const Socket = () => {
 
           switch (key) {
             case "UserRegister":
+              console.log("UserRegister:", result);
               dispatch({
                 type: "SET_REGISTERUSER",
                 registerUser: result.filter(
