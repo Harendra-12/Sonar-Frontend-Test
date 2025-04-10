@@ -261,9 +261,9 @@ export default function GroupsList() {
                                                 // console.log(user?.user?.name)
                                                 return (
                                                   <Tippy key={index} content={user?.user?.name}>
-                                                    {user?.user?.picture ? (
+                                                    {user?.user?.profile_picture ? (
                                                       <img
-                                                        src={user?.user?.picture}
+                                                        src={user?.user?.profile_picture}
                                                         onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                       />
                                                     ) : (
