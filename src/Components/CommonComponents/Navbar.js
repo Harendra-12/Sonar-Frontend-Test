@@ -373,7 +373,7 @@ function Navbar() {
                               </li>
                             )}
 
-                          <li className="tabItem">
+                          {/* <li className="tabItem">
                             <NavLink
                               to="/management-get-did"
                               onClick={backToTop}
@@ -381,7 +381,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">New Get DID</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>
@@ -1456,14 +1456,14 @@ function Navbar() {
                             </NavLink>
                           </li>
                           <li className="tabItem">
-                              <NavLink
-                                to="/billing-card-and-wallet"
-                                onClick={backToTop}
-                                className="nav-link"
-                              >
-                                <div className="itemTitle">Card and Wallet</div>
-                              </NavLink>
-                            </li>
+                            <NavLink
+                              to="/billing-card-and-wallet"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="itemTitle">Card and Wallet</div>
+                            </NavLink>
+                          </li>
                           {checkViewSidebar(
                             "ChannelHangupComplete",
                             permissions,
