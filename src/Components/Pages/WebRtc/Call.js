@@ -156,7 +156,7 @@ function Call({
     setDialpadShow(value);
   }
   console.log(startDateFlag, endDateFlag, filterBy);
-  
+
   useEffect(() => {
     if (filterBy === "date") {
       setStartDate(startDateFlag);
@@ -703,7 +703,7 @@ function Call({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -766,7 +766,7 @@ function Call({
                           </li>
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

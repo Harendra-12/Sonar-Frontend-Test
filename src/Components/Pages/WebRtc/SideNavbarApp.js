@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider } from "modify-react-sipjs";
-import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
+import LogOutPopUp from "./LogOutPopUp";
+import { CircularProgress } from "@mui/material";
 
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
@@ -13,6 +15,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
   const isCustomerAdmin = account?.email == accountDetails?.email;
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
+  const [allLogOut, setAllLogOut] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+
   useEffect(() => {
     if (connectStatus === "CONNECTED") {
       if (registerStatus === "UNREGISTERED") {
@@ -20,206 +28,274 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       }
     }
   }, [connectStatus, registerStatus])
+
+  // Function to handle logout
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section>
-      <style>
-        {`#sidenNav{
+    <>
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
+      {loading && <CircularProgress />}
+      <section>
+        <style>
+          {`#sidenNav{
         display:none;
       }`}
-      </style>
-      <div id="sidenNavApp">
-        <div className="sidenavItems">
-          <ul>
-            <li className="mb-2">
-              <button className="navItem">
+        </style>
+        <div id="sidenNavApp">
+          <div className="sidenavItems">
+            <ul>
+              <li className="mb-2">
+                <div type="button" data-bs-toggle="dropdown" className="newHeader">
+                  <button className="navItem">
+                    <div
+                      className="profileHolder"
+                      id={
+                        connectStatus === "CONNECTED"
+                          ? "profileOnlineNav"
+                          : "profileOfflineNav"
+                      }
+                    >
+                      {account?.profile_picture ?
+                        <img src={account?.profile_picture} /> : (
+                          <i className="fa-light fa-user"></i>
+                        )}
+                      {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
+                    </div>
+                    <div className="userTitle">
+                      <h5>{account?.username}</h5>
+                      <p>Ext- {extension}</p>
+                    </div>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li
+                      onClick={() => {
+                        if (allCallCenterIds.length > 0) {
+                          setAllLogOut(true);
+                        } else {
+                          handleLogOut();
+                        }
+                      }}
+                    >
+                      <div
+                        className="dropdown-item"
+                        style={{ cursor: "pointer" }}
+                      >
+                        Logout
+                      </div>
+                    </li>
+                    <li
+                      onClick={() => {
+                        sessionManager.disconnect();
+                      }}
+                    >
+                      <div
+                        className="dropdown-item"
+                        style={{ cursor: "pointer" }}
+                      >
+                        Disconnect
+                      </div>
+                    </li>
+                    <li
+                      onClick={() => {
+                        sessionManager.connect();
+                      }}
+                    >
+                      <div
+                        className="dropdown-item"
+                        style={{ cursor: "pointer" }}
+                      >
+                        Reconnect
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </li>{" "}
+              <li style={{ cursor: "pointer" }}>
                 <div
-                  className="profileHolder"
-                  id={
-                    connectStatus === "CONNECTED"
-                      ? "profileOnlineNav"
-                      : "profileOfflineNav"
+                  onClick={() => setactivePage("call")}
+                  className={activePage === "call" ? "navItem active" : "navItem"}
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-phone" />
+                  </div>
+                  <div className="itemTitle">Calls</div>
+                </div>
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("messages")}
+                  className={
+                    activePage === "messages" ? "navItem active" : "navItem"
                   }
                 >
-                  {account?.profile_picture ?
-                    <img src={account?.profile_picture} /> : (
-                      <i className="fa-light fa-user"></i>
-                    )}
-                  {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
+                  <div className="iconHolder">
+                    <i className="fa-regular fa-comment"></i>
+                  </div>
+                  <div className="itemTitle">Messages</div>
                 </div>
-                <div className="userTitle">
-                  <h5>{account?.username}</h5>
-                  <p>Ext- {extension}</p>
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("all-voice-mails")}
+                  className={
+                    activePage === "all-voice-mails"
+                      ? "navItem active"
+                      : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-voicemail" />
+                  </div>
+                  <div className="itemTitle">Voicemails</div>
                 </div>
-              </button>
-            </li>{" "}
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("call")}
-                className={activePage === "call" ? "navItem active" : "navItem"}
-              >
-                <div className="iconHolder">
-                  <i className="fa-light fa-phone" />
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("e-fax")}
+                  className={
+                    activePage === "e-fax" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-regular fa-paper-plane"></i>
+                  </div>
+                  <div className="itemTitle">Fax </div>
                 </div>
-                <div className="itemTitle">Calls</div>
-              </div>
-            </li>
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("messages")}
-                className={
-                  activePage === "messages" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-regular fa-comment"></i>
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={featureUnderdevelopment}
+                  className="navItem "
+                >
+                  <div className="iconHolder">
+                    <i className="fa-regular fa-envelope"></i>
+                  </div>
+                  <div className="itemTitle">Email</div>
                 </div>
-                <div className="itemTitle">Messages</div>
-              </div>
-            </li>
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("all-voice-mails")}
-                className={
-                  activePage === "all-voice-mails"
-                    ? "navItem active"
-                    : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-light fa-voicemail" />
-                </div>
-                <div className="itemTitle">Voicemails</div>
-              </div>
-            </li>
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("e-fax")}
-                className={
-                  activePage === "e-fax" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-regular fa-paper-plane"></i>
-                </div>
-                <div className="itemTitle">Fax </div>
-              </div>
-            </li>
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={featureUnderdevelopment}
-                className="navItem "
-              >
-                <div className="iconHolder">
-                  <i className="fa-regular fa-envelope"></i>
-                </div>
-                <div className="itemTitle">Email</div>
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => setactivePage("all-contacts")}
-                className={
-                  activePage === "all-contacts" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-light fa-address-book" />
-                </div>
-                <div className="itemTitle">Contacts</div>
-              </div>
-            </li>
-            {account?.user_role?.roles?.name !== "Agent" ?
+              </li>
               <li>
                 <div
-                  // to="/call-dashboard"
-                  onClick={() => setactivePage("call-dashboard")}
+                  onClick={() => setactivePage("all-contacts")}
                   className={
-                    activePage === "call-dashboard" ? "navItem active" : "navItem"
+                    activePage === "all-contacts" ? "navItem active" : "navItem"
                   }
                 >
                   <div className="iconHolder">
-                    <i className="fa-solid fa-headset"></i>
+                    <i className="fa-light fa-address-book" />
                   </div>
-                  <div className="itemTitle">Call Dashboard</div>
+                  <div className="itemTitle">Contacts</div>
                 </div>
               </li>
-              : ""}
-            <li style={{ cursor: "pointer" }}>
-              <div
-                // to="/call-center"
-                onClick={() => setactivePage("call-center")}
-                className={
-                  activePage === "call-center" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i className="fa-light fa-circle-user" />
-                </div>
-                <div className="itemTitle">Call Center</div>
-              </div>
-            </li>
-            {isCustomerAdmin &&
+              {account?.user_role?.roles?.name !== "Agent" ?
+                <li>
+                  <div
+                    // to="/call-dashboard"
+                    onClick={() => setactivePage("call-dashboard")}
+                    className={
+                      activePage === "call-dashboard" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-solid fa-headset"></i>
+                    </div>
+                    <div className="itemTitle">Call Dashboard</div>
+                  </div>
+                </li>
+                : ""}
               <li style={{ cursor: "pointer" }}>
                 <div
-                  onClick={() => setactivePage("conference")}
+                  // to="/call-center"
+                  onClick={() => setactivePage("call-center")}
                   className={
-                    activePage === "conference" ? "navItem active" : "navItem"
+                    activePage === "call-center" ? "navItem active" : "navItem"
                   }
                 >
                   <div className="iconHolder">
-                    <i className="fa-solid fa-users-viewfinder"></i>
+                    <i className="fa-light fa-circle-user" />
                   </div>
-                  <div className="itemTitle">Conference</div>
+                  <div className="itemTitle">Call Center</div>
                 </div>
               </li>
-            }
-            {account?.user_role?.roles?.name !== "Agent" || isCustomerAdmin ?
+              {isCustomerAdmin &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("conference")}
+                    className={
+                      activePage === "conference" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-solid fa-users-viewfinder"></i>
+                    </div>
+                    <div className="itemTitle">Conference</div>
+                  </div>
+                </li>
+              }
+              {account?.user_role?.roles?.name !== "Agent" || isCustomerAdmin ?
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => navigate('/dashboard')}
+                    className="navItem"
+                  >
+                    <div className="iconHolder">
+                      <i className="fa-light fa-screwdriver-wrench"></i>
+                    </div>
+                    <div className="itemTitle">Switch Admin</div>
+                  </div>
+                </li> : ""}
+
               <li style={{ cursor: "pointer" }}>
                 <div
-                  onClick={() => navigate('/dashboard')}
-                  className="navItem"
+                  onClick={() => setactivePage("whatsapp-chartbox")}
+                  className={
+                    activePage === "whatsapp" ? "navItem active" : "navItem"
+                  }
                 >
                   <div className="iconHolder">
-                    <i className="fa-light fa-screwdriver-wrench"></i>
+                    <i class="fa-brands fa-whatsapp"></i>
                   </div>
-                  <div className="itemTitle">Switch Admin</div>
+                  <div className="itemTitle">WhatsApp</div>
                 </div>
-              </li> : ""}
+              </li>
 
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("whatsapp-chartbox")}
-                className={
-                  activePage === "whatsapp" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i class="fa-brands fa-whatsapp"></i>
+
+
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  onClick={() => setactivePage("sms-chatbox")}
+                  className={
+                    activePage === "sms-chatbox" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i class="fa-solid fa-comment-sms"></i>
+                  </div>
+                  <div className="itemTitle">SMS</div>
                 </div>
-                <div className="itemTitle">WhatsApp</div>
-              </div>
-            </li>
+              </li>
 
-
-
-            <li style={{ cursor: "pointer" }}>
-              <div
-                onClick={() => setactivePage("sms-chatbox")}
-                className={
-                  activePage === "sms-chatbox" ? "navItem active" : "navItem"
-                }
-              >
-                <div className="iconHolder">
-                  <i class="fa-solid fa-comment-sms"></i>
-                </div>
-                <div className="itemTitle">SMS</div>
-              </div>
-            </li>
-
-          </ul>
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

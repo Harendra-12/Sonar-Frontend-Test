@@ -1169,7 +1169,7 @@ function Messages({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -1206,17 +1206,9 @@ function Messages({
                               Logout
                             </div>
                           </li>
-                          {/* <li onClick={() => navigate("/my-profile")}>
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Profile
-                            </div>
-                          </li> */}
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
