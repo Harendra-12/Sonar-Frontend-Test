@@ -373,7 +373,7 @@ function Navbar() {
                               </li>
                             )}
 
-                          {/* <li className="tabItem">
+                          <li className="tabItem">
                             <NavLink
                               to="/management-get-did"
                               onClick={backToTop}
@@ -381,7 +381,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">New Get DID</div>
                             </NavLink>
-                          </li> */}
+                          </li>
                         </ul>
                       </div>
                     </div>
