@@ -285,6 +285,7 @@ function Navbar() {
                           "/port-number-add",
                           "/port-number-edit",
                           "/did-listing",
+                          "/management-get-did",
                         ])
                           ? "true"
                           : "false"
@@ -304,6 +305,7 @@ function Navbar() {
                         "/port-number-add",
                         "/port-number-edit",
                         "/did-listing",
+                        "/management-get-did",
                       ])
                         ? "show"
                         : ""
@@ -370,6 +372,16 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+
+                          <li className="tabItem">
+                            <NavLink
+                              to="/management-get-did"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="itemTitle">New Get DID</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -1333,7 +1345,8 @@ function Navbar() {
                           "/wallet-transaction-list",
                           "/billing-report",
                           "/subscription-management",
-                          "/rate-card"
+                          "/rate-card",
+                          "/billing-card-and-wallet"
                         ])
                           ? "true"
                           : "false"
@@ -1353,7 +1366,8 @@ function Navbar() {
                         "/wallet-transaction-list",
                         "/billing-report",
                         "/subscription-management",
-                        "/rate-card"
+                        "/rate-card",
+                        "/billing-card-and-wallet"
                       ])
                         ? "show"
                         : ""
@@ -1439,6 +1453,15 @@ function Navbar() {
                               onClick={() => backToTop()}
                             >
                               <div className="itemTitle">Subscription</div>
+                            </NavLink>
+                          </li>
+                          <li className="tabItem">
+                            <NavLink
+                              to="/billing-card-and-wallet"
+                              onClick={backToTop}
+                              className="nav-link"
+                            >
+                              <div className="itemTitle">Card and Wallet</div>
                             </NavLink>
                           </li>
                           {checkViewSidebar(
