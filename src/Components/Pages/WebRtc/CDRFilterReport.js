@@ -103,6 +103,26 @@ function CdrFilterReport({ page }) {
     "call_cost",
     "id",
   ]);
+
+  useEffect(() => {
+    if (page === "billing") {
+      setShowKeys([
+        "Call-Direction",
+        "Caller-Orig-Caller-ID-Name",
+        "variable_sip_from_user",
+        "tag",
+        "application_state",
+        "application_state_to_ext",
+        "e_name",
+        "Date",
+        "Time",
+        "variable_billsec",
+        // "variable_sip_to_user",
+        "call_cost",
+        "id",
+      ])
+    }
+  }, [])
   const locationState = useLocation();
 
   const thisAudioRef = useRef(null);
@@ -958,7 +978,7 @@ function CdrFilterReport({ page }) {
                         ) : (
                           ""
                         )}
-                        {page === "callrecording" &&
+                        {page === "billing" ||
                           !filteredKeys.includes("Hangup-Cause") ? (
                           ""
                         ) : (
@@ -1164,16 +1184,20 @@ function CdrFilterReport({ page }) {
                                   }
                                   return null;
                                 })}
-                                <th>Block</th>
-                                <th>Note</th>
-                                <th>Duplicate</th>
+                                {page !== "billing" &&
+                                  <>
+                                    <th>Block</th>
+                                    <th>Note</th>
+                                    <th>Duplicate</th>
+                                  </>
+                                }
                               </tr>
                             </thead>
 
                             <tbody>
                               {loading ? (
                                 <SkeletonTableLoader
-                                  col={showKeys.length + 1}
+                                  col={page === "billing" ? showKeys.length : showKeys.length + 3}
                                   row={12}
                                 />
                               ) : (
@@ -1365,72 +1389,76 @@ function CdrFilterReport({ page }) {
                                             }
                                             return null;
                                           })}
-
-                                          <td>
-                                            {
-                                              (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
+                                          {page !== "billing" &&
+                                            <>
+                                              <td>
+                                                {
+                                                  (item["Call-Direction"] === "inbound" || item["Call-Direction"] === "outbound") ?
+                                                    <button
+                                                      disabled={isBlocked}
+                                                      effect="ripple"
+                                                      className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                        } ms-0`}
+                                                      style={{
+                                                        height: "34px",
+                                                        width: "34px",
+                                                      }}
+                                                      onClick={() => {
+                                                        setSelectedNumberToBlock(
+                                                          item["Call-Direction"] ===
+                                                            "inbound"
+                                                            ? item[
+                                                            "Caller-Caller-ID-Number"
+                                                            ]
+                                                            : item["Call-Direction"] ===
+                                                              "outbound"
+                                                              ? item[
+                                                              "Caller-Callee-ID-Number"
+                                                              ]
+                                                              : "N/A"
+                                                        );
+                                                        setPopUp(true);
+                                                      }}
+                                                    >
+                                                      <Tippy
+                                                        content={
+                                                          isBlocked
+                                                            ? "Blocked"
+                                                            : "Block"
+                                                        }
+                                                      >
+                                                        <i className="fa-solid fa-ban"></i>
+                                                      </Tippy>
+                                                    </button>
+                                                    : ""}
+                                              </td>
+                                              <td>
                                                 <button
-                                                  disabled={isBlocked}
-                                                  effect="ripple"
-                                                  className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                    } ms-0`}
-                                                  style={{
-                                                    height: "34px",
-                                                    width: "34px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setSelectedNumberToBlock(
-                                                      item["Call-Direction"] ===
-                                                        "inbound"
-                                                        ? item[
-                                                        "Caller-Caller-ID-Number"
-                                                        ]
-                                                        : item["Call-Direction"] ===
-                                                          "outbound"
-                                                          ? item[
-                                                          "Caller-Callee-ID-Number"
-                                                          ]
-                                                          : "N/A"
-                                                    );
-                                                    setPopUp(true);
-                                                  }}
+                                                  className={`tableButton ms-0`}
+                                                  onClick={() =>
+                                                    setSelectedCdr(item.id)
+                                                  }
                                                 >
-                                                  <Tippy
-                                                    content={
-                                                      isBlocked
-                                                        ? "Blocked"
-                                                        : "Block"
-                                                    }
-                                                  >
-                                                    <i className="fa-solid fa-ban"></i>
+                                                  <Tippy content={"View Note"}>
+                                                    <i className="fa-solid fa-comment-dots"></i>
                                                   </Tippy>
                                                 </button>
-                                                : ""}
-                                          </td>
-                                          <td>
-                                            <button
-                                              className={`tableButton ms-0`}
-                                              onClick={() =>
-                                                setSelectedCdr(item.id)
-                                              }
-                                            >
-                                              <Tippy content={"View Note"}>
-                                                <i className="fa-solid fa-comment-dots"></i>
-                                              </Tippy>
-                                            </button>
-                                          </td>
-                                          <td>
-                                            {item?.duplicated == 1 && <button
-                                              className={`tableButton edit ms-0`}
-                                              onClick={
-                                                () => duplicateColumn(item)
-                                              }
-                                            >
-                                              <Tippy content={"View Duplicate"}>
-                                                <i className="fa-solid fa-clone"></i>
-                                              </Tippy>
-                                            </button>}
-                                          </td>
+                                              </td>
+                                              <td>
+                                                {item?.duplicated == 1 && <button
+                                                  className={`tableButton edit ms-0`}
+                                                  onClick={
+                                                    () => duplicateColumn(item)
+                                                  }
+                                                >
+                                                  <Tippy content={"View Duplicate"}>
+                                                    <i className="fa-solid fa-clone"></i>
+                                                  </Tippy>
+                                                </button>}
+                                              </td>
+                                            </>
+                                          }
+
                                         </tr>
                                         {currentPlaying ===
                                           item["recording_path"] &&
