@@ -138,7 +138,7 @@ function SmsChat({ setLoading, loading }) {
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -200,7 +200,7 @@ function SmsChat({ setLoading, loading }) {
                           </li>
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

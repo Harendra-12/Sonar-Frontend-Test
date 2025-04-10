@@ -208,7 +208,7 @@ const Extensions = () => {
                       <div className="searchBox">
                         <label>Search:</label>
                         <input
-                          type="text"
+                          type="search"
                           value={searchValue}
                           className="formItem"
                           onChange={(e) => setSearchValue(e.target.value)}

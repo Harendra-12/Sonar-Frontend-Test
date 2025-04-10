@@ -62,10 +62,8 @@ function CallDesposition() {
                                             <div className="searchBox">
                                                 <label>Search:</label>
                                                 <input
-                                                    type="text"
-
+                                                    type="search"
                                                     className="formItem"
-
                                                 />
                                             </div>
                                         </div>

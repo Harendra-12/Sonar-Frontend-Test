@@ -2,6 +2,7 @@ import axios from "axios";
 import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
+let sessionExpiredToastShown = false
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -64,6 +65,15 @@ export async function generalGetFunction(endpoint) {
         loading: false,
       });
       if (err.response?.status === 401) {
+        if (!sessionExpiredToastShown) {
+          sessionExpiredToastShown = true;
+          toast.error("Session expired. Please login again.");
+
+          // Optional: reset the flag after a delay (e.g., 5s)
+          setTimeout(() => {
+            sessionExpiredToastShown = false;
+          }, 5000);
+        }
         handleNavigation("/");
         localStorage.clear();
         setAuthToken(null);
@@ -134,6 +144,7 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
+        toast.error("Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
@@ -184,6 +195,7 @@ export async function generalPutFunction(endpoint, data) {
         toast.error(err.response.data.message);
       }
       if (err.response.status === 401) {
+        toast.error("Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -217,6 +229,7 @@ export async function generalDeleteFunction(endpoint) {
         );
       }
       if (err.response.status === 401) {
+        toast.error("Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -283,6 +296,7 @@ export async function generatePreSignedUrl(name) {
         );
       }
       if (err.response.status === 401) {
+        toast.error("Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");

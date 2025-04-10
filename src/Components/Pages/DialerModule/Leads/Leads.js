@@ -80,7 +80,6 @@ function Leads() {
                                                 <input
                                                     type="search"
                                                     name="Search"
-                                                    placeholder="Search"
                                                     className="formItem"
                                                 // onChange={() => featureUnderdevelopment()}
                                                 />

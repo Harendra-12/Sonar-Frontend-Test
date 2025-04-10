@@ -1,7 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
+import { backToTop, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { useNavigate } from "react-router-dom";
+import PaginationComponent from "../../CommonComponents/PaginationComponent";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
+import { toast } from "react-toastify";
 
 function DialerCdrReport() {
+  const navigate = useNavigate();
+  const [filteredData, setFilteredData] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function getAllData() {
+    setLoading(true);
+    try {
+      const response = await generalGetFunction(`/campaign/cdr?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${searchQuery}`);
+      if (response.status) {
+        setFilteredData(response.data);
+      } else {
+        toast.error(response.message);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }
+
+  // Call getAllData when pageNumber, itemsPerPage, or searchQuery changes
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      getAllData()
+    } else {
+      const delay = setTimeout(() => {
+        getAllData();
+      }, 500);
+
+      return () => clearTimeout(delay);
+    }
+  }, [pageNumber, itemsPerPage, searchQuery])
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -18,20 +59,25 @@ function DialerCdrReport() {
                         <p>Here are all the Dialer CDR Reports</p>
                       </div>
                       <div className="buttonGroup">
-                        <button effect="ripple" className="panelButton gray">
+                        <button className="panelButton gray"
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                        >
                           <span className="text">Back</span>
                           <span className="icon">
                             <i className="fa-solid fa-caret-left" />
                           </span>
                         </button>
-                        <button effect="ripple" className="panelButton">
+                        <button className="panelButton" onClick={getAllData}>
                           <span className="text">Refresh</span>
                           <span className="icon">
                             <i className="fa-regular fa-arrows-rotate fs-5" />
                           </span>
                         </button>
                         <div className="dropdown">
-                          <button effect="ripple" className="panelButton">
+                          <button className="panelButton" onClick={() => featureUnderdevelopment()}>
                             <span className="text">Export</span>
                             <span className="icon">
                               <i className="fa-solid fa-file-export" />
@@ -48,19 +94,29 @@ function DialerCdrReport() {
                     <div className="tableHeader">
                       <div className="showEntries">
                         <label>Show</label>
-                        <select className="formItem">
+                        <select className="formItem"
+                          value={itemsPerPage}
+                          onChange={(e) => {
+                            setItemsPerPage(e.target.value);
+                          }}
+                        > <option value={10}>10</option>
                           <option value={20}>20</option>
                           <option value={30}>30</option>
-                          <option value={40}>40</option>
-                          <option value={50}>50</option>
-                          <option value={60}>60</option>
-                          <option value={70}>70</option>
-                          <option value={80}>80</option>
                         </select>
                         <label>entries</label>
                       </div>
+                      <div className="searchBox position-relative">
+                        <label>Search:</label>
+                        <input
+                          type="search"
+                          name="Search"
+                          value={searchQuery}
+                          className="formItem"
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
                     </div>
-                    <div className="tableHeader">
+                    {/* <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
                         <div className="formRow border-0">
                           <label className="formLabel text-start mb-0 w-100">
@@ -206,51 +262,61 @@ function DialerCdrReport() {
                           </select>
                         </div>
                       </div>
-                    </div>
-                    <div className="tableContainer">
+                    </div> */}
+                    <div className="tableContainer mt-3">
                       <table>
                         <thead>
                           <tr style={{ whiteSpace: "nowrap" }}>
                             <th>#</th>
-                            <th>Time</th>
-
-                            <th>Lead ID</th>
-                            <th>Lead Tries</th>
-                            <th>Hangup Cause</th>
+                            <th>Agent Name</th>
+                            <th>Extension</th>
+                            <th>Campaign Name</th>
+                            <th>Customer Name</th>
+                            <th>Customer Number</th>
                             <th>Duration</th>
-                            <th>Agents id </th>
-                            <th>AgentExtension</th>
-                            <th>AgentDisposition</th>
+                            <th>Hangup Cause</th>
+                            <th>Date</th>
+                            <th>Time</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="cdrTableRow">
-                            <td>1</td>
-                            <td>6:42:49 PM</td>
-                            <td>101</td>
-                            <td>1000</td>
-                            <td>USER_NOT_REGISTERED</td>
-                            <td>00:00:02</td>
-                            <td>1002</td>
-                            <td>45878</td>
-                            <td>5</td>
-                          </tr>
+                          {filteredData?.data?.length > 0 ? (
+                            filteredData?.data?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{item.agent}</td>
+                                <td>{item.extension}</td>
+                                <td>{item.campaign_title}</td>
+                                <td>{item.customer}</td>
+                                <td>{item.phone_number}</td>
+                                <td>{item.duration}</td>
+                                <td>{item.hangup_cause}</td>
+                                <td>{item.created_time.split(" ")[0]}</td>
+                                <td>{formatTimeWithAMPM(item.created_time.split(" ")[1])}</td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={99} className="text-center">
+                                <EmptyPrompt generic={true} />
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
                     <div className="tableHeader mb-3">
-                      <label
-                        className="col-6"
-                        style={{
-                          fontFamily: "Roboto",
-                          color: "var(--color-subtext)",
-                          fontWeight: 500,
-                          fontSize: 14,
-                        }}
-                      >
-                        Showing 1 to 20 of 81 Entries.
-                      </label>
-                     
+                      {filteredData && filteredData?.data?.length > 0 ? (
+                        <PaginationComponent
+                          pageNumber={(e) => setPageNumber(e)}
+                          totalPage={filteredData.last_page}
+                          from={filteredData.from}
+                          to={filteredData.to}
+                          total={filteredData.total}
+                        />
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>

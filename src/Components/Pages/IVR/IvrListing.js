@@ -118,11 +118,11 @@ const IvrListing = () => {
                             <i className="fa-solid fa-caret-left"></i>
                           </span>
                         </button>
-                        {  checkViewSidebar(
-                                        "IvrMaster",
-                                        slugPermissions,
-                                        account?.permissions, "add"
-                                      ) ? (
+                        {checkViewSidebar(
+                          "IvrMaster",
+                          slugPermissions,
+                          account?.permissions, "add"
+                        ) ? (
                           <Link
                             to="/ivr-add"
                             onClick={backToTop}
@@ -169,11 +169,10 @@ const IvrListing = () => {
                       <div className="searchBox position-relative">
                         <label>Search:</label>
                         <input
-                          type="text"
+                          type="search"
                           name="Search"
                           className="formItem"
                           value={userInput}
-                          placeholder="Search"
                           onChange={(e) => setuserInput(e.target.value)}
                         />
                       </div>
@@ -347,33 +346,33 @@ const IvrListing = () => {
                         </span>
                       </button>
                     ) : (
-                      
+
                       <button
                         className="panelButton gray m-0 float-end"
                         onClick={() => {
                           setPopUp(false);
                         }}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-xmark"></i>
-                          </span>
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
                       </button>
                     )}
-  <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => {
-                          setPopUp(false);
-                          setDeleteId("");
-                          // setDeleteToggle(false);
-                        }}
-                        >
-                          <span className="text">Cancel</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-xmark"></i>
-                          </span>
-                      </button>
-                   
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => {
+                        setPopUp(false);
+                        setDeleteId("");
+                        // setDeleteToggle(false);
+                      }}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+
                   </div>
                 </div>
               </div>

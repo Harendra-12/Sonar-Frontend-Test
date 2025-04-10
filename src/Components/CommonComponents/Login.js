@@ -464,7 +464,7 @@ export function LoginComponent() {
                     {logInDetails?.map((item) => {
                       return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
                         <div>
-                          {item?.platform} - {item?.browser}
+                          {item?.platform} - {item?.browser} - {item?.ip_address}
                           <p style={{ fontSize: '0.75rem', marginBottom: '0' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
                         </div>
                         <div>
