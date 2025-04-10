@@ -698,7 +698,7 @@ const NewGetDid = () => {
                             </div>
                             <div className='getPopup checkout'>
                                 <div className="wrapper ">
-                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2'>
+                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2 noScrollbar buyDid'>
                                         <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
                                             <li className="my-0 col mb-0 position-relative">
                                                 <i
