@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Rnd } from "react-rnd";
 
 const GoogleTranslate = () => {
     useEffect(() => {
@@ -51,7 +52,39 @@ const GoogleTranslate = () => {
         };
     }, []);
 
-    return <div id="google_translate_element"></div>;
+    return (
+        // <Rnd
+        //     minWidth={"300px"}
+        //     minHeight={"450px"}
+        //     maxWidth={"300px"}
+        //     maxHeight={"450px"}
+        //     dragHandleClassName="drag-handle" // Specify draggable area
+        // >
+        //     <div
+        //         style={{
+        //             background: "transparent",
+        //             position: "relative",
+        //             zIndex: "999",
+        //         }}
+        //     >
+        //         {/* Draggable Top Area */}
+        //         <div
+        //             id="google_translate_element"
+        //             className="drag-handle"
+        //             style={{
+        //                 position: "absolute",
+        //                 top: "35px",
+        //                 width: "100%",
+        //                 height: "105px",
+        //                 zIndex: "999999",
+        //                 background: "transparent",
+        //                 cursor: "move",
+        //             }}
+        //         ></div>
+        //     </div>
+        // </Rnd>
+        <div  id="google_translate_element"></div>
+    );
 };
 
 export default GoogleTranslate;

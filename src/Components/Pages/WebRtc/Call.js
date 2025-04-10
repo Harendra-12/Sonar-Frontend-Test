@@ -50,11 +50,11 @@ function Call({
   loading,
   isLoading
 
+
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const [dialpadShow, setDialpadShow] = useState(false);
-  // const [clickStatus, setClickStatus] = useState("all");
   const videoCall = useSelector((state) => state.videoCall);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -63,24 +63,14 @@ function Call({
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [loading, setLoading] = useState(true);
-  // const [allApiData, setAllApiData] = useState([]);
   const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
   // const [refreshCalls, setRefreshCalls] = useState(0);
   const [clickedExtension, setClickedExtension] = useState(null);
   const targetRef = useRef(null); // Reference to the target div
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [data, setData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [rawData, setRawData] = useState([]);
-  // const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
-  // const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
-  // const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
@@ -89,44 +79,6 @@ function Call({
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     if (currentPage === 1) {
-  //       setLoading(true);
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //     const basePaths = {
-  //       all: "/call-details-phone",
-  //       incoming: "/cdr/inbound",
-  //       outgoing: "/cdr/outbound",
-  //       missed: "/cdr/missed",
-  //     };
-  //     const basePath = basePaths[clickStatus] || "";
-  //     if (basePath) {
-  //       const dateParam =
-  //         filterBy === "date" || startDate == "" || endDate == ""
-  //           ? `date=${startDate}`
-  //           : `date_range=${startDate},${endDate}`;
-  //       const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
-  //       const apiData = await generalGetFunction(url);
-
-  //       if (apiData.status) {
-  //         setAllApiData(apiData.data.data?.reverse());
-  //         const result = apiData.data.data?.reverse() || [];
-  //         setRawData(apiData.data);
-  //         setData([...data, ...result]);
-  //         setLoading(false);
-  //         setIsLoading(false);
-  //       } else {
-  //         setLoading(false);
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   }
-  //   fetchData();
-  // }, [currentPage, startDate, endDate, searchQuery, clickStatus, refreshCalls]);
-
   const callListRef = useRef(null);
   const handleScroll = () => {
     const div = callListRef.current;
@@ -155,7 +107,6 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-  console.log(startDateFlag, endDateFlag, filterBy);
   
   useEffect(() => {
     if (filterBy === "date") {

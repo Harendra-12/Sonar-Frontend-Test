@@ -6,6 +6,7 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { featureUnderdevelopment } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 
+
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -20,6 +21,25 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       }
     }
   }, [connectStatus, registerStatus])
+
+  useEffect(() => {
+    const userAgent = sessionManager?.userAgent;
+
+    if (!userAgent || !userAgent.transport) {
+      console.warn("UserAgent or transport not ready yet");
+      return;
+    }
+
+    const handleTransportStateChange = (state) => {
+      console.log("🚦 Transport state changed:", state);
+    };
+
+    userAgent.transport.stateChange.addListener(handleTransportStateChange);
+
+    return () => {
+      userAgent.transport.stateChange.removeListener(handleTransportStateChange);
+    };
+  }, [sessionManager]);
   return (
     <section>
       <style>

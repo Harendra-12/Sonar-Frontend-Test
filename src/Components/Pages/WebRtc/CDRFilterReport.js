@@ -1287,12 +1287,12 @@ function CdrFilterReport({ page }) {
                                                       item["Call-Direction"] ===
                                                         "inbound"
                                                         ? item[
-                                                        "Caller-Caller-ID-Number"
+                                                        "variable_sip_from_user"
                                                         ]
                                                         : item["Call-Direction"] ===
                                                           "outbound"
                                                           ? item[
-                                                          "Caller-Callee-ID-Number"
+                                                          "variable_sip_to_user"
                                                           ]
                                                           : "N/A"
                                                     );
