@@ -108,7 +108,7 @@ function CdrFilterReport({ page }) {
     if (page === "billing") {
       setShowKeys([
         "Call-Direction",
-        "Caller-Orig-Caller-ID-Name",
+        // "Caller-Orig-Caller-ID-Name",
         "variable_sip_from_user",
         "tag",
         "application_state",
@@ -122,7 +122,8 @@ function CdrFilterReport({ page }) {
         "id",
       ])
     }
-  }, [])
+  }, [page])
+
   const locationState = useLocation();
 
   const thisAudioRef = useRef(null);
