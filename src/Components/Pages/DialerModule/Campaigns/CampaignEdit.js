@@ -32,7 +32,6 @@ function CampaignCreate() {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [completedStep, setCompletedStep] = useState(0);
-  // const [campaignId, setCampaignId] = useState("");
   const [selectedAgent, setSelectedAgent] = useState([]);
   const [newFile, setNewFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -128,7 +127,7 @@ function CampaignCreate() {
 
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
-        setSelectedDisposition(getDid.data.disposition.map((item) => (item.id)));
+        setSelectedDisposition(getDid.data.disposition.map((item) =>{return ({id:item.disposition_id , rechain:item.rechain})}));
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
@@ -324,7 +323,7 @@ function CampaignCreate() {
         setLoading(false);
       }
     } else {
-      const payload = { ...data, campaign_id: value };
+      const payload = { ...data, campaign_id: value, dispositions: selectedDesposition };
       setLoading(true);
       const apiData = await generalPutFunction(
         `/dialer-setting/update/${editState.dialer.id}`,
@@ -448,8 +447,27 @@ function CampaignCreate() {
   // Handel selcetd desposition change
   function handleDispositionChange(id) {
     // If id is present then remove it if not add it
-    setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
+    // setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
+
+    setSelectedDisposition((prevSelected) => prevSelected.filter((item)=> item.id === id).length>0? prevSelected.filter((item)=> item.id !== id) : [...prevSelected , {id:id , rechain:0}])
   }
+
+  
+  // Function to handle rechain checkbox change
+  function handleDispositionRechainChange(id) {
+    console.log("id", id);
+    
+    setSelectedDisposition((prevSelected) => prevSelected.filter((item)=> item.id === id).length>0? prevSelected.map((item)=> {
+      if(item.id === id){
+        return {...item , rechain:item.rechain===0?1:0}
+      }else{
+        return item
+      }
+    }) : [...prevSelected , {id:id , rechain:false}])
+  }
+
+  console.log("selectedDesposition", selectedDesposition);
+  
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -466,22 +484,6 @@ function CampaignCreate() {
                         <p>Edit existing campaign</p>
                       </div>
                       <div className="buttonGroup">
-                        {/* <div className='d-flex align-items-center'>
-                                                    <div className="formLabel py-0 me-2">
-                                                        <label for="selectFormRow">Enabled</label>
-                                                    </div>
-                                                    <div className="my-auto position-relative mx-1">
-                                                        <label className="switch">
-                                                            <input
-                                                                type="checkbox"
-                                                                id="showAllCheck"
-                                                                {...register("status", {
-                                                                })}
-                                                            />
-                                                            <span className="slider round" />
-                                                        </label>
-                                                    </div>
-                                                </div> */}
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -552,9 +554,9 @@ function CampaignCreate() {
                             <li
                               className={stepSelector === 2 && "active"}
                               onClick={() => {
-                                if (completedStep > 0) {
+                                // if (completedStep > 0) {
                                   setStepSelector(2);
-                                }
+                                // }
                               }}
                             >
                               <div
@@ -573,9 +575,9 @@ function CampaignCreate() {
                             <li
                               className={stepSelector === 3 && "active"}
                               onClick={() => {
-                                if (completedStep > 1) {
+                                // if (completedStep > 1) {
                                   setStepSelector(3);
-                                }
+                                // }
                               }}
                             >
                               <div
@@ -594,9 +596,9 @@ function CampaignCreate() {
                             <li
                               className={stepSelector === 4 && "active"}
                               onClick={() => {
-                                if (completedStep > 2) {
+                                // if (completedStep > 2) {
                                   setStepSelector(4);
-                                }
+                                // }
                               }}
                             >
                               <div
@@ -1331,7 +1333,7 @@ function CampaignCreate() {
                                                   <label className="switch">
                                                     <input
                                                       type="checkbox"
-                                                      checked={selectedDesposition.includes(item.id)}
+                                                      checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
                                                       id="showAllCheck"
                                                       onChange={() => handleDispositionChange(item.id)}
                                                     />
@@ -1341,13 +1343,15 @@ function CampaignCreate() {
                                               </div>
                                               <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                               <div className="contactTags">
-                                                <span data-id={dispoState.state === 'retry' ? '0' : "none"}>
+                                                <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '0' : '1'}`}  onClick={() =>selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id):""}> Rechain </span>
+
+                                                {/* <span >
                                                   Retry
                                                   <input type="radio" name={`dispoState${index}`}
                                                     style={{ width: '100%', height: '100%', opacity: '0', position: 'absolute', top: '0', left: '0' }}
                                                     value="retry"
-                                                    checked={dispoState.state === 'retry'}
-                                                    onChange={(e) => setDispoState((prev) => ({ ...prev, name: item.name, id: item.id, state: e.target.value }))}
+                                                    checked={selectedDesposition.filter((dispo) => dispo.id == item.id)?.[0]?.rechain}
+                                                    onChange={(e) => handleDispositionRechainChange(item.id)}
                                                   />
                                                 </span>
                                                 <span data-id={dispoState.state === 'final' ? '1' : "none"}>
@@ -1358,9 +1362,7 @@ function CampaignCreate() {
                                                     checked={dispoState.state === 'final'}
                                                     onChange={(e) => setDispoState((prev) => ({ ...prev, name: item.name, id: item.id, state: e.target.value }))}
                                                   />
-                                                </span>
-                                                {console.log(dispoState)
-                                                }
+                                                </span> */}
                                               </div>
                                             </div>
                                           </div>

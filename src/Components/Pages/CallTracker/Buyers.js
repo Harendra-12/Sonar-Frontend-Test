@@ -11,7 +11,7 @@ function Buyers() {
                 <section id="phonePage">
                     <div className="container-fluid">
                         <div className="row">
-                            <Header title="Buyers" />
+                            <Header title="Forwarding portal" />
                             <div className="overviewTableWrapper">
                                 <div className="overviewTableChild">
                                     <div className="d-flex flex-wrap">
@@ -19,9 +19,9 @@ function Buyers() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>
-                                                        Buyers
+                                                    Forwarding portal
                                                     </h4>
-                                                    <p>You can see all list of Buyers groups</p>
+                                                    <p>You can see all list of Forwarding portal</p>
                                                 </div>
                                                 <div className="buttonGroup">
                                                     <button
@@ -82,19 +82,31 @@ function Buyers() {
                                                 <table>
                                                     <thead>
                                                         <tr>
-                                                            <th>Name</th>
-                                                            <th>DID</th>
-                                                            <th>Campaign</th>
+                                                            <th>Fportal name</th>
+                                                            <th>Type</th>
+                                                            <th>Active hours</th>
+                                                            <th>Start time </th>
+                                                            <th>End time</th>
+                                                            <th>Start Day</th>
+                                                            <th>End Day day</th>
                                                             <th>Status</th>
                                                             <th>Edit</th>
                                                             <th>Delete</th>
+
+
+
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <td>Rishabh maurya01</td>
-                                                            <td>test102</td>
-                                                            <td>enterprise</td>
+                                                            <td>Outbound</td>
+                                                            <td>60 min</td>
+                                                            <td>09:30pm </td>
+                                                            <td>10:30am</td>
+
+                                                            <td>24/03/2025</td> 
+                                                            <td>05/04/2025</td>
                                                             <td>
                                                                 <div className="my-auto position-relative mx-1">
                                                                     <label className="switch">
@@ -139,102 +151,7 @@ function Buyers() {
                                                             </td>
 
                                                         </tr>
-                                                        <tr>
-                                                            <td>Rishabh maurya02</td>
-                                                            <td>test102</td>
-                                                            <td>enterprise</td>
-                                                            <td>
-                                                                <div className="my-auto position-relative mx-1">
-                                                                    <label className="switch">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            // checked={
-                                                                            //     item.status == "active"
-                                                                            // }
-                                                                            // onClick={(e) => {
-                                                                            //     setSelectedRingGroup(item);
-                                                                            //     setPopUp(true);
-                                                                            // }}
-                                                                            // {...register("status")}
-                                                                            id="showAllCheck"
-                                                                        />
-                                                                        <span className="slider round" />
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    className="tableButton edit"
-                                                                //   onClick={() =>
-                                                                //     navigate(
-                                                                //       `/ring-groups-edit?id=${item.id}`
-                                                                //     )
-                                                                //   }
-                                                                >
-                                                                    <i className="fa-solid fa-pencil" />
-                                                                </button>
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    className="tableButton delete"
-                                                                // onClick={() => {
-                                                                //     setPopUp(true);
-                                                                //     setDeleteId(item.id);
-                                                                // }}
-                                                                >
-                                                                    <i className="fa-solid fa-trash" />
-                                                                </button>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Rishabh maurya03</td>
-                                                            <td>test102</td>
-                                                            <td>enterprise</td>
-                                                            <td>
-                                                                <div className="my-auto position-relative mx-1">
-                                                                    <label className="switch">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            // checked={
-                                                                            //     item.status == "active"
-                                                                            // }
-                                                                            // onClick={(e) => {
-                                                                            //     setSelectedRingGroup(item);
-                                                                            //     setPopUp(true);
-                                                                            // }}
-                                                                            // {...register("status")}
-                                                                            id="showAllCheck"
-                                                                        />
-                                                                        <span className="slider round" />
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    className="tableButton edit"
-                                                                //   onClick={() =>
-                                                                //     navigate(
-                                                                //       `/ring-groups-edit?id=${item.id}`
-                                                                //     )
-                                                                //   }
-                                                                >
-                                                                    <i className="fa-solid fa-pencil" />
-                                                                </button>
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    className="tableButton delete"
-                                                                // onClick={() => {
-                                                                //     setPopUp(true);
-                                                                //     setDeleteId(item.id);
-                                                                // }}
-                                                                >
-                                                                    <i className="fa-solid fa-trash" />
-                                                                </button>
-                                                            </td>
-
-                                                        </tr>
+                                                      
                                                     </tbody>
                                                 </table>
                                             </div>

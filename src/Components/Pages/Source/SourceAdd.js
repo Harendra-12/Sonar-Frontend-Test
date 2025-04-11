@@ -132,10 +132,10 @@ const SourceAdd = () => {
                                                 <div className="formRow col-xl-3">
                                                     <div className='formLabel'>
                                                         <label>
-                                                            DID
+                                                        Customer Journey
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, simply because it is pain
+                                                       all campaign
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -150,7 +150,7 @@ const SourceAdd = () => {
                                                             Source
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it,
+                                                        all source 
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
