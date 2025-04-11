@@ -911,3 +911,63 @@
 .itemWrapper.b.dashboard_cardWrap .data-number2 h5 {
     color: var(--ui-accent-green) !important;
 }
+
+.call_dCard {
+    border: 2px dotted rgba(126, 126, 126, 0.38);
+    padding: 10px !important;
+    height: 100% !important;
+    border-radius: 10px;
+    transition: all 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.call_dCard:hover {
+    transform: translateY(-3px);
+}
+.call_dCard.d {
+    border: 2px dotted #4fc9da;
+    background: rgba(33, 150, 243, 0.059);
+}
+.call_dCard.c {
+    border: 2px dotted #ef6f54;
+    background: rgba(237, 178, 152, 0.141);
+}
+.call_dCard.b {
+    border: 2px dotted #777edd;
+    background: rgba(119, 126, 221, 0.141);
+}
+.call_dCard.a {
+    border: 2px dotted #18b16b;
+    background: rgba(30, 154, 91, 0.141);
+}
+
+.call_dCard .heading {
+   height: unset;
+}
+.call_dCard .heading i {
+    background: transparent;
+    box-shadow: none;
+}
+
+.text-decoration {
+    text-decoration: none;
+}
+
+.imageBox_wrap {
+    width: 30px;
+    height: 30px;
+    margin-inline: auto;
+    margin-bottom: 5px;
+}
+
+.imageBox_wrap img {
+    width: 100%;
+}
+.customRow{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+}
