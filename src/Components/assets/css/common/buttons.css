@@ -685,42 +685,67 @@
 
 .tableButton {
   border: none;
-  border-radius: 50%;
+  border-radius: 5px;
   background-color: var(--ui-accent);
   color: #fff;
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.3s ease-in-out;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-inline: auto;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 
-.tableButton:hover {
+/* .tableButton:hover {
   background-color: var(--bg-color);
   box-shadow: none;
-}
+} */
 
-.tableButton:hover i {
+/* .tableButton:hover i {
   color: var(--ui-accent) !important;
-}
+} */
 
 .tableButton i {
-  font-size: 0.875rem;
-  color: #fff !important;
+  font-size: 0.65rem;
+  /* color: #fff !important; */
 }
 
 .tableButton.delete {
-  background-color: #ff4444;
+  background-color: rgba(239, 68, 68, 0.116);
+    color: #fe5454;
+    border: 1px solid #ef4444;
+}
+.tableButton.delete:hover{
+  background-color: #ef4444;
+  color: #fff !important;
 }
 
 .tableButton.edit {
-  background-color: #00ab2b;
+  background-color: rgba(218, 244, 240, 0.341);
+  color: #0ab39c;
+  border: 1px solid #0ab39c;
+}
+/* .tableButton.edit i{
+  color: #0ab39c !important;
+} */
+.tableButton.edit:hover{
+  background-color: #0ab39c;
+}
+
+.tableButton.edit:hover i {
+  color: #fff !important;
 }
 
 .tableButton.warning {
-  background-color: #ffa500;
+  background-color: rgba(255, 166, 0, 0.051);
+  color: #c0760f;
+  border: 1px solid #c0760f;
+}
+.tableButton.warning:hover i {
+  color: #fff;
+  background-color: #c0760f;
 }
 
 .tableButton.empty {
@@ -732,23 +757,20 @@
   color: var(--ui-accent) !important;
 }
 
-.tableButton.delete:hover,
+/* .tableButton.delete:hover,
 .tableButton.edit:hover,
 .tableButton.warning:hover {
   background-color: #ff00000d;
-}
+} */
 
-.tableButton.delete:hover i {
+/* .tableButton.delete:hover i {
   color: #ff4444 !important;
-}
+} */
 
-.tableButton.edit:hover i {
-  color: #00ab2b !important;
-}
 
-.tableButton.warning:hover i {
+/* .tableButton.warning:hover i {
   color: #ffa500 !important;
-}
+} */
 
 .tableButton.nottif::after {
   content: '\f071';
@@ -862,3 +884,4 @@
   align-items: center;
   font-size: 1rem;
 }
+

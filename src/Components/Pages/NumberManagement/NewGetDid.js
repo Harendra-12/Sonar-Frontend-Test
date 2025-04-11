@@ -247,11 +247,11 @@ const NewGetDid = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className='card-body'>
+                            <div className='card-body fillerCountryNumber'>
                                 {watch().country ? (
                                     <>
                                         <form onSubmit={handleSubmit(onSubmit)} className={`mb-0 row`}>
-                                            <div className="formRow col-1">
+                                            <div className="formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
                                                 <div className="formLabel">
                                                     <label htmlFor="searchType">Search Type</label>
                                                 </div>
@@ -276,7 +276,7 @@ const NewGetDid = () => {
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div className={`formRow col-1`}>
+                                            <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                 <div
                                                     className="formLabel d-flex justify-content-between"
                                                     style={{ width: "100%" }}
@@ -380,7 +380,7 @@ const NewGetDid = () => {
                                             </div>
                                             {
                                                 watch().searchType === "domestic" ? <>
-                                                    <div className={`formRow col-2`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="formLabel">
                                                             <label htmlFor="searchBy">Search By</label>
                                                         </div>
@@ -410,7 +410,7 @@ const NewGetDid = () => {
                                             }
                                             {
                                                 (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
-                                                    <div className={`formRow col-1`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="col-12">
                                                             <div
                                                                 className="formLabel"
@@ -443,7 +443,7 @@ const NewGetDid = () => {
 
                                             {
                                                 (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
-                                                    <div className={`formRow col-1`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="col-12">
                                                             <div
                                                                 className="formLabel"
@@ -476,7 +476,7 @@ const NewGetDid = () => {
 
                                             {
                                                 (watch().searchBy === "ratecenter" && watch().searchType === "domestic") && <>
-                                                    <div className={`formRow col-1`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div
                                                             className="formLabel d-flex justify-content-between"
                                                             style={{ width: "100%" }}
@@ -500,7 +500,7 @@ const NewGetDid = () => {
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div className={`formRow col-1`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div
                                                             className="formLabel d-flex justify-content-between"
                                                             style={{ width: "100%" }}
@@ -524,7 +524,7 @@ const NewGetDid = () => {
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div className={`formRow col-1`}>
+                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="formLabel">
                                                             <label htmlFor="contiguous">Contiguous</label>
                                                         </div>
@@ -552,9 +552,9 @@ const NewGetDid = () => {
                                                 </>
                                             }
 
-                                            <div className="formRow col">
-                                                <div className="col-2">
-                                                    <button
+                                            <div className="formRow col-2">
+                                                <div className="">
+                                                    {/* <button
                                                         effect="ripple"
                                                         className="panelButton m-0"
                                                         type="submit"
@@ -563,11 +563,13 @@ const NewGetDid = () => {
                                                         <span className="icon">
                                                             <i className="fa-solid fa-magnifying-glass"></i>
                                                         </span>
+                                                    </button> */}
+                                                    <button class="btn btn-primary" type="button">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </form>
-                                        <div className='border border-light-subtle rounded-3 p-3 mb-3'>
+                                        <div className='border border-light-subtle rounded-3 p-3'>
                                             {/* <h4 className='card_title'>Top countries</h4> */}
                                             <div className='country_card_group numberListGroup'>
                                                 {did && did.length > 0 ?
@@ -585,7 +587,7 @@ const NewGetDid = () => {
                                                                                 if (item.label === "Voice") {
                                                                                     return (
                                                                                         <Tippy content="Voice Call is activated for this DID">
-                                                                                            <button className="text-center badge badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                            <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                                                 <i class="fa-solid fa-phone"></i>
                                                                                             </button>
                                                                                         </Tippy>
@@ -593,7 +595,7 @@ const NewGetDid = () => {
                                                                                 } else if (item.label === "Text") {
                                                                                     return (
                                                                                         <Tippy content="SMS is activated for this DID">
-                                                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                                                 <i class="fa-regular fa-comments"></i>
                                                                                             </button>
                                                                                         </Tippy>
@@ -601,7 +603,7 @@ const NewGetDid = () => {
                                                                                 } else if (item.label === "Fax") {
                                                                                     return (
                                                                                         <Tippy content="Fax is activated for this DID">
-                                                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                                                 <i class="fa-solid fa-fax"></i>
                                                                                             </button>
                                                                                         </Tippy>
@@ -609,7 +611,7 @@ const NewGetDid = () => {
                                                                                 } else if (item.label === "Emergency") {
                                                                                     return (
                                                                                         <Tippy content="Emergency / e911 is activated for this DID">
-                                                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                                                 <i class="fa-regular fa-light-emergency-on"></i>
                                                                                             </button>
                                                                                         </Tippy>
@@ -642,7 +644,7 @@ const NewGetDid = () => {
                                                             </div>
                                                             <div className='card_details'>
                                                                 <p className='country_name'>{item?.country}</p>
-                                                                <div className="text-center badge rounded-pill badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                     <p className="text-center mb-0">{item?.prefix_code}</p>
                                                                 </div>
                                                             </div>

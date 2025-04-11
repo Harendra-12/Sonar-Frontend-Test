@@ -92,16 +92,16 @@ const AddNumber = () => {
                                                     <div className='card_details'>
                                                         <p className='country_name text-start'>+91 {item.number}</p>
                                                         <div className='d-flex justify-content-center align-content-center gap-2'>
-                                                            <button className="text-center badge badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                            <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                 <i class="fa-solid fa-phone"></i>
                                                             </button>
-                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                 <i class="fa-regular fa-comments"></i>
                                                             </button>
-                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                 <i class="fa-solid fa-fax"></i>
                                                             </button>
-                                                            <button className="text-center badge  badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
                                                                 <i class="fa-regular fa-light-emergency-on"></i>
                                                             </button>
                                                         </div>

@@ -198,7 +198,7 @@ function Agents({ type }) {
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
-                              account?.permissions, "edit") && <th>Edit</th>}
+                              account?.permissions, "edit") && <th className="text-center">Edit</th>}
                             {/* <th>Status</th> */}
                           </tr>
                         </thead>

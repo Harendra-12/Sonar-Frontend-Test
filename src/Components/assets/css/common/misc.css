@@ -62,8 +62,13 @@
 .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
     color: #fff;
     background-color: #1976d2;
-    padding: 10px;
+    padding: 6px;
 }
+
+.MuiButtonBase-root.MuiPaginationItem-root{
+    min-width: 20px;
+    height: 20px;
+   }
 
 .pricing_section .pricing_box {
     padding: 20px;
@@ -346,6 +351,7 @@
 
 .billinCardWrapper .rccs__card--unknown>div {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    background: linear-gradient(208deg, #249d8f, #0686d0);
 }
 
 .profileDetailsHolder .accordion-body,
@@ -375,7 +381,7 @@
 .profileDetailsHolder .billingDetails .formItem,
 .cardDetailsWrapper .billingDetails .formItem {
     border: 0;
-    color: #000;
+    color: var(--immortalBlack);
     font-weight: 700;
     font-size: 0.875rem;
     margin: 0;
@@ -1742,4 +1748,21 @@ input[type=number] {
     border: 1px solid #2e5ee7;
     color: #2e5ee7;
 
+}
+.billing_card1{
+    background: linear-gradient(260deg, #ff00c024, #0016ff47);
+}
+.billing_card2{
+    background: linear-gradient(260deg, #31ff0021, #00a6ff47);
+}
+.billing_card1 .data-number2 h5,
+.billing_card2 .data-number2 h5{
+    color: var(--billing-icon) !important;
+}
+.billing_card1 .heading i,
+.billing_card2 .heading i {
+    color: var(--billing-icon) !important;
+}
+.rccs__card--unknown > div{
+    background: linear-gradient(208deg, #249d8f, #0686d0) !important;
 }

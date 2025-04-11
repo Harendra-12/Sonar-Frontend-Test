@@ -156,8 +156,8 @@ export function PermissionConfigTable({ selectedGroup, selectedRole }) {
                 <th>Utilities</th>
                 <th>View</th>
                 <th>Add</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th className='text-center'>Edit</th>
+                <th className='text-center'>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -312,8 +312,8 @@ export function PermissionConfigTable({ selectedGroup, selectedRole }) {
                 <th>Utilities</th>
                 <th>View</th>
                 <th>Add</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th className='text-center'>Edit</th>
+                <th className='text-center'>Delete</th>
               </tr>
             </thead>
             <tbody>

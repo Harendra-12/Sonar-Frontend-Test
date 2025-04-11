@@ -112,7 +112,10 @@
   --form-label: #2a2a2a;
   --form-input-text: #2a2a2a;
   --formHeadingBloc: #fafafa;
-  --table-head: #f4f7f9;
+  /* --table-head: #f4f7f9; */
+  --table-head: #dce9ff;
+  --table-even-bg: #fff;
+  --table-odd-color: rgba(133, 184, 183, 0.271);
   /* --table-text: #5f5f5f; */
   --table-text: #303030;
   --accordion-active: #a2e1ff3d;
@@ -176,6 +179,8 @@
   --border-light-subtle: #e0e0e0; 
   --shadow-gray: rgba(99, 99, 99, 0.388);
   --hover-bg: #fff;
+  --billing-icon: #1e00ff;
+  --table-border-color: #d3d9eb;
 
 }
 
@@ -261,6 +266,12 @@
   --border-light-subtle: #3e3f44;
   --shadow-gray: rgb(13, 19, 24);
   --hover-bg: #3a3b4b;
+  --billing-icon: #f3f1ff;
+
+  --table-head: #293e59;
+  --table-even-bg: rgba(46, 44, 63, 0.62);
+  --table-odd-color: rgba(85, 104, 130, 0.58);
+  --table-border-color: #525458;
 }
 
 :root.green {
@@ -290,6 +301,7 @@
   /* Contrast Text Color  */
   --border-color: #ddd;
 
+
   /* Light Mode  */
   --color4: #abababa6;
   /* UI Items Color  */
@@ -303,7 +315,8 @@
   --form-label: #2a2a2a;
   --form-input-text: #2a2a2a;
   --formHeadingBloc: #fafafa;
-  --table-head: #f4f7f9;
+  /* --table-head: #f4f7f9; */
+  --table-head: #e7dcff;
   /* --table-text: #5f5f5f;  */
   --table-text: #303030;
   --accordion-active: #a2e1ff3d;
