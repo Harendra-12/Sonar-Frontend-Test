@@ -919,8 +919,9 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                              <NavLink
+                              to="/source"
+                                  onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
@@ -934,7 +935,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Source</div>
-                                </Link>
+                                  </NavLink>
                               </li>
                             </ul>
                           </div>

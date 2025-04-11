@@ -52,39 +52,13 @@ const GoogleTranslate = () => {
         };
     }, []);
 
-    return (
-        // <Rnd
-        //     minWidth={"300px"}
-        //     minHeight={"450px"}
-        //     maxWidth={"300px"}
-        //     maxHeight={"450px"}
-        //     dragHandleClassName="drag-handle" // Specify draggable area
-        // >
-        //     <div
-        //         style={{
-        //             background: "transparent",
-        //             position: "relative",
-        //             zIndex: "999",
-        //         }}
-        //     >
-        //         {/* Draggable Top Area */}
-        //         <div
-        //             id="google_translate_element"
-        //             className="drag-handle"
-        //             style={{
-        //                 position: "absolute",
-        //                 top: "35px",
-        //                 width: "100%",
-        //                 height: "105px",
-        //                 zIndex: "999999",
-        //                 background: "transparent",
-        //                 cursor: "move",
-        //             }}
-        //         ></div>
-        //     </div>
-        // </Rnd>
-        <div  id="google_translate_element"></div>
-    );
+    return <div id="google_translate_element"></div>;
+    
 };
+
+{/* <div class="sticky-icon">
+   <a href="https://www.instagram.com/?hl=en" class="Instagram"><i class="fab fa-instagram"></i> Instagram </a>
+     
+</div> */}
 
 export default GoogleTranslate;

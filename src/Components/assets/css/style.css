@@ -460,6 +460,7 @@ ul {
 .formItem:autofill {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
+
 }
 
 .formItem.active {
