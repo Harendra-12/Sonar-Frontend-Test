@@ -173,6 +173,8 @@ import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
+import FportalCampaign from "./Components/Pages/CallTracker/FportalCampaign";
+import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaignCreate";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -900,6 +902,11 @@ function App() {
           {/* ---------------- source */}
           <Route path="source" element={<Source />} />
           <Route path="source-edit" element={<SourceEdit />} />
+          <Route path="source-add" element={<SourceAdd />} />
+          {/* ---------------- source */}
+          {/* ---------------- source */}
+          <Route path="call-forwarding-campaign" element={<FportalCampaign />} />
+          <Route path="call-forwarding-campaign-create" element={<FportalCampaignCreate />} />
           <Route path="source-add" element={<SourceAdd />} />
           {/* ---------------- source */}
 

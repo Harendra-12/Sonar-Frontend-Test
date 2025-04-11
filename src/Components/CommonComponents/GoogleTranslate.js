@@ -60,6 +60,12 @@ const GoogleTranslate = () => {
     }, []);
 
     return <div id="google_translate_element"></div>;
+    
 };
+
+{/* <div class="sticky-icon">
+   <a href="https://www.instagram.com/?hl=en" class="Instagram"><i class="fab fa-instagram"></i> Instagram </a>
+     
+</div> */}
 
 export default GoogleTranslate;
