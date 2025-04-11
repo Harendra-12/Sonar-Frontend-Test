@@ -40,6 +40,7 @@ function ConfigureStepDashboard({ account2 }) {
         quantity: "1",
         npa: Number(npx),
         companyId: account.account_id,
+        country:"US"
       };
       const apiData = await generalPostFunction("/search-number", parsedData);
       if (apiData.status) {
@@ -66,7 +67,8 @@ function ConfigureStepDashboard({ account2 }) {
       accountId: didRawData.data[0].vendorAccountId,
       dids: [
         {
-          dids: didRawData.data[0].id,
+          did: didRawData.data[0].id,
+          vendorId: didRawData.data[0].vendorId,
         },
       ],
     };

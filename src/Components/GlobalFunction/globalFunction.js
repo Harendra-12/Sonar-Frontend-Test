@@ -65,10 +65,11 @@ export async function generalGetFunction(endpoint) {
         loading: false,
       });
       if (err.response?.status === 401) {
+        console.log("Session expired. Please login again.",err.response);
+        
         if (!sessionExpiredToastShown) {
           sessionExpiredToastShown = true;
-          toast.error("Session expired. Please login again.");
-
+          toast.error(err?.response?.data?.message || "Session expired. Please login again.");
           // Optional: reset the flag after a delay (e.g., 5s)
           setTimeout(() => {
             sessionExpiredToastShown = false;
@@ -144,7 +145,7 @@ export async function generalPostFunction(endpoint, data) {
         );
       }
       if (err.response.status === 401) {
-        toast.error("Session expired. Please login again.");
+        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
@@ -195,7 +196,7 @@ export async function generalPutFunction(endpoint, data) {
         toast.error(err.response.data.message);
       }
       if (err.response.status === 401) {
-        toast.error("Session expired. Please login again.");
+        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -229,7 +230,7 @@ export async function generalDeleteFunction(endpoint) {
         );
       }
       if (err.response.status === 401) {
-        toast.error("Session expired. Please login again.");
+        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         handleNavigation("/");
@@ -296,7 +297,7 @@ export async function generatePreSignedUrl(name) {
         );
       }
       if (err.response.status === 401) {
-        toast.error("Session expired. Please login again.");
+        toast.error(err?.response?.data?.message || "Session expired. Please login again.");
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
