@@ -1,11 +1,45 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { toast } from 'react-toastify';
 
+/**
+ * Renders a modal popup for agent feedback, which appears after a call with a lead has ended.
+ * The popup displays a list of dispositions that the agent can select from, and allows the agent to provide text feedback.
+ * The component uses the Redux store to retrieve the list of dispositions for the current campaign, and to dispatch actions to update the store.
+ * The component also uses the generalPostFunction utility function to make a POST request to the API to save the agent's feedback.
+ * @returns {JSX.Element}
+ */
 function AgentFeedback() {
     const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
     console.log("desposiTionOptions", desposiTionOptions);
 
     const dispatch = useDispatch()
+
+    /**
+     * Handles the submission of the agent feedback form. Makes a POST request to the API with the agent's feedback,
+     * and if the response is successful, dispatches an action to update the Redux store to indicate that the agent feedback has been recorded.
+     * If the response is not successful, displays an error message to the agent.
+     */
+    async function handleFeedback() {
+        const parseddata = {
+            'agent_id' :"",
+            'lead_id' :"",
+            'campaign_id' :"",
+            'disposition_id':"",
+            'feedback' :"",
+        }
+        const response  = await generalPostFunction("/campaign-feedback",parseddata)
+        if(response.status){
+            toast.success(response.message)
+            dispatch({
+                type: "SET_AGENT_DEPOSITION",
+                agentDeposition: false,
+            })
+        }else{
+            toast.error(response.message)
+        }
+    }
     return (
         <>
             <div className="addNewContactPopup">
@@ -30,20 +64,20 @@ function AgentFeedback() {
                             }
                             `}
                             </style>
-                                {
-                                    desposiTionOptions?.disposition?.map((item,key) => {
-                                        return (
-                                            <div key={key} className="formRow col-xl-3 justify-content-start">
-                                                <div className='col-auto me-2'>
-                                                    <input type="checkbox" />
-                                                </div>
-                                                <div className="formLabel">
-                                                    <label htmlFor="">{item.name}</label>
-                                                </div>
+                            {
+                                desposiTionOptions?.disposition?.map((item, key) => {
+                                    return (
+                                        <div key={key} className="formRow col-xl-3 justify-content-start">
+                                            <div className='col-auto me-2'>
+                                                <input type="checkbox" />
                                             </div>
-                                        )
-                                    })
-                                }
+                                            <div className="formLabel">
+                                                <label htmlFor="">{item.name}</label>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                     <div className="col-xl-12 mt-2">
@@ -59,7 +93,7 @@ function AgentFeedback() {
                                     <i className="fa-light fa-xmark"></i>
                                 </span>
                             </button>
-                            <button className="panelButton" >
+                            <button className="panelButton" onClick={handleFeedback} >
                                 <span className="text">Done</span>
                                 <span className="icon">
                                     <i className="fa-solid fa-check" />

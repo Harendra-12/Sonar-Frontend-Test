@@ -75,10 +75,12 @@ const Socket = () => {
           const { key, result, current_time } = message;
 
           switch (key) {
-            case "UserRegister":
+            case "OnlineExtensions":
+              console.log("OnlineExtensions:", result);
+              
               dispatch({
                 type: "SET_REGISTERUSER",
-                registerUser: result.filter(
+                registerUser: result?.filter(
                   (item) => item.account_id === account.account_id
                 ),
               });
