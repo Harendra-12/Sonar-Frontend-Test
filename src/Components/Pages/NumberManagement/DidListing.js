@@ -51,7 +51,7 @@ function DidListing({ page }) {
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page]);
+  }, [refreshDid, page,searchQuery]);
 
   // Fetch ALL DID
   async function getData() {
@@ -163,13 +163,13 @@ function DidListing({ page }) {
   }
 
   // Debounce Search Function
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      getData();
-    }, 500);
+  // useEffect(() => {
+  //   const delay = setTimeout(() => {
+  //     getData();
+  //   }, 500);
 
-    return () => clearTimeout(delay);
-  }, [searchQuery]);
+  //   return () => clearTimeout(delay);
+  // }, [searchQuery]);
 
   return (
     <main className="mainContent">

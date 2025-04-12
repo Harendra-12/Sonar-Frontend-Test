@@ -236,7 +236,7 @@ function App() {
         {
           adminLogout && <AdminLogoutPopUp />
         }
-         <GoogleTranslate />
+         {/* <GoogleTranslate /> */}
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />

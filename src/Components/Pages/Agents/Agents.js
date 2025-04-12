@@ -68,14 +68,14 @@ function Agents({ type }) {
     //   return () => clearTimeout(timer);
     // }
     getData();
-  }, [entriesPerPage, pageNumber, type]);
+  }, [entriesPerPage, pageNumber, type,userInput]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      getData();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [userInput])
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     getData();
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [userInput])
 
 
   // Handle Agent Logout Function
