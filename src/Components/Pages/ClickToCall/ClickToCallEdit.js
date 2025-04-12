@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import CircularLoader from "../../Loader/CircularLoader";
 import { HexColorPicker } from "react-colorful";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function ClickToCallEdit() {
     const navigate = useNavigate();
@@ -192,98 +194,100 @@ function ClickToCallEdit() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="wizard-form">
-                                        <div className="tawk-margin-auto tawk-width-100">
-                                            <div className="tawk-wizard-chat-form">
-                                                <div className="tawk-flex tawk-flex-wrap tawk-flex-large-gap tawk-margin-xlarge-top">
-                                                    <div className="tangoNavs">
-                                                        <nav>
-                                                            <div
-                                                                className="nav nav-tabs"
-                                                                id="nav-tab"
-                                                                role="tablist"
-                                                            >
-                                                                <button type="button"
-                                                                    className="nav-link active"
-                                                                    id="nav-gen-tab"
-                                                                    data-bs-toggle="tab"
-                                                                    data-bs-target="#nav-gen"
-                                                                    role="tab"
-                                                                    aria-controls="nav-gen"
-                                                                    aria-selected="true"
+                                    {
+                                       loading ? <CircularLoader /> :
+                                        <div className="wizard-form">
+                                            <div className="tawk-margin-auto tawk-width-100">
+                                                <div className="tawk-wizard-chat-form">
+                                                    <div className="tawk-flex tawk-flex-wrap tawk-flex-large-gap tawk-margin-xlarge-top">
+                                                        <div className="tangoNavs">
+                                                            <nav>
+                                                                <div
+                                                                    className="nav nav-tabs"
+                                                                    id="nav-tab"
+                                                                    role="tablist"
                                                                 >
-                                                                    General{" "}
-                                                                </button>
-                                                            </div>
-                                                        </nav>
-                                                        <div className="row">
-                                                            <div className="col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
-                                                                <div className="tab-content" id="nav-tabContent">
-                                                                    <div
-                                                                        className="tab-pane fade show active"
-                                                                        id="nav-gen"
-                                                                        role="tabpanel"
-                                                                        aria-labelledby="nav-gen-tab"
-                                                                        tabIndex="0"
+                                                                    <button type="button"
+                                                                        className="nav-link active"
+                                                                        id="nav-gen-tab"
+                                                                        data-bs-toggle="tab"
+                                                                        data-bs-target="#nav-gen"
+                                                                        role="tab"
+                                                                        aria-controls="nav-gen"
+                                                                        aria-selected="true"
                                                                     >
-                                                                        <form>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="">Company Logo</label>
-                                                                                    <label for="data" className="formItemDesc">
-                                                                                        Logo should be atleast <span className="text-danger fw-bold">100px x 100px</span> OR <span className="text-danger fw-bold">1:1</span> Dimension
-                                                                                    </label>
-                                                                                </div>
+                                                                        General{" "}
+                                                                    </button>
+                                                                </div>
+                                                            </nav>
+                                                            <div className="row">
+                                                                <div className="col-xxl-7 col-xl-7 col-lg-6 col-sm-12">
+                                                                    <div className="tab-content" id="nav-tabContent">
+                                                                        <div
+                                                                            className="tab-pane fade show active"
+                                                                            id="nav-gen"
+                                                                            role="tabpanel"
+                                                                            aria-labelledby="nav-gen-tab"
+                                                                            tabIndex="0"
+                                                                        >
+                                                                            <form>
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="">Company Logo</label>
+                                                                                        <label for="data" className="formItemDesc">
+                                                                                            Logo should be atleast <span className="text-danger fw-bold">100px x 100px</span> OR <span className="text-danger fw-bold">1:1</span> Dimension
+                                                                                        </label>
+                                                                                    </div>
 
-                                                                                <div className="col-7">
-                                                                                    <div className="row">
-                                                                                        <div className="col-auto">
-                                                                                            <div className="imageHolder" style={{ width: '50px', height: '50px', border: '1px solid var(--border-color)', borderRadius: '5px' }}>
-                                                                                                <img src={selectedImage ? selectedImage : logo} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-                                                                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                                    <div className="col-7">
+                                                                                        <div className="row">
+                                                                                            <div className="col-auto">
+                                                                                                <div className="imageHolder" style={{ width: '50px', height: '50px', border: '1px solid var(--border-color)', borderRadius: '5px' }}>
+                                                                                                    <img src={selectedImage ? selectedImage : logo} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                                                                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                                                    />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="col">
+                                                                                                <input
+                                                                                                    type="file"
+                                                                                                    name="did_id_view"
+                                                                                                    className="formItem"
+                                                                                                    accept="image/*"
+                                                                                                    onChange={(e) => {
+                                                                                                        const file = e.target.files[0];
+                                                                                                        if (file) {
+                                                                                                            // Check if the file type is MP3
+
+                                                                                                            const fileName = file.name.replace(/ /g, "-");
+                                                                                                            const newFile = new File([file], fileName, {
+                                                                                                                type: file.type,
+                                                                                                            });
+                                                                                                            setNewFile(newFile);
+                                                                                                            handleImageChange(e)
+                                                                                                        }
+                                                                                                    }}
                                                                                                 />
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div className="col">
-                                                                                            <input
-                                                                                                type="file"
-                                                                                                name="did_id_view"
-                                                                                                className="formItem"
-                                                                                                accept="image/*"
-                                                                                                onChange={(e) => {
-                                                                                                    const file = e.target.files[0];
-                                                                                                    if (file) {
-                                                                                                        // Check if the file type is MP3
-
-                                                                                                        const fileName = file.name.replace(/ /g, "-");
-                                                                                                        const newFile = new File([file], fileName, {
-                                                                                                            type: file.type,
-                                                                                                        });
-                                                                                                        setNewFile(newFile);
-                                                                                                        handleImageChange(e)
-                                                                                                    }
-                                                                                                }}
-                                                                                            />
-                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="selectFormRow">
-                                                                                        Color Scheme
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Choose your color scheme
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    <div className="d-flex align-items-center justify-content-between">
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="selectFormRow">
+                                                                                            Color Scheme
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Choose your color scheme
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <div className="d-flex align-items-center justify-content-between">
 
-                                                                                        {/* <div className="d-flex align-items-center justify-content-between">
+                                                                                            {/* <div className="d-flex align-items-center justify-content-between">
 
                                                                                             <div className="tawk-colors-active">
                                                                                                 <div className="tawk-colors">
@@ -571,338 +575,339 @@ function ClickToCallEdit() {
                                                                                             </div>
                                                                                         </div> */}
 
-                                                                                        <div className="form-widths d-flex">
-                                                                                            <div className="me-2">
-                                                                                                <input
-                                                                                                    className="formItem"
-                                                                                                    {...register("color")}
-                                                                                                    style={{ width: "100px" }}
-                                                                                                />
-                                                                                            </div>
-                                                                                            <div>
-                                                                                                <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                                                                    <div className="d-flex align-items-center">
-                                                                                                        <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
-                                                                                                        <label className="ms-2">Choose Color</label>
+                                                                                            <div className="form-widths d-flex">
+                                                                                                <div className="me-2">
+                                                                                                    <input
+                                                                                                        className="formItem"
+                                                                                                        {...register("color")}
+                                                                                                        style={{ width: "100px" }}
+                                                                                                    />
+                                                                                                </div>
+                                                                                                <div>
+                                                                                                    <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                                        <div className="d-flex align-items-center">
+                                                                                                            <div style={{ width: '20px', height: '20px', backgroundColor: baseColor || '#f42633', borderRadius: '3px' }}></div>
+                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                        </div>
+                                                                                                    </button>
+                                                                                                    <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                                                                        <HexColorPicker
+                                                                                                            color={baseColor}
+                                                                                                            onChange={(newColor) => setValue("color", newColor)} />
                                                                                                     </div>
-                                                                                                </button>
-                                                                                                <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
-                                                                                                    <HexColorPicker
-                                                                                                        color={baseColor}
-                                                                                                        onChange={(newColor) => setValue("color", newColor)} />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
 
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12   ">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="selectFormRow">
-                                                                                        Text Color Scheme
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Choose your text color scheme
-                                                                                    </label>
                                                                                 </div>
-                                                                                <div className="col-7">
-                                                                                    <div className="d-flex align-items-center justify-content-between">
-                                                                                        <div className="form-widths d-flex">
-                                                                                            <div className="me-2">
-                                                                                                <input
-                                                                                                    className="formItem"
-                                                                                                    // value={textColor}
-                                                                                                    // onChange={(newColor) => setValue("textcolor", newColor)}
-                                                                                                    {...register("textcolor")}
-                                                                                                    style={{ width: "100px" }}
-                                                                                                />
-                                                                                            </div>
-                                                                                            <div>
-                                                                                                <button className="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                                                                    <div className="d-flex align-items-center">
-                                                                                                        <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
-                                                                                                        <label className="ms-2">Choose Color</label>
+                                                                                <div className="formRow col-xl-12   ">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="selectFormRow">
+                                                                                            Text Color Scheme
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Choose your text color scheme
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <div className="d-flex align-items-center justify-content-between">
+                                                                                            <div className="form-widths d-flex">
+                                                                                                <div className="me-2">
+                                                                                                    <input
+                                                                                                        className="formItem"
+                                                                                                        // value={textColor}
+                                                                                                        // onChange={(newColor) => setValue("textcolor", newColor)}
+                                                                                                        {...register("textcolor")}
+                                                                                                        style={{ width: "100px" }}
+                                                                                                    />
+                                                                                                </div>
+                                                                                                <div>
+                                                                                                    <button className="formItem" type="button" id="textColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                                        <div className="d-flex align-items-center">
+                                                                                                            <div style={{ width: '20px', height: '20px', backgroundColor: textColor || '#17c100', borderRadius: '3px' }}></div>
+                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                        </div>
+                                                                                                    </button>
+                                                                                                    <div className="dropdown-menu p-0" aria-labelledby="textColorPicker">
+                                                                                                        <HexColorPicker
+                                                                                                            color={textColor}
+                                                                                                            onChange={(newColor) => setValue("textcolor", newColor)} />
                                                                                                     </div>
-                                                                                                </button>
-                                                                                                <div className="dropdown-menu p-0" aria-labelledby="textColorPicker">
-                                                                                                    <HexColorPicker
-                                                                                                        color={textColor}
-                                                                                                        onChange={(newColor) => setValue("textcolor", newColor)} />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12   ">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="selectFormRow">
-                                                                                        Button Color Scheme
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Choose your button color scheme
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    <div className="d-flex align-items-center justify-content-between">
-                                                                                        <div className="form-widths d-flex">
-                                                                                            <div className="me-2">
-                                                                                                <input
-                                                                                                    className="formItem"
-                                                                                                    // value={buttonColor}
-                                                                                                    // onChange={(newColor) => setValue("buttoncolor", newColor)}
-                                                                                                    {...register("buttoncolor")}
-                                                                                                    style={{ width: "100px" }}
-                                                                                                />
-                                                                                            </div>
-                                                                                            <div>
-                                                                                                <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                                                                    <div className="d-flex align-items-center">
-                                                                                                        <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
-                                                                                                        <label className="ms-2">Choose Color</label>
+                                                                                <div className="formRow col-xl-12   ">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="selectFormRow">
+                                                                                            Button Color Scheme
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Choose your button color scheme
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <div className="d-flex align-items-center justify-content-between">
+                                                                                            <div className="form-widths d-flex">
+                                                                                                <div className="me-2">
+                                                                                                    <input
+                                                                                                        className="formItem"
+                                                                                                        // value={buttonColor}
+                                                                                                        // onChange={(newColor) => setValue("buttoncolor", newColor)}
+                                                                                                        {...register("buttoncolor")}
+                                                                                                        style={{ width: "100px" }}
+                                                                                                    />
+                                                                                                </div>
+                                                                                                <div>
+                                                                                                    <button className="formItem" type="button" id="buttonColorPicker" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                                                                                        <div className="d-flex align-items-center">
+                                                                                                            <div style={{ width: '20px', height: '20px', backgroundColor: buttonColor || '#17c100', borderRadius: '3px' }}></div>
+                                                                                                            <label className="ms-2">Choose Color</label>
+                                                                                                        </div>
+                                                                                                    </button>
+                                                                                                    <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
+                                                                                                        <HexColorPicker
+                                                                                                            color={buttonColor}
+                                                                                                            onChange={(newColor) => setValue("buttoncolor", newColor)} />
                                                                                                     </div>
-                                                                                                </button>
-                                                                                                <div className="dropdown-menu p-0" aria-labelledby="buttonColorPicker">
-                                                                                                    <HexColorPicker
-                                                                                                        color={buttonColor}
-                                                                                                        onChange={(newColor) => setValue("buttoncolor", newColor)} />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="selectFormRow">
-                                                                                        Company Name
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Enter your company name
-                                                                                    </label>
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="selectFormRow">
+                                                                                            Company Name
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Enter your company name
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <input className="formItem" {...register("name")} />
+                                                                                        {errors.did_id && (
+                                                                                            <ErrorMessage text={errors.name} />
+                                                                                        )}
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div className="col-7">
-                                                                                    <input className="formItem" {...register("name")} />
-                                                                                    {errors.did_id && (
-                                                                                        <ErrorMessage text={errors.name} />
-                                                                                    )}
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="selectFormRow">
+                                                                                            Company Description
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Enter your company description
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <input className="formItem"   {...register("description")} />
+                                                                                        {errors.did_id && (
+                                                                                            <ErrorMessage text={errors.description} />
+                                                                                        )}
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="selectFormRow">
-                                                                                        Company Description
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Enter your company description
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    <input className="formItem"   {...register("description")} />
-                                                                                    {errors.did_id && (
-                                                                                        <ErrorMessage text={errors.description} />
-                                                                                    )}
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="">Usage</label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Please choose the usage.
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    <select
-                                                                                        type="text"
-                                                                                        name="did_id_view"
-                                                                                        className="formItem"
-                                                                                        {...register("usages", {
-                                                                                            ...requiredValidator,
-                                                                                        })}
-                                                                                        defaultValue={""}
-                                                                                    >
-                                                                                        <option value={""} disabled>
-                                                                                            Choose Usage
-                                                                                        </option>
-                                                                                        <option value="extension">
-                                                                                            Extension
-                                                                                        </option>
-                                                                                        <option value="callcenter">
-                                                                                            Call Center
-                                                                                        </option>
-                                                                                        <option value="ringgroup">
-                                                                                            Ring Group
-                                                                                        </option>
-                                                                                        <option value="ivr">IVR</option>
-                                                                                        <option value={"pstn"}>PSTN</option>
-                                                                                    </select>
-
-                                                                                    {errors.did_id && (
-                                                                                        <ErrorMessage text={errors.usages} />
-                                                                                    )}
-                                                                                </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12">
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="">Action</label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Please choose the usage.
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    {watch().usages !== "pstn" &&
-                                                                                        watch().usages !== "" ? (
-                                                                                        <ActionList
-                                                                                            category={watch().usages === "ringgroup" ? "ring group" : watch().usages === "callcenter" ? "call center" : watch().usages}
-                                                                                            title={null}
-                                                                                            label={null}
-                                                                                            getDropdownValue={actionListValue}
-                                                                                            value={watch().action}
-                                                                                            {...register(
-                                                                                                "action",
-                                                                                                requiredValidator
-                                                                                            )}
-                                                                                        />
-                                                                                    ) : (
-                                                                                        <input
-                                                                                            disabled={watch().usages === ""}
-                                                                                            type="number"
-                                                                                            placeholder={
-                                                                                                watch().usages === ""
-                                                                                                    ? "None"
-                                                                                                    : "Action"
-                                                                                            }
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="">Usage</label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Please choose the usage.
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <select
+                                                                                            type="text"
+                                                                                            name="did_id_view"
                                                                                             className="formItem"
-                                                                                            value={watch().action}
-                                                                                            onChange={(e) => {
-                                                                                                setValue(
+                                                                                            {...register("usages", {
+                                                                                                ...requiredValidator,
+                                                                                            })}
+                                                                                            defaultValue={""}
+                                                                                        >
+                                                                                            <option value={""} disabled>
+                                                                                                Choose Usage
+                                                                                            </option>
+                                                                                            <option value="extension">
+                                                                                                Extension
+                                                                                            </option>
+                                                                                            <option value="callcenter">
+                                                                                                Call Center
+                                                                                            </option>
+                                                                                            <option value="ringgroup">
+                                                                                                Ring Group
+                                                                                            </option>
+                                                                                            <option value="ivr">IVR</option>
+                                                                                            <option value={"pstn"}>PSTN</option>
+                                                                                        </select>
+
+                                                                                        {errors.did_id && (
+                                                                                            <ErrorMessage text={errors.usages} />
+                                                                                        )}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="formRow col-xl-12">
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="">Action</label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Please choose the usage.
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        {watch().usages !== "pstn" &&
+                                                                                            watch().usages !== "" ? (
+                                                                                            <ActionList
+                                                                                                category={watch().usages === "ringgroup" ? "ring group" : watch().usages === "callcenter" ? "call center" : watch().usages}
+                                                                                                title={null}
+                                                                                                label={null}
+                                                                                                getDropdownValue={actionListValue}
+                                                                                                value={watch().action}
+                                                                                                {...register(
                                                                                                     "action",
-                                                                                                    e.target.value
-                                                                                                );
-                                                                                            }}
+                                                                                                    requiredValidator
+                                                                                                )}
+                                                                                            />
+                                                                                        ) : (
+                                                                                            <input
+                                                                                                disabled={watch().usages === ""}
+                                                                                                type="number"
+                                                                                                placeholder={
+                                                                                                    watch().usages === ""
+                                                                                                        ? "None"
+                                                                                                        : "Action"
+                                                                                                }
+                                                                                                className="formItem"
+                                                                                                value={watch().action}
+                                                                                                onChange={(e) => {
+                                                                                                    setValue(
+                                                                                                        "action",
+                                                                                                        e.target.value
+                                                                                                    );
+                                                                                                }}
+                                                                                            />
+                                                                                        )}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className="formRow col-xl-12 pt-3"
+                                                                                    style={{
+                                                                                        borderTop:
+                                                                                            "1px solid var(--border-color)",
+                                                                                    }}
+                                                                                >
+                                                                                    <div className="formLabel">
+                                                                                        <label htmlFor="">
+                                                                                            Copy embeded code
+                                                                                        </label>
+                                                                                        <label
+                                                                                            htmlFor="data"
+                                                                                            className="formItemDesc"
+                                                                                        >
+                                                                                            Copy this code and drop it in your
+                                                                                            website (above closing body tag) to
+                                                                                            install click to call widget.
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div className="col-7">
+                                                                                        <textarea
+                                                                                            type="text"
+                                                                                            name="did_id_view"
+                                                                                            className="formItem h-auto"
+                                                                                            defaultValue={embadedCode}
+                                                                                            disabled={true}
                                                                                         />
-                                                                                    )}
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="formRow col-xl-12 pt-3"
-                                                                                style={{
-                                                                                    borderTop:
-                                                                                        "1px solid var(--border-color)",
-                                                                                }}
-                                                                            >
-                                                                                <div className="formLabel">
-                                                                                    <label htmlFor="">
-                                                                                        Copy embeded code
-                                                                                    </label>
-                                                                                    <label
-                                                                                        htmlFor="data"
-                                                                                        className="formItemDesc"
-                                                                                    >
-                                                                                        Copy this code and drop it in your
-                                                                                        website (above closing body tag) to
-                                                                                        install click to call widget.
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div className="col-7">
-                                                                                    <textarea
-                                                                                        type="text"
-                                                                                        name="did_id_view"
-                                                                                        className="formItem h-auto"
-                                                                                        defaultValue={embadedCode}
-                                                                                        disabled={true}
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                        </form>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="col-4">
-                                                                <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
-                                                                    <div className="clickToCallButton">
-                                                                        <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
-                                                                            <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    {widgetExpanded ?
-                                                                        <div className="clickToCallModule ms-auto">
-                                                                            <div className="clickToCallHeader">
-                                                                                <div className="wrapper">
-                                                                                    <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
-                                                                                    <div className="compLogo">
-                                                                                        <img src={selectedImage ? selectedImage : logo} alt='' onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}></img>
-                                                                                    </div>
-                                                                                    <div className="text">
-                                                                                        <h5>{watch().name}</h5>
-                                                                                        <p>
-                                                                                            {watch().description}
-                                                                                        </p>
+                                                                <div className="col-4">
+                                                                    <div className="clickToCall clickToCall-preview" style={{ '--prim-color': watch().color }}>
+                                                                        <div className="clickToCallButton">
+                                                                            <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
+                                                                                <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
+                                                                            </button>
+                                                                        </div>
+                                                                        {widgetExpanded ?
+                                                                            <div className="clickToCallModule ms-auto">
+                                                                                <div className="clickToCallHeader">
+                                                                                    <div className="wrapper">
+                                                                                        <button type="button" onClick={() => setCallFormVisible(false)}><i className="fa-solid fa-chevron-left"></i></button>
+                                                                                        <div className="compLogo">
+                                                                                            <img src={selectedImage ? selectedImage : logo} alt='' onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}></img>
+                                                                                        </div>
+                                                                                        <div className="text">
+                                                                                            <h5>{watch().name}</h5>
+                                                                                            <p>
+                                                                                                {watch().description}
+                                                                                            </p>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div className="clickToCallBody">
-                                                                                {!callFormVisible ?
-                                                                                    <>
-                                                                                        <div className="callByAudio">
-                                                                                            <button type="button" onClick={() => setCallFormVisible(true)}
-                                                                                                style={{ backgroundColor: watch().buttoncolor }}
-                                                                                            >
-                                                                                                <i className="fa-solid fa-phone"></i>
-                                                                                            </button>
-                                                                                            <h5>Arrange an <span style={{ color: watch().textcolor }}>Audio Call</span> with our Agent</h5>
+                                                                                <div className="clickToCallBody">
+                                                                                    {!callFormVisible ?
+                                                                                        <>
+                                                                                            <div className="callByAudio">
+                                                                                                <button type="button" onClick={() => setCallFormVisible(true)}
+                                                                                                    style={{ backgroundColor: watch().buttoncolor }}
+                                                                                                >
+                                                                                                    <i className="fa-solid fa-phone"></i>
+                                                                                                </button>
+                                                                                                <h5>Arrange an <span style={{ color: watch().textcolor }}>Audio Call</span> with our Agent</h5>
+                                                                                            </div>
+                                                                                            <div className="callByVideo">
+                                                                                                <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
+                                                                                                    <i className="fa-solid fa-video"></i>
+                                                                                                </button>
+                                                                                                <h5>Arrange a <span style={{ color: watch().textcolor }}>Video Call</span> with our Agent</h5>
+                                                                                            </div>
+                                                                                        </> : ""}
+                                                                                    {callFormVisible ? <div className="callDialogBox">
+                                                                                        <div className="formBox">
+                                                                                            <label className="formLabel">Name</label>
+                                                                                            <input type="text" placeholder="Enter your name" onChange={(e) => setName(e.target.value)} value={name} />
                                                                                         </div>
-                                                                                        <div className="callByVideo">
-                                                                                            <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
-                                                                                                <i className="fa-solid fa-video"></i>
-                                                                                            </button>
-                                                                                            <h5>Arrange a <span style={{ color: watch().textcolor }}>Video Call</span> with our Agent</h5>
-                                                                                        </div>
-                                                                                    </> : ""}
-                                                                                {callFormVisible ? <div className="callDialogBox">
-                                                                                    <div className="formBox">
-                                                                                        <label className="formLabel">Name</label>
-                                                                                        <input type="text" placeholder="Enter your name" onChange={(e) => setName(e.target.value)} value={name} />
-                                                                                    </div>
-                                                                                    <div className="formBox">
-                                                                                        <label className="formLabel">Number</label>
-                                                                                        <input
-                                                                                            type="number"
-                                                                                            placeholder="Enter your Number"
-                                                                                            onChange={(e) => {
-                                                                                                const value = e.target.value;
-                                                                                                if (value.length <= 15) {
-                                                                                                    setNumber(value); // Allow typing up to 15 digits
-                                                                                                }
-                                                                                            }}
-                                                                                            value={number}
-                                                                                        />
+                                                                                        <div className="formBox">
+                                                                                            <label className="formLabel">Number</label>
+                                                                                            <input
+                                                                                                type="number"
+                                                                                                placeholder="Enter your Number"
+                                                                                                onChange={(e) => {
+                                                                                                    const value = e.target.value;
+                                                                                                    if (value.length <= 15) {
+                                                                                                        setNumber(value); // Allow typing up to 15 digits
+                                                                                                    }
+                                                                                                }}
+                                                                                                value={number}
+                                                                                            />
 
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <button type="button" onClick={handleSubmits}>Call Now!</button>
-                                                                                    </div>
-                                                                                </div> : ""}
-                                                                            </div>
-                                                                        </div> : ""}
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            <button type="button" onClick={handleSubmits}>Call Now!</button>
+                                                                                        </div>
+                                                                                    </div> : ""}
+                                                                                </div>
+                                                                            </div> : ""}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -910,7 +915,7 @@ function ClickToCallEdit() {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>

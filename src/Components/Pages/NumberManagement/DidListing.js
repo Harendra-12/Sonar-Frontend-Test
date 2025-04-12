@@ -353,6 +353,9 @@ function DidListing({ page }) {
                             <th>E911</th>
                             <th>Cname</th>
                             <th>SMS</th>
+                            {page === "pbx" ? <>
+                            <th>Route</th>
+                            </>:""}
                             {page === "number" ?
                               <>
                                 <th>Usages</th>
@@ -399,6 +402,12 @@ function DidListing({ page }) {
                                       <td style={{ cursor: "default" }}>
                                         {item?.sms}
                                       </td>
+                                      {page === "pbx" ? <>
+                                        <td style={{ cursor: "default" }}>
+                                          {item?.configuration?.forward_to?item?.configuration?.forward_to:item?.configuration?.action}
+                                        </td>
+                                      </>:""}
+                                      
                                       {page === "number" ?
                                         <>
                                           <td style={{ cursor: "default" }}>
