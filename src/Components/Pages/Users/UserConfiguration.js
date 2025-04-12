@@ -11,6 +11,8 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { useLocation, useNavigate } from "react-router-dom";
 import UsersEdit from "./UsersEdit";
+import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function UserConfiguration() {
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ function UserConfiguration() {
     []
   );
   const [selectAll,setSelectAll]=useState(false)
+  const[loading,setLoading]=useState(false)
   const location = useLocation();
   const locationState = location.state;
 
@@ -64,14 +67,18 @@ function UserConfiguration() {
       tb_permissions: checkedUserPermissionData,
     };
     try {
+      setLoading(true)
       const res = await generalPostFunction(
         "/assign-table-permissions ",
         payload
       );
       if (res?.status) {
+        setLoading(false)
         toast.success("Assigned Permissions Successfully");
       }
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false)
+    }
   };
   //  function to add permission data for Accordian
   function permissionDataForAccordian(data) {
@@ -104,7 +111,7 @@ function UserConfiguration() {
   }
   return (
     <>
-      <main className="mainContent">
+      {loading?<CircularLoader/>:<main className="mainContent">
         <section id="phonePage">
           <div className="container-fluid px-0">
             <Header title="User Configuration" />
@@ -351,7 +358,7 @@ function UserConfiguration() {
                                                   </div>
                                                 </div>
                                               </div>
-                                              <div className="accordion permissionListWrapper">
+                                              <div className="accordion permissionListWrapper" key={activeUserPermission}>
                                                 {userPermissionData &&
                                                   userPermissionData.map(
                                                     (item, key) => (
@@ -427,7 +434,7 @@ function UserConfiguration() {
                                                             {item?.all_action?.map(
                                                               (action) => {
                                                                 return (
-                                                                  <div className="col-xl-2 col-md-4 col-6">
+                                                                  <div className="col-xl-2 col-md-4 col-6" >
                                                                     <input
                                                                       type="checkbox"
                                                                       checked={checkedUserPermissionData.includes(
@@ -498,7 +505,7 @@ function UserConfiguration() {
             </div>
           </div>
         </section>
-      </main>
+      </main>}
     </>
   );
 }
