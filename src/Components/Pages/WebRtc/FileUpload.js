@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { fileUploadFunction } from '../../GlobalFunction/globalFunction';
-function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile, setCircularLoading}) {
+function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile, setCircularLoading,sendSingleMessage,sendGroupMessage,recipient}) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const maxSizeMB = 2;
@@ -51,6 +51,7 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
 
     async function handleConfirm() {
         setCircularLoading(true)
+        setLoading(true)
         try {
             const formData = new FormData();
             formData.append('sharedMessage', selectedFile);
@@ -59,8 +60,15 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             // console.log({res})
             if (res?.status) {
                 toast.success("File uploaded successfully");
+                // console.log({recipient})
+                if (recipient[2] === "groupChat") {
+                    sendGroupMessage(res?.file_url);
+                  } else {
+                    sendSingleMessage(res?.file_url);
+                  }
                 setSelectedUrl(res?.file_url);
                 setFileUpload(null)
+                setSelectedFile(null)
             } else {
                 toast.error(res?.errors?.sharedMessage?.[0] || "Upload failed");
             }
@@ -71,6 +79,7 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
         } finally {
           setFileUpload(false)
           setCircularLoading(false)
+          setLoading(false)
         }
     }
     return (

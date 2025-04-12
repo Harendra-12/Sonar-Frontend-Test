@@ -166,7 +166,7 @@ export default function AddGroupsList() {
   // Logic to upload bulk destination
   const handleBulkDestinationUpload = (selectedDestinations) => {
     // debugger
-    console.log({ selectedDestinations });
+    // console.log({ selectedDestinations });
     if (users.length > 0) {
       const newDestinations = selectedDestinations.map(
         (selectedDestination) => ({
@@ -212,7 +212,7 @@ export default function AddGroupsList() {
   return (
     <div className="mainContent">
       <div className="container-fluid px-0">
-        <Header title="Ring Groups" />
+        <Header title="Groups" />
       </div>
       <>
         {loading ? (

@@ -19,28 +19,33 @@ const DisplayFile = ({ item }) => {
   
     //  Remove query parameters and get the base URL
     const fileUrl = selectedUrl;
+    // console.log({selectedUrl});
+    
     const fileName = fileUrl.split("/").pop();
-  
+    // console.log({fileName});
     if (fileName) {
       // Try extracting extension from the filename
       const fileParts = fileName.split(".");
+      // console.log({fileParts});
       if (fileParts.length > 1) {
-        return fileParts.pop().toLowerCase(); // Standard case: return the extension
+        // return fileParts.pop().toLowerCase(); // Standard case: return the extension
       }
   
       // Step 3: Fallback - Check query parameters for extension hints
-      const queryParams = selectedUrl.split("?")[1];
-      if (queryParams) {
-        const params = new URLSearchParams(queryParams);
+      // const queryParams = selectedUrl.split("?")[1];
+      // if (queryParams) {
+        // const params = new URLSearchParams(queryParams);
+        // console.log({params});
         // Look for common extension indicators in query params (customize as needed)
-        for (const [value] of params) {
-          const lowerValue = selectedUrl.toLowerCase();
-          if (lowerValue.includes("png")) return "png";
+        
+          const lowerValue = selectedUrl;
+          if (lowerValue.includes("png")||lowerValue.includes("Screenshot")) return "png";
           if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
           if (lowerValue.includes("pdf")) return "pdf";
           // Add more extensions as needed
-        }
-      }
+          if (lowerValue.includes("mp3")) return "mp3";
+          if (lowerValue.includes("mp4") || lowerValue.includes("Video"))  return "mp4";
+      // }
   
       // Step 4: Fallback - Decode URL-encoded filename and retry
       const decodedFileName = decodeURIComponent(fileName);
@@ -55,10 +60,10 @@ const DisplayFile = ({ item }) => {
 
 
   if (!item) return null;
-  
+//  console.log({item}) 
   const fileUrl = item.startsWith('http://') || item.startsWith('https://') ? extractFileExtension(item) : "";
   const ext = fileUrl;
-  
+  // console.log({ext})
   if (!ext) {
     return <p className="messageDetails">{item}</p>;
   }

@@ -336,7 +336,7 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => {
+  const sendSingleMessage = (selectedUrl) => {
     // Only proceed if there's either a URL or message text
     // debugger
     if (!selectedUrl && messageInput.trim() === "") {
@@ -349,8 +349,13 @@ function Messages({
       const target = UserAgent.makeURI(targetURI);
       if (target) {
         let messager;
+        let messageContent;
         try {
-          const messageContent = messageInput.trim();
+         if(selectedUrl){
+          messageContent=selectedUrl
+         }else{
+          messageContent = messageInput.trim();
+         }
           //  message if any file is selected
           messager = new Messager(userAgent, target, messageContent);
 
@@ -361,7 +366,7 @@ function Messages({
             ...prevState,
             [recipient[0]]: [
               ...(prevState[recipient[0]] || []),
-              { from: extension, body: messageInput, time },
+              { from: extension, body: messageInput||selectedUrl, time },
             ],
           }));
           // Update contact last message
@@ -957,8 +962,7 @@ function Messages({
   // function to add display logic in messages
 
   // Logic to send group messages
-  function sendGroupMessage() {
-    debugger
+  function sendGroupMessage(selectedUrl) {   
     const messageContent = messageInput.trim() || selectedUrl;
 
     sendMessage({
@@ -2202,7 +2206,6 @@ function Messages({
                       <div className="messageContent">
                         <div className="messageList" ref={messageListRef}>
 
-
                           {recipient[0] ? (
                             <>
                               {allMessage?.[recipient[0]]?.map(
@@ -2969,7 +2972,9 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} />
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} sendSingleMessage={sendSingleMessage} sendGroupMessage={sendGroupMessage} recipient={recipient}
+          
+          />
         }
       </main>
     </>
