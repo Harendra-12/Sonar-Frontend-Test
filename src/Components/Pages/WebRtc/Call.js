@@ -80,6 +80,7 @@ function Call({
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
   const callListRef = useRef(null);
+  const [showComments, setShowComment] = useState(false);
   const handleScroll = () => {
     const div = callListRef.current;
     if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
@@ -951,6 +952,7 @@ function Call({
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
+          setShowComment={setShowComment}
         />
       }
       {/* Comment section end */}

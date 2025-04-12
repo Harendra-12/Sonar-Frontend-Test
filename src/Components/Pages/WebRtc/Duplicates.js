@@ -256,7 +256,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
 
                                 return <th key={key}>{headerText}</th>;
                               })}
-                              {/* <th>Comments</th> */}
+                              <th>Comments</th>
                             </tr>
                           </thead>
                           <tbody  >
@@ -316,6 +316,71 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                       const time = formatTimeWithAMPM(call["variable_start_stamp"]?.split(" ")[1])
                                       return <td >{time}</td>;
                                     }
+                                    // else if (key === "recording_path") {
+                                    //     return (
+                                    //         <td >
+                                    //             {call["recording_path"] !== null && call["variable_billsec"] > 0 && (
+                                    //                 <button
+                                    //                     className="tableButton"
+                                    //                     onClick={() => {
+                                    //                         if (currentPlaying === call["recording_path"]) {
+                                    //                             setCurrentPlaying("");
+                                    //                             setShowAudio(false);
+                                    //                         } else {
+                                    //                             setCurrentPlaying(call["recording_path"]);
+                                    //                             setShowDropdown(true);
+                                    //                             setShowAudio(false);
+                                    //                         }
+                                    //                     }}
+                                    //                 >
+                                    //                     {showDropDown && currentPlaying === call["recording_path"] ? (
+                                    //                         <ul className="dropdown-menu actionBtnDropdowns" key={index}>
+                                    //                             <>
+                                    //                                 <li className="dropdown-item">
+                                    //                                     <div
+                                    //                                         className="clearButton text-align-start"
+                                    //                                         onClick={(e) => {
+                                    //                                             e.stopPropagation();
+                                    //                                             if (call.recording_path === currentPlaying) {
+                                    //                                                 setShowDropdown(false);
+                                    //                                                 setShowAudio(true);
+                                    //                                                 handlePlaying(call.recording_path);
+                                    //                                             }
+                                    //                                         }}
+                                    //                                     >
+                                    //                                         <i className={`fa-solid fa-${call?.recording_path !== null ? "play" : "triangle-exclamation"} me-2`}></i>
+                                    //                                         Play
+                                    //                                     </div>
+                                    //                                 </li>
+                                    //                                 <li className="dropdown-item">
+                                    //                                     <div className="clearButton text-align-start">
+                                    //                                         <i className="fa-solid fa-bolt me-2"></i>
+                                    //                                         Transcript
+                                    //                                     </div>
+                                    //                                 </li>
+                                    //                             </>
+                                    //                             <>
+                                    //                                 <li className="dropdown-item">
+                                    //                                     <div className="clearButton text-align-start">
+                                    //                                         <i className="fa-regular fa-download"></i> Download
+                                    //                                     </div>
+                                    //                                 </li>
+                                    //                             </>
+                                    //                             <li className="dropdown-item"></li>
+                                    //                         </ul>
+                                    //                     ) : (
+                                    //                         <></>
+                                    //                     )}
+                                    //                     {currentPlaying === call["recording_path"] ? (
+                                    //                         <i className="fa-solid fa-stop"></i>
+                                    //                     ) : (
+                                    //                         <i className="fa-solid fa-play"></i>
+                                    //                     )}
+                                    //                 </button>
+                                    //             )}
+                                    //         </td>
+                                    //     );
+                                    // }
                                     else if (key === "variable_billsec") {
                                       return <td>{formatTime(call["variable_billsec"])}</td>;
                                     } else if (key === "Hangup-Cause") {
@@ -325,6 +390,16 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                       return <td>{call[key]}</td>
                                     }
                                   })}
+
+                                  <td className="px-4 py-3">
+                                    <button
+                                      className="tableButton"
+                                      onClick={() => handelOpenNotes()}
+                                    >
+                                      <i className="fa-solid fa-comment-dots"></i>
+                                    </button>
+                                    {/* {call.comments} */}
+                                  </td>
                                 </tr>
                                 {/* Recording Player */}
                                 {currentPlaying ===
