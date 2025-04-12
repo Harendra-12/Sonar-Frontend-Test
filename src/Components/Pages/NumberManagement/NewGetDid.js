@@ -281,11 +281,30 @@ const NewGetDid = () => {
                                                     className="formLabel d-flex justify-content-between"
                                                     style={{ width: "100%" }}
                                                 >
-                                                    <span className="text">Back</span>
-                                                    <span className="icon">
-                                                        <i className="fa-solid fa-caret-left"></i>
-                                                    </span>
-                                                </button>
+                                                    <label htmlFor="quantity">Quantity</label>
+                                                    {errors.quantity && (
+                                                        <ErrorMessage text={errors.quantity.message} />
+                                                    )}
+                                                </div>
+                                                <div className="col-12">
+                                                    <input
+                                                        type="number"
+                                                        name="quantity"
+                                                        className={`formItem ${errors.quantity ? "error" : ""
+                                                            }`}
+                                                        {...register("quantity", {
+                                                            ...requiredValidator,
+                                                            ...lengthValidator(1, 10),
+                                                            ...noSpecialCharactersValidator,
+                                                        })}
+                                                        onKeyDown={restrictToNumbers}
+                                                        style={{ color: 'transparent' }}
+                                                        onFocus={(e) => e.target.style.color = 'var(--form-input-text)'}
+                                                    />
+                                                    <label htmlFor="data" className="formItemDesc text-start">
+                                                        Input the quantity
+                                                    </label>
+                                                </div>
                                             </div>
                                             <div className={`formRow`} style={{ width: '335px' }}>
                                                 <div className="formLabel">
@@ -363,23 +382,24 @@ const NewGetDid = () => {
                                                 watch().searchType === "domestic" ? <>
                                                     <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="formLabel">
-                                                            <label htmlFor="searchType">Search Type</label>
+                                                            <label htmlFor="searchBy">Search By</label>
                                                         </div>
                                                         <div className="col-12">
                                                             <select
-                                                                name="searchType"
-                                                                className={`formItem ${errors.searchType ? "error" : ""
+                                                                name="searchBy"
+                                                                className={`formItem ${errors.searchBy ? "error" : ""
                                                                     }`}
-                                                                {...register("searchType", {
+                                                                {...register("searchBy", {
                                                                     ...requiredValidator,
                                                                 })}
-                                                                defaultValue={"tollfree"}
+                                                                defaultValue={"npa"}
                                                             >
-                                                                <option value="tollfree">Toll free</option>
-                                                                <option value="domestic">Domestic</option>
+                                                                <option value="npa">First 3 Digit (Area Code)</option>
+                                                                <option value="npanxx">First 6 Digits (Area + Exchange Code)</option>
+                                                                <option value="ratecenter">Rate Center</option>
                                                             </select>
-                                                            {errors.searchType && (
-                                                                <ErrorMessage text={errors.searchType.message} />
+                                                            {errors.searchBy && (
+                                                                <ErrorMessage text={errors.searchBy.message} />
                                                             )}
                                                             <label htmlFor="data" className="formItemDesc text-start">
                                                                 Select the type of domestic DID
@@ -485,34 +505,28 @@ const NewGetDid = () => {
                                                             className="formLabel d-flex justify-content-between"
                                                             style={{ width: "100%" }}
                                                         >
-                                                            <label htmlFor="quantity">Quantity</label>
-                                                            {errors.quantity && (
-                                                                <ErrorMessage text={errors.quantity.message} />
+                                                            <label htmlFor="state">State</label>
+                                                            {errors.state && (
+                                                                <ErrorMessage text={errors.state.message} />
                                                             )}
                                                         </div>
                                                         <div className="col-12">
                                                             <input
-                                                                type="number"
-                                                                name="quantity"
-                                                                className={`formItem ${errors.quantity ? "error" : ""
-                                                                    }`}
-                                                                {...register("quantity", {
-                                                                    ...requiredValidator,
-                                                                    ...lengthValidator(1, 10),
-                                                                    ...noSpecialCharactersValidator,
+                                                                type="state"
+                                                                name="state"
+                                                                className={`formItem ${errors.state ? "error" : ""}`}
+                                                                {...register("state", {
+                                                                    ...requiredValidator
                                                                 })}
-                                                                onKeyDown={restrictToNumbers}
-                                                                style={{ color: 'transparent' }}
-                                                                onFocus={(e) => e.target.style.color = 'var(--form-input-text)'}
                                                             />
                                                             <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Input the quantity */}
+                                                                {/* Input the state for the DID */}
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
                                                         <div className="formLabel">
-                                                            <label htmlFor="">Usage</label>
+                                                            <label htmlFor="contiguous">Contiguous</label>
                                                         </div>
                                                         <div className="col-12">
                                                             <select
@@ -603,40 +617,17 @@ const NewGetDid = () => {
                                                                                         </Tippy>
                                                                                     )
                                                                                 }
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                            ) : (
-                                                                <EmptyPrompt generic={true} />
-                                                            )
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className='pt-3'>
-                                                <h4 className='card_title'>Select A Country</h4>
-                                                <div className='country_card_group'>
-                                                    {countryCode && countryCode.length > 0 &&
-                                                        countryCode.map((item, index) => (
-                                                            <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
-                                                                <div className='card-body'>
-                                                                    <div className='avatar_img'>
-                                                                        <img src={`https://flagsapi.com/${item?.country_code}/shiny/64.png`} alt='logout' style={{ width: 'auto' }} />
-                                                                    </div>
-                                                                    <div className='card_details'>
-                                                                        <p className='country_name'>{item?.country}</p>
-                                                                        <div className="text-center badge rounded-pill badge-soft-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                            <p className="text-center mb-0">{item?.prefix_code}</p>
-                                                                        </div>
+                                                                            })
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        ))
-                                                    }
-                                                </div>
+                                                        </div>
+                                                    )
+                                                    ) : (
+                                                        <EmptyPrompt generic={true} />
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </>
@@ -663,7 +654,7 @@ const NewGetDid = () => {
                                             }
                                         </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -701,7 +692,7 @@ const NewGetDid = () => {
                             </div>
                             <div className='getPopup checkout'>
                                 <div className="wrapper ">
-                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2 noScrollbar buyDid'>
+                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2'>
                                         <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
                                             <li className="my-0 col mb-0 position-relative">
                                                 <i
