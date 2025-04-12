@@ -239,7 +239,7 @@ function Agents({ type }) {
                                         </td>
                                         <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
                                         <td>{item.extension.extension}</td>
-                                        <td>{item.user_role.roles.name}</td>
+                                        <td>{item?.user_role?.roles?.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
                                         <td>
                                           <span

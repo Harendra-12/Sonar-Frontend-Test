@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { generalPostFunction } from '../../GlobalFunction/globalFunction';
 import { toast } from 'react-toastify';
@@ -13,6 +13,19 @@ import { toast } from 'react-toastify';
 function AgentFeedback() {
     const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
     console.log("desposiTionOptions", desposiTionOptions);
+    const [currentDisposition, setCurrentDisposiTion] = useState([])
+
+    // Function to check wetaher this dispo is already presnt if yes then remove otherwise add
+    const checkDispo = (item) => {
+        const index = currentDisposition?.findIndex((dispo) => dispo.id === item.id);
+        if (index !== -1) {
+            const newDisposition = [...currentDisposition];
+            newDisposition.splice(index, 1);
+            setCurrentDisposiTion(newDisposition);
+        } else {
+            setCurrentDisposiTion([item]);
+        }
+    };
 
     const dispatch = useDispatch()
 
@@ -22,12 +35,16 @@ function AgentFeedback() {
      * If the response is not successful, displays an error message to the agent.
      */
     async function handleFeedback() {
+        if(currentDisposition.length === 0) {
+            toast.error("Please select at least one feedback option")
+            return
+        }
         const parseddata = {
-            'agent_id' :"",
-            'lead_id' :"",
-            'campaign_id' :"",
-            'disposition_id':"",
-            'feedback' :"",
+            'agent_id' :desposiTionOptions.agent_id,
+            'lead_id' :desposiTionOptions.lead_id,
+            'campaign_id' :desposiTionOptions.campaign_id,
+            'disposition_id':currentDisposition[0]?.id,
+            'feedback' :currentDisposition[0]?.campaign_disposition_name,
         }
         const response  = await generalPostFunction("/campaign-feedback",parseddata)
         if(response.status){
@@ -40,6 +57,9 @@ function AgentFeedback() {
             toast.error(response.message)
         }
     }
+
+    console.log("currentDisposition", currentDisposition);
+    
     return (
         <>
             <div className="addNewContactPopup">
@@ -69,7 +89,7 @@ function AgentFeedback() {
                                     return (
                                         <div key={key} className="formRow col-xl-3 justify-content-start">
                                             <div className='col-auto me-2'>
-                                                <input type="checkbox" />
+                                                <input onChange={()=>checkDispo(item)} checked={currentDisposition?.some((dispo) => dispo.id === item.id)} type="checkbox" />
                                             </div>
                                             <div className="formLabel">
                                                 <label htmlFor="">{item.name}</label>

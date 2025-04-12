@@ -76,8 +76,6 @@ const Socket = () => {
 
           switch (key) {
             case "OnlineExtensions":
-              console.log("OnlineExtensions:", result);
-              
               dispatch({
                 type: "SET_REGISTERUSER",
                 registerUser: result?.filter(

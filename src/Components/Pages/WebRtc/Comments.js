@@ -52,7 +52,7 @@ function Comments({ id, setId, setShowComment, webrtc }) {
     const handlePopupClose = () => {
         setComment("");
         setId("");
-        setShowComment(false);
+        // setShowComment(false);
     }
     return (
         <div className={`backdropContact ${webrtc ? 'bg-transparent' : ''}`} style={{ zIndex: 15 }}>
