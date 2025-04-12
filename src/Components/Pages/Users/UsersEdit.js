@@ -874,6 +874,30 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">
+                               Usages
+                              </label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Set usages for the current user
+                              </label>
+                            </div>
+                            <div className="col-6">
+                            <select
+                                className="formItem"
+                                name="extension_id"
+                                value={watch().usages}
+                                {...register("usages", {
+                                  ...requiredValidator,
+                                })}
+                              >
+                                <option value="pbx">PBX</option>
+                                <option value="dialer">Dialer</option>
+                                <option value="both">Both</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="formRow col-xl-12">
+                            <div className="formLabel">
+                              <label htmlFor="selectFormRow">
                                 New Password
                               </label>
                               <label htmlFor="data" className="formItemDesc">
@@ -1253,7 +1277,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 }}
                               />
                             </div>
-                            <div
+                            {/* <div
                               className={`${watch().extension_id ? "col-5" : "col-5"
                                 }`}
                             >
@@ -1271,7 +1295,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                 <option value="dialer">Dialer</option>
                                 <option value="both">Both</option>
                               </select>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

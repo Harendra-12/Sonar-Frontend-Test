@@ -238,7 +238,12 @@ export default function GroupsList() {
                             <SkeletonTableLoader col={4} row={10} />
                           ) : (
                             <>
-                              {groups.length &&
+                              {groups.length===0 ?  <td colSpan={99}>
+                                  <EmptyPrompt
+                                    name="Groups"
+                                    link="groups-add"
+                                  />
+                                </td> :
                                 groups?.map((item, index) => {
                                   return (
                                     <tr key={index}>
@@ -263,6 +268,7 @@ export default function GroupsList() {
                                                   <Tippy key={index} content={user?.user?.name}>
                                                     {user?.user?.profile_picture ? (
                                                       <img
+                                                      alt='profile'
                                                         src={user?.user?.profile_picture}
                                                         onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                       />
@@ -334,17 +340,6 @@ export default function GroupsList() {
                                     </tr>
                                   );
                                 })}
-                              {groups &&
-                                groups?.data?.length === 0 ? (
-                                <td colSpan={99}>
-                                  <EmptyPrompt
-                                    name="Groups"
-                                    link="groups-add"
-                                  />
-                                </td>
-                              ) : (
-                                ""
-                              )}
                             </>
                           )}
                         </>
@@ -423,20 +418,6 @@ export default function GroupsList() {
                   ) : (
                     ""
                   )}
-
-                  {/* <div className="tableHeader mb-3">
-                  {ringGroup && ringGroup?.data?.length > 0 ? (
-                    <PaginationComponent
-                      pageNumber={(e) => setPageNumber(e)}
-                      totalPage={ringGroup.last_page}
-                      from={ringGroup.from}
-                      to={ringGroup.to}
-                      total={ringGroup.total}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div> */}
                 </div>
               </div>
             </div>
