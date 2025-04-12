@@ -167,7 +167,9 @@ label.status.missing::before {
     color: var(--form-input-text);
     font-weight: 700;
 }
-
+.tableHeader .formItem{
+    height: 25px;
+}
 .formWidth {
     width: 90px !important;
 }
@@ -628,7 +630,7 @@ form.tangoNavs .nav-tabs {
     background-color: var(--bg-badge-danger);
     border: 1px solid var(--bg-badge-danger-border);
 }
-.badge-soft-primary {
+.badge-softLight-primary {
     color: var(--badge-primary-text);
     /* background-color: var(--bg-badge-danger); */
     border: 1px solid var(--badge-primary-border);
@@ -688,4 +690,11 @@ form.tangoNavs .nav-tabs {
     top: 0;
     left: 0;
     border-radius: 10px;
+}
+
+.fillerCountryNumber .formRow {
+  /* display: block; */
+}
+.fillerCountryNumber .formItem{
+    height: 25px;
 }

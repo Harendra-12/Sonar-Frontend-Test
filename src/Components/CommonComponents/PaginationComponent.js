@@ -11,7 +11,7 @@ function PaginationComponent({
 }) {
   return (
     <>
-      <label className="col-6" style={{ fontFamily: 'Roboto', color: 'var(--color-subtext)', fontWeight: 500, fontSize: 14 }}>
+      <label className="col-6" style={{ fontFamily: 'Roboto', color: 'var(--color-subtext)', fontWeight: 500, fontSize: 12 }}>
         Showing {from} to {to} of {total} Entries.
       </label>
       <Pagination

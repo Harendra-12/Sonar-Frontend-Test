@@ -83,6 +83,7 @@ function CdrFilterReport({ page }) {
   const [showAudio, setShowAudio] = useState(false)
   // const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
+  const [showComment, setShowComment] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -1435,29 +1436,14 @@ function CdrFilterReport({ page }) {
                                               </td>
                                               <td>
                                                 <button
-                                                  disabled={isBlocked}
                                                   effect="ripple"
-                                                  className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                    } ms-0`}
+                                                  className={`tableButton warning ms-0`}
                                                   style={{
                                                     height: "34px",
                                                     width: "34px",
                                                   }}
                                                   onClick={() => {
-                                                    setSelectedNumberToBlock(
-                                                      item["Call-Direction"] ===
-                                                        "inbound"
-                                                        ? item[
-                                                        "variable_sip_from_user"
-                                                        ]
-                                                        : item["Call-Direction"] ===
-                                                          "outbound"
-                                                          ? item[
-                                                          "variable_sip_to_user"
-                                                          ]
-                                                          : "N/A"
-                                                    );
-                                                    setPopUp(true);
+                                                    setSelectedCdr(item.id);
                                                   }}
                                                 >
                                                   <Tippy content={"View Note"}>
@@ -1597,7 +1583,7 @@ function CdrFilterReport({ page }) {
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} />
+        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>

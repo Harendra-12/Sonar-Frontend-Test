@@ -407,7 +407,7 @@ const AgentDashboard = () => {
                                                                 <th>Extension</th>
                                                                 <th>Destination / Source</th>
                                                                 <th>Call Duration</th>
-                                                                <th>Edit</th>
+                                                                <th className='text-center'>Edit</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody className="">
