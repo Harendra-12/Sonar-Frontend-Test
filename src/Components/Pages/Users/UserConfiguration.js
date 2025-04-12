@@ -25,6 +25,7 @@ function UserConfiguration() {
   const [checkedUserPermissionData, setCheckedUserPermissionData] = useState(
     []
   );
+  const [selectAll,setSelectAll]=useState(false)
   const location = useLocation();
   const locationState = location.state;
 
@@ -36,9 +37,12 @@ function UserConfiguration() {
         const permissionData = permissionDataForAccordian(
           response?.data[Object.keys(response?.data)[0]]
         );
+        console.log({permissionData})
         setUserPermissionData(permissionData);
         setActiveUserPermission(Object.keys(response?.data)[0]);
+        console.log("00",Object.keys(response?.data)[0])
         if (locationState.table_permissions.length > 0) {
+          console.log("009",locationState.table_permissions)
           setCheckedUserPermissionData([...locationState.table_permissions]);
         }
       } catch (error) {}
@@ -46,8 +50,15 @@ function UserConfiguration() {
     permissionData();
   }, []);
   const handleSetUserPermissionData = (data) => {
-    setUserPermissionData(userPermission[data]);
+    setSelectAll(false)
+    console.log(userPermission[data])
+    const permissionData = permissionDataForAccordian(
+     userPermission[data]
+    );
+    // console.log({permissionData})
+    setUserPermissionData(permissionData);
     setActiveUserPermission(data);
+
   };
   const handlePermissionSave = async () => {
     const payload = {
@@ -305,7 +316,7 @@ function UserConfiguration() {
                                             <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
                                               <div className="col-xl-12">
                                                 <div className="headerCommon d-flex align-items-center">
-                                                  <div className="col">
+                                                <div className="col d-flex justify-content-between">
                                                     Permissions for Role{" "}
                                                     <span
                                                       style={{
@@ -313,8 +324,31 @@ function UserConfiguration() {
                                                           "var(--ui-accent)",
                                                         fontWeight: 600,
                                                       }}
+                                                
                                                     >
                                                       {/* {selectedRole} */}
+                                                    
+                                                      <div><span className="m-3">Select All</span><input type="checkbox" checked={selectAll} onChange={(e)=>{
+                                                        if(e.target.checked){
+                                                          setSelectAll(true)
+                                                          userPermissionData.map((item)=>{
+                                                           
+                                                            setCheckedUserPermissionData(
+                                                              (pre) => [
+                                                                ...pre,
+                                                                ...item?.all_action.map(
+                                                                  (
+                                                                    action
+                                                                  ) =>
+                                                                    action?.id
+                                                                ),
+                                                              ])
+                                                          })
+                                                        }else{
+                                                          setSelectAll(false)
+                                                          setCheckedUserPermissionData([])
+                                                        }
+                                                      }}/></div>
                                                     </span>
                                                   </div>
                                                 </div>
