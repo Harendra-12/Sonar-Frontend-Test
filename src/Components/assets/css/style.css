@@ -168,7 +168,7 @@
   --text-timer-color: #192ea2;
   /* --dash-listing-bg: #d6dcff; */
   --dash-listing-bg: #d6dcff47;
-  --dash-listing-text: #013d7a;
+  --dash-listing-text: #08121c;
   --dash-listing-border: #2747f3;
   --dash-listing-hover-border: #0063c5;
   --dash-listing-hover-text: #0065a8;
@@ -180,6 +180,7 @@
   --shadow-gray: rgba(99, 99, 99, 0.388);
   --hover-bg: #fff;
   --billing-icon: #1e00ff;
+  --billing-icon2: #0c0c10;
   --table-border-color: #d3d9eb;
 
 }
@@ -267,6 +268,7 @@
   --shadow-gray: rgb(13, 19, 24);
   --hover-bg: #3a3b4b;
   --billing-icon: #f3f1ff;
+  --billing-icon2: #f3f1ff;
 
   --table-head: #293e59;
   --table-even-bg: rgba(46, 44, 63, 0.62);
