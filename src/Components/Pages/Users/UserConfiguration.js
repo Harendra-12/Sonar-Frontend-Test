@@ -37,12 +37,10 @@ function UserConfiguration() {
         const permissionData = permissionDataForAccordian(
           response?.data[Object.keys(response?.data)[0]]
         );
-        console.log({permissionData})
+        // console.log({permissionData})
         setUserPermissionData(permissionData);
         setActiveUserPermission(Object.keys(response?.data)[0]);
-        console.log("00",Object.keys(response?.data)[0])
         if (locationState.table_permissions.length > 0) {
-          console.log("009",locationState.table_permissions)
           setCheckedUserPermissionData([...locationState.table_permissions]);
         }
       } catch (error) {}
@@ -51,7 +49,7 @@ function UserConfiguration() {
   }, []);
   const handleSetUserPermissionData = (data) => {
     setSelectAll(false)
-    console.log(userPermission[data])
+    // console.log(userPermission[data])
     const permissionData = permissionDataForAccordian(
      userPermission[data]
     );
