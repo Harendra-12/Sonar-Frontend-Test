@@ -68,7 +68,12 @@
 .MuiButtonBase-root.MuiPaginationItem-root{
     min-width: 20px;
     height: 20px;
-   }
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    line-height: 31px;
+}
 
 .pricing_section .pricing_box {
     padding: 20px;
