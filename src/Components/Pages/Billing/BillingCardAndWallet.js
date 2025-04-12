@@ -72,7 +72,7 @@ const BillingCardAndWallet = () => {
                                                             <th>Wallet Balance</th>
                                                             <th>Date</th> 
                                                             <th>Description</th>
-                                                            <th>Download</th>
+                                                            <th className='text-center'>Download</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

@@ -136,7 +136,7 @@ function WalletTransactionsList() {
                             <th>Transaction ID</th>
                             <th>Transaction Amount</th>
                             <th>Transaction Type</th>
-                            <th>Download</th>
+                            <th className="text-center">Download</th>
                           </tr>
                         </thead>
                         <tbody>

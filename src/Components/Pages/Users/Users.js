@@ -299,11 +299,11 @@ const Users = () => {
                               <option value="offline">Offline</option>
                               <option value="all">All</option>
                             </select></th>
-                            {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <th>Edit</th>}
+                            {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
                             <th>Activation <span>
 
                             </span></th>
-                            <th>Delete</th>
+                            <th className="text-center">Delete</th>
                           </tr>
                         </thead>
                         <tbody className="">

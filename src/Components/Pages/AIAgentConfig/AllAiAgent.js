@@ -111,8 +111,8 @@ function AllAiAgent() {
                                                         <tr>
                                                             <th>Name</th>
                                                             <th>Number</th>
-                                                            <th>Edit</th>
-                                                            <th>Delete</th>
+                                                            <th className='text-center'>Edit</th>
+                                                            <th className='text-center'>Delete</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
