@@ -107,7 +107,7 @@ export default function AddGroupsList() {
     // }
   };
 
-  // Handle chek box for bulk edit
+  // Handle check box for bulk edit
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
