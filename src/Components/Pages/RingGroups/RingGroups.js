@@ -281,7 +281,7 @@ const RingGroups = () => {
                     </div>
                     <div
                       className="col-12"
-                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                      style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       <div className="tableHeader ">
                         <div className="showEntries">
@@ -505,6 +505,8 @@ const RingGroups = () => {
                                                 }}
                                               >
                                                 <i className="fa-solid fa-trash" />
+                                                {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
+                                                {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
                                               </button>
                                             </td>
                                             <div className="utilPopup"></div>

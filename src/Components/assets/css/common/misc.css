@@ -344,7 +344,7 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    padding-left: 10px;
+    /* padding-left: 10px; */
 }
 
 .billinCardWrapper .rccs__card {
@@ -406,9 +406,8 @@
 }
 
 .addressDrawer.active {
-
-    border: 1px solid green;
-    box-shadow: #00ff1554 0px 3px 8px;
+    border: 1px solid #009688;
+    box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
 /* Card logo css start */

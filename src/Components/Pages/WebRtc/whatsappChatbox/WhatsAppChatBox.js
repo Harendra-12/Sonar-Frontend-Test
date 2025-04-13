@@ -178,14 +178,7 @@ const WhatsAppChatBox = ({ initial }) => {
               : "0",
         }}
       >
-        {/* {allLogOut && (
-                    <LogOutPopUp
-                        setAllLogOut={setAllLogOut}
-                        handleLogOut={handleLogOut}
-                    />
-                )} */}
-
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
               <div className="newHeader">
@@ -209,47 +202,6 @@ const WhatsAppChatBox = ({ initial }) => {
                       <i className="fa-regular fa-bell" />
                     </button>
                   </div>
-                  {/* <DarkModeToggle marginLeft={"2"} /> */}
-                  {/* <div className="col-auto">
-                    <div className="dropdown">
-                      <div
-                        className="myProfileWidget"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <div className="profileHolder" id="profileOnlineNav">
-                          <img
-                            src={account?.profile_picture}
-                            alt="profile"
-                            onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
-                          />
-                        </div>
-                        <div className="profileName">
-                          {account?.username}{" "}
-                          <span className="status">Available</span>
-                        </div>
-                      </div>
-                      <ul className="dropdown-menu">
-                        <li
-                        onClick={() => {
-                            if (allCallCenterIds.length > 0) {
-                                setAllLogOut(true);
-                            } else {
-                                handleLogOut();
-                            }
-                        }}
-                        >
-                          <div
-                            className="dropdown-item"
-                            style={{ cursor: "pointer" }}
-                          >
-                            Logout
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -311,66 +263,12 @@ const WhatsAppChatBox = ({ initial }) => {
                                     </div>
                                     <p className="mb-0 profile_text">
                                       <span>{item}</span> <br />
-                                      {/* <span>
-                                    Haha that's terrifying 😂 Haha that's
-                                    terrifying
-                                  </span> */}
+
                                     </p>
                                   </div>
-                                  {/* <div className="user_info">
-                                <p className="mb-0">7:30 am</p>
-                                <p className="mb-0 text-end read mt-2">
-                                  <i class="fa-solid fa-check-double"></i>
-                                </p>
-                              </div> */}
+
                                 </div>
                               ))}
-                            {/* <div className="profile_wrap isActive py-3">
-                              <div className="d-flex justify-content-start align-items-center gap-3">
-                                <div className="profileBox">
-                                  <img
-                                    src={require("../../../assets/images/boy.png")}
-                                    alt="loader"
-                                  />
-                                </div>
-                                <p className="mb-0 profile_text">
-                                  <span>Claire</span> <br />
-                                  <span>
-                                    Haha that's terrifying 😂 Haha that's
-                                    terrifying
-                                  </span>
-                                </p>
-                              </div>
-                              <div className="user_info">
-                                <p className="mb-0">7:30 am</p>
-                                <p className="mb-0 text-end read mt-2">
-                                  <i class="fa-solid fa-check-double"></i>
-                                </p>
-                              </div>
-                            </div>
-                            <div className="profile_wrap py-3">
-                              <div className="d-flex justify-content-start align-items-center gap-3">
-                                <div className="profileBox">
-                                  <img
-                                    src={require("../../../assets/images/boy.png")}
-                                    alt="loader"
-                                  />
-                                </div>
-                                <p className="mb-0 profile_text">
-                                  <span>Claire</span> <br />
-                                  <span>
-                                    Haha that's terrifying 😂 Haha that's
-                                    terrifying
-                                  </span>
-                                </p>
-                              </div>
-                              <div className="user_info">
-                                <p className="mb-0 un_Read">7:30 am</p>
-                                <div className="message_record ms-auto mt-2">
-                                  25+
-                                </div>
-                              </div>
-                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -427,11 +325,6 @@ const WhatsAppChatBox = ({ initial }) => {
                             <div className="chart_body" ref={chatContainerRef}>
                               <div
                                 className="chart_text"
-
-                              // style={{
-                              //   maxHeight: "calc(100vh - 200px)",
-                              //   overflowY: "auto",
-                              // }}
                               >
                                 {activeChatMessages &&
                                   activeChatMessages.map((item, index) => (
@@ -458,13 +351,6 @@ const WhatsAppChatBox = ({ initial }) => {
                                       </span>
                                     </div>
                                   ))}
-                                {/* <div className="message_chatbox sent">
-                                <p>Hey brother</p>
-                                <span className="c_time">
-                                  17:07{" "}
-                                  <i class="fa-solid fa-check-double read"></i>
-                                </span>
-                              </div> */}
                               </div>
                             </div>
                           )}
@@ -500,7 +386,474 @@ const WhatsAppChatBox = ({ initial }) => {
               </div>
             </>
           </div>
+        </div> */}
+
+
+        <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
+          <div className="newHeader">
+            <div className="col-auto" style={{ padding: "0 10px" }}>
+              <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                WhatsApp
+              </h3>
+            </div>
+            <div className="d-flex justify-content-end align-items-center">
+              <div className="col-9">
+                <input
+                  type="search"
+                  name="Search"
+                  placeholder="Search users, groups or chat"
+                  className="formItem fw-normal"
+                  style={{ backgroundColor: "var(--searchBg)" }}
+                />
+              </div>
+              <div className="col-auto ms-2">
+                <button className="clearButton2 xl" effect="ripple">
+                  <i className="fa-regular fa-bell" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div className="container-fluid mt-4">
+          <div className='row'>
+            <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 '>
+              <div className="main-chart-wrapper gap-xl-3 gap-lg-3 gap-0 mb-2 d-flex align-items-center justify-content-center">
+                <div className="chat-container border chat-info">
+                  <div className="chat-search p-3 border-bottom">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        className="form-control "
+                        placeholder="Search Chat"
+                        aria-describedby="button-addon01"
+                      />
+                      <button
+                        aria-label="button"
+                        className="btn btn-primary"
+                        type="button"
+                        id="button-addon01"
+                      >
+                        <i className="fa-solid fa-magnifying-glass" />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="tabs">
+                    <div className="tab active">Chat</div>
+                    <div className="tab" />
+                    <div className="tab" />
+                    <div className="tab" />
+                  </div>
+                  <div className="chat-list">
+                    {whatsappContactData && whatsappContactData.map((item, index) => (
+
+                      <div className={`chat-item py-3 ${activeChat === item && "active"
+                        }`}
+                        key={index}
+                        onClick={() => setActiveChat(item)}>
+                        <div className="borders-color">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="user"
+                          />
+                          <div className="user-online" />
+                        </div>
+                        <div className="chat-details">
+                          <div className="chat-name">
+                            {/* <p>Ella Fitzgerald</p> */}
+                            <p>{item}</p>
+                          </div>
+                          <div className="chat-message">
+                            <p>Typing...</p>
+                          </div>
+                        </div>
+                        <div className="chat-time">08:45AM</div>
+                      </div>
+                    ))}
+                    {/* <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/7.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Liam Neeson</p>
+                        </div>
+                        <div>
+                          <div className="chat-message">
+                            <p>Excited for our meeting later!</p>
+                          </div>
+                        </div>
+                        <div></div>
+                      </div>
+                      <div className="chat-time">
+                        <p>11:05AM</p>
+                        <p className="notification">5</p>
+                      </div>
+                    </div>
+                    <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/9.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Biplab</p>
+                        </div>
+                        <div className="chat-message">
+                          <p>Can't wait to discuss our project...</p>
+                        </div>
+                      </div>
+                      <div className="chat-time">09:30AM</div>
+                    </div>
+                    <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/11.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Rishabh</p>
+                        </div>
+                        <div className="chat-message">
+                          <p>hiii </p>
+                        </div>
+                      </div>
+                      <div className="chat-time">09:30AM</div>
+                    </div>
+                    <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/10.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Rajneesh</p>
+                        </div>
+                        <div className="chat-message">
+                          <p>Can't wait to discuss our project...</p>
+                        </div>
+                      </div>
+                      <div className="chat-time">
+                        <p>09:30AM</p>
+                        <p className="notification">1</p>
+                      </div>
+                    </div>
+                    <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/1.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Natalie Portman</p>
+                        </div>
+                        <div className="chat-message">
+                          <p>Can't wait to discuss our project...</p>
+                        </div>
+                      </div>
+                      <div className="chat-time">09:30AM</div>
+                    </div>
+                    <div className="chat-item">
+                      <div className="borders-color">
+                        <img
+                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/2.jpg"
+                          alt="user"
+                        />
+                      </div>
+                      <div className="chat-details">
+                        <div className="chat-name">
+                          <p>Damini</p>
+                        </div>
+                        <div className="chat-message">
+                          <p>work done.</p>
+                        </div>
+                      </div>
+                      <div className="chat-time">09:30AM</div>
+                    </div> */}
+                    {/* <div class="chat-item">
+                  <img src="https://spruko.com/demo/rixzo/dist/assets/images/faces/4.jpg" alt="user">
+                  <div class="chat-details">
+                      <div class="chat-name">Natalie Portman</div>
+                      <div class="chat-message">Can't wait to discuss our project...</div>
+                  </div>
+                  <div class="chat-time">09:30AM</div>
+              </div> */}
+                  </div>
+                </div>
+                <div className="main-chat-area border">
+                  <div className="chat-box">
+                    <div className="chat-header-section">
+                      <div className="d-flex align-items-center justify-content-space-between">
+                        <div className="borders-color">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-avatar"
+                          />
+                          <div className="user-online" />
+                        </div>
+                        <div>
+                          <div className="user-details">
+                            <h5>Ella Fitzgerald</h5>
+                            <p className="status"></p>
+                            <p>Last seen: Today, 8:45AM</p>
+                            <p />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="icons-header me-3">
+                        <div className="d-flex align-items-center justify-content-start">
+                          <div className="phone">
+                            <i className="fa-solid fa-phone" />
+                          </div>
+                          <div>
+                            <div className="video">
+                              <i className="fa-solid fa-video" />
+                            </div>
+                          </div>
+                          <div className="user">
+                            <i className="fa-solid fa-user-tie" />
+                          </div>
+                          <div className="three-dot">
+                            <i className="fa-solid fa-ellipsis-vertical" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <div className="chat-content" ref={chatContainerRef}>
+                      <div className="chat-message incomings">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div className="message-content">
+                          <p>
+                            Hey! 😊 Have you tried that new restaurant in town? I heard
+                            their biryani is fantastic!
+                          </p>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                      <div className="chat-message outgoings">
+                        <div className="message-content message-time">
+                          <p>
+                            Oh, hey! 😊 I've been meaning to go! I'm free this weekend,
+                            maybe we can check it out together?
+                          </p>
+                          <p className="timestamp">Today, 11:50 PM</p>
+                        </div>
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/9.jpg"
+                            alt="You"
+                            className="user-image"
+                          />
+                        </div>
+                      </div>
+                      <div className="chat-message incomings">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div className="message-content">
+                          <p>
+                            Absolutely! I've heard the ambience is great too. Let's decide
+                            on a time!
+                          </p>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                      <div className="chat-message outgoings">
+                        <div className="message-content message-time">
+                          <p>yes </p>
+                          <p className="timestamp">Today, 11:50 PM</p>
+                        </div>
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/9.jpg"
+                            alt="You"
+                            className="user-image"
+                          />
+                        </div>
+                      </div>
+                      <div className="chat-message incomings">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div className="message-content">
+                          <p>done </p>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                      <div className="chat-message incomings ">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div>
+                          <div className="message-content">
+                            <p>hiii</p>
+                          </div>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                      <div className="chat-message outgoings">
+                        <div className="message-content message-time">
+                          <div>
+                            <p>Good</p>
+                          </div>
+                          <p className="timestamp">Today, 11:50 PM</p>
+                        </div>
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/9.jpg"
+                            alt="You"
+                            className="user-image"
+                          />
+                        </div>
+                      </div>
+                      <div className="chat-message incomings">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div className="message-content">
+                          <p>how are you ?</p>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                      <div className="chat-message incomings">
+                        <div className="borders-color-chat">
+                          <img
+                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                            alt="User"
+                            className="user-image"
+                          />
+                        </div>
+                        <div className="message-content">
+                          <p>done </p>
+                          <p className="timestamp">Today, 10:20 PM</p>
+                        </div>
+                      </div>
+                    </div> */}
+
+                    {loading ? (
+                      <div className="w_loader">
+                        <div class="spinner-border" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="chat-content" ref={chatContainerRef}>
+                        <div
+                          className="chart-text"
+                        >
+                          {activeChatMessages &&
+                            activeChatMessages.map((item, index) => (
+                              <>
+                                <div
+                                  className={`chat-message ${item?.wp_receiver_id === activeChat
+                                    ? "incomings"
+                                    : "outgoings"
+                                    }`}
+                                  key={index}
+                                >
+                                  <div className="borders-color-chat">
+                                    <img
+                                      src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                                      alt="User"
+                                      className="user-image"
+                                    />
+                                  </div>
+                                  <div className="message-content">
+                                    <p>
+                                      {item?.message}
+                                    </p>
+                                    <p className="timestamp">Today, 10:20 PM</p>
+                                    <span className="c_time">
+                                      {formatTimeFromDate(item?.created_at)}
+                                      {item?.delivery_status === "read" &&
+                                        item?.wp_receiver_id === activeChat ? (
+                                        <i class="fa-solid fa-check-double read ms-2" />
+                                      ) : item?.delivery_status === "sent" &&
+                                        item?.wp_receiver_id ===
+                                        activeChat ? (
+                                        <i class="fa-solid fa-check text-muted ms-2" />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+                              </>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="chat-input-section">
+                      <input type="text" placeholder="Type your message here..." onChange={(e) => setMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        value={message} />
+                      <div className="btn">
+                        <button className="btns" onClick={handleMessageSend}
+                          disabled={sendingMessage}>
+                          <i className="fa-solid fa-paper-plane" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="icons-header ">
+                      <div className="ms-3  mb-3">
+                        <div className="d-flex justify-content-start align-items center">
+                          <div className="phone a">
+                            <i className="fa-solid fa-camera" />
+                          </div>
+                          <div className="video b">
+                            <i className="fa-solid fa-paperclip" />
+                          </div>
+                          <div className="user c">
+                            <i className="fa-regular fa-face-smile" />
+                          </div>
+                          <div className="three-dot d">
+                            <i className="fa-brands fa-meta" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main>
     </>
   );

@@ -108,6 +108,7 @@
   --sideNavApp-width: 210px;
   --active-calls-sidePanel-width: 250px;
   --ele-color: #fff;
+  --ele-color3: #fff;
   --ele-color2: var(--ele-color2);
   --form-label: #2a2a2a;
   --form-input-text: #2a2a2a;
@@ -192,6 +193,7 @@
   --bg-color: #1d1e22;
   /* --ele-color: #141718; */
   --ele-color: #303138;
+  --ele-color3: #dbdbdb;
   --ele-color2: #404146;
   --bgdark-color: #fff;
   --color-subtext: #bbb;

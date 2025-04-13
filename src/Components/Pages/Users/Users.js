@@ -257,7 +257,7 @@ const Users = () => {
                   </div>
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "20px 20px 0" }}
                   >
                     <div className="tableHeader">
                       <div className="showEntries">
@@ -408,7 +408,7 @@ const Users = () => {
                                             ? "Enabled"
                                             : "Disabled"} */}
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input
                                                 type="checkbox"
                                                 checked={item.status === "E"}
@@ -419,7 +419,20 @@ const Users = () => {
                                                 id="showAllCheck"
                                               />
                                               <span className="slider round" />
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                                  <label class="cl-switch">
+                                                    <input type="checkbox"
+                                                       checked={item.status === "E"}
+                                                       onClick={(e) => {
+                                                         setSelectedUser(item);
+                                                         setPopUp(true);
+                                                       }}
+                                                      id="showAllCheck"
+                                                       />
+                                                      <span></span>
+                                                  </label>
+                                                </div>
                                           </div>
                                         </td>
                                         {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td>

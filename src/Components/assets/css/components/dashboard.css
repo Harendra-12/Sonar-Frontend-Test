@@ -971,3 +971,6 @@
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 8px;
 }
+.call_dCard  h3{
+    font-size: 20px;
+}
