@@ -3,13 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   backToTop,
   generalGetFunction,
+  generalGetFunctionWithToken,
+  generalPostFunctionWithToken,
   login,
 } from "../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   return (
@@ -79,7 +80,7 @@ export default Login;
 export function LoginComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const permissionRefresh = useSelector((state) => state.permissionRefresh.permissionRefresh);
+  const permissionRefresh = useSelector((state) => state.permissionRefresh);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,7 @@ export function LoginComponent() {
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("")
-
+  
   // Handle login function
   async function handleLogin() {
     // Reseting State before Loggin In
@@ -98,6 +99,12 @@ export function LoginComponent() {
     if (data) {
       if (data.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -138,6 +145,7 @@ export function LoginComponent() {
               window.scrollTo(0, 0);
               navigate("/temporary-dashboard");
             } else {
+
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
@@ -208,21 +216,18 @@ export function LoginComponent() {
   async function handleLogoutFromSpecificDevice(token) {
     try {
       setLoading(true);
-      const logOut = await axios.post(`${baseName}/logout-specific-device`, { token: token }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (logOut?.data?.status) {
-        toast.success(logOut?.data?.message)
+      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token },token);
+      // console.log({logOut})
+      if (logOut?.status) {
+        toast.success(logOut?.message)
         setLoading(false);
-        setLoginDetails(logOut?.data?.data)
+        setLoginDetails(logOut?.data)
         setLogInText("You can login now")
       }
     } catch (error) {
       // console.log("00err",error)
       setLoading(false)
-      toast.error(error?.response?.data?.message)
+      toast.error("Something went wrong. Please try again.")
     }
   }
 
@@ -242,6 +247,12 @@ export function LoginComponent() {
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
+        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
+
+        dispatch({
+          type: "SET_PERMISSION_REFRESH",
+          permissionRefresh: permissionRefresh + 1,
+        });
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -287,10 +298,6 @@ export function LoginComponent() {
               dispatch({
                 type: "SET_TEMPACCOUNT",
                 tempAccount: null,
-              });
-              dispatch({
-                type: "SET_PERMISSION_REFRESH",
-                permissionRefresh: permissionRefresh + 1,
               });
               // Checking wether user is agent or not if agent then redirect to webrtc else redirect to dashboard
               if (profile.data.user_role?.roles?.name === "Agent") {
@@ -357,22 +364,18 @@ export function LoginComponent() {
     setLoading(true);
     setPopUp(false);
     try {
-      const logoutAll = await axios.get(`${baseName}/logout?all`, {
-        headers: {
-          Authorization: `Bearer ${logOutToken}`,
-        },
-      });
-
-      if (logoutAll.status >= 200 && logoutAll.status < 300) {
+      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`,logOutToken);
+      console.log({logoutAll})
+      if (logoutAll.status) {
         handleLogin();
       } else {
         setLoading(false);
-        toast.error(logoutAll.data?.message || "Logout failed");
+        toast.error(logoutAll.message || "Logout failed");
       }
     } catch (error) {
       setLoading(false);
       console.error("Logout all error:", error);
-      toast.error(error.response?.data?.message || error.message || "An unexpected error occurred");
+      toast.error(error.response?.message || error.message || "An unexpected error occurred");
     }
   }
   return (
@@ -387,6 +390,7 @@ export function LoginComponent() {
             <i className="fa-thin fa-user" />
             <input
               type="text"
+              name="username1"
               placeholder="Enter your username"
               className="loginFormItem"
               value={userName}
@@ -398,6 +402,7 @@ export function LoginComponent() {
             <i className="fa-thin fa-lock" />
             <input
               type="password"
+              name="password1"
               placeholder="Enter your password"
               className="loginFormItem"
               value={password}
@@ -434,12 +439,13 @@ export function LoginComponent() {
           <div className="backdropContact">
             <div className="addNewContactPopup position-relative logoutPopup">
               <button className="popup_close" onClick={() => {
-                    setPopUp(false);}}>
-              <i class="fa-solid fa-xmark"></i>
+                setPopUp(false);
+              }}>
+                <i class="fa-solid fa-xmark"></i>
               </button>
               <div className=" position-relative">
                 <img className="w-100 " src={require('../assets/images/login-cruve2.png')} />
-              {/* <div className="warning_img">
+                {/* <div className="warning_img">
                 <img className=" " src={require('../assets/images/crisis.png')} />
               </div> */}
               </div>
@@ -458,7 +464,7 @@ export function LoginComponent() {
                     {logInDetails?.map((item) => {
                       return <li className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
                         <div>
-                          {item?.platform} - {item?.browser}
+                          {item?.platform} - {item?.browser} - {item?.ip_address}
                           <p style={{ fontSize: '0.75rem', marginBottom: '0' }}><b>Logged At</b>: {item.created_at.split("T")[0]} {formatTimeWithAMPM(item.created_at.split("T")[1].split(".")[0])}</p>
                         </div>
                         <div>

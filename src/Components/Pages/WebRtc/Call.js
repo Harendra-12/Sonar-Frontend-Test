@@ -50,11 +50,11 @@ function Call({
   loading,
   isLoading
 
+
 }) {
   const dispatch = useDispatch();
   const sessions = useSelector((state) => state.sessions);
   const [dialpadShow, setDialpadShow] = useState(false);
-  // const [clickStatus, setClickStatus] = useState("all");
   const videoCall = useSelector((state) => state.videoCall);
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -63,24 +63,14 @@ function Call({
   const [previewCalls, setPreviewCalls] = useState([]);
   const [addContactToggle, setAddContactToggle] = useState(false);
   const [clickedCall, setClickedCall] = useState(null);
-  // const [searchQuery, setSearchQuery] = useState("");
-  // const [loading, setLoading] = useState(true);
-  // const [allApiData, setAllApiData] = useState([]);
   const [mode, setMode] = useState("audio");
   const [callHistory, setCallHistory] = useState([]);
   const { sessionManager, connectStatus } = useSIPProvider();
   // const [refreshCalls, setRefreshCalls] = useState(0);
   const [clickedExtension, setClickedExtension] = useState(null);
   const targetRef = useRef(null); // Reference to the target div
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [data, setData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [rawData, setRawData] = useState([]);
-  // const [filterBy, setFilterBy] = useState("date");
   const [startDateFlag, setStartDateFlag] = useState("");
-  // const [startDate, setStartDate] = useState("");
   const [endDateFlag, setEndDateFlag] = useState("");
-  // const [endDate, setEndDate] = useState("");
   const [filterState, setfilterState] = useState("all");
   const [comment, setComment] = useState("");
   const [selectedCdr, setSelectedCdr] = useState("");
@@ -89,45 +79,8 @@ function Call({
     useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
   const [allLogOut, setAllLogOut] = useState(false);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     if (currentPage === 1) {
-  //       setLoading(true);
-  //     } else {
-  //       setIsLoading(false);
-  //     }
-  //     const basePaths = {
-  //       all: "/call-details-phone",
-  //       incoming: "/cdr/inbound",
-  //       outgoing: "/cdr/outbound",
-  //       missed: "/cdr/missed",
-  //     };
-  //     const basePath = basePaths[clickStatus] || "";
-  //     if (basePath) {
-  //       const dateParam =
-  //         filterBy === "date" || startDate == "" || endDate == ""
-  //           ? `date=${startDate}`
-  //           : `date_range=${startDate},${endDate}`;
-  //       const url = `${basePath}?page=${currentPage}&${dateParam}&search=${searchQuery}`;
-  //       const apiData = await generalGetFunction(url);
-
-  //       if (apiData.status) {
-  //         setAllApiData(apiData.data.data?.reverse());
-  //         const result = apiData.data.data?.reverse() || [];
-  //         setRawData(apiData.data);
-  //         setData([...data, ...result]);
-  //         setLoading(false);
-  //         setIsLoading(false);
-  //       } else {
-  //         setLoading(false);
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   }
-  //   fetchData();
-  // }, [currentPage, startDate, endDate, searchQuery, clickStatus, refreshCalls]);
-
   const callListRef = useRef(null);
+  const [showComments, setShowComment] = useState(false);
   const handleScroll = () => {
     const div = callListRef.current;
     if (div?.scrollTop + div?.clientHeight >= div?.scrollHeight) {
@@ -155,8 +108,9 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
+  
   useEffect(() => {
-    if (filterBy === "date" && startDateFlag !== "") {
+    if (filterBy === "date") {
       setStartDate(startDateFlag);
       setEndDate(startDateFlag);
     } else if (
@@ -365,12 +319,12 @@ function Call({
                       {item["variable_billsec"] > 0 ? (
                         <i
                           className="fa-solid fa-phone mx-2"
-                          style={{ color: "var(--ui-accent)" }}
+                          style={{ color: "#fff" }}
                         ></i>
                       ) : (
                         <i
                           className="fa-solid fa-phone-xmark mx-2"
-                          style={{ color: "red" }}
+                          style={{ color: "#fff", background: 'red' }}
                         ></i>
                       )}
                     </div>
@@ -701,7 +655,7 @@ function Call({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -764,7 +718,7 @@ function Call({
                           </li>
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -998,6 +952,7 @@ function Call({
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
+          setShowComment={setShowComment}
         />
       }
       {/* Comment section end */}

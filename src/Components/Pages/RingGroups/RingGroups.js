@@ -281,9 +281,9 @@ const RingGroups = () => {
                     </div>
                     <div
                       className="col-12"
-                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                      style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
-                      <div className="tableHeader">
+                      <div className="tableHeader ">
                         <div className="showEntries">
                           <label>Show</label>
                           <select
@@ -302,16 +302,15 @@ const RingGroups = () => {
                         <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
-                            type="text"
+                            type="search"
                             name="Search"
-                            placeholder="Search"
                             value={searchValue}
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}
                           />
                         </div>
                       </div>
-                      <div className="tableContainer">
+                      <div className="tableContainer mb-0">
                         <table>
                           <thead>
                             <tr>
@@ -321,8 +320,8 @@ const RingGroups = () => {
                               <th>Members</th>
                               <th>Status</th>
                               <th>Description</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
+                              <th className="text-center">Edit</th>
+                              <th className="text-center">Delete</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -395,7 +394,16 @@ const RingGroups = () => {
                                                   <div className="avatar-container">
                                                     {item.ring_group_destination?.slice(0, 4).map((item, index) => {
                                                       return (
-                                                        <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                                        <Tippy key={index} content={item?.username}>
+                                                          {item.profile_picture ? (
+                                                            <img
+                                                              src={item.profile_picture}
+                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
                                                       )
                                                     })}
                                                     {item.ring_group_destination.length > 4 && <span>+2</span>}
@@ -432,7 +440,7 @@ const RingGroups = () => {
                                             {/* <td>(999) 999-9999, (999) 999-9999</td> */}
                                             <td>
                                               <div className="my-auto position-relative mx-1">
-                                                <label className="switch">
+                                                {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     checked={
@@ -446,7 +454,23 @@ const RingGroups = () => {
                                                     id="showAllCheck"
                                                   />
                                                   <span className="slider round" />
-                                                </label>
+                                                </label> */}
+                                                <div class="cl-toggle-switch">
+                                                  <label class="cl-switch">
+                                                    <input type="checkbox"
+                                                      checked={
+                                                        item.status == "active"
+                                                      }
+                                                      onClick={(e) => {
+                                                        setSelectedRingGroup(item);
+                                                        setPopUp(true);
+                                                      }}
+                                                      // {...register("status")}
+                                                      id="showAllCheck"
+                                                       />
+                                                      <span></span>
+                                                  </label>
+                                                </div>
                                               </div>
                                             </td>
                                             <td
@@ -455,10 +479,10 @@ const RingGroups = () => {
                                                   `/ring-groups-edit?id=${item.id}`
                                                 )
                                               }
-                                              className="ellipsis"
+                                              className="align-middle"
                                               id="detailBox"
                                             >
-                                              {item.description}
+                                              <p className="ellipsis mb-0"> {item.description}</p>
                                             </td>
                                             <td>
                                               <button
@@ -481,6 +505,8 @@ const RingGroups = () => {
                                                 }}
                                               >
                                                 <i className="fa-solid fa-trash" />
+                                                {/* <i class="fa-duotone fa-solid fa-trash"></i> */}
+                                                {/* <i class="fa-duotone fa-solid fa-user-minus"></i> */}
                                               </button>
                                             </td>
                                             <div className="utilPopup"></div>
@@ -506,7 +532,7 @@ const RingGroups = () => {
                         </table>
                       </div>
 
-                      <div className="tableHeader mb-3">
+                      <div className="tableFooter">
                         {ringGroup && ringGroup?.data?.length > 0 ? (
                           <PaginationComponent
                             pageNumber={(e) => setPageNumber(e)}

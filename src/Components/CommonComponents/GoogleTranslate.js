@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Rnd } from "react-rnd";
 
 const GoogleTranslate = () => {
   useEffect(() => {

@@ -457,9 +457,9 @@ function CardAndBilling() {
                           />
                         </div>
                         <div className="col-xl-4">
-                          <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                          <div className="itemWrapper a billing_card1">
                             <div className="heading">
-                              <div className="col-10">
+                              <div className="col-10 ">
                                 <h5>Upcoming Transaction</h5>
                                 {/* <p>16-01-2024</p> */}
                                 <p>On:{" "}
@@ -524,7 +524,7 @@ function CardAndBilling() {
                           </div>
                         </div>
                         <div className="col-xl-4">
-                          <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
+                          <div className="itemWrapper a billing_card2" >
                             <div className="heading">
                               <div className="col-10">
                                 <h5>Wallet Balance</h5>
@@ -621,7 +621,7 @@ function CardAndBilling() {
                                               </label>
                                             </div>
                                             <div className="ms-auto">
-                                              <label className="switch">
+                                              {/* <label className="switch">
                                                 <input
                                                   type="checkbox"
                                                   id="showAllCheck"
@@ -639,7 +639,27 @@ function CardAndBilling() {
                                                   }}
                                                 />
                                                 <span className="slider round"></span>
-                                              </label>
+                                              </label> */}
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox"
+                                                   checked={item.default}
+                                                   onChange={(e) => {
+                                                     if (e.target.checked) {
+                                                       setSelectedCardId(item.id);
+                                                       setCardConfirmationPopUp(true);
+                                                       setDisableCard(false);
+                                                     } else {
+                                                       setSelectedCardId(item.id);
+                                                       setCardConfirmationPopUp(true);
+                                                       setDisableCard(true);
+                                                     }
+                                                   }}
+                                                    id="showAllCheck"
+                                                  />
+                                                  <span></span>
+                                                </label>
+                                              </div>
                                             </div>
                                             <div className="ms-3">
                                               <button
@@ -719,7 +739,7 @@ function CardAndBilling() {
                                                 </button>
                                               </div>
                                               <div className="ms-auto d-flex">
-                                                <label className="switch">
+                                                {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     id="showAllCheck"
@@ -747,7 +767,38 @@ function CardAndBilling() {
                                                     }}
                                                   />
                                                   <span className="slider round"></span>
+                                                </label> */}
+
+                                                <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox"
+                                                   checked={item.default}
+                                                   onChange={(e) => {
+                                                     if (e.target.checked) {
+                                                       setSelecetedBillingId(
+                                                         item.id
+                                                       );
+                                                       setSelectedCardId();
+                                                       setBillingConfirmationPopUp(
+                                                         true
+                                                       );
+                                                       setDisableBilling(false);
+                                                     } else {
+                                                       setSelecetedBillingId(
+                                                         item.id
+                                                       );
+                                                       setSelectedCardId();
+                                                       setBillingConfirmationPopUp(
+                                                         true
+                                                       );
+                                                       setDisableBilling(true);
+                                                     }
+                                                   }}
+                                                    id="showAllCheck"
+                                                  />
+                                                  <span></span>
                                                 </label>
+                                              </div>
                                               </div>
                                             </div>
                                           </h2>
@@ -1065,7 +1116,7 @@ function CardAndBilling() {
                     <div className="col-xxl-4 col-xl-3">
                       <div className="col-xl-12">
                         <div className="itemWrapper a h-100" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                          <div className="heading">
+                          <div className="heading dashboard_headerPart">
                             <div className="col-10">
                               <h5>Invoices</h5>
                               <p>As on:{" "}
@@ -1475,79 +1526,81 @@ function CardAndBilling() {
 
       {autoPayPopup &&
         <>
-          <div className="addNewContactPopup">
-            <div className="row">
-              <div className="col-12 heading mb-0">
-                <i className="fa-regular fa-dollar-sign" />
-                <h5>Edit Autopay options for your account</h5>
-              </div>
-              <div className="mt-3">
-                <div className="col-12">
-                  <div className="formRow">
-                    <div className="col-6">
-                      <div className="formLabel">
-                        <label htmlFor="">Min Threshold</label>
-                        <label className="formItemDesc">The minimum threshold that the user will hit before autopay</label>
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading mb-0">
+                  <i className="fa-regular fa-dollar-sign" />
+                  <h5>Edit Autopay options for your account</h5>
+                </div>
+                <div className="mt-3">
+                  <div className="col-12">
+                    <div className="formRow">
+                      <div className="col-6">
+                        <div className="formLabel">
+                          <label htmlFor="">Min Threshold</label>
+                          <label className="formItemDesc">The minimum threshold that the user will hit before autopay</label>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <input type="number" className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
                       </div>
                     </div>
-                    <div className="col-6">
-                      <input type="number" className="formItem" value={autoPayThreshold} onChange={(e) => setAutoPayThreshold(e.target.value)} />
+                  </div>
+                  <div className="col-12">
+                    <div className="formRow">
+                      <div className="col-6">
+                        <div className="formLabel">
+                          <label htmlFor="">Amount</label>
+                          <label className="formItemDesc">The amount of recharge to be commenced</label>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <input type="number" className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12">
+                    <div className="formRow">
+                      <div className="col-6">
+                        <div className="formLabel">
+                          <label htmlFor="">Status</label>
+                          <label className="formItemDesc">The status of the autopay feature</label>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="formItem me-0"
+                          id="selectFormRow"
+                          name="status"
+                          style={{ width: "100%" }}
+                          value={autoPayStatus}
+                          onChange={(e) => setAutoPayStatus(e.target.value)}
+                        >
+                          <option className="status" value="enable">
+                            Enable
+                          </option>
+                          <option value="disable">Disable</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-12">
-                  <div className="formRow">
-                    <div className="col-6">
-                      <div className="formLabel">
-                        <label htmlFor="">Amount</label>
-                        <label className="formItemDesc">The amount of recharge to be commenced</label>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <input type="number" className="formItem" value={autoPayAmount} onChange={(e) => setAutoPayAmount(e.target.value)} />
-                    </div>
+                <div className="col-xl-12 mt-2">
+                  <div className="d-flex justify-content-between">
+                    <button className="panelButton gray ms-0" onClick={() => setAutoPayPopup(false)}>
+                      <span className="text">Close</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-caret-left" />
+                      </span>
+                    </button>
+                    <button className="panelButton me-0" onClick={handleAutoPaymentChange}>
+                      <span className="text">Save</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-floppy-disk" />
+                      </span>
+                    </button>
                   </div>
-                </div>
-                <div className="col-12">
-                  <div className="formRow">
-                    <div className="col-6">
-                      <div className="formLabel">
-                        <label htmlFor="">Status</label>
-                        <label className="formItemDesc">The status of the autopay feature</label>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <select
-                        className="formItem me-0"
-                        id="selectFormRow"
-                        name="status"
-                        style={{ width: "100%" }}
-                        value={autoPayStatus}
-                        onChange={(e) => setAutoPayStatus(e.target.value)}
-                      >
-                        <option className="status" value="enable">
-                          Enable
-                        </option>
-                        <option value="disable">Disable</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-12 mt-2">
-                <div className="d-flex justify-content-between">
-                  <button className="panelButton gray ms-0" onClick={() => setAutoPayPopup(false)}>
-                    <span className="text">Close</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-caret-left" />
-                    </span>
-                  </button>
-                  <button className="panelButton me-0" onClick={handleAutoPaymentChange}>
-                    <span className="text">Save</span>
-                    <span className="icon">
-                      <i className="fa-solid fa-floppy-disk" />
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>

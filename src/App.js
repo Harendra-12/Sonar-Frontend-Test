@@ -173,6 +173,9 @@ import AddGroupsList from "./Components/Pages/Groups/AddGroupsList";
 import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
+import NewGetDid from "./Components/Pages/NumberManagement/NewGetDid";
+import AddNumber from "./Components/Pages/NumberManagement/AddNumber";
+import BillingCardAndWallet from "./Components/Pages/Billing/BillingCardAndWallet";
 import FportalCampaign from "./Components/Pages/CallTracker/FportalCampaign";
 import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaignCreate";
 
@@ -228,11 +231,12 @@ function App() {
   return (
     <>
 
-      <GoogleTranslate />
+     
       <Router>
         {
           adminLogout && <AdminLogoutPopUp />
         }
+         {/* <GoogleTranslate /> */}
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
@@ -246,7 +250,6 @@ function App() {
           <Route path="/conference-join" element={<DummyRegistration />} />
 
           <Route element={<ProtectedRoute />} />
-          <Route path="/campaign-edit" element={<CampaignEdit />} />
           <Route path="/meeting-room" element={<Meeting />} />
           <Route path="/meeting-add" element={<MeetingAdd />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -551,12 +554,14 @@ function App() {
           <Route path="/add-vendor" element={<AddVendors />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/edit-vendor" element={<EditVendor />} />
-          <Route path="/rate-card" element={<RateCharge />} />
+          {/* <Route path="/rate-card" element={<RateCharge />} /> */}
           <Route path="/edit-rate-charge" element={<RateChargeEdit />} />
           <Route path="/get-did" element={<GetDid />} />
           <Route path="/did-listing-pbx" element={<DidListing page="pbx" />} />
           <Route path="/did-listing" element={<DidListing page="number" />} />
           <Route path="/did-config" element={<DidConfig />} />
+          <Route path="/management-get-did" element={<NewGetDid />} />
+          {/* <Route path="/add-number" element={<AddNumber />} /> */}
           <Route
             path="/port-number"
             element={
@@ -696,6 +701,7 @@ function App() {
           />
           <Route path="/invoice-list" element={<InvoiceList />} />
           <Route path="/expense-list" element={<ExpenseList />} />
+          <Route path="/billing-card-and-wallet" element={<BillingCardAndWallet />} />
           <Route
             path="/card-transaction-list"
             element={
@@ -838,11 +844,8 @@ function App() {
 
           {/* Dialer Modules */}
 
-          {/* ------ Dashboard  */}
           <Route path="/dialer-dashboard" element={<DialerDashboard />} />
           <Route path="/call-desposition" element={<CallDesposition />} />
-          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
-          {/* ------ Dashboard  */}
 
           {/* ------ Leads */}
           <Route path="/leads" element={<Leads />} />
@@ -862,6 +865,8 @@ function App() {
           <Route path="/campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="/campaign-create" element={<CampaignCreate />} />
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
+          <Route path="/campaign-edit" element={<CampaignEdit />} />
+          <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}

@@ -35,8 +35,6 @@ const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const ip = process.env.REACT_APP_BACKEND_IP;
   const token = localStorage.getItem("token");
-  console.log("token", token);
-
   const openCallCenterPopUp = useSelector((state) => state.openCallCenterPopUp);
   const navigate = useNavigate();
   const port = process.env.REACT_APP_FREESWITCH_PORT;
@@ -285,6 +283,45 @@ const WebrtcWrapper = () => {
           callfilterBy === "date" || callstartDate == "" || callendDate == ""
             ? `date=${callstartDate}`
             : `date_range=${callstartDate},${callendDate}`;
+        const url = `${basePath}?page=1&${dateParam}&search=${callsearchQuery}`;
+        const apiData = await generalGetFunction(url);
+
+        if (apiData.status) {
+          setCallAllApiData(apiData.data.data?.reverse());
+          const result = apiData.data.data?.reverse() || [];
+          setCallRawData(apiData.data);
+          setCallData(result);
+          setCallLoading(false);
+          setIsCallLoading(false);
+        } else {
+          setCallLoading(false);
+          setIsCallLoading(false);
+        }
+      }
+    }
+    fetchData();
+  }, [ callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
+
+
+  useEffect(() => {
+    async function fetchData() {
+      if (callCurrentPage === 1) {
+        setCallLoading(true);
+      } else {
+        setIsCallLoading(false);
+      }
+      const basePaths = {
+        all: "/call-details-phone",
+        incoming: "/cdr/inbound",
+        outgoing: "/cdr/outbound",
+        missed: "/cdr/missed",
+      };
+      const basePath = basePaths[callclickStatus] || "";
+      if (basePath) {
+        const dateParam =
+          callfilterBy === "date" || callstartDate == "" || callendDate == ""
+            ? `date=${callstartDate}`
+            : `date_range=${callstartDate},${callendDate}`;
         const url = `${basePath}?page=${callCurrentPage}&${dateParam}&search=${callsearchQuery}`;
         const apiData = await generalGetFunction(url);
 
@@ -302,7 +339,7 @@ const WebrtcWrapper = () => {
       }
     }
     fetchData();
-  }, [callCurrentPage, callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
+  }, [callCurrentPage]);
 
   return (
     <>

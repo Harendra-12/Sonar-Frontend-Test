@@ -96,6 +96,7 @@ function ClickToCallSetup() {
       setPopUp(true);
       setEmbededCode(apiData.data.embedded_code)
     } else {
+      toast.error(apiData?.errors[Object.keys(apiData.errors)[0]][0]);
       setLoading(false);
     }
   }
@@ -551,6 +552,7 @@ function ClickToCallSetup() {
                                                   className="formItem ms-1"
                                                   // value={baseColor || '#f42633'}
                                                   // onChange={(newColor) => setValue("color", newColor)}
+                                                  defaultValue={"#f30000"}
                                                   {...register("color")}
                                                   style={{ width: "100px" }}
                                                 />
@@ -592,6 +594,7 @@ function ClickToCallSetup() {
                                                   className="formItem ms-1"
                                                   // value={textColor || '#17c100'}
                                                   // onChange={(newColor) => setValue("textcolor", newColor)}
+                                                  defaultValue={"#ff0000"}
                                                   {...register("textcolor")}
                                                   style={{ width: "100px" }}
                                                 />
@@ -633,6 +636,7 @@ function ClickToCallSetup() {
                                                   className="formItem ms-1"
                                                   // value={buttonColor || '#17c100'}
                                                   // onChange={(newColor) => setValue("buttoncolor", newColor)}
+                                                  defaultValue={"#9493ff"}
                                                   {...register("buttoncolor")}
                                                   style={{ width: "100px" }}
                                                 />
@@ -780,7 +784,7 @@ function ClickToCallSetup() {
                                 </div>
                               </div>
                               <div className="col-xxl-5 col-xl-5 col-lg-6 col-sm-12">
-                                <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color }}>
+                                <div className="clickToCall clickToCall-preview " style={{ '--prim-color': watch().color|| "#f30000" }}>
                                   <div className="clickToCallButton">
                                     <button type="button" onClick={() => setWidgetExpanded(!widgetExpanded)}>
                                       <i className={`fa-solid fa-${!widgetExpanded ? "phone" : "chevron-down"}`}></i>
@@ -806,16 +810,16 @@ function ClickToCallSetup() {
                                         {!callFormVisible ?
                                           <>
                                             <div className="callByAudio">
-                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
+                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor || "#9493ff" }}>
                                                 <i className="fa-solid fa-phone"></i>
                                               </button>
-                                              <h5>Arrange an <span style={{ color: watch().textcolor }}>Audio Call</span> with our Agent</h5>
+                                              <h5>Arrange an <span style={{ color: watch().textcolor || "#ff0000" }}>Audio Call</span> with our Agent</h5>
                                             </div>
                                             <div className="callByVideo">
-                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor }}>
+                                              <button type="button" onClick={() => setCallFormVisible(true)} style={{ backgroundColor: watch().buttoncolor || "#9493ff" }}>
                                                 <i className="fa-solid fa-video"></i>
                                               </button>
-                                              <h5>Arrange a <span style={{ color: watch().textcolor }}>Video Call</span> with our Agent</h5>
+                                              <h5>Arrange a <span style={{ color: watch().textcolor || "#ff0000" }}>Video Call</span> with our Agent</h5>
                                             </div>
                                           </> : ""}
                                         {callFormVisible ? <div className="callDialogBox">

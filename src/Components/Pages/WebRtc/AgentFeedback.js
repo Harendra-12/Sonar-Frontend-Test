@@ -1,11 +1,65 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { toast } from 'react-toastify';
 
+/**
+ * Renders a modal popup for agent feedback, which appears after a call with a lead has ended.
+ * The popup displays a list of dispositions that the agent can select from, and allows the agent to provide text feedback.
+ * The component uses the Redux store to retrieve the list of dispositions for the current campaign, and to dispatch actions to update the store.
+ * The component also uses the generalPostFunction utility function to make a POST request to the API to save the agent's feedback.
+ * @returns {JSX.Element}
+ */
 function AgentFeedback() {
     const desposiTionOptions = useSelector((state) => state.desposiTionOptions);
     console.log("desposiTionOptions", desposiTionOptions);
+    const [currentDisposition, setCurrentDisposiTion] = useState([])
+
+    // Function to check wetaher this dispo is already presnt if yes then remove otherwise add
+    const checkDispo = (item) => {
+        const index = currentDisposition?.findIndex((dispo) => dispo.id === item.id);
+        if (index !== -1) {
+            const newDisposition = [...currentDisposition];
+            newDisposition.splice(index, 1);
+            setCurrentDisposiTion(newDisposition);
+        } else {
+            setCurrentDisposiTion([item]);
+        }
+    };
 
     const dispatch = useDispatch()
+
+    /**
+     * Handles the submission of the agent feedback form. Makes a POST request to the API with the agent's feedback,
+     * and if the response is successful, dispatches an action to update the Redux store to indicate that the agent feedback has been recorded.
+     * If the response is not successful, displays an error message to the agent.
+     */
+    async function handleFeedback() {
+        if(currentDisposition.length === 0) {
+            toast.error("Please select at least one feedback option")
+            return
+        }
+        const parseddata = {
+            'agent_id' :desposiTionOptions.agent_id,
+            'lead_id' :desposiTionOptions.lead_id,
+            'campaign_id' :desposiTionOptions.campaign_id,
+            'disposition_id':currentDisposition[0]?.id,
+            'feedback' :currentDisposition[0]?.campaign_disposition_name,
+        }
+        const response  = await generalPostFunction("/campaign-feedback",parseddata)
+        if(response.status){
+            toast.success(response.message)
+            dispatch({
+                type: "SET_AGENT_DEPOSITION",
+                agentDeposition: false,
+            })
+        }else{
+            toast.error(response.message)
+        }
+    }
+
+    console.log("currentDisposition", currentDisposition);
+    
     return (
         <>
             <div className="addNewContactPopup">
@@ -30,20 +84,20 @@ function AgentFeedback() {
                             }
                             `}
                             </style>
-                                {
-                                    desposiTionOptions?.disposition?.map((item,key) => {
-                                        return (
-                                            <div key={key} className="formRow col-xl-3 justify-content-start">
-                                                <div className='col-auto me-2'>
-                                                    <input type="checkbox" />
-                                                </div>
-                                                <div className="formLabel">
-                                                    <label htmlFor="">{item.name}</label>
-                                                </div>
+                            {
+                                desposiTionOptions?.disposition?.map((item, key) => {
+                                    return (
+                                        <div key={key} className="formRow col-xl-3 justify-content-start">
+                                            <div className='col-auto me-2'>
+                                                <input onChange={()=>checkDispo(item)} checked={currentDisposition?.some((dispo) => dispo.id === item.id)} type="checkbox" />
                                             </div>
-                                        )
-                                    })
-                                }
+                                            <div className="formLabel">
+                                                <label htmlFor="">{item.name}</label>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                     <div className="col-xl-12 mt-2">
@@ -59,7 +113,7 @@ function AgentFeedback() {
                                     <i className="fa-light fa-xmark"></i>
                                 </span>
                             </button>
-                            <button className="panelButton" >
+                            <button className="panelButton" onClick={handleFeedback} >
                                 <span className="text">Done</span>
                                 <span className="icon">
                                     <i className="fa-solid fa-check" />

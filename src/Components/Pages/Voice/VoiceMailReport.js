@@ -98,7 +98,7 @@ function VoiceMailReport() {
                         <p>Here are all the Voicemail Reportsss</p>
                       </div>
                       <div className="buttonGroup">
-                      
+
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -131,7 +131,7 @@ function VoiceMailReport() {
                   </div>
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
                   >
                     <div className="tableHeader">
                       <div className="showEntries">
@@ -153,7 +153,7 @@ function VoiceMailReport() {
                       <div className="searchBox">
                         <label>Search:</label>
                         <input
-                          type="text"
+                          type="search"
                           value={searchValue}
                           className="formItem"
                           onChange={(e) => setSearchValue(e.target.value)}
@@ -209,9 +209,9 @@ function VoiceMailReport() {
                                         item[
                                         "recording_path"
                                         ] ? (
-                                        <i className="fa-solid fa-stop"></i>
+                                        <i className="fa-solid fa-chevron-up"></i>
                                       ) : (
-                                        <i className="fa-solid fa-play"></i>
+                                        <i className="fa-solid fa-chevron-down"></i>
                                       )}
                                     </button>
                                   </td>

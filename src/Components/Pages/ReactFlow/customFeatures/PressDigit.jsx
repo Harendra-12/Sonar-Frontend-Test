@@ -25,7 +25,7 @@ const PressDigit = ({ id, data }) => {
   // Add new field
   const addField = () => {
     if (fields.some((field) => field.value.trim() === "")) return;
-    const newField = { id: uuidv4(), value: "" };
+    const newField = { id: `digit-${fields.length}`, value: "" };
     const updatedFields = [...fields, newField];
     setFields(updatedFields);
 

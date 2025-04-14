@@ -2,7 +2,8 @@
     --funky-boy1: #ff0000;
     --funky-boy2: #4749e6;
     --funky-boy3: #62A8AC;
-    --funky-boy4: #D35269;
+    /* --funky-boy4: #D35269; */
+    --funky-boy4: #f73658;
     --funky-boy4-trans: #ff999930;
     /* --funky-boy3: #31c07d; */
     /* --funky-boy4: #ff2365; */
@@ -12,7 +13,7 @@
     --funky-boy1: #ff00007c;
     --funky-boy2: #4749e67c;
     --funky-boy3: #62A8AC7c;
-    --funky-boy4: #D352697c;
+    --funky-boy4: #d35269;
     --funky-boy4-trans: #ff999930;
 }
 
@@ -116,7 +117,7 @@
     font-weight: 500;
     font-family: Roboto;
     color: var(--bgdark-color);
-    height: 60px;
+    height: 65px;
     padding: 0;
     width: 100%;
     background: transparent;
@@ -190,7 +191,7 @@
     justify-content: center;
 }
 
-.itemWrapper .heading:hover i {
+.itemWrapper .heading i:hover {
     box-shadow: none
 }
 
@@ -836,4 +837,140 @@
     right: 0;
     z-index: -1;
     opacity: 0.4;
+}
+
+.d_extension_listing {
+    background: var(--dash-listing-bg);
+    color: var(--dash-listing-text);
+    padding: 8px 10px !important;
+    /* border-radius: 5px; */
+    margin-bottom: 10px;
+    font-weight: 500;
+    /* border-left: 3px solid var(--dash-listing-border); */
+    border-left: 3px solid var(--ui-accent);
+    border-bottom: 0 !important;
+    transition: all 0.4s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing:hover {
+    /* border-left: 8px solid var(--dash-listing-hover-border); */
+    border-left: 8px solid var(--ui-accent);
+    border-bottom: 0 !important;
+    color: var(--dash-listing-hover-text);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.dashboard_headerPart {
+    border: 1px solid var(--header-dark-gray) !important;
+    border-radius: 8px;
+    padding: 10px !important;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing {
+    font-size: 0.8rem;
+}
+
+.itemWrapper .data-number2 ul li.d_extension_listing:last-child {
+    margin-bottom: 0;
+}
+
+.itemWrapper.dashboard_cardWrap.a .heading i {
+    color: #fff;
+    background: rgba(225, 236, 249, 0.369);
+}
+
+.itemWrapper.dashboard_cardWrap.c .heading i,
+.itemWrapper.c i {
+    color: var(--listing-color3);
+}
+
+.itemWrapper.dashboard_cardWrap.a {
+    background: #005b70 !important;
+}
+
+.itemWrapper.dashboard_cardWrap.a h5,
+.itemWrapper.dashboard_cardWrap.a p {
+    color: #fff;
+}
+
+.dashboard_cardWrap .d_chartImg {
+    opacity: 0.3;
+    top: 100px;
+}
+
+.itemWrapper.d.dashboard_cardWrap .data-number2 h5 {
+    color: var(--funky-boy4) !important;
+}
+
+.itemWrapper.c.dashboard_cardWrap .data-number2 h5 {
+    color: var(--color3) !important;
+}
+
+.itemWrapper.b.dashboard_cardWrap .data-number2 h5 {
+    color: var(--ui-accent-green) !important;
+}
+
+.call_dCard {
+    /* border: 2px dotted rgba(126, 126, 126, 0.38); */
+    padding: 10px !important;
+    height: 100% !important;
+    border-radius: 10px;
+    transition: all 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.call_dCard:hover {
+    transform: translateY(-3px);
+}
+.call_dCard.d {
+    /* border: 2px dotted #4fc9da; */
+    background: rgba(33, 150, 243, 0.059);
+}
+.call_dCard.c {
+    /* border: 2px dotted #ef6f54; */
+    background: rgba(237, 178, 152, 0.141);
+}
+.call_dCard.b {
+    /* border: 2px dotted #777edd; */
+    background: rgba(119, 126, 221, 0.141);
+}
+.call_dCard.a {
+    /* border: 2px dotted #18b16b; */
+    background: rgba(30, 154, 91, 0.141);
+}
+
+.call_dCard .heading {
+   height: unset;
+}
+.call_dCard .heading i {
+    background: transparent;
+    box-shadow: none;
+}
+
+.text-decoration {
+    text-decoration: none;
+}
+
+.imageBox_wrap {
+    width: 30px;
+    height: 30px;
+    margin-inline: auto;
+    margin-bottom: 5px;
+}
+
+.imageBox_wrap img {
+    width: 100%;
+}
+.customRow{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+}
+.call_dCard  h3{
+    font-size: 20px;
 }

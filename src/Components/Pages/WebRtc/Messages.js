@@ -336,8 +336,9 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = () => {
+  const sendSingleMessage = (selectedUrl) => {
     // Only proceed if there's either a URL or message text
+    // debugger
     if (!selectedUrl && messageInput.trim() === "") {
       return;
     }
@@ -348,8 +349,13 @@ function Messages({
       const target = UserAgent.makeURI(targetURI);
       if (target) {
         let messager;
+        let messageContent;
         try {
-          const messageContent = messageInput.trim() || selectedUrl;
+         if(selectedUrl){
+          messageContent=selectedUrl
+         }else{
+          messageContent = messageInput.trim();
+         }
           //  message if any file is selected
           messager = new Messager(userAgent, target, messageContent);
 
@@ -360,7 +366,7 @@ function Messages({
             ...prevState,
             [recipient[0]]: [
               ...(prevState[recipient[0]] || []),
-              { from: extension, body: messageInput, time },
+              { from: extension, body: messageInput||selectedUrl, time },
             ],
           }));
           // Update contact last message
@@ -956,8 +962,7 @@ function Messages({
   // function to add display logic in messages
 
   // Logic to send group messages
-  function sendGroupMessage() {
-    debugger
+  function sendGroupMessage(selectedUrl) {   
     const messageContent = messageInput.trim() || selectedUrl;
 
     sendMessage({
@@ -1168,7 +1173,7 @@ function Messages({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -1205,17 +1210,9 @@ function Messages({
                               Logout
                             </div>
                           </li>
-                          {/* <li onClick={() => navigate("/my-profile")}>
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Profile
-                            </div>
-                          </li> */}
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -2209,7 +2206,6 @@ function Messages({
                       <div className="messageContent">
                         <div className="messageList" ref={messageListRef}>
 
-
                           {recipient[0] ? (
                             <>
                               {allMessage?.[recipient[0]]?.map(
@@ -2390,11 +2386,11 @@ function Messages({
                                 role="tabpanel"
                                 aria-labelledby="nav-im-tab"
                               >
-                                {selectedFile && (
+                                {/* {selectedFile && (
                                   <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
                                     📎 {selectedFile.name}
                                   </div>
-                                )}
+                                )} */}
 
                                 <textarea
                                   type="text"
@@ -2976,7 +2972,9 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} />
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} sendSingleMessage={sendSingleMessage} sendGroupMessage={sendGroupMessage} recipient={recipient}
+          
+          />
         }
       </main>
     </>

@@ -41,10 +41,12 @@
     height: 15px;
     border-radius: 50%;
     background-color: red;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .extensionStatus.online {
-    background-color: green;
+    /* background-color: green; */
+    background-color: #00d700;
 }
 
 .extensionStatus.onCall {
@@ -60,7 +62,17 @@
 .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
     color: #fff;
     background-color: #1976d2;
-    padding: 10px;
+    padding: 6px;
+}
+
+.MuiButtonBase-root.MuiPaginationItem-root{
+    min-width: 20px;
+    height: 20px;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    line-height: 31px;
 }
 
 .pricing_section .pricing_box {
@@ -332,7 +344,7 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    padding-left: 10px;
+    /* padding-left: 10px; */
 }
 
 .billinCardWrapper .rccs__card {
@@ -344,6 +356,7 @@
 
 .billinCardWrapper .rccs__card--unknown>div {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    background: linear-gradient(208deg, #249d8f, #0686d0);
 }
 
 .profileDetailsHolder .accordion-body,
@@ -373,7 +386,7 @@
 .profileDetailsHolder .billingDetails .formItem,
 .cardDetailsWrapper .billingDetails .formItem {
     border: 0;
-    color: #000;
+    color: var(--immortalBlack);
     font-weight: 700;
     font-size: 0.875rem;
     margin: 0;
@@ -393,9 +406,8 @@
 }
 
 .addressDrawer.active {
-
-    border: 1px solid green;
-    box-shadow: #00ff1554 0px 3px 8px;
+    border: 1px solid #009688;
+    box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
 /* Card logo css start */
@@ -612,6 +624,8 @@ input[type=number] {
     font-weight: 400 !important;
     margin: 0px 10px 0 0 !important;
     cursor: pointer;
+
+    position: relative;
 }
 
 .contactTags span[data-id="0"] {
@@ -637,6 +651,12 @@ input[type=number] {
 .contactTags span[data-id="4"] {
     background-color: #ddb8ea;
     color: #9300ff !important;
+}
+
+.contactTags span[data-id="none"] {
+    background-color: #c1c1c1;
+    color: #000 !important;
+    opacity: 0.5;
 }
 
 .contactTags span.more {
@@ -1256,6 +1276,9 @@ input[type=number] {
     height: 28px;
     border-color: transparent;
     /* background-color: #f4f7f9 !important; */
+    font-size: 0.875rem;
+    padding: 0;
+    background-color: var(--table-head);
 }
 
 .popupopen ul {
@@ -1708,12 +1731,12 @@ input[type=number] {
 
 /* ========================== warning logged popup */
 
-.loggedPopupSm .iconWrapper.log__warning{
+.loggedPopupSm .iconWrapper.log__warning {
     width: 62px;
     height: 62px;
 }
 
-.loggedPopupSm .iconWrapper.log__warning img{
+.loggedPopupSm .iconWrapper.log__warning img {
     width: 100%;
 }
 
@@ -1729,9 +1752,26 @@ input[type=number] {
     gap: 10px;
 }
 
-.btn_info:hover{
+.btn_info:hover {
     background-color: transparent;
     border: 1px solid #2e5ee7;
     color: #2e5ee7;
-    
+
+}
+.billing_card1{
+    background: linear-gradient(260deg, #ff00c024, #0016ff47);
+}
+.billing_card2{
+    background: linear-gradient(260deg, #31ff0021, #00a6ff47);
+}
+.billing_card1 .data-number2 h5,
+.billing_card2 .data-number2 h5{
+    color: var(--billing-icon2) !important;
+}
+.billing_card1 .heading i,
+.billing_card2 .heading i {
+    color: var(--billing-icon) !important;
+}
+.rccs__card--unknown > div{
+    background: linear-gradient(208deg, #249d8f, #0686d0) !important;
 }

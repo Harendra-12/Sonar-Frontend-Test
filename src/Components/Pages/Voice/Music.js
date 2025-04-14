@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import { toast } from "react-toastify";
 
@@ -37,8 +37,9 @@ function Music() {
   const [selectedMusicName, setSelectedMusicName] = useState("");
   const [selecetdMusicType, setSelectedMusicType] = useState("");
   const [audioURL, setAudioURL] = useState("");
-  const [showAudio, setShowAudio] = useState(false)
-  const [showDropDown, setShowDropdown] = useState(false)
+  const [showAudio, setShowAudio] = useState(false);
+  const [showDropDown, setShowDropdown] = useState(false);
+  const thisAudioRef = useRef(null);
 
   // Get all previous music data
   useEffect(() => {
@@ -148,20 +149,21 @@ function Music() {
     }
   }
 
-  // function to play the music
-  const handlePlayMusic = async (id, path) => {
-    if (showAudio && currentPlaying === id) {
-      setCurrentPlaying(null); // Pause if already playing
-      setAudioURL(null);
-    } else {
-      setCurrentPlaying(id); // Play selected audio
-      const url = path.split(".com/").pop();
+  // Common Function to Play Music - Use this function for everywhere
+  const handlePlaying = async (audio) => {
+    // Reseting state before Playing
+    setCurrentPlaying("");
+    setAudioURL("");
+    try {
+      setCurrentPlaying(audio);
+      const url = audio?.split(".com/").pop();
       // const res = await generatePreSignedUrl(url);
-
       // if (res?.status && res?.url) {
-      setAudioURL(path);
-      // setAudioURL(res.url);
+      // setAudioURL(res.url); // Update audio URL state
       // }
+      setAudioURL(audio);
+    } catch (error) {
+      console.error("Error in handlePlaying:", error);
     }
   };
 
@@ -250,7 +252,7 @@ function Music() {
                   </div>
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "20px 20px 0" }}
                   >
                     <div className="tableHeader">
                       <div className="showEntries">
@@ -333,35 +335,22 @@ function Music() {
                                           <button
                                             className="tableButton px-2 mx-0"
                                             onClick={() => {
-                                              if (
-                                                item[
-                                                "recording_path"
-                                                ] ===
-                                                currentPlaying
-                                              ) {
-                                                setCurrentPlaying(
-                                                  ""
-                                                );
+                                              if (item.path === currentPlaying) {
+                                                setCurrentPlaying("");
                                                 setAudioURL("");
                                               } else {
-                                                handlePlayMusic(
-                                                  item[
-                                                  "recording_path"
-                                                  ]
-                                                );
+                                                handlePlaying(item.path);
                                               }
                                             }}
                                           >
                                             {currentPlaying ===
-                                              item[
-                                              "recording_path"
-                                              ] ? (
-                                              <i className="fa-solid fa-stop"></i>
+                                              item.path ? (
+                                              <i className="fa-solid fa-chevron-up"></i>
                                             ) : (
-                                              <i className="fa-solid fa-play"></i>
+                                              <i className="fa-solid fa-chevron-down"></i>
                                             )}
                                           </button>
-                                          {showDropDown && isCurrent && (
+                                          {/* {showDropDown && isCurrent && (
                                             <ul className="dropdown-menu d-block  actionBtnDropdowns" key={index} >
                                               <>
                                                 <li className="dropdown-item">
@@ -402,7 +391,7 @@ function Music() {
                                               </>
                                               <li className="dropdown-item"></li>
                                             </ul>
-                                          )}
+                                          )} */}
                                         </td>
                                         <td>
                                           <button
@@ -473,8 +462,8 @@ function Music() {
                                         </tr>
                                       )} */}
                                       {currentPlaying ===
-                                        item["recording_path"] &&
-                                        item["recording_path"] && (
+                                        item.path &&
+                                        item.path && (
                                           <tr>
                                             <td colSpan={99}>
                                               <div className="audio-container mx-2">

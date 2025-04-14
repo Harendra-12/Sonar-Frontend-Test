@@ -20,7 +20,7 @@ function AdminLogoutPopUp() {
                     <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
                         <div className="col-2 px-0">
                             <div className="iconWrapper log__warning mb-3">
-                                <img className=" " src={require('../assets/images/crisis.png')} />
+                                <img className=" " src={require('../assets/images/crisis.png')} alt='logout' />
                             </div>
                         </div>
                         <div className="col-10 ps-0 px-0">
@@ -33,7 +33,7 @@ function AdminLogoutPopUp() {
                                         <i className="fa-solid fa-check" />
                                     </span>
                                 </button> */}
-                                <button type="button" class="btn btn_info">
+                                <button type="button" class="btn btn_info"  onClick={handleLogout}>
                                     <span>Ok</span>
                                 <i class="fa-solid fa-power-off "></i>
                                 </button>

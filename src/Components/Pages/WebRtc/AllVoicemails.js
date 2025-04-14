@@ -419,7 +419,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
+                    {/* <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -456,17 +456,9 @@ function AllVoicemails({ isCustomerAdmin }) {
                               Logout
                             </div>
                           </li>
-                          {/* <li onClick={() => navigate("/my-profile")}>
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Profile
-                            </div>
-                          </li> */}
                         </ul>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -806,75 +798,94 @@ function AllVoicemails({ isCustomerAdmin }) {
                                             </span>
                                           )}
                                         </td>
-                                        <td>   <div className="dropdown">
-                                          <div
-                                            className={`tableButton`}
-                                            href="#"
-                                            role="button"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false"
+                                        <td>
+                                          <button
+                                            className="tableButton px-2 mx-0"
+                                            onClick={() => {
+                                              if (clickedVoiceMail.recording_path === currentPlaying) {
+                                                setCurrentPlaying("");
+                                                setAudioURL("");
+                                              } else {
+                                                handlePlaying(clickedVoiceMail.recording_path);
+                                              }
+                                            }}
                                           >
-                                            <i className="fa-solid fa-ellipsis-vertical" />
-                                          </div>
-                                          <ul className="dropdown-menu actionBtnDropdowns">
-                                            <>
-                                              <li className="dropdown-item">
-                                                <div
-                                                  className="clearButton text-align-start"
-                                                  onClick={() => {
-                                                    setShowInfoAudio(true)
-                                                    if (clickedVoiceMail.recording_path) {
+                                            {currentPlaying === clickedVoiceMail.recording_path ? (
+                                              <i className="fa-solid fa-chevron-up"></i>
+                                            ) : (
+                                              <i className="fa-solid fa-chevron-down"></i>
+                                            )}
+                                          </button>
+                                          {/* <div className="dropdown">
+                                            <div
+                                              className={`tableButton`}
+                                              href="#"
+                                              role="button"
+                                              data-bs-toggle="dropdown"
+                                              aria-expanded="false"
+                                            >
+                                              <i className="fa-solid fa-ellipsis-vertical" />
+                                            </div>
+                                            <ul className="dropdown-menu actionBtnDropdowns">
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div
+                                                    className="clearButton text-align-start"
+                                                    onClick={() => {
+                                                      setShowInfoAudio(true)
+                                                      if (clickedVoiceMail.recording_path) {
 
-                                                      handlePlaying(
-                                                        clickedVoiceMail.recording_path
-                                                      );
+                                                        handlePlaying(
+                                                          clickedVoiceMail.recording_path
+                                                        );
+                                                      }
+                                                    }}
+                                                  >
+
+                                                    <i
+                                                      className={`fa-solid fa-${clickedVoiceMail.recording_path.configuration !== null
+                                                        ? "play"
+                                                        : "triangle-exclamation"
+                                                        } me-2`}
+                                                    ></i>{" "}
+                                                    {clickedVoiceMail.recording_path.configuration !== null
+                                                      ? "Play "
+                                                      : "Configure"}
+                                                  </div>
+                                                </li>
+
+                                                <li className="dropdown-item">
+                                                  <div
+                                                    className="clearButton text-align-start"
+                                                    onClick={() =>
+                                                      handleTranscript()
                                                     }
-                                                  }}
-                                                >
+                                                  >
+                                                    <i className="fa-solid fa-bolt me-2"></i>
+                                                    Transcript
+                                                  </div>
+                                                </li>
+                                              </>
 
-                                                  <i
-                                                    className={`fa-solid fa-${clickedVoiceMail.recording_path.configuration !== null
-                                                      ? "play"
-                                                      : "triangle-exclamation"
-                                                      } me-2`}
-                                                  ></i>{" "}
-                                                  {clickedVoiceMail.recording_path.configuration !== null
-                                                    ? "Play "
-                                                    : "Configure"}
-                                                </div>
-                                              </li>
-
-                                              <li className="dropdown-item">
-                                                <div
-                                                  className="clearButton text-align-start"
-                                                  onClick={() =>
-                                                    handleTranscript()
-                                                  }
-                                                >
-                                                  <i className="fa-solid fa-bolt me-2"></i>
-                                                  Transcript
-                                                </div>
-                                              </li>
-                                            </>
-
-                                            <>
-                                              <li className="dropdown-item">
-                                                <div
-                                                  className="clearButton text-align-start"
-                                                  onClick={() =>
-                                                    handleAudioDownload(
-                                                      clickedVoiceMail.recording_path
-                                                    )
-                                                  }
-                                                >
-                                                  <i className="fa-regular fa-download"></i>{" "}
-                                                  Download
-                                                </div>
-                                              </li>
-                                            </>
-                                            <li className="dropdown-item"></li>
-                                          </ul>
-                                        </div></td>
+                                              <>
+                                                <li className="dropdown-item">
+                                                  <div
+                                                    className="clearButton text-align-start"
+                                                    onClick={() =>
+                                                      handleAudioDownload(
+                                                        clickedVoiceMail.recording_path
+                                                      )
+                                                    }
+                                                  >
+                                                    <i className="fa-regular fa-download"></i>{" "}
+                                                    Download
+                                                  </div>
+                                                </li>
+                                              </>
+                                              <li className="dropdown-item"></li>
+                                            </ul>
+                                          </div> */}
+                                        </td>
                                         {/* <td>
                                   {getSourceName(
                                     clickedVoiceMail.src,
@@ -885,7 +896,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                                       </tr>
                                     </tbody>
                                   </table>
-                                  {showInfoAudio && clickedVoiceMail.recording_path && <div className="audio-container mx-2">
+                                  {currentPlaying === clickedVoiceMail.recording_path && clickedVoiceMail.recording_path && <div className="audio-container mx-2">
                                     {/* <audio
                                           controls={true}
                                           ref={thisAudioRef}

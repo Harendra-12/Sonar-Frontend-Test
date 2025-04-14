@@ -303,7 +303,7 @@ function CallCenterQueue() {
 
                     <div
                       className="col-12"
-                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                      style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       <div className="tableHeader">
                         <div className="showEntries">
@@ -322,9 +322,8 @@ function CallCenterQueue() {
                         <div className="searchBox position-relative">
                           <label>Search:</label>
                           <input
-                            type="text"
+                            type="search"
                             name="Search"
-                            placeholder="Search"
                             value={searchValue}
                             className="formItem"
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -341,8 +340,8 @@ function CallCenterQueue() {
                               <th>Strategy</th>
                               <th>Total Agents</th>
                               <th>Status</th>
-                              <th>Edit</th>
-                              <th>Delete</th>
+                              <th className='text-center'>Edit</th>
+                              <th className='text-center'>Delete</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -422,7 +421,16 @@ function CallCenterQueue() {
                                                   <div className="avatar-container">
                                                     {item.agents?.slice(0, 4).map((item, index) => {
                                                       return (
-                                                        <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                                        <Tippy key={index} content={item?.username}>
+                                                          {item.profile_picture ? (
+                                                            <img
+                                                              src={item.profile_picture}
+                                                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                            />
+                                                          ) : (
+                                                            <i className="fa-light fa-user"></i>
+                                                          )}
+                                                        </Tippy>
                                                       )
                                                     })}
                                                     {item.agents.length > 4 && <span>+2</span>}

@@ -167,7 +167,9 @@ label.status.missing::before {
     color: var(--form-input-text);
     font-weight: 700;
 }
-
+.tableHeader .formItem{
+    height: 25px;
+}
 .formWidth {
     width: 90px !important;
 }
@@ -608,23 +610,91 @@ form.tangoNavs .nav-tabs {
 .badge-soft-primary {
     color: var(--text-badge-accent);
     background-color: var(--bg-badge-accent);
-    /* border: 1px solid var(--bg-badge-accent-border); */
+    border: 1px solid var(--bg-badge-accent-border);
 }
 
 .badge-soft-secondary {
     color: var(--text-badge-secondary);
     background-color: var(--bg-badge-secondary);
-    /* border: 1px solid var(--bg-badge-/secondary-border); */
+    border: 1px solid var(--bg-badge-secondary-border);
 }
 
 .badge-soft-success {
     color: var(--text-badge-success);
     background-color: var(--bg-badge-success);
-    /* border: 1px solid var(--bg-badge-success-border); */
+    border: 1px solid var(--bg-badge-success-border);
 }
 
 .badge-soft-danger {
     color: var(--text-badge-danger);
     background-color: var(--bg-badge-danger);
-    /* border: 1px solid var(--bg-badge-danger-border); */
+    border: 1px solid var(--bg-badge-danger-border);
+}
+.badge-softLight-primary {
+    color: var(--badge-primary-text);
+    /* background-color: var(--bg-badge-danger); */
+    border: 1px solid var(--badge-primary-border);
+}
+
+.badge-border {
+    border: 1px solid #00993b; 
+}
+.badge-border-danger {
+    border: 1px solid #e90059; 
+}
+.badge-subtle {
+    background-color: #0ab39c;
+    color: #fff;
+    font-size: 0.625rem;
+    transition: all 0.4s ease-in-out;
+    position: relative;
+}
+.badge-subtle:hover .card_info{
+    opacity: 1;
+}
+.card_info{
+    position: absolute;
+    top: 0;
+    right: 48px;
+    z-index: 11;
+    background: var(--hover-bg);
+    box-shadow: var(--shadow-gray) 0 0 10px;
+    /* width: 100%; */
+    max-width: 200px;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--form-label);
+    text-align: start;
+    opacity: 0;
+}
+.card_info ul li{
+    list-style-type: none;
+}
+
+
+.getPopup.checkout input[type="radio"] {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    height: 100%;
+    cursor: pointer;
+}
+.getPopup.checkout input[type="radio"]:checked~.checkmark {
+    border: 1px solid var(--ui-accent);
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+}
+
+.fillerCountryNumber .formRow {
+  /* display: block; */
+}
+.fillerCountryNumber .formItem{
+    height: 25px;
 }

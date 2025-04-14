@@ -125,7 +125,7 @@ function WalletTransactionsList() {
                   </div>
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
                   >
                     <div className="tableContainer">
                       <table>
@@ -136,7 +136,7 @@ function WalletTransactionsList() {
                             <th>Transaction ID</th>
                             <th>Transaction Amount</th>
                             <th>Transaction Type</th>
-                            <th>Download</th>
+                            <th className="text-center">Download</th>
                           </tr>
                         </thead>
                         <tbody>

@@ -29,7 +29,9 @@ const Dashboard = () => {
   const callCenter = useSelector((state) => state.callCenter || []);
   const extension = useSelector((state) => state.extension || []);
   const registerUser = useSelector((state) => state.registerUser || []);
-  const [onlineExtension, setOnlineExtension] = useState([0]);
+  const [onlineExtension, setOnlineExtension] = useState([]);
+  console.log("onlineExtension", registerUser);
+  
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
   const slugPermissions = useSelector((state) => state?.permissions);
@@ -117,7 +119,7 @@ const Dashboard = () => {
         })
       );
     } else {
-      setOnlineExtension([0]);
+      setOnlineExtension([]);
     }
     // generalGetFunction("/freeswitch/checkActiveExtensionOnServer");
   }, [registerUser]);
@@ -334,6 +336,93 @@ const Dashboard = () => {
     navigate("/cdr-report");
   };
 
+  // Graph Module
+  const [graphData, setGraphData] = useState({
+    totalCallMin: [],
+    numberOfCall: [],
+    callCostPerHour: [],
+    totalSpent: [],
+  })
+  const [graphFilter, setGraphFilter] = useState({
+    totalCallMin: {
+      interval: "1",
+      startTime: "24",
+    },
+    numberOfCall: {
+      date: "7_days"
+    },
+    callCostPerHour: {
+      interval: "1",
+      startTime: "24",
+    },
+    totalSpent: [],
+  });
+
+  const [graphLoading, setGraphLoading] = useState({
+    totalCallMin: 1,
+    numberOfCall: 1,
+    callCostPerHour: 1
+  });
+
+  // Call Cost Graph Data
+  const fetchTotalCallCostGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date();
+    const currentTime = new Date().toTimeString().slice(0, 8);
+
+    switch (graphFilter.callCostPerHour.startTime) {
+      case "1":
+        startDate?.setHours(startDate.getHours() - 1);
+        break;
+      case "3":
+        startDate?.setHours(startDate.getHours() - 3);
+        break;
+      case "6":
+        startDate?.setHours(startDate.getHours() - 6);
+        break;
+      case "12":
+        startDate?.setHours(startDate.getHours() - 12);
+        break;
+      case "24":
+        startDate?.setHours(startDate.getHours() - 24);
+        break;
+      default:
+        startDate?.setHours(0, 0, 0);
+    }
+
+    const startDateTimeObj = {
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toTimeString().slice(0, 8)
+    }
+
+    const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
+    const endDateTime = `${endDate} ${currentTime}`;
+
+    try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        callCostPerHour: 1
+      }));
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
+      if (apiCall.status) {
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          callCostPerHour: apiCall.filtered
+        }));
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          callCostPerHour: 0
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchTotalCallCostGraphData();
+  }, [graphFilter.callCostPerHour])
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -434,13 +523,9 @@ const Dashboard = () => {
                 >
                   <div className="row">
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper a">
+                      <div className="itemWrapper a dashboard_cardWrap ">
                         <div className="heading">
-                          <div
-                            className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/users-profile")}
-                            style={{ cursor: "pointer" }}
-                          >
+                          <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
                               <h5>Timezone</h5>
                               <p>
@@ -453,67 +538,42 @@ const Dashboard = () => {
                               </p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-earth-americas"></i>
+                              <i className="fa-duotone fa-earth-americas" onClick={() => navigate("/users-profile")}></i>
                             </div>
                           </div>
                         </div>
 
-                        <div className="data-number2">
+                        <div className="data-number2 mt-0">
                           <div className="d-flex flex-wrap justify-content-between align-items-center">
                             <div className="col">
-                              <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
-                              <p>Language: {account?.language}</p>
-                              <p>
-                                TimeZone:{" "}
-                                {
-                                  timeZone.filter(
-                                    (item) => item.id === account?.timezone_id
-                                  )[0]?.name
-                                }
-                              </p>
-                            </div>
-                            <div className="col-auto">
-                              <div className="clock-wrapper">
-                                {/* left timer */}
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
-                                </div>
-                                {/* right timer */}
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{String(new Date(time).getMinutes()).padStart(2, "0")}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
-                                </div>
-                                <div className="timer">
-                                  <div className="timer-bg">
-                                    {/* background squares */}
-                                    <div />
-                                    <div />
-                                  </div>
-                                  <div className="timer-value">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</div>
-                                  {/* line across middle */}
-                                  <div className="timer-line">
-                                    <div />
-                                  </div>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <h5 style={{ textTransform: 'capitalize' }}>{accountDetails?.country}</h5>
+                                <p>Language: {account?.language}</p>
+                              </div>
+                              <div className="digital__clock">
+                                <p>
+                                  TimeZone:{" "}
+                                  {
+                                    timeZone.filter(
+                                      (item) => item.id === account?.timezone_id
+                                    )[0]?.name
+                                  }
+                                </p>
+                                <div className="d-flex justify-content-center align-items-center">
+                                  <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                  <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                  <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
                                 </div>
                               </div>
-                              {/* <Clock
+                            </div>
+                            {/* <div className="col-auto "> */}
+                            {/* <div className="digital__clock">
+                                <p class="d_time">{String(new Date(time).getHours() > 12 ? new Date(time).getHours() - 12 : new Date(time).getHours()).padStart(2, "0")}:</p>
+                                <p class="d_time">{String(new Date(time).getMinutes()).padStart(2, "0")}:</p>
+                                <p class="d_time">{new Date(time).getHours() > 12 ? 'PM' : 'AM'}</p>
+                              </div> */}
+
+                            {/* <Clock
                                 value={time}
                                 size={50}
                                 secondHandWidth={1}
@@ -524,25 +584,21 @@ const Dashboard = () => {
                                 minuteHandWidth={1}
                               /> */}
 
-                            </div>
+                            {/* </div> */}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper b">
+                      <div className="itemWrapper b d_card2 dashboard_cardWrap">
                         <div className="heading">
-                          <div
-                            className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/users-profile")}
-                            style={{ cursor: "pointer" }}
-                          >
+                          <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
                               <h5>Account Info</h5>
                               <p>Click to view details</p>
                             </div>
                             <div className="col-2">
-                              <i className="fa-solid fa-user"></i>
+                              <i className="fa-solid fa-user" onClick={() => navigate("/users-profile")}></i>
                             </div>
                           </div>
                         </div>
@@ -554,34 +610,35 @@ const Dashboard = () => {
                               <p>Username: {account?.username}</p>
                               <p style={{ whiteSpace: 'nowrap', width: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }} title={account?.email}>Email: {account?.email}</p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart1.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper c">
+                      <div className="itemWrapper c dashboard_cardWrap d_card3">
                         <div className="heading">
-                          <div
-                            className="d-flex flex-wrap justify-content-between"
-                            onClick={() => navigate("/users-profile")}
-                            style={{ cursor: "pointer" }}
-                          >
+                          <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
                               <h5>Package Information</h5>
                               <p>Click to view details</p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-file"></i>
+                              <i className="fa-duotone fa-file" onClick={() => navigate("/users-profile")}></i>
                             </div>
                           </div>
                         </div>
-
                         <div className="data-number2">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -594,18 +651,24 @@ const Dashboard = () => {
                                 Extensions / {accountDetails?.dids?.length} DIDs
                               </p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart2.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-3 mb-3 mb-xl-0">
-                      <div className="itemWrapper d">
+                      <div className="itemWrapper d d_card4 dashboard_cardWrap ">
                         <div className="heading">
                           <div className="d-flex flex-wrap justify-content-between">
                             <div className="col-9">
@@ -613,7 +676,7 @@ const Dashboard = () => {
                               <p>You are registered to this domain</p>
                             </div>
                             <div className="col-3">
-                              <i className="fa-duotone fa-globe"></i>
+                              <i className="fa-duotone fa-globe" style={{ cursor: 'default' }}></i>
                             </div>
                           </div>
                         </div>
@@ -632,17 +695,22 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div className="col-3">
+                            {/* <div className="col-3">
                               <img
                                 alt="dashboard"
                                 src={require("../../assets/images/icons/diagram.png")}
                               />
-                            </div>
+                            </div> */}
                           </div>
+                        </div>
+                        <div className="d_chartImg">
+                          <img
+                            src={require("../../assets/images/d-chart3.png")}
+                            alt="diagram"
+                          />
                         </div>
                       </div>
                     </div>
-
                     <div className="col-xl-12 mt-xl-4 chartWrapper">
                       <div className="row">
                         {/* <div className="col-xl-4 mb-3 mb-xl-0">
@@ -782,12 +850,8 @@ const Dashboard = () => {
                         {checkViewSidebar("Extension", slugPermissions, account?.permissions, "read") && (
                           <div className="col-xl-3 mb-3 mb-xl-0">
                             <div className="itemWrapper a">
-                              <div className="heading">
-                                <div
-                                  className="d-flex flex-wrap justify-content-between"
-                                  onClick={() => navigate("/extensions")}
-                                  style={{ cursor: "pointer" }}
-                                >
+                              <div className="heading dashboard_headerPart">
+                                <div className="d-flex flex-wrap justify-content-between">
                                   <div className="col-9">
                                     <h5>Extensions</h5>
                                     <p>
@@ -798,7 +862,7 @@ const Dashboard = () => {
                                   </div>
                                   <div className="col-3">
                                     <Tippy content="Click to view extensions">
-                                      <i className="fa-duotone fa-phone-office"></i>
+                                      <i className="fa-duotone fa-phone-office" onClick={() => navigate("/extensions")}></i>
                                     </Tippy>
                                   </div>
                                 </div>
@@ -815,7 +879,7 @@ const Dashboard = () => {
                                     >
                                       {accountDetails?.extensions?.map(
                                         (item, index) => (
-                                          <li
+                                          <li className="d_extension_listing"
                                             key={index}
                                             onClick={() =>
                                               navigate(
@@ -872,7 +936,7 @@ const Dashboard = () => {
                                 <div className="data-number">
                                   <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
                                 </div>
-                                <p>Total Online Users</p>
+                                <p>Total Online Agents</p>
                               </div>
                             </div>
                           </div>
@@ -912,21 +976,15 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
-                          <div className="itemWrapper d">
-                            <div className="heading">
-                              <div
-                                className="d-flex flex-wrap justify-content-between"
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                  navigate("/did-listing")
-                                }
-                              >
+                          <div className="itemWrapper a">
+                            <div className="heading dashboard_headerPart">
+                              <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-9">
                                   <h5>DID Information</h5>
                                   <p>Click to view all available DIDs</p>
                                 </div>
                                 <div className="col-3">
-                                  <i className="fa-solid fa-file-invoice"></i>
+                                  <i className="fa-solid fa-file-invoice" onClick={() => navigate("/did-listing")}></i>
                                 </div>
                               </div>
                             </div>
@@ -934,31 +992,31 @@ const Dashboard = () => {
                               <div className="d-flex flex-wrap justify-content-between">
                                 <div className="col-12">
                                   <ul>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Total DID Purchasd{" "}
                                       <span className="float-end">
                                         {allDID?.length}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default Outbound Number{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_outbound == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default Fax Number{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_eFax == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default SMS{" "}
                                       <span className="float-end">
                                         {allDID?.filter((item) => item.default_sms == 1)[0]?.did}
                                       </span>
                                     </li>
-                                    <li>
+                                    <li className="d_extension_listing">
                                       Default WhatsApp{" "}
                                       <span className="float-end">
                                         {didAll?.filter((item) => item.default_whatsapp == 1)[0]?.did}
@@ -1416,13 +1474,8 @@ const Dashboard = () => {
                                 }
                               </p>
                             </div>
-                            <div
-                              className="col-3"
-                              onClick={() => {
-                                navigate("/card-details");
-                              }}
-                            >
-                              <i className="fa-duotone fa-money-check-dollar"></i>
+                            <div className="col-3">
+                              <i className="fa-duotone fa-money-check-dollar" onClick={() => { navigate("/card-details") }}></i>
                             </div>
                           </div>
                         </div>
@@ -1463,11 +1516,8 @@ const Dashboard = () => {
                                 #{accountDetails?.payments[0]?.transaction_id}
                               </p>
                             </div>
-                            <div
-                              className="col-3"
-                              onClick={() => navigate("/card-transaction-list")}
-                            >
-                              <i className="fa-solid fa-dollar-sign"></i>
+                            <div className="col-3">
+                              <i className="fa-solid fa-dollar-sign" onClick={() => navigate("/card-transaction-list")}></i>
                             </div>
                           </div>
                         </div>
@@ -1529,11 +1579,8 @@ const Dashboard = () => {
                                 ""
                               )}
                             </div>
-                            <div
-                              className="col-3"
-                              onClick={() => navigate("/card-details")}
-                            >
-                              <i className="fa-duotone fa-wallet"></i>
+                            <div className="col-3">
+                              <i className="fa-duotone fa-wallet" onClick={() => navigate("/card-details")}></i>
                             </div>
                           </div>
                         </div>
@@ -1581,13 +1628,8 @@ const Dashboard = () => {
                                   <h5>Invoices</h5>
                                   <p>Last 5 invoices</p>
                                 </div>
-                                <div
-                                  className="col-3"
-                                  onClick={() =>
-                                    navigate("/card-transaction-list")
-                                  }
-                                >
-                                  <i className="fa-duotone fa-file-invoice"></i>
+                                <div className="col-3">
+                                  <i className="fa-duotone fa-file-invoice" onClick={() => navigate("/card-transaction-list")}></i>
                                 </div>
                               </div>
                             </div>
@@ -1624,11 +1666,8 @@ const Dashboard = () => {
                                   <h5>Billing Address</h5>
                                   <p>Click the icon to change it</p>
                                 </div>
-                                <div
-                                  className="col-3"
-                                  onClick={() => navigate("/card-details")}
-                                >
-                                  <i className="fa-duotone fa-address-card"></i>
+                                <div className="col-3">
+                                  <i className="fa-duotone fa-address-card" onClick={() => navigate("/card-details")}></i>
                                 </div>
                               </div>
                             </div>
@@ -1711,49 +1750,121 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
-                          <div className="wrapper itemWrapper c">
-                            <div className="heading">
-                              <div className="d-flex flex-wrap justify-content-between">
-                                <div className="col-9">
-                                  <h5>Billing Expenses</h5>
-                                  <p>
-                                    {" "}
-                                    {new Date().getDate()}{" "}
-                                    {new Date().toLocaleString("default", {
-                                      month: "long",
-                                    })}
-                                    , {new Date().getFullYear()}
-                                  </p>
+                          <div className="itemWrapper c">
+                            <div className='heading h-auto'>
+                              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                <div className='col-auto'>
+                                  <h5>Call Billed Per Hour</h5>
                                 </div>
-                                <div
-                                  className="col-3"
-                                  onClick={() => navigate("/card-details")}
-                                >
-                                  <i className="fa-solid fa-gauge-simple-high"></i>
+                                <div className="col-auto">
+                                  <ul class="chart_tabs" >
+                                    <li class="nav-item">
+                                      <input class="nav-link" type="radio" name="graphCostFilter"
+                                        value="1"
+                                        checked={graphFilter.callCostPerHour.startTime === '1'}
+                                        onChange={(e) =>
+                                          setGraphFilter((prevGraphData) => ({
+                                            ...prevGraphData,
+                                            callCostPerHour: {
+                                              ...prevGraphData.callCostPerHour,
+                                              startTime: e.target.value,
+                                            },
+                                          }))
+                                        }
+                                      />
+                                      <button class="nav-link">1 Hr</button>
+                                    </li>
+                                    <li class="nav-item">
+                                      <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                                        checked={graphFilter.callCostPerHour.startTime === '3'}
+                                        onChange={(e) =>
+                                          setGraphFilter((prevGraphData) => ({
+                                            ...prevGraphData,
+                                            callCostPerHour: {
+                                              ...prevGraphData.callCostPerHour,
+                                              startTime: e.target.value,
+                                            },
+                                          }))
+                                        }
+                                      />
+                                      <button class="nav-link">3 Hr</button>
+                                    </li>
+                                    <li class="nav-item">
+                                      <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                                        checked={graphFilter.callCostPerHour.startTime === '6'}
+                                        onChange={(e) =>
+                                          setGraphFilter((prevGraphData) => ({
+                                            ...prevGraphData,
+                                            callCostPerHour: {
+                                              ...prevGraphData.callCostPerHour,
+                                              startTime: e.target.value,
+                                            },
+                                          }))
+                                        }
+                                      />
+                                      <button class="nav-link">6 Hr</button>
+                                    </li>
+                                    <li class="nav-item">
+                                      <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                                        checked={graphFilter.callCostPerHour.startTime === '12'}
+                                        onChange={(e) =>
+                                          setGraphFilter((prevGraphData) => ({
+                                            ...prevGraphData,
+                                            callCostPerHour: {
+                                              ...prevGraphData.callCostPerHour,
+                                              startTime: e.target.value,
+                                            },
+                                          }))
+                                        }
+                                      />
+                                      <button class="nav-link">12 Hr</button>
+                                    </li>
+                                    <li class="nav-item">
+                                      <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                                        checked={graphFilter.callCostPerHour.startTime === '24'}
+                                        onChange={(e) =>
+                                          setGraphFilter((prevGraphData) => ({
+                                            ...prevGraphData,
+                                            callCostPerHour: {
+                                              ...prevGraphData.callCostPerHour,
+                                              startTime: e.target.value,
+                                            },
+                                          }))
+                                        }
+                                      />
+                                      <button class="nav-link">24 Hr</button>
+                                    </li>
+                                  </ul>
                                 </div>
                               </div>
                             </div>
-                            <div className="d-flex flex-wrap justify-content-between mt-3">
-                              <GraphChart
-                                chartType="multiple"
-                                label1={"Wallet"}
-                                label2={"Card"}
-                                // labels={[ "Field 1", "Field 2"]}
-                                fields={[
-                                  "0s",
-                                  "10s",
-                                  "20s",
-                                  "30s",
-                                  "40s",
-                                  "50s",
-                                  "60s",
-                                ]}
-                                percentage={[
-                                  [10, 12, 14, 16, 24, 14, 16], // CPU Usage
-                                  [8, 15, 20, 18, 25, 10, 12], // Memory Usage
-                                ]}
-                                colors={["#f18f01", "#36A2EB"]}
-                              />
+                            <div className='d-flex flex-wrap justify-content-between mt-1'>
+                              {graphLoading.callCostPerHour == 1 ?
+                                (
+                                  <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
+                                    <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                      <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                    </div>
+                                  </div>
+                                ) :
+                                <GraphChart
+                                  height={'320px'}
+                                  chartType="multiple"
+                                  label1={"Inbound"}
+                                  label2={"Outbound"}
+                                  label3={"Internal"}
+                                  label4={"Missed"}
+                                  type={"bar"}
+                                  fields={graphData?.callCostPerHour?.map((item, index) => {
+                                    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                    const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                                    const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                                    return `${time}`
+                                  })}
+                                  percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
+                                  colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                                />
+                              }
                             </div>
                           </div>
                         </div>

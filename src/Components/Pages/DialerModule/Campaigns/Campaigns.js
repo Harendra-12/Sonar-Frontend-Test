@@ -97,7 +97,7 @@ function Campaigns() {
                         </div>
                         <div className="searchBox">
                           <label>Search:</label>
-                          <input type="text" className="formItem" value="" />
+                          <input type="search" className="formItem" value="" />
                         </div>
                       </div>
                       <div className='tableContainer'>
@@ -234,21 +234,27 @@ function Campaigns() {
                                       </div>
                                     </td>
                                     <td>
-                                      <div>
-                                        <div className="avatar-container">
-                                          {item.agents?.slice(0, 4).map((agent, index) => {
-                                            return (
-                                              <Tippy key={index} content={agent.user_id}><i className="fa-light fa-user"></i></Tippy>
-                                            )
-                                          })}
-
-                                          {/* <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy>
-                                                                         <Tippy content={"1001"}><i className="fa-light fa-user"></i></Tippy> */}
-                                          {item.agents?.length > 4 && <span>+2</span>}
-
+                                      {item.agents.length === 0 ? "N/A" :
+                                        <div>
+                                          <div className="avatar-container">
+                                            {item.agents?.slice(0, 4).map((agent, index) => {
+                                              return (
+                                                <Tippy key={index} content={agent.user_id}>
+                                                  {item.profile_picture ? (
+                                                    <img
+                                                      src={item.profile_picture}
+                                                      onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
+                                                    />
+                                                  ) : (
+                                                    <i className="fa-light fa-user"></i>
+                                                  )}
+                                                </Tippy>
+                                              )
+                                            })}
+                                            {item.agents?.length > 4 && <span>+2</span>}
+                                          </div>
                                         </div>
-                                      </div>
+                                      }
                                     </td>
                                     <td><span className='ellipsis'>CustomerList.xls</span></td>
                                     <td>

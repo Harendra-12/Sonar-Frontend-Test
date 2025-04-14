@@ -39,6 +39,8 @@ const edgeType = {
 };
 
 const Reactflow = () => {
+  console.log("Reactflow component rendered",initialEdges, initialNodes);
+  
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -218,6 +220,7 @@ const Reactflow = () => {
     //   body: JSON.stringify(flowData),
     // });
   };
+console.log("nodes",nodes);
 
   return (
     <main className="mainContent">
@@ -231,10 +234,10 @@ const Reactflow = () => {
         className="text-black font-bold"
         nodeTypes={nodeType}
         edgeTypes={edgeType}
-        fitView
+        // fitView
       >
         <Panel
-          position="top-left"
+          position="top-right"
           className=" bg-slate-900 text-white rounded-lg shadow-lg p-4"
         >
           <div className="flex flex-col gap-4">

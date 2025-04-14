@@ -5,6 +5,10 @@ import { useSIPProvider } from "modify-react-sipjs";
 import { toast } from "react-toastify";
 import {
   featureUnderdevelopment,
+  fileUploadFunction,
+  generalGetFunction,
+  generalPostFunction,
+  generatePreSignedUrl,
 } from "../../GlobalFunction/globalFunction";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
@@ -103,52 +107,55 @@ function CallDetails({
     }
   };
 
+  async function handleTranscript(url) {
+    const newUrl = url.split(".com/").pop();
+    // const presignData = await generatePreSignedUrl(newUrl);
+    // if (presignData?.status && presignData?.url) {
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+      // }
+      console.log({url})
+      const trnascript = await fileUploadFunction(`transcribe-audio`,
+        { src: url },
+      );
+  }
+
   const handlePlaying = async (audio) => {
     // Reseting state before Playing
     setCurrentPlaying("");
     setAudioURL("");
 
-    if (!audio) return;
-    if (currentPlaying === audio) {
-      if (thisAudioRef.current) {
-        thisAudioRef.current.pause();
-      }
-      setCurrentPlaying(null);
-      return;
-    }
-
-    setCurrentPlaying(audio);
-
     try {
-      // const url = audio.split(".com/").pop();
+      setCurrentPlaying(audio);
+      const url = audio?.split(".com/").pop();
       // const res = await generatePreSignedUrl(url);
 
       // if (res?.status && res?.url) {
-      // setAudioURL(res.url);
+      // setAudioURL(res.url); // Update audio URL state
       setAudioURL(audio);
+      // Wait for React state update before accessing ref
       setTimeout(() => {
         if (thisAudioRef.current) {
-          thisAudioRef.current.load();
-          thisAudioRef.current
-            .play()
-            .catch((error) => console.error("Audio play error:", error));
+          thisAudioRef.current.load(); // Reload audio source
+          thisAudioRef.current.play().catch((error) => {
+            console.error("Audio play error:", error);
+          });
         }
-      }, 100);
+      }, 100); // Reduced timeout to minimize delay
       // }
     } catch (error) {
       console.error("Error in handlePlaying:", error);
-      setCurrentPlaying(null);
     }
   };
 
-  const handleAudioDownload = (src) => {
-    const link = document.createElement("a");
-    link.href = src;
-    link.download = "audio-file.wav";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  // const handleAudioDownload = (src) => {
+  //   const link = document.createElement("a");
+  //   link.href = src;
+  //   link.download = "audio-file.wav";
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
 
   useEffect(() => {
     if (callDetails) {
@@ -594,7 +601,24 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <div className="dropdown">
+                                  <button
+                                    className="tableButton px-2 mx-0"
+                                    onClick={() => {
+                                      if (item?.recording_path === currentPlaying) {
+                                        setCurrentPlaying("");
+                                        setAudioURL("");
+                                      } else {
+                                        handlePlaying(item?.recording_path);
+                                      }
+                                    }}
+                                  >
+                                    {currentPlaying === item?.recording_path ? (
+                                      <i className="fa-solid fa-chevron-up"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-chevron-down"></i>
+                                    )}
+                                  </button>
+                                  {/* <div className="dropdown">
                                     <div
                                       className={`tableButton`}
                                       href="#"
@@ -663,7 +687,7 @@ function CallDetails({
                                       </>
                                       <li className="dropdown-item"></li>
                                     </ul>
-                                  </div>
+                                  </div> */}
                                 </td>
                               </tr>
                               {item?.recording_path &&
@@ -706,7 +730,7 @@ function CallDetails({
                                     </td>
                                   </tr>
                                 )}
-                              {
+                              {/* {
                                 transcribeLink === item?.recording_path ?
                                   <tr
                                     className="show"
@@ -717,7 +741,7 @@ function CallDetails({
                                     </td>
                                   </tr>
                                   : ""
-                              }
+                              } */}
                             </>
                           ))}
                         </tbody>

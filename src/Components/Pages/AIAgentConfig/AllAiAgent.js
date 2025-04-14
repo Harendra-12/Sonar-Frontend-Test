@@ -103,7 +103,7 @@ function AllAiAgent() {
                                         </div>
                                         <div
                                             className="col-12"
-                                            style={{ overflow: "auto", padding: "25px 20px 0" }}
+                                            style={{ overflow: "auto", padding: "10px 20px 0" }}
                                         >
                                             <div className="tableContainer">
                                                 <table>
@@ -111,8 +111,8 @@ function AllAiAgent() {
                                                         <tr>
                                                             <th>Name</th>
                                                             <th>Number</th>
-                                                            <th>Edit</th>
-                                                            <th>Delete</th>
+                                                            <th className='text-center'>Edit</th>
+                                                            <th className='text-center'>Delete</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
