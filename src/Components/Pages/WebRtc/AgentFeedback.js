@@ -92,7 +92,7 @@ function AgentFeedback() {
                                                 <input onChange={()=>checkDispo(item)} checked={currentDisposition?.some((dispo) => dispo.id === item.id)} type="checkbox" />
                                             </div>
                                             <div className="formLabel">
-                                                <label htmlFor="">{item.name}</label>
+                                                <label htmlFor="">{item.campaign_disposition_name}</label>
                                             </div>
                                         </div>
                                     )
