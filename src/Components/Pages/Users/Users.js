@@ -16,6 +16,15 @@ import PaginationComponent from "../../CommonComponents/PaginationComponent";
 
 import { toast } from "react-toastify";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+/**
+ * This component is used to display a list of all users and their respective roles.
+ * The component renders a table with the following columns: username, extension, role, usage, status, and actions.
+ * The user can filter the list by typing in the search bar.
+ * The user can also sort the list by clicking on the column headers.
+ * The component also renders a button to add a new user and a button to delete a selected user.
+ * The component is connected to the Redux store and listens for changes to the user list and the login user.
+ **/
+
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
@@ -39,6 +48,7 @@ const Users = () => {
   const [refreshData, setRefreshData] = useState(0);
   const [onlineFilter, setonlineFilter] = useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
+  const [debouncedInput, setDebouncedInput] = useState(""); // Debounced value
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -58,12 +68,23 @@ const Users = () => {
     });
   }, []);
 
+    // Debounce logic
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedInput(userInput); // Update debounced value after delay
+      }, 500); // 500ms debounce delay
+  
+      return () => {
+        clearTimeout(handler); // Clear timeout on cleanup
+      };
+    }, [userInput]);
+
   // Getting users data with pagination row per page and search filter
   useEffect(() => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${debouncedInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -83,21 +104,14 @@ const Users = () => {
         }
       }
     }
-    if (userInput.trim().length === 0) {
-      getApi();
-    } else {
-      const timer = setTimeout(() => {
-        getApi();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    getApi();
   }, [
     account,
     navigate,
     pageNumber,
     refreshState,
     itemsPerPage,
-    userInput,
+    debouncedInput,
     refreshData,
     onlineFilter,
   ]);

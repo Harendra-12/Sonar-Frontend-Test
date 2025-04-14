@@ -7,13 +7,14 @@ import {
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
-  generalPostFunction,
+  generalPostFunction,logout
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import LogOutPopUp from "./LogOutPopUp";
 
 function EFax() {
   const dispatch = useDispatch();
@@ -32,8 +33,10 @@ function EFax() {
   const { sessionManager } = useSIPProvider();
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
-
+  const [allLogOut, setAllLogOut] = useState(false);
   const [showUserHistory, setShowUserHistory] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
 
   useEffect(() => {
     const getData = async () => {
@@ -104,9 +107,22 @@ function EFax() {
       setEfaxFileLoading(false);
     }
   };
-
+  const handleLogOut = async () => {
+    setLoading(true);
+    try {
+      const apiResponses = await logout(
+        allCallCenterIds,
+        dispatch,
+        sessionManager
+      );
+    } catch (error) {
+      console.error("Unexpected error in handleLogOut:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   async function sendFax() {
-
     if (destinationId === "") {
       toast.error("Please enter destination id");
     } else if (faxFileId === "") {
@@ -139,6 +155,9 @@ function EFax() {
 
   return (
     <>
+      {allLogOut && (
+        <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
+      )}
       {/* <SideNavbarApp /> */}
       <main
         className="mainContentApp"
@@ -156,7 +175,10 @@ function EFax() {
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button className="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
+                      <button
+                        className="clearButton2 text-dark"
+                        onClick={() => featureUnderdevelopment()}
+                      >
                         <i className="fa-solid fa-chevron-left fs-4"></i>
                       </button>{" "}
                       E-Fax{" "}
@@ -190,7 +212,7 @@ function EFax() {
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    {/* <div className="col-auto">
+                    <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -198,20 +220,30 @@ function EFax() {
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div className="profileHolder" id="profileOnlineNav">
+                          {/* <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src={account?.profile_picture}
                               alt="profile"
                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
-                          </div>
-                          <div className="profileName">
+                          </div> */}
+                          {/* <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
-                          </div>
+                          </div> */}
+
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
-                          <li onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
+                          <li
+                            onClick={() => {
+                              if (allCallCenterIds.length > 0) {
+                                setAllLogOut(true);
+                              } else {
+                                handleLogOut();
+                              }
+                            }}
+                          >
                             <div
                               className="dropdown-item"
                               style={{ cursor: "pointer" }}
@@ -219,9 +251,33 @@ function EFax() {
                               Logout
                             </div>
                           </li>
+                          <li
+                            onClick={() => {
+                              sessionManager.disconnect();
+                            }}
+                          >
+                            <div
+                              className="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Disconnect
+                            </div>
+                          </li>
+                          <li
+                            onClick={() => {
+                              sessionManager.connect();
+                            }}
+                          >
+                            <div
+                              className="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Reconnect
+                            </div>
+                          </li>
                         </ul>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -459,7 +515,8 @@ function EFax() {
 
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
-                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div
+                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -616,7 +673,8 @@ function EFax() {
 
               {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
               {showUserHistory && (
-                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div
+                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -769,7 +827,11 @@ function EFax() {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -780,7 +842,11 @@ function EFax() {
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           1 Attachment
                                         </td>
                                       </tr>
@@ -808,7 +874,11 @@ function EFax() {
                                     </thead>
                                     <tbody>
                                       <tr>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -819,12 +889,20 @@ function EFax() {
                                           <span>Received</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           1 Attachment
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           Jan 16, 2022
                                         </td>
                                         <td>12:46 PM</td>
@@ -835,7 +913,11 @@ function EFax() {
                                           <span>Sent</span>
                                         </td>
                                         <td>1 (999) 999-9999</td>
-                                        <td style={{ color: "var(--color-subtext)" }}>
+                                        <td
+                                          style={{
+                                            color: "var(--color-subtext)",
+                                          }}
+                                        >
                                           1 Attachment
                                         </td>
                                       </tr>

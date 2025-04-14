@@ -16,7 +16,7 @@ function Navbar() {
   const account = useSelector((state) => state.account);
   const accountDetails = useSelector((state) => state.accountDetails);
   const userType = account?.usertype;
-  const isCustomerAdmin = account?.email == accountDetails?.email;
+  const isCustomerAdmin = (account?.email == accountDetails?.email) || account?.user_role?.roles?.name === "All access with upcoming fetaure";
   const permissions = useSelector((state) => state.permissions);
   const permissionRefresh = useSelector((state) => state.permissionRefresh);
 
@@ -417,7 +417,7 @@ function Navbar() {
                           "/voicemail-report",
                           "/groups",
                           "/groups-add",
-                          "/groups-edit"
+                          "/groups-edit",
                         ])
                           ? "true"
                           : "false"
@@ -509,11 +509,11 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-                          <li className="tabItem ">
+                          {/* <li className="tabItem ">
                             <NavLink to="/agent-dashboard">
                               <div className="itemTitle">Agent Dashboard</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           {checkViewSidebar(
                             "CallCenterAgent",
                             permissions,
@@ -642,7 +642,6 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-
                         </ul>
                       </div>
                     </div>

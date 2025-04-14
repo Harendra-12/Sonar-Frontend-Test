@@ -51,7 +51,7 @@ function DidListing({ page }) {
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page]);
+  }, [refreshDid, page,searchQuery]);
 
   // Fetch ALL DID
   async function getData() {
@@ -163,13 +163,13 @@ function DidListing({ page }) {
   }
 
   // Debounce Search Function
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      getData();
-    }, 500);
+  // useEffect(() => {
+  //   const delay = setTimeout(() => {
+  //     getData();
+  //   }, 500);
 
-    return () => clearTimeout(delay);
-  }, [searchQuery]);
+  //   return () => clearTimeout(delay);
+  // }, [searchQuery]);
 
   return (
     <main className="mainContent">
@@ -353,6 +353,9 @@ function DidListing({ page }) {
                             <th>E911</th>
                             <th>Cname</th>
                             <th>SMS</th>
+                            {page === "pbx" ? <>
+                            <th>Route</th>
+                            </>:""}
                             {page === "number" ?
                               <>
                                 <th>Usages</th>
@@ -399,6 +402,12 @@ function DidListing({ page }) {
                                       <td style={{ cursor: "default" }}>
                                         {item?.sms}
                                       </td>
+                                      {page === "pbx" ? <>
+                                        <td style={{ cursor: "default" }}>
+                                          {item?.configuration?.forward_to?item?.configuration?.forward_to:item?.configuration?.action}
+                                        </td>
+                                      </>:""}
+                                      
                                       {page === "number" ?
                                         <>
                                           <td style={{ cursor: "default" }}>
@@ -449,7 +458,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-brands fa-whatsapp me-2" /> Secondary
+                                                  <i className="fa-brands fa-whatsapp me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -499,7 +508,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-fax me-2" /> Secondary
+                                                  <i className="fa-solid fa-fax me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -549,7 +558,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-comment-sms me-2" /> Secondary
+                                                  <i className="fa-solid fa-comment-sms me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>

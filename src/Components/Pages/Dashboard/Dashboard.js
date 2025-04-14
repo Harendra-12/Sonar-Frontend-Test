@@ -936,7 +936,7 @@ const Dashboard = () => {
                                 <div className="data-number">
                                   <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
                                 </div>
-                                <p>Total Online Users</p>
+                                <p>Total Online Agents</p>
                               </div>
                             </div>
                           </div>

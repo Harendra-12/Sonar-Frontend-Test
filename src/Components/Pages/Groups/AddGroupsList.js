@@ -20,7 +20,7 @@ export default function AddGroupsList() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectAll, setSelectAll] = useState(false);
-  const [bulkEditPopup, setBulkEditPopup] = useState(false);
+  // const [bulkEditPopup, setBulkEditPopup] = useState(false);
   const account = useSelector((state) => state.account);
   const navigate = useNavigate();
   const {
@@ -73,7 +73,6 @@ export default function AddGroupsList() {
   const handleSelectAll = () => {
     const newSelectAllState = !selectAll; // Toggle Select All state
     setSelectAll(newSelectAllState);
-
     if (newSelectAllState) {
       // Add all visible users to bulkUploadSelectedAgents
       users.forEach((item) => {
@@ -108,7 +107,7 @@ export default function AddGroupsList() {
     // }
   };
 
-  // Handle chek box for bulk edit
+  // Handle check box for bulk edit
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
@@ -126,13 +125,10 @@ export default function AddGroupsList() {
       }
     });
   };
-  // // Function to handle changes in destination fields
+   // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
-    // debugger
     const { name, value } = event.target;
-
     const allowedCharacters = /^[A-Za-z0-9\s]*$/;
-
     if (name === "destination" && !allowedCharacters.test(value)) {
       return;
     }
@@ -165,8 +161,7 @@ export default function AddGroupsList() {
 
   // Logic to upload bulk destination
   const handleBulkDestinationUpload = (selectedDestinations) => {
-    // debugger
-    console.log({ selectedDestinations });
+    // console.log({ selectedDestinations });
     if (users.length > 0) {
       const newDestinations = selectedDestinations.map(
         (selectedDestination) => ({
@@ -212,7 +207,7 @@ export default function AddGroupsList() {
   return (
     <div className="mainContent">
       <div className="container-fluid px-0">
-        <Header title="Ring Groups" />
+        <Header title="Groups" />
       </div>
       <>
         {loading ? (

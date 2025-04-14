@@ -83,6 +83,7 @@ function CdrFilterReport({ page }) {
   const [showAudio, setShowAudio] = useState(false)
   // const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
+  const [showComment, setShowComment] = useState(false)
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -1279,52 +1280,36 @@ function CdrFilterReport({ page }) {
                                               } else if (
                                                 key === "Call-Direction"
                                               ) {
+                                                const statusIcons = {
+                                                  Missed: "fa-solid fa-phone-missed",
+                                                  Cancelled: "fa-solid fa-phone-xmark",
+                                                  Failed: "fa-solid fa-phone-slash",
+                                                  transfer: "fa-solid fa-arrow-right-arrow-left",
+                                                };
                                                 const callIcons = {
                                                   inbound: {
-                                                    icon:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
-                                                        ? "fa-solid fa-phone-missed"
-                                                        : "fa-phone-arrow-down-left",
+                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
                                                     color:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
+                                                      item.variable_DIALSTATUS !==
+                                                        "Answered" 
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
                                                     label: "Inbound",
                                                   },
                                                   outbound: {
-                                                    icon:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
-                                                        ? "fa-solid fa-phone-missed"
-                                                        : "fa-phone-arrow-up-right",
+                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
                                                     color:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
+                                                      item.variable_DIALSTATUS !==
+                                                       "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
                                                     label: "Outbound",
                                                   },
-                                                  // missed: {
-                                                  //   icon: "fa-phone-missed",
-                                                  //   color: "var(--funky-boy4)",
-                                                  //   label: "Missed",
-                                                  // },
-                                                  // transfer: {
-                                                  //   icon: "fa-exchange",
-                                                  //   color: "var(--funky-boy2)",
-                                                  //   label: "Transfer",
-                                                  // },
                                                   internal: {
-                                                    icon:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
-                                                        ? "fa-solid fa-phone-missed"
-                                                        : "fa-headset",
+                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-headset",
                                                     color:
-                                                      item.variable_DIALSTATUS ==
-                                                        "Missed"
+                                                      item.variable_DIALSTATUS !==
+                                                       "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
                                                     label: "Internal",
@@ -1435,29 +1420,14 @@ function CdrFilterReport({ page }) {
                                               </td>
                                               <td>
                                                 <button
-                                                  disabled={isBlocked}
                                                   effect="ripple"
-                                                  className={`tableButton ${isBlocked ? "delete" : "warning"
-                                                    } ms-0`}
+                                                  className={`tableButton warning ms-0`}
                                                   style={{
                                                     height: "34px",
                                                     width: "34px",
                                                   }}
                                                   onClick={() => {
-                                                    setSelectedNumberToBlock(
-                                                      item["Call-Direction"] ===
-                                                        "inbound"
-                                                        ? item[
-                                                        "variable_sip_from_user"
-                                                        ]
-                                                        : item["Call-Direction"] ===
-                                                          "outbound"
-                                                          ? item[
-                                                          "variable_sip_to_user"
-                                                          ]
-                                                          : "N/A"
-                                                    );
-                                                    setPopUp(true);
+                                                    setSelectedCdr(item.id);
                                                   }}
                                                 >
                                                   <Tippy content={"View Note"}>
@@ -1597,7 +1567,7 @@ function CdrFilterReport({ page }) {
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} />
+        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>

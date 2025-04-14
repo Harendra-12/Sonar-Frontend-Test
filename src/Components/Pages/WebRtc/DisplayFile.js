@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const DisplayFile = ({ item }) => {
+const index=0;
+const DisplayFile = ({ item}) => {
   const thisAudioRef = useRef(null);
+  const [enlargeImage, setEnlargeImage] = useState(false);
 
   useEffect(() => {
    if(item){
@@ -16,38 +18,25 @@ const DisplayFile = ({ item }) => {
   
   const extractFileExtension = (selectedUrl) => {
     if (!selectedUrl) return null;
-  
-    //  Remove query parameters and get the base URL
     const fileUrl = selectedUrl;
+    
     const fileName = fileUrl.split("/").pop();
-  
     if (fileName) {
       // Try extracting extension from the filename
-      const fileParts = fileName.split(".");
-      if (fileParts.length > 1) {
-        return fileParts.pop().toLowerCase(); // Standard case: return the extension
-      }
-  
-      // Step 3: Fallback - Check query parameters for extension hints
-      const queryParams = selectedUrl.split("?")[1];
-      if (queryParams) {
-        const params = new URLSearchParams(queryParams);
-        // Look for common extension indicators in query params (customize as needed)
-        for (const [value] of params) {
-          const lowerValue = selectedUrl.toLowerCase();
-          if (lowerValue.includes("png")) return "png";
+        
+          const lowerValue = selectedUrl;
+          if (lowerValue.includes("png")||lowerValue.includes("Screenshot")) return "png";
           if (lowerValue.includes("jpg") || lowerValue.includes("jpeg")) return "jpg";
           if (lowerValue.includes("pdf")) return "pdf";
-          // Add more extensions as needed
-        }
-      }
+          if (lowerValue.includes("mp3")) return "mp3";
+          if (lowerValue.includes("mp4") || lowerValue.includes("Video"))  return "mp4";
   
-      // Step 4: Fallback - Decode URL-encoded filename and retry
-      const decodedFileName = decodeURIComponent(fileName);
-      const decodedParts = decodedFileName.split(".");
-      if (decodedParts.length > 1) {
-        return decodedParts.pop().toLowerCase();
-      }
+      
+      // const decodedFileName = decodeURIComponent(fileName);
+      // const decodedParts = decodedFileName.split(".");
+      // if (decodedParts.length > 1) {
+      //   return decodedParts.pop().toLowerCase();
+      // }
     }
   
     return null; // No extension found
@@ -55,36 +44,90 @@ const DisplayFile = ({ item }) => {
 
 
   if (!item) return null;
-  
+  if(item=="loading") return <div style={{width:"100px",height:"100px",backgroundColor:"grey", display:"flex", justifyContent:"center",alignItems:"center"}}><div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div></div>;
   const fileUrl = item.startsWith('http://') || item.startsWith('https://') ? extractFileExtension(item) : "";
   const ext = fileUrl;
-  
+  // console.log({ext})
   if (!ext) {
-    return <p className="messageDetails">{item}</p>;
+    return <div className="messageDetails">{item}</div>;
   }
   else {
     if (ext === "jpg" || ext === "png" || ext === "jpeg") {
-      return <img width="400PX" height="160px" src={item} alt="" />;
+      return <div>
+        <img width="200PX" height="160px" src={item} alt=""  onClick={() => setEnlargeImage(true)}/>
+            {enlargeImage ? (
+        <div className="popup" onClick={() => setEnlargeImage(false)}>
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <img
+                src={item}
+                alt="Preview"
+                style={{ maxWidth: "800px", maxHeight: "800px" }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      </div>
+   
     }
     
     // Handle PDF files
     if (ext === "pdf") {
+      function extractFileNameFromUrl(url) {
+        if (!url || typeof url !== 'string') {
+          return null; // Handle invalid input
+        }
+      
+        const parts = url.split('/');
+        if (parts.length > 0) {
+          return parts[parts.length - 1];
+        } else {
+          return null; // Handle cases with no slashes
+        }
+      }
+    
       return (
-        <iframe 
-          src={item} 
-          width="250PX" 
-          height="160px" 
-          style={{ border: 'none' }} 
-          title={`PDF Document - ${item}`} 
-          className="documents-pdf"
+        
+        <div>
+        <div style={{width:"200px",height:"60px",backgroundColor:"grey",display:"flex",justifyContent:"center",alignItems:"center"}}  onClick={() => setEnlargeImage(true)}><h4>{ extractFileNameFromUrl(item)}</h4></div>
+        {enlargeImage ? (
+        <div className="popup" onClick={() => setEnlargeImage(false)}>
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+            <iframe
+          src={item}
+          width="250PX"
+          height="160px"
+          style={{ border: 'none' }}
+          title={`PDF Document - ${extractFileNameFromUrl(item)}`}
         />
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+        {/* <iframe
+          src={pdfUrl}
+          width="250PX"
+          height="160px"
+          style={{ border: 'none' }}
+          title={`PDF Document - ${fileName}`}
+        /> */}
+        {/* <a href={item} download rel="noopener noreferrer" target='_blank'><button >Download</button></a> */}
+      </div>
       );
     }
     
     // Handle audio files (mp3 and others)
     if (ext === "mp3") { 
       return (
-        <div className="messageDetailss">
+        <div className="messageDetailss" key={index+1}>
           <div className="audio-container mx-2">
             <audio
               controls={true}
@@ -95,7 +138,11 @@ const DisplayFile = ({ item }) => {
                 src={item}
                 type="audio/mpeg"
               />
+            
             </audio>
+            {/* <a href={item} rel="noopener noreferrer" download>
+    <button>Download</button>
+  </a> */}
           </div>
         </div>
       );
@@ -103,16 +150,16 @@ const DisplayFile = ({ item }) => {
     
     if (ext === "mp4") {
       return (
-        <div>
-          <video 
+        <div key={index+2} >
+          <video
             controls
-            width="500px"
-            height="auto"
+            width="200px"
+            height="160px"
           >
             <source src={item} type="video/mp4" />
-            Your browser does not support the video element.
           </video>
-        </div>
+        <br/>
+      </div>
       );
     }
   }

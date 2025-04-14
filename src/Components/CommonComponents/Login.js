@@ -390,6 +390,7 @@ export function LoginComponent() {
             <i className="fa-thin fa-user" />
             <input
               type="text"
+              name="username1"
               placeholder="Enter your username"
               className="loginFormItem"
               value={userName}
@@ -401,6 +402,7 @@ export function LoginComponent() {
             <i className="fa-thin fa-lock" />
             <input
               type="password"
+              name="password1"
               placeholder="Enter your password"
               className="loginFormItem"
               value={password}

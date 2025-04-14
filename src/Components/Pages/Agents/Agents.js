@@ -68,14 +68,14 @@ function Agents({ type }) {
     //   return () => clearTimeout(timer);
     // }
     getData();
-  }, [entriesPerPage, pageNumber, type]);
+  }, [entriesPerPage, pageNumber, type,userInput]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      getData();
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [userInput])
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     getData();
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [userInput])
 
 
   // Handle Agent Logout Function
@@ -239,7 +239,7 @@ function Agents({ type }) {
                                         </td>
                                         <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
                                         <td>{item.extension.extension}</td>
-                                        <td>{item.user_role.roles.name}</td>
+                                        <td>{item?.user_role?.roles?.name}</td>
                                         <td>{item.extension.record === "A" ? 'All' : item.extension.record === "L" ? 'Local' : item.extension.record === "I" ? 'Inbound' : item.extension.record === "O" ? 'Outbound' : 'Disabled'}</td>
                                         <td>
                                           <span
