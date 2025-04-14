@@ -458,7 +458,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-brands fa-whatsapp me-2" /> Secondary
+                                                  <i className="fa-brands fa-whatsapp me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -508,7 +508,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-fax me-2" /> Secondary
+                                                  <i className="fa-solid fa-fax me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -558,7 +558,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-comment-sms me-2" /> Secondary
+                                                  <i className="fa-solid fa-comment-sms me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>

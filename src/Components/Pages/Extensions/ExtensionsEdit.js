@@ -695,7 +695,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </select>
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">Music on Hold</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -731,8 +731,8 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </option>
                                 </select>
                               </div>
-                            </div>
-                            <div className="formRow col-xl-3">
+                            </div> */}
+                            {/* <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">Effective Caller ID</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -782,7 +782,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">Record</label>
@@ -806,7 +806,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </select>
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">Emergency Caller ID</label>
                                 <label htmlFor="data" className="formItemDesc">
@@ -856,7 +856,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="selectFormRow">
