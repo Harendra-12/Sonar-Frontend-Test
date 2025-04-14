@@ -439,7 +439,7 @@ function CardAndBilling() {
                   <div className="row gy-3">
                     <div className="col-xxl-8 col-xl-9">
                       <div className="row gy-3">
-                        <div className="col-xl-4 billinCardWrapper">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 billinCardWrapper">
                           <Cards
                             className="cardWrapper row align-items-center col-12 mx-auto"
                             number={selectedCard?.[0]?.card_number}
@@ -456,10 +456,10 @@ function CardAndBilling() {
                             name={selectedCard?.[0]?.name}
                           />
                         </div>
-                        <div className="col-xl-4">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
                           <div className="itemWrapper a billing_card1">
-                            <div className="heading">
-                              <div className="col-10 ">
+                            <div className="heading d-flex justify-content-between align-items-center gap-1">
+                              <div className="">
                                 <h5>Upcoming Transaction</h5>
                                 {/* <p>16-01-2024</p> */}
                                 <p>On:{" "}
@@ -468,7 +468,7 @@ function CardAndBilling() {
                                     : ""}
                                 </p>
                               </div>
-                              <div className="col-2">
+                              <div className="">
                                 <i
                                   className="fa-duotone fa-ballot"
                                   style={{
@@ -523,14 +523,14 @@ function CardAndBilling() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-xl-4">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12">
                           <div className="itemWrapper a billing_card2" >
-                            <div className="heading">
-                              <div className="col-10">
+                            <div className="heading d-flex justify-content-between align-items-center gap-1">
+                              <div className="">
                                 <h5>Wallet Balance</h5>
                                 <p>Created On: {accountDetails?.balance?.created_at?.split("T")[0]}</p>
                               </div>
-                              <div className="col-2">
+                              <div className="">
                                 <i
                                   className="fa-duotone fa-credit-card"
                                   style={{
@@ -563,9 +563,9 @@ function CardAndBilling() {
                                     )}
                                   </p>
                                 </div>
-                                <div className="col">
+                                <div className="col ">
                                   <Tippy content="Click to add balance!">
-                                    <button className="tableButton edit ms-auto" style={{ width: 30, height: 30 }} onClick={() => setRechargePopUp(true)}>
+                                    <button className="tableButton edit ms-auto" style={{ width: 30, height: 30,  }} onClick={() => setRechargePopUp(true)}>
                                       <i className="fa-solid fa-dollar" />
                                     </button>
                                   </Tippy>
@@ -1173,10 +1173,12 @@ function CardAndBilling() {
                           </ul>
                         </div>
                       </div>
-                      <div className="col-xl-12 mt-3">
+                      <div className="col-12">
+                          <div className="row">
+                      <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
                         <div className="itemWrapper a" style={{ backgroundColor: 'var(--ele-color2)' }}>
-                          <div className="heading">
-                            <div className="col-10">
+                          <div className="heading d-flex justify-content-between align-items-center gap-1">
+                            <div className="">
                               <h5>Last Transaction</h5>
                               <p>On:{" "}
                                 {
@@ -1186,8 +1188,7 @@ function CardAndBilling() {
                                 }
                               </p>
                             </div>
-                            <div
-                              className="col-2"
+                            <div className=""
                               style={{ cursor: "pointer" }}
                               onClick={() =>
                                 downloadImage(
@@ -1236,14 +1237,14 @@ function CardAndBilling() {
                           </div>
                         </div>
                       </div>
-                      <div className="col-xl-12 mt-3">
+                      <div className="col-xl-12 col-lg-6 col-md-6 col-sm-6 mt-3">
                         <div
                           className={`itemWrapper a ${(autoPaymentFetchData?.status === "enable") ? "active" : ""}`}
                           style={{ backgroundColor: "var(--ele-color2)" }}
                         >
-                          <div className="heading">
+                          <div className="heading d-flex justify-content-between align-items-center gap-1">
 
-                            <div className="col-xl-9 col-lg-9 col-sm-9 col-sm-9 col-9">
+                            <div className="">
                               <h5>Auto Pay Feature</h5>
                               {
                                 !autoPaymentFetchData ? "" :
@@ -1251,7 +1252,7 @@ function CardAndBilling() {
                               }
                             </div>
 
-                            <div className="col-xl-3 col-lg-3 col-sm-3 col-sm-3 col-3" style={{ cursor: "pointer" }}>
+                            <div className="" style={{ cursor: "pointer" }}>
                               <i
                                 className="fa-duotone fa-circle-dollar"
                                 style={{
@@ -1293,6 +1294,9 @@ function CardAndBilling() {
                             </div>
                           </div>
                         </div>
+                      </div>
+
+                          </div>
                       </div>
                     </div>
                   </div>

@@ -401,8 +401,11 @@ form.tangoNavs .nav-tabs {
 } */
 
 .formRow.col-xl-3 {
-    width: 45%;
+    width: 46%;
     /* margin-right: 70px; */
+}
+.formRow.ringGroup_row.col-xl-3 {
+    width: auto;
 }
 
 .formRow.col-xl-3:nth-child(odd) {

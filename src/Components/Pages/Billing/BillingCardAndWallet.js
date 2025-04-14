@@ -105,7 +105,7 @@ const BillingCardAndWallet = () => {
                                                          
                                                             <td>
                                                                 <button
-                                                                    className="tableButton"
+                                                                    className="tableButton mx-auto"
                                                                 // onClick={() =>
                                                                 //     downloadImage(
                                                                 //         item.invoice_url,
