@@ -93,7 +93,7 @@ const GoogleTranslate = () => {
     <div className="sticky-icon">
       <div id="google_translate_element"></div>
       <div class="">
-      <i class="fa-solid fa-gears"></i>
+      <i class="fa-solid fa-language"></i>
       </div>
     </div>
   );
