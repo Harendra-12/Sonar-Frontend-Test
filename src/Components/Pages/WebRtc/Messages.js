@@ -957,13 +957,17 @@ function Messages({
     }
   };
 
-  // console.log("000allMessage",allMessage?.[recipient[0]])
 
   // function to add display logic in messages
 
   // Logic to send group messages
   function sendGroupMessage(selectedUrl) {   
-    const messageContent = messageInput.trim() || selectedUrl;
+    let messageContent;
+     if(selectedUrl){
+          messageContent=selectedUrl
+         }else{
+          messageContent = messageInput.trim();
+         }
 
     sendMessage({
       "action": "broadcastGroupMessage",
@@ -1061,7 +1065,6 @@ function Messages({
   //     console.error("Error sending SMS:", err);
   //   }
   // })
-
   return (
     <>
       {addNewTagPopUp && <div className="addNewContactPopup">
@@ -2972,8 +2975,8 @@ function Messages({
           ""
         )}
         {
-          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} setCircularLoading={setLoading} sendSingleMessage={sendSingleMessage} sendGroupMessage={sendGroupMessage} recipient={recipient}
-          
+          fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} sendSingleMessage={sendSingleMessage} sendGroupMessage={sendGroupMessage} recipient={recipient} setAllMessage={setAllMessage} allMessage={allMessage}
+         extension={extension} formatDateTime={formatDateTime}
           />
         }
       </main>
