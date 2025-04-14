@@ -597,11 +597,20 @@ function PhoneDashboard() {
                         <div className='col-auto'>
                           <h5 className="d-flex">Total Call Per Hour
                             <div class="my-auto position-relative ms-3">
-                              <label class="switch">
+                              {/* <label class="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
                                 <span class="slider round">
                                 </span>
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    onChange={() => featureUnderdevelopment()}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </h5>
                         </div>
@@ -723,11 +732,20 @@ function PhoneDashboard() {
                         <div className='col-auto'>
                           <h5 className="d-flex">Number of Call
                             <div class="my-auto position-relative ms-3">
-                              <label class="switch">
+                              {/* <label class="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
                                 <span class="slider round">
                                 </span>
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    onChange={() => featureUnderdevelopment()}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </h5>
                         </div>
@@ -831,11 +849,20 @@ function PhoneDashboard() {
                         <div className='col-auto'>
                           <h5 className="d-flex">Call Cost Per Hour
                             <div class="my-auto position-relative ms-3">
-                              <label class="switch">
+                              {/* <label class="switch">
                                 <input type="checkbox" id="showAllCheck" onChange={() => featureUnderdevelopment()} />
                                 <span class="slider round">
                                 </span>
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    onChange={() => featureUnderdevelopment()}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </h5>
                         </div>

@@ -58,8 +58,8 @@
 }
 
 .savedCardWrapper.active {
-    border: 1px solid green;
-    box-shadow: #00ff1554 0px 3px 8px;
+    border: 1px solid #009688;
+    box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
 .billingDetails {

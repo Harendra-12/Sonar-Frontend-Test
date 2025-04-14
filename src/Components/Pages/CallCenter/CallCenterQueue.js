@@ -303,7 +303,7 @@ function CallCenterQueue() {
 
                     <div
                       className="col-12"
-                      style={{ overflow: "auto", padding: "25px 20px 0" }}
+                      style={{ overflow: "auto", padding: "10px 20px 0" }}
                     >
                       <div className="tableHeader">
                         <div className="showEntries">

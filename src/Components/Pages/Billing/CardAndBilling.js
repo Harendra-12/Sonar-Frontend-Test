@@ -621,7 +621,7 @@ function CardAndBilling() {
                                               </label>
                                             </div>
                                             <div className="ms-auto">
-                                              <label className="switch">
+                                              {/* <label className="switch">
                                                 <input
                                                   type="checkbox"
                                                   id="showAllCheck"
@@ -639,7 +639,27 @@ function CardAndBilling() {
                                                   }}
                                                 />
                                                 <span className="slider round"></span>
-                                              </label>
+                                              </label> */}
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox"
+                                                   checked={item.default}
+                                                   onChange={(e) => {
+                                                     if (e.target.checked) {
+                                                       setSelectedCardId(item.id);
+                                                       setCardConfirmationPopUp(true);
+                                                       setDisableCard(false);
+                                                     } else {
+                                                       setSelectedCardId(item.id);
+                                                       setCardConfirmationPopUp(true);
+                                                       setDisableCard(true);
+                                                     }
+                                                   }}
+                                                    id="showAllCheck"
+                                                  />
+                                                  <span></span>
+                                                </label>
+                                              </div>
                                             </div>
                                             <div className="ms-3">
                                               <button
@@ -719,7 +739,7 @@ function CardAndBilling() {
                                                 </button>
                                               </div>
                                               <div className="ms-auto d-flex">
-                                                <label className="switch">
+                                                {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
                                                     id="showAllCheck"
@@ -747,7 +767,38 @@ function CardAndBilling() {
                                                     }}
                                                   />
                                                   <span className="slider round"></span>
+                                                </label> */}
+
+                                                <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input type="checkbox"
+                                                   checked={item.default}
+                                                   onChange={(e) => {
+                                                     if (e.target.checked) {
+                                                       setSelecetedBillingId(
+                                                         item.id
+                                                       );
+                                                       setSelectedCardId();
+                                                       setBillingConfirmationPopUp(
+                                                         true
+                                                       );
+                                                       setDisableBilling(false);
+                                                     } else {
+                                                       setSelecetedBillingId(
+                                                         item.id
+                                                       );
+                                                       setSelectedCardId();
+                                                       setBillingConfirmationPopUp(
+                                                         true
+                                                       );
+                                                       setDisableBilling(true);
+                                                     }
+                                                   }}
+                                                    id="showAllCheck"
+                                                  />
+                                                  <span></span>
                                                 </label>
+                                              </div>
                                               </div>
                                             </div>
                                           </h2>

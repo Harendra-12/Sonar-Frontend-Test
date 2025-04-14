@@ -126,7 +126,7 @@ function SubscriptionManagement() {
                                                                 <i className="fa-solid fa-repeat" />
                                                             </span>
                                                         </button>
-                                                        <button className="panelButton delete mx-0" style={{ height: 34 }}>
+                                                        <button className="panelButton delete mx-0 ms-3" style={{ height: 34 }}>
                                                             <span className="text">Cancel</span>
                                                             <span className="icon">
                                                                 <i className="fa-solid fa-xmark" />
