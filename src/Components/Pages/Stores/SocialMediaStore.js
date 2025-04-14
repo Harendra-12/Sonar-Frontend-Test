@@ -21,19 +21,20 @@ function SocialMediaStore() {
                                 </p>
                             </div>
 
-                            <div className="product-description">
+                            <div className="product-description ">
                                 Make instant calls directly from the platform.
                             </div>
-                            <div className="d-flex align-items-center justify-content-center teext-color mb-3">
+                            <div className="d-flex align-items-center justify-content-center teext-color  mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$30.00 </span>
+                                    {/* <div className="product-price me-2">$50.00</div> */}
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span>month</span>
                                     </div>
                                 </div>
                             </div>
@@ -68,25 +69,25 @@ function SocialMediaStore() {
                                 // className="product-image" 
                                 />
                             </div>
-                            <div className="product-title mt-4">
+                            <div className="product-title mt-4 text-center">
                                 <p>
                                     WhatsApp Integration
                                     <span className="text-smalls"> (Messenger)</span>
                                 </p>
                             </div>
-                            <div className="product-description">
+                            <div className="product-description text-center">
                                 Make instant calls directly from the platform.
                             </div>
                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$30.00 </span>
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span>year</span>
                                     </div>
                                 </div>
                             </div>
@@ -136,14 +137,14 @@ function SocialMediaStore() {
                             </div>
                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$30.00 </span>
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span>month</span>
                                     </div>
                                 </div>
                             </div>
@@ -188,14 +189,14 @@ function SocialMediaStore() {
                             </div>
                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$40.00 </span>
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span>year</span>
                                     </div>
                                 </div>
                             </div>
@@ -240,14 +241,14 @@ function SocialMediaStore() {
                             </div>
                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$30.00 </span>
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span> month</span>
                                     </div>
                                 </div>
                             </div>
@@ -292,14 +293,14 @@ function SocialMediaStore() {
                             </div>
                             <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                 <div>
-                                    <div className="product-price me-2">$50.00</div>
+                                <span class="old_price">$50.00</span><span  className="product-price me-2">$20.00 </span>
                                 </div>
                                 <div>
                                     <span className="borders-left-small " />
                                 </div>
                                 <div>
                                     <div className="total-price-month ms-2 me-2">
-                                        <span> $29/month</span>
+                                        <span>year</span>
                                     </div>
                                 </div>
                             </div>

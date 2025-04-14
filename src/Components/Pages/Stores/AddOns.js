@@ -165,6 +165,7 @@ function AddOns() {
                                                         <div>
                                                             <p className=' m-0 p-0 fs-5  fw-semibold'> Click to Call <span className="text-font-small"> (Poly CCX 700)</span></p>
                                                             <div className="test-number m-0 p-0">
+                                                          
                                                                 <p className="">$50.00 <span>$29/month</span></p>
                                                             </div>
                                                         </div>
