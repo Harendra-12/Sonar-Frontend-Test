@@ -44,7 +44,9 @@ const DisplayFile = ({ item}) => {
 
 
   if (!item) return null;
-  if(item=="loading") return <div style={{width:"200px",height:"200px",backgroundColor:"grey"}}>loading...</div>;
+  if(item=="loading") return <div style={{width:"100px",height:"100px",backgroundColor:"grey", display:"flex", justifyContent:"center",alignItems:"center"}}><div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div></div>;
   const fileUrl = item.startsWith('http://') || item.startsWith('https://') ? extractFileExtension(item) : "";
   const ext = fileUrl;
   // console.log({ext})
