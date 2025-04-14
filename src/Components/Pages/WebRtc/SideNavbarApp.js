@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
           <div className="sidenavItems">
             <ul>
               <li className="mb-2">
-                <div type="button" data-bs-toggle="dropdown" className="newHeader">
+                <div type="button" className="newHeader">
                   <button className="navItem">
                     <div
                       className="profileHolder"

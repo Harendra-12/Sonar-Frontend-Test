@@ -108,7 +108,7 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-  
+
   useEffect(() => {
     if (filterBy === "date") {
       setStartDate(startDateFlag);
@@ -676,7 +676,7 @@ function Call({
                           </div> */}
 
 
-<i class="fa-solid fa-right-from-bracket"></i>
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li
