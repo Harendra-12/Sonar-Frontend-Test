@@ -479,6 +479,7 @@ function CallDetails({
                             <th>Time</th>
                             <th>Call Type</th>
                             <th>Duration</th>
+                            <th>Recordings</th>
                             <th></th>
                           </tr>
                         </thead>
@@ -601,7 +602,7 @@ function CallDetails({
                                 </td>
 
                                 <td>
-                                  <button
+                                 {item.variable_billsec>0&& <button
                                     className="tableButton px-2 mx-0"
                                     onClick={() => {
                                       if (item?.recording_path === currentPlaying) {
@@ -617,7 +618,7 @@ function CallDetails({
                                     ) : (
                                       <i className="fa-solid fa-chevron-down"></i>
                                     )}
-                                  </button>
+                                  </button>}
                                   {/* <div className="dropdown">
                                     <div
                                       className={`tableButton`}

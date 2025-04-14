@@ -118,12 +118,8 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
                             <h5 className="card-title">Upload File</h5>
                         </div>
                         <div className="card-body">
-                            {selectedFile ? (
+                            {selectedFile!==null ? (
                                 <div className="audio-container mx-auto fileUploadBody">
-
-                                    {loading ? (
-                                        <p>Loading preview...</p>
-                                    ) : (
                                         <>
                                             {selectedFile.type.startsWith("image/") && (
                                                 <img src={preview} alt="Preview" className="img-preview" />
@@ -139,42 +135,45 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
                                             )}
                                             <button className="tableButton delete ms-2" onClick={() => setSelectedFile(null)}><i className='fa-solid fa-xmark' /></button>
                                         </>
-                                    )}
+                                    
                                 </div>
                             ) : (
-                                <div className="popup-border text-center p-2"
-                                    onDragOver={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.add("drag-over");
-                                    }}
-                                    onDragLeave={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.remove("drag-over");
-                                    }}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.remove("drag-over");
-                                        handleFileChange(e.dataTransfer.files[0]);
-                                    }}
-                                >
-                                    <input
-                                        type="file"
-                                        className="form-control-file d-none"
-                                        id="fileInput"
-                                        accept={type === "image" ? "image/*" : "audio/mpeg,video/mp4,application/pdf"}
-                                        onChange={(e) => handleFileChange(e.target.files[0])}
-                                    />
-                                    <label htmlFor="fileInput" className="d-block">
-                                        <div className="test-user text-center">
-                                            <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
-                                            <p className="mb-0 mt-2 text-center">Drag and Drop or <span>Click on upload</span></p>
-                                            <span>Supports formats : {type === "image" ? "Images (Max 2MB)" : "Audio, Video (Max 2MB), PDF"}</span>
-                                        </div>
-                                    </label>
-                                </div>
+                              <>{loading ? 
+                                <p>Loading preview...</p>
+                            :  
+                             <div className="popup-border text-center p-2"
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.add("drag-over");
+                                }}
+                                onDragLeave={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.remove("drag-over");
+                                }}
+                                onDrop={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.remove("drag-over");
+                                    handleFileChange(e.dataTransfer.files[0]);
+                                }}
+                            >
+                                <input
+                                    type="file"
+                                    className="form-control-file d-none"
+                                    id="fileInput"
+                                    accept={type === "image" ? "image/*" : "audio/mpeg,video/mp4,application/pdf"}
+                                    onChange={(e) => handleFileChange(e.target.files[0])}
+                                />
+                                <label htmlFor="fileInput" className="d-block">
+                                    <div className="test-user text-center">
+                                        <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
+                                        <p className="mb-0 mt-2 text-center">Drag and Drop or <span>Click on upload</span></p>
+                                        <span>Supports formats : {type === "image" ? "Images (Max 2MB)" : "Audio, Video (Max 2MB), PDF"}</span>
+                                    </div>
+                                </label>
+                            </div>}</>
                             )}
                         </div>
                         <div className="card-footer">
