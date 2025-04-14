@@ -165,7 +165,7 @@ table td.outgoing::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 10px;
+    left: -8px;
     top: 5px;
     color: green;
     font-size: 1.125rem;
