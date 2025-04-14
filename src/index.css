@@ -52,15 +52,12 @@ body {
 }
 
 
-<<<<<<< Updated upstream
-
-=======
 .sticky-icon  {
 	z-index:1;
 	position:fixed;
 	top:89%;
 	right:0%;
-	width:220px;
+	width:206px;
 	display:flex;
 	flex-direction:column;
   cursor: pointer;;
@@ -130,4 +127,3 @@ body {
 #myBtn:hover {
   background-color: #555;
 }			
->>>>>>> Stashed changes
