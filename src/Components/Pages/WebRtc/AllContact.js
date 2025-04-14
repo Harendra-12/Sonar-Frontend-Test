@@ -174,7 +174,7 @@ function AllContact({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    {/* <div className="col-auto">
+                    <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -182,17 +182,19 @@ function AllContact({
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div className="profileHolder" id="profileOnlineNav">
+                          {/* <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src={account?.profile_picture}
                               alt="profile"
                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
-                          </div>
-                          <div className="profileName">
+                          </div> */}
+                          {/* <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
-                          </div>
+                          </div> */}
+
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li
@@ -211,9 +213,33 @@ function AllContact({
                               Logout
                             </div>
                           </li>
+                          <li
+                            onClick={() => {
+                              sessionManager.disconnect();
+                            }}
+                          >
+                            <div
+                              className="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Disconnect
+                            </div>
+                          </li>
+                          <li
+                            onClick={() => {
+                              sessionManager.connect();
+                            }}
+                          >
+                            <div
+                              className="dropdown-item"
+                              style={{ cursor: "pointer" }}
+                            >
+                              Reconnect
+                            </div>
+                          </li>
                         </ul>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>

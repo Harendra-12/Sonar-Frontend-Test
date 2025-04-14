@@ -66,7 +66,7 @@ function Email() {
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    {/* <div className="col-auto">
+                    <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -96,7 +96,7 @@ function Email() {
                           </li>
                         </ul>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -108,7 +108,7 @@ function Call({
   function handleHideDialpad(value) {
     setDialpadShow(value);
   }
-  
+
   useEffect(() => {
     if (filterBy === "date") {
       setStartDate(startDateFlag);
@@ -655,7 +655,7 @@ function Call({
                       </button>
                     </div>
                     <DarkModeToggle marginLeft={"2"} />
-                    {/* <div className="col-auto">
+                    <div className="col-auto">
                       <div className="dropdown">
                         <div
                           className="myProfileWidget"
@@ -663,17 +663,20 @@ function Call({
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          <div className="profileHolder" id="profileOnlineNav">
+                          {/* <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src={account?.profile_picture}
                               alt="profile"
                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
-                          </div>
-                          <div className="profileName">
+                          </div> */}
+                          {/* <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
-                          </div>
+                          </div> */}
+
+
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li
@@ -718,7 +721,7 @@ function Call({
                           </li>
                         </ul>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>
