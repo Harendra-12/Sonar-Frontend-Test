@@ -487,7 +487,7 @@ const RingGroups = () => {
                                             </td>
                                             <td>
                                               <button
-                                                className="tableButton edit"
+                                                className="tableButton edit mx-auto"
                                                 onClick={() =>
                                                   navigate(
                                                     `/ring-groups-edit?id=${item.id}`
@@ -499,7 +499,7 @@ const RingGroups = () => {
                                             </td>
                                             <td>
                                               <button
-                                                className="tableButton delete"
+                                                className="tableButton delete mx-auto"
                                                 onClick={() => {
                                                   setPopUp(true);
                                                   setDeleteId(item.id);

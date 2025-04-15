@@ -736,26 +736,26 @@ function Music() {
               <div className="container h-100">
                 <div className="row h-100 justify-content-center align-items-center">
                   <div className="row content col-xl-4 col-md-5">
-                    <div className="col-2 px-0">
-                      <div className="iconWrapper">
-                        <i className="fa-duotone fa-triangle-exclamation"></i>
+                    {/* <div className="col-2 px-0"> */}
+                      <div className="iconWrapper mb-2">
+                        <i className="fa-duotone fa-triangle-exclamation fs-1"></i>
                       </div>
-                    </div>
-                    <div className="col-10 ps-0">
-                      <h4>Note</h4>
-                      <p>This will change the name of the music file</p>
+                    {/* </div> */}
+                    {/* <div className="col-10 ps-0"> */}
+                      <h4 className="text-center text-orange">Note</h4>
+                      <p className="text-center">This will change the name of the music file</p>
                       <div className="row g-2">
-                        <div className="col-8">
+                        <div className="col-12">
                           <input
                             type="text"
-                            className="mb-3 formItem"
+                            className="mb-2 formItem"
                             value={selectedMusicName}
                             onChange={(e) =>
                               setSelectedMusicName(e.target.value)
                             }
                           ></input>
                         </div>
-                        <div className="col-4">
+                        <div className="col-12 mb-2">
                           <select
                             name="music"
                             className="formItem"
@@ -772,7 +772,7 @@ function Music() {
                           </select>
                         </div>
                       </div>
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-between mt-3">
                         <button
                           className="panelButton m-0"
                           onClick={() => {
@@ -801,7 +801,7 @@ function Music() {
                   </div>
                 </div>
               </div>
-            </div>
+            // </div>
           ) : (
             ""
           )}

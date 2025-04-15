@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 // import CircularLoader from '../../Loader/CircularLoader';
 import { getPanelElement, getResizeHandleElement, Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import AllActiveAgentStatus from './AllActiveAgentStatus';
+import Tippy from '@tippyjs/react';
 
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
@@ -402,9 +403,11 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
-                                                        <button className='clearButton2 me-2' onClick={handleResizeLeft}>
-                                                            <i className="fa-regular fa-arrows-maximize" />
-                                                        </button>
+                                                        <Tippy content="Minimize this window">
+                                                            <button className='clearButton2 me-2' onClick={handleResizeLeft}>
+                                                                <i className="fa-solid fa-dash" />
+                                                            </button>
+                                                        </Tippy>
                                                         <div className="content">
                                                             <h4>Active Calls </h4>
                                                             <p>You can see all of the active calls here</p>
@@ -502,10 +505,11 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             <div className="col-12">
                                                 <div className="heading">
                                                     <div className='d-flex'>
-                                                        <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
-                                                            {/* <i className="fa-solid fa-down-left-and-up-right-to-center" /> */}
-                                                            <i class="fa-regular fa-arrows-maximize"></i>
-                                                        </button>
+                                                        <Tippy content="Minimize this window">
+                                                            <button className='clearButton2 me-2' onClick={handleResizeRight} style={{ left: '10px' }}>
+                                                                <i class="fa-solid fa-dash"></i>
+                                                            </button>
+                                                        </Tippy>
                                                         <div className="content">
                                                             <h4>Ringing Calls</h4>
                                                             <p>You can see all of the ringing calls here</p>

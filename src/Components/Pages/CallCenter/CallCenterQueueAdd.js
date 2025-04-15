@@ -542,7 +542,7 @@ function CallCenterQueueAdd() {
                             <label htmlFor="selectFormRow">Enabled</label>
                           </div>
                           <div className="my-auto position-relative mx-1">
-                            <label className="switch">
+                            {/* <label className="switch">
                               <input
                                 type="checkbox"
                                 checked={watch().status}
@@ -550,7 +550,17 @@ function CallCenterQueueAdd() {
                                 id="showAllCheck"
                               />
                               <span className="slider round" />
-                            </label>
+                            </label> */}
+                            <div class="cl-toggle-switch">
+                              <label class="cl-switch">
+                                <input type="checkbox"
+                                  checked={watch().status}
+                                  {...register("status")}
+                                  id="showAllCheck"
+                                />
+                                <span></span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                         <button
@@ -2008,7 +2018,7 @@ function CallCenterQueueAdd() {
                         return bMatches - aMatches;
                       })
                       .filter(
-                        (user) => !agent.some((agent) => user.id == agent.name) && user.usages==="pbx"
+                        (user) => !agent.some((agent) => user.id == agent.name) && user.usages === "pbx"
                       ) // Exclude agents already in `agent`
                       .map((item, index) => (
                         <tr key={item.id || index}>

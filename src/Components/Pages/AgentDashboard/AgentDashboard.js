@@ -431,7 +431,7 @@ const AgentDashboard = () => {
                                                                 <td>00:00:00</td>
                                                                 <td>
                                                                     <button
-                                                                        className="tableButton edit"
+                                                                        className="tableButton edit mx-auto"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
@@ -446,7 +446,7 @@ const AgentDashboard = () => {
                                                                 <td>00:00:00</td>
                                                                 <td>
                                                                     <button
-                                                                        className="tableButton edit"
+                                                                        className="tableButton edit mx-auto"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
@@ -461,7 +461,7 @@ const AgentDashboard = () => {
                                                                 <td>00:00:00</td>
                                                                 <td>
                                                                     <button
-                                                                        className="tableButton edit"
+                                                                        className="tableButton edit mx-auto"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
@@ -476,7 +476,7 @@ const AgentDashboard = () => {
                                                                 <td>00:00:00</td>
                                                                 <td>
                                                                     <button
-                                                                        className="tableButton edit"
+                                                                        className="tableButton edit mx-auto"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
@@ -491,7 +491,7 @@ const AgentDashboard = () => {
                                                                 <td>00:00:00</td>
                                                                 <td>
                                                                     <button
-                                                                        className="tableButton edit"
+                                                                        className="tableButton edit mx-auto"
                                                                     >
                                                                         <i className="fa-solid fa-pencil"></i>
                                                                     </button>
