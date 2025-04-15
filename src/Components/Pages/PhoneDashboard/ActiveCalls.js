@@ -205,7 +205,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     </td>
                     <td>{item.feature_tag}</td>
                     <td>{item.cid_num}</td>
-                    <td>{item.dest}</td>
+                    <td>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
