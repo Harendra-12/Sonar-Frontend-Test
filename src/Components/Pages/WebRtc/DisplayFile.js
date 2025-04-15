@@ -109,8 +109,10 @@ const downloadPdf=async(pdfUrl,filename)=>{
   
 
   if (!item) return null;
-  if (item === "loading") return <div style={{ width: "100px", height: "100px", backgroundColor: "grey", display: "flex", justifyContent: "center", alignItems: "center" }}><div className="spinner-border text-primary" role="status">
-    <span className="visually-hidden">Loading...</span>
+  if (item === "loading") return <div style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px",display:"flex",justifyContent:"space-between",alignItems:"end",padding:'1rem' }}>
+    
+    <div className="spinner-border  d-flex justify-content-center align-items-center text-primary" role="status">
+    <span className="visually-hidden spninner-loader ">Loading...</span>
   </div></div>;
   const fileUrl = item.startsWith('http://') || item.startsWith('https://') ? extractFileExtension(item) : "";
   const ext = fileUrl;
@@ -159,7 +161,12 @@ const downloadPdf=async(pdfUrl,filename)=>{
       return (
 
         <div>
-          <div style={{ width: "200px", height: "150px", backgroundColor: "white ", border: "1 rem",display:"flex",justifyContent:"space-between",alignItems:"end",padding:'1rem'}} ><i className="fa-solid fa-file-pdf"></i><h4 className='text-lg'>{extractFileNameFromUrl(item)}</h4>
+          <div className='align-items-center justify-content-start' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px",display:"flex",justifyContent:"space-between",alignItems:"end",padding:'1rem'}} >
+<div style={{fontSize:"26px", color:"#ff2424"}}>
+<i className="fa-solid fa-file-pdf"></i>
+
+</div>
+            <h5 className='p-0 m-0 '>{extractFileNameFromUrl(item)}</h5>
           <button
                                           className="clearButton2 xl"
                                           type="button"
@@ -171,7 +178,7 @@ const downloadPdf=async(pdfUrl,filename)=>{
                                           className="dropdown-menu light"
                                         >
                                           <li>
-                                       <div className="dropdown-item" onClick={()=>downloadPdf(item,extractFileNameFromUrl(item))}>
+                                       <div style={{cursor:"pointer"}} className="dropdown-item" onClick={()=>downloadPdf(item,extractFileNameFromUrl(item))}>
                                               Download
                                             </div>
                                           </li>
