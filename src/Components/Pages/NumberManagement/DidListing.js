@@ -51,7 +51,7 @@ function DidListing({ page }) {
       getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page,searchQuery]);
+  }, [refreshDid, page, searchQuery]);
 
   // Fetch ALL DID
   async function getData() {
@@ -354,8 +354,8 @@ function DidListing({ page }) {
                             <th>Cname</th>
                             <th>SMS</th>
                             {page === "pbx" ? <>
-                            <th>Route</th>
-                            </>:""}
+                              <th>Route</th>
+                            </> : ""}
                             {page === "number" ?
                               <>
                                 <th>Usages</th>
@@ -383,7 +383,7 @@ function DidListing({ page }) {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={9} row={15} />
+                            <SkeletonTableLoader col={page === "pbx" ? 10 : 9} row={15} />
                           ) : (
                             <>
                               {did &&
@@ -404,10 +404,10 @@ function DidListing({ page }) {
                                       </td>
                                       {page === "pbx" ? <>
                                         <td style={{ cursor: "default" }}>
-                                          {item?.configuration?.forward_to?item?.configuration?.forward_to:item?.configuration?.action}
+                                          {item?.configuration?.forward_to ? item?.configuration?.forward_to : item?.configuration?.action}
                                         </td>
-                                      </>:""}
-                                      
+                                      </> : ""}
+
                                       {page === "number" ?
                                         <>
                                           <td style={{ cursor: "default" }}>

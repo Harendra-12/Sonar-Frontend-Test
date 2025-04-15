@@ -65,13 +65,13 @@
     padding: 6px;
 }
 
-.MuiButtonBase-root.MuiPaginationItem-root{
+.MuiButtonBase-root.MuiPaginationItem-root {
     min-width: 20px;
     height: 20px;
     font-size: 10px;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     line-height: 31px;
 }
 
@@ -1207,7 +1207,7 @@ input[type=number] {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: -10px;
+    left: -3px;
     padding: 3px;
     height: 200px;
     border-radius: 5px 0 0 5px;
@@ -1215,7 +1215,7 @@ input[type=number] {
     transition: 0.3s ease-in-out;
     color: #fff;
     font-size: 13px;
-    width: 30px;
+    width: 15px;
 }
 
 .callDashParkedCalls button:hover {
@@ -1228,7 +1228,7 @@ input[type=number] {
     padding: 5px 5px;
     border-radius: 3px;
     outline: none;
-    font-size:13px;
+    font-size: 13px;
     width: 100%;
     height: 35px;
     transition: all 0.3s ease-in-out;
@@ -1760,23 +1760,29 @@ input[type=number] {
     color: #2e5ee7;
 
 }
-.billing_card1{
+
+.billing_card1 {
     background: linear-gradient(260deg, #ff00c024, #0016ff47);
 }
-.billing_card2{
+
+.billing_card2 {
     background: linear-gradient(260deg, #31ff0021, #00a6ff47);
 }
+
 .billing_card1 .data-number2 h5,
-.billing_card2 .data-number2 h5{
+.billing_card2 .data-number2 h5 {
     color: var(--billing-icon2) !important;
 }
+
 .billing_card1 .heading i,
 .billing_card2 .heading i {
     color: var(--billing-icon) !important;
 }
-.rccs__card--unknown > div{
+
+.rccs__card--unknown>div {
     background: linear-gradient(208deg, #249d8f, #0686d0) !important;
 }
-.text-orange{
+
+.text-orange {
     color: #ff6600;
 }
