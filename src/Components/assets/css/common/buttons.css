@@ -770,6 +770,16 @@
   background-color: #03900b;
   color: #fff;
 }
+
+.tableButton.blue {
+  background-color: #9dc4ff7d;
+  color: #000cff;
+}
+.tableButton.blue:hover {
+  background-color: #000796;
+  color: #fff;
+}
+
 .tableButton.option {
   background-color: rgba(0, 119, 255, 0.082);
   color: #0075ff;

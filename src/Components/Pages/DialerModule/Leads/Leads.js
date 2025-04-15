@@ -109,18 +109,26 @@ function Leads() {
                                                         <td>1200</td>
                                                         <td>
                                                             <div className="my-auto position-relative mx-1">
-                                                                <label className="switch">
+                                                                {/* <label className="switch">
                                                                     <input
                                                                         type="checkbox"
                                                                         id="showAllCheck"
                                                                     />
                                                                     <span className="slider round" />
-                                                                </label>
+                                                                </label> */}
+                                                                <div class="cl-toggle-switch">
+                                                                    <label class="cl-switch">
+                                                                        <input type="checkbox"
+                                                                        id="showAllCheck"
+                                                                        />
+                                                                        <span></span>
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <button
-                                                                className="tableButton mx-auto"
+                                                                className="tableButton mx-auto blue"
                                                             >
                                                                 <i className="fa-solid fa-download"></i>
                                                             </button>

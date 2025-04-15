@@ -515,7 +515,7 @@ const RingGroupAdd = () => {
                               <label htmlFor="selectFormRow">Enabled</label>
                             </div>
                             <div className="my-auto position-relative mx-1">
-                              <label className="switch">
+                              {/* <label className="switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -523,7 +523,18 @@ const RingGroupAdd = () => {
                                   id="showAllCheck"
                                 />
                                 <span className="slider round" />
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={watch().status}
+                                    {...register("status")}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </div>
                           <button
