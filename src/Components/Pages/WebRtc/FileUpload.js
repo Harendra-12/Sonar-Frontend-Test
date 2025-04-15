@@ -98,6 +98,7 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
                 setSelectedFile(null)
             } else {
                 toast.error(res?.errors?.sharedMessage?.[0] || "Upload failed");
+                setAllMessage(msg)
                 setSelectedFile(null)
             }
         } catch (error) {
