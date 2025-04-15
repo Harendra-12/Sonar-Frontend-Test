@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../CommonComponents/Header';
 import {
   backToTop,
-  checkViewSidebar,
+  // checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
-  generalPutFunction,
+  // generalPutFunction,
 } from "../../GlobalFunction/globalFunction";
 import { Link, useNavigate } from "react-router-dom";
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 export default function GroupsList() {
   const [refreshState, setRefreshState] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [pageLoading, setPageLoading] = useState(false);
+  // const [pageLoading, setPageLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -25,7 +25,7 @@ export default function GroupsList() {
   const [pageNumber, setPageNumber] = useState(1);
   const [groups, setGroups] = useState([])
   const account = useSelector((state) => state.account);
-  const [noPermissionToRead, setNoPermissionToRead] = useState(false);
+  // const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const allUserRefresh = useSelector((state) => state.allUserRefresh);
   const [deleteId, setDeleteId] = useState("");
   const [popUp, setPopUp] = useState(false);
@@ -34,17 +34,23 @@ export default function GroupsList() {
   const getGroupDashboardData = async () => {
     if (account && account.id) {
       setLoading(true);
-      const apidata = await generalGetFunction(
-        `groups/all`
-      );
-      if (apidata?.status) {
-        console.log(apidata.data)
-        setGroups(apidata.data);
-        setLoading(false);
-      } else {
-        if (apidata?.response?.status === 403) {
-          setNoPermissionToRead(true);
+      try {
+        const apidata = await generalGetFunction(
+          `groups/all`
+        );
+        if (apidata?.status) {
+          console.log(apidata.data)
+          setGroups(apidata.data);
+          setLoading(false);
+        } else {
+          if (apidata?.response?.status === 403) {
+            // setNoPermissionToRead(true);
+          }
+          setLoading(false); // Ensure loading is set to false even on API error
         }
+      } catch (error) {
+        console.error("An error occurred while fetching group dashboard data:", error);
+        setLoading(false);
       }
     } else {
       navigate("/");
@@ -72,28 +78,33 @@ export default function GroupsList() {
   }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   async function handleDelete(id) {
-    // debugger
     setPopUp(false);
     setLoading(true);
-    const apiData = await generalDeleteFunction(`groups/destroy/${id}`);
-    if (apiData?.status) {
-      const newArray = groups?.data?.filter((item) => item.id !== id);
-      setGroups({ ...groups, data: newArray });
-      getGroupDashboardData()
-      toast.success(apiData.message);
+    try {
+      const apiData = await generalDeleteFunction(`groups/destroy/${id}`);
+      if (apiData?.status) {
+        const newArray = groups?.data?.filter((item) => item.id !== id);
+        setGroups({ ...groups, data: newArray });
+        getGroupDashboardData();
+        toast.success(apiData.message);
+        setLoading(false);
+        // dispatch({
+        //   type: "SET_RINGGROUPREFRESH",
+        //   ringGroupRefresh: ringGroupRefresh + 1,
+        // });
+        setDeleteId("");
+      } else {
+        setLoading(false);
+        // toast.error(apiData.error);
+        setDeleteId("");
+      }
+    } catch (error) {
+      console.error("An error occurred while deleting group:", error);
       setLoading(false);
-      // dispatch({
-      //   type: "SET_RINGGROUPREFRESH",
-      //   ringGroupRefresh: ringGroupRefresh + 1,
-      // });
-      setDeleteId("");
-    } else {
-      setLoading(false);
-      // toast.error(apiData.error);
+      toast.error("An error occurred while deleting the group."); // Optionally show a generic error message
       setDeleteId("");
     }
   }
-
   return (
     <div className="mainContent"> <section id="phonePage">
       <div className="container-fluid">
@@ -174,7 +185,7 @@ export default function GroupsList() {
                 </div>
                 <div
                   className="col-12"
-                  style={{ overflow: "auto", padding: "25px 20px 0" }}
+                  style={{ overflow: "auto", padding: "10px 20px 0" }}
                 >
                   {/* <div className="tableHeader">
                   <div className="showEntries">

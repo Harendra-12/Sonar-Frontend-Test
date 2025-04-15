@@ -1,38 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { fileUploadFunction } from '../../GlobalFunction/globalFunction';
-function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile, setCircularLoading,sendSingleMessage,sendGroupMessage,recipient}) {
+import { useSelector } from 'react-redux';
+function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,selectedFile,sendSingleMessage,sendGroupMessage,recipient,setAllMessage,allMessage,formatDateTime,extension}) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const maxSizeMB = 2;
+    const account = useSelector((state) => state.account);
 
     const handleFileChange = (file) => {
         if (!file) return;
-
+        setLoading(true)
         const fileType = file.type;
         const fileSizeMB = file.size / (1024 * 1024);
 
         if (type === "image") {
             if (!fileType.startsWith("image/")) {
                 toast.error("Only image files are allowed.");
+                setLoading(false)
                 return;
             }
             if (fileSizeMB > maxSizeMB) {
                 toast.error(`Image size should not exceed ${maxSizeMB}MB.`);
+                setLoading(false)
                 return;
             }
         } else {
             if (!["audio/mpeg", "video/mp4", "application/pdf"].includes(fileType)) {
                 toast.error("Only audio, video, or PDF files are allowed.");
+                setLoading(false)
                 return;
             }
             if (fileType.startsWith("video/") && fileSizeMB > maxSizeMB) {
                 toast.error(`Video size should not exceed ${maxSizeMB}MB.`);
+                setLoading(false)
                 return;
             }
         }
-
-        setLoading(true); // Start loading
+        setLoading(false)
         setSelectedFile(file);
     };
 
@@ -50,9 +55,31 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
     }, [selectedFile]);
 
     async function handleConfirm() {
-        setCircularLoading(true)
-        setLoading(true)
+        const msg=allMessage
+        const time = formatDateTime(new Date());
+        if (recipient[2] === "groupChat") {
+            setAllMessage((prevState) => ({
+                ...prevState,
+                [recipient[0]]: [
+                  ...(prevState[recipient[0]] || []),
+                  {
+                    from: account.name,
+                    body: "loading", 
+                    time
+                  },
+                ],
+              }));
+          } else {
+            setAllMessage((prevState) => ({
+                ...prevState,
+                [recipient[0]]: [
+                  ...(prevState[recipient[0]] || []),
+                  { from: extension, body: "loading", time },
+                ],
+              }));
+          }
         try {
+            setFileUpload(false)
             const formData = new FormData();
             formData.append('sharedMessage', selectedFile);
             
@@ -61,25 +88,25 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
             if (res?.status) {
                 toast.success("File uploaded successfully");
                 // console.log({recipient})
+                setAllMessage(msg)
                 if (recipient[2] === "groupChat") {
                     sendGroupMessage(res?.file_url);
                   } else {
                     sendSingleMessage(res?.file_url);
                   }
                 setSelectedUrl(res?.file_url);
-                setFileUpload(null)
                 setSelectedFile(null)
             } else {
                 toast.error(res?.errors?.sharedMessage?.[0] || "Upload failed");
+                setSelectedFile(null)
             }
         } catch (error) {
             console.error("Error uploading file:", error);
             const errorMessage = error.response?.data?.errors?.sharedMessage?.[0] || "Error uploading file";
             toast.error(errorMessage);
+            setSelectedFile(null)
         } finally {
-          setFileUpload(false)
-          setCircularLoading(false)
-          setLoading(false)
+            setFileUpload(false)
         }
     }
     return (
@@ -91,12 +118,8 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
                             <h5 className="card-title">Upload File</h5>
                         </div>
                         <div className="card-body">
-                            {selectedFile ? (
+                            {selectedFile!==null ? (
                                 <div className="audio-container mx-auto fileUploadBody">
-
-                                    {loading ? (
-                                        <p>Loading preview...</p>
-                                    ) : (
                                         <>
                                             {selectedFile.type.startsWith("image/") && (
                                                 <img src={preview} alt="Preview" className="img-preview" />
@@ -112,42 +135,45 @@ function FileUpload({ type, setFileUpload,setSelectedUrl,setSelectedFile ,select
                                             )}
                                             <button className="tableButton delete ms-2" onClick={() => setSelectedFile(null)}><i className='fa-solid fa-xmark' /></button>
                                         </>
-                                    )}
+                                    
                                 </div>
                             ) : (
-                                <div className="popup-border text-center p-2"
-                                    onDragOver={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.add("drag-over");
-                                    }}
-                                    onDragLeave={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.remove("drag-over");
-                                    }}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        e.currentTarget.classList.remove("drag-over");
-                                        handleFileChange(e.dataTransfer.files[0]);
-                                    }}
-                                >
-                                    <input
-                                        type="file"
-                                        className="form-control-file d-none"
-                                        id="fileInput"
-                                        accept={type === "image" ? "image/*" : "audio/mpeg,video/mp4,application/pdf"}
-                                        onChange={(e) => handleFileChange(e.target.files[0])}
-                                    />
-                                    <label htmlFor="fileInput" className="d-block">
-                                        <div className="test-user text-center">
-                                            <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
-                                            <p className="mb-0 mt-2 text-center">Drag and Drop or <span>Click on upload</span></p>
-                                            <span>Supports formats : {type === "image" ? "Images (Max 2MB)" : "Audio, Video (Max 2MB), PDF"}</span>
-                                        </div>
-                                    </label>
-                                </div>
+                              <>{loading ? 
+                                <p>Loading preview...</p>
+                            :  
+                             <div className="popup-border text-center p-2"
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.add("drag-over");
+                                }}
+                                onDragLeave={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.remove("drag-over");
+                                }}
+                                onDrop={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    e.currentTarget.classList.remove("drag-over");
+                                    handleFileChange(e.dataTransfer.files[0]);
+                                }}
+                            >
+                                <input
+                                    type="file"
+                                    className="form-control-file d-none"
+                                    id="fileInput"
+                                    accept={type === "image" ? "image/*" : "audio/mpeg,video/mp4,application/pdf"}
+                                    onChange={(e) => handleFileChange(e.target.files[0])}
+                                />
+                                <label htmlFor="fileInput" className="d-block">
+                                    <div className="test-user text-center">
+                                        <i style={{ fontSize: 30 }} className="fa-solid fa-cloud-arrow-up" />
+                                        <p className="mb-0 mt-2 text-center">Drag and Drop or <span>Click on upload</span></p>
+                                        <span>Supports formats : {type === "image" ? "Images (Max 2MB)" : "Audio, Video (Max 2MB), PDF"}</span>
+                                    </div>
+                                </label>
+                            </div>}</>
                             )}
                         </div>
                         <div className="card-footer">

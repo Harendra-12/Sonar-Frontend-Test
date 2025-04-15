@@ -216,7 +216,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                 </label>
                               </div>
                               <div className="ms-auto">
-                                <label className="switch">
+                                {/* <label className="switch">
                                   <input
                                     type="checkbox"
                                     id="showAllCheck"
@@ -232,7 +232,25 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                     }}
                                   />
                                   <span className="slider round"></span>
-                                </label>
+                                </label> */}
+                                <div class="cl-toggle-switch">
+                                  <label class="cl-switch">
+                                    <input type="checkbox"
+                                      checked={
+                                        item.id === selectedCardId ? true : false
+                                      }
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setSelectedCardId(item.id);
+                                        } else {
+                                          setSelectedCardId();
+                                        }
+                                      }}
+                                      id="showAllCheck"
+                                    />
+                                    <span></span>
+                                  </label>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -314,7 +332,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                     </button>
                                   </div>
                                   <div className="ms-auto d-flex">
-                                    <label className="switch">
+                                    {/* <label className="switch">
                                       <input
                                         type="checkbox"
                                         id="showAllCheck"
@@ -332,7 +350,27 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                         }}
                                       />
                                       <span className="slider round"></span>
-                                    </label>
+                                    </label> */}
+                                    <div class="cl-toggle-switch">
+                                  <label class="cl-switch">
+                                    <input type="checkbox"
+                                      id="showAllCheck"
+                                      checked={
+                                       item.id === selectedBillId
+                                         ? true
+                                         : false
+                                     }
+                                     onChange={(e) => {
+                                       if (e.target.checked) {
+                                         setSelectedBillId(item.id);
+                                       } else {
+                                         setSelectedBillId();
+                                       }
+                                     }}
+                                    />
+                                    <span></span>
+                                  </label>
+                                </div>
                                   </div>
                                 </div>
                               </h2>

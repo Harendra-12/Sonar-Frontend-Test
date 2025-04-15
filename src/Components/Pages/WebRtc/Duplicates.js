@@ -112,36 +112,36 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
     }
   };
   function getCallIcon(item) {
+    const statusIcons = {
+      Missed: "fa-solid fa-phone-missed",
+      Cancelled: "fa-solid fa-phone-xmark",
+      Failed: "fa-solid fa-phone-slash",
+      transfer: "fa-solid fa-arrow-right-arrow-left",
+    };
     const callIcons = {
       inbound: {
-        icon:
-          item.variable_DIALSTATUS === "Missed"
-            ? "fa-solid fa-phone-missed"
-            : "fa-phone-arrow-down-left",
+        icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
         color:
-          item.variable_DIALSTATUS === "Missed"
+          item.variable_DIALSTATUS !==
+            "Answered"
             ? "var(--funky-boy4)"
             : "var(--funky-boy3)",
         label: "Inbound",
       },
       outbound: {
-        icon:
-          item.variable_DIALSTATUS === "Missed"
-            ? "fa-solid fa-phone-missed"
-            : "fa-phone-arrow-up-right",
+        icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
         color:
-          item.variable_DIALSTATUS === "Missed"
+          item.variable_DIALSTATUS !==
+            "Answered"
             ? "var(--funky-boy4)"
             : "var(--color3)",
         label: "Outbound",
       },
       internal: {
-        icon:
-          item.variable_DIALSTATUS === "Missed"
-            ? "fa-solid fa-phone-missed"
-            : "fa-headset",
+        icon:statusIcons[item.variable_DIALSTATUS] || "fa-headset",
         color:
-          item.variable_DIALSTATUS === "Missed"
+          item.variable_DIALSTATUS !==
+            "Answered"
             ? "var(--funky-boy4)"
             : "var(--color2)",
         label: "Internal",

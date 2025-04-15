@@ -38,6 +38,7 @@ const Extensions = () => {
     "description",
   ];
   const slugPermissions = useSelector((state) => state?.permissions);
+ const [allDID, setAllDID] = useState([]);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
     if (registerUser.length > 0) {
@@ -52,6 +53,18 @@ const Extensions = () => {
       setOnlineExtension([0]);
     }
   }, [registerUser]);
+
+    // Getting all DID from did listing
+    useEffect(() => {
+        async function getData() {
+          const apiData = await generalGetFunction(`/did/all`);
+          if (apiData?.status) {
+            setAllDID(apiData.data);
+           
+          }
+        }
+        getData();
+    }, [])
 
   // Trigger user api to get latest users
   useEffect(() => {
@@ -189,7 +202,7 @@ const Extensions = () => {
                   </div>
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
                   >
                     <div className="tableHeader">
                       <div className="showEntries">
@@ -254,7 +267,7 @@ const Extensions = () => {
                                         <table>
                                           <thead>
                                             <tr>
-                                              {validKeys.map((key) => {
+                                              {validKeys.filter((item)=>item!=="effectiveCallerIdName"&&item!=="outbundCallerIdName").map((key) => {
                                                 let formattedKey = "";
                                                 if (
                                                   key ===
@@ -267,7 +280,8 @@ const Extensions = () => {
                                                 ) {
                                                   formattedKey =
                                                     "Outbound CID Name";
-                                                } else {
+                                                } 
+                                                else {
                                                   formattedKey = key
                                                     .replace(/[-_]/g, " ")
                                                     .toLowerCase()
@@ -278,9 +292,10 @@ const Extensions = () => {
                                                 return (
                                                   <th key={key}>
                                                     {formattedKey}
-                                                  </th>
+                                                  </th>         
                                                 );
                                               })}
+                                              <th>Default Outbound Number</th>
                                               <th className="text-center">
 
                                                 <span>
@@ -319,7 +334,7 @@ const Extensions = () => {
 
                                                 return (
                                                   <tr key={index}>
-                                                    {validKeys.map((key) => (
+                                                    {validKeys.filter((item)=>item!=="effectiveCallerIdName"&&item!=="outbundCallerIdName").map((key) => (
                                                       <td key={key}>
                                                         {key === "user"
                                                           ? foundUser
@@ -343,6 +358,7 @@ const Extensions = () => {
                                                           : item[key]}
                                                       </td>
                                                     ))}
+                                                    <td>{allDID?.filter((item) => item.default_outbound == 1)[0]?.did}</td>
                                                     <td>
                                                       <span
                                                         className={

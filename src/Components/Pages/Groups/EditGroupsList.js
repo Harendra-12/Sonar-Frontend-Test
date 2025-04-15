@@ -171,7 +171,7 @@ export default function EditGroupsList() {
     }
   };
 
-  // Handle chek box for bulk edit
+  // Handle check box for bulk edit
   const handleCheckboxChange = (item) => {
     setBulkUploadSelectedAgents((prevSelected) => {
       if (
@@ -191,7 +191,6 @@ export default function EditGroupsList() {
   };
   // // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
-    // debugger
     const { name, value } = event.target;
 
     const allowedCharacters = /^[A-Za-z0-9\s]*$/;
@@ -374,12 +373,8 @@ export default function EditGroupsList() {
                   type="button"
                   className="panelButton"
                   onClick={() => {
-                    console.log({ users }, users.length, { selectedUsers }, selectedUsers.length)
                     if (users.length > 0 && users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
                     else toast.warn("All Users selected");
-
-
-
                   }}
                 >
                   <span className="text">Add</span>

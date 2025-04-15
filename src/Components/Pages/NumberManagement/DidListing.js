@@ -328,7 +328,7 @@ function DidListing({ page }) {
                   )}
                   <div
                     className="col-12"
-                    style={{ overflow: "auto", padding: "25px 20px 0" }}
+                    style={{ overflow: "auto", padding: "10px 20px 0" }}
                   >
                     <div className="tableHeader">
                       <div className="showEntries">
@@ -458,7 +458,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-brands fa-whatsapp me-2" /> Secondary
+                                                  <i className="fa-brands fa-whatsapp me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -508,7 +508,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-fax me-2" /> Secondary
+                                                  <i className="fa-solid fa-fax me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -558,7 +558,7 @@ function DidListing({ page }) {
                                                     }
                                                   }}
                                                 >
-                                                  <i className="fa-solid fa-comment-sms me-2" /> Secondary
+                                                  <i className="fa-solid fa-comment-sms me-2" /> Alternate
                                                 </button>
                                               </li>
                                             </ul>
@@ -594,9 +594,9 @@ function DidListing({ page }) {
                                       </> : ""}
                                       <td className="text-center">
                                         <div className="dropdown">
-                                          <div className={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <button className={`tableButton`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i className="fa-solid fa-ellipsis-vertical" />
-                                          </div>
+                                          </button>
                                           <ul className="dropdown-menu actionBtnDropdowns">
                                             {page === "pbx" ?
                                               <>

@@ -509,11 +509,11 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
-                          <li className="tabItem ">
+                          {/* <li className="tabItem ">
                             <NavLink to="/agent-dashboard">
                               <div className="itemTitle">Agent Dashboard</div>
                             </NavLink>
-                          </li>
+                          </li> */}
                           {checkViewSidebar(
                             "CallCenterAgent",
                             permissions,

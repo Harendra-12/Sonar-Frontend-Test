@@ -81,7 +81,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
           <div className="sidenavItems">
             <ul>
               <li className="mb-2">
-                <div type="button" data-bs-toggle="dropdown" className="newHeader">
+                <div type="button" className="newHeader">
                   <button className="navItem">
                     <div
                       className="profileHolder"
@@ -102,7 +102,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       <p>Ext- {extension}</p>
                     </div>
                   </button>
-                  <ul className="dropdown-menu">
+                  {/* <ul className="dropdown-menu">
                     <li
                       onClick={() => {
                         if (allCallCenterIds.length > 0) {
@@ -143,7 +143,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                         Reconnect
                       </div>
                     </li>
-                  </ul>
+                  </ul> */}
                 </div>
               </li>{" "}
               <li style={{ cursor: "pointer" }}>

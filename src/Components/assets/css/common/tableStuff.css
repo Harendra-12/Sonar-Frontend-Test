@@ -3,13 +3,13 @@ table {
 }
 
 table td {
-    padding: 10px 10px;
+    padding: 8px 10px !important;
     font-size: 0.75rem;
     color: var(--table-text);
 }
 
 table th {
-    padding: 10px 10px !important;
+    padding: 5px 10px !important;
     font-size: 0.875rem;
     background-color: var(--table-head);
     white-space: nowrap;
@@ -154,7 +154,7 @@ table td.missed::after {
     content: '\e226';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 10px;
+    left: -14px;
     top: 7px;
     color: red;
     font-size: 0.875rem;
@@ -165,7 +165,7 @@ table td.outgoing::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 10px;
+    left: -8px;
     top: 5px;
     color: green;
     font-size: 1.125rem;
@@ -176,7 +176,7 @@ table td.incoming::after {
     content: '\f061';
     font-family: 'Font Awesome 6 Pro';
     position: absolute;
-    left: 10px;
+    left: -7px;
     top: 5px;
     color: green;
     font-size: 1.125rem;
@@ -251,7 +251,6 @@ table td.incoming::after {
     height: 45px;
     font-size: 16px;
     font-weight: 500;
-
     padding: 12px 16px;
     background: transparent;
     border: 1px solid white;
@@ -325,7 +324,7 @@ table td.incoming::after {
     /* display: none; */
     position: absolute;
     z-index: 999;
-    top: 70px;
+    top: 60px;
     right: 10px;
     background-color: var(--nav-color);
     padding: 10px;
@@ -340,8 +339,8 @@ table td.incoming::after {
     font-family: 'FontAwesome';
     color: var(--nav-color);
     position: absolute;
-    top: -22px;
-    right: 55px;
+    top: -19px;
+    right: 17px;
     font-size: 1.75rem;
 }
 
@@ -360,7 +359,7 @@ table td.incoming::after {
 .profileDropdown a,
 .actionBtnDropdowns a {
     text-decoration: none;
-    color: var(--ele-color);
+    color: var(--ele-color3);
     font-size: 0.875rem;
     font-weight: 400;
     padding: 5px 0px;
