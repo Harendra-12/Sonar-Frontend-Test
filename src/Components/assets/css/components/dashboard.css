@@ -322,6 +322,9 @@
 .itemWrapper.a .data-number2 h5 {
     color: var(--color2);
 }
+.itemWrapper.a .data-number2 h5 {
+    color: var(--billing-icon2) !important;
+}
 
 .itemWrapper.b .data-number,
 .itemWrapperb.b .data-number {
@@ -360,7 +363,7 @@
 }
 
 .itemWrapper.a .heading i {
-    color: var(--color2);
+    color: var(--billing-icon) !important;
 }
 
 .itemWrapper.a .icons i {
@@ -648,8 +651,8 @@
 }
 
 .itemWrapper.active {
-    border: 1px solid green;
-    box-shadow: #00ff1554 0px 3px 8px;
+    border: 1px solid #009688;
+    box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
 

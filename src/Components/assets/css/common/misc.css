@@ -846,6 +846,7 @@ input[type=number] {
 .accordion .accordion-item {
     border-color: var(--border-color);
     background-color: var(--ele-color);
+    border-radius: 12px;
 }
 
 .pagination_slider li button {
@@ -1775,4 +1776,7 @@ input[type=number] {
 }
 .rccs__card--unknown > div{
     background: linear-gradient(208deg, #249d8f, #0686d0) !important;
+}
+.text-orange{
+    color: #ff6600;
 }
