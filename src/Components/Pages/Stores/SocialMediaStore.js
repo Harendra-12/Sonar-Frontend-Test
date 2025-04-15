@@ -50,19 +50,18 @@ function SocialMediaStore() {
                 type: "wallet",
             };
             if (
-                Number(accountDetails?.balance?.amount) <
-                (parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)
+                Number(accountBalance) <
+                (parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)
             ) {
                 toast.error("Wallet balance is low");
             } else {
                 setLoading(true);
-                setPopUp(false);
+                setPurchasePopup(false);
                 const apiData = await generalPostFunction("/addon/buy", parsedData);
                 if (apiData.status) {
                     setLoading(false);
                     toast.success(apiData.message);
-                    setDid();
-                    setSelectedAddon([]);
+                    setSelectedAddon();
                 } else {
                     setLoading(false);
                     toast.error(apiData.errors);
