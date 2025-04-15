@@ -244,7 +244,7 @@ const RingGroupEdit = () => {
 
   // Function to handle click outside to close popup
   useEffect(() => {
-    const handleClickOutside = (event) => {};
+    const handleClickOutside = (event) => { };
 
     document.addEventListener("click", handleClickOutside);
 
@@ -450,6 +450,12 @@ const RingGroupEdit = () => {
       });
     } else {
       setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -541,8 +547,8 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           !bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item?.extension?.extension
-          )
+            (agent) => agent.extension.extension == item?.extension?.extension 
+          )&& item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -753,9 +759,8 @@ const RingGroupEdit = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -985,7 +990,7 @@ const RingGroupEdit = () => {
                     </div>
                     <div className="d-flex">
                       {selectedAgentToEdit.length > 0 &&
-                      selectedAgentToEdit.length != destination.length ? (
+                        selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
                           className="panelButton ms-auto"
@@ -1085,14 +1090,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1?.extension?.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1?.extension?.extension &&
+                                              item1?.extension?.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1273,9 +1278,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"

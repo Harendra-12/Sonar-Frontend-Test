@@ -174,7 +174,7 @@ function CallCenterQueueEdit() {
   }, []);
 
   // function to get Updated Agent data
-  function getRefreshAgentData(){
+  function getRefreshAgentData() {
     if (account && account.id) {
       async function getData() {
         setLoading(true);
@@ -458,6 +458,12 @@ function CallCenterQueueEdit() {
       // navigate("/cal-center-queue");
     } else {
       setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -598,7 +604,7 @@ function CallCenterQueueEdit() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)
+          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name) && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -2171,7 +2177,7 @@ function CallCenterQueueEdit() {
                         return bMatches - aMatches;
                       })
                       .filter(
-                        (user) => !agent.some((agent) => user.id == agent?.name) && user.usages==="pbx"
+                        (user) => !agent.some((agent) => user.id == agent?.name) && user.usages === "pbx"
                       ) // Exclude agents already in `agent`
                       .map((item, index) => (
                         <tr key={item.id || index}>

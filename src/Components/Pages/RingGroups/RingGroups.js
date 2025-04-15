@@ -397,6 +397,7 @@ const RingGroups = () => {
                                                         <Tippy key={index} content={item?.username}>
                                                           {item.profile_picture ? (
                                                             <img
+                                                            alt="profile"
                                                               src={item.profile_picture}
                                                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                             />
@@ -406,7 +407,7 @@ const RingGroups = () => {
                                                         </Tippy>
                                                       )
                                                     })}
-                                                    {item.ring_group_destination.length > 4 && <span>+2</span>}
+                                                    {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length-4}</span>}
                                                   </div>
                                                 </div>
                                                 <ul className="dropdown-menu light">

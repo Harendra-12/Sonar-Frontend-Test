@@ -320,7 +320,12 @@ const RingGroupAdd = () => {
       navigate("/ring-groups");
     } else {
       setLoading(false);
-      toast.error(apiData.error);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -423,7 +428,7 @@ const RingGroupAdd = () => {
         if (
           !bulkUploadSelectedAgents.some(
             (agent) => agent.extension.extension == item.extension.extension
-          )
+          )  && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -616,9 +621,8 @@ const RingGroupAdd = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -846,7 +850,7 @@ const RingGroupAdd = () => {
                     <div className="buttonGroup">
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != destination.length ? (
+                          selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             className="panelButton"
@@ -955,14 +959,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                              destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                  item1.extension.extension &&
+                                                item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -1133,9 +1137,8 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${
-                                    index === 0 ? "t" : "y"
-                                  }-auto`}
+                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                    }-auto`}
                                 >
                                   <button
                                     type="button"
