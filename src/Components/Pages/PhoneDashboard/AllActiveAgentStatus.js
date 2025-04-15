@@ -94,7 +94,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                         allUser?.data?.filter((agent) => agent?.extension_id !== null)
                                                             .filter((agent) => onlineUser.includes(agent?.id))
                                                             .map((agent, index) => {
-                                                                const activeCallsForAgent = activeCall.filter((call) => call?.dest || call?.cid_name === agent?.extension?.extension);
+                                                                const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
 
                                                                 const getCallStatus = () => {
                                                                     if (activeCallsForAgent.length === 0) return null;
