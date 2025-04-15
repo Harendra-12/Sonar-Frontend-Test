@@ -157,7 +157,7 @@ function SocialMediaStore() {
                     <div className="addNewContactPopup">
                         <div className="row">
                             <div className="col-12 heading border-bottom-0 mb-0">
-                                <i className="fa-light fa-user-plus"></i>
+                                <i className="fa-light fa-user-plus mx-auto"></i>
                                 <h5>Purchase Number</h5>
                                 <p>
                                     You are about to purchase the selected number
@@ -166,21 +166,31 @@ function SocialMediaStore() {
                             </div>
 
                             <div>
-                                <div className="heading mb-2 px-0 py-1 bg-transparent">
+                                <div className="heading mb-2 px-0 py-1 bg-transparent border-bottom-0">
                                     <h5 className='mb-0'>Order Summary</h5>
                                 </div>
                                 <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2'>
-                                    <div>
-                                        {selectedAddon.name}
-                                        <p style={{ fontSize: 12 }}>{selectedAddon.description}</p>
+                                    <div className='d-flex justify-content-start align-items-center gap-2'>
+                                        <div className='product_imgAdonsPopup'>
+                                        <img
+                                            src={require(`../../assets/images/icons/addons/${selectedAddon.name.toLowerCase()}.webp`)}
+                                            alt="Click to Call"
+                                        />
+                                        </div>
+                                      <div className='product_details'>
+                                      <p className='mb-0 text-black fw-semibold'> {selectedAddon.name}</p>
+                                      <p style={{ fontSize: 11 }} className='ellipsisText text-muted mb-0'>{selectedAddon.description}</p>
+                                      </div>
                                     </div>
                                     <div>
-                                        <span className="float-end">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span>
+                                        <span className="float-end text-black fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br/>
+
+                                        <span class="old_price">${parseFloat(selectedAddon.price)}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="heading mb-2 px-0 py-1 bg-transparent">
+                            <div className="heading mb-2 px-0 py-1 bg-transparent border-bottom-0">
                                 <h5 className='mb-0'>Payment Method</h5>
                             </div>
                             <div className='getPopup checkout'>
