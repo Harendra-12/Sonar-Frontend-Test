@@ -10,7 +10,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 
-function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
+function RechargeWalletPopup({ closePopup, rechargeType, selectedDid, selectedAddon }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountDetailsRefresh = useSelector(
@@ -56,7 +56,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
       toast.error("Please enter CVV");
     } else if (cvv.length < 3 || cvv.length > 4) {
       toast.error("Please enter correct cvv");
-    } else if (rechargeType !== "buyDid" && amount === "") {
+    } else if (!["buyDid", "purchaseAddon"].includes(rechargeType) && amount === "") {
       toast.error("Please enter amount");
     } else {
       setLoading(true);
@@ -107,8 +107,8 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           cvc: cvv,
           // amount: amount,
           type: "card",
-          companyId: account.account_id,
-          addonId: selectedDid.id,
+          addon_id: selectedAddon.id,
+          amount: Number((parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2))
         };
         const apiData = await generalPostFunction("/addon/buy", parsedData);
         if (apiData.status) {
@@ -192,6 +192,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           mainPopUpClose={mainClose}
           rechargeType={rechargeType}
           selectedDid={selectedDid}
+          selectedAddon={selectedAddon}
         />
       ) : (
         <div className="row">
@@ -532,7 +533,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                       </div>
                     </div>
                   </div>
-                  {rechargeType === "buyDid" ? (
+                  {rechargeType === "buyDid" || rechargeType === "purchaseAddon" ? (
                     ""
                   ) : (
                     <div className="col-6">
