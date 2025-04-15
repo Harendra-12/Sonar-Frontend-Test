@@ -179,7 +179,7 @@ function CardTransactionsList() {
                                       </td>
                                       <td>
                                         <button
-                                          className="tableButton"
+                                          className="tableButton blue"
                                           onClick={() =>
                                             downloadImage(
                                               item.invoice_url,

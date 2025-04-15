@@ -127,7 +127,7 @@ function CampaignCreate() {
 
       if (getDid?.status) {
         const { dialer, agents, leads } = getDid.data;
-        setSelectedDisposition(getDid.data.disposition.map((item) =>{return ({id:item.disposition_id , rechain:item.rechain})}));
+        setSelectedDisposition(getDid.data.disposition.map((item) => { return ({ id: item.disposition_id, rechain: item.rechain }) }));
         seteditSteps({
           firstStep: true,
           secondStep: dialer != null,
@@ -449,25 +449,25 @@ function CampaignCreate() {
     // If id is present then remove it if not add it
     // setSelectedDisposition((prevSelected) => (prevSelected.includes(id) ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]));
 
-    setSelectedDisposition((prevSelected) => prevSelected.filter((item)=> item.id === id).length>0? prevSelected.filter((item)=> item.id !== id) : [...prevSelected , {id:id , rechain:0}])
+    setSelectedDisposition((prevSelected) => prevSelected.filter((item) => item.id === id).length > 0 ? prevSelected.filter((item) => item.id !== id) : [...prevSelected, { id: id, rechain: 0 }])
   }
 
-  
+
   // Function to handle rechain checkbox change
   function handleDispositionRechainChange(id) {
     console.log("id", id);
-    
-    setSelectedDisposition((prevSelected) => prevSelected.filter((item)=> item.id === id).length>0? prevSelected.map((item)=> {
-      if(item.id === id){
-        return {...item , rechain:item.rechain===0?1:0}
-      }else{
+
+    setSelectedDisposition((prevSelected) => prevSelected.filter((item) => item.id === id).length > 0 ? prevSelected.map((item) => {
+      if (item.id === id) {
+        return { ...item, rechain: item.rechain === 0 ? 1 : 0 }
+      } else {
         return item
       }
-    }) : [...prevSelected , {id:id , rechain:false}])
+    }) : [...prevSelected, { id: id, rechain: false }])
   }
 
   console.log("selectedDesposition", selectedDesposition);
-  
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -555,7 +555,7 @@ function CampaignCreate() {
                               className={stepSelector === 2 && "active"}
                               onClick={() => {
                                 // if (completedStep > 0) {
-                                  setStepSelector(2);
+                                setStepSelector(2);
                                 // }
                               }}
                             >
@@ -576,7 +576,7 @@ function CampaignCreate() {
                               className={stepSelector === 3 && "active"}
                               onClick={() => {
                                 // if (completedStep > 1) {
-                                  setStepSelector(3);
+                                setStepSelector(3);
                                 // }
                               }}
                             >
@@ -597,7 +597,7 @@ function CampaignCreate() {
                               className={stepSelector === 4 && "active"}
                               onClick={() => {
                                 // if (completedStep > 2) {
-                                  setStepSelector(4);
+                                setStepSelector(4);
                                 // }
                               }}
                             >
@@ -744,10 +744,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -767,10 +773,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -790,10 +802,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -813,10 +831,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -836,10 +860,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -859,10 +889,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -882,10 +918,16 @@ function CampaignCreate() {
                                         </div>
                                         <div className="item">
                                           <div className="my-auto position-relative mx-1">
-                                            <label className="switch">
+                                            {/* <label className="switch">
                                               <input type="checkbox" id="showAllCheck" checked="false" />
                                               <span className="slider round"></span>
-                                            </label>
+                                            </label> */}
+                                            <div class="cl-toggle-switch">
+                                              <label class="cl-switch">
+                                                <input type="checkbox" id="showAllCheck" checked="false" />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                           <label className="ms-1">Full day</label>
                                         </div>
@@ -1330,7 +1372,7 @@ function CampaignCreate() {
                                                   <label>{item.name}</label>
                                                 </div>
                                                 <div>
-                                                  <label className="switch">
+                                                  {/* <label className="switch">
                                                     <input
                                                       type="checkbox"
                                                       checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
@@ -1338,12 +1380,24 @@ function CampaignCreate() {
                                                       onChange={() => handleDispositionChange(item.id)}
                                                     />
                                                     <span className="slider round" />
-                                                  </label>
+                                                  </label> */}
+
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input
+                                                        type="checkbox"
+                                                        checked={selectedDesposition.filter((dispo) => dispo?.id == item.id).length > 0}
+                                                        id="showAllCheck"
+                                                        onChange={() => handleDispositionChange(item.id)}
+                                                      />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
                                                 </div>
                                               </div>
                                               <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                               <div className="contactTags">
-                                                <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '0' : '1'}`}  onClick={() =>selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id):""}> Rechain </span>
+                                                <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '0' : '1'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
 
                                                 {/* <span >
                                                   Retry

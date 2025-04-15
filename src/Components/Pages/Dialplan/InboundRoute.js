@@ -48,10 +48,18 @@ function InboundRoute() {
                         Add
                       </Link>
                       <div className="my-auto position-relative mx-3">
-                        <label className="switch">
+                        {/* <label className="switch">
                           <input type="checkbox" id="showAllCheck" />
                           <span className="slider round" />
-                        </label>
+                        </label> */}
+                        <div class="cl-toggle-switch">
+                          <label class="cl-switch">
+                            <input
+                              type="checkbox" id="showAllCheck"
+                            />
+                            <span></span>
+                          </label>
+                        </div>
                         <span className="position-relative mx-1">Show All</span>
                       </div>
                     </div>
@@ -156,12 +164,12 @@ function InboundRoute() {
             </div>
             {user && user.data.length > 0 ? (
               <PaginationComponent
-              pageNumber={(e) => setPageNumber(e)}
-              totalPage={user.last_page}
-              from={(pageNumber - 1) * user.per_page + 1}
-              to={user.to}
-              total={user.total}
-            />
+                pageNumber={(e) => setPageNumber(e)}
+                totalPage={user.last_page}
+                from={(pageNumber - 1) * user.per_page + 1}
+                to={user.to}
+                total={user.total}
+              />
             ) : (
               ""
             )}

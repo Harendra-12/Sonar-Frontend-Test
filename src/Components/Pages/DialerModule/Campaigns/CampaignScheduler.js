@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function CampaignScheduler() {
     const navigate = useNavigate();
-    const [strategy,setStrategy]=useState("daily")
+    const [strategy, setStrategy] = useState("daily")
     return (
         <>
             <main className="mainContent">
@@ -71,7 +71,7 @@ function CampaignScheduler() {
                                                                         </div>
                                                                     </div>
                                                                     <div className='col-xl-4'>
-                                                                        <div className={`itemWrapper local-calls ${strategy==="daily"?"active":""}`} style={{ cursor: "pointer" }} onClick={()=>setStrategy("daily")}>
+                                                                        <div className={`itemWrapper local-calls ${strategy === "daily" ? "active" : ""}`} style={{ cursor: "pointer" }} onClick={() => setStrategy("daily")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
                                                                                 <h5 className='mb-2'>Daily</h5>
@@ -80,7 +80,7 @@ function CampaignScheduler() {
                                                                         </div>
                                                                     </div>
                                                                     <div className='col-xl-4'>
-                                                                        <div className={`itemWrapper local-calls text-start ${strategy==="date-range"?"active":""}`} style={{ cursor: "pointer" }} onClick={()=>setStrategy("date-range")}>
+                                                                        <div className={`itemWrapper local-calls text-start ${strategy === "date-range" ? "active" : ""}`} style={{ cursor: "pointer" }} onClick={() => setStrategy("date-range")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
                                                                                 <h5 className='mb-2'>Date Range</h5>
@@ -155,7 +155,7 @@ function CampaignScheduler() {
                                                                 </div>
                                                             </div>
                                                         </div> */}
-                                                        {strategy==="daily" ? <div className='col-xl-12'>
+                                                        {strategy === "daily" ? <div className='col-xl-12'>
                                                             <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)' }}>
                                                                 <div className='row'>
                                                                     <div className='col-12'>
@@ -173,10 +173,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -195,10 +204,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -217,10 +235,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -239,10 +266,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -261,10 +297,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -283,10 +328,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>
@@ -305,10 +359,19 @@ function CampaignScheduler() {
                                                                             </div>
                                                                             <div className='col-auto'>
                                                                                 <div className='position-relative'>
-                                                                                    <label className="switch">
+                                                                                    {/* <label className="switch">
                                                                                         <input type="checkbox" id="showAllCheck" defaultChecked="" />
                                                                                         <span className="slider round" />
-                                                                                    </label>
+                                                                                    </label> */}
+                                                                                    <div class="cl-toggle-switch">
+                                                                                        <label class="cl-switch">
+                                                                                            <input
+                                                                                                type="checkbox" id="showAllCheck"
+                                                                                                defaultChecked=""
+                                                                                            />
+                                                                                            <span></span>
+                                                                                        </label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div className='col-auto'>

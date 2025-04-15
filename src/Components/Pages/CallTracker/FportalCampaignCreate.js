@@ -251,10 +251,19 @@ function FportalCampaignCreate() {
                             </div>
                             <div className="col-6">
                               <div className="my-auto position-relative mx-1">
-                                <label className="switch">
+                                {/* <label className="switch">
                                   <input type="checkbox" id="showAllCheck" />
                                   <span className="slider round" />
-                                </label>
+                                </label> */}
+                                <div class="cl-toggle-switch">
+                                  <label class="cl-switch">
+                                    <input
+                                      type="checkbox" id="showAllCheck"
+
+                                    />
+                                    <span></span>
+                                  </label>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -287,14 +296,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                        <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -316,14 +334,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                        <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -345,14 +372,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                         <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -374,14 +410,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                         <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -403,14 +448,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                         <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -432,14 +486,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                         <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>
@@ -461,14 +524,23 @@ function FportalCampaignCreate() {
                                     </div>
                                     <div className="item">
                                       <div className="my-auto position-relative mx-1">
-                                        <label className="switch">
+                                        {/* <label className="switch">
                                           <input
                                             type="checkbox"
                                             id="showAllCheck"
                                             defaultChecked=""
                                           />
                                           <span className="slider round" />
-                                        </label>
+                                        </label> */}
+                                         <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                              type="checkbox" id="showAllCheck"
+                                              defaultChecked=""
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                       </div>
                                       <label className="ms-1">Full day</label>
                                     </div>

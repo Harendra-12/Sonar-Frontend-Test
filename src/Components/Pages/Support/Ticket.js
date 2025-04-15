@@ -132,8 +132,8 @@ function Ticket() {
                                     <th>Email</th>
                                     <th>Subject</th>
                                     <th>Status</th>
-                                    <th>View massage</th>
-                                    <th>Close Ticket</th>
+                                    <th className='text-center'>View massage</th>
+                                    <th className='text-center'>Close Ticket</th>
 
 
                                   </tr>
@@ -157,7 +157,7 @@ function Ticket() {
                                       </td>
                                       <td><div className=''>
                                         <button
-                                          className="tableButton edit" onClick={handleSubmit}
+                                          className="tableButton edit mx-auto" onClick={handleSubmit}
 
                                         >
                                           <i className="fa-regular fa-eye"></i>
@@ -166,7 +166,7 @@ function Ticket() {
                                       <td>
                                         <div className='d-flex align-items-center justify-content-start'>
                                           <button
-                                            className="tableButton delete me-12"
+                                            className="tableButton delete me-12 mx-auto"
 
                                           >
                                             <i className="fa-solid fa-x"></i>
@@ -242,7 +242,7 @@ function Ticket() {
                                     <th>Email</th>
                                     <th>Subject</th>
 
-                                    <th>View massage</th>
+                                    <th className='text-center'>View massage</th>
 
 
 
@@ -262,7 +262,7 @@ function Ticket() {
                                       <td>Support</td>
                                       <td><div className=''>
                                         <button
-                                          className="tableButton edit" onClick={handleSubmit}
+                                          className="tableButton edit mx-auto" onClick={handleSubmit}
 
                                         >
                                           <i className="fa-regular fa-eye"></i>

@@ -316,7 +316,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
                               <div className="col-xl-6">
                                 <div className="d-flex justify-content-end">
                                   <div className="my-auto position-relative mx-1">
-                                    <label className="switch">
+                                    {/* <label className="switch">
                                       <input
                                         type="checkbox"
                                         id="showAllCheck"
@@ -337,7 +337,31 @@ function AvailableDeviceList({ header = true, extensionData }) {
                                         }}
                                       />
                                       <span className="slider round" />
-                                    </label>
+                                    </label> */}
+                                    <div class="cl-toggle-switch">
+                                          <label class="cl-switch">
+                                            <input
+                                             type="checkbox"
+                                             id="showAllCheck"
+                                             checked={
+                                               item.status === "active"
+                                                 ? true
+                                                 : false
+                                             }
+                                             onChange={() => {
+                                               setStatus(
+                                                 item.status === "active"
+                                                   ? "inactive"
+                                                   : "active"
+                                               );
+                                               setDeleteId("");
+                                               setPopu(true);
+                                               setDeviceType(item.type);
+                                             }}
+                                            />
+                                            <span></span>
+                                          </label>
+                                        </div>
                                   </div>
                                   <button
                                     className="tableButton edit mx-2"
@@ -614,20 +638,20 @@ function AvailableDeviceList({ header = true, extensionData }) {
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4 col-md-5">
-                  <div className="col-2 px-0">
+                <div className=" content col-xl-4 col-md-5">
+                  <div className="">
                     <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                      <i className="fa-duotone fa-triangle-exclamation fs-1 mb-2"></i>
                     </div>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
+                  <div className=" text-center">
+                    <h4 className="text-orange">Warning!</h4>
                     <p>
                       {deleteId
                         ? "Are you sure you want to delete this Device?"
                         : "Are you sure you want to change its status?"}
                     </p>
-                    <div className="d-flex justify-content-between">
+                    <div className="d-flex justify-content-center mt-4 gap-2">
                       <button
                         disabled={loading}
                         className="panelButton m-0"

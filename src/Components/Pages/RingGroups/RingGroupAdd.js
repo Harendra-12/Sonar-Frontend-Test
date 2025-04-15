@@ -510,7 +510,7 @@ const RingGroupAdd = () => {
                               <label htmlFor="selectFormRow">Enabled</label>
                             </div>
                             <div className="my-auto position-relative mx-1">
-                              <label className="switch">
+                              {/* <label className="switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -518,7 +518,18 @@ const RingGroupAdd = () => {
                                   id="showAllCheck"
                                 />
                                 <span className="slider round" />
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={watch().status}
+                                    {...register("status")}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </div>
                           <button
@@ -616,9 +627,8 @@ const RingGroupAdd = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -846,7 +856,7 @@ const RingGroupAdd = () => {
                     <div className="buttonGroup">
                       {destination.length > 0 &&
                         (selectedAgentToEdit.length > 0 &&
-                        selectedAgentToEdit.length != destination.length ? (
+                          selectedAgentToEdit.length != destination.length ? (
                           <button
                             type="button"
                             className="panelButton"
@@ -955,14 +965,14 @@ const RingGroupAdd = () => {
                                         .filter((item1) => {
                                           return (
                                             item1.extension.extension ==
-                                              destination[index]?.destination ||
+                                            destination[index]?.destination ||
                                             !destination.some(
                                               (
                                                 destinationItem,
                                                 destinationIndex
                                               ) =>
                                                 destinationItem.destination ==
-                                                  item1.extension.extension &&
+                                                item1.extension.extension &&
                                                 destinationIndex != index
                                             )
                                           );
@@ -1133,9 +1143,8 @@ const RingGroupAdd = () => {
                                 ""
                               ) : (
                                 <div
-                                  className={`me-2 h-100 m${
-                                    index === 0 ? "t" : "y"
-                                  }-auto`}
+                                  className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                    }-auto`}
                                 >
                                   <button
                                     type="button"
