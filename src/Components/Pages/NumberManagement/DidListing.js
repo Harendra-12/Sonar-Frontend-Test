@@ -429,7 +429,7 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_whatsapp === 1
-                                                  ? "tableButton edit mx-auto"
+                                                  ? "tableButton whatsapp mx-auto"
                                                   : item.is_secondary_whatsapp === 1 ? "tableButton warning mx-auto"
                                                     : "tableButton empty mx-auto"
                                               }
@@ -479,7 +479,7 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_eFax === 1
-                                                  ? "tableButton edit mx-auto"
+                                                  ? "tableButton fax mx-auto"
                                                   : item.is_secondary_eFax === 1 ? "tableButton warning mx-auto"
                                                     : "tableButton empty mx-auto"
                                               }
@@ -529,8 +529,8 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_sms === 1
-                                                  ? "tableButton edit mx-auto"
-                                                  : item.is_secondary_sms === 1 ? "tableButton warning mx-auto"
+                                                  ? "tableButton sms mx-auto"
+                                                  : item.is_secondary_sms === 1 ? "tableButton sms mx-auto"
                                                     : "tableButton empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
@@ -577,8 +577,8 @@ function DidListing({ page }) {
                                             <button
                                               className={
                                                 item.default_outbound === 1
-                                                  ? "tableButton edit mx-auto"
-                                                  : "tableButton empty mx-auto"
+                                                  ? "tableButton head mx-auto"
+                                                  : "tableButton head mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
                                               onClick={() => {
