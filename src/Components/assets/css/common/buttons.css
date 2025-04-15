@@ -694,11 +694,15 @@
   justify-content: center;
   align-items: center;
   transition: 0.3s ease-in-out;
-  margin-inline: auto;
+  /* margin-inline: auto; */
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 .tableButton i{
   line-height: 10px;
+}
+.tableButton.popupIcon_btn{
+  width: 35px !important;
+  height: 35px !important;
 }
 
 /* .tableButton:hover {

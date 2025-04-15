@@ -334,7 +334,7 @@ function CallCenterQueue() {
                         <table>
                           <thead>
                             <tr>
-                              <th>Prefix</th>
+                              <th>Tag</th>
                               <th>Queue Name</th>
                               <th>Extension</th>
                               <th>Strategy</th>
@@ -378,7 +378,7 @@ function CallCenterQueue() {
                                                 )
                                               }
                                             >
-                                              {item.queue_cid_prefix}
+                                              {item.tag}
                                             </td>
                                             <td
                                               onClick={() =>
@@ -424,6 +424,7 @@ function CallCenterQueue() {
                                                         <Tippy key={index} content={item?.username}>
                                                           {item.profile_picture ? (
                                                             <img
+                                                              alt="avatar"
                                                               src={item.profile_picture}
                                                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                             />
@@ -433,7 +434,7 @@ function CallCenterQueue() {
                                                         </Tippy>
                                                       )
                                                     })}
-                                                    {item.agents.length > 4 && <span>+2</span>}
+                                                    {item.agents.length > 4 && <span>+{item.agents.length - 4}</span>}
                                                   </div>
                                                 </div>
                                                 <ul className="dropdown-menu light">

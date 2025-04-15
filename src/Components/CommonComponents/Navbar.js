@@ -918,8 +918,8 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                              <NavLink
-                              to="/source"
+                                <NavLink
+                                  to="/source"
                                   onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
@@ -934,7 +934,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Source</div>
-                                  </NavLink>
+                                </NavLink>
                               </li>
                             </ul>
                           </div>
@@ -1396,7 +1396,7 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-                          {checkViewSidebar(
+                          {/* {checkViewSidebar(
                             "CardDetail",
                             permissions,
                             account?.permissions
@@ -1426,7 +1426,7 @@ function Navbar() {
                                 <div className="itemTitle">Wallet</div>
                               </NavLink>
                             </li>
-                          ) : null}
+                          ) : null} */}
 
                           {isCustomerAdmin && (< li className="tabItem ">
                             <NavLink
@@ -1455,15 +1455,19 @@ function Navbar() {
                               <div className="itemTitle">Subscription</div>
                             </NavLink>
                           </li>
-                          <li className="tabItem">
+                          {checkViewSidebar(
+                            "CardDetail",
+                            permissions,
+                            account?.permissions
+                          ) ? <li className="tabItem">
                             <NavLink
                               to="/billing-card-and-wallet"
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              <div className="itemTitle">Card and Wallet</div>
+                              <div className="itemTitle">All Transactions</div>
                             </NavLink>
-                          </li>
+                          </li> : ""}
                           {checkViewSidebar(
                             "ChannelHangupComplete",
                             permissions,

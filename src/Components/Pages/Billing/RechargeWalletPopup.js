@@ -99,6 +99,28 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           // const errorMessage = Object.keys(apiData.errors);
           toast.error(apiData.error);
         }
+      } else if (rechargeType === "purchaseAddon") {
+        const parsedData = {
+          address_id: selectedBillId,
+          account_id: account.account_id,
+          card_id: selectedCardId,
+          cvc: cvv,
+          // amount: amount,
+          type: "card",
+          companyId: account.account_id,
+          addonId: selectedDid.id,
+        };
+        const apiData = await generalPostFunction("/addon/buy", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          setTimeout(() => {
+            closePopup(false);
+          }, 2000);
+          toast.success(apiData.message);
+        } else {
+          setLoading(false);
+          toast.error(apiData.error);
+        }
       } else {
         const parsedData = {
           address_id: selectedBillId,
@@ -352,25 +374,25 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                       <span className="slider round"></span>
                                     </label> */}
                                     <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
-                                    <input type="checkbox"
-                                      id="showAllCheck"
-                                      checked={
-                                       item.id === selectedBillId
-                                         ? true
-                                         : false
-                                     }
-                                     onChange={(e) => {
-                                       if (e.target.checked) {
-                                         setSelectedBillId(item.id);
-                                       } else {
-                                         setSelectedBillId();
-                                       }
-                                     }}
-                                    />
-                                    <span></span>
-                                  </label>
-                                </div>
+                                      <label class="cl-switch">
+                                        <input type="checkbox"
+                                          id="showAllCheck"
+                                          checked={
+                                            item.id === selectedBillId
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={(e) => {
+                                            if (e.target.checked) {
+                                              setSelectedBillId(item.id);
+                                            } else {
+                                              setSelectedBillId();
+                                            }
+                                          }}
+                                        />
+                                        <span></span>
+                                      </label>
+                                    </div>
                                   </div>
                                 </div>
                               </h2>

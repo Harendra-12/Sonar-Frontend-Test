@@ -244,7 +244,7 @@ const RingGroupEdit = () => {
 
   // Function to handle click outside to close popup
   useEffect(() => {
-    const handleClickOutside = (event) => {};
+    const handleClickOutside = (event) => { };
 
     document.addEventListener("click", handleClickOutside);
 
@@ -450,6 +450,12 @@ const RingGroupEdit = () => {
       });
     } else {
       setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -541,8 +547,8 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           !bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item?.extension?.extension
-          )
+            (agent) => agent.extension.extension == item?.extension?.extension 
+          )&& item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }
@@ -628,7 +634,7 @@ const RingGroupEdit = () => {
                             <label htmlFor="selectFormRow">Enabled</label>
                           </div>
                           <div className="my-auto position-relative mx-1">
-                            <label className="switch">
+                            {/* <label className="switch">
                               <input
                                 type="checkbox"
                                 checked={watch().status}
@@ -636,7 +642,17 @@ const RingGroupEdit = () => {
                                 id="showAllCheck"
                               />
                               <span className="slider round" />
-                            </label>
+                            </label> */}
+                            <div class="cl-toggle-switch">
+                              <label class="cl-switch">
+                                <input type="checkbox"
+                                  checked={watch().status}
+                                  {...register("status")}
+                                  id="showAllCheck"
+                                />
+                                <span></span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                         <button
@@ -753,9 +769,8 @@ const RingGroupEdit = () => {
                       <div className="col-6">
                         <div className="row">
                           <div
-                            className={`col-${
-                              showTimeoutDestinationToggle ? "4" : "12"
-                            }`}
+                            className={`col-${showTimeoutDestinationToggle ? "4" : "12"
+                              }`}
                           >
                             {showTimeoutDestinationToggle && (
                               <div className="formLabel">
@@ -985,7 +1000,7 @@ const RingGroupEdit = () => {
                     </div>
                     <div className="d-flex">
                       {selectedAgentToEdit.length > 0 &&
-                      selectedAgentToEdit.length != destination.length ? (
+                        selectedAgentToEdit.length != destination.length ? (
                         <button
                           type="button"
                           className="panelButton ms-auto"
@@ -1085,14 +1100,14 @@ const RingGroupEdit = () => {
                                       .filter((item1) => {
                                         return (
                                           item1?.extension?.extension ==
-                                            destination[index]?.destination ||
+                                          destination[index]?.destination ||
                                           !destination.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem.destination ==
-                                                item1?.extension?.extension &&
+                                              item1?.extension?.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -1273,9 +1288,8 @@ const RingGroupEdit = () => {
                               ""
                             ) : (
                               <div
-                                className={`col-auto h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`col-auto h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"
@@ -1315,125 +1329,127 @@ const RingGroupEdit = () => {
       )}
 
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Ring Group</h5>
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Search"
-                  name="name"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <button
-                  className="tableButton ms-2"
-                  onClick={() => navigate("/users-add")}
-                >
-                  <i className="fa-solid fa-user-plus"></i>
-                </button>
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
               </div>
-            </div>
-            <div className="col-xl-12 mt-3">
-              <div
-                className="tableContainer mt-0"
-                style={{ maxHeight: "calc(100vh - 400px)" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>
-                        <input
-                          type="checkbox"
-                          onChange={handleSelectAll} // Call handler on change
-                          checked={selectAll ? true : false} // Keep checkbox state in sync
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {user
-                      .sort((a, b) => {
-                        const aMatches =
-                          a.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (a?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        const bMatches =
-                          b.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (b?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        return bMatches - aMatches;
-                      })
-                      .filter(
-                        (user) =>
-                          !destination.some(
-                            (agent) =>
-                              user?.extension?.extension == agent.destination
-                          ) && user.usages === "pbx"
-                      )
-                      .map((item, index) => {
-                        return (
-                          <tr key={item.id || index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item?.extension?.extension}</td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                checked={bulkUploadSelectedAgents.some(
-                                  (agent) => agent.name === item.name
-                                )} // Keep checkbox state in sync
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button
+                    className="tableButton popupIcon_btn ms-2"
+                    onClick={() => navigate("/users-add")}
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkAddPopUp(false);
-                    setBulkUploadSelectedAgents([]);
-                    setSelectAll(false);
-                  }}
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
                 >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-light fa-xmark"></i>
-                  </span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                    setBulkAddPopUp(false);
-                  }}
-                  className="panelButton"
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {user
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) =>
+                            !destination.some(
+                              (agent) =>
+                                user?.extension?.extension == agent.destination
+                            ) && user.usages === "pbx"
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item?.extension?.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent.name === item.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1443,72 +1459,107 @@ const RingGroupEdit = () => {
       )}
 
       {bulkEditPopup ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Edit People to the selected Queue</h5>
-            </div>
-            <div>
-              <div className="d-flex justify-content-between mb-2">
-                <h5
-                  style={{
-                    color: "var(--color-subtext)",
-                    fontSize: 14,
-                    marginBottom: 5,
-                    marginTop: 5,
-                  }}
-                >
-                  Affected user:{" "}
-                </h5>
-                <div className="searchBoxWrapper">
-                  <input
-                    className="searchBar"
-                    type="text"
-                    value={searchEditAllUser}
-                    onChange={(e) => setSearchEditAllUser(e.target.value)}
-                  />
-                </div>
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Edit People to the selected Queue</h5>
               </div>
-              <ul>
-                {selectedAgentToEdit
-                  .map((item) => destination.find((user) => item.id == user.id))
-                  .filter((item) =>
-                    item.destination.includes(searchEditAllUser.trim())
-                  )
-                  .map((items) => (
-                    <li>
-                      <i className="fa-regular fa-user me-2" />
-                      {items?.destination}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center"></div>
-            </div>
-            <div className="mt-3 d-flex">
-              {watch("strategy") !== "sequence" && (
+              <div>
+                <div className="d-flex justify-content-between mb-2">
+                  <h5
+                    style={{
+                      color: "var(--color-subtext)",
+                      fontSize: 14,
+                      marginBottom: 5,
+                      marginTop: 5,
+                    }}
+                  >
+                    Affected user:{" "}
+                  </h5>
+                  <div className="searchBoxWrapper">
+                    <input
+                      className="searchBar"
+                      type="text"
+                      value={searchEditAllUser}
+                      onChange={(e) => setSearchEditAllUser(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <ul>
+                  {selectedAgentToEdit
+                    .map((item) => destination.find((user) => item.id == user.id))
+                    .filter((item) =>
+                      item.destination.includes(searchEditAllUser.trim())
+                    )
+                    .map((items) => (
+                      <li >
+                        <i className="fa-regular fa-user me-2" />
+                        {items?.destination}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center"></div>
+              </div>
+              <div className="mt-3 d-flex">
+                {watch("strategy") !== "sequence" && (
+                  <div className="col-4 pe-2">
+                    <div className="formLabel">
+                      <label htmlFor="">Delay</label>
+                    </div>
+
+                    <select
+                      className="formItem me-0"
+                      style={{ width: "100%" }}
+                      name="delay"
+                      id="selectFormRow"
+                      value={settingsForBulkEdit.delay}
+                      onChange={(e) => {
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          delay: e.target.value,
+                        });
+                      }}
+                      defaultValue={0}
+                    >
+                      <option>Delay</option>
+                      {(() => {
+                        const numbers = [];
+                        for (let i = 0; i <= 100; i++) {
+                          if (i % 5 === 0) {
+                            numbers.push(<span key={i}>{i}</span>);
+                          }
+                        }
+                        return numbers.map((item) => {
+                          return <option>{item}</option>;
+                        });
+                      })()}
+                    </select>
+                  </div>
+                )}
                 <div className="col-4 pe-2">
                   <div className="formLabel">
-                    <label htmlFor="">Delay</label>
+                    <label htmlFor="">Timeout</label>
                   </div>
 
                   <select
                     className="formItem me-0"
                     style={{ width: "100%" }}
-                    name="delay"
-                    id="selectFormRow"
-                    value={settingsForBulkEdit.delay}
+                    name="timeOut"
+                    value={settingsForBulkEdit.timeOut}
                     onChange={(e) => {
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        delay: e.target.value,
+                        timeOut: e.target.value,
                       });
                     }}
+                    id="selectFormRow"
                     defaultValue={0}
                   >
-                    <option>Delay</option>
+                    <option>Timeout</option>
                     {(() => {
                       const numbers = [];
                       for (let i = 0; i <= 100; i++) {
@@ -1522,103 +1573,70 @@ const RingGroupEdit = () => {
                     })()}
                   </select>
                 </div>
-              )}
-              <div className="col-4 pe-2">
-                <div className="formLabel">
-                  <label htmlFor="">Timeout</label>
+
+                <div className="col-4 pe-0">
+                  <div className="formLabel">
+                    <label htmlFor="">Status</label>
+                  </div>
+
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    value={settingsForBulkEdit.status}
+                    onChange={(e) => {
+                      setSettingsForBulkEdit({
+                        ...settingsForBulkEdit,
+                        status: e.target.value,
+                      });
+                    }}
+                    id="selectFormRow"
+                    name="status"
+                    defaultValue={"active"}
+                  >
+                    <option className="status" value="active">
+                      True
+                    </option>
+                    <option value="inactive">False</option>
+                  </select>
                 </div>
-
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="timeOut"
-                  value={settingsForBulkEdit.timeOut}
-                  onChange={(e) => {
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      timeOut: e.target.value,
-                    });
-                  }}
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option>Timeout</option>
-                  {(() => {
-                    const numbers = [];
-                    for (let i = 0; i <= 100; i++) {
-                      if (i % 5 === 0) {
-                        numbers.push(<span key={i}>{i}</span>);
-                      }
-                    }
-                    return numbers.map((item) => {
-                      return <option>{item}</option>;
-                    });
-                  })()}
-                </select>
               </div>
-
-              <div className="col-4 pe-0">
-                <div className="formLabel">
-                  <label htmlFor="">Status</label>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkEditPopup(false);
+                      setSettingsForBulkEdit({
+                        tier_level: "",
+                        tier_position: "",
+                        call_timeout: "",
+                        reject_delay: "",
+                        max_no_answer: "",
+                        busy_delay: "",
+                        no_answer_delay: "",
+                        wrap_up_time: "",
+                        reserve_agents: "",
+                        truncate_agents_on_load: "",
+                        truncate_tiers_on_load: "",
+                      });
+                      setSearchEditAllUser("");
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton me-0"
+                    onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
                 </div>
-
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  value={settingsForBulkEdit.status}
-                  onChange={(e) => {
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      status: e.target.value,
-                    });
-                  }}
-                  id="selectFormRow"
-                  name="status"
-                  defaultValue={"active"}
-                >
-                  <option className="status" value="active">
-                    True
-                  </option>
-                  <option value="inactive">False</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkEditPopup(false);
-                    setSettingsForBulkEdit({
-                      tier_level: "",
-                      tier_position: "",
-                      call_timeout: "",
-                      reject_delay: "",
-                      max_no_answer: "",
-                      busy_delay: "",
-                      no_answer_delay: "",
-                      wrap_up_time: "",
-                      reserve_agents: "",
-                      truncate_agents_on_load: "",
-                      truncate_tiers_on_load: "",
-                    });
-                    setSearchEditAllUser("");
-                  }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
               </div>
             </div>
           </div>

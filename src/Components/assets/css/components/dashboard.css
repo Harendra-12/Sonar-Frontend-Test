@@ -323,6 +323,10 @@
     color: var(--color2);
 }
 
+/* .itemWrapper.a .data-number2 h5 {
+    color: var(--billing-icon2) !important;
+} */
+
 .itemWrapper.b .data-number,
 .itemWrapperb.b .data-number {
     color: var(--funky-boy3);
@@ -360,6 +364,7 @@
 }
 
 .itemWrapper.a .heading i {
+    /* color: var(--billing-icon) !important; */
     color: var(--color2);
 }
 
@@ -648,8 +653,8 @@
 }
 
 .itemWrapper.active {
-    border: 1px solid green;
-    box-shadow: #00ff1554 0px 3px 8px;
+    border: 1px solid #009688;
+    box-shadow: rgba(0, 150, 136, 0.22) 0px 3px 8px;
 }
 
 
@@ -927,26 +932,31 @@
 .call_dCard:hover {
     transform: translateY(-3px);
 }
+
 .call_dCard.d {
     /* border: 2px dotted #4fc9da; */
     background: rgba(33, 150, 243, 0.059);
 }
+
 .call_dCard.c {
     /* border: 2px dotted #ef6f54; */
     background: rgba(237, 178, 152, 0.141);
 }
+
 .call_dCard.b {
     /* border: 2px dotted #777edd; */
     background: rgba(119, 126, 221, 0.141);
 }
+
 .call_dCard.a {
     /* border: 2px dotted #18b16b; */
     background: rgba(30, 154, 91, 0.141);
 }
 
 .call_dCard .heading {
-   height: unset;
+    height: unset;
 }
+
 .call_dCard .heading i {
     background: transparent;
     box-shadow: none;
@@ -966,11 +976,13 @@
 .imageBox_wrap img {
     width: 100%;
 }
-.customRow{
+
+.customRow {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 8px;
 }
-.call_dCard  h3{
+
+.call_dCard h3 {
     font-size: 20px;
 }

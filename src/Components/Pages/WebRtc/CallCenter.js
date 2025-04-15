@@ -33,6 +33,10 @@ const CallCenter = ({ initial }) => {
 
   useEffect(() => {
     const getData = async () => {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
       const apiData = await generalGetFunction("/call-center-agent/all");
       if (apiData?.status) {
         setCallCenterDetailData(apiData.data);
@@ -225,10 +229,6 @@ const CallCenter = ({ initial }) => {
                               onClick={() => {
                                 setRefreshCenter(refreshCenter + 1);
                                 setLoading(true);
-                                dispatch({
-                                  type: "SET_CALLCENTERREFRESH",
-                                  callCenterRefresh: callCenterRefresh + 1,
-                                });
                               }
 
                               }

@@ -194,7 +194,7 @@ function Agents({ type }) {
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
-                              account?.permissions, "edit") && <th>LogOut</th>}
+                              account?.permissions, "edit") && <th className="text-center">LogOut</th>}
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
@@ -270,7 +270,7 @@ function Agents({ type }) {
                                           slugPermissions,
                                           account?.permissions, "edit") && <td>
                                             <button
-                                              className="tableButton edit"
+                                              className="tableButton edit mx-auto"
                                               onClick={() => {
                                                 navigate(`/agents-edit?id=${item.id}`, {
                                                   state: item,

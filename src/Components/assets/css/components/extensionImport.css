@@ -167,9 +167,11 @@ label.status.missing::before {
     color: var(--form-input-text);
     font-weight: 700;
 }
-.tableHeader .formItem{
+
+.tableHeader .formItem {
     height: 25px;
 }
+
 .formWidth {
     width: 90px !important;
 }
@@ -405,6 +407,10 @@ form.tangoNavs .nav-tabs {
     /* margin-right: 70px; */
 }
 
+.formRow.ringGroup_row.col-xl-3 {
+    width: auto;
+}
+
 .formRow.col-xl-3:nth-child(odd) {
     margin-right: 70px;
 }
@@ -630,6 +636,7 @@ form.tangoNavs .nav-tabs {
     background-color: var(--bg-badge-danger);
     border: 1px solid var(--bg-badge-danger-border);
 }
+
 .badge-softLight-primary {
     color: var(--badge-primary-text);
     /* background-color: var(--bg-badge-danger); */
@@ -637,11 +644,13 @@ form.tangoNavs .nav-tabs {
 }
 
 .badge-border {
-    border: 1px solid #00993b; 
+    border: 1px solid #00993b;
 }
+
 .badge-border-danger {
-    border: 1px solid #e90059; 
+    border: 1px solid #e90059;
 }
+
 .badge-subtle {
     background-color: #0ab39c;
     color: #fff;
@@ -649,10 +658,12 @@ form.tangoNavs .nav-tabs {
     transition: all 0.4s ease-in-out;
     position: relative;
 }
-.badge-subtle:hover .card_info{
+
+.badge-subtle:hover .card_info {
     opacity: 1;
 }
-.card_info{
+
+.card_info {
     position: absolute;
     top: 0;
     right: 48px;
@@ -667,7 +678,8 @@ form.tangoNavs .nav-tabs {
     text-align: start;
     opacity: 0;
 }
-.card_info ul li{
+
+.card_info ul li {
     list-style-type: none;
 }
 
@@ -681,6 +693,7 @@ form.tangoNavs .nav-tabs {
     height: 100%;
     cursor: pointer;
 }
+
 .getPopup.checkout input[type="radio"]:checked~.checkmark {
     border: 1px solid var(--ui-accent);
     width: 100%;
@@ -693,8 +706,9 @@ form.tangoNavs .nav-tabs {
 }
 
 .fillerCountryNumber .formRow {
-  /* display: block; */
+    /* display: block; */
 }
-.fillerCountryNumber .formItem{
+
+.fillerCountryNumber .formItem {
     height: 25px;
 }
