@@ -1153,7 +1153,7 @@ function CardAndBilling() {
                                   </div>
                                   <div
                                     style={{ cursor: "pointer", fontWeight: "500" }}
-                                    className="tableButton"
+                                    className="tableButton blue"
                                     onClick={() =>
                                       downloadImage(
                                         item.invoice_url,

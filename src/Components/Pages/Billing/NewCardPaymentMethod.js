@@ -621,7 +621,7 @@ function NewCardPaymentMethod({
                                   </button>
                                 </div>
                                 <div className="ms-auto d-flex">
-                                  <label className="switch">
+                                  {/* <label className="switch">
                                     <input
                                       type="checkbox"
                                       id="showAllCheck"
@@ -637,7 +637,27 @@ function NewCardPaymentMethod({
                                       }}
                                     />
                                     <span className="slider round"></span>
-                                  </label>
+                                  </label> */}
+
+                                  <div class="cl-toggle-switch">
+                                    <label class="cl-switch">
+                                      <input
+                                        type="checkbox"
+                                        id="showAllCheck"
+                                        checked={
+                                          selectedBillId === item.id
+                                            ? true
+                                            : false
+                                        }
+                                        onChange={(e) => {
+                                          if (e.target.checked) {
+                                            setSelectedBillId(item.id);
+                                          }
+                                        }}
+                                      />
+                                      <span></span>
+                                    </label>
+                                  </div>
                                 </div>
                               </div>
                             </h2>

@@ -1238,9 +1238,12 @@ input[type=number] {
     border: none;
     background: #66339900;
     /* color: #000000; */
-
 }
 
+#google_translate_element select:invalid,
+#google_translate_element select option[value] {
+    color: #000000;
+}
 
 .popupopen {
     position: fixed;

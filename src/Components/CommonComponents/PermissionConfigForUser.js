@@ -293,7 +293,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
           <div className="heading h-auto justify-content-start">
             <h5 className='me-3'>{sectionName}</h5>
             <div className="my-auto position-relative mx-1">
-              <label className="switch">
+              {/* <label className="switch">
                 <input
                   type="checkbox"
                   checked={models.every(model =>
@@ -317,7 +317,35 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                   }}
                 />
                 <span className="slider round"></span>
-              </label>
+              </label> */}
+
+              <div class="cl-toggle-switch">
+                <label class="cl-switch">
+                  <input
+                    type="checkbox"
+                    checked={models.every(model =>
+                      model.permissions.every(p =>
+                        rolePermissions.permissions.includes(p.id)
+                      ) &&
+                      model.table_records.every(r =>
+                        rolePermissions.tablePermissions.includes(r.id)
+                      )
+                    )}
+                    onChange={(e) => {
+                      models.forEach(model => {
+                        handleMasterToggle(
+                          model.id,
+                          model.module_section,
+                          model.permissions,
+                          model.table_records,
+                          e.target.checked
+                        );
+                      });
+                    }}
+                  />
+                  <span></span>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -359,7 +387,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                         {model.permissions.map(permission => (
                           <td key={permission.id}>
                             <div className="my-auto position-relative mx-1">
-                              <label className="switch">
+                              {/* <label className="switch">
                                 <input
                                   type="checkbox"
                                   checked={rolePermissions.permissions.includes(permission.id)}
@@ -371,7 +399,21 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                   )}
                                 />
                                 <span className="slider round"></span>
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input type="checkbox"
+                                    checked={rolePermissions.permissions.includes(permission.id)}
+                                    onChange={(e) => handlePermissionToggle(
+                                      permission.id,
+                                      model.id,
+                                      model.module_section,
+                                      e.target.checked
+                                    )}
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </td>
                         ))}
@@ -394,7 +436,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                       <div className="card">
                                         <div className="card-header d-flex justify-content-between align-items-center">
                                           <strong className='text-capitalize'>{column.replace(/_/g, " ")}</strong>
-                                          <label className="switch">
+                                          {/* <label className="switch">
                                             <input
                                               type="checkbox"
                                               checked={allColumnPermissionsChecked}
@@ -410,13 +452,32 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                               }}
                                             />
                                             <span className="slider round"></span>
-                                          </label>
+                                          </label> */}
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input
+                                                type="checkbox"
+                                                checked={allColumnPermissionsChecked}
+                                                onChange={(e) => {
+                                                  columnRecords.forEach(record => {
+                                                    handleColumnToggle(
+                                                      record.id,
+                                                      model.id,
+                                                      model.module_section,
+                                                      e.target.checked
+                                                    );
+                                                  });
+                                                }}
+                                              />
+                                              <span></span>
+                                            </label>
+                                          </div>
                                         </div>
                                         <div className="card-body">
                                           {columnRecords.map(record => (
                                             <div key={record.id} className="d-flex justify-content-between mb-2">
                                               <span className='text-capitalize'>{record.action}</span>
-                                              <label className="switch">
+                                              {/* <label className="switch">
                                                 <input
                                                   type="checkbox"
                                                   checked={rolePermissions.tablePermissions.includes(record.id)}
@@ -428,7 +489,22 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                                   )}
                                                 />
                                                 <span className="slider round"></span>
-                                              </label>
+                                              </label> */}
+                                              <div class="cl-toggle-switch">
+                                                <label class="cl-switch">
+                                                  <input
+                                                    type="checkbox"
+                                                    checked={rolePermissions.tablePermissions.includes(record.id)}
+                                                    onChange={(e) => handleColumnToggle(
+                                                      record.id,
+                                                      model.id,
+                                                      model.module_section,
+                                                      e.target.checked
+                                                    )}
+                                                  />
+                                                  <span></span>
+                                                </label>
+                                              </div>
                                             </div>
                                           ))}
                                         </div>

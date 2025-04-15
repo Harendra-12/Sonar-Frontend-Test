@@ -4,7 +4,7 @@ import Header from '../../CommonComponents/Header'
 const SourceAdd = () => {
     return (
         <>
-           <main className="mainContent">
+            <main className="mainContent">
                 <section id="phonePage">
                     <div className="container-fluid">
                         <div className="row">
@@ -24,13 +24,21 @@ const SourceAdd = () => {
                                                             <label for="selectFormRow">Enabled</label>
                                                         </div>
                                                         <div className="my-auto position-relative mx-1">
-                                                            <label className="switch">
+                                                            {/* <label className="switch">
                                                                 <input
                                                                     type="checkbox"
                                                                     id="showAllCheck"
                                                                 />
                                                                 <span className="slider round" />
-                                                            </label>
+                                                            </label> */}
+                                                            <div class="cl-toggle-switch">
+                                                                <label class="cl-switch">
+                                                                    <input
+                                                                        type="checkbox" id="showAllCheck"
+                                                                    />
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <button
@@ -82,7 +90,7 @@ const SourceAdd = () => {
                                                             Strategy
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
+                                                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -97,7 +105,7 @@ const SourceAdd = () => {
                                                             Campaign
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                         who seeks after it and wants to have it, simply because it is pain
+                                                            who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -120,7 +128,7 @@ const SourceAdd = () => {
                                                             Status
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, 
+                                                            There is no one who loves pain itself,
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -132,10 +140,10 @@ const SourceAdd = () => {
                                                 <div className="formRow col-xl-3">
                                                     <div className='formLabel'>
                                                         <label>
-                                                        Customer Journey
+                                                            Customer Journey
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                       all campaign
+                                                            all campaign
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -150,7 +158,7 @@ const SourceAdd = () => {
                                                             Source
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        all source 
+                                                            all source
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
