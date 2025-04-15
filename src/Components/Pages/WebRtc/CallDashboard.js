@@ -9,6 +9,16 @@ import ActiveCallsPage from "../PhoneDashboard/ActiveCallsPage";
 import { useSIPProvider } from "modify-react-sipjs";
 import AllActiveAgentStatus from "../PhoneDashboard/AllActiveAgentStatus";
 
+/**
+ * The CallDashboard component manages and displays the call dashboard interface.
+ * It integrates with the Redux store to fetch session, account, and call data,
+ * and provides functionalities for handling parked calls and agent activity status.
+ * The component includes UI elements for searching, logging out, and toggling dark mode.
+ * It also manages the state of online and offline users, and handles call parking and unparking.
+ *
+ * @returns {JSX.Element} The rendered call dashboard component.
+ */
+
 function CallDashboard() {
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);

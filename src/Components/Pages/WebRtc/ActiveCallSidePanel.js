@@ -7,6 +7,23 @@ import { useSessionCall } from "modify-react-sipjs";
 import { SessionState } from "sip.js";
 import { toast } from "react-toastify";
 
+/**
+ * ActiveCallSidePanel
+ * This component is used to show the active call list in the side panel of the phone dashboard.
+ * It shows the destination number and the status of the call.
+ * If the call is established, it shows the answered time and the call duration.
+ * If the call is ringing, it shows the "Answer" and "Reject" buttons.
+ * If the call is on hold, it shows the "Resume" button.
+ * @param {string} sessionId - The id of the session.
+ * @param {number} chennel - The channel number of the call.
+ * @param {string} mode - The mode of the call, "audio" or "video".
+ * @param {string} destination - The destination number of the call.
+ * @param {function} setHangupRefresh - The function to set the hangup refresh flag.
+ * @param {number} hangupRefresh - The hangup refresh flag.
+ * @param {function} setSelectedModule - The function to set the selected module.
+ * @param {boolean} isMicOn - The flag to check if the microphone is on.
+ * @param {array} globalSession - The array of all the sessions.
+ */
 function ActiveCallSidePanel({
   sessionId,
   chennel,
