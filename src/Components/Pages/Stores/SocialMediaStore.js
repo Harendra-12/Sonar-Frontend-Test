@@ -62,7 +62,8 @@ function SocialMediaStore() {
                                         </div>
                                         <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                             <div>
-                                                <div className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</div>
+                                                <span class="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
+                                                {/* <div className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</div> */}
                                             </div>
                                             <div>
                                                 <span className="borders-left-small " />
