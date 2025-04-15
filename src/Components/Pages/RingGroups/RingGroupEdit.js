@@ -686,7 +686,7 @@ const RingGroupEdit = () => {
                   }}
                 >
                   <form className="row mb-0">
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">
                           Name <span className="text-danger">*</span>
@@ -695,7 +695,7 @@ const RingGroupEdit = () => {
                           Enter a name.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <input
                           type="text"
                           name="extension"
@@ -712,14 +712,14 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Extension</label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter an extension.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <input
                           type="text"
                           name="extension"
@@ -732,14 +732,14 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Strategy</label>
                         <label htmlFor="data" className="formItemDesc">
                           Select the ring strategy.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <select
                           className="formItem"
                           {...register("strategy")}
@@ -753,14 +753,14 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label>Timeout Destination</label>
                         <label className="formItemDesc">
                           Select the timeout destination for this ring group.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <div className="row">
                           <div
                             className={`col-${showTimeoutDestinationToggle ? "4" : "12"
@@ -880,7 +880,7 @@ const RingGroupEdit = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Ring Back</label>
                         <label htmlFor="data" className="formItemDesc">
@@ -888,7 +888,7 @@ const RingGroupEdit = () => {
                           destination is being called.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <select
                           className="formItem"
                           {...register("ring_back")}
@@ -919,14 +919,14 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Description</label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter the description.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <input
                           type="text"
                           name="extension"
@@ -941,11 +941,11 @@ const RingGroupEdit = () => {
                         )}
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="">Recording</label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <select
                           className="formItem me-0"
                           style={{ width: "100%" }}
@@ -962,14 +962,14 @@ const RingGroupEdit = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="formRow ringGroup_row col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div className="formRow col-xl-3">
                       <div className="formLabel">
                         <label htmlFor="selectFormRow">Tag</label>
                         <label htmlFor="data" className="formItemDesc">
                           Enter the tag.
                         </label>
                       </div>
-                      <div className="col-xl-6 col-lg-12 col-12">
+                      <div className="col-6">
                         <input
                           type="text"
                           name="extension"
