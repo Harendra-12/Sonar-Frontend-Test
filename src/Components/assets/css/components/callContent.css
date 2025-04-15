@@ -561,6 +561,7 @@
 .addNewContactPopup ul {
     list-style: none;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     padding: 0;
     margin: 0;
@@ -582,10 +583,11 @@
     /* border: 1px solid var(--border-color); */
     border-radius: 10px;
     padding: 0 10px 10px;
+   
 }
 
 .addNewContactPopup ul li {
-    width: 50%;
+    width: 48%;
     padding-bottom: 5px;
     font-size: 0.875rem;
     font-size: 0.875rem;

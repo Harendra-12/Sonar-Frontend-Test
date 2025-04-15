@@ -82,9 +82,9 @@ function AddOns() {
                                             </button>
                                             <button
                                                 className="nav-link px-2"
-                                                // id="nav-package-tab"
+                                                id="nav-package-tab"
                                                 // data-bs-toggle="tab"
-                                                data-bs-target="#nav-package"
+                                                // data-bs-target="#nav-package"
                                                 type="button"
                                                 role="tab"
                                                 aria-controls="nav-package"

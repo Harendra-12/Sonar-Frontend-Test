@@ -2291,7 +2291,7 @@ function Messages({
                                             </h6>
                                             <div className="">
                                               {/* function to display the message */}
-                                              <DisplayFile item={item.body} />
+                                              <DisplayFile key={index} item={item.body} index={index} />
                                             </div>
                                           </div>
                                         </div>

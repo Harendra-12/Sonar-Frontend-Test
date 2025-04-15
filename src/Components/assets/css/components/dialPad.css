@@ -98,3 +98,7 @@
 .dialerWrap>div:hover {
     cursor: pointer;
 }
+
+.spninner-loader{
+    margin-left: 50px !important;
+}
