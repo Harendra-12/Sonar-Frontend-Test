@@ -10,9 +10,11 @@ function SocialMediaStore() {
     const [allAddons, setAllAddons] = useState([]);
     const [selectedAddon, setSelectedAddon] = useState({});
     const accountBalance = useSelector((state) => state.accountBalance);
+    const account = useSelector((state) => state.account);
     const [paymentMethod, setPaymentMethod] = useState("wallet");
     const [purchasePopup, setPurchasePopup] = useState(false);
     const [rechargePopUp, setRechargePopUp] = useState(false);
+    const [addonBuyPopup, setAddonBuyPopup] = useState(false);
 
     // Get All Addons
     const fetchAllAddons = async () => {
@@ -33,6 +35,43 @@ function SocialMediaStore() {
         setRechargePopUp(value);
     }
 
+    // Handle callBack for buying pop up
+    function handleBuyPopUp(value) {
+        setAddonBuyPopup(value);
+    }
+
+    // Handle Addon Purchase
+    async function handlePayment() {
+        setPurchasePopup(false);
+        if (paymentMethod === "wallet") {
+            const parsedData = {
+                companyId: account.account_id,
+                addonId: selectedAddon.id,
+                type: "wallet",
+            };
+            if (
+                Number(accountDetails?.balance?.amount) <
+                (parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)
+            ) {
+                toast.error("Wallet balance is low");
+            } else {
+                setLoading(true);
+                setPopUp(false);
+                const apiData = await generalPostFunction("/addon/buy", parsedData);
+                if (apiData.status) {
+                    setLoading(false);
+                    toast.success(apiData.message);
+                    setDid();
+                    setSelectedAddon([]);
+                } else {
+                    setLoading(false);
+                    toast.error(apiData.errors);
+                }
+            }
+        } else {
+            setAddonBuyPopup(true);
+        }
+    }
 
     return (
         <>
@@ -48,7 +87,6 @@ function SocialMediaStore() {
                                             <img
                                                 src={require(`../../assets/images/icons/addons/${item.name.toLowerCase()}.webp`)}
                                                 alt="Click to Call"
-                                            // className="product-image"
                                             />
                                         </div>
                                         <div className="product-title hover mt-4">
@@ -63,7 +101,6 @@ function SocialMediaStore() {
                                         <div className="d-flex align-items-center justify-content-center teext-color mb-3">
                                             <div>
                                                 <span class="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
-                                                {/* <div className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</div> */}
                                             </div>
                                             <div>
                                                 <span className="borders-left-small " />
@@ -172,18 +209,18 @@ function SocialMediaStore() {
                                 <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2'>
                                     <div className='d-flex justify-content-start align-items-center gap-2'>
                                         <div className='product_imgAdonsPopup'>
-                                        <img
-                                            src={require(`../../assets/images/icons/addons/${selectedAddon.name.toLowerCase()}.webp`)}
-                                            alt="Click to Call"
-                                        />
+                                            <img
+                                                src={require(`../../assets/images/icons/addons/${selectedAddon.name.toLowerCase()}.webp`)}
+                                                alt="Click to Call"
+                                            />
                                         </div>
-                                      <div className='product_details'>
-                                      <p className='mb-0 text-black fw-semibold'> {selectedAddon.name}</p>
-                                      <p style={{ fontSize: 11 }} className='ellipsisText text-muted mb-0'>{selectedAddon.description}</p>
-                                      </div>
+                                        <div className='product_details'>
+                                            <p className='mb-0 text-black fw-semibold'> {selectedAddon.name}</p>
+                                            <p style={{ fontSize: 11 }} className='ellipsisText text-muted mb-0'>{selectedAddon.description}</p>
+                                        </div>
                                     </div>
                                     <div>
-                                        <span className="float-end text-black fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br/>
+                                        <span className="float-end text-black fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br />
 
                                         <span class="old_price">${parseFloat(selectedAddon.price)}</span>
                                     </div>
@@ -262,7 +299,6 @@ function SocialMediaStore() {
                                     </button>
                                     <button
                                         className="panelButton"
-                                        // onClick={handlePayment}
                                         onClick={() => setPurchasePopup(true)}
                                     >
                                         <span className="text">Pay</span>
@@ -293,6 +329,23 @@ function SocialMediaStore() {
                 )
             }
             {
+                addonBuyPopup ? (
+                    <div className="popup">
+                        <div className="container h-100">
+                            <div className="row h-100 justify-content-center align-items-center">
+                                <RechargeWalletPopup
+                                    closePopup={handleBuyPopUp}
+                                    rechargeType={"purchaseAddon"}
+                                    selectedAddon={selectedAddon}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    ""
+                )
+            }
+            {
                 purchasePopup ? (
                     <div className="popup">
                         <div className="container h-100">
@@ -311,7 +364,7 @@ function SocialMediaStore() {
                                         <div className="mt-2 d-flex justify-content-between">
                                             <button
                                                 className="panelButton m-0 float-end"
-                                                onClick={() => featureUnderdevelopment()}
+                                                onClick={handlePayment}
                                             >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon"><i className="fa-solid fa-check" /></span>
