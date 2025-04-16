@@ -108,7 +108,7 @@ const CallQueueDetails = () => {
                     </div>
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
-                        <span className="badge badge-soft-secondary rounded-pill" 
+                        <span className="badge badge-soft-danger rounded-pill" 
                         style={{ minWidth: '7vw', }}>
                         {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
                           Missed Calls:&nbsp;
@@ -138,7 +138,7 @@ const CallQueueDetails = () => {
                     </div>
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
-                        <span className="badge badge-soft-danger rounded-pill" 
+                        <span className="badge badge-soft-secondary rounded-pill" 
                         style={{ minWidth: '7vw', }}>
                         {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}
                           Total Calls:&nbsp;
