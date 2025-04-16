@@ -161,7 +161,7 @@ const downloadPdf=async(pdfUrl,filename)=>{
       return (
 
         <div>
-          <div className='align-items-center justify-content-start' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px",display:"flex",justifyContent:"space-between",alignItems:"end",padding:'1rem'}} >
+          <div className='align-items-center justify-content-between' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px",display:"flex",justifyContent:"space-between",alignItems:"end",padding:'1rem'}} >
 <div style={{fontSize:"26px", color:"#ff2424"}}>
 <i className="fa-solid fa-file-pdf"></i>
 

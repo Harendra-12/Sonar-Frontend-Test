@@ -186,9 +186,9 @@ const IvrListing = () => {
                             <th>Confirm Attempts</th>
                             <th>Timeout</th>
                             <th>Max Failures</th>
-                            <th className="text-center">Options</th>
-                             <th className="text-center">Edit</th>
-                            <th className="text-center">Delete</th>
+                            <th>Options</th>
+                             <th>Edit</th>
+                            <th>Delete</th>
                           </tr> 
                         </thead>
                         <tbody>

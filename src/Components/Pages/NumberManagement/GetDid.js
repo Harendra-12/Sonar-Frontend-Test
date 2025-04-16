@@ -306,7 +306,7 @@ function GetDid() {
                     </div>
                     <div />
 
-                    <div className="col-xl-4  mx-auto mt-2">
+                    <div className="col-xl-4 col-lg-4 col-md-5 mx-auto mt-2">
                       <div className={watch().searchType === "domestic" ? "itemWrapper local-calls a active" : "itemWrapper local-calls a"} onClick={() => setValue('searchType', "domestic")} style={{ cursor: 'pointer' }}>
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div className="float-none">
@@ -319,7 +319,7 @@ function GetDid() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4  mx-auto">
+                    <div className="col-xl-4 col-lg-4 col-md-5  mx-auto">
                       <div className={watch().searchType === "tollfree" ? "itemWrapper local-calls a active" : "itemWrapper local-calls a"} onClick={() => setValue('searchType', "tollfree")} style={{ cursor: 'pointer' }}>
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div className="float-none">
@@ -332,7 +332,7 @@ function GetDid() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-4  mx-auto">
+                    <div className="col-xl-4 col-lg-4 col-md-5  mx-auto">
                       <div className="itemWrapper local-calls a" style={{ cursor: 'not-allowed' }}>
                         <div className="heading  d-flex justify-content-center align-items-center h-auto">
                           <div className="float-none">
@@ -915,7 +915,7 @@ function GetDid() {
           <div className="popup">
             <div className="container h-100">
               <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4">
+                <div className="row content col-xl-4 col-lg-5 col-md-5">
                   <div className="col-2 px-0">
                     <div className="iconWrapper">
                       <i className="fa-duotone fa-triangle-exclamation"></i>
