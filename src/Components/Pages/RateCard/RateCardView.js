@@ -6,6 +6,7 @@ import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import { set } from 'date-fns';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
+import { use } from 'react';
 
 function RateCardView() {
     const navigate = useNavigate();
@@ -35,10 +36,12 @@ function RateCardView() {
 
     // Debounce Search Function
     useEffect(() => {
-        const delay = setTimeout(() => {
-            getRateCard();
-        }, 500);
-        return () => clearTimeout(delay);
+        if (userInput !== "") {
+            const delay = setTimeout(() => {
+                getRateCard();
+            }, 500);
+            return () => clearTimeout(delay);
+        }
     }, [userInput]);
 
     return (

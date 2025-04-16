@@ -226,8 +226,7 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
-  console.log(adminLogout, "Hey");
-
+  
   return (
     <>
      
