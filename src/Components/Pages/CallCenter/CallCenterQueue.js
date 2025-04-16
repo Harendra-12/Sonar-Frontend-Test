@@ -339,7 +339,7 @@ function CallCenterQueue() {
                               <th>Extension</th>
                               <th>Strategy</th>
                               <th>Total Agents</th>
-                              <th>Status</th>
+                              <th className="text-center">Status</th>
                               <th className='text-center'>Edit</th>
                               <th className='text-center'>Delete</th>
                             </tr>
@@ -466,7 +466,7 @@ function CallCenterQueue() {
                                               </div>
                                             </td>
                                             <td>
-                                              <div className="my-auto position-relative mx-1">
+                                              <div className="my-auto position-relative d-flex justify-content-center ">
                                                 {/* <label className="switch">
                                                   <input
                                                     type="checkbox"
@@ -510,7 +510,7 @@ function CallCenterQueue() {
                                             <td>
                                               {" "}
                                               <button
-                                                className="tableButton edit"
+                                                className="tableButton edit mx-auto"
                                                 onClick={() =>
                                                   navigate(
                                                     `/cal-center-queue-edit?id=${item.id}`
@@ -522,7 +522,7 @@ function CallCenterQueue() {
                                             </td>
                                             <td>
                                               <button
-                                                className="tableButton delete"
+                                                className="tableButton delete mx-auto"
                                                 onClick={() => {
                                                   setPopUp(true);
                                                   // setDeleteToggle(true);

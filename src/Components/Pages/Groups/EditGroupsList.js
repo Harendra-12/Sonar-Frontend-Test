@@ -334,151 +334,151 @@ export default function EditGroupsList() {
               </div>
               <form className="row mb-0">
                 <div className="col-12 col-md-12" >
-                    <div  style={{
+                  <div style={{
                     padding: "25px 23px",
                     borderBottom: "1px solid #ddd",
                   }}>
                     <div className="formRow  col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">
-                        Name <span className="text-danger">*</span>
-                      </label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter a name.
-                      </label>
-                    </div>
-                    <div className="formInput">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("name", { required: true })}
-                      />
-                      {errors.name && (
-                        <ErrorMessage text="This field is required" />
-                      )}
+                      <div className="formLabel">
+                        <label htmlFor="">
+                          Name <span className="text-danger">*</span>
+                        </label>
+                        <label htmlFor="data" className="formItemDesc">
+                          Enter a name.
+                        </label>
+                      </div>
+                      <div className="formInput">
+                        <input
+                          type="text"
+                          name="extension"
+                          className="formItem"
+                          {...register("name", { required: true })}
+                        />
+                        {errors.name && (
+                          <ErrorMessage text="This field is required" />
+                        )}
+                      </div>
                     </div>
                   </div>
-                    </div>
-                  
+
                 </div>
               </form>
               <div className="col-12">
-              <div className="heading bg-transparent border-bottom-0">
-                <div className="content">
-                  <h4>List of Users</h4>
-                  <p>You can see the list of agents in this group.</p>
-                </div>{" "}
-                <button
-                  type="button"
-                  className="panelButton"
-                  onClick={() => {
-                    if (users.length > 0 && users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
-                    else toast.warn("All Users selected");
-                  }}
-                >
-                  <span className="text">Add</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-plus"></i>
-                  </span>
-                </button>
-              </div>
-              {selectedUsers.length > 0 && (
-                <form className="row" style={{ padding: "0px 23px 20px" }}>
-                  <div className="formRow col-xl-12">
-                    {selectedUsers.map((item, index) => {
-                      return (
-                        <div className="col-12 d-flex justify-content-start mb-2">
-                          <div
-                            className="formLabel pe-2 d-flex justify-content-between"
-                            style={
-                              index === 0
-                                ? { marginTop: 32, width: 50 }
-                                : { width: 50 }
-                            }
-                          >
-                            <div>
-                              {/* <input
+                <div className="heading bg-transparent border-bottom-0">
+                  <div className="content">
+                    <h4>List of Users</h4>
+                    <p>You can see the list of agents in this group.</p>
+                  </div>{" "}
+                  <button
+                    type="button"
+                    className="panelButton"
+                    onClick={() => {
+                      if (users.length > 0 && users?.length !== selectedUsers?.length) setBulkAddPopUp(true);
+                      else toast.warn("All Users selected");
+                    }}
+                  >
+                    <span className="text">Add</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+                {selectedUsers.length > 0 && (
+                  <form className="row" style={{ padding: "0px 23px 20px" }}>
+                    <div className="formRow col-xl-12">
+                      {selectedUsers.map((item, index) => {
+                        return (
+                          <div className="col-12 d-flex justify-content-start mb-2">
+                            <div
+                              className="formLabel pe-2 d-flex justify-content-between"
+                              style={
+                                index === 0
+                                  ? { marginTop: 32, width: 50 }
+                                  : { width: 50 }
+                              }
+                            >
+                              <div>
+                                {/* <input
                           type="checkbox"
                         //   onChange={() => handleSelectUserToEdit(item)}
                           checked={selectedAgentToEdit.some(
                             (agent) => agent.destination == item.destination
                           )}
                         ></input> */}
-                            </div>
-                            <label>{index + 1}.</label>
-                          </div>
-                          <div className="col-3 pe-2">
-                            {index === 0 ? (
-                              <div className="formLabel">
-                                <label htmlFor="">
-                                  Name<span className="text-danger">*</span>
-                                </label>
                               </div>
-                            ) : (
-                              ""
-                            )}
-                            <div className="position-relative">
-                              <select
-                                disabled
-                                type="text"
-                                name="destination"
-                                value={item?.user?.id || item?.id}
-                                onChange={(e) => {
-                                  const selectedValue = e.target.value;
-                                  if (selectedValue === "addUser") {
-                                    navigate("/users-add");
-                                  } else {
-                                    handleDestinationChange(index, e);
-                                  }
-                                }}
-                                className="formItem"
-                                placeholder="Destination"
-                              >
-                                <option value={item?.user?.id || item?.id} disabled>
-                                  {item?.user?.name || item?.name}
-                                </option>
-
-                                {users &&
-                                  users
-                                    .filter((item1) => {
-                                      return (
-                                        item1?.extension?.extension ==
-                                        selectedUsers[index]?.destination ||
-                                        !selectedUsers.some(
-                                          (destinationItem, destinationIndex) =>
-                                            destinationItem?.destination ==
-                                            item1?.extension?.extension &&
-                                            destinationIndex != index
-                                        )
-                                      );
-                                    })
-                                    .map((item) => {
-                                      return (
-                                        <option
-                                          value={item?.extension?.extension}
-                                          key={item?.id}
-                                        >
-                                          {item.alias
-                                            ? `${item?.alias} - ${item?.extension?.extension}`
-                                            : `${item?.name} - ${item?.extension?.extension}`}
-                                          {item.name}(
-                                          {item?.extension?.extension})
-                                        </option>
-                                      );
-                                    })}
-                                <option
-                                  value="addUser"
-                                  className="addmusic"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  Add User
-                                </option>
-                              </select>
+                              <label>{index + 1}.</label>
                             </div>
-                          </div>
+                            <div className="col-3 pe-2">
+                              {index === 0 ? (
+                                <div className="formLabel">
+                                  <label htmlFor="">
+                                    Name<span className="text-danger">*</span>
+                                  </label>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <div className="position-relative">
+                                <select
+                                  disabled
+                                  type="text"
+                                  name="destination"
+                                  value={item?.user?.id || item?.id}
+                                  onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    if (selectedValue === "addUser") {
+                                      navigate("/users-add");
+                                    } else {
+                                      handleDestinationChange(index, e);
+                                    }
+                                  }}
+                                  className="formItem"
+                                  placeholder="Destination"
+                                >
+                                  <option value={item?.user?.id || item?.id} disabled>
+                                    {item?.user?.name || item?.name}
+                                  </option>
 
-                          {/* {watch("strategy") === "sequence" ? (
+                                  {users &&
+                                    users
+                                      .filter((item1) => {
+                                        return (
+                                          item1?.extension?.extension ==
+                                          selectedUsers[index]?.destination ||
+                                          !selectedUsers.some(
+                                            (destinationItem, destinationIndex) =>
+                                              destinationItem?.destination ==
+                                              item1?.extension?.extension &&
+                                              destinationIndex != index
+                                          )
+                                        );
+                                      })
+                                      .map((item) => {
+                                        return (
+                                          <option
+                                            value={item?.extension?.extension}
+                                            key={item?.id}
+                                          >
+                                            {item.alias
+                                              ? `${item?.alias} - ${item?.extension?.extension}`
+                                              : `${item?.name} - ${item?.extension?.extension}`}
+                                            {item.name}(
+                                            {item?.extension?.extension})
+                                          </option>
+                                        );
+                                      })}
+                                  <option
+                                    value="addUser"
+                                    className="addmusic"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    Add User
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+
+                            {/* {watch("strategy") === "sequence" ? (
                       <div className="col-2 pe-2">
                         {index === 0 ? (
                           <div className="formLabel">
@@ -606,161 +606,163 @@ export default function EditGroupsList() {
                         <option value="inactive">False</option>
                       </select>
                     </div> */}
-                          {selectedUsers.length == 1 ? (
-                            ""
-                          ) : (
-                            <div
-                              className={`me-2 h-100 m${index === 0 ? "t" : "y"
-                                }-auto`}
-                            >
-                              <button
-                                type="button"
-                                onClick={() => deleteDestination(item.id)}
-                                className="tableButton delete"
+                            {selectedUsers.length == 1 ? (
+                              ""
+                            ) : (
+                              <div
+                                className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
-                                <i className="fa-solid fa-trash"></i>
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                    {errors.destinations && (
-                      <ErrorMessage text={errors.destinations.message} />
-                    )}
+                                <button
+                                  type="button"
+                                  onClick={() => deleteDestination(item.id)}
+                                  className="tableButton delete"
+                                >
+                                  <i className="fa-solid fa-trash"></i>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                      {errors.destinations && (
+                        <ErrorMessage text={errors.destinations.message} />
+                      )}
 
-                    <label htmlFor="data" className="formItemDesc">
-                      Add destinations and parameters to the group.
-                    </label>
-                  </div>
-                </form>
-              )}
+                      <label htmlFor="data" className="formItemDesc">
+                        Add destinations and parameters to the group.
+                      </label>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
-            </div>
-           
+
           </div>
         )}
       </>
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Ring Group</h5>
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Search"
-                  name="name"
-                  value={searchQuery}
-                //   onChange={handleSearchChange}
-                />
-                <button
-                  className="tableButton ms-2"
-                //   onClick={() => navigate("/users-add")}
-                >
-                  <i className="fa-solid fa-user-plus"></i>
-                </button>
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
               </div>
-            </div>
-            <div className="col-xl-12 mt-3">
-              <div
-                className="tableContainer mt-0"
-                style={{ maxHeight: "calc(100vh - 400px)" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>
-                        <input
-                          type="checkbox"
-                          onChange={handleSelectAll} // Call handler on change
-                          checked={selectAll ? true : false} // Keep checkbox state in sync
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users?.sort((a, b) => {
-                      const aMatches =
-                        a.name
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase()) ||
-                        (a?.extension?.extension || "")
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase());
-                      const bMatches =
-                        b.name
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase()) ||
-                        (b?.extension?.extension || "")
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase());
-                      // Sort: matching items come first
-                      return bMatches - aMatches;
-                    })
-                      .filter(
-                        (user) =>
-                          !selectedUsers.some(
-                            (agent) =>
-                              user?.extension?.extension == agent?.destination
-                          )
-                      )
-                      .map((item, index) => {
-                        return (
-                          <tr key={item.id || index}>
-                            <td>{index + 1}</td>
-                            <td>{item?.name}</td>
-                            <td>{item?.extension?.extension}</td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                checked={bulkUploadSelectedAgents.some(
-                                  (agent) => agent?.name === item?.name
-                                )} // Keep checkbox state in sync
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                  //   onChange={handleSearchChange}
+                  />
+                  <button
+                    className="tableButton popupIcon_btn ms-2"
+                  //   onClick={() => navigate("/users-add")}
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkAddPopUp(false);
-                    setBulkUploadSelectedAgents([]);
-                    setSelectAll(false);
-                  }}
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
                 >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-light fa-xmark"></i>
-                  </span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                    setBulkAddPopUp(false);
-                  }}
-                  className="panelButton"
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users?.sort((a, b) => {
+                        const aMatches =
+                          a.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (a?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        const bMatches =
+                          b.name
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase()) ||
+                          (b?.extension?.extension || "")
+                            .toLowerCase()
+                            .includes(searchQuery.toLowerCase());
+                        // Sort: matching items come first
+                        return bMatches - aMatches;
+                      })
+                        .filter(
+                          (user) =>
+                            !selectedUsers.some(
+                              (agent) =>
+                                user?.extension?.extension == agent?.destination
+                            )
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item?.name}</td>
+                              <td>{item?.extension?.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent?.name === item?.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

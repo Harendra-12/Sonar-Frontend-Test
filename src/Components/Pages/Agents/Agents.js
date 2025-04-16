@@ -190,7 +190,7 @@ function Agents({ type }) {
                             <th>Extension</th>
                             <th>Role</th>
                             <th>Recording</th>
-                            <th>Online</th>
+                            <th className="text-center">Online</th>
                             {checkViewSidebar(
                               "CallCenterAgent",
                               slugPermissions,
@@ -245,8 +245,8 @@ function Agents({ type }) {
                                           <span
                                             className={
                                               onlineUsers.includes(item.id)
-                                                ? "extensionStatus online"
-                                                : "extensionStatus"
+                                                ? "extensionStatus online mx-auto"
+                                                : "extensionStatus mx-auto"
                                             }
                                           ></span>
                                         </td>
@@ -256,7 +256,7 @@ function Agents({ type }) {
                                           account?.permissions, "edit")) && (onlineUsers.includes(item.id) && item.token != null) ?
                                           <td>
                                             <button
-                                              className="tableButton delete"
+                                              className="tableButton delete mx-auto"
                                               onClick={() => {
                                                 setIsAgentLogoutPopup(true);
                                                 setAgentLogOutToken(item.token);
