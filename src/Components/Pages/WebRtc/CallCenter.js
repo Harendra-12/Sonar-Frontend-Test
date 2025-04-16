@@ -14,6 +14,13 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
 import { useSIPProvider } from "modify-react-sipjs";
 
+/**
+ * The CallCenter component renders a call center dashboard where the user can see the status of the agents assigned to them.
+ * It fetches the call center data from the API and displays it in a table.
+ * The user can also search for specific agents and take actions on the agents such as logging out or disconnecting.
+ * @param {boolean} initial - This is a boolean that is used to determine whether the call center component is being rendered initially or not.
+ * @returns {JSX.Element}
+ */
 const CallCenter = ({ initial }) => {
   const sessions = useSelector((state) => state.sessions);
   const dispatch = useDispatch();
@@ -33,6 +40,10 @@ const CallCenter = ({ initial }) => {
 
   useEffect(() => {
     const getData = async () => {
+      dispatch({
+        type: "SET_CALLCENTERREFRESH",
+        callCenterRefresh: callCenterRefresh + 1,
+      });
       const apiData = await generalGetFunction("/call-center-agent/all");
       if (apiData?.status) {
         setCallCenterDetailData(apiData.data);
@@ -225,10 +236,6 @@ const CallCenter = ({ initial }) => {
                               onClick={() => {
                                 setRefreshCenter(refreshCenter + 1);
                                 setLoading(true);
-                                dispatch({
-                                  type: "SET_CALLCENTERREFRESH",
-                                  callCenterRefresh: callCenterRefresh + 1,
-                                });
                               }
 
                               }

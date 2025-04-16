@@ -554,18 +554,7 @@ const NewGetDid = () => {
 
                                             <div className="formRow col-2">
                                                 <div className="">
-                                                    {/* <button
-                                                        effect="ripple"
-                                                        className="panelButton m-0"
-                                                        type="submit"
-                                                    >
-                                                        <span className="text">Search</span>
-                                                        <span className="icon">
-                                                            <i className="fa-solid fa-magnifying-glass"></i>
-                                                        </span>
-                                                    </button> */}
-                                                    <button class="btn btn-primary" type="button">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>
-                                                    </button>
+                                                    <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>                                                    </button>
                                                 </div>
                                             </div>
                                         </form>

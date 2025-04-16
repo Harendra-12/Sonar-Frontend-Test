@@ -385,7 +385,7 @@ function DidListing({ page }) {
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={9} row={15} />
+                            <SkeletonTableLoader col={page === "pbx" ? 10 : 9} row={15} />
                           ) : (
                             <>
                               {did &&

@@ -92,7 +92,9 @@ const AudioWaveformCommon = ({ audioUrl }) => {
         // Cleanup WaveSurfer instance
         return () => {
             if (wavesurfer.current) {
-                wavesurfer.current.destroy();
+                wavesurfer.current.stop();       // 👈 stop the audio
+                wavesurfer.current.destroy();    // 👈 destroy the instance
+                wavesurfer.current = null;
             }
         };
     }, [audioUrl]);

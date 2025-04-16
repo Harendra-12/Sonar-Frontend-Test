@@ -450,6 +450,12 @@ const RingGroupEdit = () => {
       });
     } else {
       setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -541,8 +547,8 @@ const RingGroupEdit = () => {
       availableUsers.forEach((item) => {
         if (
           !bulkUploadSelectedAgents.some(
-            (agent) => agent.extension.extension == item?.extension?.extension
-          )
+            (agent) => agent.extension.extension == item?.extension?.extension 
+          )&& item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }

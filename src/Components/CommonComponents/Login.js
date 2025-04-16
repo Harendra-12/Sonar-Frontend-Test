@@ -13,6 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const account = useSelector((state)=> state.account);
+  if (token && account) {
+    if(account?.user_role?.roles?.name === "Agent"){
+      navigate("/webrtc")
+    }else{
+      navigate("/dashboard")
+    }
+  }
   return (
     <>
       <style>

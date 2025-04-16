@@ -458,6 +458,12 @@ function CallCenterQueueEdit() {
       // navigate("/cal-center-queue");
     } else {
       setLoading(false);
+      if (apiData.error) {
+        toast.error(apiData.error);
+      } else {
+        const errorMessage = Object.keys(apiData.errors);
+        toast.error(apiData.errors[errorMessage[0]][0]);
+      }
     }
   });
 
@@ -598,7 +604,7 @@ function CallCenterQueueEdit() {
       // Add all visible users to bulkUploadSelectedAgents
       availableUsers.forEach((item) => {
         if (
-          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name)
+          !bulkUploadSelectedAgents.some((agent) => agent?.name == item?.name) && item.usages === "pbx"
         ) {
           handleCheckboxChange(item);
         }

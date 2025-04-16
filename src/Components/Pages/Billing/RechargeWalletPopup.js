@@ -10,7 +10,7 @@ import CircularLoader from "../../Loader/CircularLoader";
 import { generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 
-function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
+function RechargeWalletPopup({ closePopup, rechargeType, selectedDid, selectedAddon }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountDetailsRefresh = useSelector(
@@ -56,7 +56,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
       toast.error("Please enter CVV");
     } else if (cvv.length < 3 || cvv.length > 4) {
       toast.error("Please enter correct cvv");
-    } else if (rechargeType !== "buyDid" && amount === "") {
+    } else if (!["buyDid", "purchaseAddon"].includes(rechargeType) && amount === "") {
       toast.error("Please enter amount");
     } else {
       setLoading(true);
@@ -97,6 +97,28 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           setLoading(false);
           // navigate("/card-details");
           // const errorMessage = Object.keys(apiData.errors);
+          toast.error(apiData.error);
+        }
+      } else if (rechargeType === "purchaseAddon") {
+        const parsedData = {
+          address_id: selectedBillId,
+          account_id: account.account_id,
+          card_id: selectedCardId,
+          cvc: cvv,
+          // amount: amount,
+          type: "card",
+          addon_id: selectedAddon.id,
+          amount: Number((parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2))
+        };
+        const apiData = await generalPostFunction("/addon/buy", parsedData);
+        if (apiData.status) {
+          setLoading(false);
+          setTimeout(() => {
+            closePopup(false);
+          }, 2000);
+          toast.success(apiData.message);
+        } else {
+          setLoading(false);
           toast.error(apiData.error);
         }
       } else {
@@ -170,6 +192,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
           mainPopUpClose={mainClose}
           rechargeType={rechargeType}
           selectedDid={selectedDid}
+          selectedAddon={selectedAddon}
         />
       ) : (
         <div className="row">
@@ -352,25 +375,25 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                                       <span className="slider round"></span>
                                     </label> */}
                                     <div class="cl-toggle-switch">
-                                  <label class="cl-switch">
-                                    <input type="checkbox"
-                                      id="showAllCheck"
-                                      checked={
-                                       item.id === selectedBillId
-                                         ? true
-                                         : false
-                                     }
-                                     onChange={(e) => {
-                                       if (e.target.checked) {
-                                         setSelectedBillId(item.id);
-                                       } else {
-                                         setSelectedBillId();
-                                       }
-                                     }}
-                                    />
-                                    <span></span>
-                                  </label>
-                                </div>
+                                      <label class="cl-switch">
+                                        <input type="checkbox"
+                                          id="showAllCheck"
+                                          checked={
+                                            item.id === selectedBillId
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={(e) => {
+                                            if (e.target.checked) {
+                                              setSelectedBillId(item.id);
+                                            } else {
+                                              setSelectedBillId();
+                                            }
+                                          }}
+                                        />
+                                        <span></span>
+                                      </label>
+                                    </div>
                                   </div>
                                 </div>
                               </h2>
@@ -510,7 +533,7 @@ function RechargeWalletPopup({ closePopup, rechargeType, selectedDid }) {
                       </div>
                     </div>
                   </div>
-                  {rechargeType === "buyDid" ? (
+                  {rechargeType === "buyDid" || rechargeType === "purchaseAddon" ? (
                     ""
                   ) : (
                     <div className="col-6">

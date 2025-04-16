@@ -65,8 +65,8 @@ export async function generalGetFunction(endpoint) {
         loading: false,
       });
       if (err.response?.status === 401) {
-        console.log("Session expired. Please login again.",err.response);
-        
+        console.log("Session expired. Please login again.", err.response);
+
         if (!sessionExpiredToastShown) {
           sessionExpiredToastShown = true;
           toast.error(err?.response?.data?.message || "Session expired. Please login again.");
@@ -115,9 +115,9 @@ export async function generalGetFunctionWithToken(endpoint, token) {
         type: "SET_LOADING",
         loading: false,
       });
-      
-        return err;
-      
+
+      return err;
+
     })
 }
 
@@ -169,10 +169,10 @@ export async function generalPostFunctionWithToken(endpoint, data, token) {
       return res.data;
     })
     .catch((err) => {
-     
-        return err.response?.data;
-      })
-    
+
+      return err.response?.data;
+    })
+
 }
 
 // General Put function
@@ -448,3 +448,14 @@ export function formatTimeWithAMPM(timeString) {
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${period}`;
 }
 
+// Function to format Time Duration
+export function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0");
+  const minutes = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
+  return `${hours}:${minutes}:${secs}`;
+}
