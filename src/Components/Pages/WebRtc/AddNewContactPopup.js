@@ -14,6 +14,18 @@ import {
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 
+/**
+ * AddNewContactPopup
+ * A popup component for adding or editing a new contact
+ * @param {function} setAddContactToggle - a function to set the add contact toggle
+ * @param {boolean} editContactToggle - a boolean to indicate if the popup is for editing a contact
+ * @param {function} setEditContactToggle - a function to set the edit contact toggle
+ * @param {object} selectedEditContact - the contact object to be edited
+ * @param {function} setLoading - a function to set the loading state
+ * @param {function} setSelectedEditContact - a function to set the selected edit contact
+ * @param {boolean} loading - a boolean to indicate if the component is loading
+ * @returns {JSX.Element}
+ */
 function AddNewContactPopup({
   setAddContactToggle,
   editContactToggle,

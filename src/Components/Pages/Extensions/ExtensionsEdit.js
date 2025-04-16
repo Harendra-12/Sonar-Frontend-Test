@@ -68,10 +68,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       callTimeOut: `${160}`,
     },
   });
-
-  console.log("All data extension",watch());
-  console.log("Error in extension", errors);
-  
   
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
@@ -246,8 +242,6 @@ const ExtensionsEdit = ({ page, extensionData }) => {
   // Handle edit form submit by checking all validation with the help of react hook form and also manually check if onbusyto, noanswerto, notregisterto is selected then its destination should not be empty apart from this there is two type of submit one is normal means if no extension assign then we can assign any extension other one is force if the extension is already assign then by using force option we can assign any extension
 
   const handleFormSubmit = handleSubmit(async (data, title) => {
-    console.log("Inside handleFormSubmit", data, title);
-    
     if (data.onbusy == 1 && !data.onbusyTo) {
       setError("onbusyTo", {
         type: "manual",
@@ -353,9 +347,10 @@ const ExtensionsEdit = ({ page, extensionData }) => {
               }
             : {}),
           password: data.password,
-          ...(data.user === "" || data.user === null
-            ? {}
-            : { user: data.user }),
+          user: data.user,
+          // ...(data.user === "" || data.user === null
+          //   ? {user : null}
+          //   : { user: data.user }),
           forceUpdate: true,
         };
       } else {
@@ -428,9 +423,10 @@ const ExtensionsEdit = ({ page, extensionData }) => {
               : 0,
           description: data.description,
           password: data.password,
-          ...(data.user === "" || data.user === null
-            ? {}
-            : { user: data.user }),
+          user: data.user,
+          // ...(data.user === "" || data.user === null
+          //   ? {user : null}
+          //   : { user: data.user }),
         };
       }
       const apiData = await generalPutFunction(
@@ -640,7 +636,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 )}
                               </div>
                             </div>
-                            <div className="formRow col-xl-3">
+                            {/* <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">
                                   Password{" "}
@@ -666,7 +662,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   />
                                 )}
                               </div>
-                            </div>
+                            </div> */}
                             <div className="formRow col-xl-3">
                               <div className="formLabel">
                                 <label htmlFor="">Select User</label>

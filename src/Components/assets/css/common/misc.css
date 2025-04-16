@@ -1232,15 +1232,18 @@ input[type=number] {
     width: 100%;
     height: 35px;
     transition: all 0.3s ease-in-out;
-    color: var(--form-input-text);
+    color: #fff;
     font-weight: 700;
 
     border: none;
     background: #66339900;
-    color: #000000;
-
+    /* color: #000000; */
 }
 
+#google_translate_element select:invalid,
+#google_translate_element select option[value] {
+    color: #000000;
+}
 
 .popupopen {
     position: fixed;

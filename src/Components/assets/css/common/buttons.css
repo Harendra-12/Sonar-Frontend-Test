@@ -688,8 +688,8 @@
   border-radius: 5px;
   background-color: var(--ui-accent);
   color: #fff;
-  width: 20px !important;
-  height: 20px !important;
+  width: 25px !important;
+  height: 25px !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -723,9 +723,9 @@
 }
 
 .tableButton.delete {
-  background-color: rgba(239, 68, 68, 0.116);
-  color: #fe5454;
-  border: 1px solid #ef4444;
+  background-color: #fbd6db;
+  color: #ec344c;
+  /* border: 1px solid #ef4444; */
 }
 
 .tableButton.delete:hover {
@@ -734,10 +734,68 @@
 }
 
 .tableButton.edit {
-  background-color: rgba(218, 244, 240, 0.341);
-  color: #0ab39c;
-  border: 1px solid #0ab39c;
+  background-color: #d4e5e3;
+  color: #287f71;
+  /* border: 1px solid #0ab39c; */
 }
+.tableButton.whatsapp {
+  color: var(--text-badge-accent);
+  background-color: var(--bg-badge-accent);
+}
+.tableButton.whatsapp:hover {
+  color:#fff;
+  background-color: #058d97;
+}
+.tableButton.whatsapp.empty {
+  color:#fff;
+  background-color: #058d97;
+}
+.tableButton.fax {
+  color: var(--text-badge-danger);
+  background-color: var(--bg-badge-danger);
+}
+.tableButton.fax:hover {
+  color: #fff;
+  background-color: #a00d5f;
+}
+.tableButton.fax.empty {
+  color: #fff;
+  background-color: #a00d5f;
+}
+.tableButton.sms {
+  color: var(--text-badge-secondary);
+    background-color: var(--bg-badge-secondary);
+}
+.tableButton.sms:hover {
+  color: #fff;
+    background-color: #777edd;
+}
+.tableButton.sms.empty {
+  color: #fff;
+    background-color: #777edd;
+}
+.tableButton.head {
+  background-color: #8bff806b;
+  color: #03900b;
+}
+.tableButton.head:hover {
+  background-color: #03900b;
+  color: #fff;
+}
+.tableButton.head.empty {
+  background-color: #03900b;
+  color: #fff;
+}
+
+.tableButton.blue {
+  background-color: #9dc4ff7d;
+  color: #000cff;
+}
+.tableButton.blue:hover {
+  background-color: #000796;
+  color: #fff;
+}
+
 .tableButton.option {
   background-color: rgba(0, 119, 255, 0.082);
   color: #0075ff;
@@ -763,24 +821,24 @@
 } */
 
 .tableButton.warning {
-  background-color: rgba(255, 166, 0, 0.051);
-  color: #c0760f;
+  background-color: rgba(255, 166, 0, 0.205);
+  color: #ad6501;
   border: 1px solid #c0760f;
 }
 
 .tableButton.warning:hover i {
-  color: #fff;
-  background-color: #c0760f;
+  color: #6d4100;
+  /* background-color: #c0760f; */
 }
 
-.tableButton.empty {
+/* .tableButton.empty {
   background-color: transparent;
   border: 1px solid var(--ui-accent);
 }
 
 .tableButton.empty i {
   color: var(--ui-accent) !important;
-}
+} */
 
 /* .tableButton.delete:hover,
 .tableButton.edit:hover,

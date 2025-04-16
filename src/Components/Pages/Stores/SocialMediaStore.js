@@ -45,8 +45,8 @@ function SocialMediaStore() {
         setPurchasePopup(false);
         if (paymentMethod === "wallet") {
             const parsedData = {
-                companyId: account.account_id,
-                addonId: selectedAddon.id,
+                account_id: account.account_id,
+                addon_id: selectedAddon.id,
                 type: "wallet",
             };
             if (
@@ -363,7 +363,7 @@ function SocialMediaStore() {
                                         <div className="mt-2 d-flex justify-content-between">
                                             <button
                                                 className="panelButton m-0 float-end"
-                                                onClick={handlePayment}
+                                                onClick={() => featureUnderdevelopment()}
                                             >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon"><i className="fa-solid fa-check" /></span>

@@ -1,6 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+/**
+ * Establishes a WebSocket connection to a specified server using account information
+ * from Redux state and token from localStorage. Manages connection states and handles
+ * incoming WebSocket messages, updating Redux store accordingly. Attempts to reconnect 
+ * if the connection is lost, unless the user is logged out. Provides a method to send 
+ * messages over the WebSocket connection.
+ */
+
 const Socket = () => {
   const dispatch = useDispatch();
   const ip = process.env.REACT_APP_BACKEND_IP;
@@ -40,29 +48,24 @@ const Socket = () => {
         socketRef.current.readyState === WebSocket.OPEN &&
         prevTokenRef.current === currentToken
       ) {
-        console.log("WebSocket is already connected with the same token.");
         return;
       }
 
       // Prevent multiple parallel connection attempts
       if (connectingRef.current) {
-        console.log("WebSocket connection already in progress.");
         return;
       }
 
       // Close existing socket if token changed or socket not open
       if (socketRef.current) {
-        console.log("Closing existing WebSocket connection...");
         socketRef.current.close();
       }
 
-      console.log("Connecting WebSocket with token:", currentToken);
       connectingRef.current = true;
 
       const socket = new WebSocket(`wss://${ip}:${port}?token=${currentToken}`);
 
       socket.onopen = () => {
-        console.log("WebSocket connected.");
         reconnectAttemptsRef.current = 0;
         connectingRef.current = false;
         prevTokenRef.current = currentToken;
@@ -114,7 +117,6 @@ const Socket = () => {
               dispatch({ type: "SET_CONFERENCE", conference: result });
               break;
             case "logout_warning":
-              console.log("Logout warning received:", result);
               
               dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
               break;
@@ -164,7 +166,6 @@ const Socket = () => {
 
     return () => {
       if (socketRef.current) {
-        console.log("Cleaning up WebSocket connection.");
         socketRef.current.close();
       }
     };

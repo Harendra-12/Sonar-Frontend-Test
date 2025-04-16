@@ -24,13 +24,21 @@ const SourceEdit = () => {
                                                             <label for="selectFormRow">Enabled</label>
                                                         </div>
                                                         <div className="my-auto position-relative mx-1">
-                                                            <label className="switch">
+                                                            {/* <label className="switch">
                                                                 <input
                                                                     type="checkbox"
                                                                     id="showAllCheck"
                                                                 />
                                                                 <span className="slider round" />
-                                                            </label>
+                                                            </label> */}
+                                                            <div class="cl-toggle-switch">
+                                                                <label class="cl-switch">
+                                                                    <input
+                                                                        type="checkbox" id="showAllCheck"
+                                                                    />
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <button
@@ -82,7 +90,7 @@ const SourceEdit = () => {
                                                             Strategy
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
+                                                            There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -97,7 +105,7 @@ const SourceEdit = () => {
                                                             Campaign
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                         who seeks after it and wants to have it, simply because it is pain
+                                                            who seeks after it and wants to have it, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -120,7 +128,7 @@ const SourceEdit = () => {
                                                             Status
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, 
+                                                            There is no one who loves pain itself,
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -135,7 +143,7 @@ const SourceEdit = () => {
                                                             DID
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, simply because it is pain
+                                                            There is no one who loves pain itself, simply because it is pain
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -150,7 +158,7 @@ const SourceEdit = () => {
                                                             Source
                                                         </label>
                                                         <label htmlFor="data" className="formItemDesc">
-                                                        There is no one who loves pain itself, who seeks after it and wants to have it,
+                                                            There is no one who loves pain itself, who seeks after it and wants to have it,
                                                         </label>
                                                     </div>
                                                     <div className='col-6'>
@@ -159,7 +167,7 @@ const SourceEdit = () => {
                                                             // {...register("strategy")}
                                                             id="selectFormRow"
                                                         >
-                                                           <option value="enterprise">File</option>
+                                                            <option value="enterprise">File</option>
                                                             <option value="sequence">Pdf</option>
                                                             <option value="simultaneously">png</option>
                                                             <option value="random">jpg</option>

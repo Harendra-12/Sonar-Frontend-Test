@@ -109,7 +109,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/phone-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Total Calls Completed</p>
+                                  <p>Total Calls <br /> Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.success !== undefined ? (callDetails?.success) : <i
@@ -645,7 +645,7 @@ function AllCallsDetails() {
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-center align-items flex-column">
                                 <div className="imageBox_wrap">
-                                  <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='missed-call' />
+                                  <img className=" " src={require('../../assets/images/call-dashboardIcon/customer-service.png')} alt='missed-call' />
                                 </div>
                                 <div className="text-center">
                                   <p>Agents On Calls</p>
@@ -669,7 +669,7 @@ function AllCallsDetails() {
                             <div className="heading ">
                               <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
                                 <div className="imageBox_wrap">
-                                  <img className=" " src={require('../../assets/images/call-dashboardIcon/customer-service.png')} alt='customer-service' />
+                                  <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
                                   <p>Missed Internal <br/>Calls</p>

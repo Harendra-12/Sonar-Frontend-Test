@@ -46,13 +46,13 @@ function DialerDashboard() {
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
                                 <div className="itemWrapper a">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>56</h3>
-                                                <p>Agents logged in</p>
-                                            </div>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
                                             <div className='col-3'>
                                                 <i className="fa-solid fa-square-check" />
+                                            </div>
+                                            <div className='text-center'>
+                                                <h3 style={{ fontWeight: 900 }}>56</h3>
+                                                <p>Agents logged in</p>
                                             </div>
                                         </div>
                                     </div>

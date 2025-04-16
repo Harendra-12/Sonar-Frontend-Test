@@ -14,6 +14,7 @@ function NewCardPaymentMethod({
   mainPopUpClose,
   rechargeType,
   selectedDid,
+  selectedAddon
 }) {
   const dispatch = useDispatch();
   const accountDetailsRefresh = useSelector(
@@ -193,7 +194,7 @@ function NewCardPaymentMethod({
       });
       if (
         !(cardDetails.cardName === "") &&
-        !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
+        !(!["buyDid", "purchaseAddon"].includes(rechargeType) && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
         !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid &&
@@ -265,6 +266,47 @@ function NewCardPaymentMethod({
             setLoading(false);
             toast.error(apiData.error);
           }
+        } else if (rechargeType === "purchaseAddon") {
+          const year = new Date().getFullYear();
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            // amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+              String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+            fullname: billing.name,
+            contact_no: billing.phone,
+            email: billing.email,
+            address: billing.address,
+            zip: billing.zip,
+            city: billing.city,
+            state: billing.state,
+            country: billing.country,
+            addon_id: selectedAddon.id,
+            amount: Number((parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2))
+          };
+
+          const apiData = await generalPostFunction("/addon/buy", parsedData);
+          if (apiData.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+            setLoading(false);
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            toast.error(apiData.error);
+          }
+
         } else {
           const parsedData = {
             type: "card",
@@ -325,7 +367,7 @@ function NewCardPaymentMethod({
       if (
         !(selectedBillId === undefined && newBilling === false) &&
         !(cardDetails.cardName === "") &&
-        !(rechargeType !== "buyDid" && cardDetails.amount === "") &&
+        !(!["buyDid", "purchaseAddon"].includes(rechargeType) && cardDetails.amount === "") &&
         !(cardDetails.expiryDate === "") &&
         !(cardDetails.cvv?.length < 3 || cardDetails.cvv?.length > 6) &&
         cardValidator.number(cardDetails.cardNumber).isValid
@@ -372,6 +414,47 @@ function NewCardPaymentMethod({
             setLoading(false);
             toast.error(apiData.error);
           }
+        } else if (rechargeType === "purchaseAddon") {
+          const year = new Date().getFullYear();
+          const parsedData = {
+            type: "card",
+            account_id: account.account_id,
+            address_id: selectedBillId,
+            // amount: cardDetails.amount,
+            card_number: cardDetails.cardNumber.split(" ").join(""),
+            name: cardDetails.cardName,
+            save_card: saveCard,
+            exp_month: cardDetails.expiryDate.split("/")[0],
+            exp_year: Number(
+              String(year).slice(0, 2) +
+              String(cardDetails.expiryDate.split("/")[1])
+            ),
+            cvc: cardDetails.cvv,
+            fullname: billing.name,
+            contact_no: billing.phone,
+            email: billing.email,
+            address: billing.address,
+            zip: billing.zip,
+            city: billing.city,
+            state: billing.state,
+            country: billing.country,
+            addon_id: selectedAddon.id,
+            amount: Number((parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2))
+          };
+
+          const apiData = await generalPostFunction("/addon/buy", parsedData);
+          if (apiData.status) {
+            setLoading(false);
+            toast.success(apiData.message);
+            setLoading(false);
+            setTimeout(() => {
+              mainPopUpClose(false);
+            }, 2000);
+          } else {
+            setLoading(false);
+            toast.error(apiData.error);
+          }
+
         } else {
           const year = new Date().getFullYear();
           const parsedData = {
@@ -621,7 +704,7 @@ function NewCardPaymentMethod({
                                   </button>
                                 </div>
                                 <div className="ms-auto d-flex">
-                                  <label className="switch">
+                                  {/* <label className="switch">
                                     <input
                                       type="checkbox"
                                       id="showAllCheck"
@@ -637,7 +720,27 @@ function NewCardPaymentMethod({
                                       }}
                                     />
                                     <span className="slider round"></span>
-                                  </label>
+                                  </label> */}
+
+                                  <div class="cl-toggle-switch">
+                                    <label class="cl-switch">
+                                      <input
+                                        type="checkbox"
+                                        id="showAllCheck"
+                                        checked={
+                                          selectedBillId === item.id
+                                            ? true
+                                            : false
+                                        }
+                                        onChange={(e) => {
+                                          if (e.target.checked) {
+                                            setSelectedBillId(item.id);
+                                          }
+                                        }}
+                                      />
+                                      <span></span>
+                                    </label>
+                                  </div>
                                 </div>
                               </div>
                             </h2>
@@ -952,7 +1055,7 @@ function NewCardPaymentMethod({
                         </div>
                       </div>
                     </div>
-                    {rechargeType === "buyDid" ? (
+                    {rechargeType === "buyDid" || rechargeType === "purchaseAddon" ? (
                       ""
                     ) : (
                       <div className="col-xl-6 mt-1 mb-3">

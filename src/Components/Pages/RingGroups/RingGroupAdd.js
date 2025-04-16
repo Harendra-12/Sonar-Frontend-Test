@@ -515,7 +515,7 @@ const RingGroupAdd = () => {
                               <label htmlFor="selectFormRow">Enabled</label>
                             </div>
                             <div className="my-auto position-relative mx-1">
-                              <label className="switch">
+                              {/* <label className="switch">
                                 <input
                                   type="checkbox"
                                   checked={watch().status}
@@ -523,7 +523,18 @@ const RingGroupAdd = () => {
                                   id="showAllCheck"
                                 />
                                 <span className="slider round" />
-                              </label>
+                              </label> */}
+                              <div class="cl-toggle-switch">
+                                <label class="cl-switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={watch().status}
+                                    {...register("status")}
+                                    id="showAllCheck"
+                                  />
+                                  <span></span>
+                                </label>
+                              </div>
                             </div>
                           </div>
                           <button
@@ -1179,126 +1190,128 @@ const RingGroupAdd = () => {
         />
       )}
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Ring Group</h5>
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Search"
-                  name="name"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <button
-                  className="tableButton ms-2"
-                  onClick={() => navigate("/users-add")}
-                >
-                  <i className="fa-solid fa-user-plus"></i>
-                </button>
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
               </div>
-            </div>
-            <div className="col-xl-12 mt-3">
-              <div
-                className="tableContainer mt-0"
-                style={{ maxHeight: "calc(100vh - 400px)" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>
-                        <input
-                          type="checkbox"
-                          onChange={handleSelectAll} // Call handler on change
-                          checked={selectAll ? true : false} // Keep checkbox state in sync
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {user
-                      .sort((a, b) => {
-                        const aMatches =
-                          a.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (a?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        const bMatches =
-                          b.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (b?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        // Sort: matching items come first
-                        return bMatches - aMatches;
-                      })
-                      .filter(
-                        (user) =>
-                          !destination.some(
-                            (agent) =>
-                              user.extension.extension == agent.destination
-                          ) && user.usages === "pbx"
-                      )
-                      .map((item, index) => {
-                        return (
-                          <tr key={item.id || index}>
-                            <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.extension.extension}</td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                checked={bulkUploadSelectedAgents.some(
-                                  (agent) => agent.name === item.name
-                                )} // Keep checkbox state in sync
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button
+                    className="tableButton popupIcon_btn ms-2"
+                    onClick={() => navigate("/users-add")}
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkAddPopUp(false);
-                    setBulkUploadSelectedAgents([]);
-                    setSelectAll(false);
-                  }}
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
                 >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-light fa-xmark"></i>
-                  </span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                    setBulkAddPopUp(false);
-                  }}
-                  className="panelButton"
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {user
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          // Sort: matching items come first
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) =>
+                            !destination.some(
+                              (agent) =>
+                                user.extension.extension == agent.destination
+                            ) && user.usages === "pbx"
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item.name}</td>
+                              <td>{item.extension.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent.name === item.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -94,7 +94,7 @@ function Leads() {
                                                         <th>Lead Description</th>
                                                         <th>Campaign</th>
                                                         <th>Rows</th>
-                                                        <th>Active</th>
+                                                        <th className='text-center'>Active</th>
                                                         <th style={{ textAlign: "center" }}>Download</th>
                                                         <th style={{ textAlign: "center" }}>Edit</th>
                                                         <th style={{ textAlign: "center" }}>Delete</th>
@@ -108,19 +108,27 @@ function Leads() {
                                                         <td>Campaign Name</td>
                                                         <td>1200</td>
                                                         <td>
-                                                            <div className="my-auto position-relative mx-1">
-                                                                <label className="switch">
+                                                            <div className="my-auto position-relative d-flex justify-content-center">
+                                                                {/* <label className="switch">
                                                                     <input
                                                                         type="checkbox"
                                                                         id="showAllCheck"
                                                                     />
                                                                     <span className="slider round" />
-                                                                </label>
+                                                                </label> */}
+                                                                <div class="cl-toggle-switch">
+                                                                    <label class="cl-switch">
+                                                                        <input type="checkbox"
+                                                                        id="showAllCheck"
+                                                                        />
+                                                                        <span></span>
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <button
-                                                                className="tableButton mx-auto"
+                                                                className="tableButton mx-auto blue"
                                                             >
                                                                 <i className="fa-solid fa-download"></i>
                                                             </button>

@@ -234,35 +234,36 @@ function DidListing({ page }) {
                   </div>
 
                   {addNew ? (
-                    <div className="addNewContactPopup">
-                      <div className="row">
-                        <div className="col-12 heading border-0 bg-transparent mb-0">
-                          <i className="fa-light fa-user-plus" />
-                          <h5>Add new DID </h5>
-                        </div>
-                        <div className="col-xl-12 mt-3">
-                          {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
-                            <div
-                              className="tableContainer mt-0"
-                              style={{ maxHeight: "calc(100vh - 400px)" }}
-                            >
-                              <table>
-                                <thead>
-                                  <tr>
-                                    <th>S.No</th>
-                                    <th>Number</th>
-                                    <th>
-                                      Add DID
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
-                                    return (
-                                      <tr>
-                                        <td> {index + 1}</td>
-                                        <td>{item.did}</td>
-                                        {/* <button
+                    <div className="backdropContact">
+                      <div className="addNewContactPopup">
+                        <div className="row">
+                          <div className="col-12 heading border-0 bg-transparent mb-0">
+                            <i className="fa-light fa-user-plus" />
+                            <h5>Add new DID </h5>
+                          </div>
+                          <div className="col-xl-12 mt-3">
+                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
+                              <div
+                                className="tableContainer mt-0"
+                                style={{ maxHeight: "calc(100vh - 400px)" }}
+                              >
+                                <table>
+                                  <thead>
+                                    <tr>
+                                      <th>S.No</th>
+                                      <th>Number</th>
+                                      <th className="text-center">
+                                        Add DID
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
+                                      return (
+                                        <tr>
+                                          <td> {index + 1}</td>
+                                          <td>{item.did}</td>
+                                          {/* <button
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
                                                   navigate(
@@ -278,39 +279,39 @@ function DidListing({ page }) {
                                               >
                                                 <i className="fa-solid fa-plus"></i>
                                               </button> */}
-                                        <div className="mt-1">
-                                          <button
-                                            className="tableButton align-items-center justify-content-center"
-                                            onClick={() => {
-                                              handleUsagesEdit(item.id)
-                                            }}
-                                          >
+                                          <div className="mt-1">
+                                            <button
+                                              className="tableButton align-items-center justify-content-center mx-auto"
+                                              onClick={() => {
+                                                handleUsagesEdit(item.id)
+                                              }}
+                                            >
 
-                                            <i className="fa-solid fa-plus"></i>
-                                          </button>
-                                        </div>
-                                      </tr>
-                                    )
-                                  })}
+                                              <i className="fa-solid fa-plus"></i>
+                                            </button>
+                                          </div>
+                                        </tr>
+                                      )
+                                    })}
 
 
-                                </tbody>
-                              </table>
-                            </div>
-                          }
-                        </div>
-                        <div className="col-xl-12 mt-2">
-                          <div className="d-flex justify-content-between">
-                            <button
-                              className="panelButton gray ms-0"
-                              onClick={() => setAddNew(false)}
-                            >
-                              <span className="text">Close</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-caret-left" />
-                              </span>
-                            </button>
-                            {/* <button
+                                  </tbody>
+                                </table>
+                              </div>
+                            }
+                          </div>
+                          <div className="col-xl-12 mt-2">
+                            <div className="d-flex justify-content-between">
+                              <button
+                                className="panelButton gray ms-0"
+                                onClick={() => setAddNew(false)}
+                              >
+                                <span className="text">Close</span>
+                                <span className="icon">
+                                  <i className="fa-solid fa-caret-left" />
+                                </span>
+                              </button>
+                              {/* <button
                               className="panelButton me-0"
 
                             >
@@ -319,6 +320,7 @@ function DidListing({ page }) {
                                 <i className="fa-solid fa-check" />
                               </span>
                             </button> */}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -429,9 +431,9 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_whatsapp === 1
-                                                  ? "tableButton edit mx-auto"
+                                                  ? "tableButton whatsapp mx-auto"
                                                   : item.is_secondary_whatsapp === 1 ? "tableButton warning mx-auto"
-                                                    : "tableButton empty mx-auto"
+                                                    : "tableButton whatsapp empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
 
@@ -479,9 +481,9 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_eFax === 1
-                                                  ? "tableButton edit mx-auto"
+                                                  ? "tableButton fax mx-auto"
                                                   : item.is_secondary_eFax === 1 ? "tableButton warning mx-auto"
-                                                    : "tableButton empty mx-auto"
+                                                    : "tableButton fax empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
 
@@ -529,9 +531,9 @@ function DidListing({ page }) {
                                               data-bs-toggle="dropdown"
                                               className={
                                                 item.default_sms === 1
-                                                  ? "tableButton edit mx-auto"
-                                                  : item.is_secondary_sms === 1 ? "tableButton warning mx-auto"
-                                                    : "tableButton empty mx-auto"
+                                                  ? "tableButton sms mx-auto"
+                                                  : item.is_secondary_sms === 1 ? "tableButton sms mx-auto"
+                                                    : "tableButton sms empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
 
@@ -577,8 +579,8 @@ function DidListing({ page }) {
                                             <button
                                               className={
                                                 item.default_outbound === 1
-                                                  ? "tableButton edit mx-auto"
-                                                  : "tableButton empty mx-auto"
+                                                  ? "tableButton head mx-auto"
+                                                  : "tableButton head empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
                                               onClick={() => {

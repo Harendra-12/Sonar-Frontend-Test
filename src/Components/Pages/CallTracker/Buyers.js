@@ -19,7 +19,7 @@ function Buyers() {
                                             <div className="heading">
                                                 <div className="content">
                                                     <h4>
-                                                    Forwarding portal
+                                                        Forwarding portal
                                                     </h4>
                                                     <p>You can see all list of Forwarding portal</p>
                                                 </div>
@@ -105,11 +105,11 @@ function Buyers() {
                                                             <td>09:30pm </td>
                                                             <td>10:30am</td>
 
-                                                            <td>24/03/2025</td> 
+                                                            <td>24/03/2025</td>
                                                             <td>05/04/2025</td>
                                                             <td>
                                                                 <div className="my-auto position-relative mx-1">
-                                                                    <label className="switch">
+                                                                    {/* <label className="switch">
                                                                         <input
                                                                             type="checkbox"
                                                                             // checked={
@@ -123,7 +123,16 @@ function Buyers() {
                                                                             id="showAllCheck"
                                                                         />
                                                                         <span className="slider round" />
-                                                                    </label>
+                                                                    </label> */}
+                                                                    <div class="cl-toggle-switch">
+                                                                        <label class="cl-switch">
+                                                                            <input
+                                                                                type="checkbox" id="showAllCheck"
+
+                                                                            />
+                                                                            <span></span>
+                                                                        </label>
+                                                                    </div>
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -151,7 +160,7 @@ function Buyers() {
                                                             </td>
 
                                                         </tr>
-                                                      
+
                                                     </tbody>
                                                 </table>
                                             </div>

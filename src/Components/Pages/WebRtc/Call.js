@@ -21,6 +21,41 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
 import Comments from "./Comments";
 
+/**
+ * Component to handle and display call functionalities, including call history, 
+ * filtering, searching, and initiating calls. Manages states for call sessions, 
+ * dialpad visibility, and various UI elements. Integrates with Redux store for 
+ * session and account data.
+ *
+ * @param {string} selectedModule - The currently selected module.
+ * @param {function} setSelectedModule - Function to update the selected module.
+ * @param {boolean} isCustomerAdmin - Indicates if the current user is a customer admin.
+ * @param {boolean} isMicOn - Indicates if the microphone is enabled.
+ * @param {boolean} isVideoOn - Indicates if the video is enabled.
+ * @param {function} setactivePage - Function to set the active page.
+ * @param {Array} allContact - List of all contacts.
+ * @param {function} setExtensionFromCdrMessage - Function to set the extension from CDR message.
+ * @param {Array} data - Array of call data.
+ * @param {string} filterBy - The filter criteria for calls.
+ * @param {number} currentPage - The current page number for pagination.
+ * @param {Date} startDate - The start date for filtering calls.
+ * @param {Date} endDate - The end date for filtering calls.
+ * @param {string} searchQuery - The search query for filtering calls.
+ * @param {string} clickStatus - The current click status for call filtering.
+ * @param {number} refreshCalls - Counter to trigger call data refresh.
+ * @param {Array} allApiData - Array of all API data.
+ * @param {Object} rawData - Raw data object for calls.
+ * @param {function} setCurrentPage - Function to set the current page.
+ * @param {function} setStartDate - Function to set the start date.
+ * @param {function} setEndDate - Function to set the end date.
+ * @param {function} setSearchQuery - Function to set the search query.
+ * @param {function} setFilterBy - Function to set the filter criteria.
+ * @param {function} setIsLoading - Function to set the loading state.
+ * @param {function} setLoading - Function to set the loading state.
+ * @param {boolean} loading - Indicates if data is currently loading.
+ * @param {boolean} isLoading - Indicates if data is currently loading.
+ */
+
 function Call({
   selectedModule,
   setSelectedModule,

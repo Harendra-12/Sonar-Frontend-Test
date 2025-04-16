@@ -28,6 +28,20 @@ import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
 import AudioTranscribe from "../../CommonComponents/AudioTranscribe";
 
+
+/**
+ * CdrFilterReport is a React component that manages and displays Call Detail Records (CDR)
+ * reports based on various filters and parameters. It fetches data from an API and allows
+ * users to filter, block numbers, and export data. The component handles different types
+ * of reports like billing, call center, ring group, and call recordings and provides
+ * pagination, data filtering by date and time, and the ability to view and manage comments
+ * and duplicate records.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.page - The current page type to determine which keys to display 
+ * in the report table.
+ */
+
 function CdrFilterReport({ page }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -551,7 +565,6 @@ function CdrFilterReport({ page }) {
     URL.revokeObjectURL(url);
   }
 
-
   // function to handle export
   const handleExport = async () => {
     setLoading(true);
@@ -605,6 +618,7 @@ function CdrFilterReport({ page }) {
       refreshCallData();
     })
   };
+console.log("cdr", cdr);
 
   return (
     <>

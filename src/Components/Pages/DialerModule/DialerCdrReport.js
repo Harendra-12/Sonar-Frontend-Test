@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, featureUnderdevelopment, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 
 function DialerCdrReport() {
   const navigate = useNavigate();
@@ -280,28 +281,29 @@ function DialerCdrReport() {
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredData?.data?.length > 0 ? (
-                            filteredData?.data?.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{item.agent}</td>
-                                <td>{item.extension}</td>
-                                <td>{item.campaign_title}</td>
-                                <td>{item.customer}</td>
-                                <td>{item.phone_number}</td>
-                                <td>{item.duration}</td>
-                                <td>{item.hangup_cause}</td>
-                                <td>{item.created_time.split(" ")[0]}</td>
-                                <td>{formatTimeWithAMPM(item.created_time.split(" ")[1])}</td>
+                          {loading ? <SkeletonTableLoader row={15} col={10} /> :
+                            filteredData && filteredData?.data?.length > 0 ? (
+                              filteredData?.data?.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{item?.agent || 'N/A'}</td>
+                                  <td>{item?.extension || 'N/A'}</td>
+                                  <td>{item?.campaign_title || 'N/A'}</td>
+                                  <td>{item?.customer || 'N/A'}</td>
+                                  <td>{item?.phone_number || 'N/A'}</td>
+                                  <td>{item.duration ? formatTime(item?.duration) : 'N/A'}</td>
+                                  <td>{item?.hangup_cause || 'N/A'}</td>
+                                  <td>{item.created_at ? item?.created_at?.split(" ")[0] : 'N/A'}</td>
+                                  <td>{item.created_at ? formatTimeWithAMPM(item?.created_at?.split(" ")[1]) : 'N/A'}</td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={99} className="text-center">
+                                  <EmptyPrompt generic={true} />
+                                </td>
                               </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td colSpan={99} className="text-center">
-                                <EmptyPrompt generic={true} />
-                              </td>
-                            </tr>
-                          )}
+                            )}
                         </tbody>
                       </table>
                     </div>
