@@ -44,91 +44,102 @@ function DialerDashboard() {
                         </div> */}
                         <div className="row mt-3 gx-3">
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
-                                <div className="itemWrapper a">
+                                <div className="call_dCard a">
                                     <div className='heading h-auto'>
                                         <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-square-check" />
-                                            </div>
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/register.webp')} alt='customer-service' />
+                            </div>
                                             <div className='text-center'>
-                                                <h3 style={{ fontWeight: 900 }}>56</h3>
                                                 <p>Agents logged in</p>
+                                                <h3 className="mb-0 fw-bolder">56</h3>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2 ">
-                                <div className="itemWrapper b">
+                                <div className="call_dCard b">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>50</h3>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/agents.webp')} alt='customer-service' />
+                            </div>
+                                            <div className='text-center'>
                                                 <p>Available Agents</p>
+                                                <h3 className="mb-0 fw-bolder">50</h3>
                                             </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-user-check" />
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper c">
+                                <div className="call_dCard c">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>45</h3>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/waiting.webp')} alt='customer-service' />
+                            </div>
+                                            <div className='text-center'>
                                                 <p>Waiting Calls</p>
+                                                <h3 className="mb-0 fw-bolder">45</h3>
                                             </div>
-                                            <div className='col-3'>
-                                                <i className="fa-solid fa-phone-arrow-down-left" />
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper d">
+                                <div className="call_dCard d">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>78</h3>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/telephone.webp')} alt='customer-service' />
+                            </div>
+                                            <div className='text-center'>
                                                 <p>Active Calls</p>
+                                                <h3 className="mb-0 fw-bolder">78</h3>
                                             </div>
-                                            <div className='col-3'>
+                                            {/* <div className='col-3'>
                                                 <i className="fa-solid fa-phone-volume" />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper a">
+                                <div className="call_dCard a">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>545</h3>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/queue.webp')} alt='customer-service' />
+                            </div>
+                                            <div className='text-center'>
                                                 <p>Calls on Queue</p>
+                                                <h3 className="mb-0 fw-bolder">545</h3>
                                             </div>
-                                            <div className='col-3'>
+                                            {/* <div className='col-3'>
                                                 <i className="fa-solid fa-clock-rotate-left" />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-2 col-sm-4 mb-sm-2 col-xl-2">
-                                <div className="itemWrapper b">
+                                <div className="call_dCard b">
                                     <div className='heading h-auto'>
-                                        <div className="d-flex flex-wrap justify-content-between">
-                                            <div className='col-9'>
-                                                <h3 style={{ fontWeight: 900 }}>7 <span style={{ fontSize: '15px', fontWeight: '500' }}>seconds</span></h3>
+                                        <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                                        <div className="imageBox_wrap">
+                              <img className=" " src={require('../../assets/images/call-dashboardIcon/clock.webp')} alt='customer-service' />
+                            </div>
+                                            <div className='text-center'>
                                                 <p>Avg. Response Time</p>
+                                                <h3 className="mb-0 fw-bolder">7 <span style={{ fontSize: '15px', fontWeight: '500' }}>seconds</span></h3>
                                             </div>
-                                            <div className='col-3'>
+                                            {/* <div className='col-3'>
                                                 <i className="fa-solid fa-phone-slash" />
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
