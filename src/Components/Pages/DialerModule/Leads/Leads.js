@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import { backToTop } from '../../../GlobalFunction/globalFunction';
@@ -6,6 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 function Leads() {
     const navigate = useNavigate();
+    const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+    const [newFile, setNewFile] = useState(null);
+    const [fileName, setFileName] = useState("");
+
+    // Function to get selected file name
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const sanitizedFileName = file.name.replace(/ /g, "-");
+            setFileName(sanitizedFileName); // Set the file name in state
+            // Additional logic for the newFile can go here
+        }
+    };
+
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -47,10 +61,7 @@ function Leads() {
                                                 <button
                                                     type="button"
                                                     className="panelButton"
-                                                    onClick={() => {
-                                                        navigate('/lead-add');
-                                                        backToTop();
-                                                    }}
+                                                    onClick={() => setAddNewCsvToggle(true)}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
@@ -119,7 +130,7 @@ function Leads() {
                                                                 <div class="cl-toggle-switch">
                                                                     <label class="cl-switch">
                                                                         <input type="checkbox"
-                                                                        id="showAllCheck"
+                                                                            id="showAllCheck"
                                                                         />
                                                                         <span></span>
                                                                     </label>
@@ -165,6 +176,84 @@ function Leads() {
                                 </div>
                             </div>
                         </div>
+                        {addNewCsvToggle && (
+                            <div className="popup music">
+                                <div className="container h-100">
+                                    <div className="row h-100 justify-content-center align-items-center">
+                                        <div
+                                            className="card px-0 col-5 shadow-none"
+                                            style={{
+                                                border: "1px solid var(--border-color)",
+                                            }}
+                                        >
+                                            <div className="header bg-transparent">
+                                                <div className="d-flex justify-content-between">
+                                                    <h5 className="card-title fs14 border-bootm fw700">
+                                                        Upload Documents
+                                                    </h5>
+                                                    <button className="clearButton2 xl" onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}>
+                                                        <i className="fa-solid fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="card-body">
+                                                <div className="popup-border text-center p-2">
+                                                    <input
+                                                        type="file"
+                                                        className="form-control-file d-none"
+                                                        id="fileInput"
+                                                        accept=".csv"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                // Check if the file type is MP3
+
+                                                                const fileName =
+                                                                    file.name.replace(/ /g, "-");
+                                                                const newFile = new File(
+                                                                    [file],
+                                                                    fileName,
+                                                                    {
+                                                                        type: file.type,
+                                                                    }
+                                                                );
+                                                                setNewFile(newFile);
+                                                                handleFileChange(e);
+                                                            }
+                                                        }}
+                                                    />
+                                                    <label
+                                                        htmlFor="fileInput"
+                                                        className="d-block"
+                                                    >
+                                                        <div className="test-user text-center">
+                                                            <i
+                                                                className="fa-solid fa-cloud-arrow-up"
+                                                                style={{ fontSize: 30 }}
+                                                            />
+                                                            <p className="mb-0 mt-2 text-center">
+                                                                Drag and Drop or{" "}
+                                                                <span>Click on upload</span>
+                                                            </p>
+                                                            <span>
+                                                                Supports formats : MP3, Max
+                                                                Size: 2MB
+                                                            </span>
+                                                        </div>
+                                                    </label>
+                                                    {fileName && (
+                                                        <p className="mt-3 text-center">
+                                                            Selected File:{" "}
+                                                            <strong>{fileName}</strong>
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
