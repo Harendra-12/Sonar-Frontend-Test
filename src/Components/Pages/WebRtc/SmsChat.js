@@ -13,6 +13,8 @@ import Tippy from "@tippyjs/react";
 function SmsChat({ setLoading, loading }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
+  const didAll = useSelector((state) => state.didAll);
+  const [did, setDid] = useState();
   const extension = account?.extension?.extension || "";
   const { sessionManager, connectStatus } = useSIPProvider();
   const [allLogOut, setAllLogOut] = useState(false);
@@ -47,6 +49,11 @@ function SmsChat({ setLoading, loading }) {
 
   useEffect(() => {
     getAllSMSData();
+    if (!did || !didAll) {
+      getAllDid();
+    } else {
+      setDid(didAll.filter((item) => item.usages === "pbx"))
+    }
   }, []);
 
   const getAllSMSData = async () => {
@@ -85,6 +92,20 @@ function SmsChat({ setLoading, loading }) {
       console.error("Error sending SMS:", err);
     }
   })
+
+  // Fetch ALL DID
+  async function getAllDid() {
+    const apiData = await generalGetFunction(`/did/all`);
+    if (apiData?.status) {
+      setDid(apiData.data.filter((item) => item.usages === "pbx"));
+      dispatch({
+        type: "SET_DIDALL",
+        didAll: apiData.data,
+      });
+    } else {
+      toast.error(apiData.status)
+    }
+  }
 
   return (
     <>
@@ -159,7 +180,7 @@ function SmsChat({ setLoading, loading }) {
                           </div> */}
 
 
-<i class="fa-solid fa-right-from-bracket"></i>
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li
@@ -331,16 +352,29 @@ function SmsChat({ setLoading, loading }) {
                           <div>
                             <div className="messageSubject">
                               <label>Enter Sender Number</label>
-                              <input
+                              {console.log(did)
+                              }
+                              <select className="formItem mt-2">
+                                {did && did.length > 0 ?
+                                  did.sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
+                                    .map((item, index) => (
+                                      <option key={index} value={item.did}>
+                                        {item.did}
+                                      </option>
+                                    ))
+                                  : ""
+                                }
+                              </select>
+                              {/* <input
                                 type="text"
                                 defaultValue={""}
                                 {...register("from_did", { ...requiredValidator, ...numberValidator })}
                               />
                               {errors.from_did && (
                                 <ErrorMessage text={errors.from_did.message} />
-                              )}
+                              )} */}
                             </div>
-                            <div className="messageSubject mt-3">
+                            <div className="messageSubject">
                               <label className="mt-3">Enter Receiver Number</label>
                               <input
                                 type="text"
@@ -351,7 +385,7 @@ function SmsChat({ setLoading, loading }) {
                                 <ErrorMessage text={errors.to_did.message} />
                               )}
                             </div>
-                            <div className="messageBody mt-5">
+                            <div className="messageBody">
                               <label>Enter your messsage</label>
                               <textarea
                                 type="text"

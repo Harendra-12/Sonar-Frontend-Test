@@ -4,6 +4,7 @@ import Header from "../../../CommonComponents/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   backToTop,
+  featureUnderdevelopment,
   fileUploadFunction,
   generalDeleteFunction,
   generalGetFunction,
@@ -49,6 +50,7 @@ function CampaignCreate() {
     fourthStep: false,
   });
   const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+  const [addLeadInternalToggle, setAddLeadInternalToggle] = useState(false);
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
   const [campaignRefresh, setcampaignRefresh] = useState(0);
@@ -1171,6 +1173,27 @@ function CampaignCreate() {
                                     )}
                                   </div>
                                 </div>
+                                <div className="formRow col-xl-6">
+                                  <div className="formLabel">
+                                    <label>Rechain</label>
+                                  </div>
+                                  <div className="col-6">
+                                    <select
+                                      className="formItem"
+                                      {...register("rechain", { ...requiredValidator })}
+                                    >
+                                      <option value="1">Enabled</option>
+                                      <option value="0">Disabled</option>
+                                    </select>
+                                    {errors.rechain && (
+                                      <ErrorMessage
+                                        text={
+                                          errors.rechain.message
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                </div>
                               </>
                             </form>
                             <div className="row mt-2 gx-xxl-5">
@@ -1856,9 +1879,15 @@ function CampaignCreate() {
                                     <div className="buttonGroup">
                                       <button
                                         className="panelButton static m-0 px-2"
+                                        onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
+                                      >
+                                        <span className="text">Add Lead</span>
+                                      </button>
+                                      <button
+                                        className="panelButton static m-0 px-2"
                                         onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                       >
-                                        <span className="text">Add CSV</span>
+                                        <span className="text">Import CSV</span>
                                       </button>
                                     </div>
                                   </div>
@@ -1949,6 +1978,148 @@ function CampaignCreate() {
                                     </div>
                                   )}
 
+                                  {addLeadInternalToggle &&
+                                    <div className="backdropContact">
+                                      <div className="addNewContactPopup">
+                                        <div className="row">
+                                          <div className="col-12 heading mb-0">
+                                            <i className="fa-light fa-user-plus" />
+                                            <h5>Add Leads to the selected Campaign</h5>
+                                          </div>
+                                          <div className="col-xl-12">
+                                            <div className="col-12 d-flex justify-content-between align-items-center">
+                                              <input
+                                                type="text"
+                                                className="formItem"
+                                                placeholder="Search"
+                                                name="name"
+                                                defaultValue=""
+                                              />
+                                              <button className="tableButton popupIcon_btn ms-2">
+                                                <i className="fa-solid fa-user-plus" />
+                                              </button>
+                                            </div>
+                                          </div>
+                                          <div className="col-xl-12 mt-3">
+                                            <div
+                                              className="tableContainer mt-0"
+                                              style={{ maxHeight: "calc(-400px + 100vh)" }}
+                                            >
+                                              <table>
+                                                <thead>
+                                                  <tr>
+                                                    <th>S.No</th>
+                                                    <th>Name</th>
+                                                    <th>Qty</th>
+                                                    <th><input type="checkbox" /></th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>1</td>
+                                                    <td>test</td>
+                                                    <td>1000</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>2</td>
+                                                    <td>ravi raj</td>
+                                                    <td>1007</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>3</td>
+                                                    <td>riddhee</td>
+                                                    <td>1001</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>4</td>
+                                                    <td>pratima</td>
+                                                    <td>1002</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>5</td>
+                                                    <td>biplab</td>
+                                                    <td>1003</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>6</td>
+                                                    <td>tushar</td>
+                                                    <td>1004</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>7</td>
+                                                    <td>solman</td>
+                                                    <td>1005</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>8</td>
+                                                    <td>sanchit</td>
+                                                    <td>1010</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>9</td>
+                                                    <td>damini</td>
+                                                    <td>1011</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>10</td>
+                                                    <td>rishabh</td>
+                                                    <td>1012</td>
+                                                    <td>
+                                                      <input type="checkbox" />
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </div>
+                                          </div>
+                                          <div className="col-xl-12 mt-2">
+                                            <div className="d-flex justify-content-between">
+                                              <button className="panelButton gray ms-0" onClick={() => setAddLeadInternalToggle(false)}>
+                                                <span className="text">Close</span>
+                                                <span className="icon">
+                                                  <i className="fa-light fa-xmark" />
+                                                </span>
+                                              </button>
+                                              <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                                                <span className="text">Done</span>
+                                                <span className="icon">
+                                                  <i className="fa-solid fa-check" />
+                                                </span>
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  }
+
                                   <div>
                                     <div className="tableContainer mt-0">
                                       <table>
@@ -2010,231 +2181,225 @@ function CampaignCreate() {
           </div>
         </div>
         {popUp ? (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-circle-exclamation"></i>
+          <div className="backdropContact">
+            <div className="addNewContactPopup">
+              <div className="row">
+                <div className="col-12 heading mb-0">
+                  <i className="fa-light fa-circle-exclamation"></i>
+                  <h5>Lead Edit</h5>
+                </div>
+                <div className="col-12" style={{ padding: "0px 0px 10px" }}>
+                  <form className="mb-0 d-flex flex-wrap">
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>First Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.first_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              first_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-10 ps-0">
-                    <h4>Leads Edit</h4>
-                    <div className="col-12" style={{ padding: "10px 0px" }}>
-                      <form className="row mb-0">
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>First Name</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.first_name}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  first_name: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
 
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Last Name</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.last_name}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  last_name: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Phone Number</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="number"
-                              className="formItem"
-                              value={leadsEditState.phone_number}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  phone_number: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Address 1</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.address1}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  address1: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Address 2</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.address2}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  address2: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>City</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.city}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  city: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>State</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              className="formItem"
-                              value={leadsEditState.state}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  state: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Country code</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="number"
-                              className="formItem"
-                              value={leadsEditState.phone_code}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  phone_code: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Zip Code</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="number"
-                              className="formItem"
-                              value={leadsEditState.postal_code}
-                              onChange={(e) => {
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  postal_code: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="formRow col-xl-12">
-                          <div className="formLabel">
-                            <label>Gender</label>
-                          </div>
-                          <div className="col-6">
-                            <select
-                              name=""
-                              id=""
-                              className="formItem "
-                              value={leadsEditState.gender}
-                              onChange={(e) =>
-                                setLeadsEditState({
-                                  ...leadsEditState,
-                                  gender: e.target.value,
-                                })
-                              }
-                            >
-                              <option value="M">Male</option>
-                              <option value="F">Female</option>
-                              <option value="O">Other</option>
-                            </select>
-                          </div>
-                        </div>
-                      </form>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Last Name</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.last_name}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              last_name: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="d-flex justify-content-between">
-                      <button
-                        className="panelButton m-0"
-                        onClick={() => handleUpdateLeads()}
-                      >
-                        <span className="text">Confirm</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-check"></i>
-                        </span>
-                      </button>
-                      <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => setPopUp(false)}
-                      >
-                        <span className="text">Cancel</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-xmark"></i>
-                        </span>
-                      </button>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Phone Number</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_number}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_number: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 1</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address1}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address1: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Address 2</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.address2}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              address2: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>City</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.city}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              city: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>State</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="text"
+                          className="formItem"
+                          value={leadsEditState.state}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              state: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Country code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.phone_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              phone_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Zip Code</label>
+                      </div>
+                      <div className="col-12">
+                        <input
+                          type="number"
+                          className="formItem"
+                          value={leadsEditState.postal_code}
+                          onChange={(e) => {
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              postal_code: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="formRow col-xl-6">
+                      <div className="formLabel">
+                        <label>Gender</label>
+                      </div>
+                      <div className="col-12">
+                        <select
+                          name=""
+                          id=""
+                          className="formItem "
+                          value={leadsEditState.gender}
+                          onChange={(e) =>
+                            setLeadsEditState({
+                              ...leadsEditState,
+                              gender: e.target.value,
+                            })
+                          }
+                        >
+                          <option value="M">Male</option>
+                          <option value="F">Female</option>
+                          <option value="O">Other</option>
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton m-0"
+                    onClick={() => handleUpdateLeads()}
+                  >
+                    <span className="text">Confirm</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton gray m-0 float-end"
+                    onClick={() => setPopUp(false)}
+                  >
+                    <span className="text">Cancel</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-xmark"></i>
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>

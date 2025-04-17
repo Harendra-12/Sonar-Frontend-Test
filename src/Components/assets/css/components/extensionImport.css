@@ -168,9 +168,9 @@ label.status.missing::before {
     font-weight: 700;
 }
 
-.tableHeader .formItem {
+/* .tableHeader .formItem {
     height: 25px;
-}
+} */
 
 .formWidth {
     width: 90px !important;
@@ -709,6 +709,6 @@ form.tangoNavs .nav-tabs {
     /* display: block; */
 }
 
-.fillerCountryNumber .formItem {
+/* .fillerCountryNumber .formItem {
     height: 25px;
-}
+} */
