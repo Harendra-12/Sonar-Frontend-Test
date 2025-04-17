@@ -1,17 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+/**
+ * AllActiveAgentStatus
+ * 
+ * This component displays the status of all agents, showing online and offline agents, as well as their call status.
+ * It integrates with the Redux store to fetch data about users, active calls, and registered users.
+ * The component provides a UI to toggle between viewing active and inactive agents.
+ * 
+ * Props:
+ * @param {boolean} isActiveAgentsOpen - A flag to indicate if the active agents section is open.
+ * @param {function} setIsActiveAgentsOpen - Function to toggle the active agents section.
+ * 
+ * Redux State:
+ * - allUser: List of all users.
+ * - allUserRefresh: Flag to trigger refresh of user data.
+ * - activeCall: Data about active calls.
+ * - logonUser: Logged-in user's data.
+ * - registerUser: List of registered users.
+ * 
+ * Local State:
+ * - onlineUser: List of online users.
+ * 
+ * Effects:
+ * - Refreshes user data if required.
+ * - Updates online users based on registered users and current logon state.
+ * 
+ * UI:
+ * - Displays a button to toggle the active agents section.
+ * - Shows a tab navigation to switch between online and offline agents.
+ * - Displays tables listing agents with their status, name, direction, origin, and destination.
+ * - Indicates call status with icons and styles based on call direction.
+ */
 
 function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
     const allUser = useSelector((state) => state.allUser);
+    const allUserRefresh = useSelector((state) => state.allUserRefresh);
     const activeCall = useSelector((state) => state.activeCall);
     const logonUser = useSelector((state) => state.loginUser);
-    const [onlineUser, setOnlineUSer] = useState([0]);
-
+    const registerUser = useSelector((state) => state.registerUser || []);
+    const [onlineUser, setOnlineUSer] = useState([]);
+    const dispatch = useDispatch();
     useEffect(() => {
+        if(allUserRefresh === 0){
+            dispatch({ type: "SET_ALLUSERREFRESH", allUserRefresh: allUserRefresh + 1 });
+        }
         if (logonUser && logonUser.length > 0) {
             setOnlineUSer(
-                logonUser.map((item) => {
-                    return item.id;
+                registerUser.map((item) => {
+                    return item.extension;
                 })
             );
         }
@@ -92,7 +129,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                 <tbody>
                                                     {allUser?.data?.length > 0 &&
                                                         allUser?.data?.filter((agent) => agent?.extension_id !== null)
-                                                            .filter((agent) => onlineUser.includes(agent?.id))
+                                                            .filter((agent) => onlineUser.includes(agent?.extension?.extension))
                                                             .map((agent, index) => {
                                                                 const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
 
@@ -123,8 +160,8 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                                     <tr>
                                                                         <td>
                                                                             <div className="d-flex align-items-center">
-                                                                                <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.id) ? 'online' : 'offline'}`}></span>
-                                                                                <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.id) ? 'Online' : 'Offline'}</span>
+                                                                                <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.extension?.extension) ? 'online' : 'offline'}`}></span>
+                                                                                <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.extension?.extension) ? 'Online' : 'Offline'}</span>
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -178,7 +215,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                 </thead>
                                                 <tbody>
                                                     {allUser?.data?.length > 0 &&
-                                                        allUser?.data?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.id))
+                                                        allUser?.data?.filter((agent) => agent?.extension_id !== null && !onlineUser.includes(agent?.extension?.extension))
                                                             // .filter((agent) => )
                                                             .map((agent, index) => {
                                                                 return (

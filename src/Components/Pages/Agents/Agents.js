@@ -8,17 +8,54 @@ import {
   checkViewSidebar,
   generalGetFunction,
   generalGetFunctionWithToken,
-  generalPostFunction,
+  generalPostFunctionWithToken,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
-import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import { toast } from "react-toastify";
-import PromptFunctionPopup from "../../CommonComponents/PromptFunctionPopup";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+/**
+ * Agents Component
+ * 
+ * This component displays a list of agents with their details including name, caller ID, extension,
+ * role, recording status, and online status. It allows the user to search, paginate, and perform
+ * actions such as adding, editing, and logging out agents. The component integrates with Redux to
+ * manage state and fetches data from an API to display the list of agents.
+ * 
+ * Props:
+ * @param {string} type - The type of agent usage to filter the list of agents.
+ * 
+ * State:
+ * - agents: Array of agent objects fetched from the API.
+ * - onlineUsers: Array of IDs representing agents that are currently online.
+ * - loading: Boolean indicating if the data is being loaded.
+ * - entriesPerPage: Number of entries to display per page.
+ * - pageNumber: Current page number for pagination.
+ * - userInput: Search input for filtering agents.
+ * - isAgentLogoutPopup: Boolean indicating if the agent logout confirmation popup is visible.
+ * - agentLogOutToken: Token used to logout an agent.
+ * 
+ * Effects:
+ * - Fetches agent data on component mount and when dependencies change.
+ * - Updates online users based on the logged-in user's data.
+ * 
+ * Functions:
+ * - getData: Fetches agent data from the API based on the current type, pagination, and search settings.
+ * - handleAgentLogout: Logs out an agent using a token and refreshes the agent list.
+ * 
+ * UI:
+ * - Displays a table of agents with options to search, paginate, and perform actions like adding, editing, and logging out.
+ * - Shows a confirmation popup for logging out an agent.
+ * 
+ * Integration:
+ * - Uses `useSelector` to access Redux state for users, account, permissions, and DID.
+ * - Utilizes `useNavigate` for navigation between pages.
+ */
+
 function Agents({ type }) {
   const navigate = useNavigate();
   const logonUser = useSelector((state) => state.loginUser);
+  const registerUser = useSelector((state) => state.registerUser);
   const [agents, setAgents] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([0]);
   const [loading, setLoading] = useState(false);
@@ -27,7 +64,6 @@ function Agents({ type }) {
   const [userInput, setuserInput] = useState("");
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
-  const { confirm, ModalComponent } = PromptFunctionPopup();
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
   const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
   const [agentLogOutToken, setAgentLogOutToken] = useState("");
@@ -36,8 +72,8 @@ function Agents({ type }) {
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        logonUser.map((item) => {
-          return item.id;
+        registerUser.map((item) => {
+          return item.extension;
         })
       );
     }
@@ -58,24 +94,8 @@ function Agents({ type }) {
   };
 
   useEffect(() => {
-    // getData();
-    // if (userInput.trim().length === 0) {
-    //   getData();
-    // } else {
-    //   const timer = setTimeout(() => {
-    //     getData();
-    //   }, 1000);
-    //   return () => clearTimeout(timer);
-    // }
     getData();
-  }, [entriesPerPage, pageNumber, type,userInput]);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     getData();
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, [userInput])
+  }, [entriesPerPage, pageNumber, type, userInput]);
 
 
   // Handle Agent Logout Function
@@ -92,7 +112,17 @@ function Agents({ type }) {
           setLoading(false);
           getData();
         } else {
-          toast.error(logOut?.error || logOut?.error.message);
+          if (logOut?.message === "Token expired") {
+            const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { all: agentLogOutToken, token: agentLogOutToken });
+            if (expireLogout?.status) {
+              toast.success(logOut?.message);
+              setLoading(false);
+              getData();
+            } else {
+              setLoading(false)
+              toast.error("Something went wrong. Please try again.")
+            }
+          }
         }
       } catch (err) {
         console.log(err);
@@ -102,6 +132,17 @@ function Agents({ type }) {
       // }
     }
   }
+
+  // Getting token from online user by checking with extension
+  function getToken(extension) {
+    const user = logonUser.find((user) => user?.extension?.extension === extension);
+
+    return user ? user.usertokens : null;
+  }
+  console.log("LogonUser:", logonUser);
+
+
+  console.log("Tokennnnn:", getToken("1006"));
 
   return (
     <main className="mainContent">
@@ -227,6 +268,7 @@ function Agents({ type }) {
                                             <div className="tableProfilePicHolder">
                                               {item.profile_picture ? (
                                                 <img
+                                                  alt="profile"
                                                   src={item.profile_picture}
                                                   onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                 />
@@ -244,27 +286,25 @@ function Agents({ type }) {
                                         <td>
                                           <span
                                             className={
-                                              onlineUsers.includes(item.id)
+                                              onlineUsers.includes(item.extension.extension)
                                                 ? "extensionStatus online mx-auto"
                                                 : "extensionStatus mx-auto"
                                             }
                                           ></span>
                                         </td>
-                                        {(checkViewSidebar(
-                                          "CallCenterAgent",
-                                          slugPermissions,
-                                          account?.permissions, "edit")) && (onlineUsers.includes(item.id) && item.token != null) ?
-                                          <td>
+                                        {
+                                          getToken(item.extension.extension) && onlineUsers.includes(item.extension.extension) ? <td>
                                             <button
                                               className="tableButton delete mx-auto"
                                               onClick={() => {
                                                 setIsAgentLogoutPopup(true);
-                                                setAgentLogOutToken(item.token);
+                                                setAgentLogOutToken(getToken(item.extension.extension)[0].token);
                                               }}
                                             >
                                               <i className="fa-solid fa-power-off"></i>
                                             </button>
-                                          </td> : <td></td>}
+                                          </td> : <td></td>
+                                        }
                                         {checkViewSidebar(
                                           "CallCenterAgent",
                                           slugPermissions,
