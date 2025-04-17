@@ -25,11 +25,13 @@ const NewGetDid = () => {
     const [countryCode, setCountryCode] = useState();
     const [loading, setLoading] = useState();
     const [did, setDid] = useState();
-    const [selectedDid, setSelectedDid] = useState();
+    const [selectedDid, setSelectedDid] = useState([]);
     const [didBuyPopUP, setDidBuyPopUp] = useState(false);
     const [rechargePopUp, setRechargePopUp] = useState(false);
     const [popUp, setPopUp] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("wallet");
+    const [purchaseDidPopup, setPurchaseDidPopup] = useState(false);
+
 
     const [selectedUsage, setSelectedUsage] = useState([
         {
@@ -105,6 +107,7 @@ const NewGetDid = () => {
 
     // Handle TFN search
     const onSubmit = async (data) => {
+        setSelectedDid([]);
         setLoading(true);
         const usagePayload = option.reduce((acc, curr) => {
             acc[curr.label] = 0;
@@ -170,7 +173,7 @@ const NewGetDid = () => {
             if (
                 Number(accountDetails?.balance?.amount) <
                 // Number(selectedDid[0].price) * selectedDid.length
-                Number(selectedDid.price)
+                totalPrice
             ) {
                 toast.error("Wallet balance is low");
             } else {
@@ -213,6 +216,24 @@ const NewGetDid = () => {
     function handleRechargePopup(value) {
         setRechargePopUp(value);
     }
+
+    //   Add did to selected did when a user click on add button
+    function addSelect(item) {
+        if (selectedDid.includes(item)) {
+        } else {
+            setSelectedDid([...selectedDid, item]);
+        }
+    }
+
+    //   Remove did from selected when a user click on remove did
+    function removeDid(item) {
+        setSelectedDid(selectedDid.filter((item1) => item1 !== item));
+    }
+
+    const totalPrice = selectedDid.reduce((total, item) => {
+        const price = parseFloat(item.price) || 0; // Convert price string to a number
+        return total + price;
+    }, 0);
 
     return (
         <>
@@ -556,7 +577,7 @@ const NewGetDid = () => {
 
                                                                 <div className="formRow col-auto">
                                                                     <div className="">
-                                                                        <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>                                                    </button>
+                                                                        <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i></button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -564,7 +585,7 @@ const NewGetDid = () => {
                                                             <div className='country_card_group numberListGroup'>
                                                                 {did && did.length > 0 ?
                                                                     did.map((item, index) => (
-                                                                        <div className='card country_box' key={index} onClick={() => setSelectedDid(item)}>
+                                                                        <div className={`card country_box ${selectedDid.includes(item) ? 'active' : ''}`} key={index} onClick={() => selectedDid.includes(item) ? removeDid(item) : addSelect(item)}>
                                                                             <div className='card-body flex-row gap-3 justify-content-start w-100'>
                                                                                 <div className='avatar_img mb-0'>
                                                                                     <img src={`https://flagsapi.com/${watch().country}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
@@ -619,6 +640,17 @@ const NewGetDid = () => {
                                                                     )
                                                                 }
                                                             </div>
+                                                            {selectedDid && selectedDid.length > 0 &&
+                                                                <div className='py-2'>
+                                                                    <button
+                                                                        className='panelButton mx-auto'
+                                                                        onClick={() => setPurchaseDidPopup(true)}
+                                                                    >
+                                                                        <span class="text">Buy</span>
+                                                                        <span class="icon"><i class="fa-solid fa-arrows-rotate"></i></span>
+                                                                    </button>
+                                                                </div>
+                                                            }
                                                         </div>
                                                     </>
                                                 ) : (
@@ -670,119 +702,130 @@ const NewGetDid = () => {
                     </div>
                 </section>
             </main>
-            {selectedDid && <>
-                <div className='backdropContact'>
-                    <div className="addNewContactPopup">
-                        <div className="row">
-                            <div className="col-12 heading">
-                                <i className="fa-light fa-user-plus"></i>
-                                <h5>Purchase Number</h5>
-                                <p>
-                                    You are about to purchase the selected number
-                                </p>
-                                <div className="border-bottom col-12" />
-                            </div>
+            {purchaseDidPopup &&
+                <>
+                    <div className='backdropContact'>
+                        <div className="addNewContactPopup">
+                            <div className="row">
+                                <div className="col-12 heading">
+                                    <i className="fa-light fa-user-plus"></i>
+                                    <h5>Purchase Number</h5>
+                                    <p>
+                                        You are about to purchase the selected number
+                                    </p>
+                                    <div className="border-bottom col-12" />
+                                </div>
 
-                            <div>
+                                <div>
+                                    <div className="heading mb-2 px-0 py-1 bg-transparent">
+                                        <h5 className='mb-0'>Order Summary</h5>
+                                    </div>
+                                    <div className='border border-light-subtle rounded-3 p-2 mb-2'>
+                                        <div>
+                                            <ul>
+                                                {selectedDid.map((item) => {
+                                                    return (
+                                                        <li className='mb-2' style={{ width: '100%', marginBlock: '0' }}>
+                                                            {item.friendly_name ? item.friendly_name : item.didSummary}{" "}
+                                                            <span className="float-end">${item.price}</span>
+                                                        </li>
+                                                    );
+                                                })}
+                                                <li className='mb-2 fw-bold fs-6' style={{ width: '100%', marginBlock: '0' }}>Total: <span className="float-end">${parseFloat(totalPrice).toFixed(2)}</span></li>
+                                            </ul>
+                                        </div>
+                                        {/* <div>
+                                            <span className="float-end">${totalPrice}</span>
+                                        </div> */}
+                                    </div>
+                                </div>
+
                                 <div className="heading mb-2 px-0 py-1 bg-transparent">
-                                    <h5 className='mb-0'>Order Summary</h5>
+                                    <h5 className='mb-0'>Payment Method</h5>
                                 </div>
-                                <div className='d-flex justify-content-between border border-light-subtle rounded-3 p-2 mb-2'>
-                                    <div>
-                                        {selectedDid.friendly_name ? selectedDid.friendly_name : selectedDid.didSummary}
-                                    </div>
-                                    <div>
-                                        <span className="float-end">${selectedDid.price}</span>
-                                    </div>
-                                </div>
-                            </div>
+                                <div className='getPopup checkout'>
+                                    <div className="wrapper ">
+                                        <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2'>
+                                            <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
+                                                <li className="my-0 col mb-0 position-relative">
+                                                    <i
+                                                        className="fa-duotone fa-wallet me-2"
+                                                        style={{ color: "var(--ui-accent)" }}
+                                                    ></i>{" "}
+                                                    Wallet{" "}
+                                                    <span style={{ float: 'inline-end', fontSize: '14px' }}>${accountBalance}</span>
+                                                    <input
+                                                        type="radio"
+                                                        checked={
+                                                            paymentMethod === "wallet" ? true : false
+                                                        }
+                                                        name="fav_language"
+                                                        onChange={(e) => {
+                                                            if (e.target.checked) {
+                                                                setPaymentMethod("wallet");
+                                                            }
+                                                        }}
+                                                    ></input>{" "}
+                                                    <span className="checkmark"></span>
+                                                </li>
+                                                {totalPrice > Number(accountBalance) ? <div className="col-auto">
+                                                    <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
+                                                        <i className="fa-solid fa-dollar-sign" />
+                                                    </button>
+                                                </div> : ""
+                                                }
 
-                            <div className="heading mb-2 px-0 py-1 bg-transparent">
-                                <h5 className='mb-0'>Payment Method</h5>
-                            </div>
-                            <div className='getPopup checkout'>
-                                <div className="wrapper ">
-                                    <ul className='d-flex justify-content-start flex-column border border-light-subtle rounded-3 p-2'>
-                                        <div className="d-flex justify-content-between align-items-center gap-2 mb-2">
-                                            <li className="my-0 col mb-0 position-relative">
+                                            </div>
+                                            <li className='my-0 w-100 position-relative'>
                                                 <i
-                                                    className="fa-duotone fa-wallet me-2"
+                                                    className="fa-duotone fa-credit-card me-2"
                                                     style={{ color: "var(--ui-accent)" }}
                                                 ></i>{" "}
-                                                Wallet{" "}
-                                                <span style={{ float: 'inline-end', fontSize: '14px' }}>${accountBalance}</span>
+                                                Credit Card{" "}
                                                 <input
                                                     type="radio"
-                                                    checked={
-                                                        paymentMethod === "wallet" ? true : false
-                                                    }
+                                                    checked={paymentMethod === "card" ? true : false}
                                                     name="fav_language"
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
-                                                            setPaymentMethod("wallet");
+                                                            setPaymentMethod("card");
                                                         }
                                                     }}
                                                 ></input>{" "}
                                                 <span className="checkmark"></span>
                                             </li>
-                                            {Number(selectedDid.price) > Number(accountBalance) ? <div className="col-auto">
-                                                <button className="tableButton edit" onClick={() => setRechargePopUp(true)}>
-                                                    <i className="fa-solid fa-dollar-sign" />
-                                                </button>
-                                            </div> : ""
-                                            }
+                                        </ul>
 
-                                        </div>
-                                        <li className='my-0 w-100 position-relative'>
-                                            <i
-                                                className="fa-duotone fa-credit-card me-2"
-                                                style={{ color: "var(--ui-accent)" }}
-                                            ></i>{" "}
-                                            Credit Card{" "}
-                                            <input
-                                                type="radio"
-                                                checked={paymentMethod === "card" ? true : false}
-                                                name="fav_language"
-                                                onChange={(e) => {
-                                                    if (e.target.checked) {
-                                                        setPaymentMethod("card");
-                                                    }
-                                                }}
-                                            ></input>{" "}
-                                            <span className="checkmark"></span>
-                                        </li>
-                                    </ul>
-
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="col-xl-12 mt-4">
-                                <div className="d-flex justify-content-between">
-                                    <button
-                                        className="panelButton gray ms-0"
-                                        onClick={() => setSelectedDid(null)}
-                                    >
-                                        <span className="text">Close</span>
-                                        <span className="icon">
-                                            <i className="fa-solid fa-caret-left"></i>
-                                        </span>
-                                    </button>
-                                    <button
-                                        className="panelButton"
-                                        // onClick={handlePayment}
-                                        onClick={() => setPopUp(true)}
-                                    >
-                                        <span className="text">Pay</span>
-                                        <span className="icon">
-                                            <i className="fa-solid fa-dollar-sign"></i>
-                                        </span>
-                                    </button>
+                                <div className="col-xl-12 mt-4">
+                                    <div className="d-flex justify-content-between">
+                                        <button
+                                            className="panelButton gray ms-0"
+                                            onClick={() => setPurchaseDidPopup(false)}
+                                        >
+                                            <span className="text">Close</span>
+                                            <span className="icon">
+                                                <i className="fa-solid fa-caret-left"></i>
+                                            </span>
+                                        </button>
+                                        <button
+                                            className="panelButton"
+                                            // onClick={handlePayment}
+                                            onClick={() => setPopUp(true)}
+                                        >
+                                            <span className="text">Pay</span>
+                                            <span className="icon">
+                                                <i className="fa-solid fa-dollar-sign"></i>
+                                            </span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </>}
+                </>}
             {
                 didBuyPopUP ? (
                     <div className="popup">
