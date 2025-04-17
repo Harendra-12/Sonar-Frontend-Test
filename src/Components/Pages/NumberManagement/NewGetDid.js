@@ -623,39 +623,40 @@ const NewGetDid = () => {
                                                     </>
                                                 ) : (
                                                     <div className='p-4'>
+                                                        <h4 className='card_title'>Top countries</h4>
+                                                        <div className='country_card_group mb-3'>
+                                                            <div className='card country_box' onClick={() => setValue('country', 'US')} style={{ width: '141px' }}>
+                                                                <div className='card-body'>
+                                                                    <div className='avatar_img'>
+                                                                        <img src={`https://flagsapi.com/US/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                    </div>
+                                                                    <div className='card_details'>
+                                                                        <p className='country_name'>United States</p>
+                                                                        <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                            <p className="text-center mb-0">+1</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <h4 className='card_title'>All countries</h4>
                                                         <div className='country_card_group'>
-                                                            {countryCode && countryCode.length > 0 ?
-                                                                <>
-                                                                    <div className='card country_box' onClick={() => setValue('country', 'US')}>
+                                                            {countryCode && countryCode.length > 0 &&
+                                                                countryCode.filter((item) => item.country_code !== "US").map((item, index) => (
+                                                                    <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
                                                                         <div className='card-body'>
                                                                             <div className='avatar_img'>
-                                                                                <img src={`https://flagsapi.com/US/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                                <img src={`https://flagsapi.com/${item?.country_code}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
                                                                             </div>
                                                                             <div className='card_details'>
-                                                                                <p className='country_name'>United States</p>
+                                                                                <p className='country_name'>{item?.country}</p>
                                                                                 <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                    <p className="text-center mb-0">+1</p>
+                                                                                    <p className="text-center mb-0">{item?.prefix_code}</p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    {countryCode.filter((item) => item.country_code !== "US").map((item, index) => (
-                                                                        <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
-                                                                            <div className='card-body'>
-                                                                                <div className='avatar_img'>
-                                                                                    <img src={`https://flagsapi.com/${item?.country_code}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
-                                                                                </div>
-                                                                                <div className='card_details'>
-                                                                                    <p className='country_name'>{item?.country}</p>
-                                                                                    <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                        <p className="text-center mb-0">{item?.prefix_code}</p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
-                                                                </> : ""
+                                                                ))
                                                             }
                                                         </div>
                                                     </div>
