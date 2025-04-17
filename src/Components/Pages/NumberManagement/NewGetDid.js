@@ -87,9 +87,8 @@ const NewGetDid = () => {
 
     // Handle All Country Call & Basic API Call @ Page Start
     const searchInitApiCall = () => {
-        setValue('searchType', "tollfree");
-        setValue('quantity', 10);
-        setValue('searchBy', "npa");
+        setValue('searchType', watch().searchType || "tollfree");
+        setValue('npa', "");
     }
 
     useEffect(() => {
@@ -102,7 +101,7 @@ const NewGetDid = () => {
         }, 100);
 
         return () => clearTimeout(timer);
-    }, [watch().country])
+    }, [watch().country, watch().searchType])
 
     // Handle TFN search
     const onSubmit = async (data) => {
@@ -119,7 +118,7 @@ const NewGetDid = () => {
         const parsedData = {
             ...data,
             // searchType: data.searchType,
-            // quantity: data.quantity,
+            quantity: data.quantity || 10, // Fallback for Quantity
             // npa: data.npa,
             companyId: account.account_id,
             usage: usagePayload,
@@ -221,429 +220,450 @@ const NewGetDid = () => {
             <main className='mainContent'>
                 <section >
                     <div className="container-fluid">
-                        <div className="row justify-content-center">
+                        <div className="row">
                             <Header title="DID Management" />
-                        </div>
-                        <div className='card mt-4 shadow-sm border-0'>
-                            <div className="heading card-header d-flex justify-content-between align-items-center gap-2 bg-transparent border-light-subtle">
-                                <div className="content">
-                                    <h4>Buy A Number</h4>
-                                    <p className='mb-0'>You can purchase a DID here</p>
-                                </div>
-                                <div className="buttonGroup">
-                                    <button
-                                        effect="ripple"
-                                        className="panelButton gray"
-                                        onClick={() => {
-                                            watch().country ? reset({ country: "" }) :
-                                                navigate(-1);
-                                            backToTop();
-                                        }}
-                                    >
-                                        <span className="text">Back</span>
-                                        <span className="icon">
-                                            <i className="fa-solid fa-caret-left"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className='card-body fillerCountryNumber'>
-                                {watch().country ? (
-                                    <>
-                                        <form onSubmit={handleSubmit(onSubmit)} className={`mb-0 row`}>
-                                            <div className="formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
-                                                <div className="formLabel">
-                                                    <label htmlFor="searchType">Search Type</label>
+                            <div className='overviewTableWrapper'>
+                                <div className='overviewTableChild'>
+                                    <div className='d-flex flex-wrap'>
+                                        <div className='col-12'>
+                                            <div className="heading">
+                                                <div className="content">
+                                                    <h4>Buy A Number</h4>
+                                                    <p className='mb-0'>You can purchase a DID here</p>
                                                 </div>
-                                                <div className="col-12">
-                                                    <select
-                                                        name="searchType"
-                                                        className={`formItem ${errors.searchType ? "error" : ""
-                                                            }`}
-                                                        {...register("searchType", {
-                                                            ...requiredValidator,
-                                                        })}
-                                                        defaultValue={"tollfree"}
+                                                <div className="buttonGroup">
+                                                    <button
+                                                        effect="ripple"
+                                                        className="panelButton gray"
+                                                        onClick={() => {
+                                                            watch().country ? reset({ country: "" }) :
+                                                                navigate(-1);
+                                                            backToTop();
+                                                        }}
                                                     >
-                                                        <option value="tollfree">Toll free</option>
-                                                        <option value="domestic">Domestic</option>
-                                                    </select>
-                                                    {errors.searchType && (
-                                                        <ErrorMessage text={errors.searchType.message} />
-                                                    )}
-                                                    <label htmlFor="data" className="formItemDesc text-start">
-                                                        Select the type of DID
-                                                    </label>
+                                                        <span className="text">Back</span>
+                                                        <span className="icon">
+                                                            <i className="fa-solid fa-caret-left"></i>
+                                                        </span>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                <div
-                                                    className="formLabel d-flex justify-content-between"
-                                                    style={{ width: "100%" }}
-                                                >
-                                                    <label htmlFor="quantity">Quantity</label>
-                                                    {errors.quantity && (
-                                                        <ErrorMessage text={errors.quantity.message} />
-                                                    )}
-                                                </div>
-                                                <div className="col-12">
-                                                    <input
-                                                        type="number"
-                                                        name="quantity"
-                                                        className={`formItem ${errors.quantity ? "error" : ""
-                                                            }`}
-                                                        {...register("quantity", {
-                                                            ...requiredValidator,
-                                                            ...lengthValidator(1, 10),
-                                                            ...noSpecialCharactersValidator,
-                                                        })}
-                                                        onKeyDown={restrictToNumbers}
-                                                        style={{ color: 'transparent' }}
-                                                        onFocus={(e) => e.target.style.color = 'var(--form-input-text)'}
-                                                    />
-                                                    <label htmlFor="data" className="formItemDesc text-start">
-                                                        Input the quantity
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className={`formRow`} style={{ width: '335px' }}>
-                                                <div className="formLabel">
-                                                    <label htmlFor="">Usage</label>
-                                                </div>
-                                                <div className="col-12">
-                                                    <div className="d-flex justify-content-between flex-wrap">
-                                                        <div className="checkbox-wrapper-4">
-                                                            <input className="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
-                                                            <label className="cbx" for="Voice">
-                                                                <span>
-                                                                    <svg width="12px" height="10px">
-                                                                    </svg>
-                                                                </span>
-                                                                <span className="checkBoxLabel">Voice</span>
-                                                            </label>
-                                                            <svg className="inline-svg">
-                                                                <symbol id="check-4" viewBox="0 0 12 10">
-                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                                                </symbol>
-                                                            </svg>
-                                                        </div>
-                                                        <div className="checkbox-wrapper-4">
-                                                            <input className="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
-                                                            <label className="cbx" for="Text">
-                                                                <span>
-                                                                    <svg width="12px" height="10px">
-                                                                    </svg>
-                                                                </span>
-                                                                <span className="checkBoxLabel">Text</span>
-                                                            </label>
-                                                            <svg className="inline-svg">
-                                                                <symbol id="check-4" viewBox="0 0 12 10">
-                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                                                </symbol>
-                                                            </svg>
-                                                        </div>
-                                                        <div className="checkbox-wrapper-4">
-                                                            <input className="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
-                                                            <label className="cbx" for="Fax">
-                                                                <span>
-                                                                    <svg width="12px" height="10px">
-                                                                    </svg>
-                                                                </span>
-                                                                <span className="checkBoxLabel">Fax</span>
-                                                            </label>
-                                                            <svg className="inline-svg">
-                                                                <symbol id="check-4" viewBox="0 0 12 10">
-                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                                                </symbol>
-                                                            </svg>
-                                                        </div>
-                                                        <div className="checkbox-wrapper-4">
-                                                            <input className="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
-                                                            <label className="cbx" for="Emergency">
-                                                                <span>
-                                                                    <svg width="12px" height="10px">
-                                                                    </svg>
-                                                                </span>
-                                                                <span className="checkBoxLabel">Emergency</span>
-                                                            </label>
-                                                            <svg className="inline-svg">
-                                                                <symbol id="check-4" viewBox="0 0 12 10">
-                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                                                </symbol>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <label htmlFor="data" className="formItemDesc text-start">
-                                                        Set how the Destination will be used
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            {
-                                                watch().searchType === "domestic" ? <>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div className="formLabel">
-                                                            <label htmlFor="searchBy">Search By</label>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <select
-                                                                name="searchBy"
-                                                                className={`formItem ${errors.searchBy ? "error" : ""
-                                                                    }`}
-                                                                {...register("searchBy", {
-                                                                    ...requiredValidator,
-                                                                })}
-                                                                defaultValue={"npa"}
-                                                            >
-                                                                <option value="npa">First 3 Digit (Area Code)</option>
-                                                                <option value="npanxx">First 6 Digits (Area + Exchange Code)</option>
-                                                                <option value="ratecenter">Rate Center</option>
-                                                            </select>
-                                                            {errors.searchBy && (
-                                                                <ErrorMessage text={errors.searchBy.message} />
-                                                            )}
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                Select the type of domestic DID
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </> : ""
-                                            }
-                                            {
-                                                (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div className="col-12">
-                                                            <div
-                                                                className="formLabel"
-                                                                style={{ maxWidth: "100%" }}
-                                                            >
-                                                                <label htmlFor="npa">First 3 Digits</label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <input
-                                                                type="number"
-                                                                name="npa"
-                                                                className={`formItem ${errors.npa ? "error" : ""}`}
-                                                                {...register("npa", {
-                                                                    ...(watch("searchBy") === "npanxx" ? requiredValidator : {}),
-                                                                    ...lengthValidator(3, 3),
-                                                                    ...noSpecialCharactersValidator,
-                                                                })}
-                                                            />
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Input the first 3 digits (NPA - Area Code) of the DID */}
-                                                            </label>
-                                                            {errors.npa && (
-                                                                <ErrorMessage text={errors.npa.message} />
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            }
-
-                                            {
-                                                (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div className="col-12">
-                                                            <div
-                                                                className="formLabel"
-                                                                style={{ maxWidth: "100%" }}
-                                                            >
-                                                                <label htmlFor="nxx">Next 3 Digits</label>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <input
-                                                                type="number"
-                                                                name="nxx"
-                                                                className={`formItem ${errors.nxx ? "error" : ""}`}
-                                                                {...register("nxx", {
-                                                                    ...requiredValidator,
-                                                                    ...lengthValidator(3, 3),
-                                                                    ...noSpecialCharactersValidator,
-                                                                })}
-                                                            />
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Input the next 3 digits (NXX - Exchange Code) of a DID */}
-                                                            </label>
-                                                            {errors.nxx && (
-                                                                <ErrorMessage text={errors.nxx.message} />
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            }
-
-                                            {
-                                                (watch().searchBy === "ratecenter" && watch().searchType === "domestic") && <>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div
-                                                            className="formLabel d-flex justify-content-between"
-                                                            style={{ width: "100%" }}
-                                                        >
-                                                            <label htmlFor="rateCenter">Rate Center</label>
-                                                            {errors.rateCenter && (
-                                                                <ErrorMessage text={errors.rateCenter.message} />
-                                                            )}
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <input
-                                                                type="string"
-                                                                name="rateCenter"
-                                                                className={`formItem ${errors.rateCenter ? "error" : ""}`}
-                                                                {...register("rateCenter", {
-                                                                    // ...requiredValidator
-                                                                })}
-                                                            />
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Input the rate center for the DID */}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div
-                                                            className="formLabel d-flex justify-content-between"
-                                                            style={{ width: "100%" }}
-                                                        >
-                                                            <label htmlFor="state">State</label>
-                                                            {errors.state && (
-                                                                <ErrorMessage text={errors.state.message} />
-                                                            )}
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <input
-                                                                type="state"
-                                                                name="state"
-                                                                className={`formItem ${errors.state ? "error" : ""}`}
-                                                                {...register("state", {
-                                                                    ...requiredValidator
-                                                                })}
-                                                            />
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Input the state for the DID */}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
-                                                        <div className="formLabel">
-                                                            <label htmlFor="contiguous">Contiguous</label>
-                                                        </div>
-                                                        <div className="col-12">
-                                                            <select
-                                                                name="contiguous"
-                                                                className={`formItem ${errors.contiguous ? "error" : ""
-                                                                    }`}
-                                                                {...register("contiguous", {
-                                                                    ...requiredValidator,
-                                                                })}
-                                                                defaultValue={1}
-                                                            >
-                                                                <option value={1}>True</option>
-                                                                <option value={0}>False</option>
-                                                            </select>
-                                                            {errors.contiguous && (
-                                                                <ErrorMessage text={errors.contiguous.message} />
-                                                            )}
-                                                            <label htmlFor="data" className="formItemDesc text-start">
-                                                                {/* Select the type of domestic DID */}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            }
-
-                                            <div className="formRow col-2">
-                                                <div className="">
-                                                    <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div className='border border-light-subtle rounded-3 p-3'>
-                                            {/* <h4 className='card_title'>Top countries</h4> */}
-                                            <div className='country_card_group numberListGroup'>
-                                                {did && did.length > 0 ?
-                                                    did.map((item, index) => (
-                                                        <div className='card country_box' key={index} onClick={() => setSelectedDid(item)}>
-                                                            <div className='card-body flex-row gap-3 justify-content-start w-100'>
-                                                                <div className='avatar_img mb-0'>
-                                                                    <img src={`https://flagsapi.com/${watch().country}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
-                                                                </div>
-                                                                <div className='card_details'>
-                                                                    <p className='country_name text-start'>{item.friendly_name ? item.friendly_name : item.didSummary}</p>
-                                                                    <div className='d-flex justify-content-center align-content-center gap-2'>
-                                                                        {
-                                                                            selectedUsage.map((item, key) => {
-                                                                                if (item.label === "Voice") {
-                                                                                    return (
-                                                                                        <Tippy content="Voice Call is activated for this DID">
-                                                                                            <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                <i class="fa-solid fa-phone"></i>
-                                                                                            </button>
-                                                                                        </Tippy>
-                                                                                    )
-                                                                                } else if (item.label === "Text") {
-                                                                                    return (
-                                                                                        <Tippy content="SMS is activated for this DID">
-                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                <i class="fa-regular fa-comments"></i>
-                                                                                            </button>
-                                                                                        </Tippy>
-                                                                                    )
-                                                                                } else if (item.label === "Fax") {
-                                                                                    return (
-                                                                                        <Tippy content="Fax is activated for this DID">
-                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                <i class="fa-solid fa-fax"></i>
-                                                                                            </button>
-                                                                                        </Tippy>
-                                                                                    )
-                                                                                } else if (item.label === "Emergency") {
-                                                                                    return (
-                                                                                        <Tippy content="Emergency / e911 is activated for this DID">
-                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                                                <i class="fa-regular fa-light-emergency-on"></i>
-                                                                                            </button>
-                                                                                        </Tippy>
-                                                                                    )
-                                                                                }
-                                                                            })
-                                                                        }
+                                        </div>
+                                        <div className='col-12'>
+                                            <div className='fillerCountryNumber'>
+                                                {watch().country ? (
+                                                    <>
+                                                        <div style={{ padding: '0px 23px 20px' }}>
+                                                            <form onSubmit={handleSubmit(onSubmit)} className={`mb-0 row`}>
+                                                                <div className="formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6">
+                                                                    <div className="formLabel">
+                                                                        <label htmlFor="searchType">Search Type</label>
+                                                                    </div>
+                                                                    <div className="col-12">
+                                                                        <select
+                                                                            name="searchType"
+                                                                            className={`formItem ${errors.searchType ? "error" : ""
+                                                                                }`}
+                                                                            {...register("searchType", {
+                                                                                ...requiredValidator,
+                                                                            })}
+                                                                            defaultValue={"tollfree"}
+                                                                        >
+                                                                            <option value="tollfree">Toll free</option>
+                                                                            <option value="domestic">Domestic</option>
+                                                                        </select>
+                                                                        {errors.searchType && (
+                                                                            <ErrorMessage text={errors.searchType.message} />
+                                                                        )}
+                                                                        <label htmlFor="data" className="formItemDesc text-start">
+                                                                            Select the type of DID
+                                                                        </label>
                                                                     </div>
                                                                 </div>
+                                                                <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                    <div
+                                                                        className="formLabel d-flex justify-content-between"
+                                                                        style={{ width: "100%" }}
+                                                                    >
+                                                                        <label htmlFor="quantity">Quantity</label>
+                                                                        {errors.quantity && (
+                                                                            <ErrorMessage text={errors.quantity.message} />
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="col-12">
+                                                                        <input
+                                                                            type="number"
+                                                                            name="quantity"
+                                                                            className={`formItem ${errors.quantity ? "error" : ""
+                                                                                }`}
+                                                                            {...register("quantity", {
+                                                                                // ...requiredValidator,
+                                                                                ...lengthValidator(1, 10),
+                                                                                ...noSpecialCharactersValidator,
+                                                                            })}
+                                                                            onKeyDown={restrictToNumbers}
+                                                                        />
+                                                                        <label htmlFor="data" className="formItemDesc text-start">
+                                                                            Input the quantity
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div className={`formRow`} style={{ width: '335px' }}>
+                                                                    <div className="formLabel">
+                                                                        <label htmlFor="">Usage</label>
+                                                                    </div>
+                                                                    <div className="col-12">
+                                                                        <div className="d-flex justify-content-between flex-wrap">
+                                                                            <div className="checkbox-wrapper-4">
+                                                                                <input className="inp-cbx" id="Voice" name="Voice" type="checkbox" defaultChecked={true} onChange={handleChangeUsage} disabled={true} />
+                                                                                <label className="cbx" for="Voice">
+                                                                                    <span>
+                                                                                        <svg width="12px" height="10px">
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span className="checkBoxLabel">Voice</span>
+                                                                                </label>
+                                                                                <svg className="inline-svg">
+                                                                                    <symbol id="check-4" viewBox="0 0 12 10">
+                                                                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                    </symbol>
+                                                                                </svg>
+                                                                            </div>
+                                                                            <div className="checkbox-wrapper-4">
+                                                                                <input className="inp-cbx" id="Text" name="Text" type="checkbox" onChange={handleChangeUsage} />
+                                                                                <label className="cbx" for="Text">
+                                                                                    <span>
+                                                                                        <svg width="12px" height="10px">
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span className="checkBoxLabel">Text</span>
+                                                                                </label>
+                                                                                <svg className="inline-svg">
+                                                                                    <symbol id="check-4" viewBox="0 0 12 10">
+                                                                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                    </symbol>
+                                                                                </svg>
+                                                                            </div>
+                                                                            <div className="checkbox-wrapper-4">
+                                                                                <input className="inp-cbx" id="Fax" name="Fax" type="checkbox" onChange={handleChangeUsage} />
+                                                                                <label className="cbx" for="Fax">
+                                                                                    <span>
+                                                                                        <svg width="12px" height="10px">
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span className="checkBoxLabel">Fax</span>
+                                                                                </label>
+                                                                                <svg className="inline-svg">
+                                                                                    <symbol id="check-4" viewBox="0 0 12 10">
+                                                                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                    </symbol>
+                                                                                </svg>
+                                                                            </div>
+                                                                            <div className="checkbox-wrapper-4">
+                                                                                <input className="inp-cbx" id="Emergency" name="Emergency" type="checkbox" onChange={handleChangeUsage} />
+                                                                                <label className="cbx" for="Emergency">
+                                                                                    <span>
+                                                                                        <svg width="12px" height="10px">
+                                                                                        </svg>
+                                                                                    </span>
+                                                                                    <span className="checkBoxLabel">Emergency</span>
+                                                                                </label>
+                                                                                <svg className="inline-svg">
+                                                                                    <symbol id="check-4" viewBox="0 0 12 10">
+                                                                                        <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                    </symbol>
+                                                                                </svg>
+                                                                            </div>
+                                                                        </div>
+                                                                        <label htmlFor="data" className="formItemDesc text-start">
+                                                                            Set how the Destination will be used
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                {
+                                                                    watch().searchType === "domestic" ? <>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div className="formLabel">
+                                                                                <label htmlFor="searchBy">Search By</label>
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <select
+                                                                                    name="searchBy"
+                                                                                    className={`formItem ${errors.searchBy ? "error" : ""
+                                                                                        }`}
+                                                                                    {...register("searchBy", {
+                                                                                        ...requiredValidator,
+                                                                                    })}
+                                                                                    defaultValue={"npa"}
+                                                                                >
+                                                                                    <option value="npa">First 3 Digit (Area Code)</option>
+                                                                                    <option value="npanxx">First 6 Digits (Area + Exchange Code)</option>
+                                                                                    <option value="ratecenter">Rate Center</option>
+                                                                                </select>
+                                                                                {errors.searchBy && (
+                                                                                    <ErrorMessage text={errors.searchBy.message} />
+                                                                                )}
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    Select the type of domestic DID
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </> : ""
+                                                                }
+                                                                {
+                                                                    (watch().searchBy === "npa" || watch().searchBy === "npanxx" || watch().searchType === "tollfree" || !watch().searchBy) && <>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div className="col-12">
+                                                                                <div
+                                                                                    className="formLabel"
+                                                                                    style={{ maxWidth: "100%" }}
+                                                                                >
+                                                                                    <label htmlFor="npa">First 3 Digits</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <input
+                                                                                    type="number"
+                                                                                    name="npa"
+                                                                                    className={`formItem ${errors.npa ? "error" : ""}`}
+                                                                                    {...register("npa", {
+                                                                                        ...(watch("searchBy") === "npanxx" ? requiredValidator : {}),
+                                                                                        ...lengthValidator(3, 3),
+                                                                                        ...noSpecialCharactersValidator,
+                                                                                    })}
+                                                                                />
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    {/* Input the first 3 digits (NPA - Area Code) of the DID */}
+                                                                                </label>
+                                                                                {errors.npa && (
+                                                                                    <ErrorMessage text={errors.npa.message} />
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                }
+
+                                                                {
+                                                                    (watch().searchBy === "npanxx" && watch().searchType === "domestic") && <>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div className="col-12">
+                                                                                <div
+                                                                                    className="formLabel"
+                                                                                    style={{ maxWidth: "100%" }}
+                                                                                >
+                                                                                    <label htmlFor="nxx">Next 3 Digits</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <input
+                                                                                    type="number"
+                                                                                    name="nxx"
+                                                                                    className={`formItem ${errors.nxx ? "error" : ""}`}
+                                                                                    {...register("nxx", {
+                                                                                        ...requiredValidator,
+                                                                                        ...lengthValidator(3, 3),
+                                                                                        ...noSpecialCharactersValidator,
+                                                                                    })}
+                                                                                />
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    {/* Input the next 3 digits (NXX - Exchange Code) of a DID */}
+                                                                                </label>
+                                                                                {errors.nxx && (
+                                                                                    <ErrorMessage text={errors.nxx.message} />
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                }
+
+                                                                {
+                                                                    (watch().searchBy === "ratecenter" && watch().searchType === "domestic") && <>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div
+                                                                                className="formLabel d-flex justify-content-between"
+                                                                                style={{ width: "100%" }}
+                                                                            >
+                                                                                <label htmlFor="rateCenter">Rate Center</label>
+                                                                                {errors.rateCenter && (
+                                                                                    <ErrorMessage text={errors.rateCenter.message} />
+                                                                                )}
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <input
+                                                                                    type="string"
+                                                                                    name="rateCenter"
+                                                                                    className={`formItem ${errors.rateCenter ? "error" : ""}`}
+                                                                                    {...register("rateCenter", {
+                                                                                        // ...requiredValidator
+                                                                                    })}
+                                                                                />
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    {/* Input the rate center for the DID */}
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div
+                                                                                className="formLabel d-flex justify-content-between"
+                                                                                style={{ width: "100%" }}
+                                                                            >
+                                                                                <label htmlFor="state">State</label>
+                                                                                {errors.state && (
+                                                                                    <ErrorMessage text={errors.state.message} />
+                                                                                )}
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <input
+                                                                                    type="state"
+                                                                                    name="state"
+                                                                                    className={`formItem ${errors.state ? "error" : ""}`}
+                                                                                    {...register("state", {
+                                                                                        ...requiredValidator
+                                                                                    })}
+                                                                                />
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    {/* Input the state for the DID */}
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className={`formRow col-xl-2 col-lg-3 col-md-3 col-sm-6 col-6`}>
+                                                                            <div className="formLabel">
+                                                                                <label htmlFor="contiguous">Contiguous</label>
+                                                                            </div>
+                                                                            <div className="col-12">
+                                                                                <select
+                                                                                    name="contiguous"
+                                                                                    className={`formItem ${errors.contiguous ? "error" : ""
+                                                                                        }`}
+                                                                                    {...register("contiguous", {
+                                                                                        ...requiredValidator,
+                                                                                    })}
+                                                                                    defaultValue={1}
+                                                                                >
+                                                                                    <option value={1}>True</option>
+                                                                                    <option value={0}>False</option>
+                                                                                </select>
+                                                                                {errors.contiguous && (
+                                                                                    <ErrorMessage text={errors.contiguous.message} />
+                                                                                )}
+                                                                                <label htmlFor="data" className="formItemDesc text-start">
+                                                                                    {/* Select the type of domestic DID */}
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </>
+                                                                }
+
+                                                                <div className="formRow col-auto">
+                                                                    <div className="">
+                                                                        <button class="btn btn-primary" type="submit">Search<i class="fa-regular fa-magnifying-glass ms-2"></i>                                                    </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                            {/* <h4 className='card_title'>Top countries</h4> */}
+                                                            <div className='country_card_group numberListGroup'>
+                                                                {did && did.length > 0 ?
+                                                                    did.map((item, index) => (
+                                                                        <div className='card country_box' key={index} onClick={() => setSelectedDid(item)}>
+                                                                            <div className='card-body flex-row gap-3 justify-content-start w-100'>
+                                                                                <div className='avatar_img mb-0'>
+                                                                                    <img src={`https://flagsapi.com/${watch().country}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                                </div>
+                                                                                <div className='card_details'>
+                                                                                    <p className='country_name text-start'>{item.friendly_name ? item.friendly_name : item.didSummary}</p>
+                                                                                    <div className='d-flex justify-content-center align-content-center gap-2'>
+                                                                                        {
+                                                                                            selectedUsage.map((item, key) => {
+                                                                                                if (item.label === "Voice") {
+                                                                                                    return (
+                                                                                                        <Tippy content="Voice Call is activated for this DID">
+                                                                                                            <button className="text-center badge badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                                                <i class="fa-solid fa-phone"></i>
+                                                                                                            </button>
+                                                                                                        </Tippy>
+                                                                                                    )
+                                                                                                } else if (item.label === "Text") {
+                                                                                                    return (
+                                                                                                        <Tippy content="SMS is activated for this DID">
+                                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                                                <i class="fa-regular fa-comments"></i>
+                                                                                                            </button>
+                                                                                                        </Tippy>
+                                                                                                    )
+                                                                                                } else if (item.label === "Fax") {
+                                                                                                    return (
+                                                                                                        <Tippy content="Fax is activated for this DID">
+                                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                                                <i class="fa-solid fa-fax"></i>
+                                                                                                            </button>
+                                                                                                        </Tippy>
+                                                                                                    )
+                                                                                                } else if (item.label === "Emergency") {
+                                                                                                    return (
+                                                                                                        <Tippy content="Emergency / e911 is activated for this DID">
+                                                                                                            <button className="text-center badge  badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                                                <i class="fa-regular fa-light-emergency-on"></i>
+                                                                                                            </button>
+                                                                                                        </Tippy>
+                                                                                                    )
+                                                                                                }
+                                                                                            })
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                    ) : (
+                                                                        <EmptyPrompt generic={true} />
+                                                                    )
+                                                                }
                                                             </div>
                                                         </div>
-                                                    )
-                                                    ) : (
-                                                        <EmptyPrompt generic={true} />
-                                                    )
-                                                }
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className='border border-light-subtle rounded-3 p-3'>
-                                        <h4 className='card_title'>All countries</h4>
-                                        <div className='country_card_group'>
-                                            {countryCode && countryCode.length > 0 &&
-                                                countryCode.map((item, index) => (
-                                                    <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
-                                                        <div className='card-body'>
-                                                            <div className='avatar_img'>
-                                                                <img src={`https://flagsapi.com/${item?.country_code}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
-                                                            </div>
-                                                            <div className='card_details'>
-                                                                <p className='country_name'>{item?.country}</p>
-                                                                <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
-                                                                    <p className="text-center mb-0">{item?.prefix_code}</p>
-                                                                </div>
-                                                            </div>
+                                                    </>
+                                                ) : (
+                                                    <div className='p-4'>
+                                                        <h4 className='card_title'>All countries</h4>
+                                                        <div className='country_card_group'>
+                                                            {countryCode && countryCode.length > 0 ?
+                                                                <>
+                                                                    <div className='card country_box' onClick={() => setValue('country', 'US')}>
+                                                                        <div className='card-body'>
+                                                                            <div className='avatar_img'>
+                                                                                <img src={`https://flagsapi.com/US/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                            </div>
+                                                                            <div className='card_details'>
+                                                                                <p className='country_name'>United States</p>
+                                                                                <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                    <p className="text-center mb-0">+1</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {countryCode.filter((item) => item.country_code !== "US").map((item, index) => (
+                                                                        <div key={index} className='card country_box' onClick={() => setValue('country', item.country_code)}>
+                                                                            <div className='card-body'>
+                                                                                <div className='avatar_img'>
+                                                                                    <img src={`https://flagsapi.com/${item?.country_code}/flat/64.png`} alt='logout' style={{ width: 'auto' }} />
+                                                                                </div>
+                                                                                <div className='card_details'>
+                                                                                    <p className='country_name'>{item?.country}</p>
+                                                                                    <div className="text-center badge rounded-pill badge-softLight-primary bg-transparent d-inline-flex justify-content-center align-items-center">
+                                                                                        <p className="text-center mb-0">{item?.prefix_code}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))}
+                                                                </> : ""
+                                                            }
                                                         </div>
                                                     </div>
-                                                ))
-                                            }
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
                     </div>
