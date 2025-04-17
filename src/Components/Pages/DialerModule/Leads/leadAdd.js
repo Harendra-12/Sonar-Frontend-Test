@@ -64,93 +64,29 @@ function LeadAdd() {
                   </div>
 
                   <div className="col-12" style={{ padding: "25px 23px" }}>
-                    <form className="row mb-0">
-                      <div className="formRow col-xl-3">
+                    <form className="mb-0">
+                      <div className="formRow col-xl-6">
                         <div className="formLabel">
-                          <label>First Name</label>
+                          <label>Lead File</label>
+                        </div>
+                        <div className="col-6">
+                          <input type="file" className="formItem" />
+                        </div>
+                      </div>
+                      <div className="formRow col-xl-6">
+                        <div className="formLabel">
+                          <label>Lead Name</label>
                         </div>
                         <div className="col-6">
                           <input type="text" className="formItem" />
                         </div>
                       </div>
-
-                      <div className="formRow col-xl-3">
+                      <div className="formRow col-xl-6">
                         <div className="formLabel">
-                          <label>Last Name</label>
+                          <label>Lead Description</label>
                         </div>
                         <div className="col-6">
                           <input type="text" className="formItem" />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Phone Number</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="number" className="formItem" />
-                        </div>
-                      </div>
-
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Address 1</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="text" className="formItem" />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Address 2</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="text" className="formItem" />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>City</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="text" className="formItem" />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>State</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="text" className="formItem" />
-                        </div>
-                      </div>
-
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Country</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="text" className="formItem" />
-                        </div>
-                      </div>
-
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Zip Code</label>
-                        </div>
-                        <div className="col-6">
-                          <input type="number" className="formItem" />
-                        </div>
-                      </div>
-                      <div className="formRow col-xl-3">
-                        <div className="formLabel">
-                          <label>Gender</label>
-                        </div>
-                        <div className="col-6">
-                          <select name="" id="" className="formItem ">
-                            <option value="">Male</option>
-                            <option value="">Female</option>
-                            <option value="">Other</option>
-                          </select>
                         </div>
                       </div>
                     </form>
