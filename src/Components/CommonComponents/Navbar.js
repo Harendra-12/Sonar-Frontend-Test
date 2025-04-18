@@ -940,7 +940,7 @@ function Navbar() {
                           </div>
                         </div>
                       </li>
-                      {isCustomerAdmin &&
+                      {/* {isCustomerAdmin &&
                         <li className="dashboard ">
                           <NavLink
                             to="/all-addons"
@@ -963,7 +963,7 @@ function Navbar() {
                             </div>
                           </NavLink>
                         </li>
-                      }
+                      } */}
                     </>
                   )}
                   {checkViewSidebar(

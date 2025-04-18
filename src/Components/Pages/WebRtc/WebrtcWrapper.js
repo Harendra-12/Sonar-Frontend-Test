@@ -30,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 import CloseTabWarning from "./CloseTabWarning";
 import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
 import SmsChat from "./SmsChat";
+import CampaignLogin from "./CampaignLogin";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -300,7 +301,7 @@ const WebrtcWrapper = () => {
       }
     }
     fetchData();
-  }, [ callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
+  }, [callstartDate, callendDate, callsearchQuery, callclickStatus, refreshCalls]);
 
 
   useEffect(() => {
@@ -409,6 +410,7 @@ const WebrtcWrapper = () => {
         )}
 
         {activePage === "call-center" && <CallCenter />}
+        {activePage === "campaign-login" && <CampaignLogin />}
         {activePage === "test" && <ConferenceTest />}
         {activePage === "all-voice-mails" && (
           <AllVoicemails isCustomerAdmin={isCustomerAdmin} />

@@ -40,11 +40,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     }
   }, [connectStatus, registerStatus])
 
-  useEffect(()=>{
-    if(adminLogout){
+  useEffect(() => {
+    if (adminLogout) {
       sessionManager.disconnect();
     }
-  },[adminLogout])
+  }, [adminLogout])
 
   useEffect(() => {
     const userAgent = sessionManager?.userAgent;
@@ -268,6 +268,20 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <i className="fa-light fa-circle-user" />
                   </div>
                   <div className="itemTitle">Call Center</div>
+                </div>
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  // to="/campaign-login"
+                  onClick={() => setactivePage("campaign-login")}
+                  className={
+                    activePage === "campaign-login" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-megaphone" />
+                  </div>
+                  <div className="itemTitle">Campaigns</div>
                 </div>
               </li>
               {isCustomerAdmin &&
