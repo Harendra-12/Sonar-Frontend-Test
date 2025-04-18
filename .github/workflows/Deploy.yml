@@ -7,7 +7,8 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+   # runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       # Remove the checkout step if not needed
