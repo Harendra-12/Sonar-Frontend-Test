@@ -6,9 +6,11 @@ import RechargeWalletPopup from '../Billing/RechargeWalletPopup';
 import { toast } from 'react-toastify';
 import { AddonAdd, AddonEdit } from '../ThirdPartyApps/AllAddons';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
+import CircularLoader from '../../Loader/CircularLoader';
 
 function SocialMediaStore() {
     const [loading, setLoading] = useState(false);
+    const [skeletonLoading, setSkeletonLoading] = useState(false);
     const [allAddons, setAllAddons] = useState([]);
     const [selectedAddon, setSelectedAddon] = useState({});
     const accountBalance = useSelector((state) => state.accountBalance);
@@ -33,10 +35,10 @@ function SocialMediaStore() {
 
     // Get All Addons
     const fetchAllAddons = async () => {
-        setLoading(true);
+        setSkeletonLoading(true);
         const response = await generalGetFunction('/addon/all');
         if (response.status) {
-            setLoading(false);
+            setSkeletonLoading(false);
             setAllAddons(response.data);
         }
     }
@@ -44,6 +46,10 @@ function SocialMediaStore() {
     useEffect(() => {
         fetchAllAddons();
         fetchAllConfig();
+        dispatch({
+            type: "SET_ACCOUNTDETAILSREFRESH",
+            accountDetailsRefresh: accountDetailsRefresh + 1,
+        });
     }, [])
 
     // Handle callBack for buying pop up
@@ -142,11 +148,11 @@ function SocialMediaStore() {
 
     return (
         <>
-            {console.log(accountDetails.add_on_subscription)
-            }
+            {loading && <CircularLoader />}
             <div className="row">
                 <div className="col-md-12">
-                    <div className="product-container row gy-3">
+                    <div className="product-container row gy-3 mb-4">
+                        <h4 class="card_title">Purchased Addons</h4>
                         {accountDetails && accountDetails.add_on_subscription.length > 0 ?
                             accountDetails.add_on_subscription.filter((item, index, self) =>
                                 index === self.findIndex((t) => (
@@ -180,7 +186,7 @@ function SocialMediaStore() {
                                                 </div>
                                                 {configuredItem ? (
                                                     <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem.id)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
@@ -205,6 +211,10 @@ function SocialMediaStore() {
                                     )
                                 }) : ""
                         }
+                    </div>
+
+                    <div className="product-container row gy-3">
+                        <h4 class="card_title">Available to Purchase</h4>
 
                         {/* Product 1 */}
                         {allAddons && allAddons.length > 0 ?
@@ -252,7 +262,7 @@ function SocialMediaStore() {
                                     </div>
                                 )) :
                             <>
-                                {loading ?
+                                {skeletonLoading ?
                                     <>
                                         <div className='col-3'>
                                             <div className={`product-cart`}>

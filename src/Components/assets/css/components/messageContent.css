@@ -688,15 +688,21 @@
     width: 100%;
 }
 
+.dropdown-menu-hover li::marker {
+    color: transparent;
+}
+
 .contactHeader .dropdown-menu,
-.dropdown-menu.light {
+.dropdown-menu.light,
+.dropdown-menu-hover {
     padding: 5px 0;
     background-color: var(--ele-color);
     height: auto;
 }
 
 .contactHeader .dropdown-menu .dropdown-item,
-.dropdown-menu.light .dropdown-item {
+.dropdown-menu.light .dropdown-item,
+.dropdown-menu-hover .dropdown-item {
     font-size: 0.8125rem;
     color: var(--color-subtext);
     padding: 5px 10px;
@@ -705,12 +711,14 @@
 }
 
 .contactHeader .dropdown-menu .dropdown-item:active,
-.dropdown-menu.light .dropdown-item:active {
+.dropdown-menu.light .dropdown-item:active,
+.dropdown-menu-hover .dropdown-item:active {
     background-color: #dfdfdf;
 }
 
 .contactHeader .dropdown-menu li,
-.dropdown-menu.light li {
+.dropdown-menu.light li,
+.dropdown-menu-hover li {
     margin-bottom: 0;
     padding-bottom: 0;
 }
