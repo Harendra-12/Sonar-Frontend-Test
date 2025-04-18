@@ -106,7 +106,8 @@ export default function GroupsList() {
     }
   }
   return (
-    <div className="mainContent"> <section id="phonePage">
+    <div className="mainContent">
+       <section id="phonePage">
       <div className="container-fluid">
         <div className="row">
           <Header title="Groups" />
