@@ -363,7 +363,7 @@ function SocialMediaStore() {
                                         <div className="mt-2 d-flex justify-content-between">
                                             <button
                                                 className="panelButton m-0 float-end"
-                                                onClick={() => featureUnderdevelopment()}
+                                                onClick={() => handlePayment()}
                                             >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon"><i className="fa-solid fa-check" /></span>
