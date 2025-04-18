@@ -180,7 +180,7 @@ function SocialMediaStore() {
                                                 </div>
                                                 {configuredItem ? (
                                                     <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(item.addon)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem.id)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
