@@ -448,11 +448,17 @@ function CallCenterQueue() {
                                                   >
                                                     {item.agents.map(
                                                       (item, index) => (
-                                                        <li key={index}>
-                                                          <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                                            {item?.username}
-                                                          </div>
-                                                        </li>
+                                                        <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                          <span className="avatar-container">
+                                                            {
+                                                              item.profile_picture ?
+                                                                <img
+                                                                  alt="profile"
+                                                                  src={item.profile_picture}
+                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                /> : <i className="fa-light fa-user"></i>}
+                                                          </span> {item?.username}
+                                                        </div>
 
                                                       )
                                                     )}
