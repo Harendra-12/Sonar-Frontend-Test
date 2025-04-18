@@ -180,7 +180,7 @@ function SofiaStatus() {
                           <th style={{ width: 60 }}>User</th>
                           <th>Realm</th>
                           <th style={{ width: 220 }}>Token</th>
-                          <th style={{ width: 220 }}>Url</th>
+                          <th style={{ display:"none" }}>Url</th>
                           <th>Expires</th>
                           <th>IP</th>
                           <th>Port</th>
@@ -196,8 +196,8 @@ function SofiaStatus() {
                               <td>{item.reg_user}</td>
                               <td>{item.realm}</td>
                               <td style={{overflowWrap: 'break-word' }}>{item.token}</td>
-                              <td style={{overflowWrap: 'break-word' }}>{item.url}</td>
-                              <td>{item.expires}</td>
+                              <td style={{display:"none" }}>{item.url}</td>
+                              {/* <td>{item.expires}</td> */}
                               <td>{item.network_ip}</td>
                               <td>{item.network_port}</td>
                               <td>{item.network_proto}</td>

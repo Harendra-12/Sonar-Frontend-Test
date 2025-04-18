@@ -681,6 +681,7 @@
 
 .hover-dropdown:hover .dropdown-menu {
     display: block;
+    column-count: 2;
 }
 
 .hover-dropdown .dropdown-toggle::after {

@@ -72,7 +72,7 @@ function Agents({ type }) {
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        registerUser.map((item) => {
+        registerUser?.map((item) => {
           return item.extension;
         })
       );
@@ -438,7 +438,7 @@ function Agents({ type }) {
         <div className="popup">
           <div className="container h-100">
             <div className="row h-100 justify-content-center align-items-center">
-              <div className="row content col-xl-4">
+              <div className="row content col-xl-4 col-lg-5 col-md-6">
                 <div className="col-2 px-0">
                   <div className="iconWrapper">
                     <i className="fa-duotone fa-triangle-exclamation"></i>

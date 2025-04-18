@@ -625,7 +625,7 @@ function CampaignCreate() {
                             className="col-xl-7 col-6"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
-                              padding: "0 30px",
+                              padding: "0 10px",
                             }}
                           >
                             <form className="row mb-0">

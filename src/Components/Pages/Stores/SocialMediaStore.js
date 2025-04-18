@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { featureUnderdevelopment, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
+import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RechargeWalletPopup from '../Billing/RechargeWalletPopup';
 import { toast } from 'react-toastify';
+import { AddonAdd, AddonEdit } from '../ThirdPartyApps/AllAddons';
+import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 
 function SocialMediaStore() {
     const [loading, setLoading] = useState(false);
@@ -11,10 +13,23 @@ function SocialMediaStore() {
     const [selectedAddon, setSelectedAddon] = useState({});
     const accountBalance = useSelector((state) => state.accountBalance);
     const account = useSelector((state) => state.account);
+    const accountDetails = useSelector((state) => state.accountDetails);
+    const accountDetailsRefresh = useSelector((state) => state.accountDetailsRefresh);
     const [paymentMethod, setPaymentMethod] = useState("wallet");
     const [purchasePopup, setPurchasePopup] = useState(false);
     const [rechargePopUp, setRechargePopUp] = useState(false);
     const [addonBuyPopup, setAddonBuyPopup] = useState(false);
+
+    // Addon Popup Configure
+    const [addonAddPopup, setAddonAddPopup] = useState(false);
+    const [addonEditPopup, setAddonEditPopup] = useState(false);
+    const [platform, setPlatform] = useState("");
+    const [allConfigData, setAllConfigData] = useState();
+    const { confirm, ModalComponent } = PromptFunctionPopup();
+
+    // Addon Popup Configure
+
+    const dispatch = useDispatch();
 
     // Get All Addons
     const fetchAllAddons = async () => {
@@ -62,6 +77,10 @@ function SocialMediaStore() {
                     setLoading(false);
                     toast.success(apiData.message);
                     setSelectedAddon();
+                    dispatch({
+                        type: "SET_ACCOUNTDETAILSREFRESH",
+                        accountDetailsRefresh: accountDetailsRefresh + 1,
+                    });
                 } else {
                     setLoading(false);
                     toast.error(apiData.errors);
@@ -72,54 +91,218 @@ function SocialMediaStore() {
         }
     }
 
+    // Add Config to Platform
+    const handleConfigAdd = async (platform) => {
+        setPlatform(platform);
+        setAddonAddPopup(true);
+    }
+
+    // Edit Config of Platform
+    const handleConfigEdit = async (platform) => {
+        setPlatform(platform);
+        setAddonEditPopup(true);
+    }
+
+    // Delete Config
+    const handleDeleteConfig = async (id) => {
+        const userConfirmed = await confirm();
+        if (userConfirmed) {
+            setLoading(true);
+            try {
+                const apiCall = await generalDeleteFunction(`/social-platforms/${id}`);
+                if (apiCall.status) {
+                    setLoading(false);
+                    toast.success("Config Deleted Successfully.");
+                    fetchAllConfig();
+                }
+            } catch (err) {
+                console.log(err);
+                setLoading(false);
+            }
+        }
+    }
+
+    // Fetch All Config Data
+    const fetchAllConfig = async () => {
+        setLoading(true);
+        try {
+            const apiCall = await generalGetFunction('/social-platforms/all');
+            if (apiCall.status) {
+                setAllConfigData(apiCall.data);
+                setLoading(false);
+            }
+        } catch (err) {
+            console.log(err);
+            setLoading(false);
+        }
+    }
+
     return (
         <>
             <div className="row">
                 <div className="col-md-12">
                     <div className="product-container row gy-3">
-                        {/* Product 1 */}
-                        {allAddons && allAddons.length > 0 ?
-                            allAddons.map((item, index) => (
-                                <div className='col-3'>
-                                    <div className="product-cart">
-                                        <div className="product-image">
-                                            <img
-                                                src={require(`../../assets/images/icons/addons/${item.name.toLowerCase()}.webp`)}
-                                                alt="Click to Call"
-                                            />
-                                        </div>
-                                        <div className="product-title hover mt-4">
-                                            <p>
-                                                {item.name}
-                                            </p>
-                                        </div>
-
-                                        <div className="product-description">
-                                            {item.tag_line}
-                                        </div>
-                                        <div className="d-flex align-items-center justify-content-center teext-color mb-3">
-                                            <div>
-                                                <span class="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
+                        {accountDetails && accountDetails.add_on_subscription.length > 0 ?
+                            accountDetails.add_on_subscription.map((item, index) => {
+                                const configuredItem = allConfigData?.find(config => config.id === item.addon.id);
+                                return (
+                                    <div className='col-3' key={index}>
+                                        <div className='product-cart'>
+                                            <div className="product-image">
+                                                <img
+                                                    src={require(`../../assets/images/icons/addons/${item.addon.name.toLowerCase()}.webp`)}
+                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                    alt={item.addon.name}
+                                                />
                                             </div>
-                                            <div>
-                                                <span className="borders-left-small " />
+                                            <div className='content_width'>
+                                                <div className="product-title mt-4">
+                                                    <p style={{ textTransform: 'capitalize' }}>
+                                                        {item.addon.name} Integration
+                                                    </p>
+                                                </div>
+                                                <div className="product-description">
+                                                    <span className="text-smalls">
+                                                        Integrate {item.addon.name} in our platform and use it on-the-go
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <div className="total-price-month ms-2 me-2">
-                                                    <span>{item.billing_type}</span>
+                                            {configuredItem ? (
+                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                    <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(item.addon)}>
+                                                        <span className='cartSvg addonsBtn'>
+                                                            <i className="fa-solid fa-pencil"></i>
+                                                        </span>
+                                                        <span>Edit</span>
+                                                    </button>
+                                                    <button className="tableButton delete" onClick={() => handleDeleteConfig(item.addon.id)}>
+                                                        <i className="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="mt-3">
+                                                    <button className="checkbox_wrapper edit" onClick={() => handleConfigAdd(item.addon)}>
+                                                        <span className='cartSvg addonsBtn'>
+                                                            <i className="fa-solid fa-pencil"></i>
+                                                        </span>
+                                                        <span>Configure</span>
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )
+                            }) : <>
+                                {loading ?
+                                    <>
+                                        <div className='col-3'>
+                                            <div className={`product-cart`}>
+                                                <div className="product-image skeleton" ></div>
+                                                <div className='content_width'>
+                                                    <div className="product-title mt-4">
+                                                        <p style={{ textTransform: 'capitalize' }}>
+                                                            <div className='skeleton skeleton-formLabel mx-auto' />
+                                                        </p>
+                                                    </div>
+                                                    <div className="product-description mt-2">
+                                                        <div className='skeleton skeleton-formLabel-small' />
+                                                    </div>
+                                                </div>
+                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                    <div className='skeleton skeleton-button'></div>
+                                                    <div className='skeleton skeleton-button'></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className='col-3'>
+                                            <div className={`product-cart`}>
+                                                <div className="product-image skeleton" ></div>
+                                                <div className='content_width'>
+                                                    <div className="product-title mt-4">
+                                                        <p style={{ textTransform: 'capitalize' }}>
+                                                            <div className='skeleton skeleton-formLabel mx-auto' />
+                                                        </p>
+                                                    </div>
+                                                    <div className="product-description mt-2">
+                                                        <div className='skeleton skeleton-formLabel-small' />
+                                                    </div>
+                                                </div>
+                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                    <div className='skeleton skeleton-button'></div>
+                                                    <div className='skeleton skeleton-button'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='col-3'>
+                                            <div className={`product-cart`}>
+                                                <div className="product-image skeleton" ></div>
+                                                <div className='content_width'>
+                                                    <div className="product-title mt-4">
+                                                        <p style={{ textTransform: 'capitalize' }}>
+                                                            <div className='skeleton skeleton-formLabel mx-auto' />
+                                                        </p>
+                                                    </div>
+                                                    <div className="product-description mt-2">
+                                                        <div className='skeleton skeleton-formLabel-small' />
+                                                    </div>
+                                                </div>
+                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                    <div className='skeleton skeleton-button'></div>
+                                                    <div className='skeleton skeleton-button'></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </> :
+                                    <EmptyPrompt generic={true} />
+                                }
+                            </>
+                        }
 
-                                        <button className="checkbox_wrapper" onClick={() => setSelectedAddon(item)}>
-                                            <span className='cartSvg'>
-                                                <i class="fa-solid fa-cart-shopping"></i>
-                                            </span>
-                                            <span>Buy Now</span>
-                                        </button>
+                        {/* Product 1 */}
+                        {allAddons && allAddons.length > 0 ?
+                            allAddons
+                                .filter((item) => !accountDetails.add_on_subscription.some((addon) => addon.addon.id === item.id))
+                                .map((item, index) => (
+                                    <div className='col-3'>
+                                        <div className="product-cart">
+                                            <div className="product-image">
+                                                <img
+                                                    src={require(`../../assets/images/icons/addons/${item.name.toLowerCase()}.webp`)}
+                                                    alt="Click to Call"
+                                                />
+                                            </div>
+                                            <div className="product-title hover mt-4">
+                                                <p>
+                                                    {item.name}
+                                                </p>
+                                            </div>
+
+                                            <div className="product-description">
+                                                {item.tag_line}
+                                            </div>
+                                            <div className="d-flex align-items-center justify-content-center teext-color mb-3">
+                                                <div>
+                                                    <span class="old_price">${parseFloat(item.price)}</span><span className="product-price me-2">${(parseFloat(item.price) - parseFloat(item.discount || 0)).toFixed(2)}</span>
+                                                </div>
+                                                <div>
+                                                    <span className="borders-left-small " />
+                                                </div>
+                                                <div>
+                                                    <div className="total-price-month ms-2 me-2">
+                                                        <span>{item.billing_type}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button className="checkbox_wrapper" onClick={() => setSelectedAddon(item)}>
+                                                <span className='cartSvg'>
+                                                    <i class="fa-solid fa-cart-shopping"></i>
+                                                </span>
+                                                <span>Buy Now</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            )) :
+                                )) :
                             <>
                                 {loading ?
                                     <>
@@ -349,7 +532,7 @@ function SocialMediaStore() {
                     <div className="popup">
                         <div className="container h-100">
                             <div className="row h-100 justify-content-center align-items-center">
-                                <div className="row content col-xl-4">
+                                <div className="row content col-xl-4 col-lg-5 col-md-5">
                                     <div className="col-2 px-0">
                                         <div className="iconWrapper">
                                             <i className="fa-duotone fa-triangle-exclamation"></i>
@@ -363,7 +546,7 @@ function SocialMediaStore() {
                                         <div className="mt-2 d-flex justify-content-between">
                                             <button
                                                 className="panelButton m-0 float-end"
-                                                onClick={() => featureUnderdevelopment()}
+                                                onClick={() => handlePayment()}
                                             >
                                                 <span className="text">Confirm</span>
                                                 <span className="icon"><i className="fa-solid fa-check" /></span>
@@ -387,6 +570,21 @@ function SocialMediaStore() {
                     ""
                 )
             }
+            {addonAddPopup &&
+                <div className='backdropContact'>
+                    <div className='addNewContactPopup'>
+                        <AddonAdd platform={platform} setAddonAddPopup={setAddonAddPopup} setLoading={setLoading} fetchAllConfig={fetchAllConfig} />
+                    </div>
+                </div>
+            }
+            {addonEditPopup &&
+                <div className='backdropContact'>
+                    <div className='addNewContactPopup'>
+                        <AddonEdit platform={platform} setAddonEditPopup={setAddonEditPopup} setLoading={setLoading} fetchAllConfig={fetchAllConfig} />
+                    </div>
+                </div>
+            }
+            <ModalComponent task={'delete'} reference={'addon configuration'} />
         </>
     )
 }

@@ -344,19 +344,18 @@ export function AddonAdd({ platform, setAddonAddPopup, setLoading, fetchAllConfi
             fetchAllConfig();
         } else {
             setLoading(false);
-            toast.error(apiData.message);
+            toast.error(apiData.error);
         }
     });
 
     return (
         <div className="row">
-            <div className="col-12 heading">
-                <i className={`fa-brands fa-${platform}`} />
-                <h5 style={{ textTransform: 'capitalize' }}>{platform} Integration</h5>
-                <p>
-                    Integrate {platform} in our platform and use it on-the-go
+            <div className="col-12 heading mb-2">
+                <i className={`fa-brands fa-${platform.name.toLowerCase()}`} />
+                <h5>{platform.name} Integration</h5>
+                <p className='mb-2'>
+                    Integrate {platform.name} in our platform and use it on-the-go
                 </p>
-                <div className="border-bottom col-12" />
             </div>
             <div className="col-xl-12">
                 <div className="formLabel">
@@ -399,8 +398,8 @@ export function AddonAdd({ platform, setAddonAddPopup, setLoading, fetchAllConfi
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={platform}
-                    {...register("platform")}
+                    value={platform.id}
+                    {...register("addon_id")}
                 />
             </div>
             <div className="col-xl-12 mt-4">
@@ -433,15 +432,15 @@ export function AddonAdd({ platform, setAddonAddPopup, setLoading, fetchAllConfi
     )
 }
 
-export function AddonEdit({ platform, addonEditID, setAddonEditPopup, setLoading, fetchAllConfig }) {
+export function AddonEdit({ platform, setAddonEditPopup, setLoading, fetchAllConfig }) {
     const { register, formState: { errors }, reset, handleSubmit } = useForm();
 
     useEffect(() => {
         async function getData() {
-            if (addonEditID) {
+            if (platform) {
                 setLoading(true);
                 try {
-                    const apiData = await generalGetFunction(`/social-platforms/show/${addonEditID}`)
+                    const apiData = await generalGetFunction(`/social-platforms/show/${platform.id}`)
                     if (apiData.status) {
                         const { app_id, app_token } = apiData?.data;
                         reset({ app_id, app_token });
@@ -460,7 +459,7 @@ export function AddonEdit({ platform, addonEditID, setAddonEditPopup, setLoading
     const handleFormSubmit = handleSubmit(async (data) => {
         setLoading(true);
         const payload = { ...data };
-        const apiData = await generalPutFunction(`/social-platforms/${addonEditID}`, payload);
+        const apiData = await generalPutFunction(`/social-platforms/${platform.id}`, payload);
         if (apiData?.status) {
             setLoading(false);
             toast.success(apiData.message);
@@ -475,10 +474,10 @@ export function AddonEdit({ platform, addonEditID, setAddonEditPopup, setLoading
     return (
         <div className="row">
             <div className="col-12 heading">
-                <i className={`fa-brands fa-${platform}`} />
-                <h5 style={{ textTransform: 'capitalize' }}>{platform} Integration</h5>
+                <i className={`fa-brands fa-${platform.name.toLowerCase()}`} />
+                <h5 style={{ textTransform: 'capitalize' }}>{platform.name} Integration</h5>
                 <p>
-                    Integrate {platform} in our platform and use it on-the-go
+                    Integrate {platform.name} in our platform and use it on-the-go
                 </p>
                 <div className="border-bottom col-12" />
             </div>
@@ -523,8 +522,8 @@ export function AddonEdit({ platform, addonEditID, setAddonEditPopup, setLoading
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={platform}
-                    {...register("platform")}
+                    value={platform.id}
+                    {...register("addon_id")}
                 />
             </div>
             <div className="col-xl-12 mt-4">
