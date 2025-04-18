@@ -72,7 +72,7 @@ function Agents({ type }) {
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        registerUser.map((item) => {
+        registerUser?.map((item) => {
           return item.extension;
         })
       );

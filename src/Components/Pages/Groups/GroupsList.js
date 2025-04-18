@@ -304,11 +304,17 @@ export default function GroupsList() {
                                             >
                                               {item.groupusers.map(
                                                 (item, index) => (
-                                                  <li>
-                                                    <div className="dropdown-item" >
-                                                      {item?.user?.name}
-                                                    </div>
-                                                  </li>
+                                                  <div className="dropdown-item d-flex" >
+                                                  <span className="avatar-container">
+                                                    {
+                                                      item.user?.profile_picture ?
+                                                        <img
+                                                          alt="profile"
+                                                          src={item.user?.profile_picture}
+                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        /> : <i className="fa-light fa-user"></i>}
+                                                         </span> {item?.user?.name}
+                                                </div>
                                                 )
                                               )}
                                             </div>

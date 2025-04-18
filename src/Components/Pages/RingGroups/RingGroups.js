@@ -397,7 +397,7 @@ const RingGroups = () => {
                                                         <Tippy key={index} content={item?.username}>
                                                           {item.profile_picture ? (
                                                             <img
-                                                            alt="profile"
+                                                              alt="profile"
                                                               src={item.profile_picture}
                                                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                             />
@@ -407,7 +407,7 @@ const RingGroups = () => {
                                                         </Tippy>
                                                       )
                                                     })}
-                                                    {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length-4}</span>}
+                                                    {item.ring_group_destination.length > 4 && <span>+{item.ring_group_destination.length - 4}</span>}
                                                   </div>
                                                 </div>
                                                 <ul className="dropdown-menu light">
@@ -422,8 +422,16 @@ const RingGroups = () => {
                                                     {item.ring_group_destination.map(
                                                       (item, index) => (
                                                         <li>
-                                                          <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                                            {item?.username}
+                                                          <div className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                            <span className="avatar-container">
+                                                              {
+                                                                item.profile_picture ?
+                                                                  <img
+                                                                    alt="profile"
+                                                                    src={item.profile_picture}
+                                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                                  /> : <i className="fa-light fa-user"></i>}
+                                                                   </span> {item?.username}
                                                           </div>
                                                         </li>
                                                       )
@@ -468,8 +476,8 @@ const RingGroups = () => {
                                                       }}
                                                       // {...register("status")}
                                                       id="showAllCheck"
-                                                       />
-                                                      <span></span>
+                                                    />
+                                                    <span></span>
                                                   </label>
                                                 </div>
                                               </div>
