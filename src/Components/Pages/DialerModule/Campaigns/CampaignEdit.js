@@ -1735,7 +1735,7 @@ function CampaignCreate() {
                                           }
                                         >
                                           <div className="row justify-content-between">
-                                            <div className="col-xl-7 col-xxl-6 col-7 d-flex ps-0">
+                                            <div className="col-xl-5 col-xxl-5 col-lg-5 col-md-4 d-flex ps-0">
                                               <div className="profileHolder">
                                                 <i className="fa-light fa-user fs-5" />
                                               </div>
@@ -1746,13 +1746,12 @@ function CampaignCreate() {
                                                 </h5>
                                               </div>
                                             </div>
-                                            <div className="col-4 col-xl-4 col-xxl-5">
+                                            <div className=" col-xl-3 col-xxl-3">
                                               <div className="contactTags">
                                                 <span data-id={2}>Agent</span>
                                               </div>
                                             </div>
-                                            <div
-                                              className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
+                                            <div className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
                                                 ? "selected"
                                                 : ""
                                                 }`}

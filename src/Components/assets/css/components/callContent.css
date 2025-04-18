@@ -591,7 +591,7 @@
     padding-bottom: 5px;
     font-size: 0.875rem;
     font-size: 0.875rem;
-    background: rgb(219, 238, 255);
+    background: #dbeeff3d;
     border-radius: 25px;
     padding: 5px 15px;
     margin-block: 10px;
@@ -629,7 +629,7 @@
     font-size: 1rem;
     font-family: 'FontAwesome';
     position: absolute;
-    top: 0;
+    top: 6px;
     right: 5px;
 }
 
