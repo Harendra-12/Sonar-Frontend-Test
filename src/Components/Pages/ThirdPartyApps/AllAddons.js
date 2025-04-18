@@ -474,10 +474,10 @@ export function AddonEdit({ platform, setAddonEditPopup, setLoading, fetchAllCon
     return (
         <div className="row">
             <div className="col-12 heading">
-                <i className={`fa-brands fa-${platform.name.toLowerCase()}`} />
-                <h5 style={{ textTransform: 'capitalize' }}>{platform.name} Integration</h5>
+                <i className={`fa-brands fa-${platform.platform.toLowerCase()}`} />
+                <h5 style={{ textTransform: 'capitalize' }}>{platform.platform} Integration</h5>
                 <p>
-                    Integrate {platform.name} in our platform and use it on-the-go
+                    Integrate {platform.platform} in our platform and use it on-the-go
                 </p>
                 <div className="border-bottom col-12" />
             </div>
@@ -522,7 +522,7 @@ export function AddonEdit({ platform, setAddonEditPopup, setLoading, fetchAllCon
                     type="text"
                     name="extension"
                     className="formItem"
-                    value={platform.id}
+                    value={platform.addon_id}
                     {...register("addon_id")}
                 />
             </div>
