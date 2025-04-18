@@ -396,7 +396,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                     }
                                     {
                                         checkViewSidebar("Usage", slugPermissions, account?.permissions, "add") &&
-                                        <div className='col-xl-2' onClick={() => { setAddNewMod(true); setSelectedModule(); setCustomPopup(true) }}>
+                                        <div className='col-xl-2 col-lg-3 col-md-3' onClick={() => { setAddNewMod(true); setSelectedModule(); setCustomPopup(true) }}>
                                             <div className={`deviceProvision h-100`} >
                                                 <div className="itemWrapper a addNew h-100">
                                                     <i className='fa-regular fa-plus'></i>
