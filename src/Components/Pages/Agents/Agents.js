@@ -177,7 +177,8 @@ function Agents({ type }) {
                         {checkViewSidebar(
                           "CallCenterAgent",
                           slugPermissions,
-                          account?.permissions, "add") && <button
+                          account?.permissions, "add") &&
+                           <button
                             onClick={() => {
                               navigate("/agents-pbx-add");
                               backToTop();
