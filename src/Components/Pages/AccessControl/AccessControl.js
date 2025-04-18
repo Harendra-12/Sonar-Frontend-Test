@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link } from "react-router-dom";
+import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 function AccessControl() {
+  const [accessControlList, setAccessControlList] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const apiData = await generalGetFunction("/")
+      if (apiData.status) {
+        setAccessControlList(apiData.data)
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
   return (
     <>
       <div className="mainContent">
@@ -19,13 +38,6 @@ function AccessControl() {
                           <h4>
                             Access Control
                             <button className="clearButton">
-                              {/* <i
-                            className={
-                              loading
-                                ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                                : "fa-regular fa-arrows-rotate fs-5"
-                            }
-                          ></i> */}
                             </button>
                           </h4>
                           <p>You can see all list of access control</p>
@@ -37,16 +49,8 @@ function AccessControl() {
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          {/* {checkViewSidebar(
-                      "Ringgroup",
-                      slugPermissions,
-                      account?.permissions,
-                      "add"
-                    ) ? ( */}
                           <Link
                             to="/access-control-list-add"
-                            // onClick={backToTop}
-                            // onClick={handleRingGroupAddValidation}
                             effect="ripple"
                             className="panelButton"
                           >
@@ -55,20 +59,6 @@ function AccessControl() {
                               <i className="fa-solid fa-plus"></i>
                             </span>
                           </Link>
-                          {/* ) : ( */}
-                          {/* <button
-                        disabled
-                        // onClick={handleRingGroupAddValidation}
-                        effect="ripple"
-                        className="panelButton"
-                        style={{ cursor: "not-allowed" }}
-                      >
-                        <span className="text">Add</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-plus"></i>
-                        </span>
-                      </button> */}
-                          {/* )} */}
                         </div>
                       </div>
                     </div>
@@ -89,76 +79,45 @@ function AccessControl() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>123</td>
-                              <td>
-                                <div className="hover-dropdown ">
-                                  <div
-                                    type="button"
-                                    data-bs-toggle="hover-dropdown "
-                                    aria-expanded="false"
-                                    style={{ color: "var(--ui-accent)" }}
-                                  >
-                                    <div className="avatar-container">
-                                      <i className="fa-light fa-user" />
-                                      <img
-                                        alt="profile"
-                                        src="https://ucaas-angelpbx.s3.us-east-2.amazonaws.com/abin.11.webvio.in/profile/1744952835_rishabh.png"
+                            {loading ? (
+                              <SkeletonTableLoader col={4} row={15} />
+                            ) : (
+                              <>
+                                {
+                                  accessControlList.length > 0 ?
+                                    <>
+                                      {
+                                        accessControlList.map((item, key) => {
+                                          return (
+                                            <tr key={key}>
+                                              <td>{item.name}</td>
+                                              <td>
+                                                {item.description}
+                                              </td>
+                                              <td>
+                                                <button className="tableButton edit mx-auto">
+                                                  <i className="fa-solid fa-pencil" />
+                                                </button>
+                                              </td>
+                                              <td>
+                                                <button className="tableButton delete mx-auto">
+                                                  <i className="fa-solid fa-trash" />
+                                                </button>
+                                              </td>
+                                            </tr>
+                                          )
+                                        })
+                                      }
+                                    </>
+                                    : <td colSpan={99}>
+                                      <EmptyPrompt
+                                        name="Access Control List"
+                                        link="access-control-list-add"
                                       />
-                                      <i className="fa-light fa-user" />
-                                      <i className="fa-light fa-user" />
-                                      <span>+9</span>
-                                    </div>
-                                  </div>
-                                  
-                                </div>
-                              </td>
-                              <td>
-                                <button className="tableButton edit mx-auto">
-                                  <i className="fa-solid fa-pencil" />
-                                </button>
-                              </td>
-                              <td>
-                                <button className="tableButton delete mx-auto">
-                                  <i className="fa-solid fa-trash" />
-                                </button>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>test</td>
-                              <td>
-                                <div className="hover-dropdown ">
-                                  <div
-                                    type="button"
-                                    data-bs-toggle="hover-dropdown "
-                                    aria-expanded="false"
-                                    style={{ color: "var(--ui-accent)" }}
-                                  >
-                                    <div className="avatar-container">
-                                      <i className="fa-light fa-user" />
-                                      <i className="fa-light fa-user" />
-                                      <img
-                                        alt="profile"
-                                        src="https://ucaas-angelpbx.s3.us-east-2.amazonaws.com/abin.11.webvio.in/profile/1744952835_rishabh.png"
-                                      />
-                                      <i className="fa-light fa-user" />
-                                      <span>+9</span>
-                                    </div>
-                                  </div>
-                                
-                                </div>
-                              </td>
-                              <td>
-                                <button className="tableButton edit mx-auto">
-                                  <i className="fa-solid fa-pencil" />
-                                </button>
-                              </td>
-                              <td>
-                                <button className="tableButton delete mx-auto">
-                                  <i className="fa-solid fa-trash" />
-                                </button>
-                              </td>
-                            </tr>
+                                    </td>
+                                }
+                              </>
+                            )}
                           </tbody>
                         </table>
                       </div>
