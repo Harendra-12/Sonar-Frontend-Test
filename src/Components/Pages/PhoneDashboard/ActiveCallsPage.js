@@ -11,6 +11,17 @@ import { getPanelElement, getResizeHandleElement, Panel, PanelGroup, PanelResize
 import AllActiveAgentStatus from './AllActiveAgentStatus';
 import Tippy from '@tippyjs/react';
 
+/**
+ * ActiveCallsPage is a React component that displays and manages active and ringing calls.
+ * It provides functionality to filter calls based on various criteria like Ringgroup, CallCenterQueue,
+ * and DID, as well as differentiate between active, ringing, total, and missed calls.
+ * The component also integrates with state management using Redux and handles dynamic updates
+ * and UI interactions for a phone dashboard.
+ *
+ * Props:
+ *   - isParentWebRtc: A boolean indicating whether the parent is a WebRTC component.
+ */
+
 function ActiveCallsPage({ isParentWebRtc }) {
     const account = useSelector((state) => state.account);
     const slugPermissions = useSelector((state) => state?.permissions);

@@ -4,6 +4,26 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
+/**
+ * A form component for selecting an action from a list of options.
+ *
+ * The component fetches the list of options from the Redux store and
+ * renders a dropdown list of options. The user can select an option from
+ * the list and the component will call the `getDropdownValue` callback
+ * with the selected value as an argument.
+ *
+ * @param {string} category - The category of options to display.
+ * @param {function} getDropdownValue - The callback to call when the user
+ *   selects an option. The callback is called with the selected value as an
+ *   argument.
+ * @param {string} value - The default value to display. If the value is not
+ *   provided, the component will display the first option in the list.
+ * @param {string} label - The label to display above the form element.
+ * @param {string} title - The title to display above the form element.
+ * @param {boolean} isDisabled - Whether the form element should be
+ *   disabled. If true, the form element will be disabled and the user will
+ *   not be able to select an option.
+ */
 const ActionList = ({
   category,
   getDropdownValue,

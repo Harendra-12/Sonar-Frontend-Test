@@ -718,7 +718,7 @@ function PhoneDashboard() {
                             return `${time}`
                           })}
                           percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
-                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                          colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
                         />
                       }
 
@@ -837,7 +837,7 @@ function PhoneDashboard() {
                           type={"line"}
                           fields={graphData?.numberOfCall?.map((item, index) => item.start_date)}
                           percentage={[graphData?.numberOfCall?.map((item, index) => item.inbound), graphData?.numberOfCall?.map((item, index) => item.outbound), graphData?.numberOfCall?.map((item, index) => item.internal), graphData?.numberOfCall?.map((item, index) => item.missed)]}
-                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                          colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
                         />}
                     </div>
                   </div>
@@ -972,7 +972,7 @@ function PhoneDashboard() {
                             return `${time}`
                           })}
                           percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
-                          colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                          colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
                         />
                       }
                     </div>

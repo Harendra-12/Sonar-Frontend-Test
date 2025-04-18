@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../../../CommonComponents/Header'
 import PaginationComponent from '../../../CommonComponents/PaginationComponent'
 import { backToTop } from '../../../GlobalFunction/globalFunction';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Leads() {
     const navigate = useNavigate();
+
     return (
         <main className="mainContent">
             <section id="phonePage">
@@ -47,10 +48,7 @@ function Leads() {
                                                 <button
                                                     type="button"
                                                     className="panelButton"
-                                                    onClick={() => {
-                                                        navigate('/lead-add');
-                                                        backToTop();
-                                                    }}
+                                                    onClick={() => navigate('/lead-add')}
                                                 >
                                                     <span className="text">Add</span>
                                                     <span className="icon">
@@ -94,7 +92,7 @@ function Leads() {
                                                         <th>Lead Description</th>
                                                         <th>Campaign</th>
                                                         <th>Rows</th>
-                                                        <th>Active</th>
+                                                        <th className='text-center'>Active</th>
                                                         <th style={{ textAlign: "center" }}>Download</th>
                                                         <th style={{ textAlign: "center" }}>Edit</th>
                                                         <th style={{ textAlign: "center" }}>Delete</th>
@@ -108,7 +106,7 @@ function Leads() {
                                                         <td>Campaign Name</td>
                                                         <td>1200</td>
                                                         <td>
-                                                            <div className="my-auto position-relative mx-1">
+                                                            <div className="my-auto position-relative d-flex justify-content-center">
                                                                 {/* <label className="switch">
                                                                     <input
                                                                         type="checkbox"
@@ -119,7 +117,7 @@ function Leads() {
                                                                 <div class="cl-toggle-switch">
                                                                     <label class="cl-switch">
                                                                         <input type="checkbox"
-                                                                        id="showAllCheck"
+                                                                            id="showAllCheck"
                                                                         />
                                                                         <span></span>
                                                                     </label>

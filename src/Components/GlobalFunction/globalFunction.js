@@ -17,6 +17,7 @@ if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
+
 const setAuthToken = (token) => {
   if (token) {
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -116,7 +117,7 @@ export async function generalGetFunctionWithToken(endpoint, token) {
         loading: false,
       });
 
-      return err;
+      return err.response?.data;
 
     })
 }
@@ -149,7 +150,7 @@ export async function generalPostFunction(endpoint, data) {
         localStorage.clear();
         setAuthToken(null);
         // handleNavigation("/");
-        return err.response.data;
+        return err.response;
       } else {
         return err.response.data;
       }

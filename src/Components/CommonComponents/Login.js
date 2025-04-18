@@ -13,6 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const account = useSelector((state)=> state.account);
+  if (token && account) {
+    if(account?.user_role?.roles?.name === "Agent"){
+      navigate("/webrtc")
+    }else{
+      navigate("/dashboard")
+    }
+  }
   return (
     <>
       <style>
@@ -99,8 +109,6 @@ export function LoginComponent() {
     if (data) {
       if (data.status) {
         const profile = await generalGetFunction("/user");
-        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
-
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
@@ -223,6 +231,17 @@ export function LoginComponent() {
         setLoading(false);
         setLoginDetails(logOut?.data)
         setLogInText("You can login now")
+      }else{
+        console.log("00err",logOut);
+        if(logOut?.message==="Token expired"){
+          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { token: token });
+          if(expireLogout?.status){
+            toast.success(expireLogout?.message)
+            setLoading(false);
+            setLoginDetails(expireLogout?.data)
+            setLogInText("You can login now")
+          }
+        }
       }
     } catch (error) {
       // console.log("00err",error)
@@ -247,8 +266,6 @@ export function LoginComponent() {
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
         const profile = await generalGetFunction("/user");
-        console.log("Permission refresh triggered", permissionRefresh + 1, permissionRefresh);
-
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
@@ -369,8 +386,17 @@ export function LoginComponent() {
       if (logoutAll.status) {
         handleLogin();
       } else {
-        setLoading(false);
-        toast.error(logoutAll.message || "Logout failed");
+        if(logoutAll?.message==="Token expired"){
+          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`,  {all:logOutToken,token:logOutToken});
+          if(expireLogout?.status){
+            handleLogin();
+          }else{
+            setLoading(false)
+            toast.error("Something went wrong. Please try again.")
+          }
+        }
+        // setLoading(false);
+        // toast.error(logoutAll.message || "Logout failed");
       }
     } catch (error) {
       setLoading(false);

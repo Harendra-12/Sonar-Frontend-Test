@@ -20,6 +20,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const [allLogOut, setAllLogOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const adminLogout = useSelector((state) => state.adminLogout);
 
 
   useEffect(() => {
@@ -29,6 +30,12 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       }
     }
   }, [connectStatus, registerStatus])
+
+  useEffect(()=>{
+    if(adminLogout){
+      sessionManager.disconnect();
+    }
+  },[adminLogout])
 
   useEffect(() => {
     const userAgent = sessionManager?.userAgent;
@@ -48,6 +55,8 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
       userAgent.transport.stateChange.removeListener(handleTransportStateChange);
     };
   }, [sessionManager]);
+
+
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);

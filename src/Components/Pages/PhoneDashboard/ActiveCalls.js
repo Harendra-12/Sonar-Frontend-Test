@@ -7,6 +7,17 @@ import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
 
 
+/**
+ * ActiveCalls
+ * Displays and manages active calls based on the provided filter and WebRTC settings.
+ * Filters calls by application state or direction, and provides functionalities
+ * for call actions such as barge, intercept, eavesdrop, whisper, and hangup.
+ * Updates call durations in real-time and supports user interactions through a UI table.
+ *
+ * @param {boolean} isWebrtc - Indicates if WebRTC is enabled.
+ * @param {string} filter - The filter criteria for displaying calls ("all", "ringgroup", "callcenter", "internal", "inbound", "outbound").
+ */
+
 function ActiveCalls({ isWebrtc, filter }) {
   const activeCall = useSelector((state) => state.activeCall);
   const [filterCalls, setFilterCalls] = useState([]);

@@ -307,14 +307,14 @@ const Users = () => {
                             {/* <th>Account ID</th> */}
                             <th>Role</th>
                             <th>Usage</th>
-                            <th>  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
+                            <th className="text-center">  <select className="formItem f-select-width" value={onlineFilter} onChange={(e) => setonlineFilter(e.target.value)}>
                               <option value="all" disabled>Status</option>
                               <option value="online">Online</option>
                               <option value="offline">Offline</option>
                               <option value="all">All</option>
                             </select></th>
                             {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <th className="text-center">Edit</th>}
-                            <th>Activation <span>
+                            <th className="text-center">Activation <span>
 
                             </span></th>
                             <th className="text-center">Delete</th>
@@ -396,14 +396,14 @@ const Users = () => {
                                           <span
                                             className={
                                               onlineUser.includes(item.id)
-                                                ? "extensionStatus online"
-                                                : "extensionStatus"
+                                                ? "extensionStatus online mx-auto"
+                                                : "extensionStatus mx-auto"
                                             }
                                           ></span>
                                         </td>
                                         {checkViewSidebar("User", slugPermissions, account?.permissions, "edit") && <td>
                                           <button
-                                            className="tableButton edit"
+                                            className="tableButton edit mx-auto"
                                             onClick={() =>
                                               navigate(`/users-config`, {
                                                 state: item,
@@ -421,7 +421,7 @@ const Users = () => {
                                           {/* {item.status === "E"
                                             ? "Enabled"
                                             : "Disabled"} */}
-                                          <div className="my-auto position-relative mx-1">
+                                          <div className="mx-auto position-relative d-flex justify-content-center">
                                             {/* <label className="switch">
                                               <input
                                                 type="checkbox"
@@ -434,7 +434,7 @@ const Users = () => {
                                               />
                                               <span className="slider round" />
                                             </label> */}
-                                            <div class="cl-toggle-switch">
+                                            <div class="cl-toggle-switch ">
                                                   <label class="cl-switch">
                                                     <input type="checkbox"
                                                        checked={item.status === "E"}
@@ -451,7 +451,7 @@ const Users = () => {
                                         </td>
                                         {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td>
                                           <button
-                                            className="tableButton delete"
+                                            className="tableButton delete mx-auto"
                                             onClick={() => {
                                               setPopUp(true);
                                               setDeleteId(item.id);

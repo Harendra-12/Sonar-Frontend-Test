@@ -30,8 +30,6 @@ const Dashboard = () => {
   const extension = useSelector((state) => state.extension || []);
   const registerUser = useSelector((state) => state.registerUser || []);
   const [onlineExtension, setOnlineExtension] = useState([]);
-  console.log("onlineExtension", registerUser);
-  
   const isCustomerAdmin = account?.email == accountDetails?.email;
   const [time, setTime] = useState(new Date());
   const slugPermissions = useSelector((state) => state?.permissions);

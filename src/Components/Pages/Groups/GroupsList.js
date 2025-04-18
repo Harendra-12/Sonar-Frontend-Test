@@ -326,7 +326,7 @@ export default function GroupsList() {
 
                                       <td>
                                         <button
-                                          className="tableButton edit"
+                                          className="tableButton edit mx-auto"
                                           onClick={() =>
                                             navigate(
                                               `/groups-edit?id=${item.id}`, { state: { item: item } }
@@ -338,7 +338,7 @@ export default function GroupsList() {
                                       </td>
                                       <td>
                                         <button
-                                          className="tableButton delete"
+                                          className="tableButton delete mx-auto"
                                           onClick={() => {
                                             setPopUp(true);
                                             setDeleteId(item.id);

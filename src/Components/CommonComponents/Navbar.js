@@ -117,6 +117,9 @@ function Navbar() {
                           "/all-devices",
                           "/device-provisioning-add",
                           "/device-provisioning-edit",
+                          "/groups",
+                          "/groups-add",
+                          "/groups-edit",
                         ])
                           ? "true"
                           : "false"
@@ -146,6 +149,9 @@ function Navbar() {
                         "/all-devices",
                         "/device-provisioning-add",
                         "/device-provisioning-edit",
+                        "/groups",
+                        "/groups-add",
+                        "/groups-edit",
                       ])
                         ? "show"
                         : ""
@@ -241,6 +247,22 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
+                          <li className="tabItem ">
+                            <NavLink to="/groups"
+                              onClick={backToTop}
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/groups", "/groups-add", "/groups-edit"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Groups</div>
+                            </NavLink>
+                          </li>
 
                           {userType === "SupreAdmin" ? (
                             <li className="tabItem">
@@ -415,9 +437,6 @@ function Navbar() {
                           "/call-dashboard",
                           "/active-calls",
                           "/voicemail-report",
-                          "/groups",
-                          "/groups-add",
-                          "/groups-edit",
                         ])
                           ? "true"
                           : "false"
@@ -452,9 +471,6 @@ function Navbar() {
                         "/call-dashboard",
                         "/active-calls",
                         "/voicemail-report",
-                        "/groups",
-                        "/groups-add",
-                        "/groups-edit"
                       ])
                         ? "show"
                         : ""
@@ -562,22 +578,6 @@ function Navbar() {
                               </NavLink>
                             </li>
                           ) : null}
-                          <li className="tabItem ">
-                            <NavLink to="/groups"
-                              onClick={backToTop}
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/groups", "/groups-add", "/groups-edit"].some(
-                                    (path) =>
-                                      window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              <div className="itemTitle">Groups</div>
-                            </NavLink>
-                          </li>
                           {checkViewSidebar(
                             "CallCenterQueue",
                             permissions,
