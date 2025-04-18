@@ -52,7 +52,7 @@ const DidConfig = () => {
       setValue("usages", locationData.configuration.usages || []);
       setValue("did_id_view", locationData.did || "");
       setValue("forward", locationData.configuration.forward || "");
-      setValue("direct_extension", locationData.configuration.forward_to || "");
+      setValue("forward_action", locationData.configuration.forward_to || "");
       setValue("forward_to", locationData.configuration.forward_to || "");
       setValue("action", locationData.configuration.action || "");
       setValue("hold_music", locationData.configuration.hold_music || "");
@@ -141,9 +141,9 @@ const DidConfig = () => {
   useEffect(() => {
     if (watch("forward") === "disabled") {
       setValue("forward_to", "");
-      setValue("direct_extension", "");
+      setValue("forward_action", "");
     } else if (watch("forward") === "pstn") {
-      setValue("direct_extension", "");
+      setValue("forward_action", "");
     } else if (watch("forward") === "direct") {
       setValue("forward_to", "");
     }
@@ -152,13 +152,16 @@ const DidConfig = () => {
   const actionListValue = (value) => {
     setValue("action", value[0]);
   };
-  const directListValue = (value) => {
-    setValue("direct_extension", value[0]);
+  const actionListValueForForward = (value) => {
+    setValue("forward_action", value[0]);
   };
+  // const directListValue = (value) => {
+  //   setValue("direct_extension", value[0]);
+  // };
 
   const forwardStatus = watch("forward", "disabled");
 
-  const handleFormSubmit = handleSubmit(async (data) => {
+  const handleFormSubmit = handleSubmit(async (data) => {                
     if (data.usages === "" || data.usages === null) {
       data.action = null;
       data.usages = null;
@@ -182,8 +185,8 @@ const DidConfig = () => {
         type: "minLength",
         message: "Number must be at least 10 digits.",
       });
-    } else if (data.forward === "direct" && !data.direct_extension) {
-      setErr("direct_extension", {
+    } else if (data.forward !== "pstn" && !data.forward_action) {
+      setErr("forward_action", {
         type: "required",
         message: "This field is required when forwarding directly.",
       });
@@ -191,12 +194,16 @@ const DidConfig = () => {
     // Final data preparation
     if (data.forward === "pstn") {
       data.forward_to = data.forward_to || "";
-    } else if (data.forward === "direct") {
-      data.forward_to = data.direct_extension || "";
+    } else if (data.forward !== "pstn") {
+      data.forward_to = data.forward_action || "";
     } else {
       data.forward_to = "";
     }
-    delete data.direct_extension;
+    if(data?.forward === "ring group" || data?.forward === "call center" || data?.forward == "ivr" || data?.forward == "extension"){
+      delete data.forward;
+      data.forward = "direct"
+    }
+    delete data.forward_action;
     delete data.did_id;
     const payload = { ...data, did_id: locationData.id };
 
@@ -219,6 +226,7 @@ const DidConfig = () => {
         delete payload.action;
         delete payload.usages;
       }
+      
       const apiData = await generalPutFunction(
         `/did/configure/update/${locationData.configuration.id}`,
         payload
@@ -413,10 +421,19 @@ const DidConfig = () => {
                               id="selectFormRow"
                               {...register("forward")}
                               defaultValue={"disabled"}
+                              value={watch().forward}
+                              onChange={(e) => {
+                                register("forward").onChange(e);
+                                setValue("forward_action", "");
+                              }}
                             >
                               <option value="disabled">Disable</option>
                               <option value="pstn">PSTN</option>
                               <option value="direct">Direct</option>
+                              <option value="extension">Extension</option>
+                              <option value="ring group">Ring Group</option>
+                              <option value="call center">Call Center</option>
+                              <option value="ivr">IVR</option>
                             </select>
                           </div>
                           {forwardStatus === "pstn" && (
@@ -449,7 +466,8 @@ const DidConfig = () => {
                               )}
                             </div>
                           )}
-                          {forwardStatus === "direct" && (
+
+                          {/* {forwardStatus === "direct" && (
                             <div className="col-3">
                               <div className="formLabel">
                                 <label>Extension</label>
@@ -469,6 +487,45 @@ const DidConfig = () => {
                                 />
                               )}
                             </div>
+                          )} */}
+
+                          {forwardStatus !== "pstn" && (
+                            <div className="col-3">
+                              {watch().forward && watch().forward?.length !== 0 && (
+                                <>
+                                  <div className="formLabel">
+                                    <label>Extension</label>
+                                  </div>
+                                  <ActionList
+                                    category={watch().forward}
+                                    title={null}
+                                    label={null}
+                                    getDropdownValue={actionListValueForForward}
+                                    value={watch().forward_action}
+                                    {...register("forward_action")}
+                                  />
+                                </>
+                              )}
+                            </div>
+                            // <div className="col-3">
+                            // <div className="formLabel">
+                            //   <label>Extension</label>
+                            // </div>
+                            // <ActionList
+                            //   getDropdownValue={directListValue}
+                            //   value={watch().direct_extension}
+                            //   title={null}
+                            //   label={null}
+                            //   {...register("direct_extension", {
+                            //     requiredValidator,
+                            //   })}
+                            // />
+                            // {errors.direct_extension && (
+                            //   <ErrorMessage
+                            //     text={errors.direct_extension.message}
+                            //   />
+                            // )}
+                            // </div>
                           )}
                         </div>
                         <div className="formRow col-xl-3">
