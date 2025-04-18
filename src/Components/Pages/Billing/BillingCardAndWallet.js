@@ -180,23 +180,23 @@ const BillingCardAndWallet = () => {
 
                                                                     return (
                                                                         <tr key={index}>
-                                                                            <td>{item.transaction_id}</td>
+                                                                            <td>{item?.transaction_id}</td>
                                                                             <td>
                                                                                 <button class="badge badge-subtle badge-border border-0">
-                                                                                    <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item.payment_method_options}</span>
+                                                                                    <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
                                                                                     <div className='card_info'>
                                                                                         <ul>
-                                                                                            <li className='mb-1 '><span className=' text-muted '>Card Name : </span>{item.payment_details.fullname}</li>
-                                                                                            <li className=''><span className=' text-muted '>Card Number : </span>{maskCard()}</li>
+                                                                                            <li className='mb-1 '><span className=' text-muted '>Card Name : </span>{item?.payment_details?.fullname}</li>
+                                                                                            <li className=''><span className=' text-muted '>Card Number : </span>{item?.payment_details?.card_number ? maskCard(item?.payment_details?.card_number) : ""}</li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </button>
                                                                             </td>
-                                                                            <td>${item.amount_total}</td>
+                                                                            <td>${item?.amount_total}</td>
                                                                             <td>{walletTransac && <span className={`badge badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}{walletTransac?.amount || 'N/A'}</span>}</td>
-                                                                            <td>{item.transaction_date.split(" ")[0]}</td>
+                                                                            <td>{item?.transaction_date.split(" ")[0]}</td>
                                                                             <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
-                                                                            <td>{item.description}</td>
+                                                                            <td>{item?.description}</td>
                                                                             <td className='text-center'>
                                                                                 <button className='tableButton' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
                                                                                     <i class="fa-regular fa-download"></i>
@@ -204,7 +204,9 @@ const BillingCardAndWallet = () => {
                                                                             </td>
                                                                         </tr>
                                                                     )
-                                                                }) : <EmptyPrompt generic={true} />
+                                                                }) : <tr>
+                                                                    <td colSpan={99}><EmptyPrompt generic={true} /></td>
+                                                                </tr>
                                                         }
                                                     </tbody>
                                                 </table>

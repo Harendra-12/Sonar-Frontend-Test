@@ -1,8 +1,74 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { toast } from "react-toastify";
+import CircularLoader from "../../Loader/CircularLoader";
+import { useSelector } from "react-redux";
 
+/**
+ * Function to add a new Access Control
+ * This function is used to add a new Access Control
+ * @return {JSX.Element} The JSX element for the add page
+ */
 function AccessControlAdd() {
+  const navigate = useNavigate();
+  const [ipAddress, setIpAddress] = React.useState([""]);
+  const [roles, setRoles] = React.useState([]);
+  const [name, setName] = React.useState("");
+  const [status, setStatus] = React.useState("0");
+  const [description, setDescription] = React.useState("");
+  const [roleId, setRoleId] = React.useState();
+  const [loading, setLoading] = React.useState(true);
+  const account = useSelector((state) => state.account);
+
+  useEffect(() => {
+    async function fetchData() {
+      const apidata = await generalGetFunction("/role/all")
+      if (apidata.status) {
+        setRoles(apidata.data);
+        setLoading(false);
+      }else{
+        toast.error(apidata.message)
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  /**
+   * Function to handle form submission
+   * This function is used to handle the form submission and create a new Access Control
+   * @return {void}
+   */
+  async function handleSubmit() {
+    if(name === "") {
+      toast.error("Please enter name")
+    }else if(roleId === "") {
+      toast.error("Please select group")
+    }else if(ipAddress[0] === "") {
+      toast.error("Please enter IP Address")
+    }else{
+      setLoading(true);
+      const parsedData = {
+        name: name,
+        status: status,
+        description: description,
+        role_id: roleId,
+        ip: ipAddress,
+        account_id: account.account_id,
+      }
+      const apiData = await generalPostFunction("/store-ip-whitelists", parsedData)
+      if (apiData.status) {
+        toast.success(apiData.message);
+        setLoading(false);
+        navigate(-1)
+      } else {
+        toast.error(apiData.message);
+        setLoading(false);
+      }
+    }
+  }
   return (
     <>
       <div className="mainContent">
@@ -19,35 +85,28 @@ function AccessControlAdd() {
                           <h4>
                             Access Control
                             <button className="clearButton">
-                              {/* <i
-                          className={
-                            loading
-                              ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                              : "fa-regular fa-arrows-rotate fs-5"
-                          }
-                        ></i> */}
                             </button>
                           </h4>
                           <p>You can see all list of Access Control</p>
                         </div>
                         <div className="buttonGroup">
-                          <button effect="ripple" className="panelButton gray">
+                          <button type="button" onClick={() => navigate(-1)} effect="ripple" className="panelButton gray">
                             <span className="text">Back</span>
                             <span className="icon">
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
 
-                          <Link
-                            to="/groups-add"
+                          <div
                             effect="ripple"
                             className="panelButton"
+                            onClick={handleSubmit}
                           >
                             <span className="text">Save</span>
                             <span className="icon">
                               <i className="fa-solid fa-floppy-disk"></i>
                             </span>
-                          </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -73,32 +132,20 @@ function AccessControlAdd() {
                               type="text"
                               name="name"
                               className="formItem"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="formRow col-xl-12 ">
-                          <div className="formLabel">
-                            <label htmlFor="">IP Address</label>
-                          </div>
-                          <div className="col-6">
-                            <input
-                              type="text"
-                              name="description"
-                              className="formItem"
+                              value={name}
+                              onChange={(e) => setName(e.target.value)}
                             />
                           </div>
                         </div>
                         <div className="formRow col-xl-12 ">
                           <div className="formLabel">
-                            <label htmlFor="">Default</label>
+                            <label htmlFor="">Status</label>
                           </div>
                           <div className="col-6">
-                            <input
-                              type="text"
-                              name="description"
-                              className="formItem"
-                            />
+                            <select className="formItem" name="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+                              <option value="0" >Disable</option>
+                              <option value="1">Enable</option>
+                            </select>
                           </div>
                         </div>
                         <div className="formRow col-xl-12 ">
@@ -110,88 +157,89 @@ function AccessControlAdd() {
                               type="text"
                               name="description"
                               className="formItem"
+                              value={description}
+                              onChange={(e) => setDescription(e.target.value)}
                             />
                           </div>
                         </div>
                         <div className="formRow col-xl-12 ">
                           <div className="formLabel">
-                            <label htmlFor="">Group Name</label>
+                            <label htmlFor="">Group*</label>
                           </div>
                           <div className="col-6">
                             {" "}
-                            <select className="formItem" name="role_id">
+                            <select className="formItem" name="role_id" value={roleId} onChange={(e) => setRoleId(e.target.value)}>
                               <option value="" disabled="" selected="">
                                 Choose Type
                               </option>
-                              <option value={68}>Admin</option>
-                              <option value={69}>Manager</option>
-                              <option value={70}>Agent</option>
-                              <option value={71}>Retention</option>
-                              <option value={72}>Billing</option>
-                              <option value={73}>
-                                All access with upcoming fetaure
-                              </option>
+                              {
+                                roles.map((item, index) => {
+                                  return (
+                                    <option key={index} value={item.id}>{item.name}</option>
+                                  )
+                                })
+                              }
                             </select>
                           </div>
                         </div>
                         <div className="formRow col-xl-12">
                           <div className="formLabel">
-                            <label htmlFor="selectFormRow">Nodes</label>
+                            <label htmlFor="selectFormRow">IP Address</label>
                             <label htmlFor="data" className="formItemDesc">
-                              Select the status of Node
+                              Add IP address or CIDR range.
                             </label>
                           </div>
                         </div>
-                        <div className=" col-xl-12">
-                          <div className="formRow">
-                            <div className="col-3 " style={{ width: "21.3%" }}>
-                              <div className="formLabel">
-                                <label className="formItemDesc">Type</label>
+                        {
+                          ipAddress.map((item, index) => {
+                            return (
+                              <div className=" col-xl-12" key={index}>
+                                <div className="formRow">
+                                  <div className="col-6" >
+                                    {
+                                      index === 0 &&
+                                      <div className="formLabel">
+                                        <label className="formItemDesc">
+                                          IP Address
+                                        </label>
+                                      </div>
+                                    }
+                                    <input
+                                      type="text"
+                                      name="stick_agent_expires"
+                                      className="formItem"
+                                      value={item}
+                                      onChange={(e) => {
+                                        const newIpAddress = [...ipAddress];
+                                        newIpAddress[index] = e.target.value;
+                                        setIpAddress(newIpAddress);
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="col-3 mt-4">
+                                    {
+                                      ipAddress.length > 1 &&
+                                      <button type="button" className="tableButton delete mx-auto" onClick={() => { setIpAddress(ipAddress.filter((_, i) => i !== index)) }} >
+                                        <i className="fa-solid fa-trash" />
+                                      </button>
+                                    }
+                                  </div>
+                                  {
+                                    index === ipAddress.length - 1 &&
+                                    <div className="col-3 mt-4" >
+                                      <button type="button" className="panelButton" onClick={() => { if (ipAddress[ipAddress.length - 1] !== "") { setIpAddress([...ipAddress, ""]) } }}>
+                                        <span className="text">Add</span>
+                                        <span className="icon">
+                                          <i className="fa-solid fa-plus"></i>
+                                        </span>
+                                      </button>
+                                    </div>
+                                  }
+                                </div>
                               </div>
-                              <input
-                                type="number"
-                                name="name"
-                                className="formItem"
-                              />
-                            </div>
-                            <div className="col-3 " style={{ width: "12%" }}
-                            >
-                              <div className="formLabel">
-                                <label className="formItemDesc">CDR </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="stick_agent_expires"
-                                className="formItem"
-                              />
-                            </div>
-                            <div className="col-3" style={{ width: "21.3%" }}>
-                              <div className="formLabel">
-                                <label className="formItemDesc">
-                                  Description
-                                </label>
-                              </div>
-                              <input
-                                type="text"
-                                name="stick_agent_expires"
-                                className="formItem"
-                              />
-                            </div>
-                            <div className="col-3 mt-4" style={{ width: "7.3%" }}>
-                              <button className="tableButton delete mx-auto">
-                                <i className="fa-solid fa-trash" />
-                              </button>
-                            </div>
-                            <div className="col-3 mt-4" style={{ width: "19.3%" }}>
-                              <button className="panelButton">
-                                <span className="text">Add</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-plus"></i>
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                            )
+                          })
+                        }
                       </form>
                     </div>
                   </div>
@@ -201,6 +249,9 @@ function AccessControlAdd() {
           </div>
         </section>
       </div>
+      {
+        loading && <CircularLoader />
+      }
     </>
   );
 }

@@ -250,28 +250,50 @@ export default function GroupsList() {
                             <SkeletonTableLoader col={4} row={10} />
                           ) : (
                             <>
-                              {groups.length===0 ?  <td colSpan={99}>
-                                  <EmptyPrompt
-                                    name="Groups"
-                                    link="groups-add"
-                                  />
-                                </td> :
+                              {groups.length === 0 ? <td colSpan={99}>
+                                <EmptyPrompt
+                                  name="Groups"
+                                  link="groups-add"
+                                />
+                              </td> :
                                 groups?.map((item, index) => {
                                   return (
                                     <tr key={index}>
                                       <td>
                                         {item.group_name}
                                       </td>
-                                      <td>
-                                        <div className="hover-dropdown ">
-                                          <div
-                                            style={{
-                                              color: "var(--ui-accent)",
-                                            }}
-                                            type="button"
-                                            data-bs-toggle="hover-dropdown "
-                                            aria-expanded="false"
-                                          >
+                                      <td style={{ width: '20px' }}>
+                                        <Tippy content={
+                                          <ul className="dropdown-menu-hover" style={{ columnCount: item.groupusers.length > 8 ? 2 : 1 }}>
+                                            {/* <li className="col-12">
+                                              <div className="dropdown-item fw-bold disabled">
+                                                Users
+                                              </div>
+                                            </li> */}
+                                            {item.groupusers.map(
+                                              (item, index) => (
+                                                <div className="dropdown-item d-flex align-items-center" >
+                                                  <span className="avatar-container">
+                                                    {
+                                                      item.user?.profile_picture ?
+                                                        <img
+                                                          alt="profile"
+                                                          src={item.user?.profile_picture}
+                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        /> : <i className="fa-light fa-user"></i>}
+                                                  </span>
+                                                  <span className='ms-2'>{item?.user?.name}</span>
+                                                </div>
+                                              )
+                                            )}
+                                            {/* {item.ring_group_destination.length > 6 && <li className="col-12">
+                                                <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                  Show More
+                                                </Link>
+                                              </li>} */}
+                                          </ul>
+                                        } allowHTML={true} placement="bottom">
+                                          <div className="hover-dropdown">
                                             {/* {item.ring_group_destination.length} */}
                                             <div className="avatar-container">
                                               {item?.groupusers?.slice(0, 4).map((user, index) => {
@@ -280,7 +302,7 @@ export default function GroupsList() {
                                                   <Tippy key={index} content={user?.user?.name}>
                                                     {user?.user?.profile_picture ? (
                                                       <img
-                                                      alt='profile'
+                                                        alt='profile'
                                                         src={user?.user?.profile_picture}
                                                         onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                                       />
@@ -294,38 +316,7 @@ export default function GroupsList() {
                                                 ?.length > 4 && <span>+{item?.groupusers?.length - 4}</span>}
                                             </div>
                                           </div>
-                                          <ul className="dropdown-menu light">
-                                            <li className="col-12">
-                                              <div className="dropdown-item fw-bold disabled">
-                                                Users
-                                              </div>
-                                            </li>
-                                            <div
-                                              style={{ columnCount: 1 }}
-                                            >
-                                              {item.groupusers.map(
-                                                (item, index) => (
-                                                  <div className="dropdown-item d-flex" >
-                                                  <span className="avatar-container">
-                                                    {
-                                                      item.user?.profile_picture ?
-                                                        <img
-                                                          alt="profile"
-                                                          src={item.user?.profile_picture}
-                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                        /> : <i className="fa-light fa-user"></i>}
-                                                         </span> {item?.user?.name}
-                                                </div>
-                                                )
-                                              )}
-                                            </div>
-                                            {/* {item.ring_group_destination.length > 6 && <li className="col-12">
-                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
-                                                    Show More
-                                                  </Link>
-                                                </li>} */}
-                                          </ul>
-                                        </div>
+                                        </Tippy>
                                       </td>
 
                                       {/* <td>(999) 999-9999, (999) 999-9999</td> */}
