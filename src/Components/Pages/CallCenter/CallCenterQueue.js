@@ -408,15 +408,38 @@ function CallCenterQueue() {
                                               {item.strategy}
                                             </td>
                                             <td >
-                                              <div className="hover-dropdown">
-                                                <div
-                                                  style={{
-                                                    color: "var(--ui-accent)",
-                                                  }}
-                                                  type="button"
-                                                  data-bs-toggle="hover-dropdown"
-                                                  aria-expanded="false"
+                                              <Tippy content={
+                                                <ul className="dropdown-menu-hover"
+                                                  style={{ columnCount: item.agents.length > 8 ? 2 : 1 }}
                                                 >
+                                                  {/* <li className="col-12">
+                                                    <div className="dropdown-item fw-bold disabled">
+                                                      Agents
+                                                    </div>
+                                                  </li> */}
+                                                  {item.agents.map(
+                                                    (item, index) => (
+                                                      <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
+                                                        <span className="avatar-container">
+                                                          {
+                                                            item.profile_picture ?
+                                                              <img
+                                                                alt="profile"
+                                                                src={item.profile_picture}
+                                                                onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                              /> : <i className="fa-light fa-user"></i>}
+                                                        </span> <span className="ms-2">{item?.username}</span>
+                                                      </div>
+                                                    )
+                                                  )}
+                                                  {/* {item.agents.length > 6 && <li className="col-12">
+                                                  <Link to="/agents" className="dropdown-item text-center text-primary">
+                                                    See More
+                                                  </Link>
+                                                </li>} */}
+                                                </ul>
+                                              } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                                                <div className="hover-dropdown">
                                                   {/* {item.agents.length} */}
                                                   <div className="avatar-container">
                                                     {item.agents?.slice(0, 4).map((item, index) => {
@@ -437,39 +460,8 @@ function CallCenterQueue() {
                                                     {item.agents.length > 4 && <span>+{item.agents.length - 4}</span>}
                                                   </div>
                                                 </div>
-                                                <ul className="dropdown-menu light">
-                                                  <li className="col-12">
-                                                    <div className="dropdown-item fw-bold disabled">
-                                                      Agents
-                                                    </div>
-                                                  </li>
-                                                  <div
-                                                    style={{ columnCount: 1 }}
-                                                  >
-                                                    {item.agents.map(
-                                                      (item, index) => (
-                                                        <div key={index} className="dropdown-item d-flex" onClick={() => handleAgentClick(item)}>
-                                                          <span className="avatar-container">
-                                                            {
-                                                              item.profile_picture ?
-                                                                <img
-                                                                  alt="profile"
-                                                                  src={item.profile_picture}
-                                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                                /> : <i className="fa-light fa-user"></i>}
-                                                          </span> {item?.username}
-                                                        </div>
+                                              </Tippy>
 
-                                                      )
-                                                    )}
-                                                    {/* {item.agents.length > 6 && <li className="col-12">
-                                                    <Link to="/agents" className="dropdown-item text-center text-primary">
-                                                      See More
-                                                    </Link>
-                                                  </li>} */}
-                                                  </div>
-                                                </ul>
-                                              </div>
                                             </td>
                                             <td>
                                               <div className="my-auto position-relative d-flex justify-content-center ">
