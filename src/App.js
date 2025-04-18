@@ -178,6 +178,8 @@ import AddNumber from "./Components/Pages/NumberManagement/AddNumber";
 import BillingCardAndWallet from "./Components/Pages/Billing/BillingCardAndWallet";
 import FportalCampaign from "./Components/Pages/CallTracker/FportalCampaign";
 import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaignCreate";
+import AccessControl from "./Components/Pages/AccessControl/AccessControl";
+import AccessControlAdd from "./Components/Pages/AccessControl/AccessControlAdd";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -283,6 +285,11 @@ function App() {
           <Route path="/groups-add" element={<AddGroupsList />} />
           <Route path="/groups-edit" element={<EditGroupsList />} />
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
+
+
+          {/* <Route path="/groups" element={<GroupsList/>}/> */}
+          <Route path="/access-control-list" element={<AccessControl />} />
+          <Route path="/access-control-list-add" element={<AccessControlAdd />} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 
