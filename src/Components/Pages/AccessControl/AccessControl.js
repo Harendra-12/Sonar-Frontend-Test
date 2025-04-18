@@ -1,18 +1,21 @@
 import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
 import { Link } from "react-router-dom";
-import { generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
+import { toast } from "react-toastify";
 
 function AccessControl() {
   const [accessControlList, setAccessControlList] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [deletePopup, setDeletePopup] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState("");
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const apiData = await generalGetFunction("/")
+      const apiData = await generalGetFunction("/ip-whitelists")
       if (apiData.status) {
         setAccessControlList(apiData.data)
         setLoading(false)
@@ -22,6 +25,23 @@ function AccessControl() {
     }
     fetchData()
   }, [])
+
+  async function handleDelete(id) {
+    setLoading(true);
+    setDeletePopup(false);
+    const apidata = await generalDeleteFunction(`/delete-all-ip-whitelists/${deleteId}`)
+    if(apidata.status){
+      const newArray = accessControlList.filter((item) => item.id !== id);
+      setAccessControlList(newArray);
+      setDeleteId('');
+      toast.success(apidata.message);
+      setLoading(false);
+    }else{
+      setDeleteId('');
+      toast.error(apidata.error);
+      setLoading(false);
+    }
+  }
   return (
     <>
       <div className="mainContent">
@@ -74,13 +94,14 @@ function AccessControl() {
                             <tr>
                               <th>Name</th>
                               <th>List</th>
+                              <th>Group</th>
                               <th className="text-center">Edit</th>
-                              <th className="text-center">Delete</th>
+                              <th className="text-center" >Delete</th>
                             </tr>
                           </thead>
                           <tbody>
                             {loading ? (
-                              <SkeletonTableLoader col={4} row={15} />
+                              <SkeletonTableLoader col={5} row={15} />
                             ) : (
                               <>
                                 {
@@ -94,12 +115,13 @@ function AccessControl() {
                                               <td>
                                                 {item.description}
                                               </td>
-                                              <td>
+                                              <td>{item?.role?.name}</td>
+                                              <td onClick={()=>featureUnderdevelopment()}>
                                                 <button className="tableButton edit mx-auto">
                                                   <i className="fa-solid fa-pencil" />
                                                 </button>
                                               </td>
-                                              <td>
+                                              <td onClick={() => {setDeletePopup(true);setDeleteId(item.id)}}>
                                                 <button className="tableButton delete mx-auto">
                                                   <i className="fa-solid fa-trash" />
                                                 </button>
@@ -129,6 +151,52 @@ function AccessControl() {
           </div>
         </section>
       </div>
+      {deletePopup ? (
+          <div className="popup">
+            <div className="container h-100">
+              <div className="row h-100 justify-content-center align-items-center">
+                <div className="row content col-xl-4 col-md-5">
+                  <div className="col-2 px-0">
+                    <div className="iconWrapper">
+                      <i className="fa-duotone fa-triangle-exclamation"></i>
+                    </div>
+                  </div>
+                  <div className="col-10 ps-0">
+                    <h4>Warning!</h4>
+                    <p>
+                      Are you sure you want to delete this access control?
+                    </p>
+                    <div className="d-flex justify-content-between">
+                     
+                        <button
+                          disabled={loading}
+                          className="panelButton m-0"
+                         onClick={() => handleDelete(deleteId)}
+                        >
+                          <span className="text">Confirm</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-check"></i>
+                          </span>
+                        </button>
+
+                      <button
+                        className="panelButton gray m-0 float-end"
+                        onClick={() => setDeletePopup(false)}
+                      >
+                        <span className="text">Cancel</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-xmark"></i>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
     </>
   );
 }
