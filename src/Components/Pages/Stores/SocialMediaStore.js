@@ -43,6 +43,7 @@ function SocialMediaStore() {
 
     useEffect(() => {
         fetchAllAddons();
+        fetchAllConfig();
     }, [])
 
     // Handle callBack for buying pop up
@@ -81,6 +82,8 @@ function SocialMediaStore() {
                         type: "SET_ACCOUNTDETAILSREFRESH",
                         accountDetailsRefresh: accountDetailsRefresh + 1,
                     });
+                    setRechargePopUp(false)
+                    setAddonBuyPopup(false)
                 } else {
                     setLoading(false);
                     toast.error(apiData.errors);
@@ -139,123 +142,68 @@ function SocialMediaStore() {
 
     return (
         <>
+            {console.log(accountDetails.add_on_subscription)
+            }
             <div className="row">
                 <div className="col-md-12">
                     <div className="product-container row gy-3">
                         {accountDetails && accountDetails.add_on_subscription.length > 0 ?
-                            accountDetails.add_on_subscription.map((item, index) => {
-                                const configuredItem = allConfigData?.find(config => config.id === item.addon.id);
-                                return (
-                                    <div className='col-3' key={index}>
-                                        <div className='product-cart'>
-                                            <div className="product-image">
-                                                <img
-                                                    src={require(`../../assets/images/icons/addons/${item.addon.name.toLowerCase()}.webp`)}
-                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                    alt={item.addon.name}
-                                                />
-                                            </div>
-                                            <div className='content_width'>
-                                                <div className="product-title mt-4">
-                                                    <p style={{ textTransform: 'capitalize' }}>
-                                                        {item.addon.name} Integration
-                                                    </p>
+                            accountDetails.add_on_subscription.filter((item, index, self) =>
+                                index === self.findIndex((t) => (
+                                    t.addon.id === item.addon.id
+                                ))
+                            )
+                                .map((item, index) => {
+                                    const configuredItem = allConfigData?.find(config => config.addon_id === item.addon.id);
+
+                                    return (
+                                        <div className='col-3' key={index}>
+                                            <div className='product-cart'>
+                                                <div className="product-image">
+                                                    <img
+                                                        src={require(`../../assets/images/icons/addons/${item.addon.name.toLowerCase()}.webp`)}
+                                                        onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        alt={item.addon.name}
+                                                    />
                                                 </div>
-                                                <div className="product-description">
-                                                    <span className="text-smalls">
-                                                        Integrate {item.addon.name} in our platform and use it on-the-go
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            {configuredItem ? (
-                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                    <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(item.addon)}>
-                                                        <span className='cartSvg addonsBtn'>
-                                                            <i className="fa-solid fa-pencil"></i>
+                                                <div className='content_width'>
+                                                    <div className="product-title mt-4">
+                                                        <p style={{ textTransform: 'capitalize' }}>
+                                                            {item.addon.name} Integration
+                                                        </p>
+                                                    </div>
+                                                    <div className="product-description">
+                                                        <span className="text-smalls">
+                                                            Integrate {item.addon.name} in our platform and use it on-the-go
                                                         </span>
-                                                        <span>Edit</span>
-                                                    </button>
-                                                    <button className="tableButton delete" onClick={() => handleDeleteConfig(item.addon.id)}>
-                                                        <i className="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <div className="mt-3">
-                                                    <button className="checkbox_wrapper edit" onClick={() => handleConfigAdd(item.addon)}>
-                                                        <span className='cartSvg addonsBtn'>
-                                                            <i className="fa-solid fa-pencil"></i>
-                                                        </span>
-                                                        <span>Configure</span>
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )
-                            }) : <>
-                                {loading ?
-                                    <>
-                                        <div className='col-3'>
-                                            <div className={`product-cart`}>
-                                                <div className="product-image skeleton" ></div>
-                                                <div className='content_width'>
-                                                    <div className="product-title mt-4">
-                                                        <p style={{ textTransform: 'capitalize' }}>
-                                                            <div className='skeleton skeleton-formLabel mx-auto' />
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description mt-2">
-                                                        <div className='skeleton skeleton-formLabel-small' />
                                                     </div>
                                                 </div>
-                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                    <div className='skeleton skeleton-button'></div>
-                                                    <div className='skeleton skeleton-button'></div>
-                                                </div>
+                                                {configuredItem ? (
+                                                    <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(item.addon)}>
+                                                            <span className='cartSvg addonsBtn'>
+                                                                <i className="fa-solid fa-pencil"></i>
+                                                            </span>
+                                                            <span>Edit</span>
+                                                        </button>
+                                                        <button className="tableButton delete" onClick={() => handleDeleteConfig(configuredItem.id)}>
+                                                            <i className="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="mt-3">
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigAdd(item.addon)}>
+                                                            <span className='cartSvg addonsBtn'>
+                                                                <i className="fa-solid fa-pencil"></i>
+                                                            </span>
+                                                            <span>Configure</span>
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-                                        <div className='col-3'>
-                                            <div className={`product-cart`}>
-                                                <div className="product-image skeleton" ></div>
-                                                <div className='content_width'>
-                                                    <div className="product-title mt-4">
-                                                        <p style={{ textTransform: 'capitalize' }}>
-                                                            <div className='skeleton skeleton-formLabel mx-auto' />
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description mt-2">
-                                                        <div className='skeleton skeleton-formLabel-small' />
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                    <div className='skeleton skeleton-button'></div>
-                                                    <div className='skeleton skeleton-button'></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className='col-3'>
-                                            <div className={`product-cart`}>
-                                                <div className="product-image skeleton" ></div>
-                                                <div className='content_width'>
-                                                    <div className="product-title mt-4">
-                                                        <p style={{ textTransform: 'capitalize' }}>
-                                                            <div className='skeleton skeleton-formLabel mx-auto' />
-                                                        </p>
-                                                    </div>
-                                                    <div className="product-description mt-2">
-                                                        <div className='skeleton skeleton-formLabel-small' />
-                                                    </div>
-                                                </div>
-                                                <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                    <div className='skeleton skeleton-button'></div>
-                                                    <div className='skeleton skeleton-button'></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </> :
-                                    <EmptyPrompt generic={true} />
-                                }
-                            </>
+                                    )
+                                }) : ""
                         }
 
                         {/* Product 1 */}
