@@ -257,7 +257,7 @@ function Navbar() {
 
                           <li className="tabItem">
                             <NavLink
-                              to="/roles"
+                              to="/access-control-list"
                               onClick={backToTop}
                               className="nav-link"
                             >
