@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
+  generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -14,6 +15,24 @@ function Email() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
+  const [mailSettings, setMailSettings] = useState([]);
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    // setLoading(true);
+    const result = await generalGetFunction("/mail-setting/all");
+    if (result?.status) {
+      setMailSettings(result.data);
+      // setLoading(false);
+    } else {
+      // setLoading(false);
+      // navigate("/");
+    }
+  };
   return (
     <>
       <main
@@ -225,8 +244,20 @@ function Email() {
                       >
                         <div className="newMessageWrapper mb-3">
                           <div>
+                            <div className="messageTo border-bottom-0">
+                              <label>Sender</label>
+                              <div className="d-flex flex-wrap">
+                                <div className="col-auto my-auto">
+                                  <select className="formItem">
+                                    {mailSettings.map((item, index) => (
+                                      <option key={index}>{item.mail_from_address}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
                             <div className="messageTo">
-                              <label>Recipents</label>
+                              <label>Recipent</label>
                               <div className="d-flex flex-wrap">
                                 <div className="col-auto my-auto">
                                   <input
@@ -250,10 +281,7 @@ function Email() {
                                 File(s) (maximum file size is 50 MB)
                               </label>
                               <div className="inputFileWrapper">
-                                {/* <input type="file" /> */}
-                                <select className="formItem">
-                                  <option value="">Chose file</option>
-                                </select>
+                                <input type="file" className="formItem" />
                               </div>
                             </div>
                             <div className="buttonControl">
