@@ -15,11 +15,11 @@ const MailReply = () => {
                             <button className="back_pev"><i class="fa-solid fa-arrow-left"></i></button>
                             <div className='d-flex justify-content-between align-items-center w-100'>
                                 <div className="d-flex align-items-center">
-                                    <div className="tableProfilePicHolder">
+                                    {/* <div className="tableProfilePicHolder">
                                         <img
                                             src={require('../../../assets/images/placeholder-image.webp')}
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="ms-3 ">
                                         <p className="text_dark mb-0">test250</p>
                                         <p className="mb-0 text_gray">To: nathan@themenate.com</p>
@@ -39,18 +39,18 @@ const MailReply = () => {
                                     >
                                         {/* {
                                             item.is_admin ? */}
-                                                <li>
-                                                    <button className="dropdown-item">
-                                                  <i class="fa-duotone fa-light fa-star me-2"></i> Starred
-                                                    </button>
-                                                </li>
-                                                
-                                                <li>
-                                                    <button className="dropdown-item" >
-                                                   <i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted
-                                                    </button>
-                                                </li>
-                                       
+                                        <li className='mailList_menu'>
+                                            <button className="dropdown-item">
+                                                <i class="fa-duotone fa-light fa-star me-2"></i> Starred
+                                            </button>
+                                        </li>
+
+                                        <li className='mailList_menu'>
+                                            <button className="dropdown-item text-danger" >
+                                                <i class="fa-duotone fa-solid fa-trash me-2 "></i> Deleted
+                                            </button>
+                                        </li>
+
                                     </ul>
                                 </div>
 
@@ -60,7 +60,7 @@ const MailReply = () => {
                     <div className="mailBox_body p-3">
                         <div className="mail_header">
                             <p class="fs-20 fw-semibold mb-0 text_dark">History of planets are discovered yesterday.</p>
-                            <div class="float-end"> <span class="me-2 fs-12 text-muted">April-19-2025,03:05PM</span> </div>
+                            <div class="float-end"> <span class="me-2 fs-12 text_gray">April-19-2025,03:05PM</span> </div>
                         </div>
 
                         <div class="main-mail-content mb-4 mt-5">
@@ -113,23 +113,25 @@ const MailReply = () => {
                                 />
                             </div>
                         ) : null}
-                        <div class="mail-info-footer d-flex flex-wrap gap-2 align-items-center justify-content-between p-2 position-relative">
-
-                            <div>
-                                <button class="btn btn-icon btn-light" >
-                                    <i class="fa-solid fa-paperclip"></i>
-                                </button>
-
+                        <div class=" d-flex flex-wrap gap-2 align-items-center justify-content-between p-2 position-relative">
+                           
+                            <div class="custom_fileWrap">
+                              
+                                <label for="file" class="custom_file">
+                                <i class="fa-solid fa-paperclip"></i>
+                                </label>
+                                <input id="file" type="file" />
                             </div>
+
                             <div>
-                                <button class="btn btn-secondary">
+                                <button class="btn btn-info">
                                     <i class="fa-regular fa-share me-2"></i>Forward
                                 </button>
-                                <button class="btn btn-danger ms-1" onClick={onClick}>
+                                <button class="btn btn-success ms-1" onClick={onClick}>
                                     <i class="fa-regular fa-reply-all me-2"></i>Reply All
                                 </button>
                                 {showResults ? (
-                                    <button class="btn btn-success ms-1" onClick={onClick}>
+                                    <button class="btn btn-primary ms-1" onClick={onClick}>
                                         <i class="fa-duotone fa-solid fa-paper-plane-top me-2"></i>Send
                                     </button>
                                 ) : ''}

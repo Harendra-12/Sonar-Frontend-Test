@@ -7,7 +7,7 @@ import {
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
-  generalPostFunction,logout
+  generalPostFunction, logout
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
@@ -531,94 +531,98 @@ function EFax() {
                             </div>
                           </div>
                         </div>
-                        <div
-                          className="col-12"
-                          style={{ padding: "0px 20px 0px" }}
-                        >
-                          <div className="newMessageWrapper mb-3">
-                            <div>
-                              {/* <div className="messageTitle">
+                        <div className="table_card rounded-start-0 rounded-end-0" >
+                          <div
+                            className="col-12"
+                           
+                          >
+                            <div className="newMessageWrapper mt-0">
+                              <div>
+                                {/* <div className="messageTitle">
                                 <h4>New Fax</h4>
                               </div> */}
-                              <div className="messageTo">
-                                <label>Recipents</label>
-                                <div className="d-flex flex-wrap">
-                                  {/* Map This in Loop */}
-                                  {/* <div className="col-auto">
+                                <div className="messageTo border-0">
+                                  <label>Recipents</label>
+                                  <div className="d-flex flex-wrap">
+                                    {/* Map This in Loop */}
+                                    {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                  {/* <div className="col-auto">
+                                    {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                  {/* <div className="col-auto">
+                                    {/* <div className="col-auto">
                                   <div style={{ width: "max-content" }}>
                                     <button className="receipentButton">
                                       johndoe@email.com
                                     </button>
                                   </div>
                                 </div> */}
-                                  {/* Map This in Loop */}
-                                  <div className="col-auto my-auto">
-                                    <input
-                                      type="text"
-                                      className="border-0 mb-0"
-                                      value={destinationId}
-                                      onChange={(e) =>
-                                        setDestinationId(e.target.value)
-                                      }
-                                    />
+                                    {/* Map This in Loop */}
+                                    <div className="col-auto my-auto w-100">
+                                      <input
+                                        type="text"
+                                        className="formItem rounded-3 p-2 mt-1"
+                                        value={destinationId}
+                                        onChange={(e) =>
+                                          setDestinationId(e.target.value)
+                                        }
+                                      />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="messageSubject">
-                                <label>Fax Identifier</label>
-                                <input
-                                  value={faxIdent}
-                                  onChange={(e) => setFaxIdent(e.target.value)}
-                                  type="text"
-                                />
-                              </div>
-                              <div className="messageBody">
-                                <label>Fax Header</label>
-                                <input
-                                  value={faxHeader}
-                                  onChange={(e) => setFaxHeader(e.target.value)}
-                                />
-                              </div>
-                              <div className="messageBody">
-                                <label>
-                                  <i className="fa-regular fa-link"></i> Attach
-                                  File(s) (maximum file size is 50 MB)
-                                </label>
-                                <div className="inputFileWrapper">
-                                  {/* <input type="file" /> */}
-                                  <select
-                                    value={faxFileId}
-                                    onChange={(e) =>
-                                      setFaxDileId(e.target.value)
-                                    }
-                                    className="formItem"
-                                  >
-                                    <option value="" disabled>
-                                      Chose file
-                                    </option>
-                                    {allFiles &&
-                                      allFiles.map((file) => (
-                                        <option value={file.id}>
-                                          {file.file_name}
-                                        </option>
-                                      ))}
-                                  </select>
+                                <div className="messageSubject">
+                                  <label>Fax Identifier</label>
+                                  <input
+                                    value={faxIdent}
+                                    className="formItem rounded-3 p-2 mt-1"
+                                    onChange={(e) => setFaxIdent(e.target.value)}
+                                    type="text"
+                                  />
+                                </div>
+                                <div className="messageBody">
+                                  <label>Fax Header</label>
+                                  <input
+                                    value={faxHeader}
+                                    className="formItem rounded-3 p-2"
+                                    onChange={(e) => setFaxHeader(e.target.value)}
+                                  />
+                                </div>
+                                <div className="messageBody">
+                                  <label>
+                                    <i className="fa-regular fa-link"></i> Attach
+                                    File(s) (maximum file size is 50 MB)
+                                  </label>
+                                  <div className="inputFileWrapper faxSelectUnset_hover w-100">
+                                    {/* <input type="file" /> */}
+                                    <select
+                                      value={faxFileId}
 
-                                  {/* {dropdownOption && (
+                                      onChange={(e) =>
+                                        setFaxDileId(e.target.value)
+                                      }
+                                      className="formItem rounded-3 p-2"
+                                    >
+                                      <option value="" disabled>
+                                        Chose file
+                                      </option>
+                                      {allFiles &&
+                                        allFiles.map((file) => (
+                                          <option value={file.id}>
+                                            {file.file_name}
+                                          </option>
+                                        ))}
+                                    </select>
+
+                                    {/* {dropdownOption && (
                                   <Select
                                     closeMenuOnSelect={false}
                                     isMulti
@@ -637,19 +641,20 @@ function EFax() {
                                     }}
                                   />
                                 )} */}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="buttonControl">
-                                {/* <button className="panelButton">Send Later</button> */}
-                                <button
-                                  onClick={sendFax}
-                                  className="panelButton"
-                                >
-                                  <span className="text">Send</span>
-                                  <span className="icon">
-                                    <i className="fa-solid fa-paper-plane-top"></i>
-                                  </span>
-                                </button>
+                                <div className="buttonControl">
+                                  {/* <button className="panelButton">Send Later</button> */}
+                                  <button
+                                    onClick={sendFax}
+                                    className="panelButton"
+                                  >
+                                    <span className="text">Send</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-paper-plane-top"></i>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
