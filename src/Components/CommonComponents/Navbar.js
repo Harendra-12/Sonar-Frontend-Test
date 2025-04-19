@@ -257,7 +257,7 @@ function Navbar() {
 
                           <li className="tabItem">
                             <NavLink
-                              to="/roles"
+                              to="/access-control-list"
                               onClick={backToTop}
                               className="nav-link"
                             >
@@ -962,7 +962,7 @@ function Navbar() {
                           </div>
                         </div>
                       </li>
-                      {isCustomerAdmin && (
+                      {/* {isCustomerAdmin &&
                         <li className="dashboard ">
                           <NavLink
                             to="/all-addons"
@@ -985,7 +985,7 @@ function Navbar() {
                             </div>
                           </NavLink>
                         </li>
-                      )}
+                      } */}
                     </>
                   )}
                   {checkViewSidebar(

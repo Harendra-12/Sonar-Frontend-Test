@@ -116,6 +116,12 @@ const ActionList = ({
         labelValue = aiAgentsArr.find(
           (item) => `aiagent_${item.ainumber}` == value
         )?.name;
+      } else if(category === "ring group"){
+        const ringObj = ringGroupArr?.find((item) => item?.extension == value)
+        labelValue = `${ringObj?.name}-${ringObj?.extension}`
+      } else if(category === "call center"){
+        const callObj = callCenterArr?.find((item) => item?.extension == value)
+        labelValue = `${callObj?.queue_name}-${callObj?.extension}`
       } else if (value.includes("ivr_")) {
         labelValue = ivrArr.find((item) => `ivr_${item.id}` == value)?.ivr_name;
       } else if (value.includes("aiagent_")) {
@@ -145,14 +151,14 @@ const ActionList = ({
       label: "Ring Group",
       options: ringGroup.map((item) => ({
         value: [item.extension, "ring_group"],
-        label: item.extension,
+        label: `${item?.name} - ${item?.extension}`,
       })),
     },
     {
       label: "Call Center",
       options: callCenter.map((item) => ({
         value: [item.extension, "call_center"],
-        label: item.extension,
+        label: `${item?.queue_name} - ${item?.extension}`,
       })),
     },
     {

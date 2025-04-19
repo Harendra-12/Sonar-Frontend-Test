@@ -107,8 +107,7 @@ function Campaigns() {
                               <th>Status</th>
                               <th>Name</th>
                               <th>Mode</th>
-                              <th>DID(s)</th>
-                              <th>Gateway</th>
+                              <th>Outbound Caller ID</th>
                               <th>Progress</th>
                               <th>Agents</th>
                               <th>Records</th>
@@ -117,7 +116,7 @@ function Campaigns() {
                           </thead>
                           <tbody>
                             {loading ? (
-                              <SkeletonTableLoader col={9} row={15} />
+                              <SkeletonTableLoader col={8} row={15} />
                             ) : (
                               <>
                                 {campaign?.data?.map((item, index) => (
@@ -135,21 +134,8 @@ function Campaigns() {
                                     <td><b>{item.title}</b></td>
                                     <td>{item?.dialer?.type}</td>
                                     <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
-                                    <td>Gateway</td>
                                     <td className="">
-                                      <div
-                                        className="specialProgressWrap"
-                                        style={{ cursor: "pointer" }}
-                                      >
-                                        <div className="specialProgress">
-                                          <div className='segment success' style={{ width: '85%' }}></div>
-                                          <div className='segment fail' style={{ width: '5%' }}></div>
-                                          <div className='segment pending' style={{ width: '10%' }}></div>
-                                        </div>
-                                        <div className="specialProgressText">
-                                          <p>0.00%</p>
-                                          <span>0 of 1000</span>
-                                        </div>
+                                      <Tippy content={
                                         <div className="specialProgressWrapDetails">
                                           <div className="d-flex align-items-center justify-content-start mb-1">
                                             <p
@@ -231,7 +217,22 @@ function Campaigns() {
                                             </li>
                                           </ul>
                                         </div>
-                                      </div>
+                                      } allowHTML={true}>
+                                        <div
+                                          className="specialProgressWrap"
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <div className="specialProgress">
+                                            <div className='segment success' style={{ width: '85%' }}></div>
+                                            <div className='segment fail' style={{ width: '5%' }}></div>
+                                            <div className='segment pending' style={{ width: '10%' }}></div>
+                                          </div>
+                                          <div className="specialProgressText">
+                                            <p>0.00%</p>
+                                            <span>0 of 1000</span>
+                                          </div>
+                                        </div>
+                                      </Tippy>
                                     </td>
                                     <td>
                                       {item.agents.length === 0 ? "N/A" :
@@ -256,7 +257,58 @@ function Campaigns() {
                                         </div>
                                       }
                                     </td>
-                                    <td><span className='ellipsis'>CustomerList.xls</span></td>
+                                    <td>
+                                      <Tippy content={
+                                        <ul className="dropdown-menu light d-block">
+                                          <li className="col-12">
+                                            <div className="dropdown-item fw-bold disabled">Leads</div>
+                                          </li>
+                                          <div style={{ columnCount: 1 }}>
+                                            <li>
+                                              <div className="dropdown-item d-flex">
+                                                <div class="my-auto position-relative mx-1">
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox" id="showAllCheck" />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
+                                                </div>
+                                                <div className='ms-2'>Lead Name</div>
+                                              </div>
+                                            </li>
+                                            <li>
+                                              <div className="dropdown-item d-flex">
+                                                <div class="my-auto position-relative mx-1">
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox" id="showAllCheck" />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
+                                                </div>
+                                                <div className='ms-2'>Lead Name</div>
+                                              </div>
+                                            </li>
+                                            <li>
+                                              <div className="dropdown-item d-flex">
+                                                <div class="my-auto position-relative mx-1">
+                                                  <div class="cl-toggle-switch">
+                                                    <label class="cl-switch">
+                                                      <input type="checkbox" id="showAllCheck" />
+                                                      <span></span>
+                                                    </label>
+                                                  </div>
+                                                </div>
+                                                <div className='ms-2'>Lead Name</div>
+                                              </div>
+                                            </li>
+                                          </div>
+                                        </ul>
+                                      } allowHTML={true} interactive={true}>
+                                        <span>5 Leads</span>
+                                      </Tippy>
+                                    </td>
                                     <td>
                                       <div className="dropdown">
                                         <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

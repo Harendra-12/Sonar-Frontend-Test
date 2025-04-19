@@ -41,21 +41,21 @@ const DisplayFile = ({ item, index }) => {
       console.log(error);
     }
   };
- 
+
   function downloadImages(url) {
     fetch(url, {
-      mode : 'no-cors',
+      mode: 'no-cors',
     })
       .then(response => response.blob())
       .then(blob => {
-      let blobUrl = window.URL.createObjectURL(blob);
-      let a = document.createElement('a');
-      a.download = url.replace(/^.*[\\\/]/, '');
-      a.href = blobUrl;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    })
+        let blobUrl = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.download = url.replace(/^.*[\\\/]/, '');
+        a.href = blobUrl;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
   }
   useEffect(() => {
     if (item && thisAudioRef.current) {
@@ -89,7 +89,7 @@ const DisplayFile = ({ item, index }) => {
       });
       currentlyPlayingVideoRef = thisVideoRef.current;
     }
-  }; 
+  };
   const handlePlayAudio = () => {
     if (thisAudioRef.current) {
       // Pause the currently playing audio if there is one and it's not this one
@@ -126,14 +126,14 @@ const DisplayFile = ({ item, index }) => {
         lowerValue.includes("image") ||
         lowerValue.includes("gif") ||
         lowerValue.includes("jpg") ||
-        lowerValue.includes("jpeg")||lowerValue.includes("webp")||lowerValue.includes("svg")
+        lowerValue.includes("jpeg") || lowerValue.includes("webp") || lowerValue.includes("svg")
       )
         return "png";
       if (lowerValue.includes("pdf")) return "pdf";
       if (lowerValue.includes("mp3")) return "mp3";
       if (lowerValue.includes("mp4") || lowerValue.includes("Video"))
         return "mp4";
- 
+
     }
     return null; // No extension found
   };
@@ -170,7 +170,7 @@ const DisplayFile = ({ item, index }) => {
   if (!ext) {
     return <div className="messageDetails">{item}</div>;
   } else {
-    if (ext === "png" ) {
+    if (ext === "png") {
       return (
         <div>
           <img
@@ -178,10 +178,10 @@ const DisplayFile = ({ item, index }) => {
             height="160px"
             src={item}
             alt=""
-            style={{ cursor: 'pointer' }} 
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               setEnlargeImage(true);
-              downloadImages({item});
+              downloadImages({ item });
             }}
           />
           {enlargeImage ? (
@@ -221,42 +221,24 @@ const DisplayFile = ({ item, index }) => {
 
       return (
         <div>
-          <div
-            className="align-items-center justify-content-start"
-            style={{
-              width: "200px",
-              height: "79px",
-              backgroundColor: "var(--dash-listing-bg)",
-              borderRadius: "5px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "end",
-              padding: "1rem",
-            }}
-          >
+          <div className='align-items-center justify-content-between' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px", display: "flex", justifyContent: "space-between", alignItems: "end", padding: '1rem' }} >
             <div style={{ fontSize: "26px", color: "#ff2424" }}>
               <i className="fa-solid fa-file-pdf"></i>
+
             </div>
-            <h5 className="p-0 m-0 ">{extractFileNameFromUrl(item)}</h5>
+            <h5 className='p-0 m-0 '>{extractFileNameFromUrl(item)}</h5>
             <button
               className="clearButton2 xl"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="true"
               onClick={toggleOptions}
+            > <i class="fa-solid fa-ellipsis-vertical"  ></i></button>
+            <ul
+              className="dropdown-menu light"
             >
-              {" "}
-              <i class="fa-solid fa-ellipsis-vertical"></i>
-            </button>
-            <ul className="dropdown-menu light">
               <li>
-                <div
-                  style={{ cursor: "pointer" }}
-                  className="dropdown-item"
-                  onClick={() =>
-                    downloadPdf(item, extractFileNameFromUrl(item))
-                  }
-                >
+                <div style={{ cursor: "pointer" }} className="dropdown-item" onClick={() => downloadPdf(item, extractFileNameFromUrl(item))}>
                   Download
                 </div>
               </li>

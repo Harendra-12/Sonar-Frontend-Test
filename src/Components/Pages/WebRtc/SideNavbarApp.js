@@ -9,6 +9,15 @@ import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
 
 
+/**
+ * The SideNavbarApp component renders the side navigation bar for the web application.
+ * It displays the user profile, navigation items, and a logout button.
+ * The component also handles the logout functionality.
+ * @prop {string} activePage - The current page being viewed.
+ * @prop {function} setactivePage - The function to set the current page.
+ * @prop {boolean} isMicOn - The flag to check if the microphone is on.
+ * @prop {boolean} reconnecting - The flag to check if the application is reconnecting.
+ */
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
@@ -31,11 +40,11 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     }
   }, [connectStatus, registerStatus])
 
-  useEffect(()=>{
-    if(adminLogout){
+  useEffect(() => {
+    if (adminLogout) {
       sessionManager.disconnect();
     }
-  },[adminLogout])
+  }, [adminLogout])
 
   useEffect(() => {
     const userAgent = sessionManager?.userAgent;
@@ -259,6 +268,20 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <i className="fa-light fa-circle-user" />
                   </div>
                   <div className="itemTitle">Call Center</div>
+                </div>
+              </li>
+              <li style={{ cursor: "pointer" }}>
+                <div
+                  // to="/campaign-login"
+                  onClick={() => setactivePage("campaign-login")}
+                  className={
+                    activePage === "campaign-login" ? "navItem active" : "navItem"
+                  }
+                >
+                  <div className="iconHolder">
+                    <i className="fa-light fa-megaphone" />
+                  </div>
+                  <div className="itemTitle">Campaigns</div>
                 </div>
               </li>
               {isCustomerAdmin &&

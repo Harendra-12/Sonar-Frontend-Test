@@ -41,7 +41,7 @@ const Extensions = () => {
  const [allDID, setAllDID] = useState([]);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
-    if (registerUser.length > 0) {
+    if (registerUser?.length > 0) {
       setOnlineExtension(
         registerUser.map((item) => {
           if (item.account_id === account.account_id) {
