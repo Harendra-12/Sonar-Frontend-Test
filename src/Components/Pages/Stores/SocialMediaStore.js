@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { AddonAdd, AddonEdit } from '../ThirdPartyApps/AllAddons';
 import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import CircularLoader from '../../Loader/CircularLoader';
+import { useNavigate } from 'react-router-dom';
 
 function SocialMediaStore() {
     const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ function SocialMediaStore() {
     // Addon Popup Configure
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // Get All Addons
     const fetchAllAddons = async () => {
@@ -175,7 +177,7 @@ function SocialMediaStore() {
                                                 <div className='content_width'>
                                                     <div className="product-title mt-4">
                                                         <p style={{ textTransform: 'capitalize' }}>
-                                                            {item.addon.name} Integration
+                                                            {item.addon.name}
                                                         </p>
                                                     </div>
                                                     <div className="product-description">
@@ -186,7 +188,7 @@ function SocialMediaStore() {
                                                 </div>
                                                 {configuredItem ? (
                                                     <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-listing') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list') : handleConfigEdit(configuredItem)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
@@ -198,7 +200,7 @@ function SocialMediaStore() {
                                                     </div>
                                                 ) : (
                                                     <div className="mt-3">
-                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigAdd(item.addon)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-add') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list-add') : handleConfigAdd(item.addon)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
