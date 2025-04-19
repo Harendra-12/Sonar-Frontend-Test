@@ -186,8 +186,8 @@ const BillingCardAndWallet = () => {
                                                                                     <i class="fa-duotone fa-regular fa-circle-dot"></i> <span className='ms-1 text-capitalize'>{item?.payment_method_options}</span>
                                                                                     <div className='card_info'>
                                                                                         <ul>
-                                                                                            <li className='mb-1 '><span className=' text-muted '>Card Name : </span>{item?.payment_details?.fullname}</li>
-                                                                                            <li className=''><span className=' text-muted '>Card Number : </span>{item?.payment_details?.card_number ? maskCard(item?.payment_details?.card_number) : ""}</li>
+                                                                                            <li className='mb-1 '><span className=' text-muted0 '>Card Name : </span>{item?.payment_details?.fullname}</li>
+                                                                                            <li className=''><span className=' text-muted0 '>Card Number : </span>{item?.payment_details?.card_number ? maskCard(item?.payment_details?.card_number) : ""}</li>
                                                                                         </ul>
                                                                                     </div>
                                                                                 </button>

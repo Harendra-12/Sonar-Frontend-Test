@@ -152,7 +152,7 @@ function SocialMediaStore() {
             <div className="row">
                 <div className="col-md-12">
                     <div className="product-container row gy-3 mb-4">
-                        <h4 class="card_title">Purchased Addons</h4>
+                        <h6 class="card_title">Purchased Addons</h6>
                         {accountDetails && accountDetails.add_on_subscription.length > 0 ?
                             accountDetails.add_on_subscription.filter((item, index, self) =>
                                 index === self.findIndex((t) => (
@@ -214,7 +214,7 @@ function SocialMediaStore() {
                     </div>
 
                     <div className="product-container row gy-3">
-                        <h4 class="card_title">Available to Purchase</h4>
+                        <h6 class="card_title">Available to Purchase</h6>
 
                         {/* Product 1 */}
                         {allAddons && allAddons.length > 0 ?
@@ -339,7 +339,7 @@ function SocialMediaStore() {
                                 <p>
                                     You are about to purchase the selected number
                                 </p>
-                                <div className="border-bottom col-12" />
+                                {/* <div className="border-bottom col-12" /> */}
                             </div>
 
                             <div>
@@ -355,12 +355,12 @@ function SocialMediaStore() {
                                             />
                                         </div>
                                         <div className='product_details'>
-                                            <p className='mb-0 text-black fw-semibold'> {selectedAddon.name}</p>
-                                            <p style={{ fontSize: 11 }} className='ellipsisText text-muted mb-0'>{selectedAddon.description}</p>
+                                            <p className='mb-0 text-black0 fw-semibold'> {selectedAddon.name}</p>
+                                            <p style={{ fontSize: 11 }} className='ellipsisText text-muted0 mb-0'>{selectedAddon.description}</p>
                                         </div>
                                     </div>
                                     <div>
-                                        <span className="float-end text-black fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br />
+                                        <span className="float-end text-black0 fw-medium">${(parseFloat(selectedAddon.price) - parseFloat(selectedAddon.discount || 0)).toFixed(2)}</span><br />
 
                                         <span class="old_price">${parseFloat(selectedAddon.price)}</span>
                                     </div>
