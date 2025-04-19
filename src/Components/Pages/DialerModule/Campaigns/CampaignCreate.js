@@ -362,12 +362,20 @@ function CampaignCreate() {
                                   Campaign Type
                                 </label>
                               </div>
-                              <div className='col-6'>
+                              {/* <div className='col-6'>
                                 <select defaultValue={"Inbound"} className="formItem" {...register("campaign_type", {
                                   ...requiredValidator,
                                 })}>
                                   <option value="Inbound">Inbound</option>
                                   <option value="Outbound">Outbound</option>
+                                </select>
+                              </div> */}
+                              <div className='col-6'>
+                                <select defaultValue={"pbx"} className="formItem" {...register("campaign_type", {
+                                  ...requiredValidator,
+                                })}>
+                                  <option value="pbx">PBX</option>
+                                  <option value="dialer">Dialer</option>
                                 </select>
                               </div>
                             </div>
@@ -703,7 +711,7 @@ function CampaignCreate() {
                                             </div>
                                             <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                             <div className="contactTags">
-                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '0' : '1'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
+                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '1' : 'none'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
 
                                               {/* <span >
                                                   Retry
@@ -879,11 +887,6 @@ function CampaignCreate() {
                                 <p>Select from the available list of agents</p>
                               </div>
                             </div>
-                            {/* <div className='col-12 my-2'>
-                                                            <div className="searchBox position-relative">
-                                                                <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
-                                                            </div>
-                                                        </div> */}
                             <div className="tableHeader mt-2">
                               <div className="showEntries">
                                 <label>Show</label>
@@ -939,13 +942,9 @@ function CampaignCreate() {
                                             <i className="fa-solid fa-check text-success"></i>
                                           )}
                                         </div>
-                                        {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
-                                                                                </div> */}
                                       </div>
                                     </div>
                                   )
-
                                 })
                               }
 
