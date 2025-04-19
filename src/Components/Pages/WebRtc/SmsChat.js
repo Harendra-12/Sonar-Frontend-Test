@@ -9,12 +9,11 @@ import { toast } from "react-toastify";
 import { numberValidator, requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Tippy from "@tippyjs/react";
+import CircularLoader from "../../Loader/CircularLoader";
 
-function SmsChat({ setLoading, loading }) {
+function SmsChat({ setLoading, loading, did }) {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const didAll = useSelector((state) => state.didAll);
-  const [did, setDid] = useState();
   const extension = account?.extension?.extension || "";
   const { sessionManager, connectStatus } = useSIPProvider();
   const [allLogOut, setAllLogOut] = useState(false);
@@ -49,11 +48,6 @@ function SmsChat({ setLoading, loading }) {
 
   useEffect(() => {
     getAllSMSData();
-    if (!did || !didAll) {
-      getAllDid();
-    } else {
-      setDid(didAll.filter((item) => item.usages === "pbx"))
-    }
   }, []);
 
   const getAllSMSData = async () => {
@@ -93,22 +87,9 @@ function SmsChat({ setLoading, loading }) {
     }
   })
 
-  // Fetch ALL DID
-  async function getAllDid() {
-    const apiData = await generalGetFunction(`/did/all`);
-    if (apiData?.status) {
-      setDid(apiData.data.filter((item) => item.usages === "pbx"));
-      dispatch({
-        type: "SET_DIDALL",
-        didAll: apiData.data,
-      });
-    } else {
-      toast.error(apiData.status)
-    }
-  }
-
   return (
     <>
+      {loading && <CircularLoader />}
       {/* <SideNavbarApp /> */}
       {allLogOut && (
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
@@ -352,11 +333,9 @@ function SmsChat({ setLoading, loading }) {
                           <div>
                             <div className="messageSubject">
                               <label>Enter Sender Number</label>
-                              {console.log(did)
-                              }
                               <select className="formItem mt-2">
                                 {did && did.length > 0 ?
-                                  did.sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
+                                  did.filter((item) => item.default_sms == 1 || item.is_secondary_sms == 1).sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
                                     .map((item, index) => (
                                       <option key={index} value={item.did}>
                                         {item.did}
