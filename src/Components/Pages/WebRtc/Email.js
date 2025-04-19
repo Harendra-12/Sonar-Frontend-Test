@@ -4,9 +4,10 @@ import {
   featureUnderdevelopment,
   generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
+import MailReply from "./whatsappChatbox/MailReply";
 
 function Email() {
   const sessions = useSelector((state) => state.sessions);
@@ -16,6 +17,9 @@ function Email() {
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
   const [mailSettings, setMailSettings] = useState([]);
+
+  const [showReply, setShowReply] =useState(false)
+  const handelReply = () => setShowReply(true)
 
 
   useEffect(() => {
@@ -119,7 +123,7 @@ function Email() {
                   </div>
                 </div>
               </div>
-              <div className="col-xl-6 allCallHistory pb-0">
+              {/* <div className="col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -298,8 +302,220 @@ function Email() {
                     </div>
                   </div>
                 </div>
+              </div> */}
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <div className="pt-3">
+              <div className="card mb-0">
+                <div className="card-header d-flex justify-content-between align-items-center">
+                  <h5 className="card-title mb-0 text_dark">Mailbox</h5>
+                  <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button>
+                </div>
+                <div className="card-body">
+                  <div className="d-flex ">
+                    <div className="card mail_leftbar shadow-sm rounded-3 mb-0">
+                      <div className="card-body">
+                        <ul>
+                          <li className="mail_list active">
+                            <p className="mb-0"> <i class="fa-duotone fa-solid fa-envelope me-2"></i> Inbox</p>
+                            <div className="badge badge-solid-primary rounded-pill rounded-5"><span>30</span></div>
+                          </li>
+                          <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-solid fa-paper-plane me-2"></i> Sent Item</p></li>
+                          <li className="mail_list"><p className="mb-0"><i class="fa-duotone fa-light fa-star me-2"></i> Starred</p></li>
+                          <li className="mail_list">
+                            <p className="mb-0"><i class="fa-duotone fa-solid fa-trash me-2"></i> Deleted</p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    {/* <div className="table_card">
+                      <div className="tableContainer e mail_table mt-0 w-100 border-0 mb-0" style={{ maxHeight: "calc(100vh - 20px)" }}>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>From</th>
+                              <th>Subject</th>
+                              <th> Received </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text_gray">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr >
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text_gray">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text_gray">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text-muted">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text-muted">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text-muted">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                            <tr>
+                              <td> <input type="checkbox" /></td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <div className="tableProfilePicHolder">
+                                    <img
+                                      src={require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  <div className="ms-2">test250</div>
+                                </div>
+                              </td>
+                              <td>
+                                <p className="ellipsisText300 mb-0">
+                                  <strong>Lorem Ipsum is FAKE TEXT! </strong>
+                                  <span className="text-muted">
+                                    All of the words in Lorem Ipsum have flirted with me - consciously or unconsciously. That's to be expected. We have so many things that we have to do better
+                                  </span>
+                                </p>
+                              </td>
+                              <td><p className="mb-0 fw-semibold">12:06PM</p></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                   
+                    </div> */}
+                    <MailReply />
+
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
         </section>
       </main>
