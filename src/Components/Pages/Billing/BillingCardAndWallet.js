@@ -8,7 +8,7 @@ import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 const BillingCardAndWallet = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const navigate = useNavigate();
     const allCardTransactions = useSelector((state) => state.allCardTransactions);
