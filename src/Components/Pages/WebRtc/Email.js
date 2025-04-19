@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   featureUnderdevelopment,
+  generalGetFunction,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
@@ -14,6 +15,24 @@ function Email() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sessionManager } = useSIPProvider();
+  const [mailSettings, setMailSettings] = useState([]);
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    // setLoading(true);
+    const result = await generalGetFunction("/mail-setting/all");
+    if (result?.status) {
+      setMailSettings(result.data);
+      // setLoading(false);
+    } else {
+      // setLoading(false);
+      // navigate("/");
+    }
+  };
   return (
     <>
       <main
@@ -132,115 +151,70 @@ function Email() {
                 </div>
 
                 <div className="col-12">
-                  <nav className="mt-3">
-                    <div
-                      className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
-                      <button
-                        className="tabLink active"
-                        effect="ripple"
-                        data-category="all"
-                      >
-                        All
-                      </button>
-                      <button
-                        onClick={() => featureUnderdevelopment()}
-                        className="tabLink"
-                        effect="ripple"
-                        data-category="file"
-                      >
-                        File
-                      </button>
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="incoming"
-                      >
-                        Received
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
-                      </button> */}
+                  <div className="callList">
+                    <div className="dateHeader">
+                      <p className="fw-semibold">Today</p>
                     </div>
-                  </nav>
-                  <div className="tab-content">
-                    <div className="callList">
-                      <div className="dateHeader">
-                        <p className="fw-semibold">Today</p>
-                      </div>
-                      <div data-bell="" className="callListItem incoming">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-12 d-flex">
-                            <div className="profileHolder">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
+                    <div data-bell="" className="callListItem incoming">
+                      <div className="row justify-content-between">
+                        <div className="col-xl-12 d-flex">
+                          <div className="profileHolder">
+                            <i className="fa-light fa-user fs-5"></i>
+                          </div>
 
-                            <div
-                              className="col-4 my-auto ms-2 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-                              <h5 style={{ paddingLeft: "20px" }}>
-                                1 (999) 999-9999
-                              </h5>
-                            </div>
+                          <div
+                            className="col-4 my-auto ms-2 ms-xl-3"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <h4>AUSER XYZ</h4>
+                            <h5 style={{ paddingLeft: "20px" }}>
+                              1 (999) 999-9999
+                            </h5>
+                          </div>
 
-                            <div className="col-3 mx-auto">
-                              <div className="contactTags">
-                                <span data-id="1">Received</span>
-                              </div>
-                              <h5 style={{ fontWeight: "400" }}>
-                                <i className="fa-light fa-paperclip"></i> 1
-                                Attachment
-                              </h5>
+                          <div className="col-3 mx-auto">
+                            <div className="contactTags">
+                              <span data-id="1">Received</span>
                             </div>
-                            <div className="col-1 text-end ms-auto">
-                              <p className="timeAgo">12:46pm</p>
-                            </div>
+                            <h5 style={{ fontWeight: "400" }}>
+                              <i className="fa-light fa-paperclip"></i> 1
+                              Attachment
+                            </h5>
+                          </div>
+                          <div className="col-1 text-end ms-auto">
+                            <p className="timeAgo">12:46pm</p>
                           </div>
                         </div>
                       </div>
-                      <div data-bell="" className="callListItem outgoing">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-12 d-flex">
-                            <div className="profileHolder">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
+                    </div>
+                    <div data-bell="" className="callListItem outgoing">
+                      <div className="row justify-content-between">
+                        <div className="col-xl-12 d-flex">
+                          <div className="profileHolder">
+                            <i className="fa-light fa-user fs-5"></i>
+                          </div>
 
-                            <div
-                              className="col-4 my-auto ms-2 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-                              <h5 style={{ paddingLeft: "20px" }}>
-                                1 (999) 999-9999
-                              </h5>
-                            </div>
+                          <div
+                            className="col-4 my-auto ms-2 ms-xl-3"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <h4>AUSER XYZ</h4>
+                            <h5 style={{ paddingLeft: "20px" }}>
+                              1 (999) 999-9999
+                            </h5>
+                          </div>
 
-                            <div className="col-3 mx-auto">
-                              <div className="contactTags">
-                                <span data-id="0">Sent</span>
-                              </div>
-                              <h5 style={{ fontWeight: "400" }}>
-                                <i className="fa-light fa-paperclip"></i> 1
-                                Attachment
-                              </h5>
+                          <div className="col-3 mx-auto">
+                            <div className="contactTags">
+                              <span data-id="0">Sent</span>
                             </div>
-                            <div className="col-1 text-end ms-auto">
-                              <p className="timeAgo">12:46pm</p>
-                            </div>
+                            <h5 style={{ fontWeight: "400" }}>
+                              <i className="fa-light fa-paperclip"></i> 1
+                              Attachment
+                            </h5>
+                          </div>
+                          <div className="col-1 text-end ms-auto">
+                            <p className="timeAgo">12:46pm</p>
                           </div>
                         </div>
                       </div>
@@ -270,8 +244,20 @@ function Email() {
                       >
                         <div className="newMessageWrapper mb-3">
                           <div>
+                            <div className="messageTo border-bottom-0">
+                              <label>Sender</label>
+                              <div className="d-flex flex-wrap">
+                                <div className="col-auto my-auto">
+                                  <select className="formItem">
+                                    {mailSettings.map((item, index) => (
+                                      <option key={index}>{item.mail_from_address}</option>
+                                    ))}
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
                             <div className="messageTo">
-                              <label>Recipents</label>
+                              <label>Recipent</label>
                               <div className="d-flex flex-wrap">
                                 <div className="col-auto my-auto">
                                   <input
@@ -295,10 +281,7 @@ function Email() {
                                 File(s) (maximum file size is 50 MB)
                               </label>
                               <div className="inputFileWrapper">
-                                {/* <input type="file" /> */}
-                                <select className="formItem">
-                                  <option value="">Chose file</option>
-                                </select>
+                                <input type="file" className="formItem" />
                               </div>
                             </div>
                             <div className="buttonControl">

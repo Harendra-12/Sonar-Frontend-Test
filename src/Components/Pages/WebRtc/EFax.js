@@ -7,7 +7,7 @@ import {
   featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
-  generalPostFunction,logout
+  generalPostFunction, logout
 } from "../../GlobalFunction/globalFunction";
 import CircularLoader from "../../Loader/CircularLoader";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
 
-function EFax() {
+function EFax({ did }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [clickStatus, setClickStatus] = useState("all");
@@ -537,6 +537,20 @@ function EFax() {
                         >
                           <div className="newMessageWrapper mb-3">
                             <div>
+                              <div className="messageSubject">
+                                <label>Enter Sender Number</label>
+                                <select className="formItem mt-2">
+                                  {did && did.length > 0 ?
+                                    did.filter((item) => item.default_eFax == 1 || item.is_secondary_eFax == 1)
+                                      .map((item, index) => (
+                                        <option key={index} value={item.did}>
+                                          {item.did}
+                                        </option>
+                                      ))
+                                    : ""
+                                  }
+                                </select>
+                              </div>
                               {/* <div className="messageTitle">
                                 <h4>New Fax</h4>
                               </div> */}

@@ -8,7 +8,7 @@ import SkeletonTableLoader from '../../Loader/SkeletonTableLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 
 const BillingCardAndWallet = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const navigate = useNavigate();
     const allCardTransactions = useSelector((state) => state.allCardTransactions);
@@ -165,7 +165,8 @@ const BillingCardAndWallet = () => {
                                                                         if (walletChange?.length > 0) {
                                                                             return {
                                                                                 amount: walletChange[0]?.amount,
-                                                                                type: walletChange[0]?.transaction_type
+                                                                                type: walletChange[0]?.transaction_type,
+                                                                                prevBalance: walletChange[0]?.previous_balance
                                                                             }
                                                                         }
                                                                     }
@@ -193,7 +194,20 @@ const BillingCardAndWallet = () => {
                                                                                 </button>
                                                                             </td>
                                                                             <td>${item?.amount_total}</td>
-                                                                            <td>{walletTransac && <span className={`badge badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}{walletTransac?.amount || 'N/A'}</span>}</td>
+                                                                            <td>
+                                                                                {walletTransac &&
+                                                                                    <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}
+                                                                                        {walletTransac?.amount || 'N/A'}
+                                                                                        {walletTransac?.prevBalance &&
+                                                                                            <div className='card_info'>
+                                                                                                <ul>
+                                                                                                    <li className='mb-1'><span className=' text-muted '>Previous Balance: </span>${walletTransac?.prevBalance}</li>
+                                                                                                </ul>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </span>
+                                                                                }
+                                                                            </td>
                                                                             <td>{item?.transaction_date.split(" ")[0]}</td>
                                                                             <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
                                                                             <td>{item?.description}</td>

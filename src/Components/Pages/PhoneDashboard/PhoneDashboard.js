@@ -92,7 +92,7 @@ function PhoneDashboard() {
 
 
   useEffect(() => {
-    if (registerUser.length > 0) {
+    if (registerUser && registerUser.length > 0) {
 
     } else {
     }
