@@ -132,115 +132,70 @@ function Email() {
                 </div>
 
                 <div className="col-12">
-                  <nav className="mt-3">
-                    <div
-                      className="nav nav-tabs"
-                      style={{ borderBottom: "1px solid var(--border-color)" }}
-                    >
-                      <button
-                        className="tabLink active"
-                        effect="ripple"
-                        data-category="all"
-                      >
-                        All
-                      </button>
-                      <button
-                        onClick={() => featureUnderdevelopment()}
-                        className="tabLink"
-                        effect="ripple"
-                        data-category="file"
-                      >
-                        File
-                      </button>
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="incoming"
-                      >
-                        Received
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="outgoing"
-                      >
-                        Sent
-                      </button> */}
-                      {/* <button
-                        className={"tabLink"}
-                        effect="ripple"
-                        data-category="missed"
-                      >
-                        Failed
-                      </button> */}
+                  <div className="callList">
+                    <div className="dateHeader">
+                      <p className="fw-semibold">Today</p>
                     </div>
-                  </nav>
-                  <div className="tab-content">
-                    <div className="callList">
-                      <div className="dateHeader">
-                        <p className="fw-semibold">Today</p>
-                      </div>
-                      <div data-bell="" className="callListItem incoming">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-12 d-flex">
-                            <div className="profileHolder">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
+                    <div data-bell="" className="callListItem incoming">
+                      <div className="row justify-content-between">
+                        <div className="col-xl-12 d-flex">
+                          <div className="profileHolder">
+                            <i className="fa-light fa-user fs-5"></i>
+                          </div>
 
-                            <div
-                              className="col-4 my-auto ms-2 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-                              <h5 style={{ paddingLeft: "20px" }}>
-                                1 (999) 999-9999
-                              </h5>
-                            </div>
+                          <div
+                            className="col-4 my-auto ms-2 ms-xl-3"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <h4>AUSER XYZ</h4>
+                            <h5 style={{ paddingLeft: "20px" }}>
+                              1 (999) 999-9999
+                            </h5>
+                          </div>
 
-                            <div className="col-3 mx-auto">
-                              <div className="contactTags">
-                                <span data-id="1">Received</span>
-                              </div>
-                              <h5 style={{ fontWeight: "400" }}>
-                                <i className="fa-light fa-paperclip"></i> 1
-                                Attachment
-                              </h5>
+                          <div className="col-3 mx-auto">
+                            <div className="contactTags">
+                              <span data-id="1">Received</span>
                             </div>
-                            <div className="col-1 text-end ms-auto">
-                              <p className="timeAgo">12:46pm</p>
-                            </div>
+                            <h5 style={{ fontWeight: "400" }}>
+                              <i className="fa-light fa-paperclip"></i> 1
+                              Attachment
+                            </h5>
+                          </div>
+                          <div className="col-1 text-end ms-auto">
+                            <p className="timeAgo">12:46pm</p>
                           </div>
                         </div>
                       </div>
-                      <div data-bell="" className="callListItem outgoing">
-                        <div className="row justify-content-between">
-                          <div className="col-xl-12 d-flex">
-                            <div className="profileHolder">
-                              <i className="fa-light fa-user fs-5"></i>
-                            </div>
+                    </div>
+                    <div data-bell="" className="callListItem outgoing">
+                      <div className="row justify-content-between">
+                        <div className="col-xl-12 d-flex">
+                          <div className="profileHolder">
+                            <i className="fa-light fa-user fs-5"></i>
+                          </div>
 
-                            <div
-                              className="col-4 my-auto ms-2 ms-xl-3"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <h4>AUSER XYZ</h4>
-                              <h5 style={{ paddingLeft: "20px" }}>
-                                1 (999) 999-9999
-                              </h5>
-                            </div>
+                          <div
+                            className="col-4 my-auto ms-2 ms-xl-3"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <h4>AUSER XYZ</h4>
+                            <h5 style={{ paddingLeft: "20px" }}>
+                              1 (999) 999-9999
+                            </h5>
+                          </div>
 
-                            <div className="col-3 mx-auto">
-                              <div className="contactTags">
-                                <span data-id="0">Sent</span>
-                              </div>
-                              <h5 style={{ fontWeight: "400" }}>
-                                <i className="fa-light fa-paperclip"></i> 1
-                                Attachment
-                              </h5>
+                          <div className="col-3 mx-auto">
+                            <div className="contactTags">
+                              <span data-id="0">Sent</span>
                             </div>
-                            <div className="col-1 text-end ms-auto">
-                              <p className="timeAgo">12:46pm</p>
-                            </div>
+                            <h5 style={{ fontWeight: "400" }}>
+                              <i className="fa-light fa-paperclip"></i> 1
+                              Attachment
+                            </h5>
+                          </div>
+                          <div className="col-1 text-end ms-auto">
+                            <p className="timeAgo">12:46pm</p>
                           </div>
                         </div>
                       </div>
