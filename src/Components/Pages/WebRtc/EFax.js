@@ -541,6 +541,20 @@ function EFax({ did }) {
                                 {/* <div className="messageTitle">
                                 <h4>New Fax</h4>
                               </div> */}
+                                <div className="messageSubject">
+                                  <label>Enter Sender Number</label>
+                                  <select className="formItem rounded-3 p-2 mt-1">
+                                    {did && did.length > 0 ?
+                                      did.filter((item) => item.default_eFax == 1 || item.is_secondary_eFax == 1)
+                                        .map((item, index) => (
+                                          <option key={index} value={item.did}>
+                                            {item.did}{item.default_eFax == 1 ? ' - Default' : ''}
+                                          </option>
+                                        ))
+                                      : ""
+                                    }
+                                  </select>
+                                </div>
                                 <div className="messageTo border-0">
                                   <label>Recipents</label>
                                   <div className="d-flex flex-wrap">
