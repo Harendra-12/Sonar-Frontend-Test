@@ -887,38 +887,6 @@ function CdrReport({ page }) {
                               <option value={"false"}>Unavailable</option>
                             </select>
                           </div> */}
-                          <div className="formRow border-0">
-                            <label className="formLabel text-start mb-0 w-100">
-                              Size
-                            </label>
-                            <select
-                              className="formItem"
-                              onChange={() => {
-                                featureUnderdevelopment()
-                              }}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                            >
-                              <option>None</option>
-                              <option value={"Ascending"}>Ascending</option>
-                              <option value={"Descending"}>Descending</option>
-                            </select>
-                          </div>
-                          <div className="formRow border-0">
-                            <label className="formLabel text-start mb-0 w-100">
-                              Duration
-                            </label>
-                            <select
-                              className="formItem"
-                              onChange={() => {
-                                featureUnderdevelopment()
-                              }}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
-                            >
-                              <option>None</option>
-                              <option value={"Ascending"}>Ascending</option>
-                              <option value={"Descending"}>Descending</option>
-                            </select>
-                          </div>
                         </>
                       ) : (
                         <>
