@@ -928,7 +928,7 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            {onlineExtension && accountDetails ?
+                            {onlineExtension && userList ?
                               <div className='circularProgressWrapper'>
                                 <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
                                   <circle className="bg"
