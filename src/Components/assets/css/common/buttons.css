@@ -739,52 +739,57 @@
   /* border: 1px solid #0ab39c; */
 }
 .tableButton.whatsapp {
-  color: var(--text-badge-accent);
-  background-color: var(--bg-badge-accent);
+  color:#fff;
+  background-color: #058d97;
 }
 .tableButton.whatsapp:hover {
   color:#fff;
   background-color: #058d97;
 }
 .tableButton.whatsapp.empty {
-  color:#fff;
-  background-color: #058d97;
+  color: rgba(0, 92, 99, 0.851);
+  background-color: rgba(102, 206, 213, 0.141);
+  border: 1px solid  rgba(7, 112, 119, 0.859);
 }
 .tableButton.fax {
-  color: var(--text-badge-danger);
-  background-color: var(--bg-badge-danger);
+  color: #fff;
+  background-color: rgba(142, 0, 79, 0.82);
 }
 .tableButton.fax:hover {
   color: #fff;
   background-color: #a00d5f;
 }
 .tableButton.fax.empty {
-  color: #fff;
-  background-color: #a00d5f;
+  color: var(--text-badge-danger);
+  border: 1px solid  var(--text-badge-danger);
+  background-color: rgba(255, 97, 184, 0.161);
 }
 .tableButton.sms {
-  color: var(--text-badge-secondary);
-    background-color: var(--bg-badge-secondary);
+  color: #fff;
+    background-color: #777edd;
 }
 .tableButton.sms:hover {
   color: #fff;
     background-color: #777edd;
 }
 .tableButton.sms.empty {
-  color: #fff;
-    background-color: #777edd;
+  color: var(--text-badge-secondary);
+  background-color: rgba(0, 17, 255, 0.078);
+  border: 1px solid  var(--text-badge-secondary);
+
 }
 .tableButton.head {
-  background-color: #8bff806b;
-  color: #03900b;
+  background-color: #03900b;
+  color: #fff;
 }
 .tableButton.head:hover {
   background-color: #03900b;
   color: #fff;
 }
 .tableButton.head.empty {
-  background-color: #03900b;
-  color: #fff;
+  background-color: rgba(139, 255, 128, 0.161);
+  color: #03900b;
+  border: 1px solid #03900b;
 }
 
 .tableButton.blue {
