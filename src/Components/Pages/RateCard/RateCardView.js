@@ -130,7 +130,7 @@ function RateCardView() {
                                                                 <th>#</th>
                                                                 <th>Source</th>
                                                                 <th>Destination</th>
-                                                                <th>Vendor Name</th>
+                                                                {/* <th>Vendor Name</th> */}
                                                                 <th>Country</th>
                                                                 <th>Selling Billing Block</th>
                                                                 {/* <th>Outbound Rate</th> */}
@@ -139,7 +139,7 @@ function RateCardView() {
                                                         </thead>
                                                         <tbody>
                                                             {loading ?
-                                                                <SkeletonTableLoader col={8} row={15} /> : (
+                                                                <SkeletonTableLoader col={6} row={15} /> : (
                                                                     <>
                                                                         {rateCardList && rateCardList?.data?.length === 0 ? (
                                                                             <tr>
@@ -154,7 +154,7 @@ function RateCardView() {
                                                                                         <td>{index + 1}</td>
                                                                                         <td>{item.src}</td>
                                                                                         <td>{item.dest}</td>
-                                                                                        <td>{item.vendor_name}</td>
+                                                                                        {/* <td>{item.vendor_name}</td> */}
                                                                                         <td>{item.country}</td>
                                                                                         <td>{item.selling_billing_block}</td>
                                                                                         {/* <td>{item.out_rate}</td> */}

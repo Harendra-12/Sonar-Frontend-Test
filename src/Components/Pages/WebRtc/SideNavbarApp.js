@@ -218,7 +218,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
               </li>
               <li style={{ cursor: "pointer" }}>
                 <div
-                  onClick={featureUnderdevelopment}
+                  onClick={() => setactivePage("email")}
                   className="navItem "
                 >
                   <div className="iconHolder">
@@ -227,7 +227,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="itemTitle">Email</div>
                 </div>
               </li>
-              <li>
+              <li style={{ cursor: "pointer" }}>
                 <div
                   onClick={() => setactivePage("all-contacts")}
                   className={
@@ -241,7 +241,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                 </div>
               </li>
               {account?.user_role?.roles?.name !== "Agent" ?
-                <li>
+                <li style={{ cursor: "pointer" }}>
                   <div
                     // to="/call-dashboard"
                     onClick={() => setactivePage("call-dashboard")}
