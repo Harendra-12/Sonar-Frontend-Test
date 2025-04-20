@@ -20,6 +20,7 @@ import Select from "react-select";
  */
 
 function ActiveCalls({ isWebrtc, filter }) {
+  const hangUpButton = useRef();
   const activeCall = useSelector((state) => state.activeCall);
   const [filterCalls, setFilterCalls] = useState([]);
   useEffect(() => {
@@ -183,6 +184,38 @@ function ActiveCalls({ isWebrtc, filter }) {
     return () => clearInterval(interval);
   }, [filterCalls]);
 
+
+  // Custom Select FOR Active Call ACTIONS LIKE BARGE / INTERCEPT / ETC
+  const allOptions = [
+    {
+      value: "disbale",
+      label: <option value="disbale">Choose action</option>
+    },
+    {
+      value: "barge",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Barge</div>,
+    },
+    {
+      value: "intercept",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 warning"><i className="fa-regular fa-object-intersect" /></button>Intercept</div>,
+    },
+    {
+      value: "eavesdrop",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 edit"><i className="fa-regular fa-head-side-headphones" /></button>Eavesdrop</div>,
+    },
+    {
+      value: "whisper-bleg",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy3)' }}><i className="fa-regular fa-ear-deaf" /></button>Whisper caller</div>,
+    },
+    {
+      value: "whisper-aleg",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Whisper callee</div>,
+    }, {
+      value: "kill-call",
+      label: <div className="d-flex py-2 align-items-center"><button className="tableButton delete me-2 ms-0"><i className=" fa-solid fa-phone-slash"></i></button>Hang Up</div>
+    }
+  ]
+
   return (
     <>
       <table>
@@ -197,7 +230,7 @@ function ActiveCalls({ isWebrtc, filter }) {
             {filter === "all" && <th>Direction</th>}
             <th>Duration</th>
             {isWebrtc !== false && <th>Action</th>}
-            {isWebrtc !== false && <th className="text-align">Hang Up</th>}
+            {/* {isWebrtc !== false && <th className="text-align">Hang Up</th>} */}
           </tr>
         </thead>
         <tbody>
@@ -220,7 +253,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     <td>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
-                    {isWebrtc !== false && <td>
+                    {isWebrtc !== false && <td style={{ minWidth: '170px' }}>
                       {/* <select
                         className="formItem"
                         onChange={(e) => {
@@ -272,18 +305,25 @@ function ActiveCalls({ isWebrtc, filter }) {
                         </option>
                       </select> */}
                       <Select
-                        onChange={(e) => {
-                          setBargeStatus(e.target.value);
+                        onChange={(option) => {
+                          if (!option) return;
+
+                          if (option.value === "kill-call") {
+                            killCall(item.uuid);
+                          }
+
+                          setBargeStatus(option.value);
                           setId(item.uuid);
-                          setDest(item?.dest.includes("set:valet_ticket")
-                            ? extractLastNumber(item?.accountcode)
-                            : extractLastNumber(item?.dest))
+                          setDest(
+                            item?.dest?.includes("set:valet_ticket")
+                              ? extractLastNumber(item?.accountcode)
+                              : extractLastNumber(item?.dest)
+                          );
                         }}
                         options={allOptions}
                         isSearchable
                         styles={customStyles}
                       />
-
                       {/* Separate Buttons instead of Select Box */}
                       {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
@@ -360,16 +400,17 @@ function ActiveCalls({ isWebrtc, filter }) {
                         </Tippy>
                       </div> */}
                     </td>}
-                    {isWebrtc !== false && <td onClick={() => killCall(item.uuid)}>
-                      <label
-                        className="tableButton delete mx-auto"
-                        style={{
-                          cursor: "pointer",
-                        }}
-                      >
-                        <i className=" fa-solid fa-phone-slash"></i>{" "}
-                      </label>
-                    </td>}
+                    {/* {isWebrtc !== false &&
+                      <td ref={hangUpButton} onClick={() => killCall(item.uuid)} className="d-none">
+                        <label
+                          className="tableButton delete mx-auto"
+                          style={{
+                            cursor: "pointer",
+                          }}
+                        >
+                          <i className=" fa-solid fa-phone-slash"></i>{" "}
+                        </label>
+                      </td>} */}
                   </tr>
                 );
               })}
@@ -383,29 +424,7 @@ function ActiveCalls({ isWebrtc, filter }) {
 export default ActiveCalls;
 
 
-// Custom Select FOR Active Call ACTIONS LIKE BARGE / INTERCEPT / ETC
-const allOptions = [
-  {
-    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Barge</div>,
-    value: 'barge',
-  },
-  {
-    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 warning"><i className="fa-regular fa-object-intersect" /></button>Intercept</div>,
-    value: 'intercept',
-  },
-  {
-    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 edit"><i className="fa-regular fa-head-side-headphones" /></button>Eavesdrop</div>,
-    value: 'eavesdrop',
-  },
-  {
-    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy3)' }}><i className="fa-regular fa-ear-deaf" /></button>Whisper caller</div>,
-    value: 'whisper-bleg',
-  },
-  {
-    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Whisper callee</div>,
-    value: 'whisper-aleg',
-  },
-]
+
 
 // Custom styles for react-select
 const customStyles = {
@@ -458,7 +477,7 @@ const customStyles = {
     paddingLeft: "15px",
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: state.isSelected ? "transparent" : "transparent",
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
     "&:hover": {
       backgroundColor: "#0055cc",
       color: "#fff",
