@@ -618,8 +618,6 @@ function CdrFilterReport({ page }) {
       refreshCallData();
     })
   };
-console.log("cdr", cdr);
-
   return (
     <>
       {circularLoader && <CircularLoader />}
@@ -1302,28 +1300,28 @@ console.log("cdr", cdr);
                                                 };
                                                 const callIcons = {
                                                   inbound: {
-                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                        "Answered" 
+                                                        "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--funky-boy3)",
                                                     label: "Inbound",
                                                   },
                                                   outbound: {
-                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                       "Answered"
+                                                        "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color3)",
                                                     label: "Outbound",
                                                   },
                                                   internal: {
-                                                    icon:statusIcons[item.variable_DIALSTATUS] || "fa-headset",
+                                                    icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
                                                     color:
                                                       item.variable_DIALSTATUS !==
-                                                       "Answered"
+                                                        "Answered"
                                                         ? "var(--funky-boy4)"
                                                         : "var(--color2)",
                                                     label: "Internal",
@@ -1397,7 +1395,7 @@ console.log("cdr", cdr);
                                                     <button
                                                       disabled={isBlocked}
                                                       effect="ripple"
-                                                      className={`tableButton ${isBlocked ? "delete" : "warning"
+                                                      className={`tableButton delete ${isBlocked ? "bg-danger text-white" : ""
                                                         } ms-0`}
                                                       style={{
                                                         height: "34px",
@@ -1435,7 +1433,7 @@ console.log("cdr", cdr);
                                               <td>
                                                 <button
                                                   effect="ripple"
-                                                  className={`tableButton warning ms-0`}
+                                                  className={`tableButton ms-0`}
                                                   style={{
                                                     height: "34px",
                                                     width: "34px",

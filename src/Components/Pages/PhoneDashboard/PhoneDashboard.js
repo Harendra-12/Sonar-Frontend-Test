@@ -959,12 +959,13 @@ function PhoneDashboard() {
                         ) :
                         <GraphChart
                           height={'240px'}
-                          chartType="multiple"
+                          // chartType="multiple"
                           label1={"Inbound"}
                           label2={"Outbound"}
-                          label3={"Internal"}
-                          label4={"Missed"}
+                          // label3={"Internal"}
+                          // label4={"Missed"}
                           type={"bar"}
+                          chartCateg={"money"}
                           fields={graphData?.callCostPerHour?.map((item, index) => {
                             const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                             const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
@@ -972,7 +973,7 @@ function PhoneDashboard() {
                             return `${time}`
                           })}
                           percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
-                          colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
+                          colors={["#05b62c", "#ff7900"]}
                         />
                       }
                     </div>

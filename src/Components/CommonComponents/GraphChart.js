@@ -5,20 +5,45 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearSca
 // Register necessary components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, LineController);
 
-const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, label3, label4, height, type }) => {
+const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, colors, chartType, label1, label2, label3, label4, height, type, chartCateg }) => {
+
+  const dollarTooltipFormatter = (labelPrefix = '') => {
+    if (chartCateg === "money") {
+      return function (context) {
+        const label = context.dataset.label || labelPrefix;
+        const value = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
+        return `${label}: $${value}`;
+      };
+    }
+  };
+
+  const dollarTickFormatter = () => {
+    if (chartCateg === "money") {
+      return function (value) {
+        return `$${value}`;
+      };
+    }
+  };
 
   // Define the data for the chart
   const data = {
     labels: fields,
-    datasets: [
-      {
-        label: label1,
-        data: percentage[0],
-        backgroundColor: colors,
-        hoverBackgroundColor: colors,
-        borderColor: colors,
-      },
-    ],
+    datasets: [{
+      label: label1,
+      data: percentage[0],
+      type: type,
+      backgroundColor: colors[0],
+      borderColor: colors[0],
+      order: 1
+    }, {
+      label: label2,
+      data: percentage[1],
+      type: type,
+      // this dataset is drawn on top
+      backgroundColor: colors[1],
+      borderColor: colors[1],
+      order: 2
+    }],
   };
 
   const multiChartData = {
@@ -72,6 +97,9 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: dollarTooltipFormatter()
+        }
       },
     },
     scales: {
@@ -86,6 +114,9 @@ const GraphChart = ({ fields, percentage, labels, centerTitle, centerDesc, color
         //   color: 'rgba(128, 128, 128, 0.2)',
         // }
         stacked: true,
+        ticks: {
+          callback: dollarTickFormatter()
+        }
       }
     }
   };

@@ -1789,3 +1789,259 @@ input[type=number] {
 .text-orange {
     color: #ff6600;
 }
+
+.mail_leftbar {
+    max-width: 200px;
+    width: 100%;
+    /* background: #f6f6f6; */
+    border: 0;
+}
+
+.mail_leftbar ul li {
+    list-style-type: none;
+}
+
+.mail_leftbar .mail_list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--black);
+    font-weight: 500;
+    transition: all 0.4s ease-in-out;
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.mail_leftbar .mail_list:hover {
+    color: #0411a1;
+    background-color: rgba(106, 118, 137, 0.188);
+}
+
+.mail_leftbar .mail_list.active {
+    /* color: #0016ff47; */
+    color: var(--billing-icon);
+    background-color: rgba(106, 118, 137, 0.188);
+    box-shadow: rgba(0, 0, 0, .1) 0 0 10px;
+}
+
+.mail_table thead tr th {
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--black);
+}
+
+.mail_table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table_card {
+    width: 100%;
+    background: rgba(75, 78, 99, 0.102);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.badge-solid-primary {
+    background: #1e00ff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+.back_pev {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    background: rgba(0, 0, 0, 0.078);
+    color: var(--black);
+    border: none;
+}
+
+.mail_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.attachment-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--default-border);
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+}
+.attachment-icon img{
+    width: 100%;
+}
+.mail-attachment{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+ .mail-attachment .attachment-name {
+    max-width: 7rem;
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--black);
+}
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mails-information .mail-info-footer {
+    padding: .75rem;
+    border-block-start: 1px solid var(--default-border);
+}
+
+.mailBox_body {
+    height: auto;
+    overflow: hidden scroll;
+    direction: inherit;
+    box-sizing: border-box !important;
+    position: relative;
+    display: block;
+    height: calc(100vh - 315px);
+ 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.mail-info-footer{
+    box-shadow: rgba(0, 0, 0, 0.1) -1px -8px 16px 0px;
+}
+.text_gray{
+    color: var(--gray);
+}
+.text_dark{
+    color: var(--black);
+}
+/* .text_message{
+    position: absolute;
+    top: 0;
+} */
+.mail_input{
+    width: 100%;
+    border: 1px solid var(--table-border-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+.mailList_menu .dropdown-item:hover{
+    background: rgba(119, 139, 159, 0.102);
+}
+.from-group{
+    margin-bottom: 10px;
+}
+.from-label{
+    font-size: 12px;
+}
+.modal-dialog .modal-content{
+    background: var(--white);
+}
+
+/* From Uiverse.io by Yaya12085 */ 
+.custom_fileWrap {
+    height: 30px;
+    width: 30px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 30px rgba(0, 0, 0, .2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    gap: 5px;
+    cursor: pointer;
+    background-color: rgba(0, 110, 255, 0.164);
+  }
+  
+  /* .custom_file {
+    flex: 1;
+    width: 100%;
+    border: 2px dashed royalblue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .custom_file i {
+    height: 100px;
+  }
+  
+  .custom_file p {
+    text-align: center;
+    color: black;
+  } */
+  
+  .custom_file {
+    background-color: rgba(0, 110, 255, 0.075);
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    border: none;
+  }
+  
+  /* .custom_file i {
+    height: 130%;
+    fill: royalblue;
+    background-color: rgba(70, 66, 66, 0.103);
+    border-radius: 50%;
+    padding: 2px;
+    cursor: pointer;
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.205);
+  }
+   */
+  .custom_file p {
+    flex: 1;
+    text-align: center;
+  }
+  
+  #file {
+    display: none;
+  }
+  .footerSms{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 2;
+    padding: 5px 10px;
+    border: 1px solid var(--color4);
+    border-top: 0;
+  }
+  .eFaxCompose .newMessageWrapper .inputFileWrapper.inputFileWrapper.faxSelectUnset_hover{
+    padding: 0;
+  }
+  
+  .eFaxCompose .newMessageWrapper .inputFileWrapper.faxSelectUnset_hover:hover{
+    background: transparent;
+    padding: 0;
+  }
+  

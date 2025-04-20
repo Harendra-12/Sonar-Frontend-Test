@@ -123,8 +123,8 @@
 
 .eFaxCompose .newMessageWrapper input,
 .eFaxCompose .newMessageWrapper textarea {
-    border: none;
-    border-bottom: 1px solid var(--color-subtext);
+    /* border: none; */
+    /* border-bottom: 1px solid var(--color-subtext); */
     font-size: 0.875rem;
     padding: 5px 5px 5px 0;
     outline: none;
