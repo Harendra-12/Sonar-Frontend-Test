@@ -618,8 +618,6 @@ function CdrFilterReport({ page }) {
       refreshCallData();
     })
   };
-  console.log("cdr", cdr);
-
   return (
     <>
       {circularLoader && <CircularLoader />}
