@@ -76,9 +76,9 @@ function CdrReport({ page }) {
   const { confirm, ModalComponent } = PromptFunctionPopup();
   const [showDropDown, setShowDropdown] = useState(false)
   const [showAudio, setShowAudio] = useState(false)
-  const [showCdrReport,setShowCdrReport]=useState(true)
-  const [recordingSorting,setRecordingSorting]=useState("none");
-  const [durationSorting,setDurationSorting]=useState("none")
+  const [showCdrReport, setShowCdrReport] = useState(true)
+  const [recordingSorting, setRecordingSorting] = useState("none");
+  const [durationSorting, setDurationSorting] = useState("none")
 
 
   const thisAudioRef = useRef(null);
@@ -227,8 +227,8 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        recording_size: page=="callrecording"&&durationSorting!=="none"?durationSorting:"",
-        variable_billsec: page=="callrecording"&&recordingSorting!=="none"?recordingSorting:""
+        recording_size: page == "callrecording" && durationSorting !== "none" ? durationSorting : "",
+        variable_billsec: page == "callrecording" && recordingSorting !== "none" ? recordingSorting : ""
       }
     );
 
@@ -874,25 +874,38 @@ function CdrReport({ page }) {
                       )}
                       {page === "callrecording" ? (
                         <>
-                         <div>
-                    <div className="formRow border-0 ps-xl-0">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Recording Filter
-                        </label>
-                        <select
-                          className="formItem"
-                          value={recordingSorting}
-                          onChange={(e) => {
-                            setRecordingSorting(e.target.value)
-                          }}
-                        >
-                          <option value={"asc"}>Ascending</option>
-                          <option value={"desc"}>Descending</option>
-                          <option value={"none"}>None</option>
-                        </select>
-                      </div>
-                      
-                    </div>
+                          <div className="formRow border-0 ps-xl-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Recording Filter
+                            </label>
+                            <select
+                              className="formItem"
+                              value={recordingSorting}
+                              onChange={(e) => {
+                                setRecordingSorting(e.target.value)
+                              }}
+                            >
+                              <option value={"asc"}>Ascending</option>
+                              <option value={"desc"}>Descending</option>
+                              <option value={"none"}>None</option>
+                            </select>
+                          </div>
+                          <div className="formRow border-0 ps-xl-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Duration Filter
+                            </label>
+                            <select
+                              className="formItem"
+                              value={durationSorting}
+                              onChange={(e) => {
+                                setDurationSorting(e.target.value)
+                              }}
+                            >
+                              <option value={"asc"}>Ascending</option>
+                              <option value={"desc"}>Descending</option>
+                              <option value={"none"}>None</option>
+                            </select>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -995,30 +1008,6 @@ function CdrReport({ page }) {
                 </Link> */}
                     </div>
                   </div>
-                  {page === "callrecording"&&
-                        <>
-                         <div>
-                    <div className="formRow border-0 ps-xl-0">
-                        <label className="formLabel text-start mb-0 w-100">
-                          Duration Filter
-                        </label>
-                        <select
-                          className="formItem"
-                          value={durationSorting}
-                          onChange={(e) => {
-                            setDurationSorting(e.target.value)
-                          }}
-                        >
-                          <option value={"asc"}>Ascending</option>
-                          <option value={"desc"}>Descending</option>
-                          <option value={"none"}>None</option>
-                        </select>
-                      </div>
-                      
-                    </div>
-                        </>}
-                 
-
                   <div className="tableContainer">
                     <table>
                       <thead>
@@ -1501,7 +1490,7 @@ function CdrReport({ page }) {
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
-          showCdrReport={showCdrReport}  
+          showCdrReport={showCdrReport}
         />
       }
       <ModalComponent task={"delete"} reference={"cdr recording"} />
