@@ -188,7 +188,7 @@ function SocialMediaStore() {
                                                 </div>
                                                 {configuredItem ? (
                                                     <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-listing') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list') : handleConfigEdit(configuredItem)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
@@ -200,7 +200,7 @@ function SocialMediaStore() {
                                                     </div>
                                                 ) : (
                                                     <div className="mt-3">
-                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-add') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list-add') : handleConfigAdd(item.addon)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-listing') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list') : handleConfigAdd(item.addon)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>

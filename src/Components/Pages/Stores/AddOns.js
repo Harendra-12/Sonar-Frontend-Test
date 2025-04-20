@@ -66,7 +66,7 @@ function AddOns() {
                                                 aria-controls="nav-social"
                                                 aria-selected="true"
                                             >
-                                                Social Media Integration
+                                                All Addons
                                             </button>
                                             <button
                                                 className="nav-link px-2"
