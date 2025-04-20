@@ -59,7 +59,8 @@ function CdrReport({ page }) {
     endTime: "",
   });
 
-  const [isRecordingFlag, setIsRecordingFlag] = useState("");
+  const [isSorting, setIsSorting] = useState("");
+  const [sortingValue,setSortingValue]=useState("")
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
@@ -78,8 +79,6 @@ function CdrReport({ page }) {
   const [showDropDown, setShowDropdown] = useState(false)
   const [showAudio, setShowAudio] = useState(false)
   const [showCdrReport, setShowCdrReport] = useState(true)
-  const [recordingSorting, setRecordingSorting] = useState("none");
-  const [durationSorting, setDurationSorting] = useState("none")
 
 
   const thisAudioRef = useRef(null);
@@ -228,8 +227,8 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        variable_billsec: page == "callrecording" && durationSorting !== "none" ? durationSorting : "",
-        recording_size: page == "callrecording" && recordingSorting !== "none" ? recordingSorting : ""
+        variable_billsec: page == "callrecording" && isSorting === "duration" ? sortingValue : "",
+        recording_size: page == "callrecording" && isSorting==="record" ? sortingValue : ""
       }
     );
 
@@ -273,9 +272,8 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-    recordingSorting,
-    durationSorting
-  ]);
+   sortingValue
+    ]);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -877,36 +875,37 @@ function CdrReport({ page }) {
                         <>
                           <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              Recording Filter
+                             Sorting
                             </label>
                             <select
                               className="formItem"
-                              value={recordingSorting}
-                              onChange={(e) => {
-                                setRecordingSorting(e.target.value)
+                              value={isSorting}
+                              onChange={(e) => {         
+                                  setIsSorting(e.target.value)
+                                  setSortingValue("")
                               }}
                             >
-                              <option value={"asc"}>Ascending</option>
-                              <option value={"desc"}>Descending</option>
-                              <option value={"none"}>None</option>
+                                 <option value="">Choose Sorting</option>
+                              <option value={"record"}>Recordings</option>
+                              <option value={"duration"}>Duration</option>     
                             </select>
                           </div>
-                          <div className="formRow border-0 ps-xl-0">
+                         {isSorting&& <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              Duration Filter
+                              {isSorting==="record"?"Select Recordings":"Select Duration"}
                             </label>
                             <select
                               className="formItem"
-                              value={durationSorting}
+                              value={sortingValue}
                               onChange={(e) => {
-                                setDurationSorting(e.target.value)
+                                setSortingValue(e.target.value)  
                               }}
                             >
+                            <option value="">Choose Method</option>
                               <option value={"asc"}>Ascending</option>
                               <option value={"desc"}>Descending</option>
-                              <option value={"none"}>None</option>
                             </select>
-                          </div>
+                          </div>}
                         </>
                       ) : (
                         <>
