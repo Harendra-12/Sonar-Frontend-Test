@@ -76,6 +76,9 @@ function CdrReport({ page }) {
   const { confirm, ModalComponent } = PromptFunctionPopup();
   const [showDropDown, setShowDropdown] = useState(false)
   const [showAudio, setShowAudio] = useState(false)
+  const [showCdrReport, setShowCdrReport] = useState(true)
+  const [recordingSorting, setRecordingSorting] = useState("none");
+  const [durationSorting, setDurationSorting] = useState("none")
 
 
   const thisAudioRef = useRef(null);
@@ -224,6 +227,8 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
+        recording_size: page == "callrecording" && durationSorting !== "none" ? durationSorting : "",
+        variable_billsec: page == "callrecording" && recordingSorting !== "none" ? recordingSorting : ""
       }
     );
 
@@ -267,7 +272,8 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-    isRecordingFlag
+    recordingSorting,
+    durationSorting
   ]);
 
   const getDateRange = (period) => {
@@ -868,24 +874,38 @@ function CdrReport({ page }) {
                       )}
                       {page === "callrecording" ? (
                         <>
-                          {/* <div className="formRow border-0">
+                          <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              Recording
+                              Recording Filter
                             </label>
                             <select
                               className="formItem"
+                              value={recordingSorting}
                               onChange={(e) => {
-                                setIsRecordingFlag(e.target.value);
-                                setPageNumber(1);
+                                setRecordingSorting(e.target.value)
                               }}
-                              value={isRecordingFlag}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                             >
-                              <option>All</option>
-                              <option value={"true"}>Available</option>
-                              <option value={"false"}>Unavailable</option>
+                              <option value={"asc"}>Ascending</option>
+                              <option value={"desc"}>Descending</option>
+                              <option value={"none"}>None</option>
                             </select>
-                          </div> */}
+                          </div>
+                          <div className="formRow border-0 ps-xl-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              Duration Filter
+                            </label>
+                            <select
+                              className="formItem"
+                              value={durationSorting}
+                              onChange={(e) => {
+                                setDurationSorting(e.target.value)
+                              }}
+                            >
+                              <option value={"asc"}>Ascending</option>
+                              <option value={"desc"}>Descending</option>
+                              <option value={"none"}>None</option>
+                            </select>
+                          </div>
                         </>
                       ) : (
                         <>
@@ -988,7 +1008,6 @@ function CdrReport({ page }) {
                 </Link> */}
                     </div>
                   </div>
-
                   <div className="tableContainer">
                     <table>
                       <thead>
@@ -1471,6 +1490,7 @@ function CdrReport({ page }) {
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
+          showCdrReport={showCdrReport}
         />
       }
       <ModalComponent task={"delete"} reference={"cdr recording"} />

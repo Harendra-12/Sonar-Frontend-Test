@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 
-function Comments({ id, setId, setShowComment, webrtc }) {
+function Comments({ id, setId, setShowComment, webrtc ,showCdrReport=false}) {
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
     const [commentData, setCommentData] = useState([]);
@@ -52,7 +52,9 @@ function Comments({ id, setId, setShowComment, webrtc }) {
     const handlePopupClose = () => {
         setComment("");
         setId("");
-        setShowComment(false);
+        if(!showCdrReport){
+            setShowComment(false);
+        }
     }
     return (
         <div className={`backdropContact ${webrtc ? 'bg-transparent' : ''}`} style={{ zIndex: 15 }}>
