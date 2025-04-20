@@ -5,6 +5,7 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import Tippy from "@tippyjs/react";
+import Select from "react-select";
 
 
 /**
@@ -220,7 +221,7 @@ function ActiveCalls({ isWebrtc, filter }) {
                     {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
                     <td>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td>
-                      <select
+                      {/* <select
                         className="formItem"
                         onChange={(e) => {
                           setBargeStatus(e.target.value);
@@ -269,7 +270,21 @@ function ActiveCalls({ isWebrtc, filter }) {
                         >
                           Whisper callee
                         </option>
-                      </select>
+                      </select> */}
+                      <Select
+                        onChange={(e) => {
+                          setBargeStatus(e.target.value);
+                          setId(item.uuid);
+                          setDest(item?.dest.includes("set:valet_ticket")
+                            ? extractLastNumber(item?.accountcode)
+                            : extractLastNumber(item?.dest))
+                        }}
+                        options={allOptions}
+                        isSearchable
+                        styles={customStyles}
+                      />
+
+                      {/* Separate Buttons instead of Select Box */}
                       {/* <div className="d-flex justify-content-between">
                         <Tippy content="Barge this Call">
                           <button className="tableButton" style={{ backgroundColor: 'var(--funky-boy4)' }}
@@ -366,3 +381,102 @@ function ActiveCalls({ isWebrtc, filter }) {
 }
 
 export default ActiveCalls;
+
+
+// Custom Select FOR Active Call ACTIONS LIKE BARGE / INTERCEPT / ETC
+const allOptions = [
+  {
+    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Barge</div>,
+    value: 'barge',
+  },
+  {
+    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 warning"><i className="fa-regular fa-object-intersect" /></button>Intercept</div>,
+    value: 'intercept',
+  },
+  {
+    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0 edit"><i className="fa-regular fa-head-side-headphones" /></button>Eavesdrop</div>,
+    value: 'eavesdrop',
+  },
+  {
+    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy3)' }}><i className="fa-regular fa-ear-deaf" /></button>Whisper caller</div>,
+    value: 'whisper-bleg',
+  },
+  {
+    label: <div className="d-flex py-2 align-items-center"><button className="tableButton me-2 ms-0" style={{ backgroundColor: 'var(--funky-boy4)' }}><i className="fa-regular fa-phone-plus" /></button>Whisper callee</div>,
+    value: 'whisper-aleg',
+  },
+]
+
+// Custom styles for react-select
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingLeft: "15px",
+    paddingTop: 0,
+    paddingBottom: 0,
+    backgroundColor: state.isSelected ? "transparent" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    maxHeight: "150px",
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};
