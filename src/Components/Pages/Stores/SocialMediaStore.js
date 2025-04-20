@@ -9,7 +9,7 @@ import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import CircularLoader from '../../Loader/CircularLoader';
 import { useNavigate } from 'react-router-dom';
 
-function SocialMediaStore() {
+function SocialMediaStore({ refreshData }) {
     const [loading, setLoading] = useState(false);
     const [skeletonLoading, setSkeletonLoading] = useState(false);
     const [allAddons, setAllAddons] = useState([]);
@@ -52,7 +52,7 @@ function SocialMediaStore() {
             type: "SET_ACCOUNTDETAILSREFRESH",
             accountDetailsRefresh: accountDetailsRefresh + 1,
         });
-    }, [])
+    }, [refreshData])
 
     // Handle callBack for buying pop up
     function handleRechargePopup(value) {

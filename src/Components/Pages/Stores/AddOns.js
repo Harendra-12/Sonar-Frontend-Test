@@ -8,6 +8,11 @@ import SocialMediaStore from './SocialMediaStore';
 
 function AddOns() {
     const navigate = useNavigate();
+    const [refreshData, setRefreshData] = useState(0);
+
+    const fetchAllData = () => {
+        setRefreshData(refreshData + 1);
+    }
 
     return (
         <main className="mainContent">
@@ -42,6 +47,7 @@ function AddOns() {
                                             <button
                                                 type="button"
                                                 className="panelButton"
+                                                onClick={fetchAllData}
                                             >
                                                 <span className="text">Refresh</span>
                                                 <span className="icon">
@@ -122,7 +128,7 @@ function AddOns() {
                                             aria-labelledby="nav-social-tab"
                                             tabindex="0"
                                         >
-                                            <SocialMediaStore />
+                                            <SocialMediaStore refreshData={refreshData} />
                                         </div>
                                         <div
                                             className="tab-pane fade"
