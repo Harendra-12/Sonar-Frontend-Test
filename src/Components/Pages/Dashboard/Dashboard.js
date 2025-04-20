@@ -865,43 +865,51 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="data-number2">
-                                <div className="d-flex flex-wrap justify-content-between">
-                                  <div className="col-12">
-                                    <ul
-                                      style={{
-                                        overflowY: "scroll",
-                                        height: "200px",
-                                        paddingRight: 10,
-                                      }}
-                                    >
-                                      {accountDetails?.extensions?.map(
-                                        (item, index) => (
-                                          <li className="d_extension_listing"
-                                            key={index}
-                                            onClick={() =>
-                                              navigate(
-                                                `/extensions-edit?id=${item?.id}`
-                                              )
-                                            }
-                                          >
-                                            {item?.extension}
-                                            <span
-                                              className={
-                                                onlineExtension?.includes(
-                                                  item?.extension
+                              {accountDetails && accountDetails.extensions ? (
+                                <div className="data-number2">
+                                  <div className="d-flex flex-wrap justify-content-between">
+                                    <div className="col-12">
+                                      <ul
+                                        style={{
+                                          overflowY: "scroll",
+                                          height: "200px",
+                                          paddingRight: 10,
+                                        }}
+                                      >
+                                        {accountDetails?.extensions?.map(
+                                          (item, index) => (
+                                            <li className="d_extension_listing"
+                                              key={index}
+                                              onClick={() =>
+                                                navigate(
+                                                  `/extensions-edit?id=${item?.id}`
                                                 )
-                                                  ? "float-end extensionStatus online"
-                                                  : "float-end extensionStatus"
                                               }
-                                            ></span>
-                                          </li>
-                                        )
-                                      )}
-                                    </ul>
+                                            >
+                                              {item?.extension}
+                                              <span
+                                                className={
+                                                  onlineExtension?.includes(
+                                                    item?.extension
+                                                  )
+                                                    ? "float-end extensionStatus online"
+                                                    : "float-end extensionStatus"
+                                                }
+                                              ></span>
+                                            </li>
+                                          )
+                                        )}
+                                      </ul>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              ) : (
+                                <div className="deviceProvision position-relative h-100">
+                                  <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                    <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         )}
@@ -920,23 +928,31 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            <div className='circularProgressWrapper'>
-                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
-                                ></circle>
-                                <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
-                                ></circle>
-                              </svg>
-                              <div className='circularProgressContent'>
-                                <div className="data-number">
-                                  <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                            {onlineExtension && accountDetails ?
+                              <div className='circularProgressWrapper'>
+                                <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((onlineExtension.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                  <circle className="bg"
+                                    cx="125" cy="125" r="115" fill="none" stroke="#62a8ac30" stroke-width="20"
+                                  ></circle>
+                                  <circle className="fg"
+                                    cx="125" cy="125" r="115" fill="none" stroke="#62a8ac" stroke-width="20"
+                                    stroke-dasharray="361.25 361.25"
+                                  ></circle>
+                                </svg>
+                                <div className='circularProgressContent'>
+                                  <div className="data-number">
+                                    <label style={{ color: '#62a8ac' }}>{onlineExtension.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                  </div>
+                                  <p>Total Online Agents</p>
                                 </div>
-                                <p>Total Online Agents</p>
                               </div>
-                            </div>
+                              : (
+                                <div className="deviceProvision position-relative h-100">
+                                  <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                    <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                  </div>
+                                </div>
+                              )}
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
@@ -954,23 +970,31 @@ const Dashboard = () => {
                               centerDesc="Extensions Details"
                               colors={["#9999", "#FF638470", "#36A2EB70"]}
                             /> */}
-                            <div className='circularProgressWrapper'>
-                              <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
-                                <circle className="bg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
-                                ></circle>
-                                <circle className="fg"
-                                  cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
-                                  stroke-dasharray="361.25 361.25"
-                                ></circle>
-                              </svg>
-                              <div className='circularProgressContent'>
-                                <div className="data-number">
-                                  <label style={{ color: '#ff8c42' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                            {accountDetails && accountDetails.extensions ? (
+                              <div className='circularProgressWrapper'>
+                                <svg width="250" height="250" viewBox="0 0 250 250" className="circular-progress" style={{ '--progress': `${Math.round((accountDetails?.extensions?.filter((item) => item.user == null)?.length / accountDetails?.extensions?.length) * 100)}` }}>
+                                  <circle className="bg"
+                                    cx="125" cy="125" r="115" fill="none" stroke="#ff8c4230" stroke-width="20"
+                                  ></circle>
+                                  <circle className="fg"
+                                    cx="125" cy="125" r="115" fill="none" stroke="#ff8c42" stroke-width="20"
+                                    stroke-dasharray="361.25 361.25"
+                                  ></circle>
+                                </svg>
+                                <div className='circularProgressContent'>
+                                  <div className="data-number">
+                                    <label style={{ color: '#ff8c42' }}>{accountDetails?.extensions?.filter((item) => item.user == null)?.length}</label> <span>/ {accountDetails?.extensions?.length}</span>
+                                  </div>
+                                  <p>Total Available Extensions</p>
                                 </div>
-                                <p>Total Available Extensions</p>
                               </div>
-                            </div>
+                            ) : (
+                              <div className="deviceProvision position-relative h-100">
+                                <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                  <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="col-xl-3 mb-3 mb-xl-0">
@@ -1839,7 +1863,7 @@ const Dashboard = () => {
                             <div className='d-flex flex-wrap justify-content-between mt-1'>
                               {graphLoading.callCostPerHour == 1 ?
                                 (
-                                  <div className="deviceProvision position-relative" style={{ width: '500px', height: '240px' }}>
+                                  <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
                                     <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                       <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                     </div>
