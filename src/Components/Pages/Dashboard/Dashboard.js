@@ -1847,11 +1847,12 @@ const Dashboard = () => {
                                 ) :
                                 <GraphChart
                                   height={'320px'}
-                                  chartType="multiple"
+                                  // chartType="multiple"
+                                  chartCateg={"money"}
                                   label1={"Inbound"}
                                   label2={"Outbound"}
-                                  label3={"Internal"}
-                                  label4={"Missed"}
+                                  // label3={"Internal"}
+                                  // label4={"Missed"}
                                   type={"bar"}
                                   fields={graphData?.callCostPerHour?.map((item, index) => {
                                     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -1860,7 +1861,7 @@ const Dashboard = () => {
                                     return `${time}`
                                   })}
                                   percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
-                                  colors={["#dd2e2f", "#01c78e", "#f7a733", "#3388f7"]}
+                                  colors={["#05b62c", "#ff7900"]}
                                 />
                               }
                             </div>
