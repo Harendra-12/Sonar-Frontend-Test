@@ -1581,7 +1581,7 @@ console.log("cdr", cdr);
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
+        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment}/>
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
