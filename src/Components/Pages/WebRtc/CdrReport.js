@@ -228,8 +228,8 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
-        recording_size: page == "callrecording" && durationSorting !== "none" ? durationSorting : "",
-        variable_billsec: page == "callrecording" && recordingSorting !== "none" ? recordingSorting : ""
+        variable_billsec: page == "callrecording" && durationSorting !== "none" ? durationSorting : "",
+        recording_size: page == "callrecording" && recordingSorting !== "none" ? recordingSorting : ""
       }
     );
 
@@ -1242,7 +1242,7 @@ function CdrReport({ page }) {
                                                     <i className="fa-solid fa-chevron-down"></i>
                                                   )}
                                                 </button>
-                                                <label className="ms-2">{storageSize}</label>
+                                                <label className="ms-2">{item?.recording_size}</label>
                                               </div>
                                             </>
 
