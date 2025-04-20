@@ -19,7 +19,7 @@ function Comments({ id, setId, setShowComment, webrtc }) {
                 setLoading(false);
             } else {
                 setLoading(false);
-            }
+                   }
         }
         getComment(id)
 
@@ -68,14 +68,14 @@ function Comments({ id, setId, setShowComment, webrtc }) {
                             {loading ?
                                 <div>
                                     <div className='back-comment'>
-                                        <div className='d-flex align-items-center'>
+                                        {/* <div className='d-flex align-items-center'>
                                             <span>
                                                 <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="img" height={30} width={30} />
                                             </span>
                                             <span className='username-cmt skeleton skeleton-text ms-3' style={{ width: 100 }}></span>
-                                        </div>
+                                        </div> */}
                                         <div className='name-comment skeleton skeleton-text'></div>
-                                        <div className='name-comment skeleton skeleton-text w-75'></div>
+                                        {/* <div className='name-comment skeleton skeleton-text w-75'></div> */}
                                     </div>
                                 </div>
                                 :

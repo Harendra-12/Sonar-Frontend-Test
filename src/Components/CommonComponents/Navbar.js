@@ -255,7 +255,7 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          <li className="tabItem">
+                          {accountDetails?.add_on_subscription.find((item)=>item?.addon?.id==7)?<li className="tabItem">
                             <NavLink
                               to="/access-control-list"
                               onClick={backToTop}
@@ -263,7 +263,7 @@ function Navbar() {
                             >
                               <div className="itemTitle">Access Control</div>
                             </NavLink>
-                          </li>
+                          </li>:<></>}
                           <li className="tabItem ">
                             <NavLink
                               to="/groups"
@@ -1142,7 +1142,7 @@ function Navbar() {
                           <div className="itemTitle">Meeting Rooms</div>
                         </NavLink>
                       </li>
-                      <li className="dashboard ">
+                     { accountDetails?.add_on_subscription.find((item)=>item?.addon?.id==2)?<li className="dashboard ">
                         <NavLink
                           to="/click-to-call-listing"
                           onClick={backToTop}
@@ -1153,7 +1153,7 @@ function Navbar() {
                           </div>
                           <div className="itemTitle">Click To Call</div>
                         </NavLink>
-                      </li>
+                      </li>:<></>}
                     </>
                   )}
                   {checkViewSidebar(

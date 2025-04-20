@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
-import { Link } from "react-router-dom";
-import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { Link, useNavigate } from "react-router-dom";
+import { generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ function AccessControl() {
   const [loading, setLoading] = React.useState(true);
   const [deletePopup, setDeletePopup] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
+  const navigate=useNavigate()
 
   useEffect(() => {
     async function fetchData() {
@@ -116,7 +117,9 @@ function AccessControl() {
                                                 {item.description}
                                               </td>
                                               <td>{item?.role?.name}</td>
-                                              <td onClick={()=>featureUnderdevelopment()}>
+                                              <td onClick={()=>navigate(
+                                                `/access-control-list-edit?id=${item.id}`,{state:item}
+                                              )}>
                                                 <button className="tableButton edit mx-auto">
                                                   <i className="fa-solid fa-pencil" />
                                                 </button>

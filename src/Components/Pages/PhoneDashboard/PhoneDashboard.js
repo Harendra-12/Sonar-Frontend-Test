@@ -43,8 +43,8 @@ function PhoneDashboard() {
   })
   const [graphFilter, setGraphFilter] = useState({
     totalCallMin: {
-      interval: "1",
-      startTime: "24",
+      interval: "4",
+      startTime: "27",
     },
     numberOfCall: {
       date: "7_days"
@@ -92,7 +92,7 @@ function PhoneDashboard() {
 
 
   useEffect(() => {
-    if (registerUser.length > 0) {
+    if (registerUser?.length > 0) {
 
     } else {
     }
