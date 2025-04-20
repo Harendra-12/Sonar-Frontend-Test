@@ -7,12 +7,11 @@ import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 
 function AccessControl() {
-  const navigate = useNavigate();
   const [accessControlList, setAccessControlList] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [deletePopup, setDeletePopup] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchData() {
