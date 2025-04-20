@@ -339,7 +339,7 @@ function SmsChat({ setLoading, loading, did }) {
                                     did.sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
                                       .map((item, index) => (
                                         <option key={index} value={item.did}>
-                                          {item.did}
+                                          {item.did}{item.default_sms == 1 ? ' - Default' : ''}
                                         </option>
                                       ))
                                     : ""
