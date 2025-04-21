@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import { toast } from 'react-toastify';
-import { generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { generalDeleteFunction, generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -59,11 +59,32 @@ export default function AccessControlEdit() {
               setLoading(false);
               navigate(-1)
             } else {
-              toast.error(apiData.message);
+              // toast.error(apiData.message);
               setLoading(false);
             }
           }
         }
+
+        const handleDeleteIp=async(index,id)=>{
+         if(id){
+          try {
+            const res=await generalDeleteFunction(`delete-ip-whitelists/${id}`)
+            if(res.status){
+              toast.success(res?.message)
+              setIpAddress(ipAddress.filter((_, i) => i !== index))
+            }else{
+              // toast.error(res.message)
+            }
+            
+          } catch (error) {
+            toast.error(error)
+          }
+         }else{
+          setIpAddress(ipAddress.filter((_, i) => i !== index))
+         }
+
+        }
+
   return (
     <>
     <div className="mainContent">
@@ -203,18 +224,24 @@ export default function AccessControlEdit() {
                                     type="text"
                                     name="stick_agent_expires"
                                     className="formItem"
-                                    value={item.ip_address}
+                                    value={item?.ip_address}
                                     onChange={(e) => {
-                                      const newIpAddress = [...ipAddress];
+                                      let newIpAddress;
+                                      if(item.id){
+                                         item.ip_address=e.target.value;
+                                         newIpAddress=[...ipAddress];
+                                      }else{
+                                       newIpAddress = [...ipAddress];
                                       newIpAddress[index] = { ip_address:e.target.value};
-                                      setIpAddress(newIpAddress);
+                                      }
+                                      setIpAddress(newIpAddress)
                                     }}
                                   />
                                 </div>
                                 <div className="col-3 mt-4">
                                   {
                                     ipAddress.length > 1 &&
-                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { setIpAddress(ipAddress.filter((_, i) => i !== index)) }} >
+                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { handleDeleteIp(index,item.id) }} >
                                       <i className="fa-solid fa-trash" />
                                     </button>
                                   }
