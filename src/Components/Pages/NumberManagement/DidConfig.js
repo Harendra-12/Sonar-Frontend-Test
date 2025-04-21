@@ -199,10 +199,6 @@ const DidConfig = () => {
     } else {
       data.forward_to = "";
     }
-    if(data?.forward === "ring group" || data?.forward === "call center" || data?.forward == "ivr" || data?.forward == "extension"){
-      delete data.forward;
-      data.forward = "direct"
-    }
     delete data.forward_action;
     delete data.did_id;
     const payload = { ...data, did_id: locationData.id };
