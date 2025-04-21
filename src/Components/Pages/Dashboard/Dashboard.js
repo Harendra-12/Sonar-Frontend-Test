@@ -53,28 +53,32 @@ const Dashboard = () => {
       }
       getData();
     }
-  }, [])
-
-  // Setting clock for the selected timnezone
-  useEffect(() => {
-    const updateAccountDetails = async () => {
-      try {
-        const profile = await generalGetFunction("/user");
-        if (profile?.status) {
-          dispatch({
-            type: "SET_ACCOUNT",
-            account: profile.data,
-          });
-        }
-      } catch (error) {
-      }
-    };
-    updateAccountDetails();
-    dispatch({
+      dispatch({
       type: "SET_PERMISSION_REFRESH",
       permissionRefresh: permissionRefresh + 1,
     });
-  }, []);
+  }, [])
+
+  // Setting clock for the selected timnezone
+  // useEffect(() => {
+  //   const updateAccountDetails = async () => {
+  //     try {
+  //       const profile = await generalGetFunction("/user");
+  //       if (profile?.status) {
+  //         dispatch({
+  //           type: "SET_ACCOUNT",
+  //           account: profile.data,
+  //         });
+  //       }
+  //     } catch (error) {
+  //     }
+  //   };
+  //   updateAccountDetails();
+  //   dispatch({
+  //     type: "SET_PERMISSION_REFRESH",
+  //     permissionRefresh: permissionRefresh + 1,
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (timeZoneRefresh > 0) {

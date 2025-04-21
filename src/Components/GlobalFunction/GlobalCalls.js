@@ -66,7 +66,7 @@ function GlobalCalls() {
         getData();
       }
     }
-  }, [account, callDetailsRefresh]);
+  }, [callDetailsRefresh]);
 
   // Getting all card details
   useEffect(() => {
@@ -132,21 +132,21 @@ function GlobalCalls() {
   }, [account?.account_id, accountDetailsRefresh]);
 
   // Getting call center details
-  useEffect(() => {
-    async function getData() {
-      const apiData = await generalGetFunction(`/call-center-queues/all`);
-      if (apiData?.status) {
-        dispatch({
-          type: "SET_CALLCENTER",
-          callCenter: apiData.data,
-        });
-      }
-    }
-    // getData();
-    if (callCenterRefresh > 0) {
-      getData();
-    }
-  }, [callCenterRefresh]);
+  // useEffect(() => {
+  //   async function getData() {
+  //     const apiData = await generalGetFunction(`/call-center-queues/all`);
+  //     if (apiData?.status) {
+  //       dispatch({
+  //         type: "SET_CALLCENTER",
+  //         callCenter: apiData.data,
+  //       });
+  //     }
+  //   }
+  //   // getData();
+  //   if (callCenterRefresh > 0) {
+  //     getData();
+  //   }
+  // }, [callCenterRefresh]);
 
   // refresh allCallCenterIds
   useEffect(() => {
@@ -154,6 +154,10 @@ function GlobalCalls() {
       const apiData = await generalGetFunction(`/call-center-queues/all`);
       const details = apiData.data;
       if (apiData?.status) {
+        dispatch({
+          type: "SET_CALLCENTER",
+          callCenter: apiData.data,
+        });
         const AssignedCallcenter = [...details].filter((queue) =>
           queue.agents.some((agent) => Number(agent.agent_name) == Id)
         );
