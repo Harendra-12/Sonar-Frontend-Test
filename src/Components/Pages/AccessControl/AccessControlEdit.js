@@ -240,7 +240,7 @@ export default function AccessControlEdit() {
                                 </div>
                                 <div className="col-3 mt-4">
                                   {
-                                    ipAddress.length > 1 &&
+                                    ipAddress.length > 1 && index>0&&
                                     <button type="button" className="tableButton delete mx-auto" onClick={() => { handleDeleteIp(index,item.id) }} >
                                       <i className="fa-solid fa-trash" />
                                     </button>
@@ -249,7 +249,8 @@ export default function AccessControlEdit() {
                                 {
                                   index === ipAddress.length - 1 &&
                                   <div className="col-3 mt-4" >
-                                    <button type="button" className="panelButton" onClick={() => { if (ipAddress[ipAddress.length - 1] !== "") { setIpAddress([...ipAddress, ""]) } }}>
+                                    <button type="button" className="panelButton" onClick={() => { 
+                                      setIpAddress([...ipAddress, ""]) }}>
                                       <span className="text">Add</span>
                                       <span className="icon">
                                         <i className="fa-solid fa-plus"></i>
