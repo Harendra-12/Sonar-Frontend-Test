@@ -243,24 +243,15 @@ const RingGroup = () => {
                           </td>
                           <td>
                             <Tippy content={
-                              <ul className="dropdown-menu-hover">
-                                <li className="col-12">
-                                  <div className="dropdown-item fw-bold disabled">
-                                    Agents
-                                  </div>
-                                </li>
-                                <div
-                                  style={{ columnCount: 1 }}
-                                >
-                                  {call.ring_group_destination.map(
-                                    (item, index) => (
-                                      <li>
-                                        <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                          {item?.username}
-                                        </div>
-                                      </li>
-                                    ))}
-                                </div>
+                              <ul className="dropdown-menu-hover" style={{ columnCount: call.ring_group_destination.length > 8 ? 2 : 1 }}>
+                                {call.ring_group_destination.map(
+                                  (item, index) => (
+                                    <li>
+                                      <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  ))}
                                 {/* <li className="col-12">
                               {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
                                 Show More

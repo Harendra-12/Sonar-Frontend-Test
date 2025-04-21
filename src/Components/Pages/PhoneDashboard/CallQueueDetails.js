@@ -232,25 +232,16 @@ const CallQueueDetails = () => {
                           </td>
                           <td>
                             <Tippy content={
-                              <ul className="dropdown-menu-hover">
-                                <li className="col-12">
-                                  <div className="dropdown-item fw-bold disabled">
-                                    Agents
-                                  </div>
-                                </li>
-                                <div
-                                  style={{ columnCount: 1 }}
-                                >
-                                  {call.agents.map(
-                                    (item, index) => (
-                                      <li key={index}>
-                                        <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                          {item?.username}
-                                        </div>
-                                      </li>
-                                    )
-                                  )}
-                                </div>
+                              <ul className="dropdown-menu-hover" style={{ columnCount: call.agents.length > 8 ? 2 : 1 }}>
+                                {call.agents.map(
+                                  (item, index) => (
+                                    <li key={index}>
+                                      <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
+                                        {item?.username}
+                                      </div>
+                                    </li>
+                                  )
+                                )}
                                 {/* {call.agents.length > 6 && <li className="col-12">
                               <Link to="/agents" className="dropdown-item text-center text-primary">
                                 Show More
