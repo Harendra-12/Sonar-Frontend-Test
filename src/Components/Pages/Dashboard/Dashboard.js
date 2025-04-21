@@ -904,7 +904,7 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="deviceProvision position-relative h-100">
+                                <div className="deviceProvision position-relative" style={{ height: '250px' }}>
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                     <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>
