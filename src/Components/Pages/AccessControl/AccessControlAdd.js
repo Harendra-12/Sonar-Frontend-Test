@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
 import { useNavigate } from "react-router-dom";
-import { generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, generalGetFunction, generalPostFunction } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
 import { useSelector } from "react-redux";
@@ -28,7 +28,7 @@ function AccessControlAdd() {
       if (apidata.status) {
         setRoles(apidata.data);
         setLoading(false);
-      }else{
+      } else {
         toast.error(apidata.message)
         setLoading(false);
       }
@@ -42,13 +42,13 @@ function AccessControlAdd() {
    * @return {void}
    */
   async function handleSubmit() {
-    if(name === "") {
+    if (name === "") {
       toast.error("Please enter name")
-    }else if(roleId === "") {
+    } else if (roleId === "") {
       toast.error("Please select group")
-    }else if(ipAddress[0] === "") {
+    } else if (ipAddress[0] === "") {
       toast.error("Please enter IP Address")
-    }else{
+    } else {
       setLoading(true);
       const parsedData = {
         name: name,
@@ -90,7 +90,9 @@ function AccessControlAdd() {
                           <p>You can see all list of Access Control</p>
                         </div>
                         <div className="buttonGroup">
-                          <button type="button" onClick={() => navigate(-1)} effect="ripple" className="panelButton gray">
+                          <button type="button"
+                            onClick={() => { navigate(-1); backToTop(); }}
+                            className="panelButton gray">
                             <span className="text">Back</span>
                             <span className="icon">
                               <i className="fa-solid fa-caret-left"></i>
@@ -98,7 +100,6 @@ function AccessControlAdd() {
                           </button>
 
                           <div
-                            effect="ripple"
                             className="panelButton"
                             onClick={handleSubmit}
                           >

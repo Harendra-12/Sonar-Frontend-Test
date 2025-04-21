@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import {
   backToTop,
+  featureUnderdevelopment,
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
@@ -58,7 +59,8 @@ function CdrReport({ page }) {
     endTime: "",
   });
 
-  const [isRecordingFlag, setIsRecordingFlag] = useState("");
+  const [isSorting, setIsSorting] = useState("");
+  const [sortingValue,setSortingValue]=useState("")
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
@@ -76,6 +78,7 @@ function CdrReport({ page }) {
   const { confirm, ModalComponent } = PromptFunctionPopup();
   const [showDropDown, setShowDropdown] = useState(false)
   const [showAudio, setShowAudio] = useState(false)
+  const [showCdrReport, setShowCdrReport] = useState(true)
 
 
   const thisAudioRef = useRef(null);
@@ -224,6 +227,8 @@ function CdrReport({ page }) {
         variable_DIALSTATUS: hangupCause,
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
+        variable_billsec: page == "callrecording" && isSorting === "duration" ? sortingValue : "",
+        recording_size: page == "callrecording" && isSorting==="record" ? sortingValue : ""
       }
     );
 
@@ -267,8 +272,8 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-    isRecordingFlag
-  ]);
+   sortingValue
+    ]);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -868,24 +873,39 @@ function CdrReport({ page }) {
                       )}
                       {page === "callrecording" ? (
                         <>
-                          {/* <div className="formRow border-0">
+                          <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              Recording
+                             Sorting
                             </label>
                             <select
                               className="formItem"
-                              onChange={(e) => {
-                                setIsRecordingFlag(e.target.value);
-                                setPageNumber(1);
+                              value={isSorting}
+                              onChange={(e) => {         
+                                  setIsSorting(e.target.value)
+                                  setSortingValue("")
                               }}
-                              value={isRecordingFlag}
-                            // onChange={(e) => setCallDirection(e.target.value), setPageNumber(1)}
                             >
-                              <option>All</option>
-                              <option value={"true"}>Available</option>
-                              <option value={"false"}>Unavailable</option>
+                                 <option value="">Choose Sorting</option>
+                              <option value={"record"}>Recordings</option>
+                              <option value={"duration"}>Duration</option>     
                             </select>
-                          </div> */}
+                          </div>
+                         {isSorting&& <div className="formRow border-0 ps-xl-0">
+                            <label className="formLabel text-start mb-0 w-100">
+                              {isSorting==="record"?"Select Recordings":"Select Duration"}
+                            </label>
+                            <select
+                              className="formItem"
+                              value={sortingValue}
+                              onChange={(e) => {
+                                setSortingValue(e.target.value)  
+                              }}
+                            >
+                            <option value="">Choose Method</option>
+                              <option value={"asc"}>Ascending</option>
+                              <option value={"desc"}>Descending</option>
+                            </select>
+                          </div>}
                         </>
                       ) : (
                         <>
@@ -988,7 +1008,6 @@ function CdrReport({ page }) {
                 </Link> */}
                     </div>
                   </div>
-
                   <div className="tableContainer">
                     <table>
                       <thead>
@@ -1222,7 +1241,7 @@ function CdrReport({ page }) {
                                                     <i className="fa-solid fa-chevron-down"></i>
                                                   )}
                                                 </button>
-                                                <label className="ms-2">{storageSize}</label>
+                                                <label className="ms-2">{item?.recording_size}</label>
                                               </div>
                                             </>
 
@@ -1471,6 +1490,7 @@ function CdrReport({ page }) {
         <Comments
           id={selectedCdr}
           setId={setSelectedCdr}
+          showCdrReport={showCdrReport}
         />
       }
       <ModalComponent task={"delete"} reference={"cdr recording"} />

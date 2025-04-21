@@ -31,6 +31,7 @@ import CloseTabWarning from "./CloseTabWarning";
 import WhatsAppChatBox from "./whatsappChatbox/WhatsAppChatBox";
 import SmsChat from "./SmsChat";
 import CampaignLogin from "./CampaignLogin";
+import { toast } from "react-toastify";
 
 const WebrtcWrapper = () => {
   const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
@@ -82,6 +83,10 @@ const WebrtcWrapper = () => {
   const [calldata, setCallData] = useState([]);
   const [callloading, setCallLoading] = useState(true);
   const [isCallLoading, setIsCallLoading] = useState(false);
+
+  const didAll = useSelector((state) => state.didAll);
+  const [did, setDid] = useState();
+
   const useWebSocketErrorHandling = (options) => {
     const retryCountRef = useRef(0);
     const connectWebSocket = (retryCount = 0) => {
@@ -342,6 +347,32 @@ const WebrtcWrapper = () => {
     fetchData();
   }, [callCurrentPage]);
 
+  // Fetch ALL DID at Page Load
+  useEffect(() => {
+    if (!did || !didAll) {
+      getAllDid();
+    } else {
+      setDid(didAll.filter((item) => item.usages === "pbx"))
+    }
+  }, []);
+
+  // Fetch ALL DID
+  async function getAllDid() {
+    // setLoading(true);
+    const apiData = await generalGetFunction(`/did/all`);
+    if (apiData?.status) {
+      setDid(apiData.data.filter((item) => item.usages === "pbx"));
+      dispatch({
+        type: "SET_DIDALL",
+        didAll: apiData.data,
+      });
+      // setLoading(false);
+    } else {
+      toast.error(apiData.status);
+      // setLoading(false);
+    }
+  }
+
   return (
     <>
       <style>
@@ -364,7 +395,7 @@ const WebrtcWrapper = () => {
         <div className="d-none">
           {extension && <SipRegister options={options} />}
         </div>
-        {activePage === "sms-chatbox" && <SmsChat loading={callloading} isLoading={isCallLoading} />}
+        {activePage === "sms-chatbox" && <SmsChat loading={callloading} isLoading={isCallLoading} did={did} />}
 
         {activePage === "call" && (
           <Call
@@ -417,7 +448,7 @@ const WebrtcWrapper = () => {
         )}
         {activePage === "on-going-calls" && <OngoingCall />}
         {activePage === "call-dashboard" && <CallDashboard />}
-        {activePage === "e-fax" && <EFax />}
+        {activePage === "e-fax" && <EFax did={did} />}
         {activePage === "messages" && (
           <Messages
             setSelectedModule={setSelectedModule}

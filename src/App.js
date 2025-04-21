@@ -180,6 +180,7 @@ import FportalCampaign from "./Components/Pages/CallTracker/FportalCampaign";
 import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaignCreate";
 import AccessControl from "./Components/Pages/AccessControl/AccessControl";
 import AccessControlAdd from "./Components/Pages/AccessControl/AccessControlAdd";
+import AccessControlEdit from "./Components/Pages/AccessControl/AccessControlEdit";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -290,6 +291,7 @@ function App() {
           {/* <Route path="/groups" element={<GroupsList/>}/> */}
           <Route path="/access-control-list" element={<AccessControl />} />
           <Route path="/access-control-list-add" element={<AccessControlAdd />} />
+          <Route path="/access-control-list-edit" element={<AccessControlEdit />} />
 
           {/* <Route path="/active-calls" element={<ActiveCalls />} /> */}
 

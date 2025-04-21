@@ -443,21 +443,22 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                           <th>#</th>
                           <th>Call Direction</th>
                           <th>Caller No.</th>
-                          <th>Call Destination</th>
-                          <th>Tag</th>
-                          <th>Via/Route</th>
-                          <th>Ext/Dest</th>
+                          <th>User Name</th>
+                          {/* <th>Call Destination</th> */}
+                          {/* <th>Tag</th> */}
+                          {/* <th>Via/Route</th> */}
+                          {/* <th>Ext/Dest</th> */}
                           <th>Date</th>
                           <th>Time</th>
                           {/* <th>Recordings</th> */}
                           <th>Duration</th>
-                          <th>Hangup Cause</th>
-                          <th>Hangup Status</th>
+                          {/* <th>Hangup Cause</th>
+                          <th>Hangup Status</th> */}
                           <th>Comments</th>
                         </tr>
                       </thead>
                       <tbody >
-                        <SkeletonTableLoader col={13} row={15} />
+                        <SkeletonTableLoader col={8} row={15} />
                       </tbody>
                     </table>
                   </div>}

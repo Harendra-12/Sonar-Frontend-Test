@@ -532,7 +532,7 @@ function DidListing({ page }) {
                                               className={
                                                 item.default_sms === 1
                                                   ? "tableButton sms mx-auto"
-                                                  : item.is_secondary_sms === 1 ? "tableButton sms mx-auto"
+                                                  : item.is_secondary_sms === 1 ? "tableButton warning  mx-auto"
                                                     : "tableButton sms empty mx-auto"
                                               }
                                               style={{ cursor: "pointer" }}
