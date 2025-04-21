@@ -1436,9 +1436,9 @@ function Messages({
                                       return newState;
                                     });
                                   }}
-                                  className="row justify-content-between d-grid"
+                                  className="w-100 "
                                 >
-                                  <div className="col-xl-12 d-flex">
+                                  <div className=" d-flex align-items-start">
                                     <div
                                       className="profileHolder"
                                       id={
@@ -1451,8 +1451,19 @@ function Messages({
                                     >
                                       <i className="fa-light fa-user fs-5"></i>
                                     </div>
-                                    <div className="my-auto ms-2 ms-xl-3">
-                                      <h4>{item?.name}</h4>
+                                    <div className="ms-3 flex-grow-1">
+                                      <p>{item?.name} 
+                                      <span className=" text-end mb-0">
+                                      <p className="timeAgo">
+                                        {item?.last_message_data
+                                          ? formatRelativeTime(
+                                            item?.last_message_data
+                                              ?.created_at
+                                          )
+                                          : ""}
+                                      </p>
+                                    </span>
+                                      </p>
                                       <h5>
                                         {item?.last_message_data?.message_text}
                                       </h5>
@@ -1472,17 +1483,19 @@ function Messages({
                                             `+${item.tags?.length - 2}`}
                                         </span>
                                       </div>
+                                      {/* <div className="contactTags">
+                                   
+                                              <span >
+                                                abcjh
+                                              </span>
+                                          
+                                        <span className="more">
+                                        
+                                            lopolo25
+                                        </span>
+                                      </div> */}
                                     </div>
-                                    <div className="col text-end">
-                                      <p className="timeAgo">
-                                        {item?.last_message_data
-                                          ? formatRelativeTime(
-                                            item?.last_message_data
-                                              ?.created_at
-                                          )
-                                          : ""}
-                                      </p>
-                                    </div>
+                                    
                                   </div>
                                 </div>
                               </div>
