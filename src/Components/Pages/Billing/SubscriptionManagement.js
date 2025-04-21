@@ -43,7 +43,7 @@ function SubscriptionManagement() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-12 formScroller my-2" >
+                                        <div className="col-12 formScroller my-2" style={{ padding: '25px 23px' }}>
                                             <form className='col-12'>
                                                 <div className='row'>
                                                     <div className='col-lg-6 col-sm-12'>
