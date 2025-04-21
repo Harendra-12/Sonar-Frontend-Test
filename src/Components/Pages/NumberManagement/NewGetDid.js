@@ -122,7 +122,7 @@ const NewGetDid = () => {
             ...data,
             // searchType: data.searchType,
             quantity: data.quantity || 10, // Fallback for Quantity
-            // npa: data.npa,
+            npa: data.npa ? data.npa : data.searchType === "domestic" ? '567' : '',
             companyId: account.account_id,
             usage: usagePayload,
         };
