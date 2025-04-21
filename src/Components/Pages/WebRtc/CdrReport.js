@@ -60,7 +60,7 @@ function CdrReport({ page }) {
   });
 
   const [isSorting, setIsSorting] = useState("");
-  const [sortingValue,setSortingValue]=useState("")
+  const [sortingValue, setSortingValue] = useState("")
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
@@ -228,7 +228,7 @@ function CdrReport({ page }) {
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
         variable_billsec: page == "callrecording" && isSorting === "duration" ? sortingValue : "",
-        recording_size: page == "callrecording" && isSorting==="record" ? sortingValue : ""
+        recording_size: page == "callrecording" && isSorting === "record" ? sortingValue : ""
       }
     );
 
@@ -272,8 +272,8 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-   sortingValue
-    ]);
+    sortingValue
+  ]);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -875,35 +875,35 @@ function CdrReport({ page }) {
                         <>
                           <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                             Sorting
+                              Sorting
                             </label>
                             <select
                               className="formItem"
                               value={isSorting}
-                              onChange={(e) => {         
-                                  setIsSorting(e.target.value)
-                                  setSortingValue("")
+                              onChange={(e) => {
+                                setIsSorting(e.target.value)
+                                setSortingValue("")
                               }}
                             >
-                                 <option value="">Choose Sorting</option>
-                              <option value={"record"}>Recordings</option>
-                              <option value={"duration"}>Duration</option>     
+                              <option value="">Choose Sorting</option>
+                              <option value={"record"}>Size</option>
+                              <option value={"duration"}>Duration</option>
                             </select>
                           </div>
-                         {isSorting&& <div className="formRow border-0 ps-xl-0">
+                          {isSorting && <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              {isSorting==="record"?"Select Recordings":"Select Duration"}
+                              {isSorting === "record" ? "Select Recordings" : "Select Duration"}
                             </label>
                             <select
                               className="formItem"
                               value={sortingValue}
                               onChange={(e) => {
-                                setSortingValue(e.target.value)  
+                                setSortingValue(e.target.value)
                               }}
                             >
-                            <option value="">Choose Method</option>
-                              <option value={"asc"}>Ascending</option>
-                              <option value={"desc"}>Descending</option>
+                              <option value="">Choose Method</option>
+                              <option value={"asc"}>{isSorting === "record" ? 'Size' : 'Duration'} - Low to High</option>
+                              <option value={"desc"}>{isSorting === "record" ? 'Size' : 'Duration'} - High to Low</option>
                             </select>
                           </div>}
                         </>
