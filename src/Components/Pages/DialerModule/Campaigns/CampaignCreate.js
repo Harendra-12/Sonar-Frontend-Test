@@ -362,18 +362,12 @@ function CampaignCreate() {
                                   Campaign Type
                                 </label>
                               </div>
-                              {/* <div className='col-6'>
+                              <div className='col-6'>
                                 <select defaultValue={"Inbound"} className="formItem" {...register("campaign_type", {
                                   ...requiredValidator,
                                 })}>
                                   <option value="Inbound">Inbound</option>
                                   <option value="Outbound">Outbound</option>
-                                </select>
-                              </div> */}
-                              <div className='col-6'>
-                                <select defaultValue={"pbx"} className="formItem" {...register("campaign_type", {
-                                  ...requiredValidator,
-                                })}>
                                   <option value="pbx">PBX</option>
                                   <option value="dialer">Dialer</option>
                                 </select>

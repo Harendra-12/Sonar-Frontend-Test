@@ -73,12 +73,8 @@ function SmsChat({ setLoading, loading, did }) {
         toast.success(apiData.message);
         getAllSMSData();
       } else {
-        if (apiData.errors.from_did) {
-          toast.error(apiData.errors.from_did[0]);
-        } else if (apiData.errors.to_did) {
-          toast.error(apiData.errors.to_did[0]);
-        } else {
-          toast.error(apiData.message);
+        if (apiData.error) {
+          toast.error(apiData.error.message);
         }
       }
       reset();
@@ -334,12 +330,14 @@ function SmsChat({ setLoading, loading, did }) {
                             <div>
                               <div className="messageSubject">
                                 <label>Enter Sender Number</label>
-                                <select className="formItem rounded-3 p-2 mt-1">
+                                <select className="formItem rounded-3 p-2 mt-1"
+                                  {...register("from_did")}
+                                >
                                   {did && did.length > 0 ?
                                     did.sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
                                       .map((item, index) => (
                                         <option key={index} value={item.did}>
-                                          {item.did}{item.default_sms == 1 ? ' - Default' : ''}
+                                          {item.did}{item.default_sms == 1 ? ' - (Default)' : ''}
                                         </option>
                                       ))
                                     : ""
