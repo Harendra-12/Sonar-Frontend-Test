@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../../CommonComponents/Header";
-import { Link } from "react-router-dom";
-import { featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { Link, useNavigate } from "react-router-dom";
+import { backToTop, featureUnderdevelopment, generalDeleteFunction, generalGetFunction } from "../../GlobalFunction/globalFunction";
 import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ function AccessControl() {
   const [loading, setLoading] = React.useState(true);
   const [deletePopup, setDeletePopup] = React.useState(false);
   const [deleteId, setDeleteId] = React.useState("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchData() {
@@ -30,13 +31,13 @@ function AccessControl() {
     setLoading(true);
     setDeletePopup(false);
     const apidata = await generalDeleteFunction(`/delete-all-ip-whitelists/${deleteId}`)
-    if(apidata.status){
+    if (apidata.status) {
       const newArray = accessControlList.filter((item) => item.id !== id);
       setAccessControlList(newArray);
       setDeleteId('');
       toast.success(apidata.message);
       setLoading(false);
-    }else{
+    } else {
       setDeleteId('');
       toast.error(apidata.error);
       setLoading(false);
@@ -63,22 +64,23 @@ function AccessControl() {
                           <p>You can see all list of access control</p>
                         </div>
                         <div className="buttonGroup">
-                          <button effect="ripple" className="panelButton gray">
+                          <button
+                            onClick={() => { navigate(-1); backToTop() }}
+                            className="panelButton gray">
                             <span className="text">Back</span>
                             <span className="icon">
                               <i className="fa-solid fa-caret-left"></i>
                             </span>
                           </button>
-                          <Link
-                            to="/access-control-list-add"
-                            effect="ripple"
+                          <button
+                            onClick={() => { navigate("/access-control-list-add"); backToTop() }}
                             className="panelButton"
                           >
                             <span className="text">Add</span>
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
                             </span>
-                          </Link>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -116,12 +118,12 @@ function AccessControl() {
                                                 {item.description}
                                               </td>
                                               <td>{item?.role?.name}</td>
-                                              <td onClick={()=>featureUnderdevelopment()}>
+                                              <td onClick={() => featureUnderdevelopment()}>
                                                 <button className="tableButton edit mx-auto">
                                                   <i className="fa-solid fa-pencil" />
                                                 </button>
                                               </td>
-                                              <td onClick={() => {setDeletePopup(true);setDeleteId(item.id)}}>
+                                              <td onClick={() => { setDeletePopup(true); setDeleteId(item.id) }}>
                                                 <button className="tableButton delete mx-auto">
                                                   <i className="fa-solid fa-trash" />
                                                 </button>
@@ -152,51 +154,51 @@ function AccessControl() {
         </section>
       </div>
       {deletePopup ? (
-          <div className="popup">
-            <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-4 col-md-5">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
-                    </div>
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4 col-md-5">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Warning!</h4>
-                    <p>
-                      Are you sure you want to delete this access control?
-                    </p>
-                    <div className="d-flex justify-content-between">
-                     
-                        <button
-                          disabled={loading}
-                          className="panelButton m-0"
-                         onClick={() => handleDelete(deleteId)}
-                        >
-                          <span className="text">Confirm</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        </button>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure you want to delete this access control?
+                  </p>
+                  <div className="d-flex justify-content-between">
 
-                      <button
-                        className="panelButton gray m-0 float-end"
-                        onClick={() => setDeletePopup(false)}
-                      >
-                        <span className="text">Cancel</span>
-                        <span className="icon">
-                          <i className="fa-solid fa-xmark"></i>
-                        </span>
-                      </button>
-                    </div>
+                    <button
+                      disabled={loading}
+                      className="panelButton m-0"
+                      onClick={() => handleDelete(deleteId)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => setDeletePopup(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          ""
-        )}
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 }
