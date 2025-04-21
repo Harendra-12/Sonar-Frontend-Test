@@ -519,6 +519,8 @@ function CdrReport({ page }) {
     setEndDateFlag("");
     setTimeFlag({ startTime: "", endTime: "" });
     setTimeFilter({ startTime: "", endTime: "" });
+    setIsSorting("");
+    setSortingValue("");
 
     setTimeout(() => {
       refreshCallData();
