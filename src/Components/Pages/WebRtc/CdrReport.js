@@ -892,7 +892,7 @@ function CdrReport({ page }) {
                           </div>
                           {isSorting && <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              {isSorting === "record" ? "Select Recordings" : "Select Duration"}
+                              {isSorting === "record" ? "Select Size" : "Select Duration"}
                             </label>
                             <select
                               className="formItem"
