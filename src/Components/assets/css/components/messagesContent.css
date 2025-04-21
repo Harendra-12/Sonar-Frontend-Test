@@ -221,3 +221,94 @@
     font-size: 13px;
     font-weight: 400
 }
+
+
+
+
+/* ============================================================================ webrtc new message ui changes style here  */
+
+
+.webrtc_newMessageUi .tabLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid #f3f3f3 !important;
+}
+.webrtc_newMessageUi .tabLink:last-child{
+    border: none !important;
+}
+
+.webrtc_newMessageUi .tabLink i {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(33, 150, 243, 0.09);
+    font-size: 12px !important;
+    color: var(--ui-accent);
+}
+
+.mainContentApp .webrtc_newMessageUi .tabLink.active {
+    color: var(--ui-accent) !important;
+    border-bottom: 3px solid var(--ui-accent) !important;
+    border: none;
+    background: rgba(62, 142, 247, 0.11);
+}
+
+.webrtc_newMessageUi {
+    background: #f0f1f7;
+    padding: 10px 10px;
+}
+
+.webrtc_newMessageUi .messageOverlay {
+    background: #fff;
+    border-radius: 10px;
+    border-left: 0 !important;
+}
+
+.webrtc_newMessageUi .nav.nav-tabs {
+    border-block: 1px solid #f3f3f3;
+}
+.mainContentApp .webrtc_newMessageUi .tabLink {
+    padding: 10px 24px;
+}
+.webrtc_newMessageUi .chatHeading {
+    background:transparent;
+    padding: 10px 10px;
+    border: none;
+}
+.webrtc_newMessageUi .chatHeading h5 {
+   color: #797a7c;
+}
+.mainContentApp .webrtc_newMessageUi .contactListItem {
+   min-height: auto;
+   border-bottom: 0 !important;
+}
+.webrtc_newMessageUi #profileOfflineNav::before{
+    background-color: #26bf94;
+    border: 2px solid #fff;
+    z-index: 1;
+}
+.webrtc_newMessageUi #profileOfflineNav::after {
+    border: 1px solid #26bf94;
+}
+.mainContentApp .webrtc_newMessageUi .tab-content .contactListItem.selected{
+    background: #f7f8f9 !important;
+    border-right: 0 !important;
+}
+
+.mainContentApp .webrtc_newMessageUi .profileHolder {
+    width: 40px;
+    height: 40px;
+    box-shadow: none;
+}
+
+.webrtc_newMessageUi .callListItem:hover, .mainContentApp .webrtc_newMessageUi .tab-content .contactListItem:hover {
+    background-color: #f7f8f9;
+}
+.mainContentApp .webrtc_newMessageUi .contactListItem h4{
+    font-size: 0.875rem !important;
+}

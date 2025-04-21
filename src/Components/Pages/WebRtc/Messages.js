@@ -351,11 +351,11 @@ function Messages({
         let messager;
         let messageContent;
         try {
-         if(selectedUrl){
-          messageContent=selectedUrl
-         }else{
-          messageContent = messageInput.trim();
-         }
+          if (selectedUrl) {
+            messageContent = selectedUrl
+          } else {
+            messageContent = messageInput.trim();
+          }
           //  message if any file is selected
           messager = new Messager(userAgent, target, messageContent);
 
@@ -366,7 +366,7 @@ function Messages({
             ...prevState,
             [recipient[0]]: [
               ...(prevState[recipient[0]] || []),
-              { from: extension, body: messageInput||selectedUrl, time },
+              { from: extension, body: messageInput || selectedUrl, time },
             ],
           }));
           // Update contact last message
@@ -961,13 +961,13 @@ function Messages({
   // function to add display logic in messages
 
   // Logic to send group messages
-  function sendGroupMessage(selectedUrl) {   
+  function sendGroupMessage(selectedUrl) {
     let messageContent;
-     if(selectedUrl){
-          messageContent=selectedUrl
-         }else{
-          messageContent = messageInput.trim();
-         }
+    if (selectedUrl) {
+      messageContent = selectedUrl
+    } else {
+      messageContent = messageInput.trim();
+    }
 
     sendMessage({
       "action": "broadcastGroupMessage",
@@ -1123,7 +1123,7 @@ function Messages({
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
       )}
       <main
-        className="mainContentApp"
+        className="mainContentApp "
         style={{
           marginRight:
             sessions.length > 0 && Object.keys(sessions).length > 0
@@ -1132,9 +1132,7 @@ function Messages({
         }}
       >
         <section>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-12 ps-xl-0">
+              <div className="w-100 p-0">
                 <div className="newHeader">
                   <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
@@ -1197,7 +1195,7 @@ function Messages({
                           </div> */}
 
 
-<i class="fa-solid fa-right-from-bracket"></i>
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li
@@ -1246,15 +1244,18 @@ function Messages({
                   </div>
                 </div>
               </div>
+          <div className="container-fluid ">
+  
+            <div className="row webrtc_newMessageUi">
 
               <div
-                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0"
+                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0 bg-white rounded-3"
                 style={{
                   height: "100%",
-                  borderRight: "1px solid var(--border-color)",
+                  // borderRight: "1px solid var(--border-color)",
                 }}
               >
-                <div className="col-auto" style={{ padding: "0 10px" }}>
+                {/* <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
                     <span>
@@ -1269,7 +1270,7 @@ function Messages({
                       )}
                     </span>
                   </h5>
-                </div>
+                </div> */}
                 {/* <div className="col-auto" style={{ padding: "0 10px" }}>
                   <button
                     className="clearColorButton dark"
@@ -1278,7 +1279,7 @@ function Messages({
                     <i className="fa-light fa-pen-to-square"></i> New Chat
                   </button>
                 </div> */}
-                <div className="col-12 mt-3" style={{ padding: "0 10px" }}>
+                <div className="col-12" style={{ padding: "0 10px" }}>
                   <AgentSearch
                     getDropdownValue={setRecipient}
                     getAllAgents={setAgents}
@@ -1296,7 +1297,7 @@ function Messages({
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        All
+                       <i class="fa-regular fa-circle-dot "></i> All
                         {Object.values(unreadMessage).reduce(
                           (acc, count) => acc + count,
                           0
@@ -1319,7 +1320,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        Online
+                       <i class="fa-regular fa-user-tie"></i> Online
                       </button>
                       {/* <button
                         onClick={() => setActiveTab("tags")}
@@ -1339,7 +1340,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        Group
+                       <i class="fa-regular fa-user-group"></i> Group
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -1405,9 +1406,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          style={{
-                            borderBottom: "1px solid var(--border-color)",
-                          }}
+                          // style={{
+                          //   borderBottom: "1px solid var(--border-color)",
+                          // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1978,13 +1979,13 @@ function Messages({
                 </div>
               </div>
               <div
-                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose"
+                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose "
                 style={{ height: "100%" }}
                 id="callDetails"
               >
                 <div className="row">
-                  <div className="col">
-                    <div className="messageOverlay">
+                  <div className="col ">
+                    <div className="messageOverlay ">
                       {recipient[0] ? (
                         <div className="contactHeader">
                           <div>
@@ -3003,7 +3004,7 @@ function Messages({
         )}
         {
           fileUpload && <FileUpload type={fileType} setFileUpload={setFileUpload} setSelectedUrl={setSelectedUrl} setSelectedFile={setSelectedFile} selectedFile={selectedFile} sendSingleMessage={sendSingleMessage} sendGroupMessage={sendGroupMessage} recipient={recipient} setAllMessage={setAllMessage} allMessage={allMessage}
-         extension={extension} formatDateTime={formatDateTime}
+            extension={extension} formatDateTime={formatDateTime}
           />
         }
       </main>
