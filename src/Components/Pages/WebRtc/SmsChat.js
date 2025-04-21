@@ -73,12 +73,8 @@ function SmsChat({ setLoading, loading, did }) {
         toast.success(apiData.message);
         getAllSMSData();
       } else {
-        if (apiData.errors.from_did) {
-          toast.error(apiData.errors.from_did[0]);
-        } else if (apiData.errors.to_did) {
-          toast.error(apiData.errors.to_did[0]);
-        } else {
-          toast.error(apiData.message);
+        if (apiData.error) {
+          toast.error(apiData.error.message);
         }
       }
       reset();
@@ -328,23 +324,26 @@ function SmsChat({ setLoading, loading, did }) {
                           </div>
                         </div>
                       </div>
-                      <div className="col-12" style={{ padding: "0px 20px" }}>
-                        <div className="newMessageWrapper  mb-3">
-                          <div>
-                            <div className="messageSubject">
-                              <label>Enter Sender Number</label>
-                              <select className="formItem mt-2">
-                                {did && did.length > 0 ?
-                                  did.filter((item) => item.default_sms == 1 || item.is_secondary_sms == 1).sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
-                                    .map((item, index) => (
-                                      <option key={index} value={item.did}>
-                                        {item.did}
-                                      </option>
-                                    ))
-                                  : ""
-                                }
-                              </select>
-                              {/* <input
+                      <div className="table_card rounded-start-0 rounded-end-0" >
+                        <div className="col-12">
+                          <div className="newMessageWrapper mt-0 ">
+                            <div>
+                              <div className="messageSubject">
+                                <label>Enter Sender Number</label>
+                                <select className="formItem rounded-3 p-2 mt-1"
+                                  {...register("from_did")}
+                                >
+                                  {did && did.length > 0 ?
+                                    did.sort((a, b) => (b.default_sms == 1) - (a.default_sms == 1))
+                                      .map((item, index) => (
+                                        <option key={index} value={item.did}>
+                                          {item.did}{item.default_sms == 1 ? ' - (Default)' : ''}
+                                        </option>
+                                      ))
+                                    : ""
+                                  }
+                                </select>
+                                {/* <input
                                 type="text"
                                 defaultValue={""}
                                 {...register("from_did", { ...requiredValidator, ...numberValidator })}
@@ -352,39 +351,42 @@ function SmsChat({ setLoading, loading, did }) {
                               {errors.from_did && (
                                 <ErrorMessage text={errors.from_did.message} />
                               )} */}
-                            </div>
-                            <div className="messageSubject">
-                              <label className="mt-3">Enter Receiver Number</label>
-                              <input
-                                type="text"
-                                defaultValue={""}
-                                {...register("to_did", { ...requiredValidator, ...numberValidator })}
-                              />
-                              {errors.to_did && (
-                                <ErrorMessage text={errors.to_did.message} />
-                              )}
-                            </div>
-                            <div className="messageBody">
-                              <label>Enter your messsage</label>
-                              <textarea
-                                type="text"
-                                rows={3}
-                                defaultValue={""}
-                                {...register("message", {
-                                  ...requiredValidator,
-                                })}
-                              />
-                              {errors.message && (
-                                <ErrorMessage text={errors.message.message} />
-                              )}
-                            </div>
-                            <div className="buttonControl">
-                              <button className="panelButton" onClick={sendSMSMessage}>
-                                <span className="text">Send</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-paper-plane-top" />
-                                </span>
-                              </button>
+                              </div>
+                              <div className="messageSubject">
+                                <label className="mt-3">Enter Receiver Number</label>
+                                <input
+                                  type="text"
+                                  defaultValue={""}
+                                  className="formItem rounded-3 p-2"
+                                  {...register("to_did", { ...requiredValidator, ...numberValidator })}
+                                />
+                                {errors.to_did && (
+                                  <ErrorMessage text={errors.to_did.message} />
+                                )}
+                              </div>
+                              <div className="messageBody">
+                                <label>Enter your messsage</label>
+                                <textarea
+                                  type="text"
+                                  rows={3}
+                                  className="formItem h-auto rounded-3 p-2"
+                                  defaultValue={""}
+                                  {...register("message", {
+                                    ...requiredValidator,
+                                  })}
+                                />
+                                {errors.message && (
+                                  <ErrorMessage text={errors.message.message} />
+                                )}
+                              </div>
+                              <div className="buttonControl">
+                                <button className="panelButton" onClick={sendSMSMessage}>
+                                  <span className="text">Send</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-paper-plane-top" />
+                                  </span>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>

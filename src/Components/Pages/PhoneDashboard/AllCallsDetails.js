@@ -67,7 +67,7 @@ function AllCallsDetails() {
                             <div className="heading ">
                               <div className="d-flex flex-wrap justify-content-center align-items-center">
                                 <div className=" text-center">
-                                  <p>Agents On <br/> Calls</p>
+                                  <p>Agents On <br /> Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {activeCall.length}
                                   </h3>
@@ -305,7 +305,7 @@ function AllCallsDetails() {
                                   <div className="imageBox_wrap">
                                     <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='missed-call' />
                                   </div>
-                                  <p>Missed Inbound <br/> Calls</p>
+                                  <p>Missed Inbound <br /> Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
@@ -353,7 +353,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/total-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Total Inbound <br/>Calls</p>
+                                  <p>Total Inbound <br />Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
@@ -609,7 +609,7 @@ function AllCallsDetails() {
                     <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
                       <div className="col-xxl col-xl-12">
                         <i
-                          className="fa-duotone fa-right-left"
+                          className="fa-duotone fa-headset"
                           style={{ color: "var(--funky-boy4)" }}
                         />{" "}
                         Internal Calls{" "}
@@ -672,7 +672,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Missed Internal <br/>Calls</p>
+                                  <p>Missed Internal <br />Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i
@@ -681,7 +681,7 @@ function AllCallsDetails() {
                                     }
                                   </h3>
                                 </div>
-                             
+
                               </div>
                             </div>
                           </div>

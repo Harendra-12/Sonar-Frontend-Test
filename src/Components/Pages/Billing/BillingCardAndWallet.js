@@ -197,14 +197,12 @@ const BillingCardAndWallet = () => {
                                                                             <td>
                                                                                 {walletTransac &&
                                                                                     <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}
-                                                                                        {walletTransac?.amount || 'N/A'}
-                                                                                        {walletTransac?.prevBalance &&
-                                                                                            <div className='card_info'>
-                                                                                                <ul>
-                                                                                                    <li className='mb-1'><span className=' text-muted '>Previous Balance: </span>${walletTransac?.prevBalance}</li>
-                                                                                                </ul>
-                                                                                            </div>
-                                                                                        }
+                                                                                        ${walletTransac?.amount || 'N/A'}
+                                                                                        <div className='card_info'>
+                                                                                            <ul>
+                                                                                                <li className='mb-1'><span className=' text-muted '>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
+                                                                                            </ul>
+                                                                                        </div>
                                                                                     </span>
                                                                                 }
                                                                             </td>

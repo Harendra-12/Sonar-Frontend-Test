@@ -9,7 +9,7 @@ import PromptFunctionPopup from '../../CommonComponents/PromptFunctionPopup';
 import CircularLoader from '../../Loader/CircularLoader';
 import { useNavigate } from 'react-router-dom';
 
-function SocialMediaStore() {
+function SocialMediaStore({ refreshData }) {
     const [loading, setLoading] = useState(false);
     const [skeletonLoading, setSkeletonLoading] = useState(false);
     const [allAddons, setAllAddons] = useState([]);
@@ -52,7 +52,7 @@ function SocialMediaStore() {
             type: "SET_ACCOUNTDETAILSREFRESH",
             accountDetailsRefresh: accountDetailsRefresh + 1,
         });
-    }, [])
+    }, [refreshData])
 
     // Handle callBack for buying pop up
     function handleRechargePopup(value) {
@@ -188,7 +188,7 @@ function SocialMediaStore() {
                                                 </div>
                                                 {configuredItem ? (
                                                     <div className="d-flex align-items-center justify-content-center mt-3 gap-2">
-                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-listing') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list') : handleConfigEdit(configuredItem)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => handleConfigEdit(configuredItem)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
@@ -200,7 +200,7 @@ function SocialMediaStore() {
                                                     </div>
                                                 ) : (
                                                     <div className="mt-3">
-                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-add') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list-add') : handleConfigAdd(item.addon)}>
+                                                        <button className="checkbox_wrapper edit" onClick={() => item?.addon?.name === "ClickToCall" ? navigate('/click-to-call-listing') : item?.addon?.name === "AccessControl" ? navigate('/access-control-list') : handleConfigAdd(item.addon)}>
                                                             <span className='cartSvg addonsBtn'>
                                                                 <i className="fa-solid fa-pencil"></i>
                                                             </span>
