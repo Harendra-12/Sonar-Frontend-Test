@@ -1211,7 +1211,7 @@ function CdrFilterReport({ page }) {
                             <tbody>
                               {loading ? (
                                 <SkeletonTableLoader
-                                  col={page === "billing" ? showKeys.length : showKeys.length + 3}
+                                  col={page === "billing" ? showKeys.length : showKeys.length + 1}
                                   row={12}
                                 />
                               ) : (
@@ -1579,7 +1579,7 @@ function CdrFilterReport({ page }) {
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment}/>
+        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>
