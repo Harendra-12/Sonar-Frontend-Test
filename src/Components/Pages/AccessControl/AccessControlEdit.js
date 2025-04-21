@@ -68,15 +68,19 @@ export default function AccessControlEdit() {
         const handleDeleteIp=async(index,id)=>{
          if(id){
           try {
+           setLoading(true)
             const res=await generalDeleteFunction(`delete-ip-whitelists/${id}`)
             if(res.status){
+              setLoading(false)
               toast.success(res?.message)
               setIpAddress(ipAddress.filter((_, i) => i !== index))
             }else{
+              setLoading(false)
               // toast.error(res.message)
             }
             
           } catch (error) {
+            setLoading(false)
             toast.error(error)
           }
          }else{
@@ -240,7 +244,7 @@ export default function AccessControlEdit() {
                                 </div>
                                 <div className="col-3 mt-4">
                                   {
-                                    ipAddress.length > 1 && index>0&&
+                                    ipAddress.length > 1 &&
                                     <button type="button" className="tableButton delete mx-auto" onClick={() => { handleDeleteIp(index,item.id) }} >
                                       <i className="fa-solid fa-trash" />
                                     </button>
