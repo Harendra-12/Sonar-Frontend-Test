@@ -1020,6 +1020,7 @@ function CdrReport({ page }) {
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
+                          <th>Destination</th>
                           <th>Via/Route</th>
                           {page === "callrecording" ? (
                             ""
@@ -1166,7 +1167,7 @@ function CdrReport({ page }) {
                                       </td>
                                       <td>{item["variable_sip_from_user"]}</td>
                                       <td>{item["tag"]}</td>
-
+                                      <td>{item["variable_sip_to_user"]}</td>
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
