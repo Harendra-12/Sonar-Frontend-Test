@@ -199,7 +199,25 @@
     /* table th {
         text-wrap: nowrap;
     } */
+
+    
+element.style {
+    --progress: 0;
 }
+.circular-progress {
+    --size: 208px !important;
+    --stroke-width: 25px;
+   
+}
+
+.mainContent .circularProgressWrapper {
+   
+    height: 209px !important;
+    width: 209px !important;
+   
+}
+}
+
 
 @media (max-device-width: 1366px) {
     /* h3 {

@@ -514,8 +514,8 @@
     border: 1px solid #c9c9c970;
     border-radius: 50%;
     margin: auto;
-    height: 250px;
-    width: 250px;
+    height: 209px;
+    width: 209px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: relative;
 }
@@ -539,9 +539,9 @@
 }
 
 .circular-progress {
-    --size: 250px;
+    --size: 209px;
     --half-size: calc(var(--size) / 2);
-    --stroke-width: 25px;
+    --stroke-width: 17px;
     --radius: calc((var(--size) - var(--stroke-width)) / 2);
     /*--circumference: calc(var(--radius) * pi * 2);*/
     --circumference: calc(2 * 3.14159 * var(--radius));
