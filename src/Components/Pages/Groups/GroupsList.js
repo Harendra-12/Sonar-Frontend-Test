@@ -36,7 +36,7 @@ export default function GroupsList() {
       setLoading(true);
       try {
         const apidata = await generalGetFunction(
-          `groups/all`
+          `/groups/all`
         );
         if (apidata?.status) {
           console.log(apidata.data)
@@ -59,22 +59,7 @@ export default function GroupsList() {
 
   // Getting groups data and also update user refresh to trigger user listing api call
   useEffect(() => {
-
-    if (searchValue.trim().length === 0) {
       getGroupDashboardData();
-    } else {
-      const timer = setTimeout(() => {
-        getGroupDashboardData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-
-    if (refreshState === 0) {
-      dispatch({
-        type: "SET_ALLUSERREFRESH",
-        allUserRefresh: allUserRefresh + 1,
-      });
-    }
   }, [pageNumber, refreshState, itemsPerPage, searchValue]);
 
   async function handleDelete(id) {
