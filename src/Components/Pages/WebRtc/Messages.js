@@ -106,6 +106,8 @@ function Messages({
   const [audioUrl, setAudioURL] = useState("")
   const [sendSMSPopup, setSendSMSPopup] = useState(false);
 
+  const accountDetails = useSelector((state) => state.accountDetails);
+
   // Function to handle logout
   const handleLogOut = async () => {
     setLoading(true);
@@ -1132,120 +1134,120 @@ function Messages({
         }}
       >
         <section>
-              <div className="w-100 p-0">
-                <div className="newHeader">
-                  <div className="col-auto" style={{ padding: "0 10px" }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      Messages{" "}
-                      <button
-                        className="clearButton2"
-                        onClick={() => setContactRefresh(contactRefresh + 1)}
-                        disabled={loading}
-                      >
-                        <i
-                          className={
-                            loading
-                              ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
-                              : "fa-regular fa-arrows-rotate fs-5"
-                          }
-                          style={{ color: "var(--webUtilGray)" }}
-                        ></i>
-                      </button>
-                    </h3>
-                  </div>
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-9">
-                      <input
-                        type="search"
-                        name="Search"
-                        placeholder="Search users, groups or chat"
-                        className="formItem fw-normal"
-                        style={{ backgroundColor: "var(--searchBg)" }}
-                        onClick={() => featureUnderdevelopment()}
-                      />
-                    </div>
-                    <div className="col-auto ms-2">
-                      <button
-                        className="clearButton2 xl"
-                        effect="ripple"
-                        onClick={() => featureUnderdevelopment()}
-                      >
-                        <i className="fa-regular fa-bell" />
-                      </button>
-                    </div>
-                    <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
-                      <div className="dropdown">
-                        <div
-                          className="myProfileWidget"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          {/* <div className="profileHolder" id="profileOnlineNav">
+          <div className="w-100 p-0">
+            <div className="newHeader">
+              <div className="col-auto" style={{ padding: "0 10px" }}>
+                <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
+                  Messages{" "}
+                  <button
+                    className="clearButton2"
+                    onClick={() => setContactRefresh(contactRefresh + 1)}
+                    disabled={loading}
+                  >
+                    <i
+                      className={
+                        loading
+                          ? "fa-regular fa-arrows-rotate fs-5 fa-spin"
+                          : "fa-regular fa-arrows-rotate fs-5"
+                      }
+                      style={{ color: "var(--webUtilGray)" }}
+                    ></i>
+                  </button>
+                </h3>
+              </div>
+              <div className="d-flex justify-content-end align-items-center">
+                <div className="col-9">
+                  <input
+                    type="search"
+                    name="Search"
+                    placeholder="Search users, groups or chat"
+                    className="formItem fw-normal"
+                    style={{ backgroundColor: "var(--searchBg)" }}
+                    onClick={() => featureUnderdevelopment()}
+                  />
+                </div>
+                <div className="col-auto ms-2">
+                  <button
+                    className="clearButton2 xl"
+                    effect="ripple"
+                    onClick={() => featureUnderdevelopment()}
+                  >
+                    <i className="fa-regular fa-bell" />
+                  </button>
+                </div>
+                <DarkModeToggle marginLeft={"2"} />
+                <div className="col-auto">
+                  <div className="dropdown">
+                    <div
+                      className="myProfileWidget"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {/* <div className="profileHolder" id="profileOnlineNav">
                             <img
                               src={account?.profile_picture}
                               alt="profile"
                               onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                             />
                           </div> */}
-                          {/* <div className="profileName">
+                      {/* <div className="profileName">
                             {account?.username}{" "}
                             <span className="status">Available</span>
                           </div> */}
 
 
-                          <i class="fa-solid fa-right-from-bracket"></i>
-                        </div>
-                        <ul className="dropdown-menu">
-                          <li
-                            onClick={() => {
-                              if (allCallCenterIds.length > 0) {
-                                setAllLogOut(true);
-                              } else {
-                                handleLogOut();
-                              }
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Logout
-                            </div>
-                          </li>
-                          <li
-                            onClick={() => {
-                              sessionManager.disconnect();
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Disconnect
-                            </div>
-                          </li>
-                          <li
-                            onClick={() => {
-                              sessionManager.connect();
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Reconnect
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
+                      <i class="fa-solid fa-right-from-bracket"></i>
                     </div>
+                    <ul className="dropdown-menu">
+                      <li
+                        onClick={() => {
+                          if (allCallCenterIds.length > 0) {
+                            setAllLogOut(true);
+                          } else {
+                            handleLogOut();
+                          }
+                        }}
+                      >
+                        <div
+                          className="dropdown-item"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Logout
+                        </div>
+                      </li>
+                      <li
+                        onClick={() => {
+                          sessionManager.disconnect();
+                        }}
+                      >
+                        <div
+                          className="dropdown-item"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Disconnect
+                        </div>
+                      </li>
+                      <li
+                        onClick={() => {
+                          sessionManager.connect();
+                        }}
+                      >
+                        <div
+                          className="dropdown-item"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Reconnect
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
           <div className="container-fluid ">
-  
+
             <div className="row webrtc_newMessageUi">
 
               <div
@@ -1297,7 +1299,7 @@ function Messages({
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                       <i class="fa-regular fa-circle-dot "></i> All
+                        <i class="fa-regular fa-circle-dot "></i> All
                         {Object.values(unreadMessage).reduce(
                           (acc, count) => acc + count,
                           0
@@ -1320,7 +1322,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                       <i class="fa-regular fa-user-tie"></i> Online
+                        <i class="fa-regular fa-user-tie"></i> Online
                       </button>
                       {/* <button
                         onClick={() => setActiveTab("tags")}
@@ -1340,7 +1342,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                       <i class="fa-regular fa-user-group"></i> Group
+                        <i class="fa-regular fa-user-group"></i> Group
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -1406,9 +1408,9 @@ function Messages({
                         <div
                           className="collapse show"
                           id="collapse2"
-                          // style={{
-                          //   borderBottom: "1px solid var(--border-color)",
-                          // }}
+                        // style={{
+                        //   borderBottom: "1px solid var(--border-color)",
+                        // }}
                         >
                           {contact.map((item) => {
                             return (
@@ -1449,20 +1451,27 @@ function Messages({
                                           : "profileOfflineNav"
                                       }
                                     >
-                                      <i className="fa-light fa-user fs-5"></i>
+                                      {accountDetails?.users?.find((acc) => acc.id === item.id)?.profile_picture ?
+                                        <img
+                                          src={accountDetails?.users?.find((acc) => acc.id === item.id)?.profile_picture}
+                                          alt="profile"
+                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                        /> :
+                                        <i className="fa-light fa-user fs-5"></i>
+                                      }
                                     </div>
                                     <div className="ms-3 flex-grow-1">
-                                      <p>{item?.name} 
-                                      <span className=" text-end mb-0">
-                                      <p className="timeAgo">
-                                        {item?.last_message_data
-                                          ? formatRelativeTime(
-                                            item?.last_message_data
-                                              ?.created_at
-                                          )
-                                          : ""}
-                                      </p>
-                                    </span>
+                                      <p>{item?.name}
+                                        <span className=" text-end mb-0">
+                                          <p className="timeAgo">
+                                            {item?.last_message_data
+                                              ? formatRelativeTime(
+                                                item?.last_message_data
+                                                  ?.created_at
+                                              )
+                                              : ""}
+                                          </p>
+                                        </span>
                                       </p>
                                       <h5>
                                         {item?.last_message_data?.message_text}
@@ -1495,7 +1504,7 @@ function Messages({
                                         </span>
                                       </div> */}
                                     </div>
-                                    
+
                                   </div>
                                 </div>
                               </div>
@@ -1607,7 +1616,14 @@ function Messages({
                                       className="profileHolder"
                                       id="profileOnlineNav"
                                     >
-                                      <i className="fa-light fa-user fs-5"></i>
+                                      {accountDetails?.users?.find((acc) => acc.id === item.id)?.profile_picture ?
+                                        <img
+                                          src={accountDetails?.users?.find((acc) => acc.id === item.id)?.profile_picture}
+                                          alt="profile"
+                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                        /> :
+                                        <i className="fa-light fa-user fs-5"></i>
+                                      }
                                     </div>
                                     <div className="my-auto ms-2 ms-xl-3">
                                       <h4>{item?.username}</h4>
