@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+import CircularLoader from "../../Loader/CircularLoader";
 
 function Roles() {
   const dispatch = useDispatch();
@@ -73,11 +74,11 @@ function Roles() {
       );
     }
   }, []);
-  useEffect(() => {
-    if (rolesRefresh > 0) {
-      setLoading(false);
-    }
-  }, [rolesRefresh]);
+  // useEffect(() => {
+  //   if (rolesRefresh > 0) {
+  //     setLoading(false);
+  //   }
+  // }, [rolesRefresh]);
 
   // Handle roles select and set default permission
   useEffect(() => {
@@ -349,6 +350,7 @@ function Roles() {
       </style>
 
       <main className="mainContent">
+        {loading && <CircularLoader />}
         <section id="phonePage">
           <div className="container-fluid">
             <div className="row">
@@ -356,335 +358,261 @@ function Roles() {
             </div>
           </div>
           <div className="col-xl-12">
-            {loading ? (
-              <SkeletonFormLoader />
-            ) : (
-              <div className="overviewTableWrapper">
-                <div className="overviewTableChild">
-                  <div className="d-flex flex-wrap">
-                    <div className="col-12">
-                      <div className="heading">
-                        <div className="content">
-                          <h4>List of Roles</h4>
-                          <p>Edit existing user roles or add new ones.</p>
-                        </div>
-                        <div className="buttonGroup">
+            <div className="overviewTableWrapper">
+              <div className="overviewTableChild">
+                <div className="d-flex flex-wrap">
+                  <div className="col-12">
+                    <div className="heading">
+                      <div className="content">
+                        <h4>List of Roles</h4>
+                        <p>Edit existing user roles or add new ones.</p>
+                      </div>
+                      <div className="buttonGroup">
+                        <button
+                          onClick={() => {
+                            navigate(-1);
+                            backToTop();
+                          }}
+                          type="button"
+                          effect="ripple"
+                          className="panelButton gray"
+                        >
+                          <span className="text">Back</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-caret-left"></i>
+                          </span>
+                        </button>
+                        {checkViewSidebar(
+                          "Role",
+                          permissions,
+                          account?.permissions, "add"
+                        ) ? (
                           <button
                             onClick={() => {
-                              navigate(-1);
-                              backToTop();
+                              setAddRole(true);
+                              setAddRolePopup(true);
+                              setEditClick(false);
+                              setAddSelectedRoleId("");
                             }}
                             type="button"
                             effect="ripple"
-                            className="panelButton gray"
+                            className="panelButton"
                           >
-                            <span className="text">Back</span>
+                            <span className="text">Add</span>
                             <span className="icon">
-                              <i className="fa-solid fa-caret-left"></i>
+                              <i className="fa-solid fa-plus"></i>
                             </span>
                           </button>
-                          {checkViewSidebar(
-                            "Role",
-                            permissions,
-                            account?.permissions, "add"
-                          ) ? (
-                            <button
-                              onClick={() => {
-                                setAddRole(true);
-                                setAddRolePopup(true);
-                                setEditClick(false);
-                                setAddSelectedRoleId("");
-                              }}
-                              type="button"
-                              effect="ripple"
-                              className="panelButton"
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              effect="ripple"
-                              className="panelButton "
-                              disabled
-                              style={{ cursor: "not-allowed" }}
-                            >
-                              <span className="text">Add</span>
-                              <span className="icon">
-                                <i className="fa-solid fa-plus"></i>
-                              </span>
-                            </button>
-                          )}
-                        </div>
+                        ) : (
+                          <button
+                            type="button"
+                            effect="ripple"
+                            className="panelButton "
+                            disabled
+                            style={{ cursor: "not-allowed" }}
+                          >
+                            <span className="text">Add</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-plus"></i>
+                            </span>
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="col-12" style={{ padding: "25px 23px" }}>
-                    <div className="row masterList">
-                      <div
-                        className="col-xl-4 "
-                        style={{ borderRight: "1px solid var(--border-color)" }}
-                      >
-                        <div className="masterSegment">
-                          <ul>
-                            {role &&
-                              role.map((item, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    onClick={() => {
-                                      setSelectedRoleId(item.id);
-                                      setSelectedRole(item.name);
-                                      setSelectedIsDefault(
-                                        () => item?.is_default
-                                      );
-                                      setSelectedPermission(
-                                        item?.permissions?.map((item) => {
-                                          return item.permission_id;
-                                        })
-                                      );
-                                    }}
-                                    className={
-                                      selectedRoleId === item.id ? "active" : ""
-                                    }
-                                  >
-                                    <div className="col-xl-8 col-7" >
-                                      <input
-                                        type="text"
-                                        placeholder={item.name}
-                                        onChange={(e) =>
-                                          setUpdateRole(e.target.value)
-                                        }
-                                        disabled={
-                                          editIndex === index ? false : true
-                                        }
-                                        ref={(el) =>
-                                          (inputRefs.current[index] = el)
-                                        }
-                                      ></input>
-                                    </div>
-                                    <div className="col-auto d-flex justify-content-end" >
-                                      {item.is_default === 0 ? (
-                                        <div className="d-flex justify-content-end">
-                                          <button
-                                            className={
-                                              editIndex === index
-                                                ? "tableButton edit"
-                                                : "tableButton"
-                                            }
-                                          >
-                                            {editIndex === index ? (
-                                              <Tippy content="Save Updated Role title">
-                                                <i
-                                                  className="fa-solid fa-check"
-                                                  onClick={() => {
-                                                    setPopup(true);
-                                                    setEditClick(true);
-                                                    setAddRole(false);
-                                                  }}
-                                                ></i>
-                                              </Tippy>
-                                            ) : (
-                                              <Tippy content="Edit Role title">
-                                                <i
-                                                  className="fa-solid fa-pen-to-square"
-                                                  onClick={() => {
-                                                    setTimeout(() => {
-                                                      inputRefs.current[
-                                                        index
-                                                      ]?.focus(); // Focus on the specific input
-                                                    }, 0);
-                                                    setEditIndex(index);
-                                                    setSelectedRoleId(item.id);
-                                                    setSelectedRole(item.name);
-                                                    setSelectedPermission(
-                                                      item?.permissions?.map(
-                                                        (item) => {
-                                                          return item.permission_id;
-                                                        }
-                                                      )
-                                                    );
-                                                  }}
-                                                ></i>
-                                              </Tippy>
-                                            )}
-                                          </button>
-                                          <button className="tableButton delete mx-2">
-                                            <i
-                                              className="fa-solid fa-trash"
-                                              onClick={() => {
-                                                setPopup(true);
-                                                setDeleteIndex(index);
-                                                setEditClick(false);
-                                                setAddRole(false);
-                                                setSelectedRoleId(item.id);
-                                                setSelectedRole(item.name);
-                                                setSelectedPermission(
-                                                  item.permissions?.map(
-                                                    (item) => {
-                                                      return item.permission_id;
-                                                    }
-                                                  )
-                                                );
-                                              }}
-                                            ></i>
-                                          </button>
-                                        </div>
-                                      ) : (
-                                        <></>
-                                      )}
-                                      <button className="tableButton">
-                                        <i
-                                          className="fa-solid fa-sliders"
-                                          onClick={() => {
-                                            setSelectedRoleId(item.id);
-                                            setSelectedRole(item.name);
-                                            setSelectedIsDefault(
-                                              () => item?.is_default
-                                            );
-                                            setSelectedPermission(
-                                              item?.permissions?.map((item) => {
-                                                return item.permission_id;
-                                              })
-                                            );
-                                          }}
-                                        ></i>
-                                      </button>
-                                    </div>
-                                  </li>
-                                );
-                              })}
-                          </ul>
-                        </div>
-                      </div>
-                      {selectedRoleId && (
-                        <div className="col-xl-8 pe-xl-0">
-                          <div className="profileView p-0 pb-2 ">
-                            <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
-                              <div
-                                className="col-xl-12"
-                                style={{
-                                  position: "sticky",
-                                  top: 0,
-                                  backgroundColor: "var(--ele-color)",
-                                  zIndex: 9,
-                                }}
-                              >
-                                <div className="headerCommon d-flex justify-content-between align-items-center pe-0">
-                                  <div className="col">
-                                    Permissions for{" "}
-                                    <span
-                                      style={{
-                                        color: "var(--ui-accent)",
-                                        fontWeight: 600,
-                                        textTransform: "capitalize",
-                                      }}
-                                    >
-                                      {selectedRole}
-                                    </span>
+                </div>
+                <div className="col-12" style={{ padding: "25px 23px" }}>
+                  <div className="row masterList">
+                    <div
+                      className="col-xl-4 "
+                      style={{ borderRight: "1px solid var(--border-color)" }}
+                    >
+                      <div className="masterSegment">
+                        <ul>
+                          {role &&
+                            role.map((item, index) => {
+                              return (
+                                <li
+                                  key={index}
+                                  onClick={() => {
+                                    setSelectedRoleId(item.id);
+                                    setSelectedRole(item.name);
+                                    setSelectedIsDefault(
+                                      () => item?.is_default
+                                    );
+                                    setSelectedPermission(
+                                      item?.permissions?.map((item) => {
+                                        return item.permission_id;
+                                      })
+                                    );
+                                  }}
+                                  className={
+                                    selectedRoleId === item.id ? "active" : ""
+                                  }
+                                >
+                                  <div className="col-xl-8 col-7" >
+                                    <input
+                                      type="text"
+                                      placeholder={item.name}
+                                      onChange={(e) =>
+                                        setUpdateRole(e.target.value)
+                                      }
+                                      disabled={
+                                        editIndex === index ? false : true
+                                      }
+                                      ref={(el) =>
+                                        (inputRefs.current[index] = el)
+                                      }
+                                    ></input>
                                   </div>
-                                  {selectedIsDefault === 1 ? (
-                                    <></>
-                                  ) : (
-                                    <>
-                                      {" "}
-                                      <div className="col-auto text-end">
+                                  <div className="col-auto d-flex justify-content-end" >
+                                    {item.is_default === 0 ? (
+                                      <div className="d-flex justify-content-end">
                                         <button
-                                          className="panelButton ms-auto"
-                                          onClick={() =>
-                                            handlePermissionSave(false)
+                                          className={
+                                            editIndex === index
+                                              ? "tableButton edit"
+                                              : "tableButton"
                                           }
                                         >
-                                          <span className="text">Confirm</span>
-                                          <span className="icon">
-                                            <i className="fa-solid fa-check"></i>
-                                          </span>
+                                          {editIndex === index ? (
+                                            <Tippy content="Save Updated Role title">
+                                              <i
+                                                className="fa-solid fa-check"
+                                                onClick={() => {
+                                                  setPopup(true);
+                                                  setEditClick(true);
+                                                  setAddRole(false);
+                                                }}
+                                              ></i>
+                                            </Tippy>
+                                          ) : (
+                                            <Tippy content="Edit Role title">
+                                              <i
+                                                className="fa-solid fa-pen-to-square"
+                                                onClick={() => {
+                                                  setTimeout(() => {
+                                                    inputRefs.current[
+                                                      index
+                                                    ]?.focus(); // Focus on the specific input
+                                                  }, 0);
+                                                  setEditIndex(index);
+                                                  setSelectedRoleId(item.id);
+                                                  setSelectedRole(item.name);
+                                                  setSelectedPermission(
+                                                    item?.permissions?.map(
+                                                      (item) => {
+                                                        return item.permission_id;
+                                                      }
+                                                    )
+                                                  );
+                                                }}
+                                              ></i>
+                                            </Tippy>
+                                          )}
+                                        </button>
+                                        <button className="tableButton delete mx-2">
+                                          <i
+                                            className="fa-solid fa-trash"
+                                            onClick={() => {
+                                              setPopup(true);
+                                              setDeleteIndex(index);
+                                              setEditClick(false);
+                                              setAddRole(false);
+                                              setSelectedRoleId(item.id);
+                                              setSelectedRole(item.name);
+                                              setSelectedPermission(
+                                                item.permissions?.map(
+                                                  (item) => {
+                                                    return item.permission_id;
+                                                  }
+                                                )
+                                              );
+                                            }}
+                                          ></i>
                                         </button>
                                       </div>
-                                    </>
-                                  )}
-                                </div>
-                              </div>
-                              {selectedRole === "Agent" ? (
-                                <div className="d-flex flex-column">
-                                  <span>
-                                    This will apper only for agents (Agents will
-                                    only access webrtc)
-                                  </span>
-                                  <div className="accordion permissionListWrapper">
-                                    {filteredPermission &&
-                                      Object.keys(filteredPermission).map(
-                                        (item, key) => (
-                                          <div
-                                            className="accordion-item"
-                                            key={key}
-                                          >
-                                            <h2
-                                              className="accordion-header"
-                                              id={`collapseHeading${key}`}
-                                            >
-                                              <button
-                                                className="accordion-button collapsed"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target={`#collapseRole${key}`}
-                                                aria-expanded="true"
-                                                aria-controls={`collapse${key}`}
-                                              >
-                                                <input
-                                                  type="checkbox"
-                                                  checked={parentChecked[item]}
-                                                  onChange={() =>
-                                                    handleParentCheckboxChange(
-                                                      item
-                                                    )
-                                                  }
-                                                />
-
-                                                <label>{item}</label>
-                                              </button>
-                                            </h2>
-                                            <div
-                                              id={`collapseRole${key}`}
-                                              className="accordion-collapse collapse"
-                                              aria-labelledby={`collapseHeading${key}`}
-                                            >
-                                              <div className="accordion-body">
-                                                {filteredPermission[item].map(
-                                                  (innerItem, key) => (
-                                                    <div
-                                                      className="col-xxl col-auto col-md-4 col-6"
-                                                      key={key}
-                                                    >
-                                                      <input
-                                                        type="checkbox"
-                                                        id={`permission-${innerItem.id}`}
-                                                        checked={selectedPermission.includes(
-                                                          innerItem.id
-                                                        )}
-                                                        onChange={() =>
-                                                          handleCheckboxChange(
-                                                            innerItem.id
-                                                          )
-                                                        }
-                                                      />
-                                                      <label className="formLabel ms-2 text-capitalize">
-                                                        {innerItem.action}
-                                                      </label>
-                                                    </div>
-                                                  )
-                                                )}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        )
-                                      )}
+                                    ) : (
+                                      <></>
+                                    )}
+                                    <button className="tableButton">
+                                      <i
+                                        className="fa-solid fa-sliders"
+                                        onClick={() => {
+                                          setSelectedRoleId(item.id);
+                                          setSelectedRole(item.name);
+                                          setSelectedIsDefault(
+                                            () => item?.is_default
+                                          );
+                                          setSelectedPermission(
+                                            item?.permissions?.map((item) => {
+                                              return item.permission_id;
+                                            })
+                                          );
+                                        }}
+                                      ></i>
+                                    </button>
                                   </div>
+                                </li>
+                              );
+                            })}
+                        </ul>
+                      </div>
+                    </div>
+                    {selectedRoleId && (
+                      <div className="col-xl-8 pe-xl-0">
+                        <div className="profileView p-0 pb-2 ">
+                          <div className="profileDetailsHolder position-relative p-0 shadow-none border-0">
+                            <div
+                              className="col-xl-12"
+                              style={{
+                                position: "sticky",
+                                top: 0,
+                                backgroundColor: "var(--ele-color)",
+                                zIndex: 9,
+                              }}
+                            >
+                              <div className="headerCommon d-flex justify-content-between align-items-center pe-0">
+                                <div className="col">
+                                  Permissions for{" "}
+                                  <span
+                                    style={{
+                                      color: "var(--ui-accent)",
+                                      fontWeight: 600,
+                                      textTransform: "capitalize",
+                                    }}
+                                  >
+                                    {selectedRole}
+                                  </span>
                                 </div>
-                              ) : (
+                                {selectedIsDefault === 1 ? (
+                                  <></>
+                                ) : (
+                                  <>
+                                    {" "}
+                                    <div className="col-auto text-end">
+                                      <button
+                                        className="panelButton ms-auto"
+                                        onClick={() =>
+                                          handlePermissionSave(false)
+                                        }
+                                      >
+                                        <span className="text">Confirm</span>
+                                        <span className="icon">
+                                          <i className="fa-solid fa-check"></i>
+                                        </span>
+                                      </button>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                            {selectedRole === "Agent" ? (
+                              <div className="d-flex flex-column">
+                                <span>
+                                  This will apper only for agents (Agents will
+                                  only access webrtc)
+                                </span>
                                 <div className="accordion permissionListWrapper">
                                   {filteredPermission &&
                                     Object.keys(filteredPermission).map(
@@ -754,16 +682,86 @@ function Roles() {
                                       )
                                     )}
                                 </div>
-                              )}
-                            </div>
+                              </div>
+                            ) : (
+                              <div className="accordion permissionListWrapper">
+                                {filteredPermission &&
+                                  Object.keys(filteredPermission).map(
+                                    (item, key) => (
+                                      <div
+                                        className="accordion-item"
+                                        key={key}
+                                      >
+                                        <h2
+                                          className="accordion-header"
+                                          id={`collapseHeading${key}`}
+                                        >
+                                          <button
+                                            className="accordion-button collapsed"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target={`#collapseRole${key}`}
+                                            aria-expanded="true"
+                                            aria-controls={`collapse${key}`}
+                                          >
+                                            <input
+                                              type="checkbox"
+                                              checked={parentChecked[item]}
+                                              onChange={() =>
+                                                handleParentCheckboxChange(
+                                                  item
+                                                )
+                                              }
+                                            />
+
+                                            <label>{item}</label>
+                                          </button>
+                                        </h2>
+                                        <div
+                                          id={`collapseRole${key}`}
+                                          className="accordion-collapse collapse"
+                                          aria-labelledby={`collapseHeading${key}`}
+                                        >
+                                          <div className="accordion-body">
+                                            {filteredPermission[item].map(
+                                              (innerItem, key) => (
+                                                <div
+                                                  className="col-xxl col-auto col-md-4 col-6"
+                                                  key={key}
+                                                >
+                                                  <input
+                                                    type="checkbox"
+                                                    id={`permission-${innerItem.id}`}
+                                                    checked={selectedPermission.includes(
+                                                      innerItem.id
+                                                    )}
+                                                    onChange={() =>
+                                                      handleCheckboxChange(
+                                                        innerItem.id
+                                                      )
+                                                    }
+                                                  />
+                                                  <label className="formLabel ms-2 text-capitalize">
+                                                    {innerItem.action}
+                                                  </label>
+                                                </div>
+                                              )
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )
+                                  )}
+                              </div>
+                            )}
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </section>
         {/*  Add new role */}

@@ -258,7 +258,7 @@
 
   --text-blue-dark: #d6e3ff;
   --text-timer-color: #fff;
-    --black: #fff;
+  --black: #fff;
   --white: #2d2f39;
   --gray: #f9f9f9;
   --listing-color2: #a8d0ff;
@@ -497,4 +497,8 @@ ul {
 
 .tippy-arrow {
   color: var(--ele-color) !important;
+}
+
+.theme-transition * {
+  transition: background-color 0.3s ease, color 0.3s ease !important;
 }
