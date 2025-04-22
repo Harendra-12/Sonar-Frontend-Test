@@ -353,7 +353,7 @@ const Users = () => {
 
                                     return (
                                       <tr key={index}>
-                                        <td>
+                                        <td style={{width:"180px"}}>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">
                                               {item.profile_picture ? (
@@ -368,7 +368,7 @@ const Users = () => {
                                             <div className="ms-2">{item.username}</div>
                                           </div>
                                         </td>
-                                        <td>
+                                        <td  style={{width:"176px"}}>
                                           {item.extension?.extension || "N/A"}
                                         </td>
                                         {/* <td
@@ -380,10 +380,10 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                        <td>
+                                        <td  style={{width:"106px"}}>
                                           {item?.user_role?.roles?.name}
                                         </td>
-                                        <td
+                                        <td  style={{width:"129px"}}
                                           onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
@@ -392,7 +392,7 @@ const Users = () => {
                                         >
                                           {item?.usages}
                                         </td>
-                                        <td >
+                                        <td  style={{width:"156px"}}>
                                           <span
                                             className={
                                               onlineUser.includes(item.id)
@@ -413,7 +413,7 @@ const Users = () => {
                                             <i className="fa-solid fa-pencil"></i>
                                           </button>
                                         </td>}
-                                        <td
+                                        <td  style={{width:"129px"}}
                                         // onClick={() =>
                                         //   handleStatusChange(item.id, item.status)
                                         // }
@@ -449,7 +449,7 @@ const Users = () => {
                                                 </div>
                                           </div>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td>
+                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td style={{width:"150px"}} >
                                           <button
                                             className="tableButton delete mx-auto"
                                             onClick={() => {

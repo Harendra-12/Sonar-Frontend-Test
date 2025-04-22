@@ -200,7 +200,7 @@ const BillingCardAndWallet = () => {
                                                                                         ${walletTransac?.amount || 'N/A'}
                                                                                         <div className='card_info'>
                                                                                             <ul>
-                                                                                                <li className='mb-1'><span className=' text-muted '>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
+                                                                                                <li className='mb-1'><span className=' text-muted0 '>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
                                                                                             </ul>
                                                                                         </div>
                                                                                     </span>

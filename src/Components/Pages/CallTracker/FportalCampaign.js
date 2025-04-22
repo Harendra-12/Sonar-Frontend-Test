@@ -74,8 +74,8 @@ function FportalCampaign() {
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
-                      <h4>Campaigns</h4>
-                      <p>You can see the list of campaigns</p>
+                      <h4>  Forwarding Portal Campaigns</h4>
+                      <p>You can see the list of Forwarding Portal campaigns</p>
                     </div>
                     <div className="buttonGroup">
                       <button className="panelButton gray">
@@ -168,7 +168,7 @@ function FportalCampaign() {
                                 <p>0.00%</p>
                                 <span>0 of 1000</span>
                               </div>
-                              <div className="specialProgressWrapDetails">
+                              {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
                                     style={{
@@ -279,7 +279,7 @@ function FportalCampaign() {
                                     </div>
                                   </li>
                                 </ul>
-                              </div>
+                              </div> */}
                             </div>
                           </td>
                           <td>

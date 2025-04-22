@@ -924,13 +924,14 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                                <NavLink
+                                to="/call-forwarding-campaign"
+                                  onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
                                     [
-                                      "/extensions-add",
-                                      "/extensions-edit",
+                                      "/call-forwarding-campaign-create",
+                                      "/call-forwarding-campaign-create",
                                     ].some((path) =>
                                       window.location.pathname.includes(path)
                                     )
@@ -939,7 +940,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Campaign</div>
-                                </Link>
+                                </NavLink>
                               </li>
 
                               <li className="tabItem ">
@@ -958,6 +959,7 @@ function Navbar() {
                                   <div className="itemTitle">Buyers</div>
                                 </NavLink>
                               </li>
+
 
                               <li className="tabItem ">
                                 <NavLink
@@ -1535,10 +1537,10 @@ function Navbar() {
 
                           <li className="tabItem ">
                             <NavLink
-                              to="/billing-report"
+                              to="/billing-dashboard"
                               className={({ isActive }) =>
                                 isActive ||
-                                ["/extensions-add", "/extensions-edit"].some(
+                                ["/billing-dashboard", "/billing-dashboard"].some(
                                   (path) =>
                                     window.location.pathname.includes(path)
                                 )
@@ -1546,7 +1548,7 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              <div className="itemTitle">Reports</div>
+                              <div className="itemTitle">Billing Dashboard</div>
                             </NavLink>
                           </li>
                         </ul>
