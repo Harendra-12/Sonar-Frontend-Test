@@ -23,6 +23,9 @@ import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
+
+
+
 const DidConfig = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -149,6 +152,11 @@ const DidConfig = () => {
     }
   }, [watch("forward"), setValue]);
 
+  /**
+   * Sets the value of the "action" field in the form to the first element
+   * of the given array (value[0]).
+   * @param {Array} value An array with the selected value as the first element.
+   */
   const actionListValue = (value) => {
     setValue("action", value[0]);
   };
@@ -238,6 +246,9 @@ const DidConfig = () => {
     }
   });
 
+/**
+ * Function to open the add music popup and reset the value of hold_music in the form
+ */
   const handleAddMusic = () => {
     setValue("hold_music", "");
     setShowMusic(true);

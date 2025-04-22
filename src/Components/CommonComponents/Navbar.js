@@ -365,7 +365,7 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {checkViewSidebar(
+                          {/* {checkViewSidebar(
                             "DidDetail",
                             permissions,
                             account?.permissions
@@ -379,7 +379,7 @@ function Navbar() {
                                   <div className="itemTitle">Get DID</div>
                                 </NavLink>
                               </li>
-                            )}
+                            )} */}
                           {checkViewSidebar(
                             "Port",
                             permissions,
@@ -430,7 +430,7 @@ function Navbar() {
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              <div className="itemTitle">New Get DID</div>
+                              <div className="itemTitle">Get DID</div>
                             </NavLink>
                           </li>
                         </ul>
@@ -447,7 +447,6 @@ function Navbar() {
                         isChildActive([
                           "/phone-dashboard",
                           "/agent-dashboard",
-
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",

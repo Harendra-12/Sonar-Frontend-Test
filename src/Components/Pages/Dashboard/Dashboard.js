@@ -53,10 +53,12 @@ const Dashboard = () => {
       }
       getData();
     }
+    if (permissionRefresh === 0) {
       dispatch({
-      type: "SET_PERMISSION_REFRESH",
-      permissionRefresh: permissionRefresh + 1,
-    });
+        type: "SET_PERMISSION_REFRESH",
+        permissionRefresh: permissionRefresh + 1,
+      });
+    }
   }, [])
 
   // Setting clock for the selected timnezone
