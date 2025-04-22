@@ -236,9 +236,18 @@ const CallQueueDetails = () => {
                                 {call.agents.map(
                                   (item, index) => (
                                     <li key={index}>
-                                      <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                        {item?.username}
-                                      </div>
+                                      <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
+                                          <span className="avatar-container">
+                                            {
+                                              item.profile_picture ?
+                                                <img
+                                                  alt="profile"
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                /> : <i className="fa-light fa-user"></i>}
+                                          </span>
+                                          <span className="ms-2">{item?.username}</span>
+                                        </div>
                                     </li>
                                   )
                                 )}
@@ -248,7 +257,12 @@ const CallQueueDetails = () => {
                               </Link>
                             </li>} */}
                               </ul>
-                            } allowHTML={true} placement="bottom" interactive={true} popperOptions={{ strategy: 'fixed' }}>
+                            }
+                              allowHTML={true}
+                              placement="bottom"
+                              interactive={true}
+                              popperOptions={{ strategy: 'fixed' }}
+                            >
                               <div className="hover-dropdown">
                                 <div className="avatar-container">
                                   {call.agents?.slice(0, 4).map((item, index) => {
@@ -256,7 +270,7 @@ const CallQueueDetails = () => {
                                       <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
                                     )
                                   })}
-                                  {call.agents.length > 4 && <span>+2</span>}
+                                  {call.agents.length > 4 && <span>+{call?.agents?.length - 4}</span>}
                                 </div>
                               </div>
                             </Tippy>
