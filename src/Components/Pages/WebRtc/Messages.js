@@ -17,7 +17,7 @@ import {
 } from "../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import CircularLoader from "../../Loader/CircularLoader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tippy from "@tippyjs/react";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useForm } from "react-hook-form";
@@ -1197,7 +1197,7 @@ function Messages({
                           </div> */}
 
 
-                      <i class="fa-solid fa-right-from-bracket"></i>
+                      <i className="fa-solid fa-right-from-bracket"></i>
                     </div>
                     <ul className="dropdown-menu">
                       <li
@@ -1299,7 +1299,7 @@ function Messages({
                         data-category="all"
                         onClick={() => setActiveTab("all")}
                       >
-                        <i class="fa-regular fa-circle-dot "></i> All
+                        <i className="fa-regular fa-circle-dot "></i> All
                         {Object.values(unreadMessage).reduce(
                           (acc, count) => acc + count,
                           0
@@ -1322,7 +1322,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-user-tie"></i> Online
+                        <i className="fa-regular fa-user-tie"></i> Online
                       </button>
                       {/* <button
                         onClick={() => setActiveTab("tags")}
@@ -1342,7 +1342,7 @@ function Messages({
                         effect="ripple"
                         data-category="incoming"
                       >
-                        <i class="fa-regular fa-user-group"></i> Group
+                        <i className="fa-regular fa-user-group"></i> Group
                       </button>
                       {/* <button
                         onClick={() => setSendSMSPopup(true)}
@@ -1560,6 +1560,8 @@ function Messages({
                             })
                           }
                         </div>
+
+
                       </div>
                     </div>
                   ) : activeTab === "online" ? (
@@ -1994,6 +1996,7 @@ function Messages({
                             );
                           })
                         }
+
                       </div>
                     </div>
                   )}
@@ -2001,31 +2004,31 @@ function Messages({
               </div>
               <div
                 className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi"
-                style={{ height: "100%" }}
+                // style={{ height: "100%" }}
                 id="callDetails"
               >
-                <div className="row">
-                  <div className="col ">
-                    <div className="messageOverlay ">
+                <div className="row h-100">
+                  <div className="col h-100">
+                    <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
                           <div>
-                          <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                            <div
-                              className="profileHolder"
-                              id={"profileOfflineNav"}
-                            >
-                              <i className="fa-light fa-users fs-5"></i>
-                            </div>
-                            <h4 className="">
-                              {/* {
+                            <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
+                              <div
+                                className="profileHolder"
+                                id={"profileOfflineNav"}
+                              >
+                                <i className="fa-light fa-users fs-5"></i>
+                              </div>
+                              <h4 className="">
+                                {/* {
                                 contact?.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
                               }{" "}-
                               {" "} */}
-                              {recipient[0]}
-                            </h4>
+                                {recipient[0]}
+                              </h4>
                             </div>
                             {/* <h4>{recipient[0]}</h4> */}
                             <div className="contactTags">
@@ -2263,7 +2266,7 @@ function Messages({
                       ) : (
                         ""
                       )}
-                      <div className="messageContent">
+                      <div className="messageContent position-relative">
                         <div className="messageList" ref={messageListRef}>
 
                           {recipient[0] ? (
@@ -2465,7 +2468,8 @@ function Messages({
                                 </div>
                               </nav>
                             </div>
-                            <div className="tab-content textSms" id="nav-tabContent">
+                            <div className="d-flex w-100">
+                            <div className="tab-content textSms me-2" id="nav-tabContent">
                               <div
                                 className="tab-pane fade show active"
                                 id="nav-im"
@@ -2518,7 +2522,7 @@ function Messages({
                               </div>
                             </div>
 
-                            <div className=" d-flex justify-content-between align-items-center gap-2">
+                            <div className=" d-flex justify-content-between align-items-start gap-2">
                               <div className="d-flex gap-1">
                                 <button
                                   className="clearButton2 eraser"
@@ -2561,6 +2565,7 @@ function Messages({
                                   <i className="fa-solid fa-paper-plane-top" />
                                 </button>
                               </div>
+                            </div>
                             </div>
                           </div>
                         ) : (
@@ -2906,8 +2911,132 @@ function Messages({
                       </div>
                     </div>
                   )}
+
+                  {/* ====================== view tab */}
+                  {/* {!manageGroupChat && ( */}
+                  <div
+                    className="col-xxl-3 col-xl-4 "
+                    style={{ borderLeft: "1px solid var(--border-color)" }}
+                  >
+                    <div className="messageOverlay py-3 h-100">
+                      <div className="p-4" >
+                        <div className="col">
+                          <div className="d-flex justify-content-start align-items-center gap-2 mb-2 flex-column">
+                            <div
+                              className="profileHolder"
+                              id={"profileOfflineNav"}
+                            >
+                              <i className="fa-light fa-users fs-5"></i>
+                            </div>
+                            <p className="mb-0 fs-6 fw-semibold">
+                              {/* {
+                                contact?.find(
+                                  (contact) => contact.extension == recipient[0]
+                                )?.name
+                              }{" "}-
+                              {" "} */}
+                              Emiley Jackson
+                            </p>
+                            <h5 className="fw-medium f-s-14 text-muted">emaileyjackson2134@gmail.com</h5>
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center align-items-center gap-2">
+                          {/* {!saveEditToggleGroupNameChange ? ( */}
+                          <button
+                            className="clearButton2 link f-s-14"
+
+                          >
+                            <i className="fa-regular fa-phone"></i>
+                          </button>
+                          <button
+                            className="clearButton2 link f-s-14"
+
+                          >
+                            <i className="fa-regular fa-video"></i>
+                          </button>
+                         
+                        </div>
+                      </div>
+                      <div className="chat_doc px-4 mb-4">
+                        <div className="d-flex justify-content-between align-items-center gap-2">
+                          <p>Shared Files
+                            <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
+                            <span >
+                              {/* <Link className="" to=""><u>View All</u>
+                              </Link> */}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="file_list">
+                          <div className=""><span className="shared-file-icon"><i className="fa-regular fa-files"></i></span></div>
+                          <div className=" ">
+                            <p className="">Project Details.pdf</p>
+                            <p className="text_muted">14,April 2025 - 14:24PM</p>
+                          </div>
+                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
+                        </div>
+                        <div className="file_list">
+                          <div className=""><span className="shared-file-icon"><i class="fa-regular fa-images"></i></span></div>
+                          <div className=" ">
+                            <p className="">Img_02.Jpg</p>
+                            <p className="text_muted">22,April 2025 - 10:19AM</p>
+                          </div>
+                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
+                        </div>
+                        <div className="file_list">
+                          <div className=""><span className="shared-file-icon"><i class="fa-sharp fa-regular fa-film"></i></span></div>
+                          <div className=" ">
+                            <p className="">Video_15_02_2022.MP4</p>
+                            <p className="text_muted">22,April 2025 - 10:19AM</p>
+                          </div>
+                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
+                        </div>
+                      </div>
+                      <div className="chat_doc px-4">
+                        <div className="d-flex justify-content-between align-items-center gap-2">
+                          <p>Photos & Media
+                            <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
+                            <span >
+                              {/* <Link className="" to=""><u>View All</u>
+                              </Link> */}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="imageList">
+                          <div className="imgBox">
+                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                          </div>
+                          <div className="imgBox">
+                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                          </div>
+                          <div className="imgBox">
+                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                          </div>
+                          <div className="imgBox">
+                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* {!addMember && <div className="mb-auto px-4">
+                        <button
+                          className="panelButton gray ms-0"
+                          onClick={() => {
+                            setManageGroupChat(false);
+                          }}
+                        >
+                          <span className="text">Close</span>
+                          <span className="icon">
+                            <i className="fa-solid fa-caret-left" />
+                          </span>
+                        </button>
+                      </div>} */}
+                    </div>
+                  </div>
+                  {/* )} */}
                 </div>
               </div>
+
             </div>
           </div>
           {groupLeavePopUp ? (

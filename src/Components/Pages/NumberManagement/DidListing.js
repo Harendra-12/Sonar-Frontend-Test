@@ -237,12 +237,12 @@ function DidListing({ page }) {
                     <div className="backdropContact">
                       <div className="addNewContactPopup">
                         <div className="row">
-                          <div className="col-12 heading border-0 bg-transparent mb-0">
-                            <i className="fa-light fa-user-plus" />
-                            <h5>Add new DID </h5>
+                          <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
+                            <i className="fa-light fa-user-plus shadow-none" />
+                            <h5 className=" text-primary">Add new DID </h5>
                           </div>
-                          <div className="col-xl-12 mt-3">
-                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3}>All number is assign with other module please add new number</td></tr> :
+                          <div className="col-xl-12 ">
+                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3} className="text-center f-s-14">All number is assign with other module please add new number</td></tr> :
                               <div
                                 className="tableContainer mt-0"
                                 style={{ maxHeight: "calc(100vh - 400px)" }}
@@ -300,8 +300,8 @@ function DidListing({ page }) {
                               </div>
                             }
                           </div>
-                          <div className="col-xl-12 mt-2">
-                            <div className="d-flex justify-content-between">
+                          <div className="col-xl-12 mt-3">
+                            <div className="d-flex justify-content-center">
                               <button
                                 className="panelButton gray ms-0"
                                 onClick={() => setAddNew(false)}

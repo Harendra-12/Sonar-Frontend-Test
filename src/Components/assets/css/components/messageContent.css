@@ -1116,7 +1116,7 @@
 }
 
 .webrtc_newMessageUi .messageOverlay .messageList {
-    height: calc(100vh - 302px);
+    height:82%;
     width: 100%;
     overflow-y: auto;
 }
@@ -1136,6 +1136,11 @@
     background-color: #fff;
     width: 100%;
     padding: 15px;
+    padding: 15px;
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
 }
 
 .textarea_inputTab .nav.nav-tabs {
@@ -1155,14 +1160,19 @@
     background: #79b3ff !important;
     color: #fff !important;
 }
-
+.newMessageBoxUi{
+    height: calc(100vh - 100px);
+}
+.newMessageBoxUi .messageOverlay .messageContent{
+    height: 90%;
+}
 .textarea_inputTab .clearColorButton.dark {
     background-color: var(--ui-accent);
     padding: 0;
     font-size: 0.875rem;
     font-weight: 500;
-    width: 30px;
-    height: 30px;
+    width: 37px;
+    height: 37px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -1173,8 +1183,8 @@
     padding: 0;
     font-size: 0.875rem;
     font-weight: 500;
-    width: 30px;
-    height: 30px;
+    width: 37px;
+    height: 37px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -1190,46 +1200,46 @@
     height: auto !important;
     font-weight: 400;
     border-color: #e9edf6;
-    border-radius: 10px;
-    min-height: 45px;
+    border-radius: 7px;
+    min-height: 36px;
 }
 
-.textarea_inputTab .clearButton2.emoji {
+ .clearButton2.emoji {
     color: #26bf94;
     background: #26bf941a;
 }
 
-.textarea_inputTab .clearButton2.emoji:hover {
+ .clearButton2.emoji:hover {
     color: #f8f8f8 !important;
     background: #26bf94;
 }
 
-.textarea_inputTab .clearButton2.link {
+ .clearButton2.link {
     background-color: #c7e4fc40;
     color: #2793f4 !important;
 }
 
-.textarea_inputTab .clearButton2.link:hover {
+ .clearButton2.link:hover {
     color: #f8f8f8 !important;
     background: #2793f4;
 }
 
-.textarea_inputTab .clearButton2.gallery {
+ .clearButton2.gallery {
     background-color: #ddb8ea54;
     color: #9300ff !important;
 }
 
-.textarea_inputTab .clearButton2.gallery:hover {
+ .clearButton2.gallery:hover {
     color: #f8f8f8 !important;
     background: #9300ff;
 }
 
-.textarea_inputTab .clearButton2.eraser {
+.clearButton2.eraser {
     background-color: #fdeacd61;
     color: #f7a659 !important;
 }
 
-.textarea_inputTab .clearButton2.eraser:hover {
+.clearButton2.eraser:hover {
     color: #f8f8f8 !important;
     background: #f7a659;
 }
@@ -1241,4 +1251,74 @@
 
 .webrtc_newMessageUi .messageOverlay .contactHeader {
     padding: 15px 30px;
+}
+.f-s-14{
+    font-size: 0.875rem;
+}
+.chat_doc p{
+    font-size: 0.875rem ;
+    font-weight: 500;
+    color: var(--black);
+}
+.shared-file-icon{
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #f3f3f3;
+    color:  #8c9097;
+    border-radius: 5px;
+}
+.file_list{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.file_list p{
+    font-size: 0.75rem;
+    color: var(--black);
+    margin-bottom: 0;
+}
+.file_list p.text_muted{
+    font-size: 0.625rem;
+    color: var(--gray);
+}
+.file_list .download { 
+    margin-left: auto;
+}
+.file_list .download button{
+    font-size: 0.875rem;
+    color: var(--gray);
+    transition: all 0.4s ease-in-out;
+    text-align: end;
+    border: none;
+    background: transparent;
+}
+.file_list .download button:hover{
+    color: #2793f4;
+}
+.imageList{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 15px;
+}
+.imageList .imgBox{
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.imageList .imgBox img{
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+}
+.displayFile{
+    border-radius: .3rem;
+    background-color: #f3f6f8;
+    color: #333335;
+    padding: 15px;
 }
