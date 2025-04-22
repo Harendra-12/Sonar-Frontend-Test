@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 function UserProfile() {
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
@@ -135,7 +135,7 @@ function UserProfile() {
                   <div className="baseDetails d-block ">
                     <div className="pro_bg">
                       <img
-                        src={require('../../assets/images/profile-bg1.jpg')} alt="profile-bg" />
+                        src={require('../../assets/images/profile-bg1.webp')} alt="profile-bg" />
                     </div>
                     <div className="card profile_info border-0 ">
                       <div className="card-body ">
@@ -171,23 +171,21 @@ function UserProfile() {
                                             src={
                                               profileImage
                                                 ? profileImage
-                                                : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                                : require('../../assets/images/placeholder-image.webp')
                                             }
+                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                             alt="profile"
                                           />
                                         </div>
                                       </div>
                                       <div className="w-100 ">
                                         <h5 className="mb-0 text-center">{account?.name}</h5>
-                                        <div className="content mt-1 d-flex align-items-center justify-content-center">
-
-                                        </div>
-                                        <div className="content mt-1  d-flex align-items-center justify-content-center">
+                                        {account?.usertype && <div className="content mt-1  d-flex align-items-center justify-content-center">
                                           <div className="profileicons">
                                             <i className="fa-regular me-2 fa-id-card"></i>
                                           </div>
                                           <p className="mb-0">{account?.usertype}</p>
-                                        </div>
+                                        </div>}
                                         <div className="content mt-1  d-flex align-items-center justify-content-center">
                                           <div className="profileicons">
                                             <i className="fa-regular me-2 fa-envelope"></i>
@@ -215,7 +213,7 @@ function UserProfile() {
                                         <h4 className="fs-5">Account Information</h4>
                                       </div>
                                       <button onClick={handleSave} type="button" class={`btn btn-success-light btn-wave new_buttonStyle ${isEdit ? "active" : "new_buttonStyle"}`}>
-                                        <span>Edit</span> <i
+                                        <span>Update</span> <i
                                           className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
                                             }`}
                                         ></i></button>
@@ -245,7 +243,7 @@ function UserProfile() {
                                           <div className="formLabel">
                                             <label>First Name</label>
                                             <label className="formItemDesc">
-                                              The First Name of the User. Can be editable.
+                                              The First Name of the User.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -269,7 +267,7 @@ function UserProfile() {
                                           <div className="formLabel">
                                             <label>Last Name</label>
                                             <label className="formItemDesc">
-                                              The Last Name of the User. Can be editable.
+                                              The Last Name of the User.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -316,7 +314,7 @@ function UserProfile() {
                                           <div className="formLabel">
                                             <label>TimeZone</label>
                                             <label className="formItemDesc">
-                                              The set timezone of the User. Can be editable.
+                                              The set timezone of the User.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -346,6 +344,7 @@ function UserProfile() {
                                             </div>
                                           </div>
                                         </div>
+                                        <div className="border-bottom" />
                                         <div className="formRow col-12">
                                           <div className="formLabel">
                                             <label>Username</label>
@@ -355,7 +354,7 @@ function UserProfile() {
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
+                                            <h5 className="mb-0 pb-2">
                                               {account?.username}
                                             </h5>
                                           </div>
@@ -367,12 +366,11 @@ function UserProfile() {
                                             <div className="formLabel">
                                               <label>Role</label>
                                               <label className="formItemDesc">
-                                                The role assigned to the User. Cannot be
-                                                editable.
+                                                The role assigned to the User.
                                               </label>
                                             </div>
                                             <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                              <h5 className="mb-0 pb-2 border-bottom">Agent</h5>
+                                              <h5 className="mb-0 pb-2">Agent</h5>
                                             </div>
                                           </div>
                                         )}
@@ -381,11 +379,11 @@ function UserProfile() {
                                             <label>Email</label>
                                             <label className="formItemDesc">
                                               The email assigned to the User which is used at
-                                              login. Cannot be editable.
+                                              login.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
+                                            <h5 className="mb-0 pb-2">
                                               {account?.email}
                                             </h5>
                                           </div>
@@ -395,11 +393,11 @@ function UserProfile() {
                                             <label>Extension</label>
                                             <label className="formItemDesc">
                                               The extension assigned to the User which is used
-                                              by PBX. Cannot be editable.
+                                              by PBX.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
+                                            <h5 className="mb-0 pb-2">
                                               {account?.extension?.extension}
                                             </h5>
                                           </div>
@@ -568,7 +566,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>First Name</label>
                             <label className="formItemDesc">
-                              The First Name of the User. Can be editable.
+                              The First Name of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -592,7 +590,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>Last Name</label>
                             <label className="formItemDesc">
-                              The Last Name of the User. Can be editable.
+                              The Last Name of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -639,7 +637,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>TimeZone</label>
                             <label className="formItemDesc">
-                              The set timezone of the User. Can be editable.
+                              The set timezone of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -706,7 +704,7 @@ function UserProfile() {
                             <label>Email</label>
                             <label className="formItemDesc">
                               The email assigned to the User which is used at
-                              login. Cannot be editable.
+                              login.
                             </label>
                           </div>
                           <div className="col-6">
@@ -720,7 +718,7 @@ function UserProfile() {
                             <label>Extension</label>
                             <label className="formItemDesc">
                               The extension assigned to the User which is used
-                              by PBX. Cannot be editable.
+                              by PBX.
                             </label>
                           </div>
                           <div className="col-6">
