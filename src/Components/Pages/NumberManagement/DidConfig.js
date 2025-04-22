@@ -425,14 +425,14 @@ const DidConfig = () => {
                             >
                               <option value="disabled">Disable</option>
                               <option value="pstn">PSTN</option>
-                              <option value="direct">Direct</option>
+                              {/* <option value="direct">Direct</option> */}
                               <option value="extension">Extension</option>
                               <option value="ring group">Ring Group</option>
                               <option value="call center">Call Center</option>
                               <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          {forwardStatus === "pstn" && (
+                          {forwardStatus === "pstn" && forwardStatus != "disabled" && (
                             <div className="col-3">
                               <div className="formLabel">
                                 <label>PSTN</label>
@@ -485,7 +485,7 @@ const DidConfig = () => {
                             </div>
                           )} */}
 
-                          {forwardStatus !== "pstn" && (
+                          {forwardStatus !== "pstn" && forwardStatus != "disabled" && (
                             <div className="col-3">
                               {watch().forward && watch().forward?.length !== 0 && (
                                 <>
@@ -725,7 +725,7 @@ const DidConfig = () => {
                                 <div className="formLabel">
                                   <Tippy content="Timout for the sticky agent and return to normal routing">
                                     <label className="formItemDesc">
-                                      Timeout{" "}
+                                      Timeout(Sec.){" "}
                                     </label>
                                   </Tippy>
                                 </div>

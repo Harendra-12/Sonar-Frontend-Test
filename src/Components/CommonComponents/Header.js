@@ -154,7 +154,7 @@ function Header(props) {
             onClick={() => setDropDown(!dropDown)}
           >
             <img
-              src={account?.profile_picture}
+              src={account?.profile_picture ? account?.profile_picture : require('../assets/images/placeholder-image.webp')}
               alt="profile"
               onError={(e) => e.target.src = require('../assets/images/placeholder-image.webp')}
             />
