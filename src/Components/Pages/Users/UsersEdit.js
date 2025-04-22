@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+
 const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
   const location = useLocation();

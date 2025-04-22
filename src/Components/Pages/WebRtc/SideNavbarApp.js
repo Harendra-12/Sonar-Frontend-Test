@@ -21,6 +21,8 @@ import { CircularProgress } from "@mui/material";
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
+  const state = useSelector((state) => state)
+  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null;
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -312,19 +314,20 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </li> : ""}
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("whatsapp-chartbox")}
-                  className={
-                    activePage === "whatsapp" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i class="fa-brands fa-whatsapp"></i>
+              {isWhatsAppAvailable != null &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("whatsapp-chartbox")}
+                    className={
+                      activePage === "whatsapp" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div className="itemTitle">WhatsApp</div>
                   </div>
-                  <div className="itemTitle">WhatsApp</div>
-                </div>
-              </li>
+                </li>}
 
 
 
