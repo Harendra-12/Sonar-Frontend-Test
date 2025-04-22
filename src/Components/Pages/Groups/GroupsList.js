@@ -83,11 +83,11 @@ export default function GroupsList() {
     try {
       const apiData = await generalDeleteFunction(`groups/destroy/${id}`);
       if (apiData?.status) {
-        const newArray = groups?.data?.filter((item) => item.id !== id);
-        setGroups({ ...groups, data: newArray });
+        // const newArray = groups?.data?.filter((item) => item.id !== id);
+        // setGroups({ ...groups, data: newArray });
         getGroupDashboardData();
         toast.success(apiData.message);
-        setLoading(false);
+        // setLoading(false);
         // dispatch({
         //   type: "SET_RINGGROUPREFRESH",
         //   ringGroupRefresh: ringGroupRefresh + 1,
@@ -95,11 +95,10 @@ export default function GroupsList() {
         setDeleteId("");
       } else {
         setLoading(false);
-        // toast.error(apiData.error);
+        toast.error(apiData.error);
         setDeleteId("");
       }
     } catch (error) {
-      console.error("An error occurred while deleting group:", error);
       setLoading(false);
       toast.error("An error occurred while deleting the group."); // Optionally show a generic error message
       setDeleteId("");
@@ -250,12 +249,7 @@ export default function GroupsList() {
                               <SkeletonTableLoader col={4} row={10} />
                             ) : (
                               <>
-                                {groups.length === 0 ? <td colSpan={99}>
-                                  <EmptyPrompt
-                                    name="Groups"
-                                    link="groups-add"
-                                  />
-                                </td> :
+                                {groups && groups.length > 0 ?
                                   groups?.map((item, index) => {
                                     return (
                                       <tr key={index}>
@@ -347,7 +341,14 @@ export default function GroupsList() {
                                         </td>
                                       </tr>
                                     );
-                                  })}
+                                  }) :
+                                  <td colSpan={99}>
+                                    <EmptyPrompt
+                                      name="Groups"
+                                      link="groups-add"
+                                    />
+                                  </td>
+                                }
                               </>
                             )}
                           </>
