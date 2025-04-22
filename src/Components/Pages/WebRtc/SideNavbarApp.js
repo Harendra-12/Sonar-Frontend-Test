@@ -22,7 +22,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const state = useSelector((state) => state)
-  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "skype") || null;
+  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null;
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
