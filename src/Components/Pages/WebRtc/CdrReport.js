@@ -238,7 +238,7 @@ function CdrReport({ page }) {
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
-          setCdr(apiData.data);
+          setCdr(apiData);
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -1059,7 +1059,7 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                  ? 10
+                                  ? 11
                                   : 17
                             }
                             row={12}
@@ -1407,7 +1407,7 @@ function CdrReport({ page }) {
                           </>
                         )}
 
-                        {!loading && cdr && cdr.data.length === 0 ? (
+                        {!loading && cdr && cdr.data?.length === 0 ? (
                           <td colSpan={99}>
                             <EmptyPrompt name="Call" link="dashboard" />
                           </td>
@@ -1418,7 +1418,7 @@ function CdrReport({ page }) {
                     </table>
                   </div>
                   <div className="tableHeader mb-3">
-                    {!loading && cdr && cdr.data.length > 0 ? (
+                    {!loading && cdr && cdr.data?.length > 0 ? (
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={cdr.last_page}
