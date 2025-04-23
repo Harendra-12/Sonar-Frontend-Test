@@ -1,174 +1,120 @@
-import React from 'react'
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { backToTop } from "../../GlobalFunction/globalFunction";
+import Header from "../../CommonComponents/Header";
 
 function FportalCampaign() {
   return (
-    <div><main className="mainContent">
-    <section className="campaignPage">
+    <main className="mainContent">
+    <section id="phonePage">
       <div className="container-fluid">
         <div className="row">
-          <div id="detailsHeader">
-            <div className="col-4 d-flex align-items-center">
-              <div className="d-xl-none d-block me-3">
-                <button className="clearButton d-flex align-items-center">
-                  <i className="fa-light fa-bars fs-5" />
-                </button>
-              </div>
-              <h4 className="my-auto">Dialer</h4>
-            </div>
-            <div className="col-8 d-flex justify-content-end align-items-center">
-              <div className="col-auto">
-                <div className="d-flex justify-content-end align-items-center">
-                  <div className="my-auto mx-3">
-                    <a
-                      href="/webrtc"
-                      target="_blank"
-                      className="clearColorButton"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <i className="fa-regular fa-phone-office" />{" "}
-                      <span className="d-none d-xl-inline-block">
-                        Go to Dialer
-                      </span>
-                    </a>
-                  </div>
-                  <div>
-                    <div
-                      className="clearColorButton"
-                      style={{ cursor: "pointer", minWidth: 140 }}
-                    >
-                      <i className="fa-regular fa-wallet" />{" "}
-                      <span className="d-none d-xl-inline-block">$654.60</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-auto mx-2">
-                <button className="clearButton2 xl" effect="ripple">
-                  <i className="fa-light fa-moon" />
-                  <input
-                    type="checkbox"
-                    style={{
-                      opacity: 0,
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
-                      top: 0
-                    }}
-                  />
-                </button>
-              </div>
-              <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
-                <div className="profileName">webvio</div>&nbsp; &nbsp;
-                <div className="profileHolder">
-                  <img
-                    src="/static/media/placeholder-image.c872bce112e99ec719cb.webp"
-                    alt="profile"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <Header title="Forwarding portal" />
           <div className="overviewTableWrapper">
             <div className="overviewTableChild">
               <div className="d-flex flex-wrap">
                 <div className="col-12">
                   <div className="heading">
                     <div className="content">
-                      <h4>  Forwarding Portal Campaigns</h4>
-                      <p>You can see the list of Forwarding Portal campaigns</p>
+                      <h4>Forwarding portal</h4>
+                      <p>You can see all list of Forwarding portal</p>
                     </div>
                     <div className="buttonGroup">
-                      <button className="panelButton gray">
+                      <button effect="ripple" className="panelButton gray">
                         <span className="text">Back</span>
                         <span className="icon">
-                          <i className="fa-solid fa-caret-left" />
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
                       </button>
-                      <button className="panelButton">
-                        <span className="text">Create</span>
+                      <button
+                        onClick={() => Navigate("/buyer-add")}
+                        effect="ripple"
+                        className="panelButton"
+                      >
+                        <span className="text">Add</span>
                         <span className="icon">
-                          <i className="fa-solid fa-plus" />
+                          <i className="fa-solid fa-plus"></i>
                         </span>
                       </button>
                     </div>
                   </div>
                 </div>
-                <div
-                  className="col-12"
-                  style={{ overflow: "auto", padding: "25px 20px 0px" }}
-                >
-                  <div className="tableHeader">
-                    <div className="showEntries">
-                      <label>Show</label>
-                      <select className="formItem">
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={30}>30</option>
-                      </select>
-                      <label>entries</label>
-                    </div>
-                    <div className="searchBox">
-                      <label>Search:</label>
-                      <input type="text" className="formItem" defaultValue="" />
-                    </div>
+              <div
+                className="col-12"
+                style={{ overflow: "auto", padding: "25px 20px 0px" }}
+              >
+                <div className="tableHeader">
+                  <div className="showEntries">
+                    <label>Show</label>
+                    <select className="formItem">
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={30}>30</option>
+                    </select>
+                    <label>entries</label>
                   </div>
-                  <div className="tableContainer">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Status</th>
-                          <th>Name</th>
-                          <th>Mode</th>
-                          <th>DID(s)</th>
-                          <th>Gateway</th>
-                          <th>Progress</th>
-                          <th>Agents</th>
-                          <th>Records</th>
-                          <th>Options</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <div className="d-flex align-items-center justify-content-start ">
-                              <div className="phone-call">
-                                <i className="fa-solid fa-pause" />
-                              </div>
-                              <div>
-                                <span className="ms-1">Paused</span>
-                              </div>
+                  <div className="searchBox">
+                    <label>Search:</label>
+                    <input type="text" className="formItem" defaultValue="" />
+                  </div>
+                </div>
+                <div className="tableContainer">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>Name</th>
+                        <th>Mode</th>
+                        <th>DID(s)</th>
+                        <th>Gateway</th>
+                        <th>Progress</th>
+                        <th>Agents</th>
+                        <th>Records</th>
+                        <th>Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div className="d-flex align-items-center justify-content-start ">
+                            <div className="phone-call">
+                              <i className="fa-solid fa-pause" />
                             </div>
-                          </td>
-                          <td>
-                            <b>asdasd</b>
-                          </td>
-                          <td>preview</td>
-                          <td>1</td>
-                          <td>Gateway</td>
-                          <td className="">
-                            <div
-                              className="specialProgressWrap"
-                              style={{ cursor: "pointer" }}
-                            >
-                              <div className="specialProgress">
-                                <div
-                                  className="segment success"
-                                  style={{ width: "85%" }}
-                                />
-                                <div
-                                  className="segment fail"
-                                  style={{ width: "5%" }}
-                                />
-                                <div
-                                  className="segment pending"
-                                  style={{ width: "10%" }}
-                                />
-                              </div>
-                              <div className="specialProgressText">
-                                <p>0.00%</p>
-                                <span>0 of 1000</span>
-                              </div>
-                              {/* <div className="specialProgressWrapDetails">
+                            <div>
+                              <span className="ms-1">Paused</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <b>asdasd</b>
+                        </td>
+                        <td>preview</td>
+                        <td>1</td>
+                        <td>Gateway</td>
+                        <td className="">
+                          <div
+                            className="specialProgressWrap"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <div className="specialProgress">
+                              <div
+                                className="segment success"
+                                style={{ width: "85%" }}
+                              />
+                              <div
+                                className="segment fail"
+                                style={{ width: "5%" }}
+                              />
+                              <div
+                                className="segment pending"
+                                style={{ width: "10%" }}
+                              />
+                            </div>
+                            <div className="specialProgressText">
+                              <p>0.00%</p>
+                              <span>0 of 1000</span>
+                            </div>
+                            {/* <div className="specialProgressWrapDetails">
                                 <div className="d-flex align-items-center justify-content-start mb-1">
                                   <p
                                     style={{
@@ -280,80 +226,80 @@ function FportalCampaign() {
                                   </li>
                                 </ul>
                               </div> */}
+                          </div>
+                        </td>
+                        <td>
+                          <div>
+                            <div className="avatar-container" />
+                          </div>
+                        </td>
+                        <td>
+                          <span className="ellipsis">CustomerList.xls</span>
+                        </td>
+                        <td>
+                          <div className="dropdown">
+                            <div
+                              className="tableButton"
+                              href="#"
+                              role="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i className="fa-solid fa-ellipsis-vertical" />
                             </div>
-                          </td>
-                          <td>
-                            <div>
-                              <div className="avatar-container" />
-                            </div>
-                          </td>
-                          <td>
-                            <span className="ellipsis">CustomerList.xls</span>
-                          </td>
-                          <td>
-                            <div className="dropdown">
-                              <div
-                                className="tableButton"
-                                href="#"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fa-solid fa-ellipsis-vertical" />
-                              </div>
-                              <ul
-                                className="dropdown-menu actionBtnDropdowns"
-                                style={{}}
-                              >
-                                <li className="dropdown-item">
-                                  <div className="clearButton text-align-start">
-                                    <i className="fa-regular fa-circle-stop me-2" />{" "}
-                                    Stop
-                                  </div>
-                                </li>
-                                <li className="dropdown-item">
-                                  <div className="clearButton text-align-start">
-                                    <i className="fa-regular fa-circle-play me-2" />{" "}
-                                    Start
-                                  </div>
-                                </li>
-                                <li className="dropdown-item">
-                                  <div className="clearButton text-align-start">
-                                    <i className="fa-regular fa-pen me-2" /> Edit
-                                  </div>
-                                </li>
-                                <li className="dropdown-item">
-                                  <div className="clearButton text-align-start">
-                                    <i className="fa-regular fa-clock me-2" />{" "}
-                                    Schedule
-                                  </div>
-                                </li>
-                                <li className="dropdown-item">
-                                  <div className="clearButton text-align-start">
-                                    <i className="fa-regular fa-trash me-2" />{" "}
-                                    Delete
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="tableHeader mb-3">
-                    <label
-                      className="col-6"
-                      style={{
-                        fontFamily: "Roboto",
-                        color: "var(--color-subtext)",
-                        fontWeight: 500,
-                        fontSize: 14
-                      }}
-                    >
-                      Showing 1 to 1 of 1 Entries.
-                    </label>
-                    {/* <nav
+                            <ul
+                              className="dropdown-menu actionBtnDropdowns"
+                              style={{}}
+                            >
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-circle-stop me-2" />{" "}
+                                  Stop
+                                </div>
+                              </li>
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-circle-play me-2" />{" "}
+                                  Start
+                                </div>
+                              </li>
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-pen me-2" /> Edit
+                                </div>
+                              </li>
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-clock me-2" />{" "}
+                                  Schedule
+                                </div>
+                              </li>
+                              <li className="dropdown-item">
+                                <div className="clearButton text-align-start">
+                                  <i className="fa-regular fa-trash me-2" />{" "}
+                                  Delete
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="tableHeader mb-3">
+                  <label
+                    className="col-6"
+                    style={{
+                      fontFamily: "Roboto",
+                      color: "var(--color-subtext)",
+                      fontWeight: 500,
+                      fontSize: 14,
+                    }}
+                  >
+                    Showing 1 to 1 of 1 Entries.
+                  </label>
+                  {/* <nav
                       aria-label="pagination navigation"
                       className="MuiPagination-root MuiPagination-text pagination_slider col-6 justify-content-end css-1oj2twp-MuiPagination-root"
                     >
@@ -410,17 +356,18 @@ function FportalCampaign() {
                         </li>
                       </ul>
                     </nav> */}
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
-  </div>
-  )
+        </div>
+        </div>
+      </section>
+    </main>
+
+    
+  );
 }
 
-export default FportalCampaign
+export default FportalCampaign;

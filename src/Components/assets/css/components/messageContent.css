@@ -50,7 +50,7 @@
     font-size: 0.875rem;
     background: var(--searchBg) url(../../images/search_b.png) no-repeat 7px center / 17px 17px;
     outline: none;
-    transition: 0.1s ease-in-out;
+    /* transition: 0.1s ease-in-out; */
 }
 
 .mainContentApp #headerSearch:focus,

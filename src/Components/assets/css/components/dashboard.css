@@ -218,7 +218,7 @@
   float: inline-end;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 5px;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  /* transition: 0.3s ease-in-out; */
 
   width: 42px;
   height: 42px;
@@ -351,7 +351,7 @@
   width: max-content;
   border: none;
   background-color: transparent;
-  transition: 0.2s ease-in-out;
+  /* transition: 0.2s ease-in-out; */
   padding: 5px 10px;
   text-decoration: none;
 }
@@ -455,7 +455,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid transparent;
-  transition: 0.3s ease-in-out;
+  /* transition: 0.3s ease-in-out; */
   cursor: pointer;
 }
 
@@ -543,7 +543,7 @@
 .collapsor {
   /* height: 0px; */
   overflow: hidden;
-  transition: all 0.3s ease-in-out;
+  /* transition: all 0.3s ease-in-out; */
 }
 
 .callItemWrapper {
@@ -557,7 +557,7 @@
   position: relative;
   height: 145px;
   overflow: hidden;
-  transition: 0.2s ease-in-out;
+  /* transition: 0.2s ease-in-out; */
 }
 
 .callItemWrapper button.clearButton {
@@ -632,7 +632,7 @@
   transform: rotate(-90deg);
   transform-origin: var(--half-size) var(--half-size);
   stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
-  transition: stroke-dasharray 0.3s linear 0s;
+  transition: stroke-dasharray 0.0s linear 0s;
 }
 
 .tangoNavs .nav-tabs {
@@ -644,6 +644,7 @@
   color: var(--color-subtext);
   padding: 10px 5px;
   font-size: 0.875rem;
+  transition: color .0s ease-in-out, background-color .0s ease-in-out, border-color .0s ease-in-out;
 }
 
 .tangoNavs .nav-tabs .nav-link.active {
@@ -822,13 +823,16 @@
   color: var(--immortalBlack);
   margin-bottom: 0;
   font-weight: 500;
-  transition: all 0.4s ease-in-out;
+  /* transition: all 0.4s ease-in-out; */
   font-size: 0.75rem;
+  transition: color .0s ease-in-out, background-color .0s ease-in-out, border-color .0s ease-in-out;
+
 }
 
 .chart_tabs li:hover .nav-link {
   background: var(--color2);
   color: #fff;
+
 }
 
 .chart_tabs .nav-item {
@@ -911,7 +915,7 @@
   top: 57px;
   right: 0;
   z-index: -1;
-  opacity: 0.4;
+  /* opacity: 0.4; */
 }
 
 .d_extension_listing {
@@ -924,7 +928,7 @@
   /* border-left: 3px solid var(--dash-listing-border); */
   border-left: 3px solid var(--ui-accent);
   border-bottom: 0 !important;
-  transition: all 0.4s ease-in-out;
+  /* transition: all 0.4s ease-in-out; */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 

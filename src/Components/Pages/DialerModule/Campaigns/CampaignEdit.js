@@ -1983,7 +1983,7 @@ function CampaignCreate() {
                                     <div className="backdropContact">
                                       <div className="addNewContactPopup">
                                         <div className="row">
-                                          <div className="col-12 heading mb-0">
+                                          <div className="col-12 heading border-0 mb-0">
                                             <i className="fa-light fa-user-plus" />
                                             <h5>Add Leads to the selected Campaign</h5>
                                           </div>

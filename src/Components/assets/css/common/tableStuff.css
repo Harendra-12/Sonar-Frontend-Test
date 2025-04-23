@@ -23,7 +23,7 @@ table thead tr {
 
 table tbody tr {
     background-color: var(--table-even-bg);
-    transition: 0.1s ease-in;
+    /* transition: 0.1s ease-in; */
     /* border-bottom: 1px solid var(--border-color); */
     position: relative;
 }
