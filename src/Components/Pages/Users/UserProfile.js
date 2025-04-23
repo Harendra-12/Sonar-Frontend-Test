@@ -94,7 +94,7 @@ function UserProfile() {
         // role_id: account?.user_role?.role_id,
         // account_id: account.account_id,
         permissions: account.permissions,
-        // extension_id: account.extension.id,
+        extension_id: account.extension.id,
         // usages: account.usages,
         alias: inputAlias,
         name: `${inputFirstName} ${inputLastName}`,
