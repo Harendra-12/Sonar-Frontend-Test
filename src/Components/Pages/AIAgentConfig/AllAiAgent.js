@@ -24,6 +24,9 @@ function AllAiAgent() {
             if (apiCall.status) {
                 setAllConfigData(apiCall.data);
                 setLoading(false);
+            } else {
+                setLoading(false);
+                toast.error(apiCall.message);
             }
         } catch (err) {
             console.log(err);
