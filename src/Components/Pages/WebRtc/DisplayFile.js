@@ -141,7 +141,7 @@ const DisplayFile = ({ item, index }) => {
   if (!item) return null;
   if (item === "loading")
     return (
-      <div
+      <div className="displayFile"
         style={{
           width: "200px",
           height: "79px",
@@ -172,7 +172,7 @@ const DisplayFile = ({ item, index }) => {
   } else {
     if (ext === "png") {
       return (
-        <div>
+        <div className="displayFile">
           <img
             width="200PX"
             height="160px"
@@ -220,7 +220,7 @@ const DisplayFile = ({ item, index }) => {
       }
 
       return (
-        <div>
+        <div className="displayFile">
           <div className='align-items-center justify-content-between' style={{ width: "200px", height: "79px", backgroundColor: "var(--dash-listing-bg)", borderRadius: "5px", display: "flex", justifyContent: "space-between", alignItems: "end", padding: '1rem' }} >
             <div style={{ fontSize: "26px", color: "#ff2424" }}>
               <i className="fa-solid fa-file-pdf"></i>
@@ -256,7 +256,7 @@ const DisplayFile = ({ item, index }) => {
     // Handle audio files
     if (ext === "mp3") {
       return (
-        <div className="messageDetailss">
+        <div className="messageDetailss displayFile">
           <div className="audio-container mx-2">
             <audio
               controls={true}
@@ -273,7 +273,7 @@ const DisplayFile = ({ item, index }) => {
 
     if (ext === "mp4") {
       return (
-        <div>
+        <div className="displayFile">
           <video
             controls
             width="200px"

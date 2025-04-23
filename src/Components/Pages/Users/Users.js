@@ -68,16 +68,16 @@ const Users = () => {
   //   });
   // }, []);
 
-    // Debounce logic
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedInput(userInput); // Update debounced value after delay
-      }, 500); // 500ms debounce delay
-  
-      return () => {
-        clearTimeout(handler); // Clear timeout on cleanup
-      };
-    }, [userInput]);
+  // Debounce logic
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedInput(userInput); // Update debounced value after delay
+    }, 500); // 500ms debounce delay
+
+    return () => {
+      clearTimeout(handler); // Clear timeout on cleanup
+    };
+  }, [userInput]);
 
   // Getting users data with pagination row per page and search filter
   useEffect(() => {
@@ -212,7 +212,7 @@ const Users = () => {
                           User List{" "}
                           <button
                             className="clearButton"
-                            onClick={() => {setRefreshState(true); setRefreshData(refreshData + 1);}}
+                            onClick={() => { setRefreshState(true); setRefreshData(refreshData + 1); }}
                           >
                             <i
                               className={
@@ -239,9 +239,8 @@ const Users = () => {
                           </span>
                         </button>
                         {checkViewSidebar("User", slugPermissions, account?.permissions, "add") ? (
-                          <Link
-                            // to="/users-add"
-                            // onClick={backToTop}
+                          <button
+                            onClick={() => { backToTop(); navigate("/users-add") }}
                             // onClick={handleAddUserValidation}
                             effect="ripple"
                             className="panelButton"
@@ -250,7 +249,7 @@ const Users = () => {
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
                             </span>
-                          </Link>
+                          </button>
                         ) : (
                           <button
                             disabled
@@ -434,18 +433,18 @@ const Users = () => {
                                               <span className="slider round" />
                                             </label> */}
                                             <div class="cl-toggle-switch ">
-                                                  <label class="cl-switch">
-                                                    <input type="checkbox"
-                                                       checked={item.status === "E"}
-                                                       onClick={(e) => {
-                                                         setSelectedUser(item);
-                                                         setPopUp(true);
-                                                       }}
-                                                      id="showAllCheck"
-                                                       />
-                                                      <span></span>
-                                                  </label>
-                                                </div>
+                                              <label class="cl-switch">
+                                                <input type="checkbox"
+                                                  checked={item.status === "E"}
+                                                  onClick={(e) => {
+                                                    setSelectedUser(item);
+                                                    setPopUp(true);
+                                                  }}
+                                                  id="showAllCheck"
+                                                />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                         </td>
                                         {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td style={{width:"150px"}} >

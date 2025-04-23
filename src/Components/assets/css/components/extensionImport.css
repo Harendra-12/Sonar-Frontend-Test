@@ -624,6 +624,10 @@ form.tangoNavs .nav-tabs {
     background-color: var(--bg-badge-secondary);
     border: 1px solid var(--bg-badge-secondary-border);
 }
+.badge-purple {
+    background-color: #ddb8ea54;
+    color: #9300ff !important;
+}
 
 .badge-soft-success {
     color: var(--text-badge-success);

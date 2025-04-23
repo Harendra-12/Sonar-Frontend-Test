@@ -60,13 +60,13 @@ const AgentSearch = ({
     control: (provided, state) => ({
       ...provided,
       // border: '1px solid var(--color4)',
-      border: "1px solid var(--color4);",
+      border: "1px solid transparent",
       backgroundColor: "var(--ele-color)",
-      borderRadius: "5px",
+      borderRadius: "8px",
       outline: "none",
       fontSize: "14px",
       width: "100%",
-      minHeight: "35px",
+      minHeight: "40px",
       padding: "0px 0 0 25px",
       background: `var(--searchBg) url(${require("../../assets/images/search_b.png")}) no-repeat 7px center / 17px 17px`,
       boxShadow: state.isFocused ? "none" : provided.boxShadow,
@@ -76,7 +76,7 @@ const AgentSearch = ({
     }),
     valueContainer: (provided) => ({
       ...provided,
-      height: "35px",
+      height: "40px",
       padding: "0 6px",
     }),
     input: (provided) => ({
@@ -88,7 +88,7 @@ const AgentSearch = ({
     }),
     indicatorsContainer: (provided) => ({
       ...provided,
-      height: "32px",
+      height: "40px",
     }),
     dropdownIndicator: (provided) => ({
       ...provided,

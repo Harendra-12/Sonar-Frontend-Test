@@ -1,7 +1,155 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
+import { featureUnderdevelopment, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import GraphChart from "../../CommonComponents/GraphChart";
 
 function BillingDashboard() {
+  // Graph Module
+  const [graphData, setGraphData] = useState({
+    totalCallMin: [],
+    numberOfCall: [],
+    callCostPerHour: [],
+    totalSpent: [],
+  })
+  const [graphFilter, setGraphFilter] = useState({
+    totalCallMin: {
+      interval: "1",
+      startTime: "24",
+    },
+    numberOfCall: {
+      date: "7_days"
+    },
+    callCostPerHour: {
+      interval: "1",
+      startTime: "24",
+    },
+    totalSpent: [],
+  });
+
+  const [graphLoading, setGraphLoading] = useState({
+    totalCallMin: 1,
+    numberOfCall: 1,
+    callCostPerHour: 1
+  });
+
+  // Call Cost Graph Data
+  const fetchTotalCallCostGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date();
+    const currentTime = new Date().toTimeString().slice(0, 8);
+
+    switch (graphFilter.callCostPerHour.startTime) {
+      case "1":
+        startDate?.setHours(startDate.getHours() - 1);
+        break;
+      case "3":
+        startDate?.setHours(startDate.getHours() - 3);
+        break;
+      case "6":
+        startDate?.setHours(startDate.getHours() - 6);
+        break;
+      case "12":
+        startDate?.setHours(startDate.getHours() - 12);
+        break;
+      case "24":
+        startDate?.setHours(startDate.getHours() - 24);
+        break;
+      default:
+        startDate?.setHours(0, 0, 0);
+    }
+
+    const startDateTimeObj = {
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toTimeString().slice(0, 8)
+    }
+
+    const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
+    const endDateTime = `${endDate} ${currentTime}`;
+
+    try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        callCostPerHour: 1
+      }));
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
+      if (apiCall.status) {
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          callCostPerHour: apiCall.filtered
+        }));
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          callCostPerHour: 0
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Call Per Hour Graph Data
+  const fetchTotalCallMinGraphData = async () => {
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date();
+    const currentTime = new Date().toTimeString().slice(0, 8);
+
+    switch (graphFilter.totalCallMin.startTime) {
+      case "1":
+        startDate?.setHours(startDate.getHours() - 1);
+        break;
+      case "3":
+        startDate?.setHours(startDate.getHours() - 3);
+        break;
+      case "6":
+        startDate?.setHours(startDate.getHours() - 6);
+        break;
+      case "12":
+        startDate?.setHours(startDate.getHours() - 12);
+        break;
+      case "24":
+        startDate?.setHours(startDate.getHours() - 24);
+        break;
+      default:
+        startDate?.setHours(0, 0, 0);
+    }
+
+    const startDateTimeObj = {
+      date: startDate.toISOString().split("T")[0],
+      time: startDate.toTimeString().slice(0, 8)
+    }
+
+    const startDateTime = `${startDateTimeObj.date} ${startDateTimeObj.time}`;
+    const endDateTime = `${endDate} ${currentTime}`;
+
+    try {
+      setGraphLoading((prevGraphLoading) => ({
+        ...prevGraphLoading,
+        totalCallMin: 1
+      }));
+      const apiCall = await generalGetFunction(`/cdr-graph-report?start_date=${startDateTime}&end_date=${endDateTime}&hours=${graphFilter.totalCallMin.interval}`);
+      if (apiCall.status) {
+        setGraphData((prevGraphData) => ({
+          ...prevGraphData,
+          totalCallMin: apiCall.filtered,
+        }));
+        setGraphLoading((prevGraphLoading) => ({
+          ...prevGraphLoading,
+          totalCallMin: 0
+        }));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    fetchTotalCallCostGraphData();
+  }, [graphFilter.callCostPerHour])
+
+  useEffect(() => {
+    fetchTotalCallMinGraphData();
+  }, [graphFilter.totalCallMin])
+
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -229,94 +377,121 @@ function BillingDashboard() {
                               </div>
                               <div className="col-xl-4 chartWrapper mb-3 mb-xl-0">
                                 <div className="itemWrapper c">
-                                  <div className="heading h-auto">
+                                  <div className='heading h-auto'>
                                     <div className="d-flex flex-wrap justify-content-between align-items-center">
-                                      <div className="col-auto">
+                                      <div className='col-auto'>
                                         <h5>Call Billed Per Hour</h5>
                                       </div>
                                       <div className="col-auto">
-                                        <ul className="chart_tabs">
-                                          <li className="nav-item">
-                                            <input
-                                              className="nav-link"
-                                              type="radio"
-                                              name="graphCostFilter"
-                                              defaultValue={1}
+                                        <ul class="chart_tabs" >
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphCostFilter"
+                                              value="1"
+                                              checked={graphFilter.callCostPerHour.startTime === '1'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  callCostPerHour: {
+                                                    ...prevGraphData.callCostPerHour,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
                                             />
-                                            <button className="nav-link">
-                                              1 Hr
-                                            </button>
+                                            <button class="nav-link">1 Hr</button>
                                           </li>
-                                          <li className="nav-item">
-                                            <input
-                                              className="nav-link"
-                                              type="radio"
-                                              name="graphCostFilter"
-                                              defaultValue={3}
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphCostFilter" value="3"
+                                              checked={graphFilter.callCostPerHour.startTime === '3'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  callCostPerHour: {
+                                                    ...prevGraphData.callCostPerHour,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
                                             />
-                                            <button className="nav-link">
-                                              3 Hr
-                                            </button>
+                                            <button class="nav-link">3 Hr</button>
                                           </li>
-                                          <li className="nav-item">
-                                            <input
-                                              className="nav-link"
-                                              type="radio"
-                                              name="graphCostFilter"
-                                              defaultValue={6}
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphCostFilter" value="6"
+                                              checked={graphFilter.callCostPerHour.startTime === '6'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  callCostPerHour: {
+                                                    ...prevGraphData.callCostPerHour,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
                                             />
-                                            <button className="nav-link">
-                                              6 Hr
-                                            </button>
+                                            <button class="nav-link">6 Hr</button>
                                           </li>
-                                          <li className="nav-item">
-                                            <input
-                                              className="nav-link"
-                                              type="radio"
-                                              name="graphCostFilter"
-                                              defaultValue={12}
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphCostFilter" value="12"
+                                              checked={graphFilter.callCostPerHour.startTime === '12'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  callCostPerHour: {
+                                                    ...prevGraphData.callCostPerHour,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
                                             />
-                                            <button className="nav-link">
-                                              12 Hr
-                                            </button>
+                                            <button class="nav-link">12 Hr</button>
                                           </li>
-                                          <li className="nav-item">
-                                            <input
-                                              className="nav-link"
-                                              type="radio"
-                                              name="graphCostFilter"
-                                              defaultValue={24}
-                                              defaultChecked=""
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphCostFilter" value="24"
+                                              checked={graphFilter.callCostPerHour.startTime === '24'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  callCostPerHour: {
+                                                    ...prevGraphData.callCostPerHour,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
                                             />
-                                            <button className="nav-link">
-                                              24 Hr
-                                            </button>
+                                            <button class="nav-link">24 Hr</button>
                                           </li>
                                         </ul>
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="d-flex flex-wrap justify-content-between mt-1">
-                                    <div
-                                      style={{
-                                        width: "100%",
-                                        height: 320,
-                                        position: "relative",
-                                        margin: "0px auto",
-                                      }}
-                                    >
-                                      <canvas
-                                        role="img"
-                                        height={320}
-                                        width={399}
-                                        style={{
-                                          display: "block",
-                                          boxSizing: "border-box",
-                                          height: 320,
-                                          width: 399,
-                                        }}
+                                  <div className='d-flex flex-wrap justify-content-between mt-1'>
+                                    {graphLoading.callCostPerHour == 1 ?
+                                      (
+                                        <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
+                                          <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                            <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                          </div>
+                                        </div>
+                                      ) :
+                                      <GraphChart
+                                        height={'320px'}
+                                        // chartType="multiple"
+                                        chartCateg={"money"}
+                                        label1={"Inbound"}
+                                        label2={"Outbound"}
+                                        // label3={"Internal"}
+                                        // label4={"Missed"}
+                                        type={"line"}
+                                        fields={graphData?.callCostPerHour?.map((item, index) => {
+                                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                                          return `${time}`
+                                        })}
+                                        percentage={[graphData?.callCostPerHour?.map((item, index) => item.inbound_call_cost), graphData?.callCostPerHour?.map((item, index) => item.outbound_call_cost)]}
+                                        colors={["#05b62c", "#ff7900"]}
                                       />
-                                    </div>
+                                    }
                                   </div>
                                 </div>
                               </div>
@@ -342,11 +517,11 @@ function BillingDashboard() {
                                                 className="mt-3"
                                                 style={{ fontWeight: 900 }}
                                               >
-                                               
+
                                                 <div className="d-flex justify-content-start ">
-                                                100
-                                                <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
-                                              </div>
+                                                  100
+                                                  <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
+                                                </div>
                                               </h3>
                                             </div>
                                             <div className="total-month ">
@@ -362,11 +537,11 @@ function BillingDashboard() {
                                                 className="mt-3"
                                                 style={{ fontWeight: 900 }}
                                               >
-                                               
+
                                                 <div className="d-flex justify-content-start ">
-                                                6554
-                                                <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
-                                              </div>
+                                                  6554
+                                                  <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
+                                                </div>
                                               </h3>
                                             </div>
                                             <div className="total-month ">
@@ -400,7 +575,7 @@ function BillingDashboard() {
                                               className="mt-3"
                                               style={{ fontWeight: 900 }}
                                             >
-                                               <div className="d-flex justify-content-start ">
+                                              <div className="d-flex justify-content-start ">
                                                 $4000
                                                 <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
                                               </div>
@@ -417,7 +592,7 @@ function BillingDashboard() {
                                               className="mt-3"
                                               style={{ fontWeight: 900 }}
                                             >
-                                               <div className="d-flex justify-content-start ">
+                                              <div className="d-flex justify-content-start ">
                                                 $7896
                                                 <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
                                               </div>
@@ -428,7 +603,7 @@ function BillingDashboard() {
                                               </span>
                                             </div>
                                           </div>
-                                         
+
                                           <div className="col-2">
                                             <i className="fa-solid fa-eye"></i>
                                             <div class="parent mt-5">
@@ -469,7 +644,7 @@ function BillingDashboard() {
                                             >
                                               <div className="d-flex justify-content-start ">
                                                 00
-                                                <i style={{color:"red"}} className="fa-solid fa-arrow-trend-down custom-icon"></i>
+                                                <i style={{ color: "red" }} className="fa-solid fa-arrow-trend-down custom-icon"></i>
                                               </div>
                                             </h3>
                                             <div className="total-month light-color2">
@@ -500,11 +675,11 @@ function BillingDashboard() {
                                               className="mt-3"
                                               style={{ fontWeight: 900 }}
                                             >
-                                               <div className="d-flex justify-content-start ">
+                                              <div className="d-flex justify-content-start ">
                                                 4613
                                                 <i className="fa-solid fa-arrow-trend-up custom-icon"></i>
                                               </div>
-                                              
+
 
                                             </h3>
                                             <div className="total-month light-color3">
@@ -519,11 +694,11 @@ function BillingDashboard() {
                                               className="mt-3"
                                               style={{ fontWeight: 900 }}
                                             >
-                                               <div className="d-flex justify-content-start ">
+                                              <div className="d-flex justify-content-start ">
                                                 1000
                                                 <i className="fa-solid fa-arrow-trend-down custom-icon"></i>
                                               </div>
-                                              
+
 
                                             </h3>
                                             <div className="total-month light-color3">
@@ -546,34 +721,119 @@ function BillingDashboard() {
                               </div>
                               <div className="col-xxl-3 col-xl-9">
                                 <div className="itemWrapper a">
-                                  <div className="heading h-auto">
-                                    <div className="d-flex flex-wrap justify-content-between">
-                                      <div className="col-9">
+                                  <div className='heading h-auto'>
+                                    <div className="d-flex flex-wrap justify-content-between align-items-center">
+                                      <div className='col-auto'>
                                         <h5>Call Per Hour</h5>
                                       </div>
+                                      {/* <div className="col-auto">
+                                        <ul class="chart_tabs" >
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphTimeFilter"
+                                              value="1"
+                                              checked={graphFilter.totalCallMin.startTime === '1'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  totalCallMin: {
+                                                    ...prevGraphData.totalCallMin,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
+                                            />
+                                            <button class="nav-link">1 Hr</button>
+                                          </li>
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="3"
+                                              checked={graphFilter.totalCallMin.startTime === '3'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  totalCallMin: {
+                                                    ...prevGraphData.totalCallMin,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
+                                            />
+                                            <button class="nav-link">3 Hr</button>
+                                          </li>
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="6"
+                                              checked={graphFilter.totalCallMin.startTime === '6'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  totalCallMin: {
+                                                    ...prevGraphData.totalCallMin,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
+                                            />
+                                            <button class="nav-link">6 Hr</button>
+                                          </li>
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="12"
+                                              checked={graphFilter.totalCallMin.startTime === '12'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  totalCallMin: {
+                                                    ...prevGraphData.totalCallMin,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
+                                            />
+                                            <button class="nav-link">12 Hr</button>
+                                          </li>
+                                          <li class="nav-item">
+                                            <input class="nav-link" type="radio" name="graphTimeFilter" value="24"
+                                              checked={graphFilter.totalCallMin.startTime === '24'}
+                                              onChange={(e) =>
+                                                setGraphFilter((prevGraphData) => ({
+                                                  ...prevGraphData,
+                                                  totalCallMin: {
+                                                    ...prevGraphData.totalCallMin,
+                                                    startTime: e.target.value,
+                                                  },
+                                                }))
+                                              }
+                                            />
+                                            <button class="nav-link">24 Hr</button>
+                                          </li>
+                                        </ul>
+                                      </div> */}
                                     </div>
                                   </div>
-                                  <div className="d-flex flex-wrap justify-content-between mt-1">
-                                    <div
-                                      style={{
-                                        width: "100%",
-                                        height: 240,
-                                        position: "relative",
-                                        margin: "0px auto",
-                                      }}
-                                    >
-                                      <canvas
-                                        role="img"
-                                        height={240}
-                                        width={284}
-                                        style={{
-                                          display: "block",
-                                          boxSizing: "border-box",
-                                          height: 240,
-                                          width: 284,
-                                        }}
+                                  <div className='d-flex flex-wrap justify-content-between mt-1'>
+                                    {graphLoading.totalCallMin == 1 ? (
+                                      <div className="deviceProvision position-relative" style={{ width: '500px', height: '300px' }}>
+                                        <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
+                                          <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
+                                        </div>
+                                      </div>) :
+                                      <GraphChart
+                                        height={'300px'}
+                                        chartType="multiple"
+                                        label1={"Inbound"}
+                                        label2={"Outbound"}
+                                        label3={"Internal"}
+                                        label4={"Missed"}
+                                        type={"bar"}
+                                        fields={graphData?.totalCallMin?.map((item, index) => {
+                                          const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                                          const day = weekday[new Date(item.start_time).getDay()].replace('day', '');
+                                          const time = new Date(item.start_time).getHours().toString().padStart(2, '0') + ":" + new Date(item.start_time).getMinutes().toString().padStart(2, '0');
+                                          return `${time}`
+                                        })}
+                                        percentage={[graphData?.totalCallMin?.map((item, index) => item.inbound), graphData?.totalCallMin?.map((item, index) => item.outbound), graphData?.totalCallMin?.map((item, index) => item.internal), graphData?.totalCallMin?.map((item, index) => item.missed)]}
+                                        colors={["#05b62c", "#00fd79", "#ff7900", "#dd2e2f"]}
                                       />
-                                    </div>
+                                    }
+
                                   </div>
                                 </div>
                               </div>
