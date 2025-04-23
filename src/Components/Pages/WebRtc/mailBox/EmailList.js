@@ -59,7 +59,7 @@ const EmailList = () => {
                                 </td>
                                 <td><p className="mb-0 fw-semibold">12:06PM</p></td>
                             </tr>
-                            <tr>
+                            <tr className='active'>
                                 <td> <input type="checkbox" /></td>
                                 <td>
                                     <div className="d-flex align-items-center">

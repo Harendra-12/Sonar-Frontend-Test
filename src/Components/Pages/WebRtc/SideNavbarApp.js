@@ -7,6 +7,7 @@ import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunc
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
+import Tippy from "@tippyjs/react";
 
 
 /**
@@ -112,13 +113,13 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       }
                     >
                       {account?.profile_picture ?
-                        <img src={account?.profile_picture} /> : (
+                        <img src={account?.profile_picture} onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')} /> : (
                           <i className="fa-light fa-user"></i>
                         )}
                       {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                     </div>
                     <div className="userTitle">
-                      <h5>{account?.username}</h5>
+                      {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}
                       <p>Ext- {extension}</p>
                     </div>
                   </button>

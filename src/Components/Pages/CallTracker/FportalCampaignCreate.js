@@ -1,100 +1,44 @@
 import React from "react";
+import Header from "../../CommonComponents/Header";
+import { Navigate } from "react-router-dom";
 
 function FportalCampaignCreate() {
   return (
     <main className="mainContent">
-      <section id="phonePage">
-        <div className="container-fluid">
-          <div className="row">
-            <div id="detailsHeader">
-              <div className="col-4 d-flex align-items-center">
-                <div className="d-xl-none d-block me-3">
-                  <button className="clearButton d-flex align-items-center">
-                    <i className="fa-light fa-bars fs-5" />
-                  </button>
-                </div>
-                <h4 className="my-auto">Campaign Manage</h4>
-              </div>
-              <div className="col-8 d-flex justify-content-end align-items-center">
-                <div className="col-auto">
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="my-auto mx-3">
-                      <a
-                        href="/webrtc"
-                        target="_blank"
-                        className="clearColorButton"
-                        style={{ cursor: "pointer" }}
-                      >
-                        <i className="fa-regular fa-phone-office" />{" "}
-                        <span className="d-none d-xl-inline-block">
-                          Go to Dialer
+    <section id="phonePage">
+      <div className="container-fluid">
+        <div className="row">
+          <Header title="Forwarding portal" />
+          <div className="overviewTableWrapper">
+            <div className="overviewTableChild">
+              <div className="d-flex flex-wrap">
+                <div className="col-12">
+                  <div className="heading">
+                    <div className="content">
+                      <h4>Forwarding portal</h4>
+                      <p>You can see all list of Forwarding portal</p>
+                    </div>
+                    <div className="buttonGroup">
+                      <button effect="ripple" className="panelButton gray">
+                        <span className="text">Back</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-caret-left"></i>
                         </span>
-                      </a>
-                    </div>
-                    <div>
-                      <div
-                        className="clearColorButton"
-                        style={{ cursor: "pointer", minWidth: 140 }}
+                      </button>
+                      <button
+                        onClick={() => Navigate("/buyer-add")}
+                        effect="ripple"
+                        className="panelButton"
                       >
-                        <i className="fa-regular fa-wallet" />{" "}
-                        <span className="d-none d-xl-inline-block">
-                          $654.60
+                        <span className="text">Add</span>
+                        <span className="icon">
+                          <i className="fa-solid fa-plus"></i>
                         </span>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
-                <div className="col-auto mx-2">
-                  <button className="clearButton2 xl" effect="ripple">
-                    <i className="fa-light fa-moon" />
-                    <input
-                      type="checkbox"
-                      style={{
-                        opacity: 0,
-                        width: "100%",
-                        height: "100%",
-                        position: "absolute",
-                        top: 0,
-                      }}
-                    />
-                  </button>
-                </div>
-                <div className="col-auto col-xl-auto d-flex justify-content-end align-items-center">
-                  <div className="profileName">webvio</div>&nbsp; &nbsp;
-                  <div className="profileHolder">
-                    <img
-                      src="/static/media/placeholder-image.c872bce112e99ec719cb.webp"
-                      alt="profile"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="overviewTableWrapper">
-              <div className="overviewTableChild">
-                <div className="d-flex flex-wrap">
-                  <div className="col-12">
-                    <div className="heading">
-                      <div className="content">
-                        <h4>Campaign add</h4>
-                        <p>Edit existing campaign</p>
-                      </div>
-                      <div className="buttonGroup">
-                        <button effect="ripple" className="panelButton gray">
-                          <span className="text">Back</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-caret-left" />
-                          </span>
-                        </button>
-                        <button type="button" className="panelButton">
-                          <span className="text">Save</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-floppy-disk" />
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+              <div>
                   <div className="col-12" style={{ padding: "25px 23px" }}>
                     <div className="row">
                       <div className="col-xl-2 col-3">
@@ -106,7 +50,7 @@ function FportalCampaignCreate() {
                                 <h3>General Settings</h3>
                               </div>
                             </li>
-                            <li>
+                            {/* <li>
                               <div className="numberHolder completed">2</div>
                               <div className="textHolder">
                                 <h3>Dialer Settings</h3>
@@ -123,7 +67,7 @@ function FportalCampaignCreate() {
                               <div className="textHolder">
                                 <h3>Record List</h3>
                               </div>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       </div>
@@ -617,6 +561,7 @@ function FportalCampaignCreate() {
                       </div>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>
