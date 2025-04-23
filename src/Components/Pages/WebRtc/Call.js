@@ -283,6 +283,57 @@ function Call({
     const matchingCallerContactForAdmin = allContact.find(
       (contact) => contact.did === item["Caller-Caller-ID-Number"]
     )?.name;
+
+
+    // Call Type Icon Selector
+    const statusIcons = {
+      Missed: "fa-solid fa-phone-missed",
+      Cancelled: "fa-solid fa-phone-xmark",
+      Failed: "fa-solid fa-phone-slash",
+      transfer: "fa-solid fa-arrow-right-arrow-left",
+    };
+    const callIcons = {
+      inbound: {
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+        color:
+          item.variable_DIALSTATUS !==
+            "Answered"
+            ? "var(--funky-boy4)"
+            : "var(--funky-boy3)",
+        label: "Inbound",
+      },
+      outbound: {
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+        color:
+          item.variable_DIALSTATUS !==
+            "Answered"
+            ? "var(--funky-boy4)"
+            : "var(--color3)",
+        label: "Outbound",
+      },
+      internal: {
+        icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
+        color:
+          item.variable_DIALSTATUS !==
+            "Answered"
+            ? "var(--funky-boy4)"
+            : "var(--color2)",
+        label: "Internal",
+      },
+    };
+
+    const callType =
+      callIcons[
+      item["Call-Direction"]
+      ] || callIcons.internal;
+
+    const getCallTypeIcon = () => {
+      return (
+        <i className={`fa-solid ${callType.icon} me-1`} style={{ color: callType.color, }}        ></i>
+      );
+    }
+
+
     return (
       <>
         <div
@@ -351,17 +402,7 @@ function Call({
                       {/* <h5>Source</h5> */}
                     </div>
                     <div className="callIconAdmin">
-                      {item["variable_billsec"] > 0 ? (
-                        <i
-                          className="fa-solid fa-phone mx-2"
-                          style={{ color: "#fff" }}
-                        ></i>
-                      ) : (
-                        <i
-                          className="fa-solid fa-phone-xmark mx-2"
-                          style={{ color: "#fff", background: 'red' }}
-                        ></i>
-                      )}
+                      {getCallTypeIcon()}
                     </div>
                     <div className="destination">
                       <h4>
