@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux';
 export default function AccessControlEdit() {
       const navigate = useNavigate();
       const location=useLocation();
-      const [ipAddress, setIpAddress] = React.useState(location.state.ips);
+      const [ipAddress, setIpAddress] = React.useState([]);
       const [roles, setRoles] = React.useState([]);
-      const [name, setName] = React.useState(location.state.name);
-      const [status, setStatus] = React.useState(location.state.status);
-      const [description, setDescription] = React.useState(location.state.description);
-      const [roleId, setRoleId] = React.useState(location.state.role_id);
+      const [name, setName] = React.useState("");
+      const [status, setStatus] = React.useState(null);
+      const [description, setDescription] = React.useState("");
+      const [roleId, setRoleId] = React.useState(null);
       const [loading, setLoading] = React.useState(true);
       const account = useSelector((state) => state.account);
      
@@ -22,13 +22,19 @@ export default function AccessControlEdit() {
 
       useEffect(() => {
           async function fetchData() {
-           
             const apidata = await generalGetFunction("/role/all")
-            if (apidata.status) {
+            const res = await generalGetFunction(`ip-whitelist/${location.state.id}`)
+            if (apidata?.status&&res?.status) {
               setRoles(apidata.data);
+              setRoleId(res?.data?.role_id)
+              setIpAddress(res?.data?.ips)
+              setDescription(res?.data?.description);
+              setStatus(res?.data?.status);
+              setName(res?.data?.name)
               setLoading(false);
             }else{
-              toast.error(apidata.message)
+              toast.error(apidata?.message)
+              toast.error(res?.message)
               setLoading(false);
             }
           }
@@ -72,7 +78,7 @@ export default function AccessControlEdit() {
             const res=await generalDeleteFunction(`delete-ip-whitelists/${id}`)
             if(res.status){
               setLoading(false)
-              toast.success(res?.message)
+              toast.success(res?.message)            
               setIpAddress(ipAddress.filter((_, i) => i !== index))
             }else{
               setLoading(false)
@@ -88,7 +94,7 @@ export default function AccessControlEdit() {
          }
 
         }
-
+        // console.log({ipAddress})
   return (
     <>
     <div className="mainContent">
@@ -177,7 +183,7 @@ export default function AccessControlEdit() {
                             type="text"
                             name="description"
                             className="formItem"
-                            value={location.state.description}
+                            value={description}
                             onChange={(e) => setDescription(e.target.value)}
                           />
                         </div>
@@ -228,7 +234,7 @@ export default function AccessControlEdit() {
                                     type="text"
                                     name="stick_agent_expires"
                                     className="formItem"
-                                    value={item?.ip_address}
+                                    value={item?.ip_address||""}
                                     onChange={(e) => {
                                       let newIpAddress;
                                       if(item.id){
