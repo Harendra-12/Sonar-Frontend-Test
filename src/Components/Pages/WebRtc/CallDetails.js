@@ -592,17 +592,10 @@ function CallDetails({
                                     >
                                       <span>
                                         {item?.["Caller-Callee-ID-Number"]}
-                                        {item?.["variable_billsec"] > 0 ? (
-                                          <i
-                                            className="fa-solid fa-phone mx-2"
-                                            style={{ color: "var(--ui-accent)" }}
-                                          ></i>
-                                        ) : (
-                                          <i
-                                            className="fa-solid fa-phone-xmark mx-2"
-                                            style={{ color: "red" }}
-                                          ></i>
-                                        )}
+                                        <i className={`fa-solid ${getCallTypeIcon().icon} mx-2`} style={{ color: getCallTypeIcon().color }}></i>
+                                        {/* <span>
+                                            {getCallTypeIcon().label}
+                                          </span> */}
                                         {item?.["Caller-Caller-ID-Number"]}
                                       </span>
                                     </td>

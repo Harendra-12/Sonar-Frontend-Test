@@ -20,6 +20,7 @@ import {
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
 import Comments from "./Comments";
+import Tippy from "@tippyjs/react";
 
 /**
  * Component to handle and display call functionalities, including call history, 
@@ -327,9 +328,9 @@ function Call({
       item["Call-Direction"]
       ] || callIcons.internal;
 
-    const getCallTypeIcon = () => {
+    const getCallTypeIcon = (admin) => {
       return (
-        <i className={`fa-solid ${callType.icon} me-1`} style={{ color: callType.color, }}        ></i>
+        <i className={`fa-solid ${callType.icon} me-2 ${admin && 'bg-white'}`} style={{ color: callType.color, border: admin && '0.5px solid #a3a3a3' }}></i>
       );
     }
 
@@ -363,7 +364,7 @@ function Call({
                     }
                   </h4> */}
                   <div className="d-flex">
-                    {getCallTypeIcon()}
+                    {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
                     <h4>
                       {displayName
                         ? displayName
@@ -392,7 +393,7 @@ function Call({
                       {/* <h5>Source</h5> */}
                     </div>
                     <div className="callIconAdmin">
-                      {getCallTypeIcon()}
+                      {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon(1)}</Tippy>}
                     </div>
                     <div className="destination">
                       <h4>
