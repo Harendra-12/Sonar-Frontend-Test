@@ -7,6 +7,7 @@ import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunc
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
+import Tippy from "@tippyjs/react";
 
 
 /**
@@ -118,7 +119,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                     </div>
                     <div className="userTitle">
-                      <h5>{account?.username}</h5>
+                      {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}
                       <p>Ext- {extension}</p>
                     </div>
                   </button>
