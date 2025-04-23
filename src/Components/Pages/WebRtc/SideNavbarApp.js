@@ -112,7 +112,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       }
                     >
                       {account?.profile_picture ?
-                        <img src={account?.profile_picture} /> : (
+                        <img src={account?.profile_picture} onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')} /> : (
                           <i className="fa-light fa-user"></i>
                         )}
                       {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
