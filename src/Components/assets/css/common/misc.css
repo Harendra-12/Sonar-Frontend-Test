@@ -633,6 +633,12 @@ input[type=number] {
     color: #2793f4 !important;
 }
 
+.contactTags span[data-id="rechain"] {
+    background-color: #018786;
+    color: #fff !important;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
 .contactTags span[data-id="1"] {
     background-color: #b8eadc;
     color: #00c193 !important;
@@ -1884,10 +1890,12 @@ input[type=number] {
     display: flex;
     align-items: center;
 }
-.attachment-icon img{
+
+.attachment-icon img {
     width: 100%;
 }
-.mail-attachment{
+
+.mail-attachment {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1895,18 +1903,21 @@ input[type=number] {
     padding: 10px;
     border-radius: 5px;
 }
- .mail-attachment .attachment-name {
+
+.mail-attachment .attachment-name {
     max-width: 7rem;
     display: inline-block;
     font-size: .75rem;
     font-weight: 500;
     color: var(--black);
 }
+
 .text-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .mails-information .mail-info-footer {
     padding: .75rem;
     border-block-start: 1px solid var(--default-border);
@@ -1920,43 +1931,51 @@ input[type=number] {
     position: relative;
     display: block;
     height: calc(100vh - 315px);
- 
+
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-.mail-info-footer{
+
+.mail-info-footer {
     box-shadow: rgba(0, 0, 0, 0.1) -1px -8px 16px 0px;
 }
-.text_gray{
+
+.text_gray {
     color: var(--gray);
 }
-.text_dark{
+
+.text_dark {
     color: var(--black);
 }
+
 /* .text_message{
     position: absolute;
     top: 0;
 } */
-.mail_input{
+.mail_input {
     width: 100%;
     border: 1px solid var(--table-border-color);
     padding: 10px;
     border-radius: 5px;
 }
-.mailList_menu .dropdown-item:hover{
+
+.mailList_menu .dropdown-item:hover {
     background: rgba(119, 139, 159, 0.102);
 }
-.from-group{
+
+.from-group {
     margin-bottom: 10px;
 }
-.from-label{
+
+.from-label {
     font-size: 12px;
 }
-.modal-dialog .modal-content{
+
+.modal-dialog .modal-content {
     background: var(--white);
 }
 
-/* From Uiverse.io by Yaya12085 */ 
+/* From Uiverse.io by Yaya12085 */
 .custom_fileWrap {
     height: 30px;
     width: 30px;
@@ -1970,9 +1989,9 @@ input[type=number] {
     gap: 5px;
     cursor: pointer;
     background-color: rgba(0, 110, 255, 0.164);
-  }
-  
-  /* .custom_file {
+}
+
+/* .custom_file {
     flex: 1;
     width: 100%;
     border: 2px dashed royalblue;
@@ -1991,8 +2010,8 @@ input[type=number] {
     text-align: center;
     color: black;
   } */
-  
-  .custom_file {
+
+.custom_file {
     background-color: rgba(0, 110, 255, 0.075);
     width: 100%;
     height: 40px;
@@ -2004,9 +2023,9 @@ input[type=number] {
     justify-content: center;
     color: black;
     border: none;
-  }
-  
-  /* .custom_file i {
+}
+
+/* .custom_file i {
     height: 130%;
     fill: royalblue;
     background-color: rgba(70, 66, 66, 0.103);
@@ -2016,15 +2035,16 @@ input[type=number] {
     box-shadow: 0 2px 30px rgba(0, 0, 0, 0.205);
   }
    */
-  .custom_file p {
+.custom_file p {
     flex: 1;
     text-align: center;
-  }
-  
-  #file {
+}
+
+#file {
     display: none;
-  }
-  .footerSms{
+}
+
+.footerSms {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -2035,13 +2055,13 @@ input[type=number] {
     padding: 5px 10px;
     border: 1px solid var(--color4);
     border-top: 0;
-  }
-  .eFaxCompose .newMessageWrapper .inputFileWrapper.inputFileWrapper.faxSelectUnset_hover{
+}
+
+.eFaxCompose .newMessageWrapper .inputFileWrapper.inputFileWrapper.faxSelectUnset_hover {
     padding: 0;
-  }
-  
-  .eFaxCompose .newMessageWrapper .inputFileWrapper.faxSelectUnset_hover:hover{
+}
+
+.eFaxCompose .newMessageWrapper .inputFileWrapper.faxSelectUnset_hover:hover {
     background: transparent;
     padding: 0;
-  }
-  
+}

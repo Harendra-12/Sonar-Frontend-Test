@@ -705,7 +705,7 @@ function CampaignCreate() {
                                             </div>
                                             <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                             <div className="contactTags">
-                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '1' : 'none'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
+                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? 'rechain' : 'none'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
 
                                               {/* <span >
                                                   Retry
