@@ -111,13 +111,13 @@ function CallDetails({
     const newUrl = url.split(".com/").pop();
     // const presignData = await generatePreSignedUrl(newUrl);
     // if (presignData?.status && presignData?.url) {
-      // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
-      // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
-      // }
-      console.log({url})
-      const trnascript = await fileUploadFunction(`transcribe-audio`,
-        { src: url },
-      );
+    // const trnascript = await generalPostFunction("/transcribe-audio", { src: presignData?.url });
+    // const trnascript = await generalPostFunction("/transcribe-audio", { src:url });
+    // }
+    console.log({ url })
+    const trnascript = await fileUploadFunction(`transcribe-audio`,
+      { src: url },
+    );
   }
 
   const handlePlaying = async (audio) => {
@@ -484,267 +484,287 @@ function CallDetails({
                           </tr>
                         </thead>
                         <tbody>
-                          {callHistory?.map((item) => (
-                            <>
-                              <tr
-                                key={item.id}
-                                // data-bs-toggle="collapse"
-                                href={`#voiceMail${item.id}`}
-                                role="button"
-                                aria-expanded="false"
-                              >
-                                <td>{formatDate(item.variable_start_stamp)}</td>
-                                <td>{formatTime(item.variable_start_stamp)}</td>
-                                {/* <td
-                        className={`${
-                          item["Caller-Callee-ID-Number"] === extension &&
-                          item["variable_billsec"] > 0
-                            ? "incoming"
-                            : item["Caller-Caller-ID-Number"] === extension
-                            ? "outgoing"
-                            : item["Caller-Callee-ID-Number"] === extension &&
-                              item["variable_billsec"] === 0
-                            ? "missed"
-                            : item["Call-Direction"] === "voicemail"
-                            ? "voicemail"
-                            : ""
-                        }`}
-                      >
-                        <span>
-                          {item &&
-                          item?.["Caller-Callee-ID-Number"] === extension &&
-                          item?.["variable_billsec"] > 0
-                            ? "Incoming"
-                            : item?.["Caller-Caller-ID-Number"] === extension
-                            ? "Outgoing"
-                            : item?.["Caller-Callee-ID-Number"] === extension &&
-                              item?.["variable_billsec"] === 0
-                            ? "Missed"
-                            : item?.["Call-Direction"] === "voicemail"
-                            ? "Voicemail"
-                            : ""}
-                        </span>
-                      </td> */}
-                                {!isCustomerAdmin ? (
-                                  <td
-                                    style={{ paddingLeft: "32px" }}
-                                    className={`${item?.["Caller-Callee-ID-Number"] ===
-                                      extension &&
-                                      item?.["variable_billsec"] > 0
-                                      ? "incoming"
-                                      : item?.["Caller-Caller-ID-Number"] ===
-                                        extension
-                                        ? "outgoing"
-                                        : item?.["Caller-Callee-ID-Number"] ===
-                                          extension &&
-                                          item?.["variable_billsec"] === 0
-                                          ? "missed"
-                                          : item?.["Call-Direction"] ===
-                                            "voicemail"
-                                            ? "voicemail"
-                                            : ""
-                                      }`}
-                                  >
-                                    <span>
-                                      {item &&
-                                        item?.["Caller-Callee-ID-Number"] ===
-                                        extension &&
-                                        item?.["variable_billsec"] > 0
-                                        ? "Incoming"
-                                        : item?.["Caller-Caller-ID-Number"] ===
-                                          extension
-                                          ? "Outgoing"
-                                          : item?.["Caller-Callee-ID-Number"] ===
-                                            extension &&
-                                            item?.["variable_billsec"] === 0
-                                            ? "Missed"
-                                            : item?.["Call-Direction"] ===
-                                              "voicemail"
-                                              ? "voicemail"
-                                              : ""}
-                                    </span>
-                                  </td>
-                                ) : (
-                                  <td
-                                  // className={`${item?.["variable_billsec"] === 0
-                                  //   ? "missed"
-                                  //   : item?.["Call-Direction"] === "voicemail"
-                                  //     ? "voicemail"
-                                  //     : ""
-                                  //   }`}
-                                  >
-                                    <span>
-                                      {item?.["Caller-Callee-ID-Number"]}
-                                      {item?.["variable_billsec"] > 0 ? (
-                                        <i
-                                          className="fa-solid fa-phone mx-2"
-                                          style={{ color: "var(--ui-accent)" }}
-                                        ></i>
-                                      ) : (
-                                        <i
-                                          className="fa-solid fa-phone-xmark mx-2"
-                                          style={{ color: "red" }}
-                                        ></i>
-                                      )}
-                                      {item?.["Caller-Caller-ID-Number"]}
-                                    </span>
-                                  </td>
-                                )}
-                                {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
-                                {/* <td>
-                        {item["Caller-Caller-ID-Number"] ===
-                        extension
-                          ? item["Caller-Caller-ID-Number"]
-                          : item["Caller-Callee-ID-Number"]}
-                      </td> */}
-                                <td style={{ color: "var(--color-subtext)" }}>
-                                  {formatDuration(item.variable_billsec)}
-                                </td>
+                          {callHistory?.map((item) => {
+                            const statusIcons = {
+                              Missed: "fa-solid fa-phone-missed",
+                              Cancelled: "fa-solid fa-phone-xmark",
+                              Failed: "fa-solid fa-phone-slash",
+                              transfer: "fa-solid fa-arrow-right-arrow-left",
+                            };
+                            const callIcons = {
+                              inbound: {
+                                icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-down-left",
+                                color:
+                                  item.variable_DIALSTATUS !==
+                                    "Answered"
+                                    ? "var(--funky-boy4)"
+                                    : "var(--funky-boy3)",
+                                label: "Inbound",
+                              },
+                              outbound: {
+                                icon: statusIcons[item.variable_DIALSTATUS] || "fa-phone-arrow-up-right",
+                                color:
+                                  item.variable_DIALSTATUS !==
+                                    "Answered"
+                                    ? "var(--funky-boy4)"
+                                    : "var(--color3)",
+                                label: "Outbound",
+                              },
+                              internal: {
+                                icon: statusIcons[item.variable_DIALSTATUS] || "fa-headset",
+                                color:
+                                  item.variable_DIALSTATUS !==
+                                    "Answered"
+                                    ? "var(--funky-boy4)"
+                                    : "var(--color2)",
+                                label: "Internal",
+                              },
+                            };
 
-                                <td>
-                                 {item.variable_billsec>0&& <button
-                                    className="tableButton px-2 mx-0"
-                                    onClick={() => {
-                                      if (item?.recording_path === currentPlaying) {
-                                        setCurrentPlaying("");
-                                        setAudioURL("");
-                                      } else {
-                                        handlePlaying(item?.recording_path);
-                                      }
-                                    }}
-                                  >
-                                    {currentPlaying === item?.recording_path ? (
-                                      <i className="fa-solid fa-chevron-up"></i>
-                                    ) : (
-                                      <i className="fa-solid fa-chevron-down"></i>
-                                    )}
-                                  </button>}
-                                  {/* <div className="dropdown">
-                                    <div
-                                      className={`tableButton`}
-                                      href="#"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
+                            const callType =
+                              callIcons[
+                              item["Call-Direction"]
+                              ] || callIcons.internal;
+
+                            const getCallTypeIcon = () => {
+                              return callType;
+                              return (
+                                <i className={`fa-solid ${callType.icon} me-1`} style={{ color: callType.color, }}        ></i>
+                              );
+                            }
+
+                            return (
+                              <>
+                                <tr
+                                  key={item.id}
+                                  // data-bs-toggle="collapse"
+                                  href={`#voiceMail${item.id}`}
+                                  role="button"
+                                  aria-expanded="false"
+                                >
+                                  <td>{formatDate(item.variable_start_stamp)}</td>
+                                  <td>{formatTime(item.variable_start_stamp)}</td>
+                                  {/* <td
+                          className={`${
+                            item["Caller-Callee-ID-Number"] === extension &&
+                            item["variable_billsec"] > 0
+                              ? "incoming"
+                              : item["Caller-Caller-ID-Number"] === extension
+                              ? "outgoing"
+                              : item["Caller-Callee-ID-Number"] === extension &&
+                                item["variable_billsec"] === 0
+                              ? "missed"
+                              : item["Call-Direction"] === "voicemail"
+                              ? "voicemail"
+                              : ""
+                          }`}
+                        >
+                          <span>
+                            {item &&
+                            item?.["Caller-Callee-ID-Number"] === extension &&
+                            item?.["variable_billsec"] > 0
+                              ? "Incoming"
+                              : item?.["Caller-Caller-ID-Number"] === extension
+                              ? "Outgoing"
+                              : item?.["Caller-Callee-ID-Number"] === extension &&
+                                item?.["variable_billsec"] === 0
+                              ? "Missed"
+                              : item?.["Call-Direction"] === "voicemail"
+                              ? "Voicemail"
+                              : ""}
+                          </span>
+                        </td> */}
+                                  {!isCustomerAdmin ? (
+                                    <td>
+                                      <i className={`fa-solid ${getCallTypeIcon().icon} me-2`} style={{ color: getCallTypeIcon().color }}></i>
+                                      <span>
+                                        {getCallTypeIcon().label}
+                                      </span>
+                                    </td>
+                                  ) : (
+                                    <td
+                                    // className={`${item?.["variable_billsec"] === 0
+                                    //   ? "missed"
+                                    //   : item?.["Call-Direction"] === "voicemail"
+                                    //     ? "voicemail"
+                                    //     : ""
+                                    //   }`}
                                     >
-                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                    </div>
-                                    <ul className="dropdown-menu actionBtnDropdowns">
-                                      <>
-                                        <li className="dropdown-item">
-                                          <div
-                                            className="clearButton text-align-start"
-                                            onClick={() => {
-                                              if (item?.recording_path) {
-                                                handlePlaying(
-                                                  item?.recording_path
-                                                );
+                                      <span>
+                                        {item?.["Caller-Callee-ID-Number"]}
+                                        {item?.["variable_billsec"] > 0 ? (
+                                          <i
+                                            className="fa-solid fa-phone mx-2"
+                                            style={{ color: "var(--ui-accent)" }}
+                                          ></i>
+                                        ) : (
+                                          <i
+                                            className="fa-solid fa-phone-xmark mx-2"
+                                            style={{ color: "red" }}
+                                          ></i>
+                                        )}
+                                        {item?.["Caller-Caller-ID-Number"]}
+                                      </span>
+                                    </td>
+                                  )}
+                                  {/* <td>{item["Caller-Caller-ID-Number"]}</td> */}
+                                  {/* <td>
+                          {item["Caller-Caller-ID-Number"] ===
+                          extension
+                            ? item["Caller-Caller-ID-Number"]
+                            : item["Caller-Callee-ID-Number"]}
+                        </td> */}
+                                  <td style={{ color: "var(--color-subtext)" }}>
+                                    {formatDuration(item.variable_billsec)}
+                                  </td>
+
+                                  <td>
+                                    {item.variable_billsec > 0 && <button
+                                      className="tableButton px-2 mx-0"
+                                      onClick={() => {
+                                        if (item?.recording_path === currentPlaying) {
+                                          setCurrentPlaying("");
+                                          setAudioURL("");
+                                        } else {
+                                          handlePlaying(item?.recording_path);
+                                        }
+                                      }}
+                                    >
+                                      {currentPlaying === item?.recording_path ? (
+                                        <i className="fa-solid fa-chevron-up"></i>
+                                      ) : (
+                                        <i className="fa-solid fa-chevron-down"></i>
+                                      )}
+                                    </button>}
+                                    {/* <div className="dropdown">
+                                      <div
+                                        className={`tableButton`}
+                                        href="#"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        <i className="fa-solid fa-ellipsis-vertical" />
+                                      </div>
+                                      <ul className="dropdown-menu actionBtnDropdowns">
+                                        <>
+                                          <li className="dropdown-item">
+                                            <div
+                                              className="clearButton text-align-start"
+                                              onClick={() => {
+                                                if (item?.recording_path) {
+                                                  handlePlaying(
+                                                    item?.recording_path
+                                                  );
+                                                }
+                                              }}
+                                            >
+  
+                                              <i
+                                                className={`fa-solid fa-${item.configuration !== null
+                                                  ? "play"
+                                                  : "triangle-exclamation"
+                                                  } me-2`}
+                                              ></i>{" "}
+                                              {item.configuration !== null
+                                                ? "Play "
+                                                : "Configure"}
+                                            </div>
+                                          </li>
+  
+                                          <li className="dropdown-item">
+                                            <div
+                                              className="clearButton text-align-start"
+                                              onClick={() => {
+                                                if (item?.recording_path) {
+                                                  setTranscribeLink(item?.recording_path)
+                                                }
                                               }
+                                              }
+                                            >
+                                              <i className="fa-solid fa-bolt me-2"></i>
+                                              Transcript
+                                            </div>
+                                          </li>
+                                        </>
+  
+                                        <>
+                                          <li className="dropdown-item">
+                                            <div
+                                              className="clearButton text-align-start"
+                                              onClick={() =>
+                                                handleAudioDownload(
+                                                  item.recording_path
+                                                )
+                                              }
+                                            >
+                                              <i className="fa-regular fa-download"></i>{" "}
+                                              Download
+                                            </div>
+                                          </li>
+                                        </>
+                                        <li className="dropdown-item"></li>
+                                      </ul>
+                                    </div> */}
+                                  </td>
+                                </tr>
+                                {item?.recording_path &&
+                                  currentPlaying === item?.recording_path && (
+                                    <tr
+                                      className="show"
+                                      id={`voiceMail${item?.id}`}
+                                    >
+                                      <td colSpan={5}>
+                                        <div className="audio-container">
+                                          <AudioWaveformCommon audioUrl={audioURL} />
+                                          {/* <audio
+                                            controls={true}
+                                            ref={thisAudioRef}
+                                            autoPlay={true}
+                                            onEnded={() => {
+                                              setCurrentPlaying(null);
                                             }}
                                           >
+                                            <source
+                                              src={audioURL}
+                                              type="audio/mpeg"
+                                            />
+                                          </audio> */}
 
-                                            <i
-                                              className={`fa-solid fa-${item.configuration !== null
-                                                ? "play"
-                                                : "triangle-exclamation"
-                                                } me-2`}
-                                            ></i>{" "}
-                                            {item.configuration !== null
-                                              ? "Play "
-                                              : "Configure"}
-                                          </div>
-                                        </li>
-
-                                        <li className="dropdown-item">
-                                          <div
-                                            className="clearButton text-align-start"
-                                            onClick={() => {
-                                              if (item?.recording_path) {
-                                                setTranscribeLink(item?.recording_path)
-                                              }
-                                            }
-                                            }
-                                          >
-                                            <i className="fa-solid fa-bolt me-2"></i>
-                                            Transcript
-                                          </div>
-                                        </li>
-                                      </>
-
-                                      <>
-                                        <li className="dropdown-item">
-                                          <div
-                                            className="clearButton text-align-start"
+                                          {/* <button
+                                            className="audioCustomButton"
                                             onClick={() =>
                                               handleAudioDownload(
                                                 item.recording_path
                                               )
                                             }
                                           >
-                                            <i className="fa-regular fa-download"></i>{" "}
-                                            Download
-                                          </div>
-                                        </li>
-                                      </>
-                                      <li className="dropdown-item"></li>
-                                    </ul>
-                                  </div> */}
-                                </td>
-                              </tr>
-                              {item?.recording_path &&
-                                currentPlaying === item?.recording_path && (
-                                  <tr
-                                    className="show"
-                                    id={`voiceMail${item?.id}`}
-                                  >
-                                    <td colSpan={5}>
-                                      <div className="audio-container">
-                                        <AudioWaveformCommon audioUrl={audioURL} />
-                                        {/* <audio
-                                          controls={true}
-                                          ref={thisAudioRef}
-                                          autoPlay={true}
-                                          onEnded={() => {
-                                            setCurrentPlaying(null);
-                                          }}
-                                        >
-                                          <source
-                                            src={audioURL}
-                                            type="audio/mpeg"
-                                          />
-                                        </audio> */}
+                                            <i className="fa-sharp fa-solid fa-download"></i>
+                                          </button> */}
+                                          {/* <button className="audioCustomButton ms-1">
+                                            <i className="fa-sharp fa-solid fa-box-archive"></i>
+                                          </button> */}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                {/* {
+                                  transcribeLink === item?.recording_path ?
+                                    <tr
+                                      className="show"
+                                      id={`voiceMail${item?.id}`}
+                                    >
+                                      <td colSpan={5}>
+                                        <AudioTranscribe url={transcribeLink} />
+                                      </td>
+                                    </tr>
+                                    : ""
+                                } */}
+                              </>
+                            )
+                          }
 
-                                        {/* <button
-                                          className="audioCustomButton"
-                                          onClick={() =>
-                                            handleAudioDownload(
-                                              item.recording_path
-                                            )
-                                          }
-                                        >
-                                          <i className="fa-sharp fa-solid fa-download"></i>
-                                        </button> */}
-                                        {/* <button className="audioCustomButton ms-1">
-                                          <i className="fa-sharp fa-solid fa-box-archive"></i>
-                                        </button> */}
-                                      </div>
-                                    </td>
-                                  </tr>
-                                )}
-                              {/* {
-                                transcribeLink === item?.recording_path ?
-                                  <tr
-                                    className="show"
-                                    id={`voiceMail${item?.id}`}
-                                  >
-                                    <td colSpan={5}>
-                                      <AudioTranscribe url={transcribeLink} />
-                                    </td>
-                                  </tr>
-                                  : ""
-                              } */}
-                            </>
-                          ))}
+                          )}
                         </tbody>
                       </table>
                     </div>
