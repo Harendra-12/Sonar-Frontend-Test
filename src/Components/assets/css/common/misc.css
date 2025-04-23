@@ -640,8 +640,8 @@ input[type=number] {
 }
 
 .contactTags span[data-id="1"] {
-    background-color: #b8eadc;
-    color: #00c193 !important;
+    background-color: #b8eadcb0;
+    color: #247662 !important;
 }
 
 .contactTags span[data-id="2"] {
@@ -1836,12 +1836,13 @@ input[type=number] {
 
 .mail_table thead tr th {
     background: var(--white);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f3f3f3;
     color: var(--black);
+    padding: 10px !important;
 }
 
 .mail_table tbody tr {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f3f3f3;
 }
 
 .table_card {
@@ -2064,4 +2065,16 @@ input[type=number] {
 .eFaxCompose .newMessageWrapper .inputFileWrapper.faxSelectUnset_hover:hover {
     background: transparent;
     padding: 0;
+}
+
+.mail_table table tbody tr:nth-child(even) {
+    background: transparent;
+}
+
+.mail_table table tbody tr:hover {
+    background: #f3f6f8;
+}
+
+.mail_table table tbody tr.active {
+    background: #f3f6f8;
 }

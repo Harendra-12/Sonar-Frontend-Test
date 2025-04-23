@@ -320,7 +320,7 @@ function Email() {
 
             </div>
             <div className="pt-3">
-              <div className="card mb-0">
+              <div className="card mb-0 ">
                 <div className="card-header d-flex justify-content-between align-items-center">
                   <h5 className="card-title mb-0 text_dark">Mailbox</h5>
                   {/* <button className="btn btn-primary"><i class="fa-regular fa-envelope me-2"></i>  New Email</button> */}
@@ -329,7 +329,7 @@ function Email() {
                 </div>
                 <div className="card-body">
                   <div className="d-flex ">
-                    <div className="card mail_leftbar shadow-sm rounded-3 mb-0">
+                    <div className="card mail_leftbar rounded-end-3 mb-0">
                       <div className="card-body">
                         <ul>
                           <li className="mail_list active">
@@ -345,8 +345,8 @@ function Email() {
                       </div>
                     </div>
                     <div className="table_card">
-                      {/* <EmailList /> */}
-                      <MailReply />
+                      <EmailList />
+                      {/* <MailReply /> */}
                     </div>
                   </div>
                 </div>
