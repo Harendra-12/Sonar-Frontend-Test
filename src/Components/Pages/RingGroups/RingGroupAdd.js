@@ -1340,7 +1340,7 @@ const RingGroupAdd = () => {
                 </h5>
                 <div className="searchBoxWrapper">
                   <input
-                    className="searchBar"
+                    className="searchBar "
                     type="text"
                     value={searchEditAllUser}
                     onChange={(e) => setSearchEditAllUser(e.target.value)}
