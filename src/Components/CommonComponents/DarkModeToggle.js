@@ -8,20 +8,25 @@ function DarkModeToggle({ marginLeft }) {
     const root = document.documentElement;
 
     useEffect(() => {
+        const applyTransition = () => {
+            document.documentElement.classList.add("theme-transition");
+            setTimeout(() => {
+                document.documentElement.classList.remove("theme-transition");
+            }, 300); // same as your transition duration
+        };
+
+        applyTransition();
+
         if (isDark) {
             localStorage.setItem("theme", "dark");
-            document.body.classList.add("dark");
             root.classList.add("dark");
+            document.body.classList.add("dark");
         } else {
             localStorage.setItem("theme", "light");
             root.classList.remove("dark");
             document.body.classList.remove("dark");
         }
-    }, [isDark])
-
-
-
-    
+    }, [isDark]);
 
     useEffect(() => {
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;

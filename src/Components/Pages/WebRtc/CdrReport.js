@@ -60,7 +60,7 @@ function CdrReport({ page }) {
   });
 
   const [isSorting, setIsSorting] = useState("");
-  const [sortingValue,setSortingValue]=useState("")
+  const [sortingValue, setSortingValue] = useState("")
 
   const [contentLoader, setContentLoader] = useState(false);
   const [refresh, setRefrehsh] = useState(1);
@@ -228,7 +228,7 @@ function CdrReport({ page }) {
         "Hangup-Cause": hangupStatus,
         call_cost: page === "billing" ? "give" : "",
         variable_billsec: page == "callrecording" && isSorting === "duration" ? sortingValue : "",
-        recording_size: page == "callrecording" && isSorting==="record" ? sortingValue : ""
+        recording_size: page == "callrecording" && isSorting === "record" ? sortingValue : ""
       }
     );
 
@@ -238,7 +238,7 @@ function CdrReport({ page }) {
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
-          setCdr(apiData.data);
+          setCdr(apiData);
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -272,8 +272,8 @@ function CdrReport({ page }) {
     refresh,
     itemsPerPage,
     page,
-   sortingValue
-    ]);
+    sortingValue
+  ]);
 
   const getDateRange = (period) => {
     const currentDate = new Date();
@@ -519,6 +519,8 @@ function CdrReport({ page }) {
     setEndDateFlag("");
     setTimeFlag({ startTime: "", endTime: "" });
     setTimeFilter({ startTime: "", endTime: "" });
+    setIsSorting("");
+    setSortingValue("");
 
     setTimeout(() => {
       refreshCallData();
@@ -875,35 +877,35 @@ function CdrReport({ page }) {
                         <>
                           <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                             Sorting
+                              Sorting
                             </label>
                             <select
                               className="formItem"
                               value={isSorting}
-                              onChange={(e) => {         
-                                  setIsSorting(e.target.value)
-                                  setSortingValue("")
+                              onChange={(e) => {
+                                setIsSorting(e.target.value)
+                                setSortingValue("")
                               }}
                             >
-                                 <option value="">Choose Sorting</option>
-                              <option value={"record"}>Recordings</option>
-                              <option value={"duration"}>Duration</option>     
+                              <option value="">Choose Sorting</option>
+                              <option value={"record"}>Size</option>
+                              <option value={"duration"}>Duration</option>
                             </select>
                           </div>
-                         {isSorting&& <div className="formRow border-0 ps-xl-0">
+                          {isSorting && <div className="formRow border-0 ps-xl-0">
                             <label className="formLabel text-start mb-0 w-100">
-                              {isSorting==="record"?"Select Recordings":"Select Duration"}
+                              {isSorting === "record" ? "Select Size" : "Select Duration"}
                             </label>
                             <select
                               className="formItem"
                               value={sortingValue}
                               onChange={(e) => {
-                                setSortingValue(e.target.value)  
+                                setSortingValue(e.target.value)
                               }}
                             >
-                            <option value="">Choose Method</option>
-                              <option value={"asc"}>Ascending</option>
-                              <option value={"desc"}>Descending</option>
+                              <option value="">Choose Method</option>
+                              <option value={"asc"}>{isSorting === "record" ? 'Size' : 'Duration'} - Low to High</option>
+                              <option value={"desc"}>{isSorting === "record" ? 'Size' : 'Duration'} - High to Low</option>
                             </select>
                           </div>}
                         </>
@@ -1018,6 +1020,7 @@ function CdrReport({ page }) {
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
+                          <th>Destination</th>
                           <th>Via/Route</th>
                           {page === "callrecording" ? (
                             ""
@@ -1056,7 +1059,7 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                  ? 10
+                                  ? 11
                                   : 17
                             }
                             row={12}
@@ -1164,7 +1167,7 @@ function CdrReport({ page }) {
                                       </td>
                                       <td>{item["variable_sip_from_user"]}</td>
                                       <td>{item["tag"]}</td>
-
+                                      <td>{item["variable_sip_to_user"]}</td>
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
@@ -1404,7 +1407,7 @@ function CdrReport({ page }) {
                           </>
                         )}
 
-                        {!loading && cdr && cdr.data.length === 0 ? (
+                        {!loading && cdr && cdr.data?.length === 0 ? (
                           <td colSpan={99}>
                             <EmptyPrompt name="Call" link="dashboard" />
                           </td>
@@ -1415,7 +1418,7 @@ function CdrReport({ page }) {
                     </table>
                   </div>
                   <div className="tableHeader mb-3">
-                    {!loading && cdr && cdr.data.length > 0 ? (
+                    {!loading && cdr && cdr.data?.length > 0 ? (
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={cdr.last_page}

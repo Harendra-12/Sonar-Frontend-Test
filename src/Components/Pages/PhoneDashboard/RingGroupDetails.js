@@ -101,9 +101,9 @@ const RingGroup = () => {
                   <div className="col-6">
                     <div className="headingExtraInfo">
                       <div className="mx-auto">
-                        <span className="badge badge-soft-primary rounded-pill" 
-                        style={{ minWidth: '7vw', }}>
-                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}> */}
+                        <span className="badge badge-soft-primary rounded-pill"
+                          style={{ minWidth: '7vw', }}>
+                          {/* style={{ minWidth: '7vw', backgroundColor: 'var(--ui-accent)' }}> */}
                           Active Calls:&nbsp;
                           {activeCallData.filter(
                             (e) =>
@@ -115,9 +115,9 @@ const RingGroup = () => {
                     </div>
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
-                        <span className="badge  badge-soft-danger rounded-pill" 
-                        style={{ minWidth: '7vw', }}>
-                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
+                        <span className="badge  badge-soft-danger rounded-pill"
+                          style={{ minWidth: '7vw', }}>
+                          {/* style={{ minWidth: '7vw', backgroundColor: 'var(--color3)' }}> */}
                           Missed Calls:&nbsp;
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
@@ -131,9 +131,9 @@ const RingGroup = () => {
                   <div className="col-6">
                     <div className="headingExtraInfo">
                       <div className="mx-auto">
-                        <span className="badge badge-soft-success rounded-pill " 
-                        style={{ minWidth: '7vw', }}>
-                        {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}> */}
+                        <span className="badge badge-soft-success rounded-pill "
+                          style={{ minWidth: '7vw', }}>
+                          {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy3)' }}> */}
                           Completed Calls:&nbsp;
                           {allCallDetails?.filter_count?.filter(
                             (item) =>
@@ -147,8 +147,8 @@ const RingGroup = () => {
                     <div className="headingExtraInfo mt-1">
                       <div className="mx-auto">
                         <span className="badge badge-soft-secondary rounded-pill"
-                         style={{ minWidth: '7vw',  }}>
-                         {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}
+                          style={{ minWidth: '7vw', }}>
+                          {/* style={{ minWidth: '7vw', backgroundColor: 'var(--funky-boy4)' }}> */}
                           Total Calls:&nbsp;
                           {allCallDetails?.filter_count
                             ?.filter((item) => {
@@ -242,49 +242,52 @@ const RingGroup = () => {
                               ) || 0}
                           </td>
                           <td>
-                            <div className="hover-dropdown">
-                              <div
-                                style={{
-                                  color: "var(--ui-accent)",
-                                }}
-                                type="button"
-                                data-bs-toggle="hover-dropdown"
-                                aria-expanded="false"
-                              >
-                                <div className="avatar-container">
-                                  {call.ring_group_destination?.slice(0, 4).map((item, index) => {
-                                    return (
-                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
-                                    )
-                                  })}
-                                  {call.ring_group_destination.length > 4 && <span>+2</span>}
-                                </div>
-                              </div>
-                              <ul className="dropdown-menu light">
-                                <li className="col-12">
-                                  <div className="dropdown-item fw-bold disabled">
-                                    Agents
-                                  </div>
-                                </li>
-                                <div
-                                  style={{ columnCount: 1 }}
+                            <Tippy
+                              content={
+                                <ul
+                                  className="dropdown-menu-hover"
+                                  style={{ columnCount: call.ring_group_destination.length > 8 ? 2 : 1 }}
                                 >
                                   {call.ring_group_destination.map(
                                     (item, index) => (
                                       <li>
-                                        <div className="dropdown-item" onClick={() => handleAgentClick(item)}>
-                                          {item?.username}
+                                        <div className="dropdown-item d-flex align-items-center" onClick={() => handleAgentClick(item)}>
+                                          <span className="avatar-container">
+                                            {
+                                              item.profile_picture ?
+                                                <img
+                                                  alt="profile"
+                                                  src={item.profile_picture}
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                /> : <i className="fa-light fa-user"></i>}
+                                          </span>
+                                          <span className="ms-2">{item?.username}</span>
                                         </div>
                                       </li>
                                     ))}
+                                  {/* <li className="col-12">
+                                        {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
+                                          Show More
+                                        </Link>}
+                                      </li> */}
+                                </ul>
+                              }
+                              allowHTML={true}
+                              placement="bottom"
+                              interactive={true}
+                              popperOptions={{ strategy: 'fixed' }}
+                            >
+                              <div className="hover-dropdown">
+                                <div className="avatar-container">
+                                  {call?.ring_group_destination?.slice(0, 4).map((item, index) => {
+                                    return (
+                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                    )
+                                  })}
+                                  {call?.ring_group_destination.length > 4 && <span>+{call.ring_group_destination.length - 4}</span>}
                                 </div>
-                                {/* <li className="col-12">
-                                {call.ring_group_destination.length > 6 && <Link to="/ring-groups" className="dropdown-item text-center text-primary">
-                                  Show More
-                                </Link>}
-                              </li> */}
-                              </ul>
-                            </div>
+                              </div>
+                            </Tippy>
                           </td>
                           <td>{call.extension}</td>
                         </tr>

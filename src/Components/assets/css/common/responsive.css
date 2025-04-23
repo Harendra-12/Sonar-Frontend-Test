@@ -372,15 +372,22 @@ element.style {
         font-size: 0.625rem;
     }
 
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
 
+    .call_dCard {
+        min-height: 110px;
+    }
 }
 
 
 
-@media (max-width: 767px){
-    .chat_menu{
+@media (max-width: 767px) {
+    .chat_menu {
         display: block;
     }
+
     .chat_nav {
         background: #fff;
         position: absolute;
@@ -389,11 +396,13 @@ element.style {
         z-index: 2;
         opacity: 0;
     }
+
     .chat_nav.hidden {
         left: 0;
         opacity: 1;
     }
-    .left_listClose{
+
+    .left_listClose {
         display: block;
     }
 }

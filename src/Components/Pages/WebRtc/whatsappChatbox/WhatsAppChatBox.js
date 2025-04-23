@@ -7,6 +7,8 @@ import {
   generalPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
+import { api_url } from "../../../../urls";
+import { ActionType } from "../../../Redux/reduxActionType";
 
 const WhatsAppChatBox = ({ initial }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,8 @@ const WhatsAppChatBox = ({ initial }) => {
   const [message, setMessage] = useState();
   const [sendingMessage, setSendingMessage] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [isWhatsappInAllSocialPlatformData, setIsWhatsappInAllSocialPlatformData] = useState(null)
   const POLLING_INTERVAL = 3000; // 3 seconds
 
   const handleOpen = () => {
@@ -166,6 +170,24 @@ const WhatsAppChatBox = ({ initial }) => {
       handleMessageSend();
     }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const apiData = await generalGetFunction(api_url?.all_social_platform);
+      if (apiData?.status) {
+        dispatch({
+          type: ActionType?.ALL_SOCIAL_PLATFORM,
+          all_social_platform_data: apiData?.data
+        })
+        const isWhatsAppAllowed = apiData?.data?.find((data) => data?.platform?.toLowerCase() == "whatsapp") || null
+        if (isWhatsAppAllowed == null) {
+          setIsPopupOpen(true)
+        }
+        setIsWhatsappInAllSocialPlatformData(isWhatsAppAllowed)
+      }
+    }
+    getData()
+  }, [])
 
   return (
     <>
@@ -415,62 +437,68 @@ const WhatsAppChatBox = ({ initial }) => {
           </div>
         </div>
 
-        <div className="container-fluid mt-4">
-          <div className='row'>
-            <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 '>
-              <div className="main-chart-wrapper gap-xl-3 gap-lg-3 gap-0 mb-2 d-flex align-items-center justify-content-center">
-                <div className="chat-container border chat-info">
-                  <div className="chat-search p-3 border-bottom">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control "
-                        placeholder="Search Chat"
-                        aria-describedby="button-addon01"
-                      />
-                      <button
-                        aria-label="button"
-                        className="btn btn-primary"
-                        type="button"
-                        id="button-addon01"
-                      >
-                        <i className="fa-solid fa-magnifying-glass" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="tabs">
-                    <div className="tab active">Chat</div>
-                    <div className="tab" />
-                    <div className="tab" />
-                    <div className="tab" />
-                  </div>
-                  <div className="chat-list">
-                    {whatsappContactData && whatsappContactData.map((item, index) => (
-
-                      <div className={`chat-item py-3 ${activeChat === item && "active"
-                        }`}
-                        key={index}
-                        onClick={() => setActiveChat(item)}>
-                        <div className="borders-color">
-                          <img
-                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
-                            alt="user"
+        {
+          isWhatsappInAllSocialPlatformData != null ?
+            <div className="container-fluid mt-4">
+              <div className='row'>
+                <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 '>
+                  <div className="main-chart-wrapper gap-xl-3 gap-lg-3 gap-0 mb-2 d-flex align-items-center justify-content-center">
+                    <div className="chat-container border chat-info">
+                      <div className="chat-search p-3 border-bottom">
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control "
+                            placeholder="Search Chat"
+                            aria-describedby="button-addon01"
                           />
-                          <div className="user-online" />
+                          <button
+                            aria-label="button"
+                            className="btn btn-primary"
+                            type="button"
+                            id="button-addon01"
+                          >
+                            <i className="fa-solid fa-magnifying-glass" />
+                          </button>
                         </div>
-                        <div className="chat-details">
-                          <div className="chat-name">
-                            {/* <p>Ella Fitzgerald</p> */}
-                            <p>{item}</p>
-                          </div>
-                          <div className="chat-message">
-                            <p>Typing...</p>
-                          </div>
-                        </div>
-                        <div className="chat-time">08:45AM</div>
                       </div>
-                    ))}
-                    {/* <div className="chat-item">
+                      <div className="tabs">
+                        <div className="tab active">Chat</div>
+                        <div className="tab" />
+                        <div className="tab" />
+                        <div className="tab" />
+                      </div>
+                      <div className="chat-list">
+                        {
+                          whatsappContactData?.length > 0 ?
+                            whatsappContactData && whatsappContactData.map((item, index) => (
+
+                              <div className={`chat-item py-3 ${activeChat === item && "active"
+                                }`}
+                                key={index}
+                                onClick={() => setActiveChat(item)}>
+                                <div className="borders-color">
+                                  <img
+                                    src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                                    alt="user"
+                                  />
+                                  <div className="user-online" />
+                                </div>
+                                <div className="chat-details">
+                                  <div className="chat-name">
+                                    {/* <p>Ella Fitzgerald</p> */}
+                                    <p>{item}</p>
+                                  </div>
+                                  <div className="chat-message">
+                                    <p>Typing...</p>
+                                  </div>
+                                </div>
+                                <div className="chat-time">08:45AM</div>
+                              </div>
+                            )) :
+                            <div>There is no contact list!</div>
+                        }
+                        {/* <div className="chat-item">
                       <div className="borders-color">
                         <img
                           src="https://spruko.com/demo/rixzo/dist/assets/images/faces/7.jpg"
@@ -581,7 +609,7 @@ const WhatsAppChatBox = ({ initial }) => {
                       </div>
                       <div className="chat-time">09:30AM</div>
                     </div> */}
-                    {/* <div class="chat-item">
+                        {/* <div class="chat-item">
                   <img src="https://spruko.com/demo/rixzo/dist/assets/images/faces/4.jpg" alt="user">
                   <div class="chat-details">
                       <div class="chat-name">Natalie Portman</div>
@@ -589,50 +617,50 @@ const WhatsAppChatBox = ({ initial }) => {
                   </div>
                   <div class="chat-time">09:30AM</div>
               </div> */}
-                  </div>
-                </div>
-                <div className="main-chat-area border">
-                  <div className="chat-box">
-                    <div className="chat-header-section">
-                      <div className="d-flex align-items-center justify-content-space-between">
-                        <div className="borders-color">
-                          <img
-                            src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
-                            alt="User"
-                            className="user-avatar"
-                          />
-                          <div className="user-online" />
-                        </div>
-                        <div>
-                          <div className="user-details">
-                            <h5>Ella Fitzgerald</h5>
-                            <p className="status"></p>
-                            <p>Last seen: Today, 8:45AM</p>
-                            <p />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="icons-header me-3">
-                        <div className="d-flex align-items-center justify-content-start">
-                          <div className="phone">
-                            <i className="fa-solid fa-phone" />
-                          </div>
-                          <div>
-                            <div className="video">
-                              <i className="fa-solid fa-video" />
-                            </div>
-                          </div>
-                          <div className="user">
-                            <i className="fa-solid fa-user-tie" />
-                          </div>
-                          <div className="three-dot">
-                            <i className="fa-solid fa-ellipsis-vertical" />
-                          </div>
-                        </div>
                       </div>
                     </div>
+                    <div className="main-chat-area border">
+                      <div className="chat-box">
+                        <div className="chat-header-section">
+                          <div className="d-flex align-items-center justify-content-space-between">
+                            <div className="borders-color">
+                              <img
+                                src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                                alt="User"
+                                className="user-avatar"
+                              />
+                              <div className="user-online" />
+                            </div>
+                            <div>
+                              <div className="user-details">
+                                <h5>Ella Fitzgerald</h5>
+                                <p className="status"></p>
+                                <p>Last seen: Today, 8:45AM</p>
+                                <p />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="icons-header me-3">
+                            <div className="d-flex align-items-center justify-content-start">
+                              <div className="phone">
+                                <i className="fa-solid fa-phone" />
+                              </div>
+                              <div>
+                                <div className="video">
+                                  <i className="fa-solid fa-video" />
+                                </div>
+                              </div>
+                              <div className="user">
+                                <i className="fa-solid fa-user-tie" />
+                              </div>
+                              <div className="three-dot">
+                                <i className="fa-solid fa-ellipsis-vertical" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-                    {/* <div className="chat-content" ref={chatContainerRef}>
+                        {/* <div className="chat-content" ref={chatContainerRef}>
                       <div className="chat-message incomings">
                         <div className="borders-color-chat">
                           <img
@@ -765,84 +793,86 @@ const WhatsAppChatBox = ({ initial }) => {
                       </div>
                     </div> */}
 
-                    {loading ? (
-                      <div className="w_loader">
-                        <div class="spinner-border" role="status">
-                          <span class="visually-hidden">Loading...</span>
+                        {loading ? (
+                          <div className="w_loader">
+                            <div class="spinner-border" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="chat-content" ref={chatContainerRef}>
+                            <div
+                              className="chart-text"
+                            >
+                              {activeChatMessages &&
+                                activeChatMessages.map((item, index) => (
+                                  <>
+                                    <div
+                                      className={`chat-message ${item?.wp_receiver_id === activeChat
+                                        ? "incomings"
+                                        : "outgoings"
+                                        }`}
+                                      key={index}
+                                    >
+                                      <div className="borders-color-chat">
+                                        <img
+                                          src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
+                                          alt="User"
+                                          className="user-image"
+                                        />
+                                      </div>
+                                      <div className="message-content">
+                                        <p>
+                                          {item?.message}
+                                        </p>
+                                        <p className="timestamp">Today, 10:20 PM</p>
+                                        <span className="c_time">
+                                          {formatTimeFromDate(item?.created_at)}
+                                          {item?.delivery_status === "read" &&
+                                            item?.wp_receiver_id === activeChat ? (
+                                            <i class="fa-solid fa-check-double read ms-2" />
+                                          ) : item?.delivery_status === "sent" &&
+                                            item?.wp_receiver_id ===
+                                            activeChat ? (
+                                            <i class="fa-solid fa-check text-muted ms-2" />
+                                          ) : (
+                                            ""
+                                          )}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </>
+                                ))}
+                            </div>
+                          </div>
+                        )}
+                        <div className="chat-input-section">
+                          <input type="text" placeholder="Type your message here..." onChange={(e) => setMessage(e.target.value)}
+                            onKeyPress={handleKeyPress}
+                            value={message} />
+                          <div className="btn">
+                            <button className="btns" onClick={handleMessageSend}
+                              disabled={sendingMessage}>
+                              <i className="fa-solid fa-paper-plane" />
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="chat-content" ref={chatContainerRef}>
-                        <div
-                          className="chart-text"
-                        >
-                          {activeChatMessages &&
-                            activeChatMessages.map((item, index) => (
-                              <>
-                                <div
-                                  className={`chat-message ${item?.wp_receiver_id === activeChat
-                                    ? "incomings"
-                                    : "outgoings"
-                                    }`}
-                                  key={index}
-                                >
-                                  <div className="borders-color-chat">
-                                    <img
-                                      src="https://spruko.com/demo/rixzo/dist/assets/images/faces/3.jpg"
-                                      alt="User"
-                                      className="user-image"
-                                    />
-                                  </div>
-                                  <div className="message-content">
-                                    <p>
-                                      {item?.message}
-                                    </p>
-                                    <p className="timestamp">Today, 10:20 PM</p>
-                                    <span className="c_time">
-                                      {formatTimeFromDate(item?.created_at)}
-                                      {item?.delivery_status === "read" &&
-                                        item?.wp_receiver_id === activeChat ? (
-                                        <i class="fa-solid fa-check-double read ms-2" />
-                                      ) : item?.delivery_status === "sent" &&
-                                        item?.wp_receiver_id ===
-                                        activeChat ? (
-                                        <i class="fa-solid fa-check text-muted ms-2" />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </span>
-                                  </div>
-                                </div>
-                              </>
-                            ))}
-                        </div>
-                      </div>
-                    )}
-                    <div className="chat-input-section">
-                      <input type="text" placeholder="Type your message here..." onChange={(e) => setMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        value={message} />
-                      <div className="btn">
-                        <button className="btns" onClick={handleMessageSend}
-                          disabled={sendingMessage}>
-                          <i className="fa-solid fa-paper-plane" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="icons-header ">
-                      <div className="ms-3  mb-3">
-                        <div className="d-flex justify-content-start align-items center">
-                          <div className="phone a">
-                            <i className="fa-solid fa-camera" />
-                          </div>
-                          <div className="video b">
-                            <i className="fa-solid fa-paperclip" />
-                          </div>
-                          <div className="user c">
-                            <i className="fa-regular fa-face-smile" />
-                          </div>
-                          <div className="three-dot d">
-                            <i className="fa-brands fa-meta" />
+                        <div className="icons-header ">
+                          <div className="ms-3  mb-3">
+                            <div className="d-flex justify-content-start align-items center">
+                              <div className="phone a">
+                                <i className="fa-solid fa-camera" />
+                              </div>
+                              <div className="video b">
+                                <i className="fa-solid fa-paperclip" />
+                              </div>
+                              <div className="user c">
+                                <i className="fa-regular fa-face-smile" />
+                              </div>
+                              <div className="three-dot d">
+                                <i className="fa-brands fa-meta" />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -851,8 +881,59 @@ const WhatsAppChatBox = ({ initial }) => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+            :
+            <>
+              {
+                isPopupOpen ?
+                  <div className="whatsapp-not-allowed">
+                    <div className="popup">
+                      <div className="container h-100">
+                        <div className="row h-100 justify-content-center align-items-center">
+                          <div className="row content col-xl-4 col-md-5">
+
+                            <div className="col-10 ps-0">
+                              <h4>Warning!</h4>
+                              <p>
+                                This module is not configured!
+                              </p>
+                              <div className="d-flex justify-content-between">
+
+                                {/* <button
+                            disabled={loading}
+                            className="panelButton m-0"
+                          // onClick={() => handleDelete(deleteId)}
+                          >
+                            <span className="text">Confirm</span>
+                            <span className="icon">
+                              <i className="fa-solid fa-check"></i>
+                            </span>
+                          </button> */}
+
+                                <button
+                                  className="panelButton gray m-0 float-end"
+                                  onClick={() => setIsPopupOpen(false)}
+                                >
+                                  <span className="text">Cancel</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-xmark"></i>
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  :
+                  <div>
+                    This module is not configured!
+                  </div>
+              }
+            </>
+
+        }
+
 
       </main>
     </>
