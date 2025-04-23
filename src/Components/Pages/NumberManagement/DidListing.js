@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   backToTop,
   checkViewSidebar,
@@ -234,36 +234,62 @@ function DidListing({ page }) {
                   </div>
 
                   {addNew ? (
-                    <div className="backdropContact">
-                      <div className="addNewContactPopup">
-                        <div className="row">
-                          <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
-                            <i className="fa-light fa-user-plus shadow-none" />
-                            <h5 className=" text-primary">Add new DID </h5>
+                    didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ?
+                      (
+                        <div className="popup loggedPopupSm" style={{ backgroundColor: "#000000e0" }}>
+                          <div className="container h-100">
+                            <div className="row h-100 justify-content-center align-items-center">
+                              <div className="row content col-xl-4 col-md-5 align-items-center justify-content-center flex-column">
+                                <div className="col-2 px-0">
+                                  <div className="iconWrapper log__warning mb-3">
+                                    <img className=" " src={require('../../assets/images/crisis.png')} alt='logout' />
+                                  </div>
+                                </div>
+                                <div className="col-10 ps-0 px-0">
+                                  <h4 className="mb-2 text-center">Warning!</h4>
+                                  <p className='text-center'>All number is assign with other module please add <Link to="/did-add">new number</Link>!</p>
+                                  <div className="mt-3 logoutPopup d-flex justify-content-center">
+                                    <button type="button" class="btn btn_info" onClick={() => setAddNew(false)}>
+                                      <span>Ok</span>
+                                      <i class="fa-solid fa-power-off "></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="col-xl-12 ">
-                            {didAll.filter((item) => item.usages === "" || !item.usages).length === 0 ? <tr><td colSpan={3} className="text-center f-s-14">All number is assign with other module please add new number</td></tr> :
-                              <div
-                                className="tableContainer mt-0"
-                                style={{ maxHeight: "calc(100vh - 400px)" }}
-                              >
-                                <table>
-                                  <thead>
-                                    <tr>
-                                      <th>S.No</th>
-                                      <th>Number</th>
-                                      <th className="text-center">
-                                        Add DID
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
-                                      return (
-                                        <tr>
-                                          <td> {index + 1}</td>
-                                          <td>{item.did}</td>
-                                          {/* <button
+                        </div>
+                      )
+                      : (
+                        <div className="backdropContact">
+                          <div className="addNewContactPopup">
+                            <div className="row">
+                              <div className="col-12 heading border-0 bg-transparent mb-0 pb-0">
+                                <i className="fa-light fa-user-plus shadow-none" />
+                                <h5 className=" text-primary">Add new DID </h5>
+                              </div>
+                              <div className="col-xl-12 ">
+                                <div
+                                  className="tableContainer mt-0"
+                                  style={{ maxHeight: "calc(100vh - 400px)" }}
+                                >
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th>S.No</th>
+                                        <th>Number</th>
+                                        <th className="text-center">
+                                          Add DID
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {didAll.filter((item) => item.usages === "" || !item.usages).map((item, index) => {
+                                        return (
+                                          <tr>
+                                            <td> {index + 1}</td>
+                                            <td>{item.did}</td>
+                                            {/* <button
                                                 className="tableButton mx-auto"
                                                 onClick={() =>
                                                   navigate(
@@ -279,39 +305,38 @@ function DidListing({ page }) {
                                               >
                                                 <i className="fa-solid fa-plus"></i>
                                               </button> */}
-                                          <div className="mt-1">
-                                            <button
-                                              className="tableButton align-items-center justify-content-center mx-auto"
-                                              onClick={() => {
-                                                handleUsagesEdit(item.id)
-                                              }}
-                                            >
+                                            <div className="mt-1">
+                                              <button
+                                                className="tableButton align-items-center justify-content-center mx-auto"
+                                                onClick={() => {
+                                                  handleUsagesEdit(item.id)
+                                                }}
+                                              >
 
-                                              <i className="fa-solid fa-plus"></i>
-                                            </button>
-                                          </div>
-                                        </tr>
-                                      )
-                                    })}
+                                                <i className="fa-solid fa-plus"></i>
+                                              </button>
+                                            </div>
+                                          </tr>
+                                        )
+                                      })}
 
 
-                                  </tbody>
-                                </table>
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
-                            }
-                          </div>
-                          <div className="col-xl-12 mt-3">
-                            <div className="d-flex justify-content-center">
-                              <button
-                                className="panelButton gray ms-0"
-                                onClick={() => setAddNew(false)}
-                              >
-                                <span className="text">Close</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-caret-left" />
-                                </span>
-                              </button>
-                              {/* <button
+                              <div className="col-xl-12 mt-3">
+                                <div className="d-flex justify-content-center">
+                                  <button
+                                    className="panelButton gray ms-0"
+                                    onClick={() => setAddNew(false)}
+                                  >
+                                    <span className="text">Close</span>
+                                    <span className="icon">
+                                      <i className="fa-solid fa-caret-left" />
+                                    </span>
+                                  </button>
+                                  {/* <button
                               className="panelButton me-0"
 
                             >
@@ -320,11 +345,12 @@ function DidListing({ page }) {
                                 <i className="fa-solid fa-check" />
                               </span>
                             </button> */}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+                      )
                   ) : (
                     ""
                   )}
