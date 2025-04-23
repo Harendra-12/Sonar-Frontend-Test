@@ -664,12 +664,12 @@
   border-radius: 50%;
   left: -100%;
   top: 0;
-  transition-duration: 0.3s;
+  /* transition-duration: 0.3s; */
   mix-blend-mode: hard-light;
 }
 
 .approvalButton:hover::before {
-  transition-duration: 0.3s;
+  /* transition-duration: 0.3s; */
   transform: translate(100%, -50%);
   border-radius: 0;
 }
@@ -680,7 +680,7 @@
 
 .approvalButton:active {
   transform: translate(5px, 5px);
-  transition-duration: 0.3s;
+  /* transition-duration: 0.3s; */
 }
 
 .tableButton {
@@ -693,7 +693,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: 0.3s ease-in-out;
+  /* transition: 0.3s ease-in-out; */
   /* margin-inline: auto; */
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }

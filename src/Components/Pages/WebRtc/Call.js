@@ -20,6 +20,7 @@ import {
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import LogOutPopUp from "./LogOutPopUp";
 import Comments from "./Comments";
+import Tippy from "@tippyjs/react";
 
 /**
  * Component to handle and display call functionalities, including call history, 
@@ -327,9 +328,9 @@ function Call({
       item["Call-Direction"]
       ] || callIcons.internal;
 
-    const getCallTypeIcon = () => {
+    const getCallTypeIcon = (admin) => {
       return (
-        <i className={`fa-solid ${callType.icon} me-1`} style={{ color: callType.color, }}        ></i>
+        <i className={`fa-solid ${callType.icon} me-2 ${admin && 'bg-white'}`} style={{ color: callType.color, border: admin && '0.5px solid #a3a3a3' }}></i>
       );
     }
 
@@ -340,20 +341,7 @@ function Call({
           key={item.id}
           onClick={() => handleCallItemClick(item)}
           onDoubleClick={() => handleDoubleClickCall(item)}
-          className={`callListItem ${item["Caller-Callee-ID-Number"] === extension &&
-            item["variable_billsec"] > 0 &&
-            !isCustomerAdmin
-            ? "incoming"
-            : item["Caller-Caller-ID-Number"] === extension && !isCustomerAdmin
-              ? "outgoing"
-              : item["Caller-Callee-ID-Number"] === extension &&
-                item["variable_billsec"] === 0 &&
-                !isCustomerAdmin
-                ? "missed"
-                : item["Call-Direction"] === "voicemail" && !isCustomerAdmin
-                  ? "voicemail"
-                  : ""
-            } ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
+          className={`callListItem ${clickedCall && clickedCall.id === item.id ? "selected" : ""}`}
         >
           <div className="row justify-content-between">
             <div className="col-xl-12 d-flex">
@@ -365,7 +353,7 @@ function Call({
               </div>
               {!isCustomerAdmin ? (
                 <div
-                  className="col-4 my-auto ms-2 ms-xl-3"
+                  className="col-5 my-auto ms-3 ms-xl-3"
                   style={{ cursor: "pointer" }}
                 >
                   {/* <h4>
@@ -375,13 +363,16 @@ function Call({
                         : item["Caller-Callee-ID-Number"]
                     }
                   </h4> */}
-                  <h4 style={{ paddingLeft: 20 }}>
-                    {displayName
-                      ? displayName
-                      : item.caller_user
-                        ? item.caller_user.username
-                        : "USER XYZ"}
-                  </h4>
+                  <div className="d-flex">
+                    {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon()}</Tippy>}
+                    <h4>
+                      {displayName
+                        ? displayName
+                        : item.caller_user
+                          ? item.caller_user.username
+                          : "USER XYZ"}
+                    </h4>
+                  </div>
                   {/* <div className="contactTags">
                   <span data-id="2">Call, {formatTime(item["variable_billsec"])}</span>
                 </div> */}
@@ -402,7 +393,7 @@ function Call({
                       {/* <h5>Source</h5> */}
                     </div>
                     <div className="callIconAdmin">
-                      {getCallTypeIcon()}
+                      {<Tippy content={`${callType.label} - ${item.variable_DIALSTATUS}` || 'N/A'}>{getCallTypeIcon(1)}</Tippy>}
                     </div>
                     <div className="destination">
                       <h4>

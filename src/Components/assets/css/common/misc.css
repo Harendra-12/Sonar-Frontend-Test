@@ -73,6 +73,8 @@
     justify-content: center;
     align-items: center;
     line-height: 31px;
+
+    transition: color 100ms cubic-bezier(0.0, 0, 0.0, 1) 0ms, background-color 250ms cubic-bezier(0.0, 0, 0.0, 1) 0ms;
 }
 
 .pricing_section .pricing_box {
@@ -640,8 +642,8 @@ input[type=number] {
 }
 
 .contactTags span[data-id="1"] {
-    background-color: #b8eadc;
-    color: #00c193 !important;
+    background-color: #b8eadcb0;
+    color: #247662 !important;
 }
 
 .contactTags span[data-id="2"] {
@@ -847,6 +849,7 @@ input[type=number] {
 
 .accordion .accordion-button {
     background-color: var(--ele-color);
+    --bs-accordion-transition: color 0.0s ease-in-out, background-color 0.0s ease-in-out, border-color 0.0s ease-in-out, box-shadow 0.0s ease-in-out, border-radius 0.0s ease;
 }
 
 .accordion .accordion-item {
@@ -1815,7 +1818,7 @@ input[type=number] {
     font-size: 14px;
     color: var(--black);
     font-weight: 500;
-    transition: all 0.4s ease-in-out;
+    /* transition: all 0.4s ease-in-out; */
     padding: 10px 15px;
     border-radius: 5px;
     width: 100%;
@@ -1836,12 +1839,13 @@ input[type=number] {
 
 .mail_table thead tr th {
     background: var(--white);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f3f3f3;
     color: var(--black);
+    padding: 10px !important;
 }
 
 .mail_table tbody tr {
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f3f3f3;
 }
 
 .table_card {
@@ -1957,6 +1961,9 @@ input[type=number] {
     border: 1px solid var(--table-border-color);
     padding: 10px;
     border-radius: 5px;
+    color: var(--immortalBlack);
+
+    background: transparent;
 }
 
 .mailList_menu .dropdown-item:hover {
@@ -2064,4 +2071,16 @@ input[type=number] {
 .eFaxCompose .newMessageWrapper .inputFileWrapper.faxSelectUnset_hover:hover {
     background: transparent;
     padding: 0;
+}
+
+.mail_table table tbody tr:nth-child(even) {
+    background: transparent;
+}
+
+.mail_table table tbody tr:hover {
+    background: #f3f6f8;
+}
+
+.mail_table table tbody tr.active {
+    background: #f3f6f8;
 }

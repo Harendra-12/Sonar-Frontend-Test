@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import AudioWaveformCommon from "../../CommonComponents/AudioWaveformCommon";
 import DropdownForAudio from "../../DropdownForAudio";
+import EmptyPrompt from "../../Loader/EmptyPrompt";
 
 
 function VoiceMailReport() {
@@ -174,51 +175,52 @@ function VoiceMailReport() {
                           </tr>
                         </thead>
                         <tbody>
-                          {voiceMail?.data.map((item, index) => {
-                            return (
-                              <>
-                                <tr className="cdrTableRow">
-                                  <td>{index + 1}.</td>
-                                  <td>{item.src}</td>
-                                  <td>{item.dest}</td>
-                                  {/* <td>www.voicemailrecordingpath.com</td> */}
-                                  <td>
-                                    <button
-                                      className="tableButton px-2 mx-0"
-                                      onClick={() => {
-                                        if (
-                                          item[
-                                          "recording_path"
-                                          ] ===
-                                          currentPlaying
-                                        ) {
-                                          setCurrentPlaying(
-                                            ""
-                                          );
-                                          setAudioURL("");
-                                        } else {
-                                          handlePlaying(
+                          {voiceMail && voiceMail.data.length > 0 ?
+                            voiceMail?.data.map((item, index) => {
+                              return (
+                                <>
+                                  <tr className="cdrTableRow">
+                                    <td>{index + 1}.</td>
+                                    <td>{item.src}</td>
+                                    <td>{item.dest}</td>
+                                    {/* <td>www.voicemailrecordingpath.com</td> */}
+                                    <td>
+                                      <button
+                                        className="tableButton px-2 mx-0"
+                                        onClick={() => {
+                                          if (
                                             item[
                                             "recording_path"
-                                            ]
-                                          );
-                                        }
-                                      }}
-                                    >
-                                      {currentPlaying ===
-                                        item[
-                                        "recording_path"
-                                        ] ? (
-                                        <i className="fa-solid fa-chevron-up"></i>
-                                      ) : (
-                                        <i className="fa-solid fa-chevron-down"></i>
-                                      )}
-                                    </button>
-                                  </td>
-                                  <td>{item.duration}</td>
-                                  <td>{extractDate(item.created_at)}</td>
-                                </tr>
-                                {/* {currentPlaying == item["recording_path"] && (
+                                            ] ===
+                                            currentPlaying
+                                          ) {
+                                            setCurrentPlaying(
+                                              ""
+                                            );
+                                            setAudioURL("");
+                                          } else {
+                                            handlePlaying(
+                                              item[
+                                              "recording_path"
+                                              ]
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        {currentPlaying ===
+                                          item[
+                                          "recording_path"
+                                          ] ? (
+                                          <i className="fa-solid fa-chevron-up"></i>
+                                        ) : (
+                                          <i className="fa-solid fa-chevron-down"></i>
+                                        )}
+                                      </button>
+                                    </td>
+                                    <td>{item.duration}</td>
+                                    <td>{extractDate(item.created_at)}</td>
+                                  </tr>
+                                  {/* {currentPlaying == item["recording_path"] && (
                                   <tr>
                                     <td colSpan={99}>
                                       <div className="audio-container mx-2">
@@ -235,7 +237,7 @@ function VoiceMailReport() {
                                             type="audio/mpeg"
                                           />
                                         </audio> */}
-                                {/* <AudioWaveformCommon audioUrl={audioURL} />
+                                  {/* <AudioWaveformCommon audioUrl={audioURL} />
 
                                         <button className="audioCustomButton">
                                           <i className="fa-sharp fa-solid fa-download" />
@@ -244,20 +246,22 @@ function VoiceMailReport() {
                                     </td>
                                   </tr>
                                 )} */}
-                                {currentPlaying ===
-                                  item["recording_path"] &&
-                                  item["recording_path"] && (
-                                    <tr>
-                                      <td colSpan={99}>
-                                        <div className="audio-container mx-2">
-                                          <AudioWaveformCommon audioUrl={audioURL} />
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  )}
-                              </>
-                            );
-                          })}
+                                  {currentPlaying ===
+                                    item["recording_path"] &&
+                                    item["recording_path"] && (
+                                      <tr>
+                                        <td colSpan={99}>
+                                          <div className="audio-container mx-2">
+                                            <AudioWaveformCommon audioUrl={audioURL} />
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    )}
+                                </>
+                              );
+                            })
+                            : <tr><td colSpan={99}><EmptyPrompt generic={true} /></td></tr>
+                          }
 
                           {/* {!loading && cdr && cdr.data.length === 0 ? (
                                                         <td colSpan={99}>
@@ -274,7 +278,7 @@ function VoiceMailReport() {
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={voiceMail?.last_page}
                         from={(pageNumber - 1) * voiceMail?.per_page + 1}
-                        to={voiceMail?.to}
+                        to={voiceMail?.to || (pageNumber - 1) * voiceMail?.per_page + 1}
                         total={voiceMail?.total}
                         defaultPage={pageNumber}
                       />

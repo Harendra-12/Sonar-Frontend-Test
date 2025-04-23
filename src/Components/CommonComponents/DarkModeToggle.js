@@ -12,7 +12,7 @@ function DarkModeToggle({ marginLeft }) {
             document.documentElement.classList.add("theme-transition");
             setTimeout(() => {
                 document.documentElement.classList.remove("theme-transition");
-            }, 300); // same as your transition duration
+            }, 0); // same as your transition duration
         };
 
         applyTransition();
