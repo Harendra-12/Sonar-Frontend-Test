@@ -186,7 +186,7 @@ function RateCardView() {
                                                         </thead>
                                                         <tbody>
                                                             {loading ?
-                                                                <SkeletonTableLoader col={8} row={15} /> : (
+                                                                <SkeletonTableLoader col={7} row={15} /> : (
                                                                     <>
                                                                         {rateCardList && rateCardList?.data?.length === 0 ? (
                                                                             <tr>

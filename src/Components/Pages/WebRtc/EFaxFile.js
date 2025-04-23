@@ -109,16 +109,31 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
   document.addEventListener("mousedown", handleClickOutside);
 
   return (
-    <div className="col-12 col-xl-6 callDetails eFaxCompose" style={{ height: "100%" }} id="callDetails">
+    <div
+      className="col-12 col-xl-6 callDetails eFaxCompose"
+      style={{ height: "100%" }}
+      id="callDetails"
+    >
       <div className="profileView">
         <div className="profileDetailsHolder">
           <div className="header d-flex align-items-center pe-0">
             <div className="col-12">Upload eFax Document</div>
           </div>
           <div className="mt-2">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "5px",
+              }}
+            >
               <label>Choose a document to upload</label>
-              <div onClick={() => setUploadPopup(true)} style={{ cursor: "pointer" }} className="clearButton fw-bold">
+              <div
+                onClick={() => setUploadPopup(true)}
+                style={{ cursor: "pointer" }}
+                className="clearButton fw-bold"
+              >
                 Upload <i className="fa-duotone fa-upload"></i>
               </div>
             </div>
@@ -142,18 +157,33 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                 <div className="col-8 my-auto ps-1">
                   <p>{uploadedFile?.file_name}</p>
                 </div>
-                <div className="col-auto px-0 my-auto ms-auto" onClick={() => setOpenPopup(!openPopup)}>
+                <div
+                  className="col-auto px-0 my-auto ms-auto"
+                  onClick={() => setOpenPopup(!openPopup)}
+                >
                   <div className="iconWrapper">
                     <i className="fa-solid fa-ellipsis"></i>
                   </div>
                 </div>
                 {openPopup && (
                   <div className="buttonPopup">
-                    <div className="clearButton" onClick={() => downloadFile(uploadedFile?.file_path, uploadedFile?.file_name)}>
+                    <div
+                      className="clearButton"
+                      onClick={() =>
+                        downloadFile(
+                          uploadedFile?.file_path,
+                          uploadedFile?.file_name
+                        )
+                      }
+                    >
                       <i className="fa-solid fa-file-arrow-down"></i> Download
                     </div>
                     <div className="clearButton">
-                      <a href={uploadedFile?.file_path} target="_blank" rel="noreferrer">
+                      <a
+                        href={uploadedFile?.file_path}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <i className="fa-sharp fa-solid fa-eye"></i> View
                       </a>
                     </div>
@@ -196,8 +226,8 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                     <>
                       <br />
                       <span style={{ color: "red", fontSize: 12 }}>
-                        <i className="fa-solid fa-triangle-exclamation"></i> File
-                        should be less than 1 MB
+                        <i className="fa-solid fa-triangle-exclamation"></i>{" "}
+                        File should be less than 1 MB
                       </span>
                     </>
                   ) : (
@@ -231,7 +261,9 @@ const EFaxFile = ({ newFileUpload, eFaxFileLoadingState }) => {
                       onClick={handleUploadDocument}
                     >
                       <span className="text">Confirm</span>
-                      <span className="icon"><i className="fa-solid fa-check"></i></span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
                     </button>
                     <button
                       className="panelButtonWhite m-0 float-end"

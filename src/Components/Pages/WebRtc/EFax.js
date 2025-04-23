@@ -515,8 +515,7 @@ function EFax({ did }) {
 
               {/* THIS UI WILL BE SHOWN TO USER BY DEFAULT OR WHEN HE CLICKS NEW EFAX */}
               {clickStatus === "all" && !showUserHistory && (
-                <div
-                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
@@ -692,8 +691,7 @@ function EFax({ did }) {
 
               {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
               {showUserHistory && (
-                <div
-                  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >
