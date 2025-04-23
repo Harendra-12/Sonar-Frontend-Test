@@ -28,8 +28,8 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const roles = useSelector((state) => state.roles);
-  const rolesRefresh = useSelector((state) => state.rolesRefresh);
+  // const roles = useSelector((state) => state.roles);
+  // const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userInput, setuserInput] = useState("");
@@ -61,12 +61,12 @@ const Users = () => {
   }, [logonUser]);
 
   // Getting roles data to show which role is assigned to a user
-  useEffect(() => {
-    dispatch({
-      type: "SET_ROLES_REFRESH",
-      rolesRefresh: rolesRefresh + 1,
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "SET_ROLES_REFRESH",
+  //     rolesRefresh: rolesRefresh + 1,
+  //   });
+  // }, []);
 
     // Debounce logic
     useEffect(() => {
@@ -109,7 +109,6 @@ const Users = () => {
     account,
     navigate,
     pageNumber,
-    refreshState,
     itemsPerPage,
     debouncedInput,
     refreshData,
@@ -117,24 +116,24 @@ const Users = () => {
   ]);
 
   // Checking if role is created and the current user have permsiion to create user
-  const handleAddUserValidation = (e) => {
-    e.preventDefault();
-    if (roles.length === 0) {
-      setPopUp(true);
-      setError("Please add roles to create a user");
-      return;
-    }
-    const hasPermissions = roles.some((role) => role.permissions.length > 0);
+  // const handleAddUserValidation = (e) => {
+  //   e.preventDefault();
+  //   if (roles.length === 0) {
+  //     setPopUp(true);
+  //     setError("Please add roles to create a user");
+  //     return;
+  //   }
+  //   const hasPermissions = roles.some((role) => role.permissions.length > 0);
 
-    if (!hasPermissions) {
-      setPopUp(true);
-      setError("Please add permissions to create a user");
-      return;
-    }
+  //   if (!hasPermissions) {
+  //     setPopUp(true);
+  //     setError("Please add permissions to create a user");
+  //     return;
+  //   }
 
-    navigate(`/users-add`);
-    backToTop();
-  };
+  //   navigate(`/users-add`);
+  //   backToTop();
+  // };
 
   // Updating user status enable or disable
   const handleUpdateStatusUser = async (id) => {
@@ -213,7 +212,7 @@ const Users = () => {
                           User List{" "}
                           <button
                             className="clearButton"
-                            onClick={() => setRefreshState(true)}
+                            onClick={() => {setRefreshState(true); setRefreshData(refreshData + 1);}}
                           >
                             <i
                               className={
@@ -243,7 +242,7 @@ const Users = () => {
                           <Link
                             // to="/users-add"
                             // onClick={backToTop}
-                            onClick={handleAddUserValidation}
+                            // onClick={handleAddUserValidation}
                             effect="ripple"
                             className="panelButton"
                           >
@@ -255,7 +254,7 @@ const Users = () => {
                         ) : (
                           <button
                             disabled
-                            onClick={handleAddUserValidation}
+                            // onClick={handleAddUserValidation}
                             effect="ripple"
                             className="panelButton"
                             style={{ cursor: "not-allowed" }}

@@ -67,7 +67,7 @@ function AllCallsDetails() {
                             <div className="heading ">
                               <div className="d-flex flex-wrap justify-content-center align-items-center">
                                 <div className=" text-center">
-                                  <p>Agents On <br /> Calls</p>
+                                  <p>Agents On Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {activeCall.length}
                                   </h3>
@@ -109,7 +109,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/phone-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Total Calls <br /> Completed</p>
+                                  <p>Total Calls Completed</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.success !== undefined ? (callDetails?.success) : <i
@@ -305,7 +305,7 @@ function AllCallsDetails() {
                                   <div className="imageBox_wrap">
                                     <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='missed-call' />
                                   </div>
-                                  <p>Missed Inbound <br /> Calls</p>
+                                  <p>Missed Inbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.inbound?.missed !== undefined ? callDetails?.inbound?.missed : <i
@@ -353,7 +353,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/total-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Total Inbound <br />Calls</p>
+                                  <p>Total Inbound Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {callDetails?.inbound?.total !== undefined ? callDetails?.inbound?.total : <i
                                       className={"fa-regular fa-arrows-rotate fs-5 fa-spin shadow-none bg-transparent float-start w-auto "}
@@ -672,7 +672,7 @@ function AllCallsDetails() {
                                   <img className=" " src={require('../../assets/images/call-dashboardIcon/missed-call.webp')} alt='customer-service' />
                                 </div>
                                 <div className="text-center">
-                                  <p>Missed Internal <br />Calls</p>
+                                  <p>Missed Internal Calls</p>
                                   <h3 className="mb-0 fw-bolder">
                                     {
                                       callDetails?.internal?.missed !== undefined ? callDetails?.internal?.missed : <i

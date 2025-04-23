@@ -238,7 +238,7 @@ function CdrReport({ page }) {
         if (apiData?.status) {
           setLoading(false);
           setContentLoader(false);
-          setCdr(apiData.data);
+          setCdr(apiData);
           if (selectedCdrFilter != "") {
             dispatch({
               type: "SET_SELECTEDCDRFILTER",
@@ -1020,6 +1020,7 @@ function CdrReport({ page }) {
                           <th>Caller Name</th>
                           <th>Caller No.</th>
                           <th>Tag</th>
+                          <th>Destination</th>
                           <th>Via/Route</th>
                           {page === "callrecording" ? (
                             ""
@@ -1058,7 +1059,7 @@ function CdrReport({ page }) {
                               page === "billing"
                                 ? 13
                                 : page === "callrecording"
-                                  ? 10
+                                  ? 11
                                   : 17
                             }
                             row={12}
@@ -1166,7 +1167,7 @@ function CdrReport({ page }) {
                                       </td>
                                       <td>{item["variable_sip_from_user"]}</td>
                                       <td>{item["tag"]}</td>
-
+                                      <td>{item["variable_sip_to_user"]}</td>
                                       <td>
                                         {item["application_state"] ===
                                           "intercept" ||
@@ -1406,7 +1407,7 @@ function CdrReport({ page }) {
                           </>
                         )}
 
-                        {!loading && cdr && cdr.data.length === 0 ? (
+                        {!loading && cdr && cdr.data?.length === 0 ? (
                           <td colSpan={99}>
                             <EmptyPrompt name="Call" link="dashboard" />
                           </td>
@@ -1417,7 +1418,7 @@ function CdrReport({ page }) {
                     </table>
                   </div>
                   <div className="tableHeader mb-3">
-                    {!loading && cdr && cdr.data.length > 0 ? (
+                    {!loading && cdr && cdr.data?.length > 0 ? (
                       <PaginationComponent
                         pageNumber={(e) => setPageNumber(e)}
                         totalPage={cdr.last_page}

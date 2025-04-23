@@ -23,6 +23,9 @@ import Tippy from "@tippyjs/react";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import AddMusic from "../../CommonComponents/AddMusic";
 
+
+
+
 const DidConfig = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -149,6 +152,11 @@ const DidConfig = () => {
     }
   }, [watch("forward"), setValue]);
 
+  /**
+   * Sets the value of the "action" field in the form to the first element
+   * of the given array (value[0]).
+   * @param {Array} value An array with the selected value as the first element.
+   */
   const actionListValue = (value) => {
     setValue("action", value[0]);
   };
@@ -238,6 +246,9 @@ const DidConfig = () => {
     }
   });
 
+/**
+ * Function to open the add music popup and reset the value of hold_music in the form
+ */
   const handleAddMusic = () => {
     setValue("hold_music", "");
     setShowMusic(true);
@@ -425,14 +436,14 @@ const DidConfig = () => {
                             >
                               <option value="disabled">Disable</option>
                               <option value="pstn">PSTN</option>
-                              <option value="direct">Direct</option>
+                              {/* <option value="direct">Direct</option> */}
                               <option value="extension">Extension</option>
                               <option value="ring group">Ring Group</option>
                               <option value="call center">Call Center</option>
                               <option value="ivr">IVR</option>
                             </select>
                           </div>
-                          {forwardStatus === "pstn" && (
+                          {forwardStatus === "pstn" && forwardStatus != "disabled" && (
                             <div className="col-3">
                               <div className="formLabel">
                                 <label>PSTN</label>
@@ -485,7 +496,7 @@ const DidConfig = () => {
                             </div>
                           )} */}
 
-                          {forwardStatus !== "pstn" && (
+                          {forwardStatus !== "pstn" && forwardStatus != "disabled" && (
                             <div className="col-3">
                               {watch().forward && watch().forward?.length !== 0 && (
                                 <>
@@ -725,7 +736,7 @@ const DidConfig = () => {
                                 <div className="formLabel">
                                   <Tippy content="Timout for the sticky agent and return to normal routing">
                                     <label className="formItemDesc">
-                                      Timeout{" "}
+                                      Timeout(Sec.){" "}
                                     </label>
                                   </Tippy>
                                 </div>
