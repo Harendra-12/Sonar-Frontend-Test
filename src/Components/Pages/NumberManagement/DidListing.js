@@ -412,12 +412,12 @@ function DidListing({ page }) {
 
                                       {page === "number" ?
                                         <>
-                                          <td style={{ cursor: "default" }}>
+                                          <td style={{ cursor: "default", width:"152px" }}>
                                             {item.usages}
                                           </td>
                                         </>
                                         : ""}
-                                      <td style={{ cursor: "default" }}>
+                                      <td style={{ cursor: "default", width:"152px" }}>
                                         <Tippy
                                           content={
                                             item.default_whatsapp === 1
@@ -467,7 +467,7 @@ function DidListing({ page }) {
                                           </div>
                                         </Tippy>
                                       </td>
-                                      <td style={{ cursor: "default" }}>
+                                      <td style={{ cursor: "default", width:"139px"  }}>
                                         <Tippy
                                           content={
                                             item.default_eFax === 1

@@ -159,8 +159,8 @@ function Navbar() {
                         "/access-control-list",
                         "/access-control-list-add",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -366,8 +366,8 @@ function Navbar() {
                         "/did-listing",
                         "/management-get-did",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -508,8 +508,8 @@ function Navbar() {
                         "/active-calls",
                         "/voicemail-report",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -725,8 +725,8 @@ function Navbar() {
                             "/agent-disposition-manage",
                             "/dialer-cdr-report",
                           ])
-                              ? "show"
-                              : ""
+                            ? "show"
+                            : ""
                             }`}
                           data-bs-parent="#sidenNav"
                         >
@@ -882,8 +882,8 @@ function Navbar() {
                             "/tracker-dashboard",
                             "/did-listing-tracker",
                           ])
-                              ? "show"
-                              : ""
+                            ? "show"
+                            : ""
                             }`}
                           data-bs-parent="#sidenNav"
                         >
@@ -918,13 +918,14 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                                <NavLink
+                                  to="/call-forwarding-campaign"
+                                  onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/extensions-add",
-                                        "/extensions-edit",
+                                        "/call-forwarding-campaign-create",
+                                        "/call-forwarding-campaign-create",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -933,7 +934,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Campaign</div>
-                                </Link>
+                                </NavLink>
                               </li>
 
                               <li className="tabItem ">
@@ -952,6 +953,7 @@ function Navbar() {
                                   <div className="itemTitle">Buyers</div>
                                 </NavLink>
                               </li>
+
 
                               <li className="tabItem ">
                                 <NavLink
@@ -1058,8 +1060,8 @@ function Navbar() {
                           "/ai-agent-add",
                           "/ai-agent-edit",
                         ])
-                            ? "show"
-                            : ""
+                          ? "show"
+                          : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
@@ -1213,8 +1215,8 @@ function Navbar() {
                           "/ring-group-report",
                           "/agent-report",
                         ])
-                            ? "show"
-                            : ""
+                          ? "show"
+                          : ""
                           }`}
                         data-bs-parent="#sidenNav"
                       >
@@ -1396,8 +1398,8 @@ function Navbar() {
                         "/rate-card",
                         "/billing-card-and-wallet",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1526,10 +1528,10 @@ function Navbar() {
 
                           <li className="tabItem ">
                             <NavLink
-                              to="/billing-report"
+                              to="/billing-dashboard"
                               className={({ isActive }) =>
                                 isActive ||
-                                  ["/extensions-add", "/extensions-edit"].some(
+                                  ["/billing-dashboard", "/billing-dashboard"].some(
                                     (path) =>
                                       window.location.pathname.includes(path)
                                   )
@@ -1537,7 +1539,7 @@ function Navbar() {
                                   : "nav-link"
                               }
                             >
-                              <div className="itemTitle">Reports</div>
+                              <div className="itemTitle">Billing Dashboard</div>
                             </NavLink>
                           </li>
                         </ul>
@@ -1576,8 +1578,8 @@ function Navbar() {
                         "/custom-module",
                         "/global-permission-config",
                       ])
-                          ? "show"
-                          : ""
+                        ? "show"
+                        : ""
                         }`}
                       data-bs-parent="#sidenNav"
                     >
@@ -1834,8 +1836,8 @@ function Navbar() {
                             "/ticket",
                             "/view-massage",
                           ])
-                              ? "show"
-                              : ""
+                            ? "show"
+                            : ""
                             }`}
                           data-bs-parent="#sidenNav"
                         >
