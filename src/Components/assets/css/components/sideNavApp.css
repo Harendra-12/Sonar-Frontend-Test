@@ -139,6 +139,10 @@
 #sidenNavApp .sidenavItems .userTitle h5 {
     margin-bottom: 0;
     color: #fff;
+    width: 115px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #sidenNavApp .sidenavItems .userTitle p {
