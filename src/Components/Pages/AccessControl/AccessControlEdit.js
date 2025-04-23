@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import { toast } from 'react-toastify';
@@ -9,14 +9,17 @@ import { useSelector } from 'react-redux';
 export default function AccessControlEdit() {
       const navigate = useNavigate();
       const location=useLocation();
-      const [ipAddress, setIpAddress] = React.useState([]);
-      const [roles, setRoles] = React.useState([]);
-      const [name, setName] = React.useState("");
-      const [status, setStatus] = React.useState(null);
-      const [description, setDescription] = React.useState("");
-      const [roleId, setRoleId] = React.useState(null);
-      const [loading, setLoading] = React.useState(true);
-      const account = useSelector((state) => state.account);
+      const [ipAddress, setIpAddress] = useState([]);
+      const [roles, setRoles] = useState([]);
+      const [name, setName] = useState("");
+      const [status, setStatus] = useState(null);
+      const [description, setDescription] = useState("");
+      const [roleId, setRoleId] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const account = useSelector((state) => state.account)
+      const [deletePopup,setDeletePopup]=useState(false);
+      const [index,setIndex]=useState(null);
+      const [deleteId,setDeleteId]=useState(null)
      
 
 
@@ -63,7 +66,7 @@ export default function AccessControlEdit() {
             if (apiData.status) {
               toast.success(apiData.message);
               setLoading(false);
-              navigate(-1)
+              // navigate(-1)
             } else {
               // toast.error(apiData.message);
               setLoading(false);
@@ -79,24 +82,72 @@ export default function AccessControlEdit() {
             if(res.status){
               setLoading(false)
               toast.success(res?.message)            
-              setIpAddress(ipAddress.filter((_, i) => i !== index))
+              setIpAddress(ipAddress.filter((_, i) => i !== index))       
             }else{
               setLoading(false)
-              // toast.error(res.message)
+              // toast.error(res.message)   
             }
             
           } catch (error) {
             setLoading(false)
-            toast.error(error)
+            toast.error(error)        
           }
+          setDeletePopup(false)
          }else{
           setIpAddress(ipAddress.filter((_, i) => i !== index))
+          setDeletePopup(false)
          }
 
         }
         // console.log({ipAddress})
   return (
     <>
+       {deletePopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4 col-md-5">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure you want to delete this access control?
+                  </p>
+                  <div className="d-flex justify-content-between">
+
+                    <button
+                      disabled={loading}
+                      className="panelButton m-0"
+                      onClick={() => handleDeleteIp(index,deleteId)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => setDeletePopup(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     <div className="mainContent">
       <section id="phonePage">
         <div className="container-fluid">
@@ -251,7 +302,10 @@ export default function AccessControlEdit() {
                                 <div className="col-3 mt-4">
                                   {
                                     ipAddress.length > 1 &&
-                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { handleDeleteIp(index,item.id) }} >
+                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { 
+                                      setDeletePopup(true) 
+                                      setDeleteId(item?.id)
+                                      setIndex(index)}} >
                                       <i className="fa-solid fa-trash" />
                                     </button>
                                   }
