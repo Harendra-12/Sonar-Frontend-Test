@@ -2656,7 +2656,7 @@ function CallCenterQueueEdit() {
                 <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
                   Affected user:{" "}
                 </h5>
-                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+                <div className="searchBoxWrapper"><input className="searchBar formItem " type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
               </div>
               <ul>
                 {selectedAgentToEdit.length > 0 && selectedAgentToEdit

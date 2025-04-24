@@ -70,7 +70,7 @@ function CampaignScheduler() {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className='col-xl-4'>
+                                                                    <div className='col-xl-4 col-lg-4 col-md-4'>
                                                                         <div className={`itemWrapper local-calls ${strategy === "daily" ? "active" : ""}`} style={{ cursor: "pointer" }} onClick={() => setStrategy("daily")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}
@@ -79,7 +79,7 @@ function CampaignScheduler() {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className='col-xl-4'>
+                                                                    <div className='col-xl-4 col-lg-4 col-md-4'>
                                                                         <div className={`itemWrapper local-calls text-start ${strategy === "date-range" ? "active" : ""}`} style={{ cursor: "pointer" }} onClick={() => setStrategy("date-range")}>
                                                                             <div className="heading d-block text-start h-auto">
                                                                                 {/* <i className="fa-solid fa-phone-flip" /> */}

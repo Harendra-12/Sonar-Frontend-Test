@@ -118,7 +118,9 @@ function AccessControl() {
                                                 {item.description}
                                               </td>
                                               <td>{item?.role?.name}</td>
-                                              <td onClick={() => featureUnderdevelopment()}>
+                                              <td onClick={() =>navigate(
+                                                `/access-control-list-edit?id=${item.id}`,{state:item}
+                                              )}>
                                                 <button className="tableButton edit mx-auto">
                                                   <i className="fa-solid fa-pencil" />
                                                 </button>

@@ -514,7 +514,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
         >
           Save Permissions
         </button>
-        <pre className="mt-3 bg-light p-3">
+        <pre className="mt-3 bg-light0 p-3">
           {JSON.stringify(rolePermissions, null, 2)}
         </pre>
       </div>

@@ -705,7 +705,7 @@ function CampaignCreate() {
                                             </div>
                                             <div style={{ width: '40px', borderTop: '1px dashed var(--border-color)' }} />
                                             <div className="contactTags">
-                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? '1' : 'none'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
+                                              <span data-id={`${selectedDesposition?.filter((dispo) => dispo?.id == item.id)?.[0]?.rechain ? 'rechain' : 'none'}`} onClick={() => selectedDesposition?.filter((dispo) => dispo?.id == item.id) ? handleDispositionRechainChange(item.id) : ""}> Rechain </span>
 
                                               {/* <span >
                                                   Retry
@@ -908,7 +908,7 @@ function CampaignCreate() {
                                   return (
                                     <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
                                       <div className="row justify-content-between">
-                                        <div className="col-xl-7 col-xxl-6 col-7 d-flex ps-0">
+                                        <div className="col-xl-7 col-xxl-7 col-lg-7 col-md- d-flex ps-0">
                                           <div className="profileHolder">
                                             <i className="fa-light fa-user fs-5" />
                                           </div>
@@ -917,7 +917,7 @@ function CampaignCreate() {
                                             <h5 className="mt-2">{item.extension.extension}</h5>
                                           </div>
                                         </div>
-                                        <div className="col-xl-4 col-xxl-5 col-4">
+                                        <div className="col-xl-3 col-xxl-3">
                                           <div className="contactTags">
                                             <span data-id={2}>Agent</span>
                                           </div>

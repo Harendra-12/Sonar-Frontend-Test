@@ -304,7 +304,7 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                         checkViewSidebar("Usage", slugPermissions, account?.permissions, "read") && !usageLoading ?
                                             customModule?.map((item, index) => {
                                                 return (
-                                                    <div className='col-xxl-2 col-xl-3' key={index}>
+                                                    <div className='col-xxl-2 col-xl-3 col-lg-3 col-md-3 col-12' key={index}>
                                                         <div className={`deviceProvision position-relative`} >
                                                             <button
                                                                 disabled={!checkViewSidebar("Usage", slugPermissions, account?.permissions, "edit")}

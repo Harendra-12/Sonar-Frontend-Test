@@ -181,6 +181,7 @@ import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaig
 import AccessControl from "./Components/Pages/AccessControl/AccessControl";
 import AccessControlAdd from "./Components/Pages/AccessControl/AccessControlAdd";
 import AccessControlEdit from "./Components/Pages/AccessControl/AccessControlEdit";
+import BillingDashboard from "./Components/Pages/Billing/BillingDashboard";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -536,6 +537,10 @@ function App() {
           <Route
             path="/billing-report"
             element={<CdrFilterReport page="billing" />}
+          />
+           <Route
+            path="/billing-dashboard"
+            element={<BillingDashboard page="billing" />}
           />
           <Route path="/efax" element={<EFax />} />
 
