@@ -268,8 +268,9 @@ export default function AddGroupsList() {
                     padding: "25px 23px",
                     borderBottom: "1px solid #ddd",
                   }}>
-                 <div className="formRow  col-xl-3">
-                    <div className="formLabel">
+                 <div className="formRow  col-xl-5">
+                   <div className="formRow ">
+                   <div className="formLabel ms-2">
                       <label htmlFor="">
                         Name <span className="text-danger">*</span>
                       </label>
@@ -277,7 +278,8 @@ export default function AddGroupsList() {
                         Enter a name.
                       </label>
                     </div>
-                    <div className="formInput">
+                   </div>
+                    <div className="formInput me-5">
                       <input
                         type="text"
                         name="extension"

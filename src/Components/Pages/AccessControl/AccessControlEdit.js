@@ -271,7 +271,7 @@ export default function AccessControlEdit() {
                         ipAddress.map((item, index) => {
                           return (
                             <div className=" col-xl-12" key={index}>
-                              <div className="formRow">
+                              <div className="formRow justify-content-start">
                                 <div className="col-6" >
                                   {
                                     index === 0 &&
