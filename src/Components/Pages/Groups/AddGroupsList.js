@@ -262,14 +262,19 @@ export default function AddGroupsList() {
                   </div>
                 </div>
               </div>
-              <form className="row mb-0">
-                <div className="col-12 col-md-12" >
-                 <div  style={{
+              <form className="row mb-0 p-0 m-0" >
+                <div className="col-12 col-md-12 "  style={{
                     padding: "25px 23px",
                     borderBottom: "1px solid #ddd",
+                  }} >
+              <div className="row">
+              <div className="col-12 col-md-6">
+                <div  style={{
+                    // padding: "25px 23px",
+                    // borderBottom: "1px solid #ddd",
                   }}>
-                 <div className="formRow  col-xl-5">
-                   <div className="formRow ">
+                 <div className="formRow  col-xl-12">
+                   <div className="formRow0">
                    <div className="formLabel ms-2">
                       <label htmlFor="">
                         Name <span className="text-danger">*</span>
@@ -279,7 +284,7 @@ export default function AddGroupsList() {
                       </label>
                     </div>
                    </div>
-                    <div className="formInput me-5">
+                    <div className="formInput0 col-6 me-5">
                       <input
                         type="text"
                         name="extension"
@@ -293,6 +298,10 @@ export default function AddGroupsList() {
                   </div>
                  </div>
                 </div>
+              </div>
+                </div>
+
+                <div className="col-12 col-md-6"></div>
               </form>
               <div className="col-12">
                 <div className="heading bg-transparent border-bottom-0">
