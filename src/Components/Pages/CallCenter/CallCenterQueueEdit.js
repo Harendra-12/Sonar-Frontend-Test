@@ -2119,119 +2119,121 @@ function CallCenterQueueEdit() {
         />
       )}
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Queue</h5>
-              {/* <p>
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Queue</h5>
+                {/* <p>
                 Add people to yourqueue effortlessly, keeping your connections
                 organized and efficient
               </p> */}
-              {/* <div className="border-bottom col-12" /> */}
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Search"
-                  name="name"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <button
-                  className="tableButton ms-2"
-                  onClick={() => navigate("/users-add")}
-                >
-                  <i className="fa-solid fa-user-plus"></i>
-                </button>
+                {/* <div className="border-bottom col-12" /> */}
               </div>
-            </div>
-            <div className="col-xl-12 mt-3">
-              <div
-                className="tableContainer mt-0"
-                style={{ maxHeight: "calc(100vh - 400px)" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>
-                        <input
-                          type="checkbox"
-                          onChange={handleSelectAll} // Call handler on change
-                          checked={selectAll ? true : false} // Keep checkbox state in sync
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {user
-                      .sort((a, b) => {
-                        const aMatches =
-                          a.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (a?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        const bMatches =
-                          b.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (b?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        return bMatches - aMatches;
-                      })
-                      .filter(
-                        (user) => !agent.some((agent) => user.id == agent?.name) && user.usages === "pbx"
-                      ) // Exclude agents already in `agent`
-                      .map((item, index) => (
-                        <tr key={item.id || index}>
-                          <td>{index + 1}.</td>
-                          <td>{item.name}</td>
-                          <td>{item?.extension?.extension}</td>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={() => handleCheckboxChange(item)} // Call handler on change
-                              checked={bulkUploadSelectedAgents.some(
-                                (agent) => agent?.name == item.name
-                              )}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button
+                    className="tableButton ms-2"
+                    onClick={() => navigate("/users-add")}
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkAddPopUp(false);
-                  }}
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
                 >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button
-                  className="panelButton me-0"
-                  onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {user
+                        .sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) => !agent.some((agent) => user.id == agent?.name) && user.usages === "pbx"
+                        ) // Exclude agents already in `agent`
+                        .map((item, index) => (
+                          <tr key={item.id || index}>
+                            <td>{index + 1}.</td>
+                            <td>{item.name}</td>
+                            <td>{item?.extension?.extension}</td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                checked={bulkUploadSelectedAgents.some(
+                                  (agent) => agent?.name == item.name
+                                )}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton me-0"
+                    onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -2645,328 +2647,330 @@ function CallCenterQueueEdit() {
         ""
       )} */}
       {bulkEditPopup ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Edit People to the selected Queue</h5>
-            </div>
-            <div className="px-1">
-              <div className="d-flex justify-content-between mb-2">
-                <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
-                  Affected user:{" "}
-                </h5>
-                <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
+        <div className="backdropContact">
+          <div className="addNewContactPopup popup500">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Edit People to the selected Queue</h5>
               </div>
-              <ul>
-                {selectedAgentToEdit.length > 0 && selectedAgentToEdit
-                  .map((item) => user?.find((user) => item?.name == user?.id)).filter((item) => item?.name?.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
-                  .map((items) => (
-                    <li><i className="fa-regular fa-user me-2" />{items?.name}</li>
-                  ))}
-              </ul>
-            </div>
-            <div className="row g-2 mt-0">
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Tier Level</label>
+              <div className="px-1 mt-4">
+                <div className="d-flex justify-content-between mb-2 align-items-center">
+                  <h5 style={{ color: 'var(--color-subtext)', fontSize: 14, marginBottom: 5, marginTop: 5 }}>
+                    Affected user:{" "}
+                  </h5>
+                  <div className="searchBoxWrapper"><input className="searchBar" type="text" value={searchEditAllUser} onChange={(e) => setSearchEditAllUser(e.target.value)} /></div>
                 </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="level"
-                  value={settingsForBulkEdit.tier_level}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      tier_level: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option value={0}>0</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
-                  <option value={9}>9</option>
-                </select>
+                <ul>
+                  {selectedAgentToEdit.length > 0 && selectedAgentToEdit
+                    .map((item) => user?.find((user) => item?.name == user?.id)).filter((item) => item?.name?.toLowerCase().includes(searchEditAllUser.trim().toLowerCase()))
+                    .map((items) => (
+                      <li><i className="fa-regular fa-user me-2" />{items?.name}</li>
+                    ))}
+                </ul>
               </div>
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
-                    Tier Position
-                  </label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="position"
-                  value={settingsForBulkEdit.tier_position}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      tier_position: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option value={0}>0</option>
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
-                  <option value={9}>9</option>
-                </select>
-              </div>
-
-
-              <div className="col-3 ">
-                <div className="formLabel">
-                  <label htmlFor="">Reject Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="reject_delay_time"
-                    value={settingsForBulkEdit.reject_delay}
+              <div className="row g-2 mt-0">
+                <div className="col-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Tier Level</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="level"
+                    value={settingsForBulkEdit.tier_level}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        reject_delay: e.target.value,
+                        tier_level: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Reject Delay"
+                    id="selectFormRow"
                     defaultValue={0}
-                  />
+                  >
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                  </select>
                 </div>
-              </div>
-
-              <div className="col-3">
-                <div className="formLabel">
-                  <label htmlFor="">Busy Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="busy_delay_time"
-                    value={settingsForBulkEdit.busy_delay}
+                <div className="col-3">
+                  <div className="formLabel">
+                    <label htmlFor="" style={{ whiteSpace: "nowrap" }}>
+                      Tier Position
+                    </label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="position"
+                    value={settingsForBulkEdit.tier_position}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        busy_delay: e.target.value,
+                        tier_position: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Busy Delay"
+                    id="selectFormRow"
                     defaultValue={0}
-                  />
+                  >
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                  </select>
                 </div>
-              </div>
-              <div className="col-4 ">
-                <div className="formLabel">
-                  <label htmlFor="">Call Timeout</label>
+
+
+                <div className="col-3 ">
+                  <div className="formLabel">
+                    <label htmlFor="">Reject Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="reject_delay_time"
+                      value={settingsForBulkEdit.reject_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          reject_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Reject Delay"
+                      defaultValue={0}
+                    />
+                  </div>
                 </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="call_timeout"
-                    value={settingsForBulkEdit.call_timeout}
+
+                <div className="col-3">
+                  <div className="formLabel">
+                    <label htmlFor="">Busy Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="busy_delay_time"
+                      value={settingsForBulkEdit.busy_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          busy_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Busy Delay"
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+                <div className="col-4 ">
+                  <div className="formLabel">
+                    <label htmlFor="">Call Timeout</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="call_timeout"
+                      value={settingsForBulkEdit.call_timeout}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          call_timeout: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Max No Answer"
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="">Max No Answer</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="max_no_answer"
+                      value={settingsForBulkEdit.max_no_answer}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          max_no_answer: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Max No Answer"
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-4">
+                  <div className="formLabel">
+                    <label htmlFor="">Wrap Up Time</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="wrap_up_time"
+                      value={settingsForBulkEdit.wrap_up_time}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          wrap_up_time: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="Wrap Up Time"
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">No Answer Delay</label>
+                  </div>
+                  <div className="position-relative">
+                    <input
+                      type="number"
+                      name="no_answer_delay_time"
+                      value={settingsForBulkEdit.no_answer_delay}
+                      onChange={(e) =>
+                        setSettingsForBulkEdit({
+                          ...settingsForBulkEdit,
+                          no_answer_delay: e.target.value,
+                        })
+                      }
+                      className="formItem"
+                      placeholder="No Answer Delay"
+                      defaultValue={0}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">Reserve Agents</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="reserve_agents"
+                    value={settingsForBulkEdit.reserve_agents}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        call_timeout: e.target.value,
+                        reserve_agents: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Max No Answer"
+                    id="selectFormRow"
                     defaultValue={0}
-                  />
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
-              </div>
-              <div className="col-4">
-                <div className="formLabel">
-                  <label htmlFor="">Max No Answer</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="max_no_answer"
-                    value={settingsForBulkEdit.max_no_answer}
+
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">Truncate agents on load</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="truncate-agents-on-load"
+                    value={settingsForBulkEdit.truncate_agents_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        max_no_answer: e.target.value,
+                        truncate_agents_on_load: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Max No Answer"
+                    id="selectFormRow"
                     defaultValue={0}
-                  />
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
-              </div>
 
-              <div className="col-4">
-                <div className="formLabel">
-                  <label htmlFor="">Wrap Up Time</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="wrap_up_time"
-                    value={settingsForBulkEdit.wrap_up_time}
+                <div className="col-6">
+                  <div className="formLabel">
+                    <label htmlFor="">Truncate tiers on load</label>
+                  </div>
+                  <select
+                    className="formItem me-0"
+                    style={{ width: "100%" }}
+                    name="truncate-tiers-on-load"
+                    value={settingsForBulkEdit.truncate_tiers_on_load}
                     onChange={(e) =>
                       setSettingsForBulkEdit({
                         ...settingsForBulkEdit,
-                        wrap_up_time: e.target.value,
+                        truncate_tiers_on_load: e.target.value,
                       })
                     }
-                    className="formItem"
-                    placeholder="Wrap Up Time"
+                    id="selectFormRow"
                     defaultValue={0}
-                  />
+                  >
+                    <option value={0}>False</option>
+                    <option value={1}>True</option>
+                  </select>
                 </div>
               </div>
-
-              <div className="col-6">
-                <div className="formLabel">
-                  <label htmlFor="">No Answer Delay</label>
-                </div>
-                <div className="position-relative">
-                  <input
-                    type="number"
-                    name="no_answer_delay_time"
-                    value={settingsForBulkEdit.no_answer_delay}
-                    onChange={(e) =>
+              <div className="col-xl-12 mt-2 px-1">
+                <div className="d-flex justify-content-between mt-3">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkEditPopup(false);
                       setSettingsForBulkEdit({
-                        ...settingsForBulkEdit,
-                        no_answer_delay: e.target.value,
-                      })
-                    }
-                    className="formItem"
-                    placeholder="No Answer Delay"
-                    defaultValue={0}
-                  />
+                        tier_level: "",
+                        tier_position: "",
+                        call_timeout: "",
+                        reject_delay: "",
+                        max_no_answer: "",
+                        busy_delay: "",
+                        no_answer_delay: "",
+                        wrap_up_time: "",
+                        reserve_agents: "",
+                        truncate_agents_on_load: "",
+                        truncate_tiers_on_load: "",
+                      });
+                      setSearchEditAllUser("");
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left" />
+                    </span>
+                  </button>
+                  <button
+                    className="panelButton me-0"
+                    // onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
+                    onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
                 </div>
-              </div>
-
-              <div className="col-6">
-                <div className="formLabel">
-                  <label htmlFor="">Reserve Agents</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="reserve_agents"
-                  value={settingsForBulkEdit.reserve_agents}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      reserve_agents: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
-              </div>
-
-              <div className="col-6">
-                <div className="formLabel">
-                  <label htmlFor="">Truncate agents on load</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="truncate-agents-on-load"
-                  value={settingsForBulkEdit.truncate_agents_on_load}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      truncate_agents_on_load: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
-              </div>
-
-              <div className="col-6">
-                <div className="formLabel">
-                  <label htmlFor="">Truncate tiers on load</label>
-                </div>
-                <select
-                  className="formItem me-0"
-                  style={{ width: "100%" }}
-                  name="truncate-tiers-on-load"
-                  value={settingsForBulkEdit.truncate_tiers_on_load}
-                  onChange={(e) =>
-                    setSettingsForBulkEdit({
-                      ...settingsForBulkEdit,
-                      truncate_tiers_on_load: e.target.value,
-                    })
-                  }
-                  id="selectFormRow"
-                  defaultValue={0}
-                >
-                  <option value={0}>False</option>
-                  <option value={1}>True</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-xl-12 mt-2 px-1">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkEditPopup(false);
-                    setSettingsForBulkEdit({
-                      tier_level: "",
-                      tier_position: "",
-                      call_timeout: "",
-                      reject_delay: "",
-                      max_no_answer: "",
-                      busy_delay: "",
-                      no_answer_delay: "",
-                      wrap_up_time: "",
-                      reserve_agents: "",
-                      truncate_agents_on_load: "",
-                      truncate_tiers_on_load: "",
-                    });
-                    setSearchEditAllUser("");
-                  }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-caret-left" />
-                  </span>
-                </button>
-                <button
-                  className="panelButton me-0"
-                  // onClick={() => handleBulkUpload(bulkUploadSelectedAgents)}
-                  onClick={() => handleApplyEditSettings(settingsForBulkEdit)}
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
               </div>
             </div>
           </div>

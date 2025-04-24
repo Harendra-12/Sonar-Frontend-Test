@@ -681,7 +681,7 @@ input[type=number] {
 }
 
 .contactTagsAddEdit {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--me-border1);
 }
 
 .contactTagsAddEdit input {
@@ -822,6 +822,7 @@ input[type=number] {
 .permissionListWrapper .accordion-button {
     background-color: var(--ele-color);
     color: var(--form-label);
+    border: 1px solid var(--me-border1);
 }
 
 .permissionListWrapper .accordion-button:not(.collapsed) {
@@ -835,7 +836,7 @@ input[type=number] {
 .permissionListWrapper .accordion-body {
     display: flex;
     justify-content: space-between;
-    background-color: var(--ele-color);
+    /* background-color: var(--ele-color); */
     flex-wrap: wrap;
 }
 
@@ -1836,7 +1837,7 @@ input[type=number] {
 }
 
 .mail_table tbody tr {
-    border-bottom: 1px solid #f3f3f3;
+    border-bottom: 1px solid var(--me-border1);
 }
 
 .table_card {
@@ -1943,6 +1944,7 @@ input[type=number] {
     border: 1px solid var(--table-border-color);
     padding: 10px;
     border-radius: 5px;
+    height: auto;
 }
 .mailList_menu .dropdown-item:hover{
     background: rgba(119, 139, 159, 0.102);
@@ -2003,7 +2005,7 @@ input[type=number] {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+    color: var(--me-text-color2);
     border: none;
   }
   
@@ -2050,8 +2052,33 @@ input[type=number] {
     background: transparent;
   }
   .mail_table table tbody tr:hover{
-    background: #f3f6f8;
+    background: var(--table-bg-active);
   }
   .mail_table table tbody tr.active{
-    background: #f3f6f8;
+    background: var(--table-bg-active);
+  }
+
+
+  .popup.music .test-user {
+    color: var(--black);
+  }
+  .fa-cloud-arrow-up{
+    color: #03c2f4;
+  }
+  .bg_light{
+    background: var(--config-bg);
+  }
+  .popupBox{
+    max-width: 680px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .css-64zmo3-control{
+
+  }
+  .accordion-button{
+    border-radius: 12px;
+  }
+  .accordion-item{
+    margin-bottom: 10px;
   }

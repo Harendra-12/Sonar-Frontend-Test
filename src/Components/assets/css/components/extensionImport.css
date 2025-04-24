@@ -165,7 +165,7 @@ label.status.missing::before {
     height: 35px;
     transition: all 0.3s ease-in-out;
     color: var(--form-input-text);
-    font-weight: 700;
+    font-weight: 500;
 }
 
 /* .tableHeader .formItem {
@@ -625,8 +625,8 @@ form.tangoNavs .nav-tabs {
     border: 1px solid var(--bg-badge-secondary-border);
 }
 .badge-purple {
-    background-color: #ddb8ea54;
-    color: #9300ff !important;
+    background-color: var(--badge-purple-bg);
+    color: var( --badge-purple-text) !important;
 }
 
 .badge-soft-success {

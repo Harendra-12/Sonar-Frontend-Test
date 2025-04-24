@@ -1254,7 +1254,7 @@ function Messages({
                 className="col-12 col-xl-3 col-lg-3 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0 rounded-3 leftside_listBar"
                 style={{
                   // height: "100%",
-                  // borderRight: "1px solid var(--border-color)",
+                  // borderRight: "1px solid var(--me-border1)",
                 }}
               >
                 {/* <div className="col-auto" style={{ padding: "0 10px" }}>
@@ -1409,7 +1409,7 @@ function Messages({
                           className="collapse show"
                           id="collapse2"
                         // style={{
-                        //   borderBottom: "1px solid var(--border-color)",
+                        //   borderBottom: "1px solid var(--me-border1)",
                         // }}
                         >
                           {contact.map((item) => {
@@ -1488,9 +1488,11 @@ function Messages({
                                           })}
 
                                         {item.tags?.length > 2 &&
+                                        <Tippy content="Family and Other">
                                           <span className="more">
                                             +{item.tags?.length - 2}
                                           </span>
+                                      </Tippy>
                                         }
                                       </div>
 
@@ -1581,7 +1583,7 @@ function Messages({
                             Online<i className="fa-solid fa-chevron-down"></i>
                           </h5>
                         </div>
-                        <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--border-color)" }}>
+                        <div className="collapse show" id="collapse4" style={{ borderBottom: "1px solid var(--me-border1)" }}>
                           {onlineUser.map((item) => {
                             return (
                               <div
@@ -2067,8 +2069,8 @@ function Messages({
                                     {allTags.map((item, key) => {
                                       return (
                                         <div className="contactTagsAddEdit" style={{ width: '350px' }}>
-                                          <div className="row align-items-center item">
-                                            <div className="col-4">
+                                          <div className="row align-items-center justify-content-between item">
+                                            <div className="col-auto d-flex justify-content-start align-items-center gap-2">
                                               <h5>
                                                 <input
                                                   value={
@@ -2085,8 +2087,6 @@ function Messages({
                                                   className="w-100"
                                                 />
                                               </h5>
-                                            </div>
-                                            <div className="col-3">
                                               <span data-id="0">
                                                 {
                                                   selectedTag === item.id
@@ -2095,6 +2095,8 @@ function Messages({
                                                 }
                                               </span>
                                             </div>
+                                            {/* <div className="col-3">
+                                            </div> */}
                                             <div className="col-auto d-flex justify-content-end pe-0">
                                               <button
                                                 className="clearButton2"
@@ -2313,7 +2315,7 @@ function Messages({
                                         <div className="messageItem sender">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
-                                              <div className=" ms-3 ">
+                                              <div className=" ">
                                                 <h6>
                                                   <span>
                                                     {item.time
@@ -2348,7 +2350,7 @@ function Messages({
                                               >
                                                 <i className="fa-light fa-users fs-5"></i>
                                               </div>
-                                              <div className=" ms-3 ">
+                                              <div className=" ">
                                                 <h6>
                                                   {item.from},
                                                   <span>
@@ -2577,7 +2579,7 @@ function Messages({
                   {manageGroupChat && (
                     <div
                       className="col-xxl-3 col-xl-3  pe-0"
-                      style={{ borderLeft: "1px solid var(--border-color)" }}
+                      style={{ borderLeft: "1px solid var(--me-border1)" }}
                     >
                       <div className="messageOverlay">
                         <div className="contactHeader" style={{ height: "71px" }}>
@@ -2916,7 +2918,7 @@ function Messages({
                   {/* {!manageGroupChat && ( */}
                   <div
                     className="col-xxl-4 col-xl-5 col-lg-4 col-md-4 h-100"
-                    style={{ borderLeft: "1px solid var(--border-color)" }}
+                    style={{ borderLeft: "1px solid var(--me-border1)" }}
                   >
                     <div className="messageOverlay py-3 h-100">
                       <div className="p-4" >
@@ -2958,15 +2960,14 @@ function Messages({
                         </div>
                       </div>
                       <div className="rightPanel">
+
                         <div className="chat_doc px-4 mb-4">
-                          <div className="d-flex justify-content-between align-items-center gap-2">
-                            <p>Shared Files
+                          <div className="d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <p className="mb-0">Shared Files
                               <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                              <span >
-                                {/* <Link className="" to=""><u>View All</u>
-                              </Link> */}
-                              </span>
                             </p>
+                                <Link  to=""><u>View All</u>
+                              </Link>
                           </div>
                           <div className="file_list">
                             <div className=""><span className="shared-file-icon"><i className="fa-regular fa-files"></i></span></div>
@@ -2994,14 +2995,13 @@ function Messages({
                           </div>
                         </div>
                         <div className="chat_doc px-4">
-                          <div className="d-flex justify-content-between align-items-center gap-2">
-                            <p>Photos & Media
+                          <div className="d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <p className="mb-0">Photos & Media
                               <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                              <span >
-                                {/* <Link className="" to=""><u>View All</u>
-                              </Link> */}
-                              </span>
+                            
                             </p>
+                                <Link className="" to=""><u>View All</u>
+                              </Link>
                           </div>
                           <div className="imageList">
                             <div className="imgBox">

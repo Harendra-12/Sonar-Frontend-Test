@@ -1187,23 +1187,23 @@ const UsersEdit = ({ page, setUsersDetails }) => {
         )}
 
         {popUp ? (
-          <div className="popup">
+          <div className=" popup">
             <div className="container h-100">
-              <div className="row h-100 justify-content-center align-items-center">
-                <div className="row content col-xl-7 col-md-9 col-sm-10">
-                  <div className="col-2 px-0">
-                    <div className="iconWrapper">
-                      <i className="fa-duotone fa-triangle-exclamation"></i>
+              <div className="row h-100 justify-content-center align-items-center popupBox">
+                <div className="row content col-xl-7 col-md-9 col-sm-10 px-3">
+                  <div className="col-12 px-0">
+                    <div className="iconWrapper mb-2">
+                      <i className="fa-duotone fa-triangle-exclamation fs-1"></i>
                     </div>
                   </div>
-                  <div className="col-10 ps-0">
-                    <h4>Note</h4>
+                  <div className="col-12 px-0 text-center">
+                    <h4 className="text-center text-orange mb-1">Note</h4>
                     <p className="mb-0">
                       Updating this extension will remove the current extension
                       access from this user.
                     </p>
                     <div>
-                      <div className="formRow col-xl-12 px-0 pt-0 pb-3">
+                      <div className="formRow flex-column px-0 pt-0 pb-3">
                         <div className="formLabel">
                           <label htmlFor="selectFormRow">
                             Select extension
@@ -1216,7 +1216,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           <div className="row">
                             <div
                               className={
-                                watch().extension_id ? "col-5" : "col-5"
+                                watch().extension_id ? "col-12" : "col-12"
                               }
                             >
                               <Select
