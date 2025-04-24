@@ -1380,7 +1380,11 @@ function CdrFilterReport({ page }) {
                                                     )}
                                                   </td>
                                                 );
-                                              } else {
+                                              }else if(key==="call_cost" && item[key]){
+                                                return(
+                                                  <td>${item[key]}</td>
+                                                )
+                                              }else {
                                                 return (
                                                   <td key={key}>{item[key]}</td>
                                                 );

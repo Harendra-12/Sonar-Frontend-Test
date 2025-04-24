@@ -38,7 +38,7 @@ export default function AddGroupsList() {
     };
     try {
       setLoading(true);
-      const res = await generalPostFunction(`groups/store`, payload);
+      const res = await generalPostFunction(`/groups/store`, payload);
       console.log(res);
       if (res.status) {
         setLoading(false);
@@ -46,8 +46,6 @@ export default function AddGroupsList() {
         navigate("/groups");
       } else {
         setLoading(false);
-        toast.error(res?.message);
-        toast.error("Please try different group name or add users");
       }
     } catch (error) {
       setLoading(false);
@@ -262,14 +260,20 @@ export default function AddGroupsList() {
                   </div>
                 </div>
               </div>
-              <form className="row mb-0">
-                <div className="col-12 col-md-12" >
-                 <div  style={{
+              <form className="row mb-0 p-0 m-0" >
+                <div className="col-12 col-md-12 "  style={{
                     padding: "25px 23px",
                     borderBottom: "1px solid #ddd",
+                  }} >
+              <div className="row">
+              <div className="col-12 col-md-6">
+                <div  style={{
+                    // padding: "25px 23px",
+                    // borderBottom: "1px solid #ddd",
                   }}>
-                 <div className="formRow  col-xl-3">
-                    <div className="formLabel">
+                 <div className="formRow  col-xl-12">
+                   <div className="formRow0">
+                   <div className="formLabel ms-2">
                       <label htmlFor="">
                         Name <span className="text-danger">*</span>
                       </label>
@@ -277,7 +281,8 @@ export default function AddGroupsList() {
                         Enter a name.
                       </label>
                     </div>
-                    <div className="formInput">
+                   </div>
+                    <div className="formInput0 col-6 me-5">
                       <input
                         type="text"
                         name="extension"
@@ -291,6 +296,10 @@ export default function AddGroupsList() {
                   </div>
                  </div>
                 </div>
+              </div>
+                </div>
+
+                <div className="col-12 col-md-6"></div>
               </form>
               <div className="col-12">
                 <div className="heading bg-transparent border-bottom-0">

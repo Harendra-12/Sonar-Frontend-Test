@@ -8,6 +8,7 @@ import {
   backToTop,
   checkViewSidebar,
   generalGetFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -39,6 +40,7 @@ const Extensions = () => {
   ];
   const slugPermissions = useSelector((state) => state?.permissions);
   const [allDID, setAllDID] = useState([]);
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
   // Geeting online extensions from socket and updating the state
   useEffect(() => {
     if (registerUser?.length > 0) {
@@ -114,14 +116,15 @@ const Extensions = () => {
           setLoading(false);
         }
       }
-      if (searchValue.trim().length === 0) {
-        getData();
-      } else {
-        const timer = setTimeout(() => {
-          getData();
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
+      // if (searchValue.trim().length === 0) {
+      //   getData();
+      // } else {
+      //   const timer = setTimeout(() => {
+      //     getData();
+      //   }, 1000);
+      //   return () => clearTimeout(timer);
+      // }
+      getData()
     } else {
       async function getData() {
         setLoading(true);
@@ -147,16 +150,17 @@ const Extensions = () => {
           setLoading(false);
         }
       }
-      if (searchValue.trim().length === 0) {
-        getData();
-      } else {
-        const timer = setTimeout(() => {
-          getData();
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
+      // if (searchValue.trim().length === 0) {
+      //   getData();
+      // } else {
+      //   const timer = setTimeout(() => {
+      //     getData();
+      //   }, 1000);
+      //   return () => clearTimeout(timer);
+      // }
+      getData()
     }
-  }, [navigate, pageNumber, account, itemsPerPage, searchValue, onlineFilter]);
+  }, [navigate, pageNumber, account, itemsPerPage, debouncedSearchTerm, onlineFilter]);
 
   return (
     <main className="mainContent">

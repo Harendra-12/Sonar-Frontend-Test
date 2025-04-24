@@ -5,6 +5,7 @@ import {
   backToTop,
   generalDeleteFunction,
   generalGetFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -23,6 +24,8 @@ const ClickToCallListing = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);  
+  
   useEffect(() => {
     setLoading(true);
     const getRingGroupDashboardData = async () => {
@@ -41,7 +44,7 @@ const ClickToCallListing = () => {
       }
     };
     getRingGroupDashboardData();
-  }, [pageNumber, itemsPerPage, searchValue]);
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   async function handleDelete(id) {
     setDeletePopup(false);

@@ -6,6 +6,7 @@ import {
   checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
 import Header from "../../CommonComponents/Header";
@@ -29,6 +30,8 @@ const IvrListing = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [userInput, setuserInput] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
+   const debouncedSearchTerm = useDebounce(userInput, 1000);
+
   useEffect(() => {
     async function getData() {
       setLoading(true);
@@ -44,15 +47,16 @@ const IvrListing = () => {
         setLoading(false);
       }
     }
-    if (userInput.trim().length === 0) {
-      getData();
-    } else {
-      const timer = setTimeout(() => {
-        getData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [ivrArr, refreshState, itemsPerPage, pageNumber, userInput]);
+    // if (userInput.trim().length === 0) {
+    //   getData();
+    // } else {
+    //   const timer = setTimeout(() => {
+    //     getData();
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }
+    getData();
+  }, [ivrArr, refreshState, itemsPerPage, pageNumber, debouncedSearchTerm]);
 
   async function handleDelete(id) {
     setPopUp(false);

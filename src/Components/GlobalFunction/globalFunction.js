@@ -1,6 +1,7 @@
 import axios from "axios";
 import { handleNavigation, handleDispatch } from "./Navigation";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
 
@@ -459,4 +460,20 @@ export function formatTime(seconds) {
     .padStart(2, "0");
   const secs = (seconds % 60).toString().padStart(2, "0");
   return `${hours}:${minutes}:${secs}`;
+}
+
+export const useDebounce = (value, delay) => {
+  const afterTrimVal = value.trim();
+  const [debouncedValue, setDebouncedValue] = useState(afterTrimVal);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(afterTrimVal);
+    }, delay);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 }
