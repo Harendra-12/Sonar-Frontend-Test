@@ -232,7 +232,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
                   className="col-12"
                   style={{
                     padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
+                    // borderBottom: "1px solid #ddd",
                   }}
                 >
                   <div className="row gx-5">
@@ -246,7 +246,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
                         provesionDevice.map((item, index) => {
                           return (
                             <div
-                              className={`deviceProvision row align-items-center ${
+                              className={`deviceProvision m-3 row align-items-center ${
                                 item.status === "active" ? "active" : ""
                               } `}
                               key={index}
@@ -651,7 +651,7 @@ function AvailableDeviceList({ header = true, extensionData }) {
                         ? "Are you sure you want to delete this Device?"
                         : "Are you sure you want to change its status?"}
                     </p>
-                    <div className="d-flex justify-content-center mt-4 gap-2">
+                    <div className="d-flex justify-content-between mt-4 gap-2">
                       <button
                         disabled={loading}
                         className="panelButton m-0"
