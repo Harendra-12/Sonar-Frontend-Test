@@ -160,7 +160,7 @@ function RateCardView() {
                                                                                         <td>{item.country}</td>
                                                                                         <td>{item.selling_billing_block}</td>
                                                                                         {/* <td>{item.out_rate}</td> */}
-                                                                                        <td>{item.in_rate}</td>
+                                                                                        <td>${item.in_rate}</td>
                                                                                     </tr>
                                                                                 )
                                                                             })
@@ -179,7 +179,7 @@ function RateCardView() {
                                                                 <th>#</th>
                                                                 <th>Source</th>
                                                                 <th>Destination</th>
-                                                                <th>Vendor Name</th>
+                                                                {/* <th>Vendor Name</th> */}
                                                                 <th>Country</th>
                                                                 <th>Selling Billing Block</th>
                                                                 <th>Outbound Rate</th>
@@ -203,10 +203,10 @@ function RateCardView() {
                                                                                         <td>{index + 1}</td>
                                                                                         <td>{item.src}</td>
                                                                                         <td>{item.dest}</td>
-                                                                                        <td>{item.vendor_name}</td>
+                                                                                        {/* <td>{item.vendor_name}</td> */}
                                                                                         <td>{item.country}</td>
                                                                                         <td>{item.selling_billing_block}</td>
-                                                                                        <td>{item.out_rate}</td>
+                                                                                        <td>${item.out_rate}</td>
                                                                                         {/* <td>{item.in_rate}</td> */}
                                                                                     </tr>
                                                                                 )
