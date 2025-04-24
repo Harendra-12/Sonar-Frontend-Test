@@ -1,34 +1,43 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CircularLoader from '../../Loader/CircularLoader';
 import Header from '../../CommonComponents/Header';
 import { toast } from 'react-toastify';
-import { generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
+import { generalDeleteFunction, generalGetFunction, generalPutFunction } from '../../GlobalFunction/globalFunction';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function AccessControlEdit() {
       const navigate = useNavigate();
       const location=useLocation();
-      const [ipAddress, setIpAddress] = React.useState(location.state.ips);
-      const [roles, setRoles] = React.useState([]);
-      const [name, setName] = React.useState(location.state.name);
-      const [status, setStatus] = React.useState(location.state.status);
-      const [description, setDescription] = React.useState(location.state.description);
-      const [roleId, setRoleId] = React.useState(location.state.role_id);
-      const [loading, setLoading] = React.useState(true);
-      const account = useSelector((state) => state.account);
+      const [ipAddress, setIpAddress] = useState([]);
+      const [roles, setRoles] = useState([]);
+      const [name, setName] = useState("");
+      const [status, setStatus] = useState(null);
+      const [description, setDescription] = useState("");
+      const [roleId, setRoleId] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const account = useSelector((state) => state.account)
+      const [deletePopup,setDeletePopup]=useState(false);
+      const [index,setIndex]=useState(null);
+      const [deleteId,setDeleteId]=useState(null)
      
 
 
       useEffect(() => {
           async function fetchData() {
-           
             const apidata = await generalGetFunction("/role/all")
-            if (apidata.status) {
+            const res = await generalGetFunction(`ip-whitelist/${location.state.id}`)
+            if (apidata?.status&&res?.status) {
               setRoles(apidata.data);
+              setRoleId(res?.data?.role_id)
+              setIpAddress(res?.data?.ips)
+              setDescription(res?.data?.description);
+              setStatus(res?.data?.status);
+              setName(res?.data?.name)
               setLoading(false);
             }else{
-              toast.error(apidata.message)
+              toast.error(apidata?.message)
+              toast.error(res?.message)
               setLoading(false);
             }
           }
@@ -57,15 +66,88 @@ export default function AccessControlEdit() {
             if (apiData.status) {
               toast.success(apiData.message);
               setLoading(false);
-              navigate(-1)
+              // navigate(-1)
             } else {
-              toast.error(apiData.message);
+              // toast.error(apiData.message);
               setLoading(false);
             }
           }
         }
+
+        const handleDeleteIp=async(index,id)=>{
+         if(id){
+          try {
+           setLoading(true)
+            const res=await generalDeleteFunction(`delete-ip-whitelists/${id}`)
+            if(res.status){
+              setLoading(false)
+              toast.success(res?.message)            
+              setIpAddress(ipAddress.filter((_, i) => i !== index))       
+            }else{
+              setLoading(false)
+              // toast.error(res.message)   
+            }
+            
+          } catch (error) {
+            setLoading(false)
+            toast.error(error)        
+          }
+          setDeletePopup(false)
+         }else{
+          setIpAddress(ipAddress.filter((_, i) => i !== index))
+          setDeletePopup(false)
+         }
+
+        }
+        // console.log({ipAddress})
   return (
     <>
+       {deletePopup ? (
+        <div className="popup">
+          <div className="container h-100">
+            <div className="row h-100 justify-content-center align-items-center">
+              <div className="row content col-xl-4 col-md-5">
+                <div className="col-2 px-0">
+                  <div className="iconWrapper">
+                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  </div>
+                </div>
+                <div className="col-10 ps-0">
+                  <h4>Warning!</h4>
+                  <p>
+                    Are you sure you want to delete this access control?
+                  </p>
+                  <div className="d-flex justify-content-between">
+
+                    <button
+                      disabled={loading}
+                      className="panelButton m-0"
+                      onClick={() => handleDeleteIp(index,deleteId)}
+                    >
+                      <span className="text">Confirm</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-check"></i>
+                      </span>
+                    </button>
+
+                    <button
+                      className="panelButton gray m-0 float-end"
+                      onClick={() => setDeletePopup(false)}
+                    >
+                      <span className="text">Cancel</span>
+                      <span className="icon">
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     <div className="mainContent">
       <section id="phonePage">
         <div className="container-fluid">
@@ -152,7 +234,7 @@ export default function AccessControlEdit() {
                             type="text"
                             name="description"
                             className="formItem"
-                            value={location.state.description}
+                            value={description}
                             onChange={(e) => setDescription(e.target.value)}
                           />
                         </div>
@@ -203,18 +285,27 @@ export default function AccessControlEdit() {
                                     type="text"
                                     name="stick_agent_expires"
                                     className="formItem"
-                                    value={item.ip_address}
+                                    value={item?.ip_address||""}
                                     onChange={(e) => {
-                                      const newIpAddress = [...ipAddress];
+                                      let newIpAddress;
+                                      if(item.id){
+                                         item.ip_address=e.target.value;
+                                         newIpAddress=[...ipAddress];
+                                      }else{
+                                       newIpAddress = [...ipAddress];
                                       newIpAddress[index] = { ip_address:e.target.value};
-                                      setIpAddress(newIpAddress);
+                                      }
+                                      setIpAddress(newIpAddress)
                                     }}
                                   />
                                 </div>
                                 <div className="col-3 mt-4">
                                   {
                                     ipAddress.length > 1 &&
-                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { setIpAddress(ipAddress.filter((_, i) => i !== index)) }} >
+                                    <button type="button" className="tableButton delete mx-auto" onClick={() => { 
+                                      setDeletePopup(true) 
+                                      setDeleteId(item?.id)
+                                      setIndex(index)}} >
                                       <i className="fa-solid fa-trash" />
                                     </button>
                                   }
@@ -222,7 +313,8 @@ export default function AccessControlEdit() {
                                 {
                                   index === ipAddress.length - 1 &&
                                   <div className="col-3 mt-4" >
-                                    <button type="button" className="panelButton" onClick={() => { if (ipAddress[ipAddress.length - 1] !== "") { setIpAddress([...ipAddress, ""]) } }}>
+                                    <button type="button" className="panelButton" onClick={() => { 
+                                      setIpAddress([...ipAddress, ""]) }}>
                                       <span className="text">Add</span>
                                       <span className="icon">
                                         <i className="fa-solid fa-plus"></i>

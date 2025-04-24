@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
-import { backToTop, featureUnderdevelopment, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import { set } from 'date-fns';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
@@ -16,6 +16,7 @@ function RateCardView() {
 
     const [rateCardList, setRateCardList] = useState([]);
     const [loading, setLoading] = useState(false);
+     const debouncedSearchTerm = useDebounce(userInput, 1000);
     const getRateCard = async () => {
         setLoading(true);
         try {
@@ -36,13 +37,14 @@ function RateCardView() {
 
     // Debounce Search Function
     useEffect(() => {
-        if (userInput !== "") {
-            const delay = setTimeout(() => {
-                getRateCard();
-            }, 500);
-            return () => clearTimeout(delay);
-        }
-    }, [userInput]);
+        // if (userInput !== "") {
+        //     const delay = setTimeout(() => {
+        //         getRateCard();
+        //     }, 500);
+        //     return () => clearTimeout(delay);
+        // }
+        getRateCard();
+    }, [debouncedSearchTerm]);
 
     return (
         <main className="mainContent">

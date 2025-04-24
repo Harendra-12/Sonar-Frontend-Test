@@ -281,7 +281,20 @@ const RingGroup = () => {
                                 <div className="avatar-container">
                                   {call?.ring_group_destination?.slice(0, 4).map((item, index) => {
                                     return (
-                                      <Tippy key={index} content={item?.username}><i className="fa-light fa-user"></i></Tippy>
+                                      <Tippy
+                                        key={index}
+                                        content={item?.username}
+                                      >
+                                        {item?.profile_picture ? (
+                                          <img
+                                            alt="avatar"
+                                            src={item?.profile_picture}
+                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                          />
+                                        ) : (
+                                          <i className="fa-light fa-user"></i>
+                                        )}
+                                      </Tippy>
                                     )
                                   })}
                                   {call?.ring_group_destination.length > 4 && <span>+{call.ring_group_destination.length - 4}</span>}

@@ -7,6 +7,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +49,7 @@ const Users = () => {
   const [refreshData, setRefreshData] = useState(0);
   const [onlineFilter, setonlineFilter] = useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
-  const [debouncedInput, setDebouncedInput] = useState(""); // Debounced value
+  const debouncedSearchTerm = useDebounce(userInput, 1000);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -68,23 +69,23 @@ const Users = () => {
   //   });
   // }, []);
 
-  // Debounce logic
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedInput(userInput); // Update debounced value after delay
-    }, 500); // 500ms debounce delay
-
-    return () => {
-      clearTimeout(handler); // Clear timeout on cleanup
-    };
-  }, [userInput]);
+    // Debounce logic
+    // useEffect(() => {
+    //   const handler = setTimeout(() => {
+    //     setDebouncedInput(userInput); // Update debounced value after delay
+    //   }, 500); // 500ms debounce delay
+  
+    //   return () => {
+    //     clearTimeout(handler); // Clear timeout on cleanup
+    //   };
+    // }, [userInput]);
 
   // Getting users data with pagination row per page and search filter
   useEffect(() => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${debouncedInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -110,7 +111,7 @@ const Users = () => {
     navigate,
     pageNumber,
     itemsPerPage,
-    debouncedInput,
+    debouncedSearchTerm,
     refreshData,
     onlineFilter,
   ]);

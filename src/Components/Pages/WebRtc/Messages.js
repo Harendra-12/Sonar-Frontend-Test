@@ -1251,7 +1251,7 @@ function Messages({
             <div className="row webrtc_newMessageUi">
 
               <div
-                className="col-12 col-xl-4 col-lg-4 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0 bg-white rounded-3 leftside_listBar"
+                className="col-12 col-xl-3 col-lg-3 col-xxl-3 d-flex flex-wrap justify-content-between py-3 px-xl-0 rounded-3 leftside_listBar"
                 style={{
                   // height: "100%",
                   // borderRight: "1px solid var(--border-color)",
@@ -2003,12 +2003,12 @@ function Messages({
                 </div>
               </div>
               <div
-                className="col-12 col-xl-8 col-lg-8 col-xxl-9 callDetails eFaxCompose newMessageBoxUi"
+                className="col-12 col-xl-9 col-lg-9 col-xxl-9 callDetails eFaxCompose newMessageBoxUi pe-0"
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
                 <div className="row h-100">
-                  <div className="col h-100">
+                  <div className="col-xxl-8 col-xl-7 col-lg-7 col-md-7 h-100">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
@@ -2469,103 +2469,103 @@ function Messages({
                               </nav>
                             </div>
                             <div className="d-flex w-100">
-                            <div className="tab-content textSms me-2" id="nav-tabContent">
-                              <div
-                                className="tab-pane fade show active"
-                                id="nav-im"
-                                role="tabpanel"
-                                aria-labelledby="nav-im-tab"
-                              >
-                                {/* {selectedFile && (
+                              <div className="tab-content textSms me-2" id="nav-tabContent">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="nav-im"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-im-tab"
+                                >
+                                  {/* {selectedFile && (
                                   <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
                                     📎 {selectedFile.name}
                                   </div>
                                 )} */}
-                                <div className="w-100">
-                                  <textarea
-                                    type="text"
-                                    rows={1}
-                                    name=""
-                                    className="formItem "
-                                    placeholder="Please enter your message"
-                                    value={messageInput}
-                                    onChange={(e) =>
-                                      setMessageInput(e.target.value)
-                                    }
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") {
-                                        if (recipient[2] === "groupChat") {
-                                          sendGroupMessage();
-                                        } else {
-                                          sendSingleMessage();
-                                        }
+                                  <div className="w-100">
+                                    <textarea
+                                      type="text"
+                                      rows={1}
+                                      name=""
+                                      className="formItem "
+                                      placeholder="Please enter your message"
+                                      value={messageInput}
+                                      onChange={(e) =>
+                                        setMessageInput(e.target.value)
                                       }
-                                    }}
-                                  />
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                          if (recipient[2] === "groupChat") {
+                                            sendGroupMessage();
+                                          } else {
+                                            sendSingleMessage();
+                                          }
+                                        }
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-whatsapp"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-whatsapp-tab"
+                                >
+                                  ...
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-messenger"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-messenger-tab"
+                                >
+                                  ...
                                 </div>
                               </div>
-                              <div
-                                className="tab-pane fade"
-                                id="nav-whatsapp"
-                                role="tabpanel"
-                                aria-labelledby="nav-whatsapp-tab"
-                              >
-                                ...
-                              </div>
-                              <div
-                                className="tab-pane fade"
-                                id="nav-messenger"
-                                role="tabpanel"
-                                aria-labelledby="nav-messenger-tab"
-                              >
-                                ...
-                              </div>
-                            </div>
 
-                            <div className=" d-flex justify-content-between align-items-start gap-2">
-                              <div className="d-flex gap-1">
-                                <button
-                                  className="clearButton2 eraser"
-                                  onClick={() => featureUnderdevelopment()}
-                                >
-                                  <i className="fa-light fa-eraser" />
-                                </button>
-                                <button
-                                  className="clearButton2 gallery"
-                                  onClick={() => { setFileUpload(true); setFileType("image") }}
-                                >
-                                  <i className="fa-regular fa-image"></i>
-                                </button>
-                                <button
-                                  className="clearButton2 link"
-                                  onClick={() => { setFileUpload(true); setFileType("all") }}
-                                >
-                                  <i className="fa-solid fa-paperclip"></i>
-                                </button>
-                                <button
-                                  className="clearButton2 emoji"
-                                  onClick={() => setEmojiOpen(!emojiOpen)}
-                                >
-                                  <i className="fa-regular fa-face-smile"></i>
-                                </button>
+                              <div className=" d-flex justify-content-between align-items-start gap-2">
+                                <div className="d-flex gap-1">
+                                  <button
+                                    className="clearButton2 eraser"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    <i className="fa-light fa-eraser" />
+                                  </button>
+                                  <button
+                                    className="clearButton2 gallery"
+                                    onClick={() => { setFileUpload(true); setFileType("image") }}
+                                  >
+                                    <i className="fa-regular fa-image"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 link"
+                                    onClick={() => { setFileUpload(true); setFileType("all") }}
+                                  >
+                                    <i className="fa-solid fa-paperclip"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 emoji"
+                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                  >
+                                    <i className="fa-regular fa-face-smile"></i>
+                                  </button>
+                                </div>
+                                <div>
+                                  <button
+                                    effect="ripple"
+                                    className="clearColorButton dark"
+                                    onClick={() => {
+                                      if (recipient[2] === "groupChat") {
+                                        sendGroupMessage()
+                                      } else {
+                                        sendSingleMessage()
+                                      }
+                                    }}
+                                  >
+                                    {/* Send Now{" "} */}
+                                    <i className="fa-solid fa-paper-plane-top" />
+                                  </button>
+                                </div>
                               </div>
-                              <div>
-                                <button
-                                  effect="ripple"
-                                  className="clearColorButton dark"
-                                  onClick={() => {
-                                    if (recipient[2] === "groupChat") {
-                                      sendGroupMessage()
-                                    } else {
-                                      sendSingleMessage()
-                                    }
-                                  }}
-                                >
-                                  {/* Send Now{" "} */}
-                                  <i className="fa-solid fa-paper-plane-top" />
-                                </button>
-                              </div>
-                            </div>
                             </div>
                           </div>
                         ) : (
@@ -2576,7 +2576,7 @@ function Messages({
                   </div>
                   {manageGroupChat && (
                     <div
-                      className="col-xxl-3 col-xl-4"
+                      className="col-xxl-3 col-xl-3  pe-0"
                       style={{ borderLeft: "1px solid var(--border-color)" }}
                     >
                       <div className="messageOverlay">
@@ -2915,7 +2915,7 @@ function Messages({
                   {/* ====================== view tab */}
                   {/* {!manageGroupChat && ( */}
                   <div
-                    className="col-xxl-3 col-xl-4 "
+                    className="col-xxl-4 col-xl-5 col-lg-4 col-md-4 h-100"
                     style={{ borderLeft: "1px solid var(--border-color)" }}
                   >
                     <div className="messageOverlay py-3 h-100">
@@ -2937,7 +2937,7 @@ function Messages({
                               {" "} */}
                               Emiley Jackson
                             </p>
-                            <h5 className="fw-medium f-s-14 text-muted">emaileyjackson2134@gmail.com</h5>
+                            <h5 className="fw-medium f-s-14 text_muted">emaileyjackson2134@gmail.com</h5>
                           </div>
                         </div>
                         <div className="d-flex justify-content-center align-items-center gap-2">
@@ -2954,66 +2954,68 @@ function Messages({
                           >
                             <i className="fa-regular fa-video"></i>
                           </button>
-                         
+
                         </div>
                       </div>
-                      <div className="chat_doc px-4 mb-4">
-                        <div className="d-flex justify-content-between align-items-center gap-2">
-                          <p>Shared Files
-                            <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                            <span >
-                              {/* <Link className="" to=""><u>View All</u>
+                      <div className="rightPanel">
+                        <div className="chat_doc px-4 mb-4">
+                          <div className="d-flex justify-content-between align-items-center gap-2">
+                            <p>Shared Files
+                              <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
+                              <span >
+                                {/* <Link className="" to=""><u>View All</u>
                               </Link> */}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="file_list">
-                          <div className=""><span className="shared-file-icon"><i className="fa-regular fa-files"></i></span></div>
-                          <div className=" ">
-                            <p className="">Project Details.pdf</p>
-                            <p className="text_muted">14,April 2025 - 14:24PM</p>
+                              </span>
+                            </p>
                           </div>
-                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
-                        </div>
-                        <div className="file_list">
-                          <div className=""><span className="shared-file-icon"><i class="fa-regular fa-images"></i></span></div>
-                          <div className=" ">
-                            <p className="">Img_02.Jpg</p>
-                            <p className="text_muted">22,April 2025 - 10:19AM</p>
+                          <div className="file_list">
+                            <div className=""><span className="shared-file-icon"><i className="fa-regular fa-files"></i></span></div>
+                            <div className=" ">
+                              <p className="ellipsisText">Project Details.pdf</p>
+                              <p className="text_muted">14,April 2025 - 14:24PM</p>
+                            </div>
+                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
                           </div>
-                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
-                        </div>
-                        <div className="file_list">
-                          <div className=""><span className="shared-file-icon"><i class="fa-sharp fa-regular fa-film"></i></span></div>
-                          <div className=" ">
-                            <p className="">Video_15_02_2022.MP4</p>
-                            <p className="text_muted">22,April 2025 - 10:19AM</p>
+                          <div className="file_list">
+                            <div className=""><span className="shared-file-icon"><i class="fa-regular fa-images"></i></span></div>
+                            <div className=" ">
+                              <p className="ellipsisText">Img_02.Jpg</p>
+                              <p className="text_muted">22,April 2025 - 10:19AM</p>
+                            </div>
+                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
                           </div>
-                          <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
+                          <div className="file_list">
+                            <div className=""><span className="shared-file-icon"><i class="fa-sharp fa-regular fa-film"></i></span></div>
+                            <div className=" ">
+                              <p className="ellipsisText">Video_15_02_2022.MP4</p>
+                              <p className="text_muted">22,April 2025 - 10:19AM</p>
+                            </div>
+                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="chat_doc px-4">
-                        <div className="d-flex justify-content-between align-items-center gap-2">
-                          <p>Photos & Media
-                            <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                            <span >
-                              {/* <Link className="" to=""><u>View All</u>
+                        <div className="chat_doc px-4">
+                          <div className="d-flex justify-content-between align-items-center gap-2">
+                            <p>Photos & Media
+                              <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
+                              <span >
+                                {/* <Link className="" to=""><u>View All</u>
                               </Link> */}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="imageList">
-                          <div className="imgBox">
-                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                              </span>
+                            </p>
                           </div>
-                          <div className="imgBox">
-                            <img src={require("../../assets/images/profilepic.png")} alt="" />
-                          </div>
-                          <div className="imgBox">
-                            <img src={require("../../assets/images/profilepic.png")} alt="" />
-                          </div>
-                          <div className="imgBox">
-                            <img src={require("../../assets/images/profilepic.png")} alt="" />
+                          <div className="imageList">
+                            <div className="imgBox">
+                              <img src={require("../../assets/images/profilepic.png")} alt="" />
+                            </div>
+                            <div className="imgBox">
+                              <img src={require("../../assets/images/profilepic.png")} alt="" />
+                            </div>
+                            <div className="imgBox">
+                              <img src={require("../../assets/images/profilepic.png")} alt="" />
+                            </div>
+                            <div className="imgBox">
+                              <img src={require("../../assets/images/profilepic.png")} alt="" />
+                            </div>
                           </div>
                         </div>
                       </div>

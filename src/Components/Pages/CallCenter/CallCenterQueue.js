@@ -9,6 +9,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -39,6 +40,7 @@ function CallCenterQueue() {
   const [searchValue, setSearchValue] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
   const [pageLoading, setPageLoading] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   useEffect(() => {
     const getCallCenterDashboardData = async () => {
@@ -56,21 +58,22 @@ function CallCenterQueue() {
         }
       }
     };
-    if (searchValue.trim().length === 0) {
-      getCallCenterDashboardData();
-    } else {
-      const timer = setTimeout(() => {
-        getCallCenterDashboardData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    // if (searchValue.trim().length === 0) {
+    //   getCallCenterDashboardData();
+    // } else {
+    //   const timer = setTimeout(() => {
+    //     getCallCenterDashboardData();
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }
+    getCallCenterDashboardData();
     if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
+  }, [pageNumber, refreshState, itemsPerPage, debouncedSearchTerm]);
 
   const handleAddCallCenterValidation = (e) => {
     e.preventDefault();

@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   backToTop,
   generalDeleteFunction,
   generalGetFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -23,6 +24,8 @@ const ClickToCallListing = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);  
+  
   useEffect(() => {
     setLoading(true);
     const getRingGroupDashboardData = async () => {
@@ -41,7 +44,7 @@ const ClickToCallListing = () => {
       }
     };
     getRingGroupDashboardData();
-  }, [pageNumber, itemsPerPage, searchValue]);
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm]);
 
   async function handleDelete(id) {
     setDeletePopup(false);
@@ -139,21 +142,30 @@ const ClickToCallListing = () => {
                             <th>Company Name</th>
                             <th>Usage</th>
                             <th>Action</th>
+                            <th>Edit</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
                         <tbody>
                           {loading ? (
-                            <SkeletonTableLoader col={4} row={15} />
+                            <SkeletonTableLoader col={5} row={15} />
                           ) : (
                             <>
                               {callBlock &&
                                 callBlock.data?.map((item, index) => {
                                   return (
                                     <tr key={index}>
-                                      <td onClick={()=>navigate(`/click-to-call-edit?id=${item.id}`)}>{item.company_name}</td>
-                                      <td onClick={()=>navigate(`/click-to-call-edit?id=${item.id}`)}>{item.usages}</td>
-                                      <td onClick={()=>navigate(`/click-to-call-edit?id=${item.id}`)}>{item.action}</td>
+                                      <td>{item.company_name}</td>
+                                      <td>{item.usages}</td>
+                                      <td>{item.action}</td>
+                                      <td>
+                                        <button
+                                          className="tableButton edit"
+                                          onClick={() => navigate(`/click-to-call-edit?id=${item.id}`)}
+                                        >
+                                          <i className="fa-solid fa-pen"></i>
+                                        </button>
+                                      </td>
                                       <td>
                                         <button
                                           className="tableButton delete"
