@@ -38,7 +38,7 @@ export default function AddGroupsList() {
     };
     try {
       setLoading(true);
-      const res = await generalPostFunction(`groups/store`, payload);
+      const res = await generalPostFunction(`/groups/store`, payload);
       console.log(res);
       if (res.status) {
         setLoading(false);
@@ -46,8 +46,6 @@ export default function AddGroupsList() {
         navigate("/groups");
       } else {
         setLoading(false);
-        toast.error(res?.message);
-        toast.error("Please try different group name or add users");
       }
     } catch (error) {
       setLoading(false);

@@ -80,7 +80,6 @@ export default function GroupsList() {
         setDeleteId("");
       } else {
         setLoading(false);
-        toast.error(apiData.error);
         setDeleteId("");
       }
     } catch (error) {
