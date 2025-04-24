@@ -6,6 +6,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPostFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -27,6 +28,8 @@ const CallBlocking = () => {
   const [number, setNumber] = useState("");
   const [deletePopup, setDeletePopup] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
+
   useEffect(() => {
     setLoading(true);
     const getRingGroupDashboardData = async () => {
@@ -45,7 +48,7 @@ const CallBlocking = () => {
       }
     };
     getRingGroupDashboardData();
-  }, [pageNumber, itemsPerPage, searchValue]);
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm])
 
   // Add number to block list
   async function addBlock() {

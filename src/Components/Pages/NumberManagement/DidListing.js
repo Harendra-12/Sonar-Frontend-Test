@@ -10,6 +10,7 @@ import {
   generalGetFunction,
   generalPostFunction,
   generalPutFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -35,6 +36,7 @@ function DidListing({ page }) {
   const account = useSelector((state) => state?.account);
   const slugPermissions = useSelector((state) => state?.permissions);
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
   useEffect(() => {
     if (didAll) {
@@ -46,12 +48,12 @@ function DidListing({ page }) {
       } else if (page === "dialer") {
         setDid(didAll.filter((item) => item.usage === "dialer"));
       }
-      getData();
+        getData();
     } else {
-      getData();
+        getData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshDid, page, searchQuery]);
+  }, [refreshDid, page, debouncedSearchTerm]);
 
   // Fetch ALL DID
   async function getData() {
@@ -68,7 +70,7 @@ function DidListing({ page }) {
       }
       dispatch({
         type: "SET_DIDALL",
-        didAll: apiData.data,
+        didAll: apiData.data || []
       });
     } else {
       setLoading(false);

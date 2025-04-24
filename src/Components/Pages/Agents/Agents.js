@@ -9,6 +9,7 @@ import {
   generalGetFunction,
   generalGetFunctionWithToken,
   generalPostFunctionWithToken,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -68,7 +69,7 @@ function Agents({ type }) {
   const [isAgentLogoutPopup, setIsAgentLogoutPopup] = useState(false);
   const [agentLogOutToken, setAgentLogOutToken] = useState("");
   const allDID = useSelector((state) => state.didAll);
-
+  const debouncedSearchTerm = useDebounce(userInput, 1000); 
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
@@ -95,7 +96,7 @@ function Agents({ type }) {
 
   useEffect(() => {
     getData();
-  }, [entriesPerPage, pageNumber, type, userInput]);
+  }, [entriesPerPage, pageNumber, type, debouncedSearchTerm]);
 
 
   // Handle Agent Logout Function
@@ -139,10 +140,10 @@ function Agents({ type }) {
 
     return user ? user.usertokens : null;
   }
-  console.log("LogonUser:", logonUser);
+  // console.log("LogonUser:", logonUser);
 
 
-  console.log("Tokennnnn:", getToken("1006"));
+  // console.log("Tokennnnn:", getToken("1006"));
 
   return (
     <main className="mainContent">
@@ -178,7 +179,7 @@ function Agents({ type }) {
                           "CallCenterAgent",
                           slugPermissions,
                           account?.permissions, "add") &&
-                           <button
+                          <button
                             onClick={() => {
                               navigate("/agents-pbx-add");
                               backToTop();
@@ -219,7 +220,7 @@ function Agents({ type }) {
                           name="Search"
                           className="formItem"
                           value={userInput}
-                          onChange={(e) => setuserInput(e.target.value)}
+                          onChange={(e) => setuserInput(e?.target?.value)}
                         />
                       </div>
                     </div>

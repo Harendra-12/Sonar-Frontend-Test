@@ -6,6 +6,7 @@ import {
   backToTop,
   generalGetFunction,
   generatePreSignedUrl,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
@@ -26,6 +27,7 @@ function VoiceMailReport() {
   const [audioURL, setAudioURL] = useState("");
   const [showAudio, setShowAudio] = useState(false)
   const [showDropDown, setShowDropdown] = useState(false)
+  const debouncedSearchTerm = useDebounce(searchValue, 1000);
 
   const handlePlaying = async (audio) => {
     // Reseting state before Playing
@@ -68,15 +70,16 @@ function VoiceMailReport() {
         setLoading(false);
       }
     }
-    if (searchValue.trim().length === 0) {
-      getData();
-    } else {
-      const timer = setTimeout(() => {
-        getData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [pageNumber, voiceMailRefresh, rowPerPage, searchValue]);
+    // if (searchValue.trim().length === 0) {
+    //   getData();
+    // } else {
+    //   const timer = setTimeout(() => {
+    //     getData();
+    //   }, 1000);
+    //   return () => clearTimeout(timer);
+    // }
+    getData();
+  }, [pageNumber, voiceMailRefresh, rowPerPage, debouncedSearchTerm]);
 
   function extractDate(dateTimeString) {
     // Split the string by space and return the first part
