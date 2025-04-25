@@ -1,5 +1,15 @@
 import React, { useCallback, useState } from 'react'
 
+/**
+ * A generic prompt component for confirming user actions.
+ *
+ * @return {Object} An object with two properties: `confirm` and `ModalComponent`.
+ *   `confirm` is a function that returns a Promise that resolves with a boolean
+ *   indicating whether the user confirmed the action. `ModalComponent` is a React
+ *   component that renders a modal with the prompt message and buttons to confirm
+ *   or cancel the action.
+ */
+
 function PromptFunctionPopup() {
     const [isOpen, setIsOpen] = useState(false);
     const [resolver, setResolver] = useState(null);

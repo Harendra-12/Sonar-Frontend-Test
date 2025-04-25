@@ -6,6 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { generalGetFunction } from "./globalFunction";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * GlobalCalls is a React component that is responsible for
+ * fetching data from the server and storing it in the Redux
+ * store. It is used to fetch data that is needed by multiple
+ * components, such as the account details, card list,
+ * billing address list, call center details, extension
+ * details, timezone details, ring group details, and
+ * permission details. It also handles logout functionality
+ * and resets the Redux state when the user logs out.
+ * @returns {JSX.Element} - An empty JSX element. This
+ * component does not render anything, it just fetches data
+ * and stores it in the Redux store.
+ */
 function GlobalCalls() {
   const account = useSelector((state) => state.account);
   const Id = account?.id || "";

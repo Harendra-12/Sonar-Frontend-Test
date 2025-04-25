@@ -42,6 +42,7 @@ function Messages({
   const { sendMessage } = Socket();
   const navigate = useNavigate();
   const { sessionManager, connectStatus } = useSIPProvider();
+  const incomingMessage = useSelector((state) => state.incomingMessage);
   const loginUser = useSelector((state) => state.loginUser);
   const globalSession = useSelector((state) => state.sessions);
   const messageListRef = useRef(null);
@@ -338,92 +339,260 @@ function Messages({
   }, [recipient, loadMore]);
 
   // Logic to send message
-  const sendSingleMessage = (selectedUrl) => {
-    // Only proceed if there's either a URL or message text
-    // debugger
+
+  function sendSingleMessage(selectedUrl) {
     if (!selectedUrl && messageInput.trim() === "") {
       return;
     }
-    if (isSIPReady) {
-      const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
-      const userAgent = sipProvider?.sessionManager?.userAgent;
-
-      const target = UserAgent.makeURI(targetURI);
-      if (target) {
-        let messager;
-        let messageContent;
-        try {
-          if (selectedUrl) {
-            messageContent = selectedUrl
-          } else {
-            messageContent = messageInput.trim();
-          }
-          //  message if any file is selected
-          messager = new Messager(userAgent, target, messageContent);
-
-          messager.message();
-          const time = formatDateTime(new Date());
-          setIsFreeSwitchMessage(true);
-          setAllMessage((prevState) => ({
-            ...prevState,
-            [recipient[0]]: [
-              ...(prevState[recipient[0]] || []),
-              { from: extension, body: messageInput || selectedUrl, time },
-            ],
-          }));
-          // Update contact last message
-          const contactIndex = contact.findIndex(
-            (contact) => contact.extension === recipient[0]
-          );
-          if (contactIndex !== -1) {
-            const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text = messageInput;
-            newContact[contactIndex].last_message_data.created_at = time;
-            setContact(newContact);
-          }
-          setActiveTab("all");
-
-          const extensionExists = contact.some(
-            (contact) => contact.extension === recipient[0]
-          );
-          const agentDetails = agents.find(
-            (agent) => agent.extension.extension === recipient[0]
-          );
-
-          if (!extensionExists) {
-            contact.unshift({
-              name: agentDetails.username,
-              email: agentDetails.email,
-              id: agentDetails.id,
-              extension_id: agentDetails.extension_id,
-              extension: recipient[0],
-              last_message_data: {
-                message_text: messageInput,
-                created_at: time,
-              },
-            });
-          }
-          setMessageInput("");
-          setSelectedFile(null);
-          setSelectedUrl(null);
-          setSelectFileExtension(null);
-        } catch (error) {
-          setMessageInput("");
-          console.error("Error sending message:", error);
-        }
-      } else {
-        setMessageInput("");
-        console.error("Invalid recipient address.");
-      }
+    let messageContent;
+    if (selectedUrl) {
+      messageContent = selectedUrl
     } else {
-      toast.error("UserAgent or session not ready.");
+      messageContent = messageInput.trim();
     }
-  };
+
+    sendMessage({
+      "sharedMessage": messageContent,
+      "from": account.id,
+      "to": recipient[1],
+      "key": "peerchat",
+      "action": "peerchat"
+    })
+
+    const time = formatDateTime(new Date());
+    setIsFreeSwitchMessage(true);
+    setAllMessage((prevState) => ({
+      ...prevState,
+      [recipient[0]]: [
+        ...(prevState[recipient[0]] || []),
+        { from: extension, body: messageInput || selectedUrl, time },
+      ],
+    }));
+    // Update contact last message
+    const contactIndex = contact.findIndex(
+      (contact) => contact.extension === recipient[0]
+    );
+    if (contactIndex !== -1) {
+      const newContact = [...contact];
+      newContact[contactIndex].last_message_data.message_text = messageInput;
+      newContact[contactIndex].last_message_data.created_at = time;
+      setContact(newContact);
+    }
+    setActiveTab("all");
+
+    const extensionExists = contact.some(
+      (contact) => contact.extension === recipient[0]
+    );
+    const agentDetails = agents.find(
+      (agent) => agent.extension.extension === recipient[0]
+    );
+
+    if (!extensionExists) {
+      contact.unshift({
+        name: agentDetails.username,
+        email: agentDetails.email,
+        id: agentDetails.id,
+        extension_id: agentDetails.extension_id,
+        extension: recipient[0],
+        last_message_data: {
+          message_text: messageInput,
+          created_at: time,
+        },
+      });
+    }
+    setMessageInput("");
+    setSelectedFile(null);
+    setSelectedUrl(null);
+    setSelectFileExtension(null);
+  }
+  // const sendSingleMessageWithFreeswitch = (selectedUrl) => {
+  //   // Only proceed if there's either a URL or message text
+  //   // debugger
+  //   if (!selectedUrl && messageInput.trim() === "") {
+  //     return;
+  //   }
+  //   if (isSIPReady) {
+  //     const targetURI = `sip:${recipient[0]}@${account.domain.domain_name}`;
+  //     const userAgent = sipProvider?.sessionManager?.userAgent;
+
+  //     const target = UserAgent.makeURI(targetURI);
+  //     if (target) {
+  //       let messager;
+  //       let messageContent;
+  //       try {
+  //         if (selectedUrl) {
+  //           messageContent = selectedUrl
+  //         } else {
+  //           messageContent = messageInput.trim();
+  //         }
+  //         //  message if any file is selected
+  //         messager = new Messager(userAgent, target, messageContent);
+
+  //         messager.message();
+  //         const time = formatDateTime(new Date());
+  //         setIsFreeSwitchMessage(true);
+  //         setAllMessage((prevState) => ({
+  //           ...prevState,
+  //           [recipient[0]]: [
+  //             ...(prevState[recipient[0]] || []),
+  //             { from: extension, body: messageInput || selectedUrl, time },
+  //           ],
+  //         }));
+  //         // Update contact last message
+  //         const contactIndex = contact.findIndex(
+  //           (contact) => contact.extension === recipient[0]
+  //         );
+  //         if (contactIndex !== -1) {
+  //           const newContact = [...contact];
+  //           newContact[contactIndex].last_message_data.message_text = messageInput;
+  //           newContact[contactIndex].last_message_data.created_at = time;
+  //           setContact(newContact);
+  //         }
+  //         setActiveTab("all");
+
+  //         const extensionExists = contact.some(
+  //           (contact) => contact.extension === recipient[0]
+  //         );
+  //         const agentDetails = agents.find(
+  //           (agent) => agent.extension.extension === recipient[0]
+  //         );
+
+  //         if (!extensionExists) {
+  //           contact.unshift({
+  //             name: agentDetails.username,
+  //             email: agentDetails.email,
+  //             id: agentDetails.id,
+  //             extension_id: agentDetails.extension_id,
+  //             extension: recipient[0],
+  //             last_message_data: {
+  //               message_text: messageInput,
+  //               created_at: time,
+  //             },
+  //           });
+  //         }
+  //         setMessageInput("");
+  //         setSelectedFile(null);
+  //         setSelectedUrl(null);
+  //         setSelectFileExtension(null);
+  //       } catch (error) {
+  //         setMessageInput("");
+  //         console.error("Error sending message:", error);
+  //       }
+  //     } else {
+  //       setMessageInput("");
+  //       console.error("Invalid recipient address.");
+  //     }
+  //   } else {
+  //     toast.error("UserAgent or session not ready.");
+  //   }
+  // };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
+
+  // useEffect(()=>{
+  //   if(incomingMessage){
+  //     const from = incomingMessage?.from
+  //     const body = incomingMessage?.body
+  //     setIsFreeSwitchMessage(true);
+  //     const extensionExists = contact.some(
+  //       (contact) => contact.id === from
+  //     );
+  //     const agentDetails = agents.find(
+  //       (agent) => agent.extension.id === from
+  //     );
+  //     const time = formatDateTime(new Date());
+
+  //     const contactIndex = contact.findIndex(
+  //       (contact) => contact.id === recipient[0]
+  //     );
+  //     if (contactIndex !== -1) {
+  //       const newContact = [...contact];
+  //       newContact[contactIndex].last_message_data.message_text = body;
+  //       newContact[contactIndex].last_message_data.created_at = time;
+  //       setContact(newContact);
+  //     }
+  //     if (!extensionExists) {
+  //       contact.unshift({
+  //         name: agentDetails.username,
+  //         email: agentDetails.email,
+  //         id: agentDetails.id,
+  //         extension_id: agentDetails.extension_id,
+  //         extension: from,
+  //         last_message_data: { message_text: body, created_at: time },
+  //       });
+  //     } else {
+  //       // Move the extension object to the beginning of the array
+  //       const index = contact.findIndex(
+  //         (contact) => contact.extension === from
+  //       );
+  //       const extensionObject = contact.splice(index, 1)[0];
+  //       contact.unshift(extensionObject);
+  //       const newContact = [...contact];
+  //       newContact[index].last_message_data.message_text = body;
+  //       newContact[index].last_message_data.created_at = time;
+  //       setContact(newContact);
+  //     }
+  //     // Check Content-Type for the incoming message
+  //     const contentType =
+  //       message?.incomingMessageRequest?.message?.getHeader("Content-Type");
+
+  //     // Get the current time when the message is received
+  //     // Or use .toISOString() for UTC format
+
+  //     // Check if the content is an image
+
+  //     const audio = new Audio(
+  //       require("../../assets/music/message-notification.mp3")
+  //     );
+  //     if (contentType && contentType.startsWith("image/")) {
+  //       // If it's an image, create a URL for the Base64 image to render it in <img>
+  //       // const imageUrl = `${body}`;
+
+  //       // Update the state to include the image
+  //       setAllMessage((prevState) => ({
+  //         ...prevState,
+  //         [from]: [...(prevState[from] || []), { from, body, time }],
+  //       }));
+
+  //       // Add number of unread messaeg based on extension
+  //       setUnreadMessage((prevState) => ({
+  //         ...prevState,
+  //         [from]: (prevState[from] || 0) + 1,
+  //       }));
+  //     } else {
+  //       // If it's a text message or other type, render as text
+  //       setAllMessage((prevState) => ({
+  //         ...prevState,
+  //         [from]: [...(prevState[from] || []), { from, body, time }],
+  //       }));
+
+  //       // Play music when message is received
+
+  //       if (recipient[0] !== from) {
+  //         setUnreadMessage((prevState) => ({
+  //           ...prevState,
+  //           [from]: (prevState[from] || 0) + 1,
+  //         }));
+  //         audio.play();
+  //       }
+
+  //       // Update contact last message
+  //       const contactIndex = contact.findIndex(
+  //         (contact) => contact.extension === recipient[0]
+  //       );
+  //       if (contactIndex !== -1) {
+  //         const newContact = [...contact];
+  //         newContact[contactIndex].last_message_data.message_text =
+  //           messageInput;
+  //         newContact[contactIndex].last_message_data.created_at = time;
+  //         setContact(newContact);
+  //       }
+  //     }
+  //   }
+  // },[incomingMessage])
   if (userAgent) {
     // Setup message delegate to handle incoming messages
     userAgent.delegate = {
@@ -1428,7 +1597,7 @@ function Messages({
                               >
                                 <div
                                   onClick={() => {
-                                    setRecipient([item?.extension, item.id], "singleChat");
+                                    setRecipient([item?.extension, item.id, "singleChat"]);
                                     setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {

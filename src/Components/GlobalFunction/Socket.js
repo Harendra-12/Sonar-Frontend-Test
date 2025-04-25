@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,9 +23,6 @@ const Socket = () => {
   const connectingRef = useRef(false);
   const reconnectAttemptsRef = useRef(0);
   const prevTokenRef = useRef(null);
-
-  const token = localStorage.getItem("token");
-
   const sendMessage = (data) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(data));
@@ -80,11 +79,7 @@ const Socket = () => {
           switch (key) {
             case "OnlineExtensions":
               dispatch({
-                type: "SET_REGISTERUSER",
-                registerUser: result?.filter(
-                  (item) => item.account_id === account.account_id
-                ),
-              });
+                type: "SET_REGISTERUSER",registerUser: result?.filter( (item) => item.account_id === account.account_id),});
               break;
             case "onlineUser":
               dispatch({ type: "SET_LOGINUSER", loginUser: result });
@@ -104,13 +99,7 @@ const Socket = () => {
             case "activeCalls":
               dispatch({
                 type: "SET_ACTIVECALL",
-                activeCall: result
-                  .filter(
-                    (item) =>
-                      item.application_state !== "conference" &&
-                      item.account_id == account.account_id
-                  )
-                  .map((item) => ({ ...item, serverTime: current_time })),
+                activeCall: result.filter((item) => item.application_state !== "conference" && item.account_id == account.account_id).map((item) => ({ ...item, serverTime: current_time })),
               });
               break;
             case "Conference":
@@ -121,18 +110,16 @@ const Socket = () => {
               dispatch({ type: "SET_ADMIN_LOGOUT", adminLogout: true });
               break;
             case "screenShare":
-              dispatch({
-                type: "SET_CONFERENCESCREENSHARESTATUS",
-                conferenceScreenShareStatus: result,
-              });
+              dispatch({ type: "SET_CONFERENCESCREENSHARESTATUS", conferenceScreenShareStatus: result, });
               break;
             case "broadcastGroupMessage":
               dispatch({ type: "SET_GROUPMESSAGE", groupMessage: result });
               break;
             case "conferenceMessage":
-              if (result["room_id"] == RoomID) {
-                dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result });
-              }
+              if (result["room_id"] == RoomID) {dispatch({ type: "SET_CONFERENCEMESSAGE", conferenceMessage: result }); }
+              break;
+            case "clientMsg":
+              dispatch({ type:"SET_INCOMING_MESSAGE", incomingMessage: result });
               break;
             case "progressive":
               dispatch({ type: "SET_PREVIEWDIALER", previewDialer: result });
