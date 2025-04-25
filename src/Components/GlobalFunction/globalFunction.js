@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
+const token = localStorage.getItem("token");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -13,11 +14,19 @@ const axiosInstance = axios.create({
   },
 });
 
-const token = localStorage.getItem("token");
+
 if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
+
+/**
+ * Sets or removes the Authorization header for the axios instance.
+ * If a token is provided, it sets the Authorization header to use the Bearer token.
+ * If no token is provided, it removes the Authorization header.
+ *
+ * @param {string|null} token - The token to be used for authorization, or null to remove the header.
+ */
 
 const setAuthToken = (token) => {
   if (token) {
@@ -48,6 +57,12 @@ export async function login(userName, password) {
 }
 
 export async function generalGetFunction(endpoint) {
+  // if(!token){
+  //   return({
+  //     status: false,
+      
+  //   })
+  // }
   handleDispatch({
     type: "SET_LOADING",
     loading: true,

@@ -348,6 +348,10 @@ export function LoginComponent() {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
+        if(checkLogin?.message === "Network Error"){
+          toast.error("Network Error")
+          return
+        }
         setLoading(false)
         setLogOutToken(checkLogin?.response?.data?.data[0].token)
         setPopUp(true)
