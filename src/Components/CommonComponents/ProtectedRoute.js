@@ -1,9 +1,14 @@
 import { useSelector } from "react-redux";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function ProtectedRoute() {
   const account = useSelector((state) => state.account);
-  return account && account.account_id ? <Outlet /> : <Navigate to="/" />;
+  const isAuthenticated = account?.account_id;
+
+  // Don't even render Outlet if not authenticated
+  if (!isAuthenticated) return null;
+
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

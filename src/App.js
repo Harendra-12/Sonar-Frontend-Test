@@ -46,7 +46,6 @@ import RateChargeAdd from "./Components/Pages/NumberManagement/RateChargeAdd";
 import AddVendors from "./Components/Pages/NumberManagement/AddVendors";
 import Vendors from "./Components/Pages/NumberManagement/Vendors";
 import EditVendor from "./Components/Pages/NumberManagement/EditVendor";
-import RateCharge from "./Components/Pages/NumberManagement/RateCharge";
 import RateChargeEdit from "./Components/Pages/NumberManagement/RateChargeEdit";
 import GetDid from "./Components/Pages/NumberManagement/GetDid";
 import { checkViewSidebar } from "./Components/GlobalFunction/globalFunction";
@@ -119,7 +118,6 @@ import Meeting from "./Components/Pages/Meeting/Meeting";
 import MeetingAdd from "./Components/Pages/Meeting/MeetingAdd";
 import ActiveCallsPage from "./Components/Pages/PhoneDashboard/ActiveCallsPage";
 import CallDashboardProvider from "./Components/Pages/CallDashboardProvider/CallDashboardProvider";
-import ExtensionStore from "./Components/Pages/Stores/ExtensionStore";
 import CallDesposition from "./Components/Pages/DialerModule/CallDesposition";
 import KnowledgeBase from "./Components/Pages/Support/KnowledgeBase";
 import AgentsPbx from "./Components/Pages/Agents/AgentsPbx";
@@ -174,7 +172,6 @@ import SmsChat from "./Components/Pages/WebRtc/SmsChat";
 import AdminLogoutPopUp from "./Components/CommonComponents/AdminLogoutPopUp";
 import EditGroupsList from "./Components/Pages/Groups/EditGroupsList";
 import NewGetDid from "./Components/Pages/NumberManagement/NewGetDid";
-import AddNumber from "./Components/Pages/NumberManagement/AddNumber";
 import BillingCardAndWallet from "./Components/Pages/Billing/BillingCardAndWallet";
 import FportalCampaign from "./Components/Pages/CallTracker/FportalCampaign";
 import FportalCampaignCreate from "./Components/Pages/CallTracker/FportalCampaignCreate";
@@ -182,6 +179,7 @@ import AccessControl from "./Components/Pages/AccessControl/AccessControl";
 import AccessControlAdd from "./Components/Pages/AccessControl/AccessControlAdd";
 import AccessControlEdit from "./Components/Pages/AccessControl/AccessControlEdit";
 import BillingDashboard from "./Components/Pages/Billing/BillingDashboard";
+import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -230,19 +228,20 @@ function App() {
   //   }
   // }, []);
   window.dynamicId = 10;
-  
+
   return (
     <>
-     
+
       <Router>
         {
           adminLogout && <AdminLogoutPopUp />
         }
-         <GoogleTranslate />
+        <GoogleTranslate />
         <NavigationSetter />
         <DispatchSetter />
         <GlobalCalls />
         <Navbar />
+        <OfflineNotice />
 
         <Routes>
           <Route path="/click-to-call" element={<ClickToCall />} />
@@ -538,7 +537,7 @@ function App() {
             path="/billing-report"
             element={<CdrFilterReport page="billing" />}
           />
-           <Route
+          <Route
             path="/billing-dashboard"
             element={<BillingDashboard page="billing" />}
           />

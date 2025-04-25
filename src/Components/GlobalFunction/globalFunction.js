@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 let sessionExpiredToastShown = false
+const token = localStorage.getItem("token");
 
 // Creating instance of axios
 const axiosInstance = axios.create({
@@ -13,7 +14,7 @@ const axiosInstance = axios.create({
   },
 });
 
-const token = localStorage.getItem("token");
+
 if (token !== null) {
   axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
@@ -48,6 +49,12 @@ export async function login(userName, password) {
 }
 
 export async function generalGetFunction(endpoint) {
+  if(!token){
+    return({
+      status: false,
+      
+    })
+  }
   handleDispatch({
     type: "SET_LOADING",
     loading: true,

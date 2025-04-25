@@ -16,7 +16,7 @@ function RateCardView() {
 
     const [rateCardList, setRateCardList] = useState([]);
     const [loading, setLoading] = useState(false);
-     const debouncedSearchTerm = useDebounce(userInput, 1000);
+    const debouncedSearchTerm = useDebounce(userInput, 1000);
     const getRateCard = async () => {
         setLoading(true);
         try {

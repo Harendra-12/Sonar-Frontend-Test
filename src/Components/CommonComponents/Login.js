@@ -342,12 +342,15 @@ export function LoginComponent() {
           setLoading(false);
           // toast.error("unauthorized access!");
         }
-
-
       } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
+        if(checkLogin?.message === "Network Error"){
+          toast.error("Network Error")
+          setLoading(false)
+          return
+        }
         setLoading(false)
         setLogOutToken(checkLogin?.response?.data?.data[0].token)
         setPopUp(true)
