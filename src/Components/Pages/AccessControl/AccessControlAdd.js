@@ -115,7 +115,7 @@ function AccessControlAdd() {
                       className="col-xl-6"
                       style={{
                         padding: "25px 23px",
-                        borderBottom: "1px solid rgb(221, 221, 221)",
+                        // borderBottom: "1px solid rgb(221, 221, 221)",
                       }}
                     >
                       <form className="row mb-0">
@@ -195,7 +195,7 @@ function AccessControlAdd() {
                           ipAddress.map((item, index) => {
                             return (
                               <div className=" col-xl-12" key={index}>
-                                <div className="formRow">
+                                <div className="formRow justify-content-start">
                                   <div className="col-6" >
                                     {
                                       index === 0 &&

@@ -163,7 +163,7 @@ label.status.missing::before {
     width: 100%;
     /* margin: 0px 5px 5px 0px; */
     height: 35px;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
     color: var(--form-input-text);
     font-weight: 500;
 }
@@ -258,7 +258,7 @@ label.status.missing::before {
 #detailsContent #advancedOptions {
     max-height: 0px;
     overflow: hidden;
-    transition: 0.7s ease-in-out;
+    /* transition: 0.7s ease-in-out; */
     display: flex;
     flex-wrap: wrap;
 }
@@ -579,7 +579,7 @@ form.tangoNavs .nav-tabs {
 }
 
 .headingExtraInfo span.badge.rounded-pill {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
 }
 
 .image_wrap {

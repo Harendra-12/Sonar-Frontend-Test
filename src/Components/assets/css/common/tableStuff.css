@@ -13,6 +13,7 @@ table th {
     font-size: 0.875rem;
     background-color: var(--table-head);
     white-space: nowrap;
+    width: 200px;
 }
 
 table thead tr {
@@ -22,7 +23,7 @@ table thead tr {
 
 table tbody tr {
     background-color: var(--table-even-bg);
-    transition: 0.1s ease-in;
+    /* transition: 0.1s ease-in; */
     /* border-bottom: 1px solid var(--border-color); */
     position: relative;
 }
@@ -36,6 +37,8 @@ table tbody tr td {
     font-weight: 400;
     font-size: 0.875rem;
     white-space: nowrap;
+
+    width: 200px;
 }
 
 table tbody tr td a {

@@ -7,6 +7,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +29,8 @@ import SkeletonTableLoader from "../../Loader/SkeletonTableLoader";
 const Users = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
-  const roles = useSelector((state) => state.roles);
-  const rolesRefresh = useSelector((state) => state.rolesRefresh);
+  // const roles = useSelector((state) => state.roles);
+  // const rolesRefresh = useSelector((state) => state.rolesRefresh);
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [userInput, setuserInput] = useState("");
@@ -48,7 +49,7 @@ const Users = () => {
   const [refreshData, setRefreshData] = useState(0);
   const [onlineFilter, setonlineFilter] = useState("all")
   const slugPermissions = useSelector((state) => state?.permissions);
-  const [debouncedInput, setDebouncedInput] = useState(""); // Debounced value
+  const debouncedSearchTerm = useDebounce(userInput, 1000);
   // Setting up online users to display when user is logged in
   useEffect(() => {
     if (logonUser && logonUser.length > 0) {
@@ -61,30 +62,30 @@ const Users = () => {
   }, [logonUser]);
 
   // Getting roles data to show which role is assigned to a user
-  useEffect(() => {
-    dispatch({
-      type: "SET_ROLES_REFRESH",
-      rolesRefresh: rolesRefresh + 1,
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "SET_ROLES_REFRESH",
+  //     rolesRefresh: rolesRefresh + 1,
+  //   });
+  // }, []);
 
     // Debounce logic
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedInput(userInput); // Update debounced value after delay
-      }, 500); // 500ms debounce delay
+    // useEffect(() => {
+    //   const handler = setTimeout(() => {
+    //     setDebouncedInput(userInput); // Update debounced value after delay
+    //   }, 500); // 500ms debounce delay
   
-      return () => {
-        clearTimeout(handler); // Clear timeout on cleanup
-      };
-    }, [userInput]);
+    //   return () => {
+    //     clearTimeout(handler); // Clear timeout on cleanup
+    //   };
+    // }, [userInput]);
 
   // Getting users data with pagination row per page and search filter
   useEffect(() => {
     setLoading(true);
     async function getApi() {
       const apiData = await generalGetFunction(
-        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${debouncedInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
+        `/user/all?page=${pageNumber}&row_per_page=${itemsPerPage}&search=${userInput}${onlineFilter == "all" ? "" : onlineFilter == "online" ? "&online" : "&offline"}`
       );
       if (apiData?.status) {
         setUser(apiData.data);
@@ -109,32 +110,31 @@ const Users = () => {
     account,
     navigate,
     pageNumber,
-    refreshState,
     itemsPerPage,
-    debouncedInput,
+    debouncedSearchTerm,
     refreshData,
     onlineFilter,
   ]);
 
   // Checking if role is created and the current user have permsiion to create user
-  const handleAddUserValidation = (e) => {
-    e.preventDefault();
-    if (roles.length === 0) {
-      setPopUp(true);
-      setError("Please add roles to create a user");
-      return;
-    }
-    const hasPermissions = roles.some((role) => role.permissions.length > 0);
+  // const handleAddUserValidation = (e) => {
+  //   e.preventDefault();
+  //   if (roles.length === 0) {
+  //     setPopUp(true);
+  //     setError("Please add roles to create a user");
+  //     return;
+  //   }
+  //   const hasPermissions = roles.some((role) => role.permissions.length > 0);
 
-    if (!hasPermissions) {
-      setPopUp(true);
-      setError("Please add permissions to create a user");
-      return;
-    }
+  //   if (!hasPermissions) {
+  //     setPopUp(true);
+  //     setError("Please add permissions to create a user");
+  //     return;
+  //   }
 
-    navigate(`/users-add`);
-    backToTop();
-  };
+  //   navigate(`/users-add`);
+  //   backToTop();
+  // };
 
   // Updating user status enable or disable
   const handleUpdateStatusUser = async (id) => {
@@ -213,7 +213,7 @@ const Users = () => {
                           User List{" "}
                           <button
                             className="clearButton"
-                            onClick={() => setRefreshState(true)}
+                            onClick={() => { setRefreshState(true); setRefreshData(refreshData + 1); }}
                           >
                             <i
                               className={
@@ -240,10 +240,9 @@ const Users = () => {
                           </span>
                         </button>
                         {checkViewSidebar("User", slugPermissions, account?.permissions, "add") ? (
-                          <Link
-                            // to="/users-add"
-                            // onClick={backToTop}
-                            onClick={handleAddUserValidation}
+                          <button
+                            onClick={() => { backToTop(); navigate("/users-add") }}
+                            // onClick={handleAddUserValidation}
                             effect="ripple"
                             className="panelButton"
                           >
@@ -251,11 +250,11 @@ const Users = () => {
                             <span className="icon">
                               <i className="fa-solid fa-plus"></i>
                             </span>
-                          </Link>
+                          </button>
                         ) : (
                           <button
                             disabled
-                            onClick={handleAddUserValidation}
+                            // onClick={handleAddUserValidation}
                             effect="ripple"
                             className="panelButton"
                             style={{ cursor: "not-allowed" }}
@@ -353,7 +352,7 @@ const Users = () => {
 
                                     return (
                                       <tr key={index}>
-                                        <td>
+                                        <td style={{width:"180px"}}>
                                           <div className="d-flex align-items-center">
                                             <div className="tableProfilePicHolder">
                                               {item.profile_picture ? (
@@ -368,7 +367,7 @@ const Users = () => {
                                             <div className="ms-2">{item.username}</div>
                                           </div>
                                         </td>
-                                        <td>
+                                        <td  style={{width:"176px"}}>
                                           {item.extension?.extension || "N/A"}
                                         </td>
                                         {/* <td
@@ -380,10 +379,10 @@ const Users = () => {
                                         >
                                           {item.account_id}
                                         </td> */}
-                                        <td>
+                                        <td  style={{width:"106px"}}>
                                           {item?.user_role?.roles?.name}
                                         </td>
-                                        <td
+                                        <td  style={{width:"129px"}}
                                           onClick={() =>
                                             navigate(`/users-config`, {
                                               state: item,
@@ -392,7 +391,7 @@ const Users = () => {
                                         >
                                           {item?.usages}
                                         </td>
-                                        <td >
+                                        <td  style={{width:"156px"}}>
                                           <span
                                             className={
                                               onlineUser.includes(item.id)
@@ -413,7 +412,7 @@ const Users = () => {
                                             <i className="fa-solid fa-pencil"></i>
                                           </button>
                                         </td>}
-                                        <td
+                                        <td  style={{width:"129px"}}
                                         // onClick={() =>
                                         //   handleStatusChange(item.id, item.status)
                                         // }
@@ -435,21 +434,21 @@ const Users = () => {
                                               <span className="slider round" />
                                             </label> */}
                                             <div class="cl-toggle-switch ">
-                                                  <label class="cl-switch">
-                                                    <input type="checkbox"
-                                                       checked={item.status === "E"}
-                                                       onClick={(e) => {
-                                                         setSelectedUser(item);
-                                                         setPopUp(true);
-                                                       }}
-                                                      id="showAllCheck"
-                                                       />
-                                                      <span></span>
-                                                  </label>
-                                                </div>
+                                              <label class="cl-switch">
+                                                <input type="checkbox"
+                                                  checked={item.status === "E"}
+                                                  onClick={(e) => {
+                                                    setSelectedUser(item);
+                                                    setPopUp(true);
+                                                  }}
+                                                  id="showAllCheck"
+                                                />
+                                                <span></span>
+                                              </label>
+                                            </div>
                                           </div>
                                         </td>
-                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td>
+                                        {checkViewSidebar("User", slugPermissions, account?.permissions, "delete") && <td style={{width:"150px"}} >
                                           <button
                                             className="tableButton delete mx-auto"
                                             onClick={() => {

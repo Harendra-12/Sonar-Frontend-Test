@@ -15,11 +15,11 @@ const baseName = process.env.REACT_APP_BACKEND_BASE_URL;
 function Login() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const account = useSelector((state)=> state.account);
+  const account = useSelector((state) => state.account);
   if (token && account) {
-    if(account?.user_role?.roles?.name === "Agent"){
+    if (account?.user_role?.roles?.name === "Agent") {
       navigate("/webrtc")
-    }else{
+    } else {
       navigate("/dashboard")
     }
   }
@@ -98,7 +98,7 @@ export function LoginComponent() {
   const [logInDetails, setLoginDetails] = useState([])
   const [logInText, setLogInText] = useState("");
   const [logOutToken, setLogOutToken] = useState("")
-  
+
   // Handle login function
   async function handleLogin() {
     // Reseting State before Loggin In
@@ -108,11 +108,12 @@ export function LoginComponent() {
     const data = await login(userName, password);
     if (data) {
       if (data.status) {
-        const profile = await generalGetFunction("/user");
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
         });
+        const profile = await generalGetFunction("/user");
+
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -224,18 +225,18 @@ export function LoginComponent() {
   async function handleLogoutFromSpecificDevice(token) {
     try {
       setLoading(true);
-      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token },token);
+      const logOut = await generalPostFunctionWithToken(`${baseName}/logout-specific-device`, { token: token }, token);
       // console.log({logOut})
       if (logOut?.status) {
         toast.success(logOut?.message)
         setLoading(false);
         setLoginDetails(logOut?.data)
         setLogInText("You can login now")
-      }else{
-        console.log("00err",logOut);
-        if(logOut?.message==="Token expired"){
+      } else {
+        console.log("00err", logOut);
+        if (logOut?.message === "Token expired") {
           const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { token: token });
-          if(expireLogout?.status){
+          if (expireLogout?.status) {
             toast.success(expireLogout?.message)
             setLoading(false);
             setLoginDetails(expireLogout?.data)
@@ -265,11 +266,12 @@ export function LoginComponent() {
       const checkLogin = await login(userName, password);
       // console.log("00check",{checkLogin})
       if (checkLogin?.status) {
-        const profile = await generalGetFunction("/user");
         dispatch({
           type: "SET_PERMISSION_REFRESH",
           permissionRefresh: permissionRefresh + 1,
         });
+        const profile = await generalGetFunction("/user");
+
         if (profile?.status) {
           dispatch({
             type: "SET_ACCOUNT",
@@ -340,12 +342,15 @@ export function LoginComponent() {
           setLoading(false);
           // toast.error("unauthorized access!");
         }
-
-
       } else if (checkLogin?.response?.status === 401 || checkLogin?.response?.status === 403) {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
+        if(checkLogin?.message === "Network Error"){
+          toast.error("Network Error")
+          setLoading(false)
+          return
+        }
         setLoading(false)
         setLogOutToken(checkLogin?.response?.data?.data[0].token)
         setPopUp(true)
@@ -381,16 +386,16 @@ export function LoginComponent() {
     setLoading(true);
     setPopUp(false);
     try {
-      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`,logOutToken);
-      console.log({logoutAll})
+      const logoutAll = await generalGetFunctionWithToken(`${baseName}/logout?all`, logOutToken);
+      console.log({ logoutAll })
       if (logoutAll.status) {
         handleLogin();
       } else {
-        if(logoutAll?.message==="Token expired"){
-          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`,  {all:logOutToken,token:logOutToken});
-          if(expireLogout?.status){
+        if (logoutAll?.message === "Token expired") {
+          const expireLogout = await generalPostFunctionWithToken(`${baseName}/logout-expired-token`, { all: logOutToken, token: logOutToken });
+          if (expireLogout?.status) {
             handleLogin();
-          }else{
+          } else {
             setLoading(false)
             toast.error("Something went wrong. Please try again.")
           }

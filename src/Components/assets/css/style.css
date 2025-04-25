@@ -301,7 +301,7 @@
 
   --text-blue-dark: #d6e3ff;
   --text-timer-color: #fff;
-    --black: #fff;
+  --black: #fff;
   --white: #2d2f39;
   --gray: #f9f9f9;
   --gray2: #9b9b9b;
@@ -583,4 +583,8 @@ ul {
 
 .tippy-arrow {
   color: var(--ele-color) !important;
+}
+
+.theme-transition * {
+  /* transition: background-color 0.3s ease, color 0.3s ease !important; */
 }

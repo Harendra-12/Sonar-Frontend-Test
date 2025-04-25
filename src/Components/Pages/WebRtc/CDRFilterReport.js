@@ -103,6 +103,7 @@ function CdrFilterReport({ page }) {
     "Caller-Orig-Caller-ID-Name",
     "variable_sip_from_user",
     "tag",
+    "variable_sip_to_user",
     "application_state",
     "application_state_to_ext",
     "e_name",
@@ -132,7 +133,7 @@ function CdrFilterReport({ page }) {
         "Date",
         "Time",
         "variable_billsec",
-        // "variable_sip_to_user",
+        "variable_sip_to_user",
         "call_cost",
         "id",
       ])
@@ -215,7 +216,7 @@ function CdrFilterReport({ page }) {
   const handleCallOriginChange = (e) => {
     const newValue = e.target.value;
     // Allow only digits and validate length
-    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+    if (/^\d*$/.test(newValue) && newValue.length <= 12) {
       setDebounceCallOriginFlag(newValue);
       if (newValue.length >= 3) {
         setDebounceCallOrigin(newValue);
@@ -256,7 +257,7 @@ function CdrFilterReport({ page }) {
 
   const handleCallDestinationChange = (e) => {
     const newValue = e.target.value;
-    if (/^\d*$/.test(newValue) && newValue.length <= 5) {
+    if (/^\d*$/.test(newValue) && newValue.length <= 12) {
       setDebounceCallDestinationFlag(newValue);
       if (newValue.length >= 3) {
         setDebounceCallDestination(newValue);
@@ -1163,10 +1164,10 @@ function CdrFilterReport({ page }) {
                                     if (key === "variable_sip_from_user") {
                                       formattedKey = "Caller No.";
                                     } else if (key === "variable_sip_to_user") {
-                                      formattedKey = "Call Destination";
+                                      formattedKey = "Destination";
                                     } else if (
                                       key === "Caller-Orig-Caller-ID-Name"
-                                    ) {
+                                    ){
                                       formattedKey = "Caller Name";
                                     } else if (key === "recording_path") {
                                       formattedKey = "Recording";
@@ -1177,7 +1178,7 @@ function CdrFilterReport({ page }) {
                                     } else if (
                                       key === "application_state_to_ext"
                                     ) {
-                                      formattedKey = "Ext/Dest";
+                                      formattedKey = "Ext";
                                     } else if (key === "e_name") {
                                       formattedKey = "User Name";
                                     } else if (key === "variable_DIALSTATUS") {
@@ -1211,7 +1212,7 @@ function CdrFilterReport({ page }) {
                             <tbody>
                               {loading ? (
                                 <SkeletonTableLoader
-                                  col={page === "billing" ? showKeys.length : showKeys.length + 3}
+                                  col={page === "billing" ? showKeys.length : showKeys.length + 1}
                                   row={12}
                                 />
                               ) : (
@@ -1379,7 +1380,11 @@ function CdrFilterReport({ page }) {
                                                     )}
                                                   </td>
                                                 );
-                                              } else {
+                                              }else if(key==="call_cost" && item[key]){
+                                                return(
+                                                  <td>${item[key]}</td>
+                                                )
+                                              }else {
                                                 return (
                                                   <td key={key}>{item[key]}</td>
                                                 );
@@ -1579,7 +1584,7 @@ function CdrFilterReport({ page }) {
       </main>
       {/* Note Popup */}
       {selectedCdr !== "" && (
-        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment}/>
+        <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
     </>

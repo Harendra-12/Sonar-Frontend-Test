@@ -123,7 +123,7 @@ function Navbar() {
                           "/groups-add",
                           "/groups-edit",
                           "/access-control-list",
-                          '/access-control-list-add'
+                          "/access-control-list-add",
                         ])
                           ? "true"
                           : "false"
@@ -157,7 +157,7 @@ function Navbar() {
                         "/groups-add",
                         "/groups-edit",
                         "/access-control-list",
-                        "/access-control-list-add"
+                        "/access-control-list-add",
                       ])
                         ? "show"
                         : ""
@@ -258,23 +258,31 @@ function Navbar() {
                             </li>
                           ) : null}
 
-                          {accountDetails?.add_on_subscription.find((item)=>item?.addon?.id==7)?<li className="tabItem">
-                            <NavLink
-                              to="/access-control-list"
-                              onClick={backToTop}
-                              className={({ isActive }) =>
-                                isActive ||
-                                  ["/access-control-list", "/access-control-list-add"].some(
-                                    (path) =>
+                          {accountDetails?.add_on_subscription.find(
+                            (item) => item?.addon?.id == 7
+                          ) ? (
+                            <li className="tabItem">
+                              <NavLink
+                                to="/access-control-list"
+                                onClick={backToTop}
+                                className={({ isActive }) =>
+                                  isActive ||
+                                    [
+                                      "/access-control-list",
+                                      "/access-control-list-add",
+                                    ].some((path) =>
                                       window.location.pathname.includes(path)
-                                  )
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              <div className="itemTitle">Access Control</div>
-                            </NavLink>
-                          </li>:<></>}
+                                    )
+                                    ? "nav-link active"
+                                    : "nav-link"
+                                }
+                              >
+                                <div className="itemTitle">Access Control</div>
+                              </NavLink>
+                            </li>
+                          ) : (
+                            <></>
+                          )}
                           <li className="tabItem ">
                             <NavLink
                               to="/groups"
@@ -365,7 +373,7 @@ function Navbar() {
                     >
                       <div className="menuWrapper">
                         <ul className="tabMenu">
-                          {checkViewSidebar(
+                          {/* {checkViewSidebar(
                             "DidDetail",
                             permissions,
                             account?.permissions
@@ -379,7 +387,7 @@ function Navbar() {
                                   <div className="itemTitle">Get DID</div>
                                 </NavLink>
                               </li>
-                            )}
+                            )} */}
                           {checkViewSidebar(
                             "Port",
                             permissions,
@@ -430,7 +438,7 @@ function Navbar() {
                               onClick={backToTop}
                               className="nav-link"
                             >
-                              <div className="itemTitle">New Get DID</div>
+                              <div className="itemTitle">Get DID</div>
                             </NavLink>
                           </li>
                         </ul>
@@ -447,7 +455,6 @@ function Navbar() {
                         isChildActive([
                           "/phone-dashboard",
                           "/agent-dashboard",
-
                           "/did-listing-pbx",
                           "/did-config",
                           "/did-add",
@@ -911,13 +918,14 @@ function Navbar() {
                               </li>
 
                               <li className="tabItem ">
-                                <Link
-                                  onClick={() => featureUnderdevelopment()}
+                                <NavLink
+                                  to="/call-forwarding-campaign"
+                                  onClick={() => backToTop()}
                                   className={({ isActive }) =>
                                     isActive ||
                                       [
-                                        "/extensions-add",
-                                        "/extensions-edit",
+                                        "/call-forwarding-campaign-create",
+                                        "/call-forwarding-campaign-create",
                                       ].some((path) =>
                                         window.location.pathname.includes(path)
                                       )
@@ -926,7 +934,7 @@ function Navbar() {
                                   }
                                 >
                                   <div className="itemTitle">Campaign</div>
-                                </Link>
+                                </NavLink>
                               </li>
 
                               <li className="tabItem ">
@@ -945,6 +953,7 @@ function Navbar() {
                                   <div className="itemTitle">Buyers</div>
                                 </NavLink>
                               </li>
+
 
                               <li className="tabItem ">
                                 <NavLink
@@ -1148,18 +1157,24 @@ function Navbar() {
                           <div className="itemTitle">Meeting Rooms</div>
                         </NavLink>
                       </li>
-                     { accountDetails?.add_on_subscription.find((item)=>item?.addon?.id==2)?<li className="dashboard ">
-                        <NavLink
-                          to="/click-to-call-listing"
-                          onClick={backToTop}
-                          type="button"
-                        >
-                          <div className="iconHolder">
-                            <i className="fa-regular fa-bullseye-pointer"></i>
-                          </div>
-                          <div className="itemTitle">Click To Call</div>
-                        </NavLink>
-                      </li>:<></>}
+                      {accountDetails?.add_on_subscription.find(
+                        (item) => item?.addon?.id == 2
+                      ) ? (
+                        <li className="dashboard ">
+                          <NavLink
+                            to="/click-to-call-listing"
+                            onClick={backToTop}
+                            type="button"
+                          >
+                            <div className="iconHolder">
+                              <i className="fa-regular fa-bullseye-pointer"></i>
+                            </div>
+                            <div className="itemTitle">Click To Call</div>
+                          </NavLink>
+                        </li>
+                      ) : (
+                        <></>
+                      )}
                     </>
                   )}
                   {checkViewSidebar(
@@ -1510,6 +1525,23 @@ function Navbar() {
                                 </NavLink>
                               </li>
                             )}
+
+                          <li className="tabItem ">
+                            <NavLink
+                              to="/billing-dashboard"
+                              className={({ isActive }) =>
+                                isActive ||
+                                  ["/billing-dashboard", "/billing-dashboard"].some(
+                                    (path) =>
+                                      window.location.pathname.includes(path)
+                                  )
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              <div className="itemTitle">Billing Dashboard</div>
+                            </NavLink>
+                          </li>
                         </ul>
                       </div>
                     </div>

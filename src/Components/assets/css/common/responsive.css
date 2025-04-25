@@ -175,20 +175,25 @@
         max-width: 200px;
     }
 }
-@media (max-device-width: 1750px) {
-    html {
-        font-size: 14px !important;
-    }
-
-    /* .formRow.col-xl-3 {
-        width: 16.5%;
-    } */
-
-    table th {
-        white-space: nowrap;
-    }
+@media (max-device-width: 2250px) {
+   
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* grid-template-columns: repeat(2, 177px); */
+      }
+      
 
 }
+
+@media (max-device-width: 1750px) {
+
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+      
+
+}
+
 
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
@@ -203,7 +208,25 @@
     /* table th {
         text-wrap: nowrap;
     } */
+
+    
+element.style {
+    --progress: 0;
 }
+.circular-progress {
+    --size: 208px !important;
+    --stroke-width: 25px;
+   
+}
+
+.mainContent .circularProgressWrapper {
+   
+    height: 209px !important;
+    width: 209px !important;
+   
+}
+}
+
 
 @media (max-device-width: 1366px) {
     /* h3 {
@@ -358,15 +381,22 @@
         font-size: 0.625rem;
     }
 
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
 
+    .call_dCard {
+        min-height: 110px;
+    }
 }
 
 
 
-@media (max-width: 767px){
-    .chat_menu{
+@media (max-width: 767px) {
+    .chat_menu {
         display: block;
     }
+
     .chat_nav {
         background: #fff;
         position: absolute;
@@ -375,11 +405,13 @@
         z-index: 2;
         opacity: 0;
     }
+
     .chat_nav.hidden {
         left: 0;
         opacity: 1;
     }
-    .left_listClose{
+
+    .left_listClose {
         display: block;
     }
 }

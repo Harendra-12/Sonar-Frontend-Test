@@ -24,6 +24,7 @@ import {
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
 import Header from "../../CommonComponents/Header";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
+
 const UsersEdit = ({ page, setUsersDetails }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -621,7 +622,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         //   : profileImage ||
                                         profileImage
                                           ? profileImage
-                                          : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                          : require('../../assets/images/placeholder-image.webp')
                                       }
                                       alt="profile"
                                       style={{
@@ -630,6 +631,7 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                                         objectFit: "cover",
                                         borderRadius: "50%",
                                       }}
+                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                     />
                                   </div>
                                 </button>
@@ -874,14 +876,14 @@ const UsersEdit = ({ page, setUsersDetails }) => {
                           <div className="formRow col-xl-12">
                             <div className="formLabel">
                               <label htmlFor="selectFormRow">
-                               Usages
+                                Usages
                               </label>
                               <label htmlFor="data" className="formItemDesc">
                                 Set usages for the current user
                               </label>
                             </div>
                             <div className="col-6">
-                            <select
+                              <select
                                 className="formItem"
                                 name="extension_id"
                                 value={watch().usages}

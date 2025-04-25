@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
 import ContentLoader from "../../Loader/ContentLoader";
 import {
+  backToTop,
   checkViewSidebar,
   generalDeleteFunction,
   generalGetFunction,
@@ -11,6 +12,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import MailSettingsAdd from "./MailSettingsAdd";
 import MailSettingsEdit from "./MailSettingsEdit";
+import { Navigate } from "react-router-dom";
 
 const MailSettings = ({ style }) => {
   const slugPermissions = useSelector((state) => state?.permissions);
@@ -98,11 +100,11 @@ const MailSettings = ({ style }) => {
                             <p>You can configure your SMTP settings here</p>
                           </div>
                           <div className="buttonGroup">
-                            {/* <button
+                            <button
                               effect="ripple"
                               className="panelButton gray"
                               onClick={() => {
-                                navigate(-1);
+                                Navigate(-1);
                                 backToTop();
                               }}
                             >
@@ -110,7 +112,7 @@ const MailSettings = ({ style }) => {
                               <span className="icon">
                                 <i className="fa-solid fa-caret-left"></i>
                               </span>
-                            </button> */}
+                            </button>
                             {mailSettings && !mailSettings.length > 0 && (
                               <>
                                 {  checkViewSidebar(

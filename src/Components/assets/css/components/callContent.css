@@ -26,7 +26,7 @@
     cursor: pointer;
     /* border-radius: 10px; */
     /* margin-bottom: 5px; */
-    transition: 0.3s ease-in-out;
+    /* transition: 0.3s ease-in-out; */
 
     background-color: var(--webBG);
     border-bottom: 1px solid var(--border-color);
@@ -128,7 +128,7 @@
     border-radius: 0px;
     /* margin-bottom: 5px; */
     cursor: pointer;
-    transition: 0.3s ease-in-out;
+    /* transition: 0.3s ease-in-out; */
     border-bottom: 1px solid var(--border-color);
     background-color: var(--ele-color);
     min-height: 99.19px;
@@ -256,12 +256,9 @@
     position: absolute;
     left: 70px;
     top: 28px;
-    /* width: 50px;
-    height: 50px; */
     color: red;
     font-size: 0.875rem;
     transform: rotate(0deg);
-    /* background: url(''); */
 }
 
 .incoming::after {
@@ -270,12 +267,9 @@
     position: absolute;
     left: 70px;
     top: 29px;
-    /* width: 50px;
-    height: 50px; */
     color: green;
     font-size: 1.125rem;
     transform: rotate(130deg);
-    /* background: url(''); */
 }
 
 .outgoing::after {
@@ -284,12 +278,9 @@
     position: absolute;
     left: 70px;
     top: 29px;
-    /* width: 50px;
-    height: 50px; */
     color: green;
     font-size: 1.125rem;
     transform: rotate(-45deg);
-    /* background: url(''); */
 }
 
 .active-item {
@@ -583,7 +574,7 @@
     /* border: 1px solid var(--border-color); */
     border-radius: 10px;
     padding: 0 10px 10px;
-   
+
 }
 
 .addNewContactPopup ul li {
@@ -592,6 +583,7 @@
     font-size: 0.875rem;
     font-size: 0.875rem;
     background: var(--active-input-color);
+    /* background: #dbeeff33; */
     border-radius: 25px;
     padding: 5px 15px;
     margin-block: 10px;
@@ -614,7 +606,7 @@
     border: 1px solid var(--border-color);
     padding: 0 20px 0 0px;
     outline: none;
-    transition: 0.1s ease-in-out;
+    /* transition: 0.1s ease-in-out; */
     font-size: 0.875rem;
     background: transparent;
     border-radius: 25px;
@@ -637,6 +629,8 @@
     position: absolute;
     top: 4px;
     right: 12px;
+    /* top: 6px;
+    right: 5px; */
 }
 
 .text_warning {
@@ -652,7 +646,7 @@
     align-items: center;
     border-radius: 99px;
     position: relative;
-    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    /* transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1); */
     border: 0 !important;
 }
 
@@ -670,7 +664,7 @@
     z-index: 5;
     transform: rotate(0deg) translateX(6px);
     transform-origin: left;
-    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    /* transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1); */
     color: #dddddd;
 }
 
@@ -686,7 +680,7 @@
     top: 50%;
     right: 6px;
     transform: translateY(-50%);
-    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    /* transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1); */
 }
 
 /* .btn2.light {

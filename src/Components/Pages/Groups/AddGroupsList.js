@@ -38,7 +38,7 @@ export default function AddGroupsList() {
     };
     try {
       setLoading(true);
-      const res = await generalPostFunction(`groups/store`, payload);
+      const res = await generalPostFunction(`/groups/store`, payload);
       console.log(res);
       if (res.status) {
         setLoading(false);
@@ -46,8 +46,6 @@ export default function AddGroupsList() {
         navigate("/groups");
       } else {
         setLoading(false);
-        toast.error(res?.message);
-        toast.error("Please try different group name or add users");
       }
     } catch (error) {
       setLoading(false);
@@ -63,7 +61,7 @@ export default function AddGroupsList() {
         const users = await generalGetFunction("/user/all");
         setUsers([...users?.data?.data]);
         setLoading(false);
-      } catch (error) {}
+      } catch (error) { }
     }
     getUsers();
   }, []);
@@ -125,7 +123,7 @@ export default function AddGroupsList() {
       }
     });
   };
-   // Function to handle changes in destination fields
+  // Function to handle changes in destination fields
   const handleDestinationChange = (index, event) => {
     const { name, value } = event.target;
     const allowedCharacters = /^[A-Za-z0-9\s]*$/;
@@ -262,35 +260,46 @@ export default function AddGroupsList() {
                   </div>
                 </div>
               </div>
-              <form className="row mb-0">
-                <div className="col-12 col-md-12" >
-                 <div  style={{
-                    padding: "25px 23px",
-                    borderBottom: "1px solid #ddd",
-                  }}>
-                 <div className="formRow  col-xl-3">
-                    <div className="formLabel">
-                      <label htmlFor="">
-                        Name <span className="text-danger">*</span>
-                      </label>
-                      <label htmlFor="data" className="formItemDesc">
-                        Enter a name.
-                      </label>
-                    </div>
-                    <div className="formInput">
-                      <input
-                        type="text"
-                        name="extension"
-                        className="formItem"
-                        {...register("name", { required: true })}
-                      />
-                      {errors.name && (
-                        <ErrorMessage text="This field is required" />
-                      )}
+              <form className="row mb-0 p-0 m-0" >
+                <div className="col-12 col-md-12 " style={{
+                  padding: "25px 23px",
+                  borderBottom: "1px solid #ddd",
+                }} >
+                  <div className="row">
+                    <div className="col-12 col-md-6">
+                      <div style={{
+                        // padding: "25px 23px",
+                        // borderBottom: "1px solid #ddd",
+                      }}>
+                        <div className="formRow  col-xl-12">
+                          <div className="formRow0">
+                            <div className="formLabel ms-2">
+                              <label htmlFor="">
+                                Name <span className="text-danger">*</span>
+                              </label>
+                              <label htmlFor="data" className="formItemDesc">
+                                Enter a name.
+                              </label>
+                            </div>
+                          </div>
+                          <div className="formInput0 col-6 me-5">
+                            <input
+                              type="text"
+                              name="extension"
+                              className="formItem"
+                              {...register("name", { required: true })}
+                            />
+                            {errors.name && (
+                              <ErrorMessage text="This field is required" />
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                 </div>
                 </div>
+
+                <div className="col-12 col-md-6"></div>
               </form>
               <div className="col-12">
                 <div className="heading bg-transparent border-bottom-0">
@@ -377,14 +386,14 @@ export default function AddGroupsList() {
                                       .filter((item1) => {
                                         return (
                                           item1?.extension?.extension ==
-                                            selectedUsers[index]?.destination ||
+                                          selectedUsers[index]?.destination ||
                                           !selectedUsers.some(
                                             (
                                               destinationItem,
                                               destinationIndex
                                             ) =>
                                               destinationItem?.destination ==
-                                                item1?.extension?.extension &&
+                                              item1?.extension?.extension &&
                                               destinationIndex != index
                                           )
                                         );
@@ -546,9 +555,8 @@ export default function AddGroupsList() {
                               ""
                             ) : (
                               <div
-                                className={`me-2 h-100 m${
-                                  index === 0 ? "t" : "y"
-                                }-auto`}
+                                className={`me-2 h-100 m${index === 0 ? "t" : "y"
+                                  }-auto`}
                               >
                                 <button
                                   type="button"
@@ -578,126 +586,128 @@ export default function AddGroupsList() {
         )}
       </>
       {bulkAddPopUp ? (
-        <div className="addNewContactPopup">
-          <div className="row">
-            <div className="col-12 heading mb-0">
-              <i className="fa-light fa-user-plus" />
-              <h5>Add People to the selected Ring Group</h5>
-            </div>
-            <div className="col-xl-12">
-              <div className="col-12 d-flex justify-content-between align-items-center">
-                <input
-                  type="text"
-                  className="formItem"
-                  placeholder="Search"
-                  name="name"
-                  value={searchQuery}
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading mb-0">
+                <i className="fa-light fa-user-plus" />
+                <h5>Add People to the selected Ring Group</h5>
+              </div>
+              <div className="col-xl-12">
+                <div className="col-12 d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    className="formItem"
+                    placeholder="Search"
+                    name="name"
+                    value={searchQuery}
                   //   onChange={handleSearchChange}
-                />
-                <button
-                  className="tableButton ms-2"
+                  />
+                  <button
+                    className="tableButton ms-2"
                   //   onClick={() => navigate("/users-add")}
-                >
-                  <i className="fa-solid fa-user-plus"></i>
-                </button>
+                  >
+                    <i className="fa-solid fa-user-plus"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-3">
-              <div
-                className="tableContainer mt-0"
-                style={{ maxHeight: "calc(100vh - 400px)" }}
-              >
-                <table>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Name</th>
-                      <th>Extension</th>
-                      <th>
-                        <input
-                          type="checkbox"
-                          onChange={handleSelectAll} // Call handler on change
-                          checked={selectAll ? true : false} // Keep checkbox state in sync
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users
-                      ?.sort((a, b) => {
-                        const aMatches =
-                          a.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (a?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        const bMatches =
-                          b.name
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase()) ||
-                          (b?.extension?.extension || "")
-                            .toLowerCase()
-                            .includes(searchQuery.toLowerCase());
-                        // Sort: matching items come first
-                        return bMatches - aMatches;
-                      })
-                      .filter(
-                        (user) =>
-                          !selectedUsers.some(
-                            (agent) =>
-                              user?.extension?.extension == agent?.destination
-                          )
-                      )
-                      .map((item, index) => {
-                        return (
-                          <tr key={item.id || index}>
-                            <td>{index + 1}</td>
-                            <td>{item?.name}</td>
-                            <td>{item?.extension?.extension}</td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={() => handleCheckboxChange(item)} // Call handler on change
-                                checked={bulkUploadSelectedAgents.some(
-                                  (agent) => agent?.name === item?.name
-                                )} // Keep checkbox state in sync
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+              <div className="col-xl-12 mt-3">
+                <div
+                  className="tableContainer mt-0"
+                  style={{ maxHeight: "calc(100vh - 400px)" }}
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>
+                          <input
+                            type="checkbox"
+                            onChange={handleSelectAll} // Call handler on change
+                            checked={selectAll ? true : false} // Keep checkbox state in sync
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users
+                        ?.sort((a, b) => {
+                          const aMatches =
+                            a.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (a?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          const bMatches =
+                            b.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) ||
+                            (b?.extension?.extension || "")
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase());
+                          // Sort: matching items come first
+                          return bMatches - aMatches;
+                        })
+                        .filter(
+                          (user) =>
+                            !selectedUsers.some(
+                              (agent) =>
+                                user?.extension?.extension == agent?.destination
+                            )
+                        )
+                        .map((item, index) => {
+                          return (
+                            <tr key={item.id || index}>
+                              <td>{index + 1}</td>
+                              <td>{item?.name}</td>
+                              <td>{item?.extension?.extension}</td>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  onChange={() => handleCheckboxChange(item)} // Call handler on change
+                                  checked={bulkUploadSelectedAgents.some(
+                                    (agent) => agent?.name === item?.name
+                                  )} // Keep checkbox state in sync
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-            <div className="col-xl-12 mt-2">
-              <div className="d-flex justify-content-between">
-                <button
-                  className="panelButton gray ms-0"
-                  onClick={() => {
-                    setBulkAddPopUp(false);
-                    setBulkUploadSelectedAgents([]);
-                    setSelectAll(false);
-                  }}
-                >
-                  <span className="text">Close</span>
-                  <span className="icon">
-                    <i className="fa-light fa-xmark"></i>
-                  </span>
-                </button>
-                <button
-                  onClick={() => {
-                    handleBulkDestinationUpload(bulkUploadSelectedAgents);
-                    setBulkAddPopUp(false);
-                  }}
-                  className="panelButton"
-                >
-                  <span className="text">Done</span>
-                  <span className="icon">
-                    <i className="fa-solid fa-check" />
-                  </span>
-                </button>
+              <div className="col-xl-12 mt-2">
+                <div className="d-flex justify-content-between">
+                  <button
+                    className="panelButton gray ms-0"
+                    onClick={() => {
+                      setBulkAddPopUp(false);
+                      setBulkUploadSelectedAgents([]);
+                      setSelectAll(false);
+                    }}
+                  >
+                    <span className="text">Close</span>
+                    <span className="icon">
+                      <i className="fa-light fa-xmark"></i>
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      handleBulkDestinationUpload(bulkUploadSelectedAgents);
+                      setBulkAddPopUp(false);
+                    }}
+                    className="panelButton"
+                  >
+                    <span className="text">Done</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-check" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

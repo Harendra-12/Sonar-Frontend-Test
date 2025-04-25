@@ -53,28 +53,34 @@ const Dashboard = () => {
       }
       getData();
     }
+    if (permissionRefresh === 0) {
+      dispatch({
+        type: "SET_PERMISSION_REFRESH",
+        permissionRefresh: permissionRefresh + 1,
+      });
+    }
   }, [])
 
   // Setting clock for the selected timnezone
-  useEffect(() => {
-    const updateAccountDetails = async () => {
-      try {
-        const profile = await generalGetFunction("/user");
-        if (profile?.status) {
-          dispatch({
-            type: "SET_ACCOUNT",
-            account: profile.data,
-          });
-        }
-      } catch (error) {
-      }
-    };
-    updateAccountDetails();
-    dispatch({
-      type: "SET_PERMISSION_REFRESH",
-      permissionRefresh: permissionRefresh + 1,
-    });
-  }, []);
+  // useEffect(() => {
+  //   const updateAccountDetails = async () => {
+  //     try {
+  //       const profile = await generalGetFunction("/user");
+  //       if (profile?.status) {
+  //         dispatch({
+  //           type: "SET_ACCOUNT",
+  //           account: profile.data,
+  //         });
+  //       }
+  //     } catch (error) {
+  //     }
+  //   };
+  //   updateAccountDetails();
+  //   dispatch({
+  //     type: "SET_PERMISSION_REFRESH",
+  //     permissionRefresh: permissionRefresh + 1,
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (timeZoneRefresh > 0) {
@@ -873,7 +879,6 @@ const Dashboard = () => {
                                         style={{
                                           overflowY: "scroll",
                                           height: "200px",
-                                          paddingRight: 10,
                                         }}
                                       >
                                         {accountDetails?.extensions?.map(
@@ -904,7 +909,7 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               ) : (
-                                <div className="deviceProvision position-relative h-100">
+                                <div className="deviceProvision position-relative" style={{ height: '250px' }}>
                                   <div className="itemWrapper a addNew d-flex justify-content-center align-items-center shadow-none">
                                     <i class="fa-solid fa-spinner-third fa-spin fs-3"></i>
                                   </div>

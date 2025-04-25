@@ -423,7 +423,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                       {model.table_records.length > 0 && expandedRows[`${sectionName}-${model.model}`] && (
                         <tr>
                           <td colSpan={7}>
-                            <div className="p-3 bg-light">
+                            <div className="p-3 bg-light0">
                               <h6>Column Permissions - <b>{showOnlyViewPermissions}</b></h6>
                               <div className="row">
                                 {Array.from(new Set(model.table_records.map(r => r.column_name))).map(column => {
@@ -470,7 +470,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
                                           {filteredColumnRecords.map(record => (
                                             <div key={record.id} className="d-flex justify-content-between">
                                               {/* <span className='text-capitalize'>{record.action}</span> */}
-                                              <span className='text-capitalize'>{column.replace(/_/g, " ")}</span>
+                                              <label className='text-capitalize'>{column.replace(/_/g, " ")}</label>
                                               <div className="cl-toggle-switch">
                                                 <label className="cl-switch">
                                                   <input

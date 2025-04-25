@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Header from '../../CommonComponents/Header';
-import { backToTop, featureUnderdevelopment, generalGetFunction } from '../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, generalGetFunction, useDebounce } from '../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../CommonComponents/PaginationComponent';
 import { set } from 'date-fns';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
@@ -16,6 +16,7 @@ function RateCardView() {
 
     const [rateCardList, setRateCardList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const debouncedSearchTerm = useDebounce(userInput, 1000);
     const getRateCard = async () => {
         setLoading(true);
         try {
@@ -36,13 +37,14 @@ function RateCardView() {
 
     // Debounce Search Function
     useEffect(() => {
-        if (userInput !== "") {
-            const delay = setTimeout(() => {
-                getRateCard();
-            }, 500);
-            return () => clearTimeout(delay);
-        }
-    }, [userInput]);
+        // if (userInput !== "") {
+        //     const delay = setTimeout(() => {
+        //         getRateCard();
+        //     }, 500);
+        //     return () => clearTimeout(delay);
+        // }
+        getRateCard();
+    }, [debouncedSearchTerm]);
 
     return (
         <main className="mainContent">
@@ -158,7 +160,7 @@ function RateCardView() {
                                                                                         <td>{item.country}</td>
                                                                                         <td>{item.selling_billing_block}</td>
                                                                                         {/* <td>{item.out_rate}</td> */}
-                                                                                        <td>{item.in_rate}</td>
+                                                                                        <td>${item.in_rate}</td>
                                                                                     </tr>
                                                                                 )
                                                                             })
@@ -177,7 +179,7 @@ function RateCardView() {
                                                                 <th>#</th>
                                                                 <th>Source</th>
                                                                 <th>Destination</th>
-                                                                <th>Vendor Name</th>
+                                                                {/* <th>Vendor Name</th> */}
                                                                 <th>Country</th>
                                                                 <th>Selling Billing Block</th>
                                                                 <th>Outbound Rate</th>
@@ -186,7 +188,7 @@ function RateCardView() {
                                                         </thead>
                                                         <tbody>
                                                             {loading ?
-                                                                <SkeletonTableLoader col={8} row={15} /> : (
+                                                                <SkeletonTableLoader col={7} row={15} /> : (
                                                                     <>
                                                                         {rateCardList && rateCardList?.data?.length === 0 ? (
                                                                             <tr>
@@ -201,10 +203,10 @@ function RateCardView() {
                                                                                         <td>{index + 1}</td>
                                                                                         <td>{item.src}</td>
                                                                                         <td>{item.dest}</td>
-                                                                                        <td>{item.vendor_name}</td>
+                                                                                        {/* <td>{item.vendor_name}</td> */}
                                                                                         <td>{item.country}</td>
                                                                                         <td>{item.selling_billing_block}</td>
-                                                                                        <td>{item.out_rate}</td>
+                                                                                        <td>${item.out_rate}</td>
                                                                                         {/* <td>{item.in_rate}</td> */}
                                                                                     </tr>
                                                                                 )

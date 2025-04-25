@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 function UserProfile() {
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const dispatch = useDispatch();
   const account = useSelector((state) => state.account);
   const timeZoneRefresh = useSelector((state) => state.timeZoneRefresh);
@@ -85,7 +85,6 @@ function UserProfile() {
 
   // Handle the update logic for user edit
   const handleSave = async () => {
-    setIsEdit(!isEdit);
     if (isEdit) {
       const payload = {
         // email: account.email,
@@ -95,14 +94,20 @@ function UserProfile() {
         // role_id: account?.user_role?.role_id,
         // account_id: account.account_id,
         permissions: account.permissions,
-        // extension_id: account.extension.id,
+        extension_id: account.extension.id,
         // usages: account.usages,
         alias: inputAlias,
         name: `${inputFirstName} ${inputLastName}`,
       };
       setLoading(true);
       try {
-        await generalPutFunction(`user/${account.id}`, payload);
+        await generalPutFunction(`user/${account.id}`, payload).then((res) => {
+          if (res.status) {
+            toast.success(res.message);
+          }
+        }).catch((err) => {
+          toast.error(err?.message);
+        });
         const profile = await generalGetFunction("/user");
         if (profile?.status) {
           dispatch({
@@ -135,7 +140,7 @@ function UserProfile() {
                   <div className="baseDetails d-block ">
                     <div className="pro_bg">
                       <img
-                        src={require('../../assets/images/profile-bg1.jpg')} alt="profile-bg" />
+                        src={require('../../assets/images/profile-bg1.webp')} alt="profile-bg" />
                     </div>
                     <div className="card profile_info border-0 ">
                       <div className="card-body ">
@@ -171,23 +176,21 @@ function UserProfile() {
                                             src={
                                               profileImage
                                                 ? profileImage
-                                                : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                                : require('../../assets/images/placeholder-image.webp')
                                             }
+                                            onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
                                             alt="profile"
                                           />
                                         </div>
                                       </div>
                                       <div className="w-100 ">
                                         <h5 className="mb-0 text-center">{account?.name}</h5>
-                                        <div className="content mt-1 d-flex align-items-center justify-content-center">
-
-                                        </div>
-                                        <div className="content mt-1  d-flex align-items-center justify-content-center">
+                                        {account?.usertype && <div className="content mt-1  d-flex align-items-center justify-content-center">
                                           <div className="profileicons">
                                             <i className="fa-regular me-2 fa-id-card"></i>
                                           </div>
                                           <p className="mb-0">{account?.usertype}</p>
-                                        </div>
+                                        </div>}
                                         <div className="content mt-1  d-flex align-items-center justify-content-center">
                                           <div className="profileicons">
                                             <i className="fa-regular me-2 fa-envelope"></i>
@@ -204,24 +207,20 @@ function UserProfile() {
                           <div className="col-xl-8 col-lg-7 col-md-7">
                             <div className="card shadow_sm border-0 rounded-4">
                               <div className="card-body">
-                                {loading ? (
-                                  <>
-                                    <CircularLoader />
-                                  </>
-                                ) : (
-                                  <div className="col-12">
-                                    <div className="heading bg-transparent border-bottom-0 d-flex justify-content-between align-items-center flex-wrap">
-                                      <div className="content">
-                                        <h4 className="fs-5">Account Information</h4>
-                                      </div>
-                                      <button onClick={handleSave} type="button" class={`btn btn-success-light btn-wave new_buttonStyle ${isEdit ? "active" : "new_buttonStyle"}`}>
-                                        <span>Edit</span> <i
-                                          className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
-                                            }`}
-                                        ></i></button>
+                                {loading && <CircularLoader />}
+                                <div className="col-12">
+                                  <div className="heading bg-transparent border-bottom-0 d-flex justify-content-between align-items-center flex-wrap">
+                                    <div className="content">
+                                      <h4 className="fs-5">Account Information</h4>
+                                    </div>
+                                    <button onClick={handleSave} type="button" class={`btn btn-success-light btn-wave new_buttonStyle`}>
+                                      <span>Update</span> <i
+                                        className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
+                                          }`}
+                                      ></i></button>
 
 
-                                      {/* <div className="buttonGroup ">
+                                    {/* <div className="buttonGroup ">
                                         <button
                                           type="button"
                                           className={`panelButton ${isEdit ? "" : "edit"}`}
@@ -238,176 +237,175 @@ function UserProfile() {
                                           </span>
                                         </button>
                                       </div> */}
-                                    </div>
-                                    <div className=" col-12">
-                                      <div className="row">
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>First Name</label>
-                                            <label className="formItemDesc">
-                                              The First Name of the User. Can be editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            {isEdit ? (
-                                              <input
-                                                type="text"
-                                                className="formItem"
-                                                value={inputFirstName}
-                                                onChange={(e) =>
-                                                  setInputFirstName(e.target.value)
-                                                }
-                                              />
-                                            ) : (
-                                              <h5 className="mb-0 pb-2 border-bottom">
-                                                {inputFirstName}
-                                              </h5>
-                                            )}
-                                          </div>
+                                  </div>
+                                  <div className=" col-12">
+                                    <div className="row">
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>First Name</label>
+                                          <label className="formItemDesc">
+                                            The First Name of the User.
+                                          </label>
                                         </div>
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>Last Name</label>
-                                            <label className="formItemDesc">
-                                              The Last Name of the User. Can be editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            {isEdit ? (
-                                              <input
-                                                type="text"
-                                                className="formItem"
-                                                value={inputLastName}
-                                                onChange={(e) =>
-                                                  setInputLastName(e.target.value)
-                                                }
-                                              />
-                                            ) : (
-                                              <h5 className="mb-0 pb-2 border-bottom">
-                                                {inputLastName}
-                                              </h5>
-                                            )}
-                                          </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          {isEdit ? (
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              value={inputFirstName}
+                                              onChange={(e) =>
+                                                setInputFirstName(e.target.value)
+                                              }
+                                            />
+                                          ) : (
+                                            <h5 className="mb-0 pb-2 border-bottom">
+                                              {inputFirstName}
+                                            </h5>
+                                          )}
                                         </div>
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>Alias</label>
-                                            <label className="formItemDesc">
-                                              The Alias or Nickname of the User. Can be
-                                              editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            {isEdit ? (
-                                              <input
-                                                type="text"
-                                                className="formItem"
-                                                value={inputAlias}
-                                                onChange={(e) => setInputAlias(e.target.value)}
-                                              />
-                                            ) : (
-                                              <h5 className="mb-0 pb-2 border-bottom">
-                                                {inputAlias}
-                                              </h5>
-                                            )}
-                                          </div>
+                                      </div>
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>Last Name</label>
+                                          <label className="formItemDesc">
+                                            The Last Name of the User.
+                                          </label>
                                         </div>
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>TimeZone</label>
-                                            <label className="formItemDesc">
-                                              The set timezone of the User. Can be editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div className="row">
-                                              <div className="col-12">
-                                                <select
-                                                  className="formItem me-0"
-                                                  style={{ width: "100%" }}
-                                                  name="delay"
-                                                  id="selectFormRow"
-                                                  value={selectedTimezone}
-                                                  onChange={(e) => {
-                                                    setSelectedTimezone(e.target.value);
-                                                  }}
-                                                >
-                                                  {allTimeZone?.map((item, index) => {
-                                                    return (
-                                                      <>
-                                                        <option value={item.id}>
-                                                          {item.name}
-                                                        </option>
-                                                      </>
-                                                    );
-                                                  })}
-                                                </select>
-                                              </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          {isEdit ? (
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              value={inputLastName}
+                                              onChange={(e) =>
+                                                setInputLastName(e.target.value)
+                                              }
+                                            />
+                                          ) : (
+                                            <h5 className="mb-0 pb-2 border-bottom">
+                                              {inputLastName}
+                                            </h5>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>Alias</label>
+                                          <label className="formItemDesc">
+                                            The Alias or Nickname of the User. Can be
+                                            editable.
+                                          </label>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          {isEdit ? (
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              value={inputAlias}
+                                              onChange={(e) => setInputAlias(e.target.value)}
+                                            />
+                                          ) : (
+                                            <h5 className="mb-0 pb-2 border-bottom">
+                                              {inputAlias}
+                                            </h5>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>TimeZone</label>
+                                          <label className="formItemDesc">
+                                            The set timezone of the User.
+                                          </label>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <div className="row">
+                                            <div className="col-12">
+                                              <select
+                                                className="formItem me-0"
+                                                style={{ width: "100%" }}
+                                                name="delay"
+                                                id="selectFormRow"
+                                                value={selectedTimezone}
+                                                onChange={(e) => {
+                                                  setSelectedTimezone(e.target.value);
+                                                }}
+                                              >
+                                                {allTimeZone?.map((item, index) => {
+                                                  return (
+                                                    <>
+                                                      <option value={item.id}>
+                                                        {item.name}
+                                                      </option>
+                                                    </>
+                                                  );
+                                                })}
+                                              </select>
                                             </div>
                                           </div>
                                         </div>
+                                      </div>
+                                      <div className="border-bottom" />
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>Username</label>
+                                          <label className="formItemDesc">
+                                            The username assigned to the User. Cannot be
+                                            editable.
+                                          </label>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <h5 className="mb-0 pb-2">
+                                            {account?.username}
+                                          </h5>
+                                        </div>
+                                      </div>
+                                      {account.usertype == "Company" ? (
+                                        <></>
+                                      ) : (
                                         <div className="formRow col-12">
                                           <div className="formLabel">
-                                            <label>Username</label>
+                                            <label>Role</label>
                                             <label className="formItemDesc">
-                                              The username assigned to the User. Cannot be
-                                              editable.
+                                              The role assigned to the User.
                                             </label>
                                           </div>
                                           <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
-                                              {account?.username}
-                                            </h5>
+                                            <h5 className="mb-0 pb-2">Agent</h5>
                                           </div>
                                         </div>
-                                        {account.usertype == "Company" ? (
-                                          <></>
-                                        ) : (
-                                          <div className="formRow col-12">
-                                            <div className="formLabel">
-                                              <label>Role</label>
-                                              <label className="formItemDesc">
-                                                The role assigned to the User. Cannot be
-                                                editable.
-                                              </label>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                              <h5 className="mb-0 pb-2 border-bottom">Agent</h5>
-                                            </div>
-                                          </div>
-                                        )}
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>Email</label>
-                                            <label className="formItemDesc">
-                                              The email assigned to the User which is used at
-                                              login. Cannot be editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
-                                              {account?.email}
-                                            </h5>
-                                          </div>
+                                      )}
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>Email</label>
+                                          <label className="formItemDesc">
+                                            The email assigned to the User which is used at
+                                            login.
+                                          </label>
                                         </div>
-                                        <div className="formRow col-12">
-                                          <div className="formLabel">
-                                            <label>Extension</label>
-                                            <label className="formItemDesc">
-                                              The extension assigned to the User which is used
-                                              by PBX. Cannot be editable.
-                                            </label>
-                                          </div>
-                                          <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h5 className="mb-0 pb-2 border-bottom">
-                                              {account?.extension?.extension}
-                                            </h5>
-                                          </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <h5 className="mb-0 pb-2">
+                                            {account?.email}
+                                          </h5>
+                                        </div>
+                                      </div>
+                                      <div className="formRow col-12">
+                                        <div className="formLabel">
+                                          <label>Extension</label>
+                                          <label className="formItemDesc">
+                                            The extension assigned to the User which is used
+                                            by PBX.
+                                          </label>
+                                        </div>
+                                        <div className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
+                                          <h5 className="mb-0 pb-2">
+                                            {account?.extension?.extension}
+                                          </h5>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                )}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -568,7 +566,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>First Name</label>
                             <label className="formItemDesc">
-                              The First Name of the User. Can be editable.
+                              The First Name of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -592,7 +590,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>Last Name</label>
                             <label className="formItemDesc">
-                              The Last Name of the User. Can be editable.
+                              The Last Name of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -639,7 +637,7 @@ function UserProfile() {
                           <div className="formLabel">
                             <label>TimeZone</label>
                             <label className="formItemDesc">
-                              The set timezone of the User. Can be editable.
+                              The set timezone of the User.
                             </label>
                           </div>
                           <div className="col-6">
@@ -706,7 +704,7 @@ function UserProfile() {
                             <label>Email</label>
                             <label className="formItemDesc">
                               The email assigned to the User which is used at
-                              login. Cannot be editable.
+                              login.
                             </label>
                           </div>
                           <div className="col-6">
@@ -720,7 +718,7 @@ function UserProfile() {
                             <label>Extension</label>
                             <label className="formItemDesc">
                               The extension assigned to the User which is used
-                              by PBX. Cannot be editable.
+                              by PBX.
                             </label>
                           </div>
                           <div className="col-6">

@@ -14,6 +14,16 @@ import UsersEdit from "./UsersEdit";
 import SkeletonFormLoader from "../../Loader/SkeletonFormLoader";
 import CircularLoader from "../../Loader/CircularLoader";
 
+/**
+ * This component is used to configure the user settings and permissions.
+ * It uses the UserEdit component to edit user settings and the permission
+ * configuration component to edit the user's permissions.
+ * The component also handles the back button click and the save button click.
+ * When the user clicks the save button, the component sends a post request to the
+ * assign-table-permissions API with the user details and the checked permissions.
+ * If the request is successful then it will show a success toast message and otherwise
+ * it will show an error toast message.
+ */
 function UserConfiguration() {
   const navigate = useNavigate();
   const [isEditable, setIsEditable] = useState(true);
@@ -50,6 +60,11 @@ function UserConfiguration() {
     };
     permissionData();
   }, []);
+/**
+ * Function to set user permission data based on the selected accordion data.
+ * This function will also reset the select all checkbox value to false.
+ * @param {string} data
+ */
   const handleSetUserPermissionData = (data) => {
     setSelectAll(false)
     // console.log(userPermission[data])
@@ -61,6 +76,15 @@ function UserConfiguration() {
     setActiveUserPermission(data);
 
   };
+/**
+ * Handle permission save button click.
+ * This function will send a post request to the
+ * assign-table-permissions API with the user details
+ * and the checked permissions.
+ * If the request is successful then it will show a
+ * success toast message and otherwise it will show
+ * an error toast message.
+ */
   const handlePermissionSave = async () => {
     const payload = {
       ...usersDetails,

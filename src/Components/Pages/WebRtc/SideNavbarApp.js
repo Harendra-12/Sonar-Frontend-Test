@@ -7,6 +7,7 @@ import { featureUnderdevelopment, logout } from "../../GlobalFunction/globalFunc
 import { useNavigate } from "react-router-dom";
 import LogOutPopUp from "./LogOutPopUp";
 import { CircularProgress } from "@mui/material";
+import Tippy from "@tippyjs/react";
 
 
 /**
@@ -21,6 +22,8 @@ import { CircularProgress } from "@mui/material";
 function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
+  const state = useSelector((state) => state)
+  const isWhatsAppAvailable = state?.accountDetails?.add_on_subscription?.find((data) => data?.addon?.name?.toLowerCase() == "whatsapp") || null;
   const { sessionManager, connectStatus, registerStatus } = useSIPProvider();
   const extension = account?.extension?.extension || "";
   const accountDetails = useSelector((state) => state.accountDetails);
@@ -110,13 +113,13 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                       }
                     >
                       {account?.profile_picture ?
-                        <img src={account?.profile_picture} /> : (
+                        <img src={account?.profile_picture} onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')} /> : (
                           <i className="fa-light fa-user"></i>
                         )}
                       {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                     </div>
                     <div className="userTitle">
-                      <h5>{account?.username}</h5>
+                      {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}
                       <p>Ext- {extension}</p>
                     </div>
                   </button>
@@ -312,19 +315,20 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   </div>
                 </li> : ""}
 
-              <li style={{ cursor: "pointer" }}>
-                <div
-                  onClick={() => setactivePage("whatsapp-chartbox")}
-                  className={
-                    activePage === "whatsapp" ? "navItem active" : "navItem"
-                  }
-                >
-                  <div className="iconHolder">
-                    <i class="fa-brands fa-whatsapp"></i>
+              {isWhatsAppAvailable != null &&
+                <li style={{ cursor: "pointer" }}>
+                  <div
+                    onClick={() => setactivePage("whatsapp-chartbox")}
+                    className={
+                      activePage === "whatsapp" ? "navItem active" : "navItem"
+                    }
+                  >
+                    <div className="iconHolder">
+                      <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div className="itemTitle">WhatsApp</div>
                   </div>
-                  <div className="itemTitle">WhatsApp</div>
-                </div>
-              </li>
+                </li>}
 
 
 

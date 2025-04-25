@@ -8,6 +8,7 @@ import {
   generalDeleteFunction,
   generalGetFunction,
   generalPutFunction,
+  useDebounce,
 } from "../../GlobalFunction/globalFunction";
 import { useDispatch, useSelector } from "react-redux";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -40,6 +41,7 @@ const RingGroups = () => {
   const [noPermissionToRead, setNoPermissionToRead] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const slugPermissions = useSelector((state) => state?.permissions);
+  const debouncedSearchTerm = useDebounce(searchValue, 1000); 
 
   // Getting ringgroup data and also update user refresh to trigger user listing api call
   useEffect(() => {
@@ -61,21 +63,14 @@ const RingGroups = () => {
         navigate("/");
       }
     };
-    if (searchValue.trim().length === 0) {
-      getRingGroupDashboardData();
-    } else {
-      const timer = setTimeout(() => {
-        getRingGroupDashboardData();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    getRingGroupDashboardData()
     if (refreshState === 0) {
       dispatch({
         type: "SET_ALLUSERREFRESH",
         allUserRefresh: allUserRefresh + 1,
       });
     }
-  }, [pageNumber, refreshState, itemsPerPage, searchValue]);
+  }, [pageNumber, refreshState, itemsPerPage, debouncedSearchTerm]);
 
   // Handle validation for naviagte to ring group add page if no user is create then redirect to user page to create user
   const handleRingGroupAddValidation = (e) => {

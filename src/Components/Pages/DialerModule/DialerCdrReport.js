@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../CommonComponents/Header";
-import { backToTop, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction } from "../../GlobalFunction/globalFunction";
+import { backToTop, featureUnderdevelopment, formatTime, formatTimeWithAMPM, generalGetFunction, useDebounce } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import PaginationComponent from "../../CommonComponents/PaginationComponent";
 import EmptyPrompt from "../../Loader/EmptyPrompt";
@@ -14,6 +14,7 @@ function DialerCdrReport() {
   const [pageNumber, setPageNumber] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchQuery, 1000);
 
   async function getAllData() {
     setLoading(true);
@@ -33,16 +34,17 @@ function DialerCdrReport() {
 
   // Call getAllData when pageNumber, itemsPerPage, or searchQuery changes
   useEffect(() => {
-    if (searchQuery.trim() === '') {
-      getAllData()
-    } else {
-      const delay = setTimeout(() => {
-        getAllData();
-      }, 500);
+    // if (searchQuery.trim() === '') {
+    //   getAllData()
+    // } else {
+    //   const delay = setTimeout(() => {
+    //     getAllData();
+    //   }, 500);
 
-      return () => clearTimeout(delay);
-    }
-  }, [pageNumber, itemsPerPage, searchQuery])
+    //   return () => clearTimeout(delay);
+    // }
+    getAllData();
+  }, [pageNumber, itemsPerPage, debouncedSearchTerm])
 
   return (
     <main className="mainContent">
