@@ -878,7 +878,7 @@ const Dashboard = () => {
                                       <ul
                                         style={{
                                           overflowY: "scroll",
-                                          height: "200px",
+                                          height: "220px",
                                           paddingRight: 10,
                                         }}
                                       >
