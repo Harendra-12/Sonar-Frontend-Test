@@ -83,6 +83,7 @@ function CampaignCreate() {
       setCampaignId(apiData.data.id)
     } else {
       setLoading(false);
+      toast.error(apiData?.message || apiData?.error);
     }
   });
 
@@ -106,6 +107,7 @@ function CampaignCreate() {
       toast.success(apiData.message);
     } else {
       setLoading(false);
+      toast.error(apiData?.message || apiData?.error);
     }
   })
 
@@ -125,6 +127,7 @@ function CampaignCreate() {
       toast.success(apiData.message);
     } else {
       setLoading(false);
+      toast.error(apiData?.message || apiData?.error);
     }
   }
 
@@ -149,6 +152,7 @@ function CampaignCreate() {
           toast.success(apiData.message);
         } else {
           setLoading(false);
+          toast.error(apiData?.message || apiData?.error);
         }
       }
     } else {

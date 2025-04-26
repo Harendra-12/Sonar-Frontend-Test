@@ -300,6 +300,7 @@ function CampaignCreate() {
       setcampaignRefresh((prev) => prev + 1);
     } else {
       setLoading(false);
+      toast.error(apiData?.message || apiData?.error);
     }
   });
 
@@ -339,6 +340,7 @@ function CampaignCreate() {
         setcampaignRefresh((prev) => prev + 1);
       } else {
         setLoading(false);
+        toast.error(apiData?.message || apiData?.error);
       }
     }
   });
@@ -364,6 +366,7 @@ function CampaignCreate() {
       setcampaignRefresh((prev) => prev + 1);
     } else {
       setLoading(false);
+      toast.error(apiData?.message || apiData?.error);
     }
   }
 
@@ -392,6 +395,7 @@ function CampaignCreate() {
           toast.success(apiData.message);
         } else {
           setLoading(false);
+          toast.error(apiData?.message || apiData?.error);
         }
       }
     } else {
@@ -1754,9 +1758,9 @@ function CampaignCreate() {
                                               </div>
                                             </div>
                                             <div className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
-                                                ? "selected"
-                                                : ""
-                                                }`}
+                                              ? "selected"
+                                              : ""
+                                              }`}
                                               style={{
                                                 width: "20px",
                                                 height: "20px",
