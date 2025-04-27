@@ -2070,16 +2070,18 @@ function CampaignEditNEW() {
                                     </div>
                                     <div className="buttonGroup">
                                       <button
-                                        className="panelButton static m-0 px-2"
+                                        className="panelButton"
                                         onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
                                       >
-                                        <span className="text">Add Lead</span>
+                                        <span className="text">Add</span>
+                                        <span className='icon'><i class="fa-solid fa-plus"></i></span>
                                       </button>
                                       <button
-                                        className="panelButton static m-0 px-2"
+                                        className="panelButton edit"
                                         onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                       >
-                                        <span className="text">Import CSV</span>
+                                        <span className="text">Import</span>
+                                        <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
                                       </button>
                                     </div>
                                   </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
@@ -30,6 +30,10 @@ function CampaignCreateNEW() {
   const [fileName, setFileName] = useState("");
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
+
+  const [addLeadInternalToggle, setAddLeadInternalToggle] = useState(false);
+  const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+
 
   const {
     register,
@@ -1318,8 +1322,282 @@ function CampaignCreateNEW() {
                         </div>
                       </>} */}
                       {stepSelector === 4 && <>
-                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
-                          <div className="popup music position-static bg-transparent w-auto h-auto">
+                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 25px' }}>
+                          <div className="w-auto h-auto">
+                            <div className="container h-100">
+                              <div className="row h-100 justify-content-center align-items-center">
+
+                                <div className="heading bg-transparent border-bottom-0 pt-0">
+                                  <div className="content">
+                                    <h4>List of Leads</h4>
+                                    <p>You can see the list of leads assigned to this campaign.</p>
+                                  </div>
+                                  <div className="buttonGroup">
+                                    <button
+                                      className="panelButton"
+                                      onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
+                                    >
+                                      <span className="text">Add</span>
+                                      <span className='icon'><i class="fa-solid fa-plus"></i></span>
+                                    </button>
+                                    <button
+                                      className="panelButton edit"
+                                      onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
+                                    >
+                                      <span className="text">Import</span>
+                                      <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
+                                    </button>
+                                  </div>
+                                </div>
+                                {addNewCsvToggle && (
+                                  <div className="popup music">
+                                    <div className="container h-100">
+                                      <div className="row h-100 justify-content-center align-items-center">
+                                        <div
+                                          className="card px-0 col-5 shadow-none"
+                                          style={{
+                                            border: "1px solid var(--border-color)",
+                                          }}
+                                        >
+                                          <div className="header bg-transparent">
+                                            <div className="d-flex justify-content-between">
+                                              <h5 className="card-title fs14 border-bootm fw700">
+                                                Upload Documents
+                                              </h5>
+                                              <button className="clearButton2 xl" onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}>
+                                                <i className="fa-solid fa-xmark"></i>
+                                              </button>
+                                            </div>
+                                          </div>
+                                          <div className="card-body">
+                                            <div className="popup-border text-center p-2">
+                                              <input
+                                                type="file"
+                                                className="form-control-file d-none"
+                                                id="fileInput"
+                                                accept=".csv"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    // Check if the file type is MP3
+
+                                                    const fileName = file.name.replace(/ /g, "-");
+                                                    const newFile = new File([file], fileName, {
+                                                      type: file.type,
+                                                    });
+                                                    setNewFile(newFile);
+                                                    handleFileChange(e);
+                                                  }
+                                                }}
+                                              />
+                                              <label
+                                                htmlFor="fileInput"
+                                                className="d-block"
+                                              >
+                                                <div className="test-user text-center">
+                                                  <i
+                                                    className="fa-solid fa-cloud-arrow-up"
+                                                    style={{ fontSize: 30 }}
+                                                  />
+                                                  <p className="mb-0 mt-2 text-center">
+                                                    Drag and Drop or{" "}
+                                                    <span>Click on upload</span>
+                                                  </p>
+                                                  <span>
+                                                    Supports formats : MP3, Max
+                                                    Size: 2MB
+                                                  </span>
+                                                </div>
+                                              </label>
+                                              {fileName && (
+                                                <p className="mt-3 text-center">
+                                                  Selected File:{" "}
+                                                  <strong>{fileName}</strong>
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {addLeadInternalToggle &&
+                                  <div className="backdropContact">
+                                    <div className="addNewContactPopup">
+                                      <div className="row">
+                                        <div className="col-12 heading border-0 mb-0">
+                                          <i className="fa-light fa-user-plus" />
+                                          <h5>Add Leads to the selected Campaign</h5>
+                                        </div>
+                                        <div className="col-xl-12">
+                                          <div className="col-12 d-flex justify-content-between align-items-center">
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              placeholder="Search"
+                                              name="name"
+                                              defaultValue=""
+                                            />
+                                            <button className="tableButton popupIcon_btn ms-2">
+                                              <i className="fa-solid fa-user-plus" />
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-3">
+                                          <div
+                                            className="tableContainer mt-0"
+                                            style={{ maxHeight: "calc(-400px + 100vh)" }}
+                                          >
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>S.No</th>
+                                                  <th>Name</th>
+                                                  <th>Qty</th>
+                                                  <th><input type="checkbox" /></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td>1</td>
+                                                  <td>test</td>
+                                                  <td>1000</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>2</td>
+                                                  <td>ravi raj</td>
+                                                  <td>1007</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>3</td>
+                                                  <td>riddhee</td>
+                                                  <td>1001</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>4</td>
+                                                  <td>pratima</td>
+                                                  <td>1002</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>5</td>
+                                                  <td>biplab</td>
+                                                  <td>1003</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>6</td>
+                                                  <td>tushar</td>
+                                                  <td>1004</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>7</td>
+                                                  <td>solman</td>
+                                                  <td>1005</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>8</td>
+                                                  <td>sanchit</td>
+                                                  <td>1010</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>9</td>
+                                                  <td>damini</td>
+                                                  <td>1011</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>10</td>
+                                                  <td>rishabh</td>
+                                                  <td>1012</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-2">
+                                          <div className="d-flex justify-content-between">
+                                            <button className="panelButton gray ms-0" onClick={() => setAddLeadInternalToggle(false)}>
+                                              <span className="text">Close</span>
+                                              <span className="icon">
+                                                <i className="fa-light fa-xmark" />
+                                              </span>
+                                            </button>
+                                            <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                                              <span className="text">Done</span>
+                                              <span className="icon">
+                                                <i className="fa-solid fa-check" />
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+
+                                <div>
+                                  <div className="tableContainer mt-0">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Name</th>
+                                          <th>Number</th>
+                                          <th>Country Code</th>
+                                          <th>Address</th>
+                                          <th>Edit</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody className="">
+                                        <tr>
+                                          <td>Test</td>
+                                          <td>123456789</td>
+                                          <td>1</td>
+                                          <td>Test test etsetestse</td>
+                                          <td>
+                                            <button className="tableButton edit">
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* <div className="popup music position-static bg-transparent w-auto h-auto">
                             <div className="container h-100">
                               <div className="row h-100 justify-content-center align-items-center">
                                 <div className="card px-0 col-xl-5  shadow-none" style={{ border: '1px solid var(--border-color)' }}>
@@ -1371,7 +1649,7 @@ function CampaignCreateNEW() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </>}
                     </div>
