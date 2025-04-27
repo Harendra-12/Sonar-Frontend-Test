@@ -700,6 +700,7 @@
     height: auto;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 18px 0px, rgb(0 0 0 / 0%) 0px 0px 9px 1px;
+    border: 1px solid var(--me-border1);
 }
 
 .contactHeader .dropdown-menu .dropdown-item,
