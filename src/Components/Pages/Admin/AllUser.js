@@ -5,6 +5,16 @@ import { backToTop } from '../../GlobalFunction/globalFunction';
 import ContentLoader from '../../Loader/ContentLoader';
 import EmptyPrompt from '../../Loader/EmptyPrompt';
 
+/**
+ * AllUser
+ *
+ * This component displays a list of all users and their respective company details.
+ * The component renders a table with the following columns: Company Name, Admin Name, Email, Phone Number, Address.
+ * The user can filter the list by typing in the search bar.
+ * The user can also sort the list by clicking on the column headers.
+ * The component also renders a button to add a new user and a button to delete a selected user.
+ * The component is connected to the Redux store and listens for changes to the user list and the login user.
+ */
 function AllUser() {
   const [loading,setLoading]=useState(true)
   return (

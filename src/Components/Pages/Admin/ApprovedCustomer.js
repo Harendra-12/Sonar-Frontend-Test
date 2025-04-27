@@ -4,6 +4,14 @@ import { generalGetFunction } from "../../GlobalFunction/globalFunction";
 import { useNavigate } from "react-router-dom";
 import ContentLoader from "../../Loader/ContentLoader";
 
+/**
+ * ApprovedCustomer
+ *
+ * This component displays a list of all approved users and their respective company details.
+ * The component renders a table with the following columns: Company Name, Admin Name, Email, Phone Number, Address, Document Uploaded, Balance.
+ * The user can click on a specific row to navigate to the user details page.
+ * The component is connected to the Redux store and listens for changes to the user list and the login user.
+ */
 function ApprovedCustomer() {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState();

@@ -3,6 +3,31 @@ import { backToTop, generalGetFunction } from '../GlobalFunction/globalFunction'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * PermissionConfigForUser is a React component that manages the configuration
+ * of user permissions based on selected groups or roles. It utilizes a
+ * `Header` component for displaying the page title and buttons for navigation
+ * and refreshing the content. The component fetches and displays lists of
+ * groups and roles, allowing the user to select one of each. It also renders
+ * the `PermissionConfigTable` component, passing the selected group, role, 
+ * and all permissions as props.
+ *
+ * State Variables:
+ * - classType: Determines whether the user is selecting by group or role.
+ * - allGroupList: Stores the list of all groups retrieved from the API.
+ * - allRoleList: Stores the list of all roles retrieved from the API.
+ * - selectedGroup: The currently selected group by the user.
+ * - selectedRole: The currently selected role by the user.
+ *
+ * Effects:
+ * - Fetches all groups and roles from the server when the component mounts
+ *   or when the `classType` changes.
+ *
+ * Methods:
+ * - getAllGroups: Retrieves all groups from the server and updates the state.
+ * - getAllRoles: Retrieves all roles from the server and updates the state.
+ */
+
 function PermissionConfigForUser() {
   const navigate = useNavigate();
 

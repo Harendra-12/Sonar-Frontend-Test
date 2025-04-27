@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { generalDeleteFunction, generalGetFunction } from '../../../GlobalFunction/globalFunction'
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
+import EmptyPrompt from '../../../Loader/EmptyPrompt'
 function Campaigns() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -30,32 +31,39 @@ function Campaigns() {
 
   async function startCampaign(id) {
     generalGetFunction(`/campaign/start/${id}`).then((res) => {
-      toast.success(res.message)
+      toast.success(res.message);
     }).catch((err) => {
       toast.error(err.response.data.message)
     })
+    setRefresh(refresh + 1);
   }
 
   async function stopCampaign(id) {
     generalGetFunction(`/campaign/stop/${id}`).then((res) => {
-      toast.success(res.message)
+      toast.success(res.message);
     }).catch((err) => {
       toast.error(err.response.data.message)
     })
+    setRefresh(refresh + 1);
   }
 
   async function deleteCampaign(id) {
-    setLoading(true)
-    setDeleteId('')
-    generalDeleteFunction(`/campaign/destroy/${id}`).then((res) => {
-      setLoading(false)
-      toast.success(res.message)
-      setRefresh(refresh + 1)
-    }).catch((err) => {
-      setLoading(false)
-      toast.error(err.response.data.message)
-    })
+    setLoading(true);
+    setDeleteId('');
+    // Stop the campaign before deleting
+    const stopCampaign = await generalGetFunction(`/campaign/stop/${id}`);
+    if (stopCampaign?.status) {
+      generalDeleteFunction(`/campaign/destroy/${id}`).then((res) => {
+        setLoading(false)
+        toast.success(res.message)
+        setRefresh(refresh + 1)
+      }).catch((err) => {
+        setLoading(false)
+        toast.error(err.response.data.message)
+      })
+    }
   }
+
   return (
     <>
       <main className='mainContent'>
@@ -119,212 +127,215 @@ function Campaigns() {
                               <SkeletonTableLoader col={8} row={15} />
                             ) : (
                               <>
-                                {campaign?.data?.map((item, index) => (
-                                  <tr key={index}>
-                                    <td>
-                                      <div className="d-flex align-items-center justify-content-start ">
-                                        <div className="phone-call">
-                                          <i className="fa-solid fa-pause" />
-                                        </div>
-                                        <div>
-                                          <span className="ms-1">Paused</span>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td><b>{item.title}</b></td>
-                                    <td>{item?.dialer?.type}</td>
-                                    <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
-                                    <td className="">
-                                      <Tippy content={
-                                        <div className="specialProgressWrapDetails">
-                                          <div className="d-flex align-items-center justify-content-start mb-1">
-                                            <p
-                                              style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
-                                            >
-                                              LEADS IN TOTAL
-                                            </p>
-                                            <span className="test-demos ms-2">1000</span>
+                                {campaign?.data?.length > 0 ?
+                                  campaign?.data.map((item, index) => (
+                                    <tr key={index}>
+                                      <td>
+                                        <div className="d-flex align-items-center justify-content-start ">
+                                          <div className="phone-call">
+                                            <i className={`fa-solid fa-${item.status === 'Active' ? 'play' : 'pause'}`} />
                                           </div>
-                                          <ul>
-                                            <li>
+                                          <div>
+                                            <span className="ms-1">{item.status}</span>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td><b>{item.title}</b></td>
+                                      <td>{item?.dialer?.type}</td>
+                                      <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
+                                      <td className="">
+                                        <Tippy content={
+                                          <div className="specialProgressWrapDetails">
+                                            <div className="d-flex align-items-center justify-content-start mb-1">
                                               <p
-                                                style={{
-                                                  color: "rgb(92, 92, 92)",
-                                                  fontSize: 12,
-                                                  fontWeight: 400
-                                                }}
-                                                className="p-0 m-0"
+                                                style={{ fontSize: 12, fontWeight: 500, marginBottom: 0 }}
                                               >
-                                                Completed records
+                                                LEADS IN TOTAL
                                               </p>
-                                              <div className="specialProgressWrap">
-                                                <div className="specialProgress">
-                                                  <div className='segment success' style={{ width: '85%' }}></div>
-                                                  <div className='segment fail' style={{ width: '5%' }}></div>
-                                                  <div className='segment pending' style={{ width: '10%' }}></div>
+                                              <span className="test-demos ms-2">1000</span>
+                                            </div>
+                                            <ul>
+                                              <li>
+                                                <p
+                                                  style={{
+                                                    color: "rgb(92, 92, 92)",
+                                                    fontSize: 12,
+                                                    fontWeight: 400
+                                                  }}
+                                                  className="p-0 m-0"
+                                                >
+                                                  Completed records
+                                                </p>
+                                                <div className="specialProgressWrap">
+                                                  <div className="specialProgress">
+                                                    <div className='segment success' style={{ width: '85%' }}></div>
+                                                    <div className='segment fail' style={{ width: '5%' }}></div>
+                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                  </div>
+                                                  <div className="specialProgressText">
+                                                    <p>0.00%</p>
+                                                    <span>0</span>
+                                                  </div>
                                                 </div>
-                                                <div className="specialProgressText">
-                                                  <p>0.00%</p>
-                                                  <span>0</span>
+                                              </li>
+                                              <li>
+                                                <p
+                                                  style={{
+                                                    color: "rgb(92, 92, 92)",
+                                                    fontSize: 12,
+                                                    fontWeight: 400
+                                                  }}
+                                                  className="p-0 m-0"
+                                                >
+                                                  Failed records
+                                                </p>
+                                                <div className="specialProgressWrap">
+                                                  <div className="specialProgress">
+                                                    <div className='segment success' style={{ width: '85%' }}></div>
+                                                    <div className='segment fail' style={{ width: '5%' }}></div>
+                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                  </div>
+                                                  <div className="specialProgressText">
+                                                    <p>0.00%</p>
+                                                    <span>0</span>
+                                                  </div>
                                                 </div>
-                                              </div>
+                                              </li>
+                                              <li>
+                                                <p
+                                                  style={{
+                                                    color: "rgb(92, 92, 92)",
+                                                    fontSize: 12,
+                                                    fontWeight: 400
+                                                  }}
+                                                  className="p-0 m-0"
+                                                >
+                                                  Untouched records
+                                                </p>
+                                                <div className="specialProgressWrap">
+                                                  <div className="specialProgress">
+                                                    <div className='segment success' style={{ width: '85%' }}></div>
+                                                    <div className='segment fail' style={{ width: '5%' }}></div>
+                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                  </div>
+                                                  <div className="specialProgressText">
+                                                    <p>0.00%</p>
+                                                    <span>0</span>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        } allowHTML={true}>
+                                          <div
+                                            className="specialProgressWrap"
+                                            style={{ cursor: "pointer" }}
+                                          >
+                                            <div className="specialProgress">
+                                              <div className='segment success' style={{ width: '85%' }}></div>
+                                              <div className='segment fail' style={{ width: '5%' }}></div>
+                                              <div className='segment pending' style={{ width: '10%' }}></div>
+                                            </div>
+                                            <div className="specialProgressText">
+                                              <p>0.00%</p>
+                                              <span>0 of 1000</span>
+                                            </div>
+                                          </div>
+                                        </Tippy>
+                                      </td>
+                                      <td>
+                                        {item.agents.length === 0 ? "N/A" :
+                                          <div>
+                                            <div className="avatar-container">
+                                              {item.agents?.slice(0, 4).map((agent, index) => {
+                                                return (
+                                                  <Tippy key={index} content={agent.user_id}>
+                                                    {item.profile_picture ? (
+                                                      <img
+                                                        src={item.profile_picture}
+                                                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
+                                                      />
+                                                    ) : (
+                                                      <i className="fa-light fa-user"></i>
+                                                    )}
+                                                  </Tippy>
+                                                )
+                                              })}
+                                              {item.agents?.length > 4 && <span>+2</span>}
+                                            </div>
+                                          </div>
+                                        }
+                                      </td>
+                                      <td>
+                                        <Tippy content={
+                                          <ul className="dropdown-menu light d-block">
+                                            <li className="col-12">
+                                              <div className="dropdown-item fw-bold disabled">Leads</div>
                                             </li>
-                                            <li>
-                                              <p
-                                                style={{
-                                                  color: "rgb(92, 92, 92)",
-                                                  fontSize: 12,
-                                                  fontWeight: 400
-                                                }}
-                                                className="p-0 m-0"
-                                              >
-                                                Failed records
-                                              </p>
-                                              <div className="specialProgressWrap">
-                                                <div className="specialProgress">
-                                                  <div className='segment success' style={{ width: '85%' }}></div>
-                                                  <div className='segment fail' style={{ width: '5%' }}></div>
-                                                  <div className='segment pending' style={{ width: '10%' }}></div>
+                                            <div style={{ columnCount: 1 }}>
+                                              <li>
+                                                <div className="dropdown-item d-flex">
+                                                  <div class="my-auto position-relative mx-1">
+                                                    <div class="cl-toggle-switch">
+                                                      <label class="cl-switch">
+                                                        <input type="checkbox" id="showAllCheck" />
+                                                        <span></span>
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                  <div className='ms-2'>Lead Name</div>
                                                 </div>
-                                                <div className="specialProgressText">
-                                                  <p>0.00%</p>
-                                                  <span>0</span>
+                                              </li>
+                                              <li>
+                                                <div className="dropdown-item d-flex">
+                                                  <div class="my-auto position-relative mx-1">
+                                                    <div class="cl-toggle-switch">
+                                                      <label class="cl-switch">
+                                                        <input type="checkbox" id="showAllCheck" />
+                                                        <span></span>
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                  <div className='ms-2'>Lead Name</div>
                                                 </div>
-                                              </div>
-                                            </li>
-                                            <li>
-                                              <p
-                                                style={{
-                                                  color: "rgb(92, 92, 92)",
-                                                  fontSize: 12,
-                                                  fontWeight: 400
-                                                }}
-                                                className="p-0 m-0"
-                                              >
-                                                Untouched records
-                                              </p>
-                                              <div className="specialProgressWrap">
-                                                <div className="specialProgress">
-                                                  <div className='segment success' style={{ width: '85%' }}></div>
-                                                  <div className='segment fail' style={{ width: '5%' }}></div>
-                                                  <div className='segment pending' style={{ width: '10%' }}></div>
+                                              </li>
+                                              <li>
+                                                <div className="dropdown-item d-flex">
+                                                  <div class="my-auto position-relative mx-1">
+                                                    <div class="cl-toggle-switch">
+                                                      <label class="cl-switch">
+                                                        <input type="checkbox" id="showAllCheck" />
+                                                        <span></span>
+                                                      </label>
+                                                    </div>
+                                                  </div>
+                                                  <div className='ms-2'>Lead Name</div>
                                                 </div>
-                                                <div className="specialProgressText">
-                                                  <p>0.00%</p>
-                                                  <span>0</span>
-                                                </div>
-                                              </div>
-                                            </li>
+                                              </li>
+                                            </div>
+                                          </ul>
+                                        } allowHTML={true} interactive={true}>
+                                          <span>5 Leads</span>
+                                        </Tippy>
+                                      </td>
+                                      <td>
+                                        <div className="dropdown">
+                                          <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i className="fa-solid fa-ellipsis-vertical" />
+                                          </div>
+                                          <ul className="dropdown-menu actionBtnDropdowns">
+                                            <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
+                                            <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Start</div></li>
+                                            <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>
+                                            <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div className="clearButton text-align-start"><i className="fa-regular fa-clock me-2"></i> Schedule</div></li>
+                                            <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>
                                           </ul>
                                         </div>
-                                      } allowHTML={true}>
-                                        <div
-                                          className="specialProgressWrap"
-                                          style={{ cursor: "pointer" }}
-                                        >
-                                          <div className="specialProgress">
-                                            <div className='segment success' style={{ width: '85%' }}></div>
-                                            <div className='segment fail' style={{ width: '5%' }}></div>
-                                            <div className='segment pending' style={{ width: '10%' }}></div>
-                                          </div>
-                                          <div className="specialProgressText">
-                                            <p>0.00%</p>
-                                            <span>0 of 1000</span>
-                                          </div>
-                                        </div>
-                                      </Tippy>
-                                    </td>
-                                    <td>
-                                      {item.agents.length === 0 ? "N/A" :
-                                        <div>
-                                          <div className="avatar-container">
-                                            {item.agents?.slice(0, 4).map((agent, index) => {
-                                              return (
-                                                <Tippy key={index} content={agent.user_id}>
-                                                  {item.profile_picture ? (
-                                                    <img
-                                                      src={item.profile_picture}
-                                                      onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
-                                                    />
-                                                  ) : (
-                                                    <i className="fa-light fa-user"></i>
-                                                  )}
-                                                </Tippy>
-                                              )
-                                            })}
-                                            {item.agents?.length > 4 && <span>+2</span>}
-                                          </div>
-                                        </div>
-                                      }
-                                    </td>
-                                    <td>
-                                      <Tippy content={
-                                        <ul className="dropdown-menu light d-block">
-                                          <li className="col-12">
-                                            <div className="dropdown-item fw-bold disabled">Leads</div>
-                                          </li>
-                                          <div style={{ columnCount: 1 }}>
-                                            <li>
-                                              <div className="dropdown-item d-flex">
-                                                <div class="my-auto position-relative mx-1">
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
-                                                      <input type="checkbox" id="showAllCheck" />
-                                                      <span></span>
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div className='ms-2'>Lead Name</div>
-                                              </div>
-                                            </li>
-                                            <li>
-                                              <div className="dropdown-item d-flex">
-                                                <div class="my-auto position-relative mx-1">
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
-                                                      <input type="checkbox" id="showAllCheck" />
-                                                      <span></span>
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div className='ms-2'>Lead Name</div>
-                                              </div>
-                                            </li>
-                                            <li>
-                                              <div className="dropdown-item d-flex">
-                                                <div class="my-auto position-relative mx-1">
-                                                  <div class="cl-toggle-switch">
-                                                    <label class="cl-switch">
-                                                      <input type="checkbox" id="showAllCheck" />
-                                                      <span></span>
-                                                    </label>
-                                                  </div>
-                                                </div>
-                                                <div className='ms-2'>Lead Name</div>
-                                              </div>
-                                            </li>
-                                          </div>
-                                        </ul>
-                                      } allowHTML={true} interactive={true}>
-                                        <span>5 Leads</span>
-                                      </Tippy>
-                                    </td>
-                                    <td>
-                                      <div className="dropdown">
-                                        <div className="tableButton" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                          <i className="fa-solid fa-ellipsis-vertical" />
-                                        </div>
-                                        <ul className="dropdown-menu actionBtnDropdowns">
-                                          <li className='dropdown-item' onClick={() => stopCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-stop me-2"></i> Stop</div></li>
-                                          <li className='dropdown-item' onClick={() => startCampaign(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-circle-play me-2"></i> Start</div></li>
-                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-edit?id=${item.id}`)}><div className="clearButton text-align-start"><i className="fa-regular fa-pen me-2"></i> Edit</div></li>
-                                          <li className='dropdown-item' onClick={() => navigate(`/campaign-scheduler`)}><div className="clearButton text-align-start"><i className="fa-regular fa-clock me-2"></i> Schedule</div></li>
-                                          <li className='dropdown-item' onClick={() => setDeleteId(item.id)}><div className="clearButton text-align-start"><i className="fa-regular fa-trash me-2"></i> Delete</div></li>
-                                        </ul>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                ))}</>)}
+                                      </td>
+                                    </tr>
+                                  )) : <tr><td colSpan={99}><EmptyPrompt generic={true} /> </td></tr>}
+                              </>
+                            )}
                           </tbody>
                         </table>
                       </div>

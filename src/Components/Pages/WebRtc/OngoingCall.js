@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSIPProvider, useSessionCall } from "modify-react-sipjs";
 import { CallTimer } from "./CallTimer";
@@ -59,6 +59,8 @@ function OngoingCall({
     (session) => session.id === callProgressId
   );
   const isOnHeld = currentSession?.state === "OnHold";
+  const attendedDialpadRef = useRef(null);
+  const primDialpadRef = useRef(null);
 
   // Listen for parking a call
   useEffect(() => {
@@ -521,11 +523,10 @@ function OngoingCall({
   async function getDuplicateData() {
     let response;
 
-    // LET IT STAY IN COMMENT, ONLY FOR TESTING PURPOSES
     // Internal Calls wont call the API
-    // if (globalSession[0].destination.length < 6) {
-    //   return;
-    // }
+    if (globalSession[0].destination.length < 6) {
+      return;
+    }
 
     try {
       if (session.outgoingInviteRequest) {
@@ -545,6 +546,17 @@ function OngoingCall({
   useEffect(() => {
     getDuplicateData();
   }, [globalSession])
+
+  // Dialpad Input Field will remain focused when it mounts.
+  useEffect(() => {
+    if (attendedDialpadRef.current) {
+      attendedDialpadRef.current.focus();
+    }
+    if (primDialpadRef.current) {
+      primDialpadRef.current.focus();
+    }
+  }, [attendShow, hideDialpad])
+
   return (
     <>
       <div className="audioCall position-relative">
@@ -880,6 +892,7 @@ function OngoingCall({
                       placeholder=""
                       className="dialerInput"
                       disabled={true}
+                      ref={primDialpadRef}
                       value={destNumber}
                     // onChange={(e) => setDestNumber(e.target.value)}
                     // onChange={handleInputChange}
@@ -1044,6 +1057,7 @@ function OngoingCall({
                       type="text"
                       placeholder=""
                       className="dialerInput"
+                      ref={attendedDialpadRef}
                       value={attendedTransferNumber}
                       onChange={(e) =>
                         setattendedTransferNumber(e.target.value)

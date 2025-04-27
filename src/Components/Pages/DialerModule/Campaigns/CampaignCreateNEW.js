@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../../CommonComponents/Header';
 import { useNavigate } from 'react-router-dom';
-import { backToTop, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
+import { backToTop, featureUnderdevelopment, fileUploadFunction, generalGetFunction, generalPostFunction } from '../../../GlobalFunction/globalFunction';
 import PaginationComponent from '../../../CommonComponents/PaginationComponent';
 import { useForm } from 'react-hook-form';
 import { numberValidator, requiredValidator } from '../../../validations/validation';
@@ -9,8 +9,10 @@ import ErrorMessage from '../../../CommonComponents/ErrorMessage';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import CircularLoader from '../../../Loader/CircularLoader';
+import Select from "react-select";
 
-function CampaignCreate() {
+
+function CampaignCreateNEW() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [stepSelector, setStepSelector] = useState(1);
@@ -28,6 +30,10 @@ function CampaignCreate() {
   const [fileName, setFileName] = useState("");
   const [allDisposition, setAllDisposition] = useState([]);
   const [selectedDesposition, setSelectedDisposition] = useState([]);
+
+  const [addLeadInternalToggle, setAddLeadInternalToggle] = useState(false);
+  const [addNewCsvToggle, setAddNewCsvToggle] = useState(false);
+
 
   const {
     register,
@@ -72,20 +78,34 @@ function CampaignCreate() {
       toast.error("Please select at least one did");
       return
     }
+    if (selectedAgent.length === 0) {
+      toast.error("Please select at least one agent");
+      return
+    }
+
     setLoading(true);
     const payload = { ...data, business_numbers: selectedItems, account_id: account.account_id, status: "Active" };
     const apiData = await generalPostFunction("/campaign/store", payload);
     if (apiData?.status) {
-      setCompletedStep(1)
-      setStepSelector(2)
-      setLoading(false);
+      // setLoading(false);
       toast.success(apiData.message);
-      setCampaignId(apiData.data.id)
+      setCampaignId(apiData.data.id);
+      // setCompletedStep(1);
+      // setStepSelector(2);
+
+      // Check if Agent Store Step is Completed, then Move to Step 2
+      const agentStoreStep = await handleFormSubmitStepThree(apiData.data.id);
+      if (agentStoreStep) {
+        setCompletedStep(1);
+        setStepSelector(2);
+      }
+
     } else {
       setLoading(false);
       toast.error(apiData?.message || apiData?.error);
     }
   });
+
 
   // Step two form submit to add dialer settings
   const handleFormSubmitStepTwo = handleSubmit(async (data) => {
@@ -102,7 +122,7 @@ function CampaignCreate() {
     const apiData = await generalPostFunction("/dialer-setting/store", payload);
     if (apiData?.status) {
       setCompletedStep(2)
-      setStepSelector(3)
+      setStepSelector(4)
       setLoading(false);
       toast.success(apiData.message);
     } else {
@@ -112,19 +132,20 @@ function CampaignCreate() {
   })
 
   // Step three form submit for adding agents
-  async function handleFormSubmitStepThree() {
+  async function handleFormSubmitStepThree(id) {
     if (selectedAgent.length === 0) {
       toast.error("Please select at least one agent");
       return
     }
     setLoading(true);
-    const payload = { campaign_id: campaignId, user_id: selectedAgent, status: "active" };
+    const payload = { campaign_id: campaignId || id, user_id: selectedAgent, status: "active" };
     const apiData = await generalPostFunction("/campaign-agent/store", payload);
     if (apiData?.status) {
-      setCompletedStep(3)
-      setStepSelector(4)
+      // setCompletedStep(3)
+      // setStepSelector(4)
       setLoading(false);
       toast.success(apiData.message);
+      return true;
     } else {
       setLoading(false);
       toast.error(apiData?.message || apiData?.error);
@@ -161,13 +182,16 @@ function CampaignCreate() {
   }
 
   // Logic to select and unselect did
-  const toggleSelect = (index) => {
-    setSelectedItems((prevSelected) =>
-      prevSelected.includes(index)
-        ? prevSelected.filter((item) => item !== index) // Remove if already selected
-        : [...prevSelected, index] // Add if not selected
-    );
-  };
+  // const toggleSelect = (index) => {
+  //   setSelectedItems((prevSelected) =>
+  //     prevSelected.includes(index)
+  //       ? prevSelected.filter((item) => item !== index) // Remove if already selected
+  //       : [...prevSelected, index] // Add if not selected
+  //   );
+  // };
+  const toggleSelect = (values) => {
+    setSelectedItems(values)
+  }
 
   // Logic to select and unselect agents
   const toggleSelectAgents = (index) => {
@@ -209,6 +233,11 @@ function CampaignCreate() {
       }
     }) : [...prevSelected, { id: id, rechain: false }])
   }
+
+  const allDidOptions = did.map((item) => ({
+    value: item.id,
+    label: item.did,
+  }))
   return (
     <main className="mainContent">
       <section id="phonePage">
@@ -226,21 +255,21 @@ function CampaignCreate() {
                       </div>
                       <div className="buttonGroup">
                         {/* <div className='d-flex align-items-center'>
-                                                    <div className="formLabel py-0 me-2">
-                                                        <label for="selectFormRow">Enabled</label>
-                                                    </div>
-                                                    <div className="my-auto position-relative mx-1">
-                                                        <label className="switch">
-                                                            <input
-                                                                type="checkbox"
-                                                                id="showAllCheck"
-                                                                {...register("status", {
-                                                                })}
-                                                            />
-                                                            <span className="slider round" />
-                                                        </label>
-                                                    </div>
-                                                </div> */}
+                          <div className="formLabel py-0 me-2">
+                            <label for="selectFormRow">Enabled</label>
+                          </div>
+                          <div className="my-auto position-relative mx-1">
+                            <label className="switch">
+                              <input
+                                type="checkbox"
+                                id="showAllCheck"
+                                {...register("status", {
+                                })}
+                              />
+                              <span className="slider round" />
+                            </label>
+                          </div>
+                        </div> */}
                         <button
                           effect="ripple"
                           className="panelButton gray"
@@ -289,14 +318,6 @@ function CampaignCreate() {
                               </div>
                               <div className='textHolder'>
                                 <h3>General Settings</h3>
-                                {/* <div className='description'>
-                                                                    <div>
-                                                                        Numbers
-                                                                    </div>
-                                                                    <div>
-                                                                        18081818181
-                                                                    </div>
-                                                                </div> */}
                               </div>
                             </li>
                             <li className={stepSelector === 2 && 'active'} onClick={() => {
@@ -311,7 +332,7 @@ function CampaignCreate() {
                                 <h3>Dialer Settings</h3>
                               </div>
                             </li>
-                            <li className={stepSelector === 3 && 'active'} onClick={() => {
+                            {/* <li className={stepSelector === 3 && 'active'} onClick={() => {
                               //  if (completedStep > 1) {
                               setStepSelector(3)
                               //  } 
@@ -322,14 +343,14 @@ function CampaignCreate() {
                               <div className='textHolder'>
                                 <h3>Agent List</h3>
                               </div>
-                            </li>
+                            </li> */}
                             <li className={stepSelector === 4 && 'active'} onClick={() => {
                               //  if (completedStep > 2) { 
                               setStepSelector(4)
                               // }
                             }}>
                               <div className={completedStep > 3 ? 'numberHolder completed' : "numberHolder"}>
-                                4
+                                3
                               </div>
                               <div className='textHolder'>
                                 <h3>Record List</h3>
@@ -339,7 +360,7 @@ function CampaignCreate() {
                         </div>
                       </div>
                       {stepSelector === 1 && <>
-                        <div className="col-xl-7 col-6" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
+                        <div className="col-xl-8 col-9" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <form className="row mb-0">
                             <div className="formRow">
                               <div className='formLabel'>
@@ -377,6 +398,26 @@ function CampaignCreate() {
                                 </select>
                               </div>
                             </div>
+                            <div className="formRow">
+                              <div className='formLabel'>
+                                <label>
+                                  Outbound Caller ID
+                                </label>
+                              </div>
+                              <div className='col-6'>
+                                <Select
+                                  onChange={(selectedOptions) => {
+                                    const values = (selectedOptions || []).map((option) => option.value)
+                                    toggleSelect(values)
+                                  }}
+                                  value={allDidOptions.filter(option => selectedItems.includes(option.value))}
+                                  isMulti
+                                  options={allDidOptions}
+                                  isSearchable
+                                  styles={customStyles}
+                                />
+                              </div>
+                            </div>
                             <div className="formRow align-items-start">
                               <div className='formLabel'>
                                 <label>
@@ -397,9 +438,333 @@ function CampaignCreate() {
                                 )}
                               </div>
                             </div>
+                            <div className="formRow">
+                              <div className="formLabel">
+                                <label>Target Timezone</label>
+                              </div>
+                              <div className="col-6">
+                                <select
+                                  className="formItem"
+                                >
+                                  <option value="1">Asia/Kolkata</option>
+                                  <option value="2">Pacific/California</option>
+                                </select>
+                                {/* {errors.title && (
+                                    <ErrorMessage text={errors.title.message} />
+                                  )} */}
+                              </div>
+                            </div>
+                            <div className="formRow">
+                              <div className="formLabel">
+                                <label>Target Date Range</label>
+                              </div>
+                              <div className="col-6">
+                                <div className="row">
+                                  <div className="col-6 pe-2">
+                                    <div className="formLabel">
+                                      <label>From Date / Time</label>
+                                    </div>
+                                    <div className='row gx-2'>
+                                      <div className='col-6'>
+                                        <input
+                                          type="date"
+                                          className="formItem"
+                                        />
+                                      </div>
+                                      <div className='col-6'>
+                                        <input
+                                          type="time"
+                                          className="formItem"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-6 ps-2">
+                                    <div className="formLabel">
+                                      <label>To Date / Time</label>
+                                    </div>
+                                    <div className='row gx-2'>
+                                      <div className='col-6'>
+                                        <input
+                                          type="date"
+                                          className="formItem"
+                                        />
+                                      </div>
+                                      <div className='col-6'>
+                                        <input
+                                          type="time"
+                                          className="formItem"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="formRow d-block">
+                              <div className="formLabel">
+                                <label className="fw-bold" style={{ fontSize: 'initial' }}>Set Target Time</label>
+                              </div>
+                              <div style={{ width: 'fit-content', marginTop: '10px' }}>
+                                <div className="timeTableWrapper col-auto">
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Sunday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Monday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Tuesday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Wednesday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Thursday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Friday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-12">
+                                    <div className="wrapper mb-0">
+                                      <div className="item" style={{ width: '95px' }}>
+                                        <input type="checkbox" />
+                                        <label className="ms-2 fw-bold">Saturday</label>
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <input type="time" className="formItem" />
+                                      </div>
+                                      <div className="item">
+                                        <div className="my-auto position-relative mx-1">
+                                          <div class="cl-toggle-switch">
+                                            <label class="cl-switch">
+                                              <input type="checkbox" id="showAllCheck" checked="false" />
+                                              <span></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <label className="ms-1">Full day</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </form>
+                          <div
+                            className="itemWrapper a p-0 mt-2 h-auto"
+                            style={{ backgroundColor: "transparent", boxShadow: 'none' }}
+                          >
+                            <div className="heading">
+                              <div className="col-10">
+                                <h5>Available Agents</h5>
+                              </div>
+                            </div>
+                            <div className="tableHeader mt-2">
+                              <div className="showEntries">
+                                <label>Show</label>
+                                <select className="formItem" value={agentPerPage} onChange={(e) => setAgentPerPage(e.target.value)}>
+                                  <option value={10}>10</option>
+                                  <option value={20}>20</option>
+                                  <option value={30}>30</option>
+                                </select>
+                                <label>entries</label>
+                              </div>
+                              <div className="searchBox position-relative">
+                                <label>Search:</label>
+                                <input
+                                  type="search"
+                                  name="Search"
+                                  className="formItem"
+                                  value={agentSearch}
+                                  onChange={(e) => setAgentSearch(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <div className='mainContentApp m-0 bg-transparent mt-3'>
+                              {agents?.data?.map((item, index) => {
+                                return (
+                                  <div className="callListItem" key={index} onClick={() => toggleSelectAgents(item.id)}>
+                                    <div className="row align-items-center px-2">
+                                      <div
+                                        className={`checkbox-placeholder d-flex justify-content-center align-items-center ${selectedAgent.includes(index) ? "selected" : ""}`}
+                                        style={{
+                                          width: "20px",
+                                          height: "26px",
+                                          border: "1px solid #ccc",
+                                          borderRadius: "3px",
+                                        }}
+                                      >
+                                        {selectedAgent.includes(item.id) && (
+                                          <i className="fa-solid fa-check text-success"></i>
+                                        )}
+                                      </div>
+                                      <div className="col-xl-7 col-xxl-7 col-lg-7 d-flex ps-0">
+                                        <div className="profileHolder">
+                                          {item?.profile_picture ?
+                                            <img
+                                              src={item?.profile_picture}
+                                              alt="profile"
+                                              onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
+                                            /> : <i className="fa-light fa-user fs-5" />}
+                                        </div>
+                                        <div className="my-auto ms-2 ms-xl-3 text-start">
+                                          <h4>{item.name}</h4>
+                                          <h5 className="mt-2">{item.extension.extension}</h5>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="tableHeader my-3 text-start">
+                              <PaginationComponent
+                                pageNumber={(e) => setPageNumber(e)}
+                                totalPage={agents.last_page}
+                                from={(pageNumber - 1) * agents.per_page + 1}
+                                to={agents.to}
+                                total={agents.total}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-xl-3 col-3" style={{ borderLeft: '1px solid var(--border-color)' }}>
+                        {/* <div className="col-xl-3 col-3" style={{ borderLeft: '1px solid var(--border-color)' }}>
                           <div
                             className="itemWrapper a py-0"
                             style={{ backgroundColor: "transparent", boxShadow: 'none' }}
@@ -430,7 +795,6 @@ function CampaignCreate() {
                                   style={{ cursor: "pointer" }}
                                   onClick={() => toggleSelect(item.id)}
                                 >
-                                  {/* Blank field that toggles a tick */}
                                   <div
                                     className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedItems.includes(index) ? "selected" : ""
                                       }`}
@@ -451,10 +815,8 @@ function CampaignCreate() {
                                 </li>
                               ))}
                             </ul>
-
-
                           </div>
-                        </div>
+                        </div> */}
                       </>}
                       {stepSelector === 2 && <>
                         <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
@@ -873,10 +1235,10 @@ function CampaignCreate() {
                           </div>
                         </div>
                       </>}
-                      {stepSelector === 3 && <>
+                      {/* {stepSelector === 3 && <>
                         <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                           <div
-                            className="itemWrapper a py-0"
+                            className="itemWrapper a p-0 h-auto"
                             style={{ backgroundColor: "transparent", boxShadow: 'none' }}
                           >
                             <div className="heading">
@@ -958,10 +1320,284 @@ function CampaignCreate() {
                             </div>
                           </div>
                         </div>
-                      </>}
+                      </>} */}
                       {stepSelector === 4 && <>
-                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
-                          <div className="popup music position-static bg-transparent w-auto h-auto">
+                        <div className='col-xl-9 col-9' style={{ borderLeft: '1px solid var(--border-color)', padding: '0 25px' }}>
+                          <div className="w-auto h-auto">
+                            <div className="container h-100">
+                              <div className="row h-100 justify-content-center align-items-center">
+
+                                <div className="heading bg-transparent border-bottom-0 pt-0">
+                                  <div className="content">
+                                    <h4>List of Leads</h4>
+                                    <p>You can see the list of leads assigned to this campaign.</p>
+                                  </div>
+                                  <div className="buttonGroup">
+                                    <button
+                                      className="panelButton"
+                                      onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
+                                    >
+                                      <span className="text">Add</span>
+                                      <span className='icon'><i class="fa-solid fa-plus"></i></span>
+                                    </button>
+                                    <button
+                                      className="panelButton edit"
+                                      onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
+                                    >
+                                      <span className="text">Import</span>
+                                      <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
+                                    </button>
+                                  </div>
+                                </div>
+                                {addNewCsvToggle && (
+                                  <div className="popup music">
+                                    <div className="container h-100">
+                                      <div className="row h-100 justify-content-center align-items-center">
+                                        <div
+                                          className="card px-0 col-5 shadow-none"
+                                          style={{
+                                            border: "1px solid var(--border-color)",
+                                          }}
+                                        >
+                                          <div className="header bg-transparent">
+                                            <div className="d-flex justify-content-between">
+                                              <h5 className="card-title fs14 border-bootm fw700">
+                                                Upload Documents
+                                              </h5>
+                                              <button className="clearButton2 xl" onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}>
+                                                <i className="fa-solid fa-xmark"></i>
+                                              </button>
+                                            </div>
+                                          </div>
+                                          <div className="card-body">
+                                            <div className="popup-border text-center p-2">
+                                              <input
+                                                type="file"
+                                                className="form-control-file d-none"
+                                                id="fileInput"
+                                                accept=".csv"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    // Check if the file type is MP3
+
+                                                    const fileName = file.name.replace(/ /g, "-");
+                                                    const newFile = new File([file], fileName, {
+                                                      type: file.type,
+                                                    });
+                                                    setNewFile(newFile);
+                                                    handleFileChange(e);
+                                                  }
+                                                }}
+                                              />
+                                              <label
+                                                htmlFor="fileInput"
+                                                className="d-block"
+                                              >
+                                                <div className="test-user text-center">
+                                                  <i
+                                                    className="fa-solid fa-cloud-arrow-up"
+                                                    style={{ fontSize: 30 }}
+                                                  />
+                                                  <p className="mb-0 mt-2 text-center">
+                                                    Drag and Drop or{" "}
+                                                    <span>Click on upload</span>
+                                                  </p>
+                                                  <span>
+                                                    Supports formats : MP3, Max
+                                                    Size: 2MB
+                                                  </span>
+                                                </div>
+                                              </label>
+                                              {fileName && (
+                                                <p className="mt-3 text-center">
+                                                  Selected File:{" "}
+                                                  <strong>{fileName}</strong>
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {addLeadInternalToggle &&
+                                  <div className="backdropContact">
+                                    <div className="addNewContactPopup">
+                                      <div className="row">
+                                        <div className="col-12 heading border-0 mb-0">
+                                          <i className="fa-light fa-user-plus" />
+                                          <h5>Add Leads to the selected Campaign</h5>
+                                        </div>
+                                        <div className="col-xl-12">
+                                          <div className="col-12 d-flex justify-content-between align-items-center">
+                                            <input
+                                              type="text"
+                                              className="formItem"
+                                              placeholder="Search"
+                                              name="name"
+                                              defaultValue=""
+                                            />
+                                            <button className="tableButton popupIcon_btn ms-2">
+                                              <i className="fa-solid fa-user-plus" />
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-3">
+                                          <div
+                                            className="tableContainer mt-0"
+                                            style={{ maxHeight: "calc(-400px + 100vh)" }}
+                                          >
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>S.No</th>
+                                                  <th>Name</th>
+                                                  <th>Qty</th>
+                                                  <th><input type="checkbox" /></th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td>1</td>
+                                                  <td>test</td>
+                                                  <td>1000</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>2</td>
+                                                  <td>ravi raj</td>
+                                                  <td>1007</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>3</td>
+                                                  <td>riddhee</td>
+                                                  <td>1001</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>4</td>
+                                                  <td>pratima</td>
+                                                  <td>1002</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>5</td>
+                                                  <td>biplab</td>
+                                                  <td>1003</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>6</td>
+                                                  <td>tushar</td>
+                                                  <td>1004</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>7</td>
+                                                  <td>solman</td>
+                                                  <td>1005</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>8</td>
+                                                  <td>sanchit</td>
+                                                  <td>1010</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>9</td>
+                                                  <td>damini</td>
+                                                  <td>1011</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>10</td>
+                                                  <td>rishabh</td>
+                                                  <td>1012</td>
+                                                  <td>
+                                                    <input type="checkbox" />
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                        <div className="col-xl-12 mt-2">
+                                          <div className="d-flex justify-content-between">
+                                            <button className="panelButton gray ms-0" onClick={() => setAddLeadInternalToggle(false)}>
+                                              <span className="text">Close</span>
+                                              <span className="icon">
+                                                <i className="fa-light fa-xmark" />
+                                              </span>
+                                            </button>
+                                            <button className="panelButton" onClick={() => featureUnderdevelopment()}>
+                                              <span className="text">Done</span>
+                                              <span className="icon">
+                                                <i className="fa-solid fa-check" />
+                                              </span>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                }
+
+                                <div>
+                                  <div className="tableContainer mt-0">
+                                    <table>
+                                      <thead>
+                                        <tr>
+                                          <th>Name</th>
+                                          <th>Number</th>
+                                          <th>Country Code</th>
+                                          <th>Address</th>
+                                          <th>Edit</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody className="">
+                                        <tr>
+                                          <td>Test</td>
+                                          <td>123456789</td>
+                                          <td>1</td>
+                                          <td>Test test etsetestse</td>
+                                          <td>
+                                            <button className="tableButton edit">
+                                              <i className="fa-solid fa-pencil"></i>
+                                            </button>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* <div className="popup music position-static bg-transparent w-auto h-auto">
                             <div className="container h-100">
                               <div className="row h-100 justify-content-center align-items-center">
                                 <div className="card px-0 col-xl-5  shadow-none" style={{ border: '1px solid var(--border-color)' }}>
@@ -1013,7 +1649,7 @@ function CampaignCreate() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </>}
                     </div>
@@ -1029,4 +1665,77 @@ function CampaignCreate() {
   )
 }
 
-export default CampaignCreate
+export default CampaignCreateNEW
+
+// Custom styles for react-select
+export const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    maxHeight: "150px",
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};

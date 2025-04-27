@@ -1,5 +1,21 @@
 import React, { useRef, useEffect } from "react";
 import AudioWaveFormCommon from "../CommonComponents/AudioWaveformCommon"
+/**
+ * MusicPlayer
+ * 
+ * This component renders an audio player for a given audio source. It takes in
+ * a few props to control the behavior of the player:
+ * - `audioSrc`: The source of the audio file to play
+ * - `isPlaying`: A boolean indicating whether the audio is currently playing
+ * - `onPlay`: A callback to call when the audio starts playing
+ * - `onStop`: A callback to call when the audio stops playing
+ * - `controls`: A boolean indicating whether the audio element should have
+ *   controls (such as a play/pause button and timeline)
+ * 
+ * The component also renders a play/pause button, which can be used to toggle
+ * the playing state of the audio. When the audio ends, the component calls the
+ * `onStop` callback to update the UI and state.
+ */
 const MusicPlayer = ({ audioSrc, isPlaying, onPlay, onStop, controls }) => {
   const audioRef = useRef(null);
 
