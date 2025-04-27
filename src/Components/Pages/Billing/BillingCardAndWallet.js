@@ -195,7 +195,7 @@ const BillingCardAndWallet = () => {
                                                                             </td>
                                                                             <td>
                                                                                 {walletTransac ?
-                                                                                    <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}{walletTransac?.amount}</span> :
+                                                                                    <span className={`badge badge-subtle badge-border text-${walletTransac?.type === 'credit' ? 'success' : 'danger'} bg-${walletTransac?.type === 'credit' ? 'success' : 'danger'}-subtle text-center`}>{walletTransac?.type === 'credit' ? '+' : '-'}{" "}${walletTransac?.amount}</span> :
                                                                                     `$${item?.amount_total}`
                                                                                 }
                                                                             </td>
@@ -205,8 +205,8 @@ const BillingCardAndWallet = () => {
                                                                                         ${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}
                                                                                         <div className='card_info'>
                                                                                             <ul style={{ fontSize: '0.625rem', fontWeight: 600 }}>
-                                                                                                <li className='mb-1'><span className=' text-muted0 '>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
-                                                                                                <li>Updated balance: ${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}</li>
+                                                                                                <li className='mb-1'><span className=' text-muted d-inline-block' style={{ width: '85px' }}>Previous Balance: </span>{walletTransac?.prevBalance ? `$${walletTransac?.prevBalance}` : 'N/A'}</li>
+                                                                                                <li><span className=' text-muted d-inline-block' style={{ width: '85px' }}>Updated balance: </span>${parseFloat(parseFloat(walletTransac?.amount || 0) + parseFloat(walletTransac?.prevBalance || 0)).toFixed(2)}</li>
                                                                                             </ul>
                                                                                         </div>
                                                                                     </span>
