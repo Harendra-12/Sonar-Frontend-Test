@@ -32,8 +32,8 @@
 }
 
 .clearButton2:hover {
-  background-color: #e7e7e7;
-  color: #000 !important;
+  background-color: var(--icon-btn-hover);
+  color: var(--black) !important;
   border-color: transparent;
 }
 

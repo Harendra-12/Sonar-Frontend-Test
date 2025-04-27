@@ -230,6 +230,7 @@
 --badge-purple-text: #9300ff;
 --badge-purple-bg: #ddb8ea54;
 --link: #00b0ff;
+--icon-btn-hover: #e7e7e7;
 
 }
 
@@ -366,6 +367,7 @@
   --badge-purple-text: #d496ff;
   --badge-purple-bg: #c82aff3d;
   --link: #51c9ff;
+  --icon-btn-hover: rgba(105, 105, 105, 0.278);
 
 }
 
