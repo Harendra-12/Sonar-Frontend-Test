@@ -3010,7 +3010,13 @@ function Messages({
                                         <div className="row justify-content-between">
                                           <div className="col-xl-12 d-flex">
                                             <div className="profileHolder">
-                                              <i className="fa-light fa-user" />
+                                              {item?.profile_picture ?
+                                                <img
+                                                  src={item?.profile_picture}
+                                                  alt="profile"
+                                                  onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                /> :
+                                                <i className="fa-light fa-user" />}
                                             </div>
                                             <div className="my-auto ms-2 ms-xl-3">
                                               <h4>{item.name}</h4>
