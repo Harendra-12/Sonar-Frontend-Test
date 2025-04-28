@@ -224,7 +224,7 @@ function Messages({
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         if (!extensionFromCdrMessage) {
-          setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat"]);
+          setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email]);
           setSelectedChat("singleChat");
         }
         setLoading(false);
@@ -294,7 +294,7 @@ function Messages({
       const apiData = await generalGetFunction(
         recipient[2] === "singleChat" ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}` : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
       );
-      apiData.data.data.map((item) => {
+      apiData?.data?.data?.map((item) => {
         setAllMessage((prevState) => ({
           ...prevState,
           [recipient[0]]: [
@@ -338,8 +338,53 @@ function Messages({
     }
   }, [recipient, loadMore]);
 
+  const getExtension = (input) => {
+    var parts = input?.split('.');
+    return parts[parts?.length - 1]?.toLowerCase();
+  }
   // Logic to send message
-
+  const checkMessageType = (message) => {
+    const isHasExtension = getExtension(message)
+    if (isHasExtension == "jpg") {
+      return "image"
+    } else if (isHasExtension == "gif") {
+      return "image"
+    } else if (isHasExtension == "bmp") {
+      return "image"
+    } else if (isHasExtension == "png") {
+      return "image"
+    } else if (isHasExtension == "m4v") {
+      return "video"
+    } else if (isHasExtension == "avi") {
+      return "video"
+    } else if (isHasExtension == "mpg") {
+      return "video"
+    } else if (isHasExtension == "mp4") {
+      return "video"
+    } else if (isHasExtension == "webm") {
+      return "video"
+    } else if (isHasExtension == "wav") {
+      return "audio"
+    } else if (isHasExtension == "wma") {
+      return "audio"
+    } else if (isHasExtension == "pdf") {
+      return "file"
+    } else if (isHasExtension == "xlsx") {
+      return "file"
+    } else if (isHasExtension == "xlsm") {
+      return "file"
+    } else if (isHasExtension == "xlsb") {
+      return "file"
+    } else if (isHasExtension == "xltx") {
+      return "file"
+    } else if (isHasExtension == "csv") {
+      return "file"
+    } else if (isHasExtension == "zip") {
+      return "file"
+    } else {
+      return "text/plain"
+    }
+  }
   function sendSingleMessage(selectedUrl) {
     if (!selectedUrl && messageInput.trim() === "") {
       return;
@@ -350,13 +395,14 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
-
+    const messageType = checkMessageType(messageContent)
     sendMessage({
       "sharedMessage": messageContent,
       "from": account.id,
       "to": recipient[1],
       "key": "peerchat",
-      "action": "peerchat"
+      "action": "peerchat",
+      "type": messageType
     })
 
     const time = formatDateTime(new Date());
@@ -940,7 +986,7 @@ function Messages({
           (group) => group.id == recipient[1]
         );
         if (isGroupSelected) {
-          setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat"]);
+          setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat", isGroupSelected?.group_name, isGroupSelected?.email]);
           setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
           setSelectedgroupUsers(isGroupSelected.groupusers);
@@ -1597,7 +1643,7 @@ function Messages({
                               >
                                 <div
                                   onClick={() => {
-                                    setRecipient([item?.extension, item.id, "singleChat"]);
+                                    setRecipient([item?.extension, item.id, "singleChat", item?.name, item?.email]);
                                     setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
@@ -1695,7 +1741,7 @@ function Messages({
                                   className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                   data-bell={""}
                                   onClick={() => {
-                                    setRecipient([item.group_name, item.id, "groupChat"]);
+                                    setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email]);
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
@@ -1766,7 +1812,9 @@ function Messages({
                                     setRecipient([
                                       item?.extension.extension,
                                       item.id,
-                                      "singleChat"
+                                      "singleChat",
+                                      item?.name,
+                                      item?.email
                                     ])
                                     setSelectedChat("singleChat");
                                   }
@@ -2105,7 +2153,7 @@ function Messages({
                                 className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                 data-bell={""}
                                 onClick={() => {
-                                  setRecipient([item.group_name, item.id, "groupChat"]);
+                                  setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email]);
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
                                   setSelectedgroupUsers(item.groupusers);
@@ -2196,7 +2244,7 @@ function Messages({
                                 )?.name
                               }{" "}-
                               {" "} */}
-                                {recipient[0]}
+                                {recipient[3]}
                               </h4>
                             </div>
                             {/* <h4>{recipient[0]}</h4> */}
@@ -3110,9 +3158,9 @@ function Messages({
                                 )?.name
                               }{" "}-
                               {" "} */}
-                              Emiley Jackson
+                              {recipient[3]}
                             </p>
-                            <h5 className="fw-medium f-s-14 text_muted">emaileyjackson2134@gmail.com</h5>
+                            <h5 className="fw-medium f-s-14 text_muted">{recipient[4]}</h5>
                           </div>
                         </div>
                         <div className="d-flex justify-content-center align-items-center gap-2">

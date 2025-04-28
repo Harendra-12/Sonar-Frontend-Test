@@ -68,7 +68,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
       callTimeOut: `${160}`,
     },
   });
-  
+
   useEffect(() => {
     // Guard clause to prevent destructuring undefined
     if (!extensionData?.extension) {
@@ -320,31 +320,31 @@ const ExtensionsEdit = ({ page, extensionData }) => {
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           dnd: data.dnd,
           notregistered: data.notregistered,
           followme: data.followme,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination_type: callSetting.followMeDestinationType,
-                    destination: data?.destination_forward_to,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    id: callSetting.followMeId,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination_type: callSetting.followMeDestinationType,
+                  destination: data?.destination_forward_to,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  id: callSetting.followMeId,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           password: data.password,
           user: data.user,
@@ -396,31 +396,31 @@ const ExtensionsEdit = ({ page, extensionData }) => {
           dnd: data.dnd,
           ...(data.followme == 1
             ? {
-                data: [
-                  {
-                    destination_type: callSetting.followMeDestinationType,
-                    destination: data?.destination_forward_to,
-                    delay: callSetting.followMeDelay,
-                    timeout: callSetting.followMeTimeOut,
-                    extension_id: value,
-                    id: callSetting.followMeId,
-                    prompt: callSetting.followMePrompt,
-                  },
-                ],
-              }
+              data: [
+                {
+                  destination_type: callSetting.followMeDestinationType,
+                  destination: data?.destination_forward_to,
+                  delay: callSetting.followMeDelay,
+                  timeout: callSetting.followMeTimeOut,
+                  extension_id: value,
+                  id: callSetting.followMeId,
+                  prompt: callSetting.followMePrompt,
+                },
+              ],
+            }
             : {}),
           blockIncomingStatus:
             data.callblocking === "Incoming"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           blockOutGoingStatus:
             data.callblocking === "Outgoing"
               ? 1
               : data.callblocking === "All"
-              ? 1
-              : 0,
+                ? 1
+                : 0,
           description: data.description,
           password: data.password,
           user: data.user,
@@ -463,6 +463,12 @@ const ExtensionsEdit = ({ page, extensionData }) => {
   const forwardToValueDestination = (value) => {
     setValue("destination_forward_to", value[0]);
   };
+  const actionForNotRegistered = (value) => {
+    setValue("notregisteredTo", value[0])
+  }
+  const actionForOnBusy = (value) => {
+    setValue("onbusyTo", value[0])
+  }
 
   useEffect(() => {
     if (watch().followme == "0") {
@@ -558,11 +564,11 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                             General{" "}
                             {(errors?.password?.message ||
                               errors?.extension?.message) && (
-                              <i
-                                className="fa fa-exclamation-circle text-danger"
-                                aria-hidden="true"
-                              ></i>
-                            )}
+                                <i
+                                  className="fa fa-exclamation-circle text-danger"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
                           </button>
                           <button
                             className="nav-link"
@@ -1377,52 +1383,103 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                                 <div
                                   className={
-                                    watch().onbusy == 0
+                                    watch().onbusy == "disabled"
                                       ? "col-6"
                                       : "col-3 pe-2 ms-auto"
                                   }
                                 >
-                                  <div className="formLabel">
-                                    <label className="formItemDesc">
-                                      Status
-                                    </label>
-                                  </div>
-                                  <select
-                                    className="formItem me-0"
-                                    style={{ width: "100%" }}
-                                    name="delay"
-                                    {...register("onbusy")}
-                                    defaultValue={0}
-                                  >
-                                    <option value={1}>Enabled</option>
-                                    <option value={0}>Disabled</option>
-                                  </select>
-                                </div>
-                                {watch().onbusy == 0 ? (
-                                  ""
-                                ) : (
-                                  <div className="col-3">
+                                   {watch().onbusy != "disabled" && (
                                     <div className="formLabel">
                                       <label className="formItemDesc">
-                                        Destinations
+                                        Type
                                       </label>
-
-                                      {errors.onbusyTo ? (
+                                    </div>
+                                  )}
+                                  <select
+                                    className="formItem"
+                                    style={{ width: "100%" }}
+                                    name="onbusy"
+                                    defaultValue={"disabled"}
+                                    value={watch().onbusy}
+                                    {...register("onbusy")}
+                                    onChange={(e) => {
+                                      register("onbusy").onChange(e);
+                                      setValue("onbusyTo", "");
+                                    }}
+                                  >
+                                    <option value={"disabled"}>Disabled</option>
+                                    <option value={"pstn"}>PSTN</option>
+                                    <option value={"extension"}>Extension</option>
+                                    <option value={"ring group"}>Ring Group</option>
+                                    <option value={"call center"}>Call Center</option>
+                                    <option value={"ivr"}>IVR</option>
+                                  </select>
+                                </div>
+                                {(watch().onbusy == "disabled" || watch().onbusy == "1") ? (
+                                  ""
+                                ) : (
+                                  <>
+                                  {watch("onbusy") !== "pstn" && (
+                                    <div className="col-3">
+                                      {watch().onbusy && watch().onbusy?.length !== 0 &&
+                                        <>
+                                          <div className="formLabel">
+                                            <label className="formItemDesc">
+                                              Extension
+                                            </label>
+                                          </div>
+                                          <ActionList
+                                            category={watch().onbusy}
+                                            title={null}
+                                            label={null}
+                                            getDropdownValue={actionForOnBusy}
+                                            value={watch().onbusyTo}
+                                            {...register(
+                                              "onbusyTo"
+                                            )}
+                                          />
+                                        </>
+                                      }
+                                      {errors.onbusyTo && (
                                         <ErrorMessage
                                           text={errors.onbusyTo.message}
                                         />
-                                      ) : (
-                                        ""
                                       )}
                                     </div>
-                                    <div className="col-12">
-                                      <ActionList
-                                        title={null}
-                                        getDropdownValue={actionListValue}
-                                        value={watch().onbusyTo}
+                                  )}
+                                  {watch("onbusy") === "pstn" && (
+                                    <div className="col-3">
+                                      <div className="formLabel">
+                                        <label className="formItemDesc">
+                                          PSTN
+                                        </label>
+                                      </div>
+                                      <input
+                                        type="number"
+                                        name="onbusyTo"
+                                        className="formItem"
+                                        {...register("onbusyTo", {
+                                          required: "PSTN is required",
+                                          pattern: {
+                                            value: /^[0-9]*$/,
+                                            message: "Only digits are allowed",
+                                          },
+                                          minLength: {
+                                            value: 10,
+                                            message: "Must be at least 10 digits",
+                                          },
+
+                                          ...noSpecialCharactersValidator,
+                                        })}
                                       />
+                                      {errors.onbusyTo && (
+                                        <ErrorMessage
+                                          text={errors.onbusyTo.message}
+                                        />
+                                      )}
                                     </div>
-                                  </div>
+                                  )}
+                                </>
                                 )}
                               </div>
                               <div className="formRow col-xl-3">
@@ -1504,51 +1561,102 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                 </div>
                                 <div
                                   className={
-                                    watch().notregistered == 0
+                                    watch().notregistered == "disabled"
                                       ? "col-6"
                                       : "col-3 pe-2 ms-auto"
                                   }
                                 >
-                                  <div className="formLabel">
-                                    <label className="formItemDesc">
-                                      Status
-                                    </label>
-                                  </div>
-                                  <select
-                                    className="formItem me-0"
-                                    style={{ width: "100%" }}
-                                    name="delay"
-                                    {...register("notregistered")}
-                                  >
-                                    <option value={1}>Enabled</option>
-                                    <option value={0}>Disabled</option>
-                                  </select>
-                                </div>
-                                {watch().notregistered == 0 ? (
-                                  ""
-                                ) : (
-                                  <div className="col-3">
+                                  {watch().notregistered != "disabled" && (
                                     <div className="formLabel">
                                       <label className="formItemDesc">
-                                        Destinations
+                                        Type
                                       </label>
-                                      {errors.notregisteredTo ? (
-                                        <ErrorMessage
-                                          text={errors.notregisteredTo.message}
+                                    </div>
+                                  )}
+                                  <select
+                                    className="formItem"
+                                    name="notregistered"
+                                    defaultValue={"disabled"}
+                                    value={watch().notregistered}
+                                    {...register("notregistered")}
+                                    onChange={(e) => {
+                                      register("notregistered").onChange(e);
+                                      setValue("notregisteredTo", "");
+                                    }}
+                                  >
+                                    <option value={"disabled"}>Disabled</option>
+                                    <option value={"pstn"}>PSTN</option>
+                                    <option value={"extension"}>Extension</option>
+                                    <option value={"ring group"}>Ring Group</option>
+                                    <option value={"call center"}>Call Center</option>
+                                    <option value={"ivr"}>IVR</option>
+                                  </select>
+                                </div>
+                                {watch().notregistered == "disabled" ? (
+                                  ""
+                                ) : (
+                                  <>
+                                    {watch("notregistered") !== "pstn" && (
+                                      <div className="col-3">
+                                        {watch().notregistered && watch().notregistered?.length !== 0 &&
+                                          <>
+                                            <div className="formLabel">
+                                              <label className="formItemDesc">
+                                                Extension
+                                              </label>
+                                            </div>
+                                            <ActionList
+                                              category={watch().notregistered}
+                                              title={null}
+                                              label={null}
+                                              getDropdownValue={actionForNotRegistered}
+                                              value={watch().notregisteredTo}
+                                              {...register(
+                                                "notregisteredTo"
+                                              )}
+                                            />
+                                          </>
+                                        }
+                                        {errors.notregisteredTo && (
+                                          <ErrorMessage
+                                            text={errors.notregisteredTo.message}
+                                          />
+                                        )}
+                                      </div>
+                                    )}
+                                    {watch("notregistered") === "pstn" && (
+                                      <div className="col-3">
+                                        <div className="formLabel">
+                                          <label className="formItemDesc">
+                                            PSTN
+                                          </label>
+                                        </div>
+                                        <input
+                                          type="number"
+                                          name="notregisteredTo"
+                                          className="formItem"
+                                          {...register("notregisteredTo", {
+                                            required: "PSTN is required",
+                                            pattern: {
+                                              value: /^[0-9]*$/,
+                                              message: "Only digits are allowed",
+                                            },
+                                            minLength: {
+                                              value: 10,
+                                              message: "Must be at least 10 digits",
+                                            },
+
+                                            ...noSpecialCharactersValidator,
+                                          })}
                                         />
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
-                                    <div className="col-12">
-                                      <ActionList
-                                        label={null}
-                                        title={null}
-                                        getDropdownValue={actionListValue2}
-                                        value={watch().notregisteredTo}
-                                      />
-                                    </div>
-                                  </div>
+                                        {errors.notregisteredTo && (
+                                          <ErrorMessage
+                                            text={errors.notregisteredTo.message}
+                                          />
+                                        )}
+                                      </div>
+                                    )}
+                                  </>
                                 )}
                               </div>
                               <div className="formRow col-xl-3">
@@ -1579,7 +1687,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </select>
                                 </div>
                                 {watch().followme === "0" ||
-                                watch().followme === 0 ? (
+                                  watch().followme === 0 ? (
                                   ""
                                 ) : (
                                   <div className="formRow col-xl-12 px-0 border-0">
@@ -1629,7 +1737,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       {callSetting.followMeDestinationType ? (
                                         <>
                                           {callSetting.followMeDestinationType !==
-                                          "pstn" ? (
+                                            "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={
@@ -1649,14 +1757,14 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                                     required:
                                                       "This field is required",
                                                     ...(callSetting.followMeDestinationType !==
-                                                    "pstn"
+                                                      "pstn"
                                                       ? {
-                                                          minLength: {
-                                                            value: 4,
-                                                            message:
-                                                              "Must be at least 4 digits",
-                                                          },
-                                                        }
+                                                        minLength: {
+                                                          value: 4,
+                                                          message:
+                                                            "Must be at least 4 digits",
+                                                        },
+                                                      }
                                                       : {}),
                                                   }
                                                 )}
@@ -1691,14 +1799,14 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                                         "Only digits are allowed",
                                                     },
                                                     ...(callSetting.followMeDestinationType ===
-                                                    "pstn"
+                                                      "pstn"
                                                       ? {
-                                                          minLength: {
-                                                            value: 10,
-                                                            message:
-                                                              "Must be at least 10 digits",
-                                                          },
-                                                        }
+                                                        minLength: {
+                                                          value: 10,
+                                                          message:
+                                                            "Must be at least 10 digits",
+                                                        },
+                                                      }
                                                       : {}),
                                                   }
                                                 )}
@@ -1727,7 +1835,7 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                       ) : (
                                         <>
                                           {watch("destinationType") !==
-                                          "pstn" ? (
+                                            "pstn" ? (
                                             <div className="w-full">
                                               <ActionList
                                                 category={watch(
@@ -1923,11 +2031,10 @@ const ExtensionsEdit = ({ page, extensionData }) => {
                                   </label>
                                 </div>
                                 <div
-                                  className={`col-${
-                                    forwardStatus != "disabled"
-                                      ? "3 pe-2 ms-auto"
-                                      : "6"
-                                  }`}
+                                  className={`col-${forwardStatus != "disabled"
+                                    ? "3 pe-2 ms-auto"
+                                    : "6"
+                                    }`}
                                 >
                                   {forwardStatus != "disabled" && (
                                     <div className="formLabel">
