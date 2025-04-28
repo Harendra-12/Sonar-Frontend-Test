@@ -175,20 +175,25 @@
         max-width: 200px;
     }
 }
-@media (max-device-width: 1750px) {
-    html {
-        font-size: 14px !important;
-    }
-
-    /* .formRow.col-xl-3 {
-        width: 16.5%;
-    } */
-
-    table th {
-        white-space: nowrap;
-    }
+@media (max-device-width: 2250px) {
+   
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* grid-template-columns: repeat(2, 177px); */
+      }
+      
 
 }
+
+@media (max-device-width: 1750px) {
+
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+      
+
+}
+
 
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {

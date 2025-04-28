@@ -107,7 +107,7 @@ const MailReply = () => {
                                 <textarea
                                     type="text"
                                     name=""
-                                    className="mail_input"
+                                    className="mail_input formItem "
                                     placeholder="Please enter your message"
 
                                 />

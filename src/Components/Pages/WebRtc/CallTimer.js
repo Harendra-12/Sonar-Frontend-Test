@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const getSecond = (time) => {
   const endDate = new Date();
   return Number.parseInt(
-    ((endDate.getTime() - time.getTime()) / 1000).toFixed(),
+    ((endDate.getTime() - time?.getTime()) / 1000).toFixed(),
     10
   );
 };
