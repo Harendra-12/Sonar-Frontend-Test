@@ -191,7 +191,7 @@ export default function AccessControlEdit() {
                     className="col-xl-6"
                     style={{
                       padding: "25px 23px",
-                      borderBottom: "1px solid rgb(221, 221, 221)",
+                      // borderBottom: "1px solid rgb(221, 221, 221)",
                     }}
                   >
                     <form className="row mb-0">

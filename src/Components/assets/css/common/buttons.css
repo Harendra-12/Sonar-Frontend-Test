@@ -32,8 +32,8 @@
 }
 
 .clearButton2:hover {
-  background-color: #e7e7e7;
-  color: #000 !important;
+  background-color: var(--icon-btn-hover);
+  color: var(--black) !important;
   border-color: transparent;
 }
 
@@ -723,8 +723,8 @@
 }
 
 .tableButton.delete {
-  background-color: #fbd6db;
-  color: #ec344c;
+  background-color: var(--table-delete-bg);
+  color: var(--table-delete-text);
   /* border: 1px solid #ef4444; */
 }
 
@@ -734,8 +734,8 @@
 }
 
 .tableButton.edit {
-  background-color: #d4e5e3;
-  color: #287f71;
+  background-color: var(--table-edit-bg);
+  color: var(--table-edit-text);
   /* border: 1px solid #0ab39c; */
 }
 .tableButton.whatsapp {
@@ -747,9 +747,10 @@
   background-color: #058d97;
 }
 .tableButton.whatsapp.empty {
-  color: rgba(0, 92, 99, 0.851);
-  background-color: rgba(102, 206, 213, 0.141);
-  border: 1px solid  rgba(7, 112, 119, 0.859);
+  color: var(--table-empty-text);
+  background-color: var(--table-empty-bg);
+  border: 1px solid  var(--table-empty-border);
+
 }
 .tableButton.fax {
   color: #fff;
@@ -787,9 +788,9 @@
   color: #fff;
 }
 .tableButton.head.empty {
-  background-color: rgba(139, 255, 128, 0.161);
-  color: #03900b;
-  border: 1px solid #03900b;
+  background-color: var(--table-empty-bg2);
+  color: var(--table-empty-text2);
+  border: 1px solid var(--table-empty-border2);
 }
 
 .tableButton.blue {

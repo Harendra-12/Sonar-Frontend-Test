@@ -388,12 +388,12 @@
 .backdropContact {
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.294);
+    background: var(--backdrop-bg);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: 120;
     /* backdrop-filter: blur(5px); */
 }
 
@@ -582,12 +582,16 @@
     padding-bottom: 5px;
     font-size: 0.875rem;
     font-size: 0.875rem;
-    background: #dbeeff33;
+    background: var(--active-input-color);
+    /* background: #dbeeff33; */
     border-radius: 25px;
     padding: 5px 15px;
     margin-block: 10px;
 }
 
+.addNewContactPopup.popup500{
+    width: 500px;
+}
 .addNewContactPopup ul li i {
     color: var(--ui-accent);
 }
@@ -599,11 +603,14 @@
 
 .addNewContactPopup .searchBar {
     border: none;
-    border-bottom: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
     padding: 0 20px 0 0px;
     outline: none;
     /* transition: 0.1s ease-in-out; */
     font-size: 0.875rem;
+    background: transparent;
+    border-radius: 25px;
+    padding: 5px 10px;
 }
 
 .addNewContactPopup .searchBar:focus-within {
@@ -620,8 +627,10 @@
     font-size: 1rem;
     font-family: 'FontAwesome';
     position: absolute;
-    top: 6px;
-    right: 5px;
+    top: 4px;
+    right: 12px;
+    /* top: 6px;
+    right: 5px; */
 }
 
 .text_warning {

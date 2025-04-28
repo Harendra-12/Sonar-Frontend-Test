@@ -188,6 +188,8 @@
   --billing-icon2: #0c0c10;
   --table-border-color: #d3d9eb;
   --table-border-color: #d3d9eb;
+  --table-bg-active: #f3f6f8;
+  
 
 
   /* ================= message box color  */
@@ -206,6 +208,29 @@
   --btn-active-bg: #c7e4fc40;
   --btn-active-text: #2793f4;
 
+  --backdrop-bg: rgba(50, 50, 81, 0.502);
+  --active-input-color: rgb(219, 238, 255);
+
+  /* ================= table icon */
+
+  --table-empty-text: rgba(0, 92, 99, 0.851);
+  --table-empty-bg: rgba(102, 206, 213, 0.141);
+  --table-empty-border: rgba(7, 112, 119, 0.859);
+
+  --table-empty-text2: #03900b;
+  --table-empty-bg2: rgba(139, 255, 128, 0.161);
+  --table-empty-border2: #03900b;
+
+--table-edit-text: #287f71;
+--table-edit-bg: #d4e5e3;
+
+--table-delete-bg: #fbd6db;
+--table-delete-text: #ec344c;
+--config-bg: #fff;
+--badge-purple-text: #9300ff;
+--badge-purple-bg: #ddb8ea54;
+--link: #00b0ff;
+--icon-btn-hover: #e7e7e7;
 
 }
 
@@ -301,7 +326,7 @@
   --table-even-bg: rgba(46, 44, 63, 0.62);
   --table-odd-color: rgba(85, 104, 130, 0.18);
   --table-border-color: #525458;
-
+  --table-bg-active: #292f3a;
   
   /* ================= message box color  */
 
@@ -319,6 +344,30 @@
   --btn-active-bg: #2793f4;
   --btn-active-text: #f8f8f8;
 
+  --backdrop-bg: rgba(24, 24, 46, 0.831);
+  --active-input-color: rgb(62 67 71);
+  
+  /* ================= table icon */
+
+  --table-empty-text: rgba(19, 238, 255, 0.851);
+  --table-empty-bg: rgba(102, 206, 213, 0.141);
+  --table-empty-border: rgba(10, 214, 227, 0.859);
+
+  --table-empty-text2: rgba(12, 255, 26, 0.769);
+  --table-empty-bg2: rgba(139, 255, 128, 0);
+  --table-empty-border2: rgba(0, 255, 15, 0.69);
+  
+  --table-edit-text: rgb(12, 202, 171);
+  --table-edit-bg: rgba(34, 255, 229, 0.102);
+
+  --table-delete-bg: rgba(221, 105, 120, 0.231);
+  --table-delete-text: #d56372;
+
+  --config-bg: #141b21;
+  --badge-purple-text: #d496ff;
+  --badge-purple-bg: #c82aff3d;
+  --link: #51c9ff;
+  --icon-btn-hover: rgba(105, 105, 105, 0.278);
 
 }
 

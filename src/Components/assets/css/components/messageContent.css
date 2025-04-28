@@ -65,7 +65,7 @@
 /* Messaging UI */
 .messageOverlay .contactHeader {
     padding: 10px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--me-border1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -698,6 +698,8 @@
     padding: 5px 0;
     background-color: var(--ele-color);
     height: auto;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 18px 0px, rgb(0 0 0 / 0%) 0px 0px 9px 1px;
 }
 
 .contactHeader .dropdown-menu .dropdown-item,
@@ -982,8 +984,8 @@
 }
 
 .mainContentApp .webrtc_newMessageUi .profileHolder {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     box-shadow: none;
     flex-shrink: 0;
 }
@@ -1117,7 +1119,7 @@
 }
 
 .webrtc_newMessageUi .newMessageBoxUi .messageItem.sender .second h6 {
-    color: #333335;
+    color: var(--color-subtext);
     margin-bottom: 8px;
 }
 
@@ -1137,6 +1139,7 @@
     border-radius: 5px;
     font-size: 0.813rem;
     text-align: start;
+    border: 0;
 }
 
 .webrtc_newMessageUi .messageContent .messageInput {
@@ -1270,6 +1273,8 @@
     font-size: 0.875rem ;
     font-weight: 500;
     color: var(--black);
+    /* min-height: 400px;
+    overflow: auto; */
 }
 .shared-file-icon{
     width: 40px;
@@ -1313,11 +1318,11 @@
 }
 .imageList{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 15px;
 }
 .imageList .imgBox{
-    width: 100%;
+    width: 100% ;
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
@@ -1336,4 +1341,19 @@
 .rightPanel{
     min-height: 600px;
     overflow-x: auto;
+}
+.chat_doc{
+    overflow: auto;
+    max-height: 320px;
+    width: 100%;
+    border-bottom: 1px solid var(--me-border1);
+    padding-bottom: 20px;
+}
+.chat_doc:last-child{
+    border: 0;
+}
+.chat_doc a{
+    color: #51c9ff;
+    font-size: 10px;
+    text-transform: uppercase;
 }

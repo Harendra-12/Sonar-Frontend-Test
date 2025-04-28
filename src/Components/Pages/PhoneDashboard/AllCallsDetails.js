@@ -29,7 +29,7 @@ function AllCallsDetails() {
                     aria-controls="collapse1"
                   >
                     <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
-                      <div className="col-xxl col-xl-12">
+                      <div className="col-xxl col-xl-12 f-s-14">
                         <i className="fa-duotone fa-phone-volume" /> All Calls  {" "}
                         {extensionDataLoading && (
                           <i
@@ -56,9 +56,9 @@ function AllCallsDetails() {
                 </h2>
                 <div id="collapse1" className="accordion-collapse collapse">
                   <div className="accordion-body">
-                    <div className="customRow">
-                      <div className="">
-                        <Link to={"/active-calls"} state={{ filter: 'all' }} className="col-3 text-decoration">
+                    <div className=" customRow">
+                      <div className="w-100">
+                        <Link to={"/active-calls"} state={{ filter: 'all' }} className=" text-decoration">
                           <div className="call_dCard d shadow-none" >
                             {/* <i className="fa-solid fa-phone-intercom"></i> */}
                             <div className="imageBox_wrap">
@@ -77,8 +77,8 @@ function AllCallsDetails() {
                           </div>
                         </Link>
                       </div>
-                      <div className="">
-                        <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'all' }} className="col-3 text-decoration">
+                      <div className="w-100">
+                        <Link to={"/cdr-report"} state={{ filter: 'missed', direction: 'all' }} className="text-decoration">
                           <div className="call_dCard c shadow-none" >
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
@@ -100,8 +100,8 @@ function AllCallsDetails() {
                           </div>
                         </Link>
                       </div>
-                      <div className="">
-                        <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'all' }} className="col-3  text-decoration">
+                      <div className="w-100">
+                        <Link to={"/cdr-report"} state={{ filter: 'completed', direction: 'all' }} className="  text-decoration">
                           <div className="call_dCard b shadow-none" >
                             <div className="heading ">
                               <div className="d-flex flex-wrap justify-content-center flex-column align-items-center">
@@ -124,8 +124,8 @@ function AllCallsDetails() {
                           </div>
                         </Link>
                       </div>
-                      <div className="">
-                        <Link to={"/cdr-report"} className="col-3 text-decoration">
+                      <div className="w-100">
+                        <Link to={"/cdr-report"} className=" text-decoration">
                           <div className="call_dCard a shadow-none" >
                             <div className="heading">
                               <div className="d-flex flex-wrap justify-content-center align-items-center flex-column">
@@ -241,7 +241,7 @@ function AllCallsDetails() {
                     aria-controls="collapse2"
                   >
                     <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
-                      <div className="col-xxl col-xl-12">
+                      <div className="col-xxl col-xl-12 f-s-14">
                         <i
                           className="fa-duotone fa-phone-arrow-down-left"
                           style={{ color: "var(--funky-boy3)" }}
@@ -467,7 +467,7 @@ function AllCallsDetails() {
                     aria-controls="collapse3"
                   >
                     <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
-                      <div className="col-xxl col-xl-12">
+                      <div className="col-xxl col-xl-12 f-s-14">
                         <i
                           className="fa-duotone fa-phone-arrow-up-right"
                           style={{ color: "var(--color3)" }}
@@ -607,7 +607,7 @@ function AllCallsDetails() {
                     aria-expanded="false"
                     aria-controls="collapseinternal" >
                     <div className="col-12 title text-start d-flex flex-wrap align-items-center justify-content-between">
-                      <div className="col-xxl col-xl-12">
+                      <div className="col-xxl col-xl-12 f-s-14">
                         <i
                           className="fa-duotone fa-headset"
                           style={{ color: "var(--funky-boy4)" }}

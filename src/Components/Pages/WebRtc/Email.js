@@ -345,8 +345,8 @@ function Email() {
                       </div>
                     </div>
                     <div className="table_card">
-                      <EmailList />
-                      {/* <MailReply /> */}
+                      {/* <EmailList /> */}
+                      <MailReply />
                     </div>
                   </div>
                 </div>
