@@ -1127,7 +1127,7 @@
 }
 
 .webrtc_newMessageUi .leftside_listBar {
-    /* height: calc(100vh - 95px); */
+    height: calc(100vh - 95px);
     background: var(--me-body-bg2);
 }
 
