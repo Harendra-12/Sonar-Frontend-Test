@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSessionCall, useSIPProvider } from "modify-react-sipjs";
 import { SessionState } from "sip.js";
 import { toast } from "react-toastify";
+import { CallTimer } from "./CallTimer";
 
 /**
  * ActiveCallSidePanel
@@ -292,8 +293,8 @@ function ActiveCallSidePanel({
   //   }
   // };
 
-  async function holdCall(type,id) {
-    console.log(id,"Inside hold setp 1",sessions);
+  async function holdCall(type, id) {
+    console.log(id, "Inside hold setp 1", sessions);
 
     // if (canHold) {
     //   console.log("Inside hold setp 2");
@@ -415,7 +416,12 @@ function ActiveCallSidePanel({
           <div className="callContent">
             <h4>{destination}</h4>
             {/* <h5>01:20</h5> */}
-            <CallTimer answeredAt={timer.answeredAt} />
+            {timer?.answeredAt && (
+              <CallTimer
+                startAt={timer.answeredAt}
+                isEnd={session.state === SessionState.Terminated}
+              />
+            )}
             {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
           </div>
           <div className="callBtnGrp my-auto ms-auto">
@@ -468,7 +474,12 @@ function ActiveCallSidePanel({
           <div className="callContent">
             <h4>{destination}</h4>
             {/* <h5>01:20</h5> */}
-            <CallTimer answeredAt={timer.receivedAt} />
+            {timer?.answeredAt && (
+              <CallTimer
+                startAt={timer.answeredAt}
+                isEnd={session.state === SessionState.Terminated}
+              />
+            )}
             {/* <span className="float-end" style={{ fontSize: 12 }}>Line {chennel + 1}</span> */}
           </div>
           <div className="callBtnGrp my-auto ms-auto">
@@ -487,29 +498,29 @@ function ActiveCallSidePanel({
 
 export default ActiveCallSidePanel;
 
-const CallTimer = ({ answeredAt }) => {
-  const [timeElapsed, setTimeElapsed] = useState(0); // time in seconds
+// const CallTimer = ({ answeredAt }) => {
+//   const [timeElapsed, setTimeElapsed] = useState(0); // time in seconds
 
-  useEffect(() => {
-    if (!answeredAt) return; // If there's no answeredAt, do nothing
+//   useEffect(() => {
+//     if (!answeredAt) return; // If there's no answeredAt, do nothing
 
-    const answeredTime = new Date(answeredAt).getTime();
+//     const answeredTime = new Date(answeredAt).getTime();
 
-    const timerInterval = setInterval(() => {
-      const currentTime = Date.now();
-      const elapsedSeconds = Math.floor((currentTime - answeredTime) / 1000);
-      setTimeElapsed(elapsedSeconds);
-    }, 1000);
+//     const timerInterval = setInterval(() => {
+//       const currentTime = Date.now();
+//       const elapsedSeconds = Math.floor((currentTime - answeredTime) / 1000);
+//       setTimeElapsed(elapsedSeconds);
+//     }, 1000);
 
-    return () => clearInterval(timerInterval); // Clean up on unmount
-  }, [answeredAt]);
+//     return () => clearInterval(timerInterval); // Clean up on unmount
+//   }, [answeredAt]);
 
-  const minutes = Math.floor(timeElapsed / 60);
-  const seconds = timeElapsed % 60;
+//   const minutes = Math.floor(timeElapsed / 60);
+//   const seconds = timeElapsed % 60;
 
-  return (
-    <h5>
-      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-    </h5>
-  );
-};
+//   return (
+//     <h5>
+//       {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+//     </h5>
+//   );
+// };
