@@ -241,7 +241,7 @@ export default function AccessControlEdit() {
                       </div>
                       <div className="formRow col-xl-12 ">
                         <div className="formLabel">
-                          <label htmlFor="">Group*</label>
+                          <label htmlFor="">Role*</label>
                         </div>
                         <div className="col-6">
                           {" "}
