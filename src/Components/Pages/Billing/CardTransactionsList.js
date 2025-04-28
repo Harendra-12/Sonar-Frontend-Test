@@ -144,36 +144,36 @@ function CardTransactionsList() {
                           {loading ? (<SkeletonTableLoader col={8} row={15} />) :
                             (<>
                               {transaction &&
-                                transaction.data.map((item) => {
+                                transaction?.data?.map((item) => {
                                   return (
                                     <tr>
-                                      <td>{item.payment_details.name}</td>
-                                      <td>{item.payment_details.card_number}</td>
+                                      <td>{item?.payment_details?.name}</td>
+                                      <td>{item?.payment_details?.card_number}</td>
                                       <td>
-                                        {item.transaction_date.split(" ")[0]}
+                                        {item?.transaction_date?.split(" ")[0]}
                                       </td>
-                                      <td>{item.transaction_id}</td>
+                                      <td>{item?.transaction_id}</td>
                                       <td>
                                         <label
                                           className={
-                                            item.transaction_type === "credit"
+                                            item?.transaction_type === "credit"
                                               ? "tableLabel success"
                                               : "tableLabel fail"
                                           }
                                         >
-                                          ${item.amount_subtotal}
+                                          ${item?.amount_subtotal}
                                         </label>
                                       </td>
-                                      <td>{item.description}</td>
+                                      <td>{item?.description}</td>
                                       <td>
                                         <i
                                           className={
-                                            item.transaction_type === "credit"
+                                            item?.transaction_type === "credit"
                                               ? "fa-duotone fa-circle-up text-success me-1"
                                               : "fa-duotone fa-circle-down text-danger me-1"
                                           }
                                         ></i>{" "}
-                                        {item.transaction_type === "credit"
+                                        {item?.transaction_type === "credit"
                                           ? "Credit"
                                           : "Debit"}
                                       </td>
