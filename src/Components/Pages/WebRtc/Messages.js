@@ -321,7 +321,8 @@ function Messages({
               time: item.created_at,
               user_id: item.user_id,
               user_name: user_details?.username,
-              profile_picture: user_details?.profile_picture
+              profile_picture: user_details?.profile_picture,
+              message_type:item.message_type
             },
             ...(prevState[recipient[1]] || []),
           ],
@@ -3138,6 +3139,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
+                              messages = {allMessage?.[recipient[0]]}
                             />
                           </div>
                         )
