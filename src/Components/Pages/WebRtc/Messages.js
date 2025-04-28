@@ -29,6 +29,7 @@ import AudioPlayer from "./AudioWaveForm";
 import DisplayFile from "./DisplayFile";
 import { numberValidator, requiredValidator } from "../../validations/validation";
 import ErrorMessage from "../../CommonComponents/ErrorMessage";
+import MessageProfileDetails from "./components/MessageProfileDetails";
 
 function Messages({
   setSelectedModule,
@@ -224,7 +225,8 @@ function Messages({
       if (apiData?.status && apiData.data.length > 0) {
         setContact(apiData.data);
         if (!extensionFromCdrMessage) {
-          setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email]);
+          const profile_img = allAgents?.find((data) => data?.id == apiData?.data[0]?.id)?.profile_picture
+          setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email, profile_img]);
           setSelectedChat("singleChat");
         }
         setLoading(false);
@@ -286,7 +288,6 @@ function Messages({
     }
   }
 
-  console.log(recipient, loadMore);
 
   // Getting messages based on pagination
   useEffect(() => {
@@ -294,7 +295,9 @@ function Messages({
       const apiData = await generalGetFunction(
         recipient[2] === "singleChat" ? `/message/all?receiver_id=${recipient[1]}&page=${pageNumb}` : `/group-message/all?group_id=${recipient[1]}&page=${pageNumb}`
       );
+
       apiData?.data?.data?.map((item) => {
+        const user_details = allAgents?.find((data) => data?.id == item?.user_id)
         setAllMessage((prevState) => ({
           ...prevState,
           [recipient[0]]: [
@@ -302,7 +305,9 @@ function Messages({
               from: recipient[2] === "singleChat" ? (item.user_id === recipient[1] ? recipient[0] : extension) : item.user_name,
               body: item?.message_text,
               time: item.created_at,
-              user_id: item.user_id
+              user_id: item.user_id,
+              user_name: user_details?.username,
+              profile_picture: user_details?.profile_picture
             },
             ...(prevState[recipient[0]] || []),
           ],
@@ -986,7 +991,8 @@ function Messages({
           (group) => group.id == recipient[1]
         );
         if (isGroupSelected) {
-          setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat", isGroupSelected?.group_name, isGroupSelected?.email]);
+          const profile_img = allAgents?.find((data) => data?.id == isGroupSelected?.id)?.profile_picture
+          setRecipient([isGroupSelected.group_name, isGroupSelected.id, "groupChat", isGroupSelected?.group_name, isGroupSelected?.email, profile_img]);
           setSelectedChat("groupChat");
           setGroupNameEdit(isGroupSelected.group_name);
           setSelectedgroupUsers(isGroupSelected.groupusers);
@@ -1643,7 +1649,8 @@ function Messages({
                               >
                                 <div
                                   onClick={() => {
-                                    setRecipient([item?.extension, item.id, "singleChat", item?.name, item?.email]);
+                                    const profile_picture = allAgents?.find((data) => data?.id == item?.id)?.profile_picture
+                                    setRecipient([item?.extension, item.id, "singleChat", item?.name, item?.email, profile_picture]);
                                     setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
@@ -1741,7 +1748,7 @@ function Messages({
                                   className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                   data-bell={""}
                                   onClick={() => {
-                                    setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email]);
+                                    setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, null]);
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
@@ -1809,12 +1816,14 @@ function Messages({
                               >
                                 <div
                                   onClick={() => {
+                                    const profile_picture = allAgents?.find((data) => data?.id == item?.id)?.profile_picture
                                     setRecipient([
                                       item?.extension.extension,
                                       item.id,
                                       "singleChat",
                                       item?.name,
-                                      item?.email
+                                      item?.email,
+                                      profile_picture
                                     ])
                                     setSelectedChat("singleChat");
                                   }
@@ -2153,7 +2162,8 @@ function Messages({
                                 className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
                                 data-bell={""}
                                 onClick={() => {
-                                  setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email]);
+                                  const profile_picture = allAgents?.find((data) => data?.id == item?.id)?.profile_picture
+                                  setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, profile_picture]);
                                   setSelectedChat("groupChat");
                                   setGroupNameEdit(item.group_name);
                                   setSelectedgroupUsers(item.groupusers);
@@ -2225,18 +2235,30 @@ function Messages({
                 id="callDetails"
               >
                 <div className="row h-100">
+                  {/* this is chat section *********** */}
                   <div className="col-xxl-8 col-xl-7 col-lg-7 col-md-7 h-100">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
                           <div>
                             <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                              <div
-                                className="profileHolder"
-                                id={"profileOfflineNav"}
-                              >
-                                <i className="fa-light fa-users fs-5"></i>
-                              </div>
+                              {
+                                recipient[5] != null ?
+                                  <div className="profileHolder">
+                                    <img
+                                      src={recipient[5]}
+                                      alt="profile"
+                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  :
+                                  <div
+                                    className="profileHolder"
+                                    id={"profileOfflineNav"}
+                                  >
+                                    <i className="fa-light fa-users fs-5"></i>
+                                  </div>
+                              }
                               <h4 className="">
                                 {/* {
                                 contact?.find(
@@ -2244,6 +2266,8 @@ function Messages({
                                 )?.name
                               }{" "}-
                               {" "} */}
+
+
                                 {recipient[3]}
                               </h4>
                             </div>
@@ -2484,8 +2508,8 @@ function Messages({
                         ""
                       )}
                       <div className="messageContent position-relative">
+                        {/* this is chat section (showing section of all input and output messages) */}
                         <div className="messageList" ref={messageListRef}>
-
                           {recipient[0] ? (
                             <>
                               {allMessage?.[recipient[0]]?.map(
@@ -2539,18 +2563,29 @@ function Messages({
                                                       .slice(0, 2)
                                                       .join(":")}
                                                   </span> &nbsp;
-                                                  {item.from}
+                                                  {item.user_name}
                                                 </h6>
                                                 <div className="">
                                                   <DisplayFile key={index} item={item.body} index={index} />
                                                 </div>
                                               </div>
-                                              <div
-                                                className="profileHolder"
-                                                id={"profileOfflineNav"}
-                                              >
-                                                <i className="fa-light fa-users fs-5"></i>
-                                              </div>
+                                              {
+                                                item?.profile_picture ?
+                                                  <div className="profileHolder">
+                                                    <img
+                                                      src={item?.profile_picture}
+                                                      alt="profile"
+                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                    />
+                                                  </div>
+                                                  :
+                                                  <div
+                                                    className="profileHolder"
+                                                    id={"profileOfflineNav"}
+                                                  >
+                                                    <i className="fa-light fa-users fs-5"></i>
+                                                  </div>
+                                              }
                                             </div>
                                           </div>
                                         </div>
@@ -2559,15 +2594,26 @@ function Messages({
                                         <div className="messageItem receiver">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
-                                              <div
-                                                className="profileHolder"
-                                                id={"profileOfflineNav"}
-                                              >
-                                                <i className="fa-light fa-users fs-5"></i>
-                                              </div>
+                                              {
+                                                item?.profile_picture ?
+                                                  <div className="profileHolder">
+                                                    <img
+                                                      src={item?.profile_picture}
+                                                      alt="profile"
+                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                    />
+                                                  </div>
+                                                  :
+                                                  <div
+                                                    className="profileHolder"
+                                                    id={"profileOfflineNav"}
+                                                  >
+                                                    <i className="fa-light fa-users fs-5"></i>
+                                                  </div>
+                                              }
                                               <div className=" ms-3 ">
                                                 <h6>
-                                                  {item.from},
+                                                  {item.user_name}
                                                   <span>
                                                     {item.time
                                                       ?.split(" ")[1]
@@ -3141,122 +3187,10 @@ function Messages({
                     className="col-xxl-4 col-xl-5 col-lg-4 col-md-4 h-100"
                     style={{ borderLeft: "1px solid var(--border-color)" }}
                   >
-                    <div className="messageOverlay py-3 h-100">
-                      <div className="p-4" >
-                        <div className="col">
-                          <div className="d-flex justify-content-start align-items-center gap-2 mb-2 flex-column">
-                            <div
-                              className="profileHolder"
-                              id={"profileOfflineNav"}
-                            >
-                              <i className="fa-light fa-users fs-5"></i>
-                            </div>
-                            <p className="mb-0 fs-6 fw-semibold">
-                              {/* {
-                                contact?.find(
-                                  (contact) => contact.extension == recipient[0]
-                                )?.name
-                              }{" "}-
-                              {" "} */}
-                              {recipient[3]}
-                            </p>
-                            <h5 className="fw-medium f-s-14 text_muted">{recipient[4]}</h5>
-                          </div>
-                        </div>
-                        <div className="d-flex justify-content-center align-items-center gap-2">
-                          {/* {!saveEditToggleGroupNameChange ? ( */}
-                          <button
-                            className="clearButton2 link f-s-14"
-
-                          >
-                            <i className="fa-regular fa-phone"></i>
-                          </button>
-                          <button
-                            className="clearButton2 link f-s-14"
-
-                          >
-                            <i className="fa-regular fa-video"></i>
-                          </button>
-
-                        </div>
-                      </div>
-                      <div className="rightPanel">
-                        <div className="chat_doc px-4 mb-4">
-                          <div className="d-flex justify-content-between align-items-center gap-2">
-                            <p>Shared Files
-                              <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                              <span >
-                                {/* <Link className="" to=""><u>View All</u>
-                              </Link> */}
-                              </span>
-                            </p>
-                          </div>
-                          <div className="file_list">
-                            <div className=""><span className="shared-file-icon"><i className="fa-regular fa-files"></i></span></div>
-                            <div className=" ">
-                              <p className="ellipsisText">Project Details.pdf</p>
-                              <p className="text_muted">14,April 2025 - 14:24PM</p>
-                            </div>
-                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
-                          </div>
-                          <div className="file_list">
-                            <div className=""><span className="shared-file-icon"><i class="fa-regular fa-images"></i></span></div>
-                            <div className=" ">
-                              <p className="ellipsisText">Img_02.Jpg</p>
-                              <p className="text_muted">22,April 2025 - 10:19AM</p>
-                            </div>
-                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
-                          </div>
-                          <div className="file_list">
-                            <div className=""><span className="shared-file-icon"><i class="fa-sharp fa-regular fa-film"></i></span></div>
-                            <div className=" ">
-                              <p className="ellipsisText">Video_15_02_2022.MP4</p>
-                              <p className="text_muted">22,April 2025 - 10:19AM</p>
-                            </div>
-                            <div className="download "><button ><i className="fa-regular fa-arrow-down-to-line"></i></button></div>
-                          </div>
-                        </div>
-                        <div className="chat_doc px-4">
-                          <div className="d-flex justify-content-between align-items-center gap-2">
-                            <p>Photos & Media
-                              <span className="badge badge-purple fw-medium rounded-circle ms-2">4</span>
-                              <span >
-                                {/* <Link className="" to=""><u>View All</u>
-                              </Link> */}
-                              </span>
-                            </p>
-                          </div>
-                          <div className="imageList">
-                            <div className="imgBox">
-                              <img src={require("../../assets/images/profilepic.png")} alt="" />
-                            </div>
-                            <div className="imgBox">
-                              <img src={require("../../assets/images/profilepic.png")} alt="" />
-                            </div>
-                            <div className="imgBox">
-                              <img src={require("../../assets/images/profilepic.png")} alt="" />
-                            </div>
-                            <div className="imgBox">
-                              <img src={require("../../assets/images/profilepic.png")} alt="" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* {!addMember && <div className="mb-auto px-4">
-                        <button
-                          className="panelButton gray ms-0"
-                          onClick={() => {
-                            setManageGroupChat(false);
-                          }}
-                        >
-                          <span className="text">Close</span>
-                          <span className="icon">
-                            <i className="fa-solid fa-caret-left" />
-                          </span>
-                        </button>
-                      </div>} */}
-                    </div>
+                    {/* this section is for profile details ************ */}
+                    <MessageProfileDetails
+                      recipient={recipient}
+                    />
                   </div>
                   {/* )} */}
                 </div>
