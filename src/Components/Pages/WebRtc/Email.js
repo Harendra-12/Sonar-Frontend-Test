@@ -10,8 +10,10 @@ import { useSIPProvider } from "modify-react-sipjs";
 import MailReply from "./mailBox/MailReply";
 import EmailList from "./mailBox/EmailList";
 import ActionListMulti from "../../CommonComponents/ActionListMulti";
+import HeaderApp from "./HeaderApp";
 
 function Email() {
+  const [loading, setLoading] = useState(false);
   const sessions = useSelector((state) => state.sessions);
   const account = useSelector((state) => state.account);
   const extension = account?.extension?.extension || "";
@@ -56,76 +58,7 @@ function Email() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <div className="newHeader">
-                  <div className="col-auto" style={{ padding: "0 10px" }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button className="clearButton2 text-dark" onClick={() => featureUnderdevelopment()}>
-                        <i className="fa-solid fa-chevron-left fs-4"></i>
-                      </button>{" "}
-                      E-Mail{" "}
-                      <button className="clearButton2">
-                        <i
-                          className="fa-regular fa-arrows-rotate fs-5"
-                          style={{ color: "var(--webUtilGray)" }}
-                          onClick={() => featureUnderdevelopment()}
-                        ></i>
-                      </button>
-                    </h3>
-                  </div>
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-9">
-                      <input
-                        type="search"
-                        name="Search"
-                        placeholder="Search users, groups or chat"
-                        className="formItem fw-normal"
-                        style={{ backgroundColor: "var(--searchBg)" }}
-                        onChange={() => featureUnderdevelopment()}
-                      />
-                    </div>
-                    <div className="col-auto ms-2">
-                      <button
-                        className="clearButton2 xl"
-                        effect="ripple"
-                        onClick={() => featureUnderdevelopment()}
-                      >
-                        <i className="fa-regular fa-bell" />
-                      </button>
-                    </div>
-                    <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
-                      <div className="dropdown">
-                        <div
-                          className="myProfileWidget"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <div className="profileHolder" id="profileOnlineNav">
-                            <img
-                              src="https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"
-                              alt="profile"
-                            />
-                          </div>
-                          <div className="profileName">
-                            {account?.username}{" "}
-                            <span className="status">Available</span>
-                          </div>
-                        </div>
-                        <ul className="dropdown-menu">
-                          <li onClick={() => { dispatch({ type: "SET_LOGOUT", logout: 1 }); sessionManager.disconnect() }}>
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Logout
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <HeaderApp title={"E-Mail"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
               </div>
               {/* <div className="col-xl-6 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
@@ -444,12 +377,12 @@ function Email() {
 
                       />
                       <div className="footerSms">
-                      <div class="custom_fileWrap">
-                        <label for="file" class="custom_file">
-                          <i class="fa-solid fa-paperclip"></i>
-                        </label>
-                        <input id="file" type="file" />
-                      </div>
+                        <div class="custom_fileWrap">
+                          <label for="file" class="custom_file">
+                            <i class="fa-solid fa-paperclip"></i>
+                          </label>
+                          <input id="file" type="file" />
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -890,10 +890,11 @@
 
 /* ============================================================================ webrtc new message ui changes style here  */
 
-.webrtc_newMessageUi .nav.nav-tabs{
+.webrtc_newMessageUi .nav.nav-tabs {
     flex-wrap: nowrap;
     overflow: auto;
 }
+
 .webrtc_newMessageUi .tabLink {
     display: flex;
     justify-content: center;
@@ -964,7 +965,8 @@
     padding: 15px 25px;
     background-color: unset;
 }
-.webrtc_newMessageUi .callList .collapse{
+
+.webrtc_newMessageUi .callList .collapse {
     background: transparent;
 }
 
@@ -1029,7 +1031,8 @@
     border: 2px solid #fff;
     z-index: 1;
 }
-.text_muted{
+
+.text_muted {
     color: var(--me-text-color2);
 }
 
@@ -1071,7 +1074,7 @@
     font-size: 0.625rem;
     border-radius: 25px;
     cursor: pointer;
-    background-color: var( --btn-active-bg);
+    background-color: var(--btn-active-bg);
     color: var(--btn-active-text) !important;
     display: flex;
     justify-content: center;
@@ -1080,7 +1083,7 @@
 }
 
 .webrtc_newMessageUi .contactTags span.add {
-    background-color: var( --btn-active-bg);
+    background-color: var(--btn-active-bg);
     color: var(--btn-active-text) !important;
     border: 1px dashed #2793f4;
     margin-left: 5px;
@@ -1129,7 +1132,7 @@
 }
 
 .webrtc_newMessageUi .messageOverlay .messageList {
-    height:82%;
+    height: 82%;
     width: 100%;
     overflow-y: auto;
 }
@@ -1174,12 +1177,15 @@
     background: #79b3ff !important;
     color: #fff !important;
 }
-.newMessageBoxUi{
+
+.newMessageBoxUi {
     height: calc(100vh - 100px);
 }
-.newMessageBoxUi .messageOverlay .messageContent{
+
+.newMessageBoxUi .messageOverlay .messageContent {
     height: 90%;
 }
+
 .textarea_inputTab .clearColorButton.dark {
     background-color: var(--ui-accent);
     padding: 0;
@@ -1218,32 +1224,32 @@
     min-height: 36px;
 }
 
- .clearButton2.emoji {
+.clearButton2.emoji {
     color: #26bf94;
     background: #26bf941a;
 }
 
- .clearButton2.emoji:hover {
+.clearButton2.emoji:hover {
     color: #f8f8f8 !important;
     background: #26bf94;
 }
 
- .clearButton2.link {
-    background-color: var( --btn-active-bg);
+.clearButton2.link {
+    background-color: var(--btn-active-bg);
     color: var(--btn-active-text) !important;
 }
 
- .clearButton2.link:hover {
+.clearButton2.link:hover {
     color: #f8f8f8 !important;
     background: #2793f4;
 }
 
- .clearButton2.gallery {
+.clearButton2.gallery {
     background-color: #ddb8ea54;
     color: #9300ff !important;
 }
 
- .clearButton2.gallery:hover {
+.clearButton2.gallery:hover {
     color: #f8f8f8 !important;
     background: #9300ff;
 }
@@ -1266,46 +1272,54 @@
 .webrtc_newMessageUi .messageOverlay .contactHeader {
     padding: 15px 30px;
 }
-.f-s-14{
+
+.f-s-14 {
     font-size: 0.875rem;
 }
-.chat_doc p{
-    font-size: 0.875rem ;
+
+.chat_doc p {
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--black);
     /* min-height: 400px;
     overflow: auto; */
 }
-.shared-file-icon{
+
+.shared-file-icon {
     width: 40px;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var( --me-border1);
-    color:  #8c9097;
+    border: 1px solid var(--me-border1);
+    color: #8c9097;
     border-radius: 5px;
 }
-.file_list{
+
+.file_list {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
     margin-bottom: 8px;
 }
-.file_list p{
+
+.file_list p {
     font-size: 0.75rem;
     color: var(--black);
     margin-bottom: 0;
 }
-.file_list p.text_muted{
+
+.file_list p.text_muted {
     font-size: 0.625rem;
     color: var(--gray2);
 }
-.file_list .download { 
+
+.file_list .download {
     margin-left: auto;
 }
-.file_list .download button{
+
+.file_list .download button {
     font-size: 0.875rem;
     color: var(--gray2);
     transition: all 0.4s ease-in-out;
@@ -1313,46 +1327,55 @@
     border: none;
     background: transparent;
 }
-.file_list .download button:hover{
+
+.file_list .download button:hover {
     color: #2793f4;
 }
-.imageList{
+
+.imageList {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 15px;
 }
-.imageList .imgBox{
-    width: 100% ;
+
+.imageList .imgBox {
+    width: 100%;
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
 }
-.imageList .imgBox img{
+
+.imageList .imgBox img {
     width: 100%;
     object-fit: cover;
     height: 100%;
 }
-.displayFile{
+
+.displayFile {
     border-radius: .3rem;
     background-color: var(--me-video-bg);
     color: #333335;
     padding: 15px;
 }
-.rightPanel{
+
+.rightPanel {
     min-height: 600px;
     overflow-x: auto;
 }
-.chat_doc{
+
+.chat_doc {
     overflow: auto;
     max-height: 320px;
     width: 100%;
     border-bottom: 1px solid var(--me-border1);
     padding-bottom: 20px;
 }
-.chat_doc:last-child{
+
+.chat_doc:last-child {
     border: 0;
 }
-.chat_doc a{
+
+.chat_doc a {
     color: #51c9ff;
     font-size: 10px;
     text-transform: uppercase;
