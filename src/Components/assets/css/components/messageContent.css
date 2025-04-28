@@ -1178,9 +1178,10 @@
     color: #fff !important;
 }
 
-/* .newMessageBoxUi{
+.newMessageBoxUi {
     height: calc(100vh - 100px);
-} */
+}
+
 .newMessageBoxUi .messageOverlay .messageContent {
     height: 90%;
 }
