@@ -452,10 +452,8 @@ const RingGroupEdit = () => {
       setLoading(false);
       if (apiData.error) {
         toast.error(apiData.error);
-      } else {
-        const errorMessage = Object.keys(apiData.errors);
-        toast.error(apiData.errors[errorMessage[0]][0]);
-      }
+      } 
+      
     }
   });
 
