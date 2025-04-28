@@ -252,7 +252,7 @@ function Navbar() {
                                 className="nav-link"
                               >
                                 <div className="itemTitle">
-                                  Roles and Permisson
+                                  Roles and Permission
                                 </div>
                               </NavLink>
                             </li>
