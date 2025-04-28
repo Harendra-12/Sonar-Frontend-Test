@@ -1,160 +1,4 @@
-@media only screen and (max-width : 991px) {
-    .menuWrapper .accordion-header .tabButton {
-        right: 27px !important;
-    }
 
-    .mainContent {
-        margin-left: inherit;
-        padding-left: inherit;
-    }
-
-    #sidenNav {
-        left: -1000px;
-    }
-
-    .mainContent #subPageHeader {
-        padding: 10px 10px !important;
-    }
-
-    table tr th:first-child {
-        padding-left: 5px !important;
-        width: 10px !important;
-    }
-
-    table tr td:first-child {
-        padding-left: 5px !important;
-        width: 10px !important;
-    }
-
-    /* .getApp {
-        font-size: 14px;
-    } */
-
-    .masterList ul li input {
-        width: 82%;
-    }
-
-    #detailsContent {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    .formItem {
-        padding-right: 0;
-    }
-
-    .circularLoader {
-        width: 100vw;
-    }
-
-    .formRow.col-xl-3 {
-        width: inherit !important;
-        margin-right: 0px;
-    }
-
-    .callerContent .user .userProfileContainer {
-        margin: 0;
-    }
-
-    .formLabel {
-        max-width: 100%;
-    }
-
-    .loginWrapper2 {
-        width: 95%;
-    }
-
-    .loginWave {
-        height: 125px;
-    }
-
-    .overviewTableWrapper {
-        padding: 15px;
-    }
-
-    .overviewTableWrapper .heading {
-        display: block;
-    }
-
-    .overviewTableWrapper .heading .content {
-        margin-bottom: 15px;
-    }
-
-    .formRow .col-6 {
-        width: 100%;
-    }
-
-    .formRow.col-xl-3:nth-child(odd) {
-        margin-right: 0;
-    }
-
-    #detailsHeader .profileName {
-        max-width: 65px;
-    }
-
-    table th {
-        /* text-wrap: nowrap; */
-        white-space: nowrap;
-    }
-
-    .tableHeader .showEntries {
-        margin-bottom: 10px;
-    }
-
-    .tableHeader .formRow {
-        width: 50%;
-    }
-
-    .popup .content {
-        width: 95%;
-    }
-
-    .mainContentApp {
-        margin-left: 0;
-    }
-
-    #sidenNavApp {
-        width: 100%;
-        height: 90px;
-        bottom: 0;
-        left: 0;
-        overflow-x: auto;
-    }
-
-    #sidenNavApp .sidenavItems {
-        height: 100%;
-    }
-
-    #sidenNavApp .sidenavItems ul {
-        display: flex;
-        justify-content: space-between;
-        line-height: inherit;
-        height: 100%;
-    }
-
-    #sidenNavApp .sidenavItems ul li:first-child {
-        display: none;
-    }
-
-    #sidenNavApp .sidenavItems ul li {
-        display: flex;
-        align-items: center;
-        padding: 5px 10px;
-    }
-
-    #sidenNavApp .sidenavItems ul li .navItem {
-        padding: 0;
-        height: 100%;
-    }
-
-    #sidenNavApp .sidenavItems ul .itemTitle {
-        display: none;
-    }
-
-    .mainContent .itemWrapper.accordion-item {
-        max-height: max-content;
-    }
-}
 
 @media (max-device-width: 1500px) {
 
@@ -382,7 +226,7 @@ element.style {
     }
 
     .customRow {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
     }
 
     .call_dCard {
@@ -390,7 +234,180 @@ element.style {
     }
 }
 
+@media (max-width: 1099px) {
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
 
+}
+/* 
+@media (max-width: 1024px) {
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+} */
+
+@media only screen and (max-width : 991px) {
+    .menuWrapper .accordion-header .tabButton {
+        right: 27px !important;
+    }
+
+    .mainContent {
+        margin-left: inherit;
+        padding-left: inherit;
+    }
+
+    #sidenNav {
+        left: -1000px;
+    }
+
+    .mainContent #subPageHeader {
+        padding: 10px 10px !important;
+    }
+
+    table tr th:first-child {
+        padding-left: 5px !important;
+        width: 10px !important;
+    }
+
+    table tr td:first-child {
+        padding-left: 5px !important;
+        width: 10px !important;
+    }
+
+    /* .getApp {
+        font-size: 14px;
+    } */
+
+    .masterList ul li input {
+        width: 82%;
+    }
+
+    #detailsContent {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .formItem {
+        padding-right: 0;
+    }
+
+    .circularLoader {
+        width: 100vw;
+    }
+
+    .formRow.col-xl-3 {
+        width: inherit !important;
+        margin-right: 0px;
+    }
+
+    .callerContent .user .userProfileContainer {
+        margin: 0;
+    }
+
+    .formLabel {
+        max-width: 100%;
+    }
+
+    .loginWrapper2 {
+        width: 95%;
+    }
+
+    .loginWave {
+        height: 125px;
+    }
+
+    .overviewTableWrapper {
+        padding: 15px;
+    }
+
+    .overviewTableWrapper .heading {
+        display: block;
+    }
+
+    .overviewTableWrapper .heading .content {
+        margin-bottom: 15px;
+    }
+
+    .formRow .col-6 {
+        width: 100%;
+    }
+
+    .formRow.col-xl-3:nth-child(odd) {
+        margin-right: 0;
+    }
+
+    #detailsHeader .profileName {
+        max-width: 65px;
+    }
+
+    table th {
+        /* text-wrap: nowrap; */
+        white-space: nowrap;
+    }
+
+    .tableHeader .showEntries {
+        margin-bottom: 10px;
+    }
+
+    .tableHeader .formRow {
+        width: 50%;
+    }
+
+    .popup .content {
+        width: 95%;
+    }
+
+    .mainContentApp {
+        margin-left: 0;
+    }
+
+    #sidenNavApp {
+        width: 100%;
+        height: 90px;
+        bottom: 0;
+        left: 0;
+        overflow-x: auto;
+    }
+
+    #sidenNavApp .sidenavItems {
+        height: 100%;
+    }
+
+    #sidenNavApp .sidenavItems ul {
+        display: flex;
+        justify-content: space-between;
+        line-height: inherit;
+        height: 100%;
+    }
+
+    #sidenNavApp .sidenavItems ul li:first-child {
+        display: none;
+    }
+
+    #sidenNavApp .sidenavItems ul li {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+    }
+
+    #sidenNavApp .sidenavItems ul li .navItem {
+        padding: 0;
+        height: 100%;
+    }
+
+    #sidenNavApp .sidenavItems ul .itemTitle {
+        display: none;
+    }
+
+    .mainContent .itemWrapper.accordion-item {
+        max-height: max-content;
+    }
+    .customRow {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
 
 @media (max-width: 767px) {
     .chat_menu {

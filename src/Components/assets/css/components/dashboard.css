@@ -912,7 +912,7 @@
 
 .d_chartImg {
   position: absolute;
-  top: 57px;
+  top: 76px;
   right: 0;
   z-index: -1;
   /* opacity: 0.4; */
@@ -928,8 +928,8 @@
   /* border-left: 3px solid var(--dash-listing-border); */
   border-left: 3px solid var(--ui-accent);
   border-bottom: 0 !important;
-  /* transition: all 0.4s ease-in-out; */
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  transition: all 0.4s ease-in-out;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px ; */
 }
 
 .itemWrapper .data-number2 ul li.d_extension_listing:hover {
@@ -937,16 +937,16 @@
   border-left: 8px solid var(--ui-accent);
   border-bottom: 0 !important;
   color: var(--dash-listing-hover-text);
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
 }
 
 .dashboard_headerPart {
   border: 1px solid var(--header-dark-gray) !important;
   border-radius: 8px;
   padding: 10px !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px; */
 }
 
 .itemWrapper .data-number2 ul li.d_extension_listing {
@@ -978,7 +978,7 @@
 
 .dashboard_cardWrap .d_chartImg {
   opacity: 0.3;
-  top: 100px;
+  top: 131px;
 }
 
 .itemWrapper.d.dashboard_cardWrap .data-number2 h5 {
