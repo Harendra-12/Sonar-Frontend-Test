@@ -284,7 +284,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                   <div className="iconHolder">
                     <i className="fa-light fa-megaphone" />
                   </div>
-                  <div className="itemTitle">Campaigns</div>
+                  <div className="itemTitle">Dialer</div>
                 </div>
               </li>
               {isCustomerAdmin &&

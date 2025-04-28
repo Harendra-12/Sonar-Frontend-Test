@@ -213,13 +213,25 @@ function UserProfile() {
                                     <div className="content">
                                       <h4 className="fs-5">Account Information</h4>
                                     </div>
-                                    <button onClick={handleSave} type="button" class={`btn btn-success-light btn-wave new_buttonStyle`}>
-                                      <span>Update</span> <i
-                                        className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
-                                          }`}
-                                      ></i></button>
-
-
+                                    <div className="d-flex">
+                                      <button className="panelButton gray m-0"
+                                        onClick={() => {
+                                          navigate(-1);
+                                          backToTop();
+                                        }}
+                                      >
+                                        <span className="text">Back</span>
+                                        <span className="icon"><i className="fa-solid fa-caret-left" /></span>
+                                      </button>
+                                      <button onClick={handleSave} type="button" class={`ms-2 btn btn-success-light btn-wave new_buttonStyle`}
+                                        style={{ maxWidth: 'none' }}
+                                      >
+                                        <span>Update</span> <i
+                                          className={`fa-solid fa-${isEdit ? "floppy-disk" : "pen"
+                                            }`}
+                                        ></i>
+                                      </button>
+                                    </div>
                                     {/* <div className="buttonGroup ">
                                         <button
                                           type="button"

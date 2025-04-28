@@ -180,6 +180,8 @@ import AccessControlAdd from "./Components/Pages/AccessControl/AccessControlAdd"
 import AccessControlEdit from "./Components/Pages/AccessControl/AccessControlEdit";
 import BillingDashboard from "./Components/Pages/Billing/BillingDashboard";
 import OfflineNotice from "./Components/CommonComponents/OfflineNotice";
+import CampaignCreateNEW from "./Components/Pages/DialerModule/Campaigns/CampaignCreateNEW";
+import CampaignEditNEW from "./Components/Pages/DialerModule/Campaigns/CampaignEditNEW";
 
 // Unlock this if want push notification
 // import { generateToken, messaging } from "./Components/GlobalFunction/PushNotification";
@@ -878,6 +880,9 @@ function App() {
           <Route path="/campaign-scheduler" element={<CampaignScheduler />} />
           <Route path="/campaign-edit" element={<CampaignEdit />} />
           <Route path="/dialer-cdr-report" element={<DialerCdrReport />} />
+
+          <Route path="/campaign-create-new" element={<CampaignCreateNEW />} />
+          <Route path="/campaign-edit-new" element={<CampaignEditNEW />} />
           {/* ------ Campaigns */}
 
           {/* ------ Call Tracker */}

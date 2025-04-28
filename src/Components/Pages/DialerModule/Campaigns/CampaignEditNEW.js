@@ -21,7 +21,10 @@ import ErrorMessage from "../../../CommonComponents/ErrorMessage";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import CircularLoader from "../../../Loader/CircularLoader";
-function CampaignCreate() {
+import Select from "react-select";
+
+
+function CampaignEditNEW() {
   const navigate = useNavigate();
   const account = useSelector((state) => state.account);
   const [stepSelector, setStepSelector] = useState(1);
@@ -292,10 +295,18 @@ function CampaignCreate() {
       payload
     );
     if (apiData?.status) {
-      setCompletedStep(1);
-      setStepSelector(2);
-      setLoading(false);
+      // setCompletedStep(1);
+      // setStepSelector(2);
+      // setLoading(false);
       toast.success(apiData.message);
+
+      // Check if Agent Store Step is Completed, then Move to Step 2
+      const agentStoreStep = await handleFormSubmitStepThree(apiData.data.id);
+      if (agentStoreStep) {
+        setCompletedStep(1);
+        setStepSelector(2);
+      }
+
       // setCampaignId(apiData.data.id);
       setcampaignRefresh((prev) => prev + 1);
     } else {
@@ -359,11 +370,12 @@ function CampaignCreate() {
     };
     const apiData = await generalPostFunction("/campaign-agent/store", payload);
     if (apiData?.status) {
-      setCompletedStep(3);
-      setStepSelector(4);
+      // setCompletedStep(3);
+      // setStepSelector(4);
       setLoading(false);
       toast.success(apiData.message);
       setcampaignRefresh((prev) => prev + 1);
+      return true;
     } else {
       setLoading(false);
       toast.error(apiData?.message || apiData?.error);
@@ -404,14 +416,17 @@ function CampaignCreate() {
   }
 
   // Logic to select and unselect did
-  const toggleSelect = (index) => {
-    setSelectedItems(
-      (prevSelected) =>
-        prevSelected.includes(index)
-          ? prevSelected.filter((item) => item !== index) // Remove if already selected
-          : [...prevSelected, index] // Add if not selected
-    );
-  };
+  // const toggleSelect = (index) => {
+  //   setSelectedItems(
+  //     (prevSelected) =>
+  //       prevSelected.includes(index)
+  //         ? prevSelected.filter((item) => item !== index) // Remove if already selected
+  //         : [...prevSelected, index] // Add if not selected
+  //   );
+  // };
+  const toggleSelect = (values) => {
+    setSelectedItems(values)
+  }
 
   // Logic to select and unselect agents
   const toggleSelectAgents = (index) => {
@@ -472,7 +487,10 @@ function CampaignCreate() {
     }) : [...prevSelected, { id: id, rechain: false }])
   }
 
-  console.log("selectedDesposition", selectedDesposition);
+  const allDidOptions = did.map((item) => ({
+    value: item.id,
+    label: item.did,
+  }))
 
   return (
     <main className="mainContent">
@@ -578,7 +596,7 @@ function CampaignCreate() {
                                 <h3>Dialer Settings</h3>
                               </div>
                             </li>
-                            <li
+                            {/* <li
                               className={stepSelector === 3 && "active"}
                               onClick={() => {
                                 // if (completedStep > 1) {
@@ -598,7 +616,7 @@ function CampaignCreate() {
                               <div className="textHolder">
                                 <h3>Agent List</h3>
                               </div>
-                            </li>
+                            </li> */}
                             <li
                               className={stepSelector === 4 && "active"}
                               onClick={() => {
@@ -614,7 +632,7 @@ function CampaignCreate() {
                                     : "numberHolder"
                                 }
                               >
-                                4
+                                3
                               </div>
                               <div className="textHolder">
                                 <h3>Record List</h3>
@@ -625,13 +643,7 @@ function CampaignCreate() {
                       </div>
                       {stepSelector === 1 && (
                         <>
-                          <div
-                            className="col-xl-7 col-6"
-                            style={{
-                              borderLeft: "1px solid var(--border-color)",
-                              padding: "0 10px",
-                            }}
-                          >
+                          <div className="col-xl-8 col-9" style={{ borderLeft: '1px solid var(--border-color)', padding: '0 30px' }}>
                             <form className="row mb-0">
                               <div className="formRow">
                                 <div className="formLabel">
@@ -667,6 +679,26 @@ function CampaignCreate() {
                                     <option value="pbx">PBX</option>
                                     <option value="dialer">Dialer</option>
                                   </select>
+                                </div>
+                              </div>
+                              <div className="formRow">
+                                <div className='formLabel'>
+                                  <label>
+                                    Outbound Caller ID
+                                  </label>
+                                </div>
+                                <div className='col-6'>
+                                  <Select
+                                    onChange={(selectedOptions) => {
+                                      const values = (selectedOptions || []).map((option) => option.value)
+                                      toggleSelect(values)
+                                    }}
+                                    isMulti
+                                    value={allDidOptions.filter(option => selectedItems.includes(option.value))}
+                                    options={allDidOptions}
+                                    isSearchable
+                                    styles={customStyles}
+                                  />
                                 </div>
                               </div>
                               <div className="formRow align-items-start">
@@ -713,21 +745,41 @@ function CampaignCreate() {
                                   <div className="row">
                                     <div className="col-6 pe-2">
                                       <div className="formLabel">
-                                        <label>From</label>
+                                        <label>From Date / Time</label>
                                       </div>
-                                      <input
-                                        type="date"
-                                        className="formItem"
-                                      />
+                                      <div className='row gx-2'>
+                                        <div className='col-6'>
+                                          <input
+                                            type="date"
+                                            className="formItem"
+                                          />
+                                        </div>
+                                        <div className='col-6'>
+                                          <input
+                                            type="time"
+                                            className="formItem"
+                                          />
+                                        </div>
+                                      </div>
                                     </div>
                                     <div className="col-6 ps-2">
                                       <div className="formLabel">
-                                        <label>To</label>
+                                        <label>To Date / Time</label>
                                       </div>
-                                      <input
-                                        type="date"
-                                        className="formItem"
-                                      />
+                                      <div className='row gx-2'>
+                                        <div className='col-6'>
+                                          <input
+                                            type="date"
+                                            className="formItem"
+                                          />
+                                        </div>
+                                        <div className='col-6'>
+                                          <input
+                                            type="time"
+                                            className="formItem"
+                                          />
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -945,8 +997,162 @@ function CampaignCreate() {
                                 </div>
                               </div>
                             </form>
+                            <div
+                              className="itemWrapper a p-0 mt-2 h-auto"
+                              style={{
+                                backgroundColor: "transparent",
+                                boxShadow: "none",
+                              }}
+                            >
+                              <div className="heading">
+                                <div className="col-10">
+                                  <h5>Available Agents</h5>
+                                </div>
+                              </div>
+                              <div className="tableHeader">
+                                <div className="showEntries">
+                                  <label>Show</label>
+                                  <select
+                                    className="formItem"
+                                    value={agentPerPage}
+                                    onChange={(e) =>
+                                      setAgentPerPage(e.target.value)
+                                    }
+                                  >
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={30}>30</option>
+                                  </select>
+                                  <label>entries</label>
+                                </div>
+                                <div className="searchBox position-relative">
+                                  <label>Search:</label>
+                                  <input
+                                    type="search"
+                                    name="Search"
+                                    className="formItem"
+                                    value={agentSearch}
+                                    onChange={(e) =>
+                                      setAgentSearch(e.target.value)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                              <div className="mainContentApp m-0 bg-transparent mt-3">
+                                <div className="row">
+                                  <div className="col-xl-6" style={{ borderRight: '1px solid var(--border-color)' }}>
+                                    {unmatchIdAgent?.map((item, index) => {
+                                      return (
+                                        <div
+                                          className="callListItem"
+                                          key={index}
+                                          onClick={() =>
+                                            toggleSelectAgents(item.id)
+                                          }
+                                        >
+                                          <div className="row align-items-center px-2">
+                                            <div className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
+                                              ? "selected"
+                                              : ""
+                                              }`}
+                                              style={{
+                                                width: "20px",
+                                                height: "20px",
+                                                border: "1px solid #ccc",
+                                                borderRadius: "3px",
+                                              }}
+                                            >
+                                              {selectedAgent.includes(
+                                                item.id
+                                              ) && (
+                                                  <i className="fa-solid fa-check text-success"></i>
+                                                )}
+                                            </div>
+                                            <div className="col-xl-5 col-xxl-5 col-lg-5 d-flex ps-0">
+                                              <div className="profileHolder">
+                                                <i className="fa-light fa-user fs-5" />
+                                              </div>
+                                              <div className="my-auto ms-2 ms-xl-3 text-start">
+                                                <h4>{item.name}</h4>
+                                                <h5 className="mt-2">
+                                                  {item.extension.extension}
+                                                </h5>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                  <div className="col-xl-6">
+                                    {matchIdAgent?.map((item, index) => {
+                                      return (
+                                        <div
+                                          className="callListItem"
+                                          key={index}
+                                          onClick={() =>
+                                            toggleSelectAgents(item.id)
+                                          }
+                                        >
+                                          <div className="row align-items-center">
+                                            <div className="w-auto">
+                                              <button
+                                                className="clearButton2 text-danger"
+                                                onClick={() => handleDeleteAgent(item.Campaign_user_id)}
+                                              >
+                                                <i className="fa-solid fa-xmark"></i>
+                                              </button>
+                                            </div>
+                                            <div className="col-7 col-xl-7 col-xxl-6 d-flex ps-0">
+                                              <div className="profileHolder">
+                                                <i className="fa-light fa-user fs-5" />
+                                              </div>
+                                              <div className="my-auto ms-2 ms-xl-3 text-start">
+                                                <h4>{item.name}</h4>
+                                                <h5 className="mt-2">
+                                                  {item.extension.extension}
+                                                </h5>
+                                              </div>
+                                            </div>
+                                            {/* <div
+                                          className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${
+                                            selectedAgent.includes(index)
+                                              ? "selected"
+                                              : ""
+                                          }`}
+                                          style={{
+                                            width: "20px",
+                                            height: "20px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "3px",
+                                          }}
+                                        >
+                                          {selectedAgent.includes(item.id) && (
+                                            <i className="fa-solid fa-check text-success"></i>
+                                          )}
+                                        </div> */}
+                                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
+                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
+                                                                                </div> */}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="tableHeader text-start my-3">
+                                <PaginationComponent
+                                  pageNumber={(e) => setPageNumber(e)}
+                                  totalPage={agents.last_page}
+                                  from={(pageNumber - 1) * agents.per_page + 1}
+                                  to={agents.to}
+                                  total={agents.total}
+                                />
+                              </div>
+                            </div>
                           </div>
-                          <div
+                          {/* <div
                             className="col-xl-3 col-3"
                             style={{
                               borderLeft: "1px solid var(--border-color)",
@@ -979,7 +1185,6 @@ function CampaignCreate() {
                               </div>
                               <div className="col-12 my-2">
                                 <div className="searchBox position-relative">
-                                  {/* <input type="text" name="Search" placeholder="Search" className="formItem" value={filter}  /> */}
                                   <div className="searchBox position-relative">
                                     <input
                                       type="number"
@@ -1007,7 +1212,6 @@ function CampaignCreate() {
                                     style={{ cursor: "pointer" }}
                                     onClick={() => toggleSelect(item.id)}
                                   >
-                                    {/* Blank field that toggles a tick */}
                                     <div
                                       className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedItems.includes(index)
                                         ? "selected"
@@ -1031,7 +1235,7 @@ function CampaignCreate() {
                                 ))}
                               </ul>
                             </div>
-                          </div>
+                          </div> */}
                         </>
                       )}
                       {stepSelector === 2 && (
@@ -1680,7 +1884,7 @@ function CampaignCreate() {
                             }}
                           >
                             <div
-                              className="itemWrapper a py-0"
+                              className="itemWrapper a p-0"
                               style={{
                                 backgroundColor: "transparent",
                                 boxShadow: "none",
@@ -1689,16 +1893,8 @@ function CampaignCreate() {
                               <div className="heading">
                                 <div className="col-10">
                                   <h5>Available Agents</h5>
-                                  <p>
-                                    Select from the available list of agents
-                                  </p>
                                 </div>
                               </div>
-                              {/* <div className='col-12 my-2'>
-                                                            <div className="searchBox position-relative">
-                                                                <input type="text" name="Search" placeholder="Search" className="formItem" value="" />
-                                                            </div>
-                                                        </div> */}
                               <div className="tableHeader">
                                 <div className="showEntries">
                                   <label>Show</label>
@@ -1740,23 +1936,7 @@ function CampaignCreate() {
                                             toggleSelectAgents(item.id)
                                           }
                                         >
-                                          <div className="row justify-content-between">
-                                            <div className="col-xl-5 col-xxl-5 col-lg-5 col-md-4 d-flex ps-0">
-                                              <div className="profileHolder">
-                                                <i className="fa-light fa-user fs-5" />
-                                              </div>
-                                              <div className="my-auto ms-2 ms-xl-3 text-start">
-                                                <h4>{item.name}</h4>
-                                                <h5 className="mt-2">
-                                                  {item.extension.extension}
-                                                </h5>
-                                              </div>
-                                            </div>
-                                            <div className=" col-xl-3 col-xxl-3">
-                                              <div className="contactTags">
-                                                <span data-id={2}>Agent</span>
-                                              </div>
-                                            </div>
+                                          <div className="row align-items-center px-2">
                                             <div className={`checkbox-placeholder me-3 d-flex justify-content-center align-items-center ${selectedAgent.includes(index)
                                               ? "selected"
                                               : ""
@@ -1774,9 +1954,17 @@ function CampaignCreate() {
                                                   <i className="fa-solid fa-check text-success"></i>
                                                 )}
                                             </div>
-                                            {/* <div className="col-auto text-end d-flex justify-content-center align-items-center">
-                                                                                    <div className="tableButton edit" ><i className="fa-solid fa-plus"></i> </div>
-                                                                                </div> */}
+                                            <div className="col-xl-5 col-xxl-5 col-lg-5 d-flex ps-0">
+                                              <div className="profileHolder">
+                                                <i className="fa-light fa-user fs-5" />
+                                              </div>
+                                              <div className="my-auto ms-2 ms-xl-3 text-start">
+                                                <h4>{item.name}</h4>
+                                                <h5 className="mt-2">
+                                                  {item.extension.extension}
+                                                </h5>
+                                              </div>
+                                            </div>
                                           </div>
                                         </div>
                                       );
@@ -1859,7 +2047,6 @@ function CampaignCreate() {
                                 />
                               </div>
                             </div>
-
                           </div>
                         </>
                       )}
@@ -1883,16 +2070,18 @@ function CampaignCreate() {
                                     </div>
                                     <div className="buttonGroup">
                                       <button
-                                        className="panelButton static m-0 px-2"
+                                        className="panelButton"
                                         onClick={() => setAddLeadInternalToggle(!addLeadInternalToggle)}
                                       >
-                                        <span className="text">Add Lead</span>
+                                        <span className="text">Add</span>
+                                        <span className='icon'><i class="fa-solid fa-plus"></i></span>
                                       </button>
                                       <button
-                                        className="panelButton static m-0 px-2"
+                                        className="panelButton edit"
                                         onClick={() => setAddNewCsvToggle(!addNewCsvToggle)}
                                       >
-                                        <span className="text">Import CSV</span>
+                                        <span className="text">Import</span>
+                                        <span className='icon'><i class="fa-solid fa-file-csv"></i></span>
                                       </button>
                                     </div>
                                   </div>
@@ -2418,4 +2607,77 @@ function CampaignCreate() {
   );
 }
 
-export default CampaignCreate;
+export default CampaignEditNEW;
+
+// Custom styles for react-select
+export const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    // border: '1px solid var(--color4)',
+    border: "1px solid var(--color4);",
+    borderRadius: "3px",
+    backgroundColor: "var(--ele-color)",
+    outline: "none",
+    fontSize: "14px",
+    width: "100%",
+    minHeight: "35px",
+    height: "35px",
+    boxShadow: state.isFocused ? "none" : provided.boxShadow,
+    "&:hover": {
+      borderColor: "var(--ui-accent)",
+    },
+  }),
+  valueContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+    padding: "0 6px",
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+  }),
+  input: (provided) => ({
+    ...provided,
+    margin: "0",
+    color: "var(--form-input-text)",
+  }),
+  indicatorSeparator: (provided) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided) => ({
+    ...provided,
+    height: "32px",
+  }),
+  dropdownIndicator: (provided) => ({
+    ...provided,
+    color: "var(--form-input-text)",
+    "&:hover": {
+      color: "var(--ui-accent)",
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: state.isSelected ? "var(--ui-accent)" : "transparent",
+    "&:hover": {
+      backgroundColor: "#0055cc",
+      color: "#fff",
+    },
+    fontSize: "14px",
+  }),
+  menu: (provided) => ({
+    ...provided,
+    margin: 0,
+    padding: 0,
+    backgroundColor: "var(--ele-color)",
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+    margin: 0,
+    maxHeight: "150px",
+    overflowY: "auto",
+    color: "var(--form-input-text)",
+  }),
+};
