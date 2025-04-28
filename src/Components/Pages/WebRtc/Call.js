@@ -330,7 +330,7 @@ function Call({
 
     const getCallTypeIcon = (admin) => {
       return (
-        <i className={`fa-solid ${callType.icon} me-2 ${admin && 'bg-white'}`} style={{ color: callType.color, border: admin && '0.5px solid #a3a3a3' }}></i>
+        <i className={`fa-solid ${callType.icon} me-2 ${admin && 'bg-white'}`} style={{ color: callType.color, }}></i>
       );
     }
 

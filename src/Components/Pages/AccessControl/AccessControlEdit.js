@@ -191,7 +191,7 @@ export default function AccessControlEdit() {
                     className="col-xl-6"
                     style={{
                       padding: "25px 23px",
-                      borderBottom: "1px solid rgb(221, 221, 221)",
+                      // borderBottom: "1px solid rgb(221, 221, 221)",
                     }}
                   >
                     <form className="row mb-0">
@@ -241,7 +241,7 @@ export default function AccessControlEdit() {
                       </div>
                       <div className="formRow col-xl-12 ">
                         <div className="formLabel">
-                          <label htmlFor="">Group*</label>
+                          <label htmlFor="">Role*</label>
                         </div>
                         <div className="col-6">
                           {" "}
