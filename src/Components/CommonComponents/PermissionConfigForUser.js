@@ -314,7 +314,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
   return (
     <div className='col-xl-12 col-xxl-8'>
       {Object.entries(permissionData).map(([sectionName, models]) => (
-        <div key={sectionName} className='itemWrapper a shadow-none px-0 permissionsConfigWrapper mb-4'>
+        <div key={sectionName} className='itemWrapper a shadow-none border-0 px-0 permissionsConfigWrapper'>
           <div className="heading h-auto justify-content-start">
             <h5 className='me-3'>{sectionName}</h5>
             <div className="my-auto position-relative mx-1">
@@ -539,7 +539,7 @@ export function PermissionConfigTable({ selectedGroup, selectedRole, allPermissi
         >
           Save Permissions
         </button>
-        <pre className="mt-3 bg-light0 p-3">
+        <pre className="mt-3 bg_light p-3">
           {JSON.stringify(rolePermissions, null, 2)}
         </pre>
       </div>

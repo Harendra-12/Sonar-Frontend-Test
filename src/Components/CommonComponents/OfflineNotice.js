@@ -19,8 +19,8 @@ const OfflineNotice = () => {
   if (isOnline) return null;
 
   return (
-    <div style={{ background: "red", color: "white", padding: "10px", textAlign: "center" }}>
-       You are currently offline.
+    <div className="offline_messages">
+     <i class="fa-solid fa-circle-exclamation me-1"></i>  You are currently offline.
     </div>
   );
 };

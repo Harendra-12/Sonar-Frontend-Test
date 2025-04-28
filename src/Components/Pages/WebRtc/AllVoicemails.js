@@ -39,38 +39,40 @@ function AllVoicemails({ isCustomerAdmin }) {
 
 
 
-  useEffect(() => {
-    const handlePlaying = async (audio) => {
-      // Reseting state before Playing
-      setCurrentPlaying("");
-      setAudioURL("");
+  // useEffect(() => {
+  //   const handlePlaying = async (audio) => {
+  //     // Reseting state before Playing
+  //     setCurrentPlaying("");
+  //     setAudioURL("");
 
-      try {
-        setCurrentPlaying(audio);
-        const url = audio.split(".com/").pop();
-        // const res = await generatePreSignedUrl(url);
+  //     try {
+  //       setCurrentPlaying(audio);
+  //       const url = audio.split(".com/").pop();
+  //       // const res = await generatePreSignedUrl(url);
 
-        // if (res?.status && res?.url) {
-        setAudioURL(audio); // Update audio URL state
-        // setAudioURL(res.url);
-        // Wait for React state update before accessing ref
-        setTimeout(() => {
-          if (thisAudioRef.current) {
-            thisAudioRef.current.load(); // Reload audio source
-            thisAudioRef.current.play().catch((error) => {
-              console.error("Audio play error:", error);
-            });
-          }
-        }, 100); // Reduced timeout to minimize delay
-        // }
-      } catch (error) {
-        console.error("Error in handlePlaying:", error);
-      }
-    };
-    if (clickedVoiceMail) {
-      handlePlaying(clickedVoiceMail.recording_path)
-    }
-  }, [clickedVoiceMail])
+  //       // if (res?.status && res?.url) {
+  //       setAudioURL(audio); // Update audio URL state
+  //       // setAudioURL(res.url);
+  //       // Wait for React state update before accessing ref
+  //       setTimeout(() => {
+  //         if (thisAudioRef.current) {
+  //           thisAudioRef.current.load(); // Reload audio source
+  //           thisAudioRef.current.play().catch((error) => {
+  //             console.error("Audio play error:", error);
+  //           });
+  //         }
+  //       }, 100); // Reduced timeout to minimize delay
+  //       // }
+  //     } catch (error) {
+  //       console.error("Error in handlePlaying:", error);
+  //     }
+  //   };
+  //   if (clickedVoiceMail) {
+  //     handlePlaying(clickedVoiceMail.recording_path)
+  //   }
+  // }, [clickedVoiceMail])
+
+
   useEffect(() => {
     if (thisAudioRef.current) {
       thisAudioRef.current.load(); // Reload the audio source
@@ -440,7 +442,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                           </div> */}
 
 
-<i class="fa-solid fa-right-from-bracket"></i>
+                          <i class="fa-solid fa-right-from-bracket"></i>
                         </div>
                         <ul className="dropdown-menu">
                           <li

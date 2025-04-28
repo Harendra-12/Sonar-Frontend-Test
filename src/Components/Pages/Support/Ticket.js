@@ -29,7 +29,7 @@ function Ticket() {
                 <div className='overviewTableChild'>
                   <div className='d-flex flex-wrap'>
                     <div className="col-12">
-                      <div className="heading">
+                      <div className="heading mb-0">
                         <div className="content">
                           <h4>Ticket</h4>
                           <p>You can Create ticket of users </p>
@@ -314,88 +314,96 @@ function Ticket() {
 
 
                     {isOpen && (
-                      <div className="addNewContactPopup p-3">
-                        <div className="row">
-                          <div className="col-12 heading border-0 bg-transparent">
-                            <i className="fa-light fa-user-plus" />
-                            <h5>Create Ticket</h5>
-                          </div>
-                          <div className="col-xl-12">
-                            <div
-                              className="tableContainer0"
-                              style={{ maxHeight: "calc(100vh - 100px)" }}>
-                              <div className="formLabel">
-                                <label for="">Subject : </label>
-                              </div>
-                              <div className="col-12">
-                                <select
-                                  className="formItem"
-                                  name="" >
-                                  <option value="" disabled>Choose Type</option>
-                                  <option></option>
-                                </select>
-                              </div>
-                              <div className="formLabel">
-                                <label for="">Department : </label>
-
-                              </div>
-
-                              <div className="col-12">
-                                <select
-                                  className="formItem"
-                                  name="" >
-                                  <option value="" disabled>Choose Type</option>
-                                  <option>Support</option>
-                                  <option>Support</option>
-                                  <option>Support</option>
-                                </select>
-                              </div>
-                              <div className="formLabel">
-                                <label for="">Query Type: </label>
-                              </div>
-                              <div className="col-12">
-                                <select
-                                  className="formItem"
-                                  name="" >
-                                  <option value="" disabled>Choose Type</option>
-                                  <option>Minor </option>
-                                  <option>Major</option>
-                                  <option>Critical</option>
-                                  <option>Fatal</option>
-                                </select>
-                              </div>
-                              <div className="formLabel">
-                                <label for="">Massage </label>
-                              </div>
-                              <div className="col-12">
-                                <textarea
-                                  type="text"
-                                  name="did"
-                                  className="formItem" />
-                              </div>
-
+                      <div className="backdropContact">
+                        <div className="addNewContactPopup p-3">
+                          <div className="row">
+                            <div className="col-12 heading border-0 bg-transparent">
+                              <i className="fa-light fa-user-plus" />
+                              <h5>Create Ticket</h5>
                             </div>
-                          </div>
-                          <div className="col-xl-12 mt-2">
-                            <div className="d-flex justify-content-between">
-                              <button
-                                className="panelButton gray ms-0"
-                                onClick={closePopupAndPage}
-                              >
-                                <span className="text">Close</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-caret-left" />
-                                </span>
-                              </button>
-                              <button
-                                className="panelButton me-0"
+                            <div className="col-xl-12">
+                              <div
+                                className="tableContainer0"
+                                style={{ maxHeight: "calc(100vh - 100px)" }}>
+                                <div className='from-group'>
+                                  <div className="formLabel">
+                                    <label for="">Subject : </label>
+                                  </div>
+                                  <div className="col-12">
+                                    <select
+                                      className="formItem"
+                                      name="" >
+                                      <option value="" disabled>Choose Type</option>
+                                      <option></option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className='from-group'>
+                                  <div className="formLabel">
+                                    <label for="">Department : </label>
+                                  </div>
+                                  <div className="col-12">
+                                    <select
+                                      className="formItem"
+                                      name="" >
+                                      <option value="" disabled>Choose Type</option>
+                                      <option>Support</option>
+                                      <option>Support</option>
+                                      <option>Support</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className='from-group'>
+                                  <div className="formLabel">
+                                    <label for="">Query Type: </label>
+                                  </div>
+                                  <div className="col-12">
+                                    <select
+                                      className="formItem"
+                                      name="" >
+                                      <option value="" disabled>Choose Type</option>
+                                      <option>Minor </option>
+                                      <option>Major</option>
+                                      <option>Critical</option>
+                                      <option>Fatal</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className='from-group'>
+                                  <div className="formLabel">
+                                    <label for="">Massage </label>
+                                  </div>
+                                  <div className="col-12">
+                                    <textarea
+                                      type="text"
+                                      name="did"
+                                      className="formItem" />
+                                  </div>
+                                </div>
 
-                              >
-                                <span className="text">Done</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-check" />
-                                </span>
-                              </button>
+                              </div>
+                            </div>
+                            <div className="col-xl-12 mt-4">
+                              <div className="d-flex justify-content-between">
+                                <button
+                                  className="panelButton gray ms-0"
+                                  onClick={closePopupAndPage}
+                                >
+                                  <span className="text">Close</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-caret-left" />
+                                  </span>
+                                </button>
+                                <button
+                                  className="panelButton me-0"
+
+                                >
+                                  <span className="text">Done</span>
+                                  <span className="icon">
+                                    <i className="fa-solid fa-check" />
+                                  </span>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>

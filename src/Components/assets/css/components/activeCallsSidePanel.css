@@ -44,6 +44,7 @@
 
 .callItem.hold {
     border-left-color: #d39000;
+    background-color: #d3000060;
 }
 
 .callItem.active .profilepicHolder::after {

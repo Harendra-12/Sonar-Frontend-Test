@@ -239,7 +239,8 @@ export function LoginComponent() {
           if (expireLogout?.status) {
             toast.success(expireLogout?.message)
             setLoading(false);
-            setLoginDetails(expireLogout?.data)
+            // setLoginDetails(expireLogout?.data)
+            setLoginDetails(logInDetails.filter((item) => item.token !== token))
             setLogInText("You can login now")
           }
         }
@@ -348,7 +349,7 @@ export function LoginComponent() {
         setLoading(false)
         toast.error(checkLogin?.response?.data?.message)
       } else {
-        if(checkLogin?.message === "Network Error"){
+        if (checkLogin?.message === "Network Error") {
           toast.error("Network Error")
           return
         }
