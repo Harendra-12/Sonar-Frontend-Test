@@ -2214,11 +2214,11 @@ function Messages({
                                       <ul className="dropdown-menu" ref={tagDropdownRef}>
                                         {allTags.map((item, key) => {
                                           return (
-                                            <div className="contactTagsAddEdit" style={{ width: '350px' }}>
-                                              <div className="row align-items-center item">
-                                                <div className="col-4">
+                                            <div className="contactTagsAddEdit addTagEdit" style={{ width: '280px' }}>
+                                              <div className="row align-items-center justify-content-between item">
+                                                {/* <div className="col-lg-8 d-flex justify-content-start align-items-center gap-2">
                                                   <h5>
-                                                    <input
+                                                      <input
                                                       value={
                                                         selectedTag === item.id
                                                           ? upDateTag
@@ -2233,19 +2233,34 @@ function Messages({
                                                       className="w-100"
                                                     />
                                                   </h5>
-                                                </div>
-                                                <div className="col-3">
-                                                  <span data-id="0">
-                                                    {
+                                                </div> */}
+                                                <div className="col-lg-8 d-flex justify-content-start gap-2">
+                                                  <span data-id={key}>
+                                                    {/* {
                                                       selectedTag === item.id
                                                         ? upDateTag
                                                         : item.name
-                                                    }
+                                                    } */}
+
+                                                    <input
+                                                      value={
+                                                        selectedTag === item.id
+                                                          ? upDateTag
+                                                          : item.name
+                                                      }
+                                                      onChange={(e) =>
+                                                        setUpDateTag(e.target.value)
+                                                      }
+                                                      placeholder="Please enter tag name"
+                                                      type="text"
+                                                      disabled={selectedTag !== item.id}
+                                                      className="w-100"
+                                                    />
                                                   </span>
                                                 </div>
-                                                <div className="col-auto d-flex justify-content-end pe-0">
+                                                <div className=" col-lg-4 d-flex justify-content-end gap-2">
                                                   <button
-                                                    className="clearButton2"
+                                                    className="clearButton2 tagListIcon badge badge-soft-success rounded-pill"
                                                     onClick={() =>
                                                       handleAssignTask(
                                                         item?.id,
@@ -2255,7 +2270,7 @@ function Messages({
                                                   ><i className="fa-regular fa-check" /></button>
                                                   {selectedTag === item.id ? (
                                                     <button
-                                                      className="clearButton2"
+                                                      className="clearButton2 tagListIcon badge badge-soft-secondary rounded-pill"
                                                       onClick={handleUpdateTag}
                                                     >
                                                       <Tippy content="Click to save your tag!">
@@ -2264,7 +2279,7 @@ function Messages({
                                                     </button>
                                                   ) : (
                                                     <button
-                                                      className="clearButton2"
+                                                      className="clearButton2 tagListIcon badge badge-soft-primary rounded-pill"
                                                       onClick={() => {
                                                         setSelectedTag(item.id);
                                                         setUpDateTag(item.name);
@@ -2277,7 +2292,7 @@ function Messages({
                                                   )}
                                                   <Tippy content="Click to delete your tag!">
                                                     <button
-                                                      className="clearButton2"
+                                                      className="clearButton2 tagListIcon badge  badge-soft-danger rounded-pill"
                                                       onClick={() => handleDeleteTag(item.id)}
                                                     >
                                                       <i className="fa-regular fa-trash text-danger"></i>
@@ -2300,7 +2315,7 @@ function Messages({
                                           );
                                         })}
                                         <li className="p-2 pb-1">
-                                          <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton static">
+                                          <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton static addTag">
                                             <div className="text">Add New Tag</div>
                                           </button>
                                         </li>

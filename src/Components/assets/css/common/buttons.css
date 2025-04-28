@@ -86,7 +86,7 @@
 
 .panelButton {
   width: 100px;
-  height: 30px;
+  height: 35px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -99,6 +99,9 @@
   text-decoration: none;
   margin-left: 10px;
   position: relative;
+}
+.panelButton.addTag{
+  height: 30px;
 }
 
 .panelButton.delete {
