@@ -259,18 +259,8 @@ function Messages({
 
   const resetResizeContent = () => {
     if (leftPanel.current && rightPanel.current) {
-      leftPanel.current.resize(50);
-      rightPanel.current.resize(50);
-    }
-  }
-
-  const handleResizeLeft = () => {
-    if (leftPanel.current) {
-      if (leftPanel.current.isCollapsed()) {
-        leftPanel.current.resize(50);
-      } else {
-        leftPanel.current.collapse();
-      }
+      leftPanel.current.resize(70);
+      rightPanel.current.resize(30);
     }
   }
 
@@ -2118,7 +2108,7 @@ function Messages({
                       id="callDetails"
                     >
                       <PanelGroup autoSaveId="example" direction="horizontal">
-                        <Panel className='leftPanel' defaultSize={70} collapsible={true} minSize={25} ref={leftPanel}>
+                        <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}>
                           <div className="callDetails eFaxCompose newMessageBoxUi pe-0"
                             // style={{ height: "100%" }}
                             id="callDetails"
@@ -3037,14 +3027,16 @@ function Messages({
                             </div>
                           </div>
                         </Panel>
-
-
-
                         <PanelResizeHandle className="resizeHandle">
-                          <button className='clearButton2' onClick={resetResizeContent}>
-                            {/* <i className='fa-solid fa-arrows-rotate' /> */}
-                            <i class="fa-regular fa-arrows-left-right"></i>
-                          </button>
+                          <Tippy content={
+                            <button className='tableButton delete' onClick={resetResizeContent}>
+                              <i className="fa-regular fa-arrows-rotate"></i>
+                            </button>
+                          } allowHTML={true} placement="top" interactive={true}>
+                            <button className='clearButton2'>
+                              <i class="fa-regular fa-arrows-left-right"></i>
+                            </button>
+                          </Tippy>
                         </PanelResizeHandle>
                         {/* ====================== view tab */}
                         {/* {!manageGroupChat && ( */}

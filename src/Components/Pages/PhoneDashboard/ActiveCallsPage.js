@@ -507,10 +507,15 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                             </div>
                                         </Panel>
                                         <PanelResizeHandle className="resizeHandle">
-                                            <button className='clearButton2' onClick={resetResizeContent}>
-                                                {/* <i className='fa-solid fa-arrows-rotate' /> */}
-                                                <i class="fa-regular fa-arrows-left-right"></i>
-                                            </button>
+                                            <Tippy content={
+                                                <button className='tableButton delete' onClick={resetResizeContent}>
+                                                    <i className="fa-regular fa-arrows-rotate"></i>
+                                                </button>
+                                            } allowHTML={true} placement="top" interactive={true}>
+                                                <button className='clearButton2'>
+                                                    <i class="fa-regular fa-arrows-left-right"></i>
+                                                </button>
+                                            </Tippy>
                                         </PanelResizeHandle>
                                         <Panel className='rightPanel' defaultSize={40} collapsible={true} minSize={25} ref={rightPanel}>
                                             <div className="col-12">
