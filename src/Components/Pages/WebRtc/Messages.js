@@ -314,16 +314,16 @@ function Messages({
         const user_details = allAgents?.find((data) => data?.id == item?.user_id)
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[0]]: [
+          [recipient[1]]: [
             {
-              from: recipient[2] === "singleChat" ? (item.user_id === recipient[1] ? recipient[0] : extension) : item.user_name,
+              from: item.user_id,
               body: item?.message_text,
               time: item.created_at,
               user_id: item.user_id,
               user_name: user_details?.username,
               profile_picture: user_details?.profile_picture
             },
-            ...(prevState[recipient[0]] || []),
+            ...(prevState[recipient[1]] || []),
           ],
         }));
       });
@@ -426,11 +426,19 @@ function Messages({
 
     const time = formatDateTime(new Date());
     setIsFreeSwitchMessage(true);
+    const userDetails = allAgents?.find((data) => data?.id == recipient[1])
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[0]]: [
-        ...(prevState[recipient[0]] || []),
-        { from: extension, body: messageInput || selectedUrl, time },
+      [recipient[1]]: [
+        ...(prevState[recipient[1]] || []),
+        { 
+          from: userDetails.id, 
+          body: messageInput || selectedUrl, 
+          time,
+          user_id: userDetails.id,
+          user_name: userDetails?.username,
+          profile_picture: userDetails?.profile_picture
+        },
       ],
     }));
     // Update contact last message
@@ -721,9 +729,17 @@ function Messages({
           // const imageUrl = `${body}`;
 
           // Update the state to include the image
+          const userDetails = allAgents?.find((data) => data?.extension?.extension == from)
           setAllMessage((prevState) => ({
             ...prevState,
-            [from]: [...(prevState[from] || []), { from, body, time }],
+            [userDetails?.id]: [...(prevState[userDetails?.id] || []), 
+            { 
+              from: userDetails?.id, 
+              body, 
+              time,
+              user_id: userDetails.id,
+              user_name: userDetails?.username,
+              profile_picture: userDetails?.profile_picture }],
           }));
 
           // Add number of unread messaeg based on extension
@@ -733,9 +749,16 @@ function Messages({
           }));
         } else {
           // If it's a text message or other type, render as text
+          const userDetails = allAgents?.find((data) => data?.extension?.extension == from)
           setAllMessage((prevState) => ({
             ...prevState,
-            [from]: [...(prevState[from] || []), { from, body, time }],
+            [userDetails.id]: [...(prevState[userDetails.id] || []), { 
+              from: userDetails.id, 
+              body, 
+              time,
+              user_id: userDetails.id,
+              user_name: userDetails?.username,
+              profile_picture: userDetails?.profile_picture }],
           }));
 
           // Play music when message is received
@@ -1217,15 +1240,18 @@ function Messages({
     })
 
     const time = formatDateTime(new Date());
-
+    const userDetails = allAgents?.find((data) => data?.extension?.extension == recipient[0])
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[0]]: [
-        ...(prevState[recipient[0]] || []),
+      [recipient[1]]: [
+        ...(prevState[recipient[1]] || []),
         {
-          from: account.name,
+          from: recipient[1],
           body: messageContent, // Show appropriate text in the message history
-          time
+          time,
+          user_id: userDetails.id,
+          user_name: userDetails?.username,
+          profile_picture: userDetails?.profile_picture
         },
       ],
     }));
@@ -1241,7 +1267,11 @@ function Messages({
     const time = formatDateTime(new Date());
     setAllMessage((prevState) => ({
       ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), { from: groupMessage.user_name, body: groupMessage.sharedMessage, time }],
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), 
+      { 
+        from: groupMessage.user_name, 
+        body: groupMessage.sharedMessage, 
+        time }],
     }));
   }, [groupMessage])
 
@@ -2419,7 +2449,7 @@ function Messages({
                             <div className="messageList" ref={messageListRef}>
                               {recipient[0] ? (
                                 <>
-                                  {allMessage?.[recipient[0]]?.map(
+                                  {allMessage?.[recipient[1]]?.map(
                                     (item, index, arr) => {
                                       const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                       const todayDate = new Date()
