@@ -525,9 +525,9 @@ function OngoingCall({
 
     // LET IT STAY IN COMMENT, ONLY FOR TESTING PURPOSES
     // Internal Calls wont call the API
-    // if (globalSession[0].destination.length < 6) {
-    //   return;
-    // }
+    if (globalSession[0].destination.length < 6) {
+      return;
+    }
 
     try {
       if (session.outgoingInviteRequest) {
