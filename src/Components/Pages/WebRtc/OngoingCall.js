@@ -523,7 +523,6 @@ function OngoingCall({
   async function getDuplicateData() {
     let response;
 
-    // LET IT STAY IN COMMENT, ONLY FOR TESTING PURPOSES
     // Internal Calls wont call the API
     if (globalSession[0].destination.length < 6) {
       return;
