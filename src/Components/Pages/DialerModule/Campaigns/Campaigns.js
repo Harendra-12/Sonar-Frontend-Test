@@ -141,7 +141,7 @@ function Campaigns() {
                                         </div>
                                       </td>
                                       <td><b>{item.title}</b></td>
-                                      <td>{item?.dialer?.type}</td>
+                                      <td style={{ textTransform: 'capitalize' }}>{item?.dialer?.type}</td>
                                       <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
                                       <td className="">
                                         <Tippy content={
@@ -264,9 +264,9 @@ function Campaigns() {
                                               {item.agents?.slice(0, 4).map((agent, index) => {
                                                 return (
                                                   <Tippy key={index} content={agent.user_id}>
-                                                    {item.profile_picture ? (
+                                                    {agent.profile_picture ? (
                                                       <img
-                                                        src={item.profile_picture}
+                                                        src={agent.profile_picture}
                                                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
                                                       />
                                                     ) : (
