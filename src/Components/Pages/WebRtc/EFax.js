@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "../../CommonComponents/DarkModeToggle";
 import { useSIPProvider } from "modify-react-sipjs";
 import LogOutPopUp from "./LogOutPopUp";
+import HeaderApp from "./HeaderApp";
 
 function EFax({ did }) {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function EFax({ did }) {
   const extension = account?.extension?.extension || "";
   const [allLogOut, setAllLogOut] = useState(false);
   const [showUserHistory, setShowUserHistory] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
 
   useEffect(() => {
@@ -172,114 +173,7 @@ function EFax({ did }) {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 ps-xl-0">
-                <div className="newHeader">
-                  <div className="col-auto" style={{ padding: "0 10px" }}>
-                    <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                      <button
-                        className="clearButton2 text-dark"
-                        onClick={() => featureUnderdevelopment()}
-                      >
-                        <i className="fa-solid fa-chevron-left fs-4"></i>
-                      </button>{" "}
-                      E-Fax{" "}
-                      <button className="clearButton2">
-                        <i
-                          className="fa-regular fa-arrows-rotate fs-5"
-                          style={{ color: "var(--webUtilGray)" }}
-                          onClick={() => featureUnderdevelopment()}
-                        ></i>
-                      </button>
-                    </h3>
-                  </div>
-                  <div className="d-flex justify-content-end align-items-center">
-                    <div className="col-9">
-                      <input
-                        type="search"
-                        name="Search"
-                        placeholder="Search users, groups or chat"
-                        className="formItem fw-normal"
-                        style={{ backgroundColor: "var(--searchBg)" }}
-                        onChange={() => featureUnderdevelopment()}
-                      />
-                    </div>
-                    <div className="col-auto ms-2">
-                      <button
-                        className="clearButton2 xl"
-                        effect="ripple"
-                        onClick={() => featureUnderdevelopment()}
-                      >
-                        <i className="fa-regular fa-bell" />
-                      </button>
-                    </div>
-                    <DarkModeToggle marginLeft={"2"} />
-                    <div className="col-auto">
-                      <div className="dropdown">
-                        <div
-                          className="myProfileWidget"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          {/* <div className="profileHolder" id="profileOnlineNav">
-                            <img
-                              src={account?.profile_picture}
-                              alt="profile"
-                              onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                            />
-                          </div> */}
-                          {/* <div className="profileName">
-                            {account?.username}{" "}
-                            <span className="status">Available</span>
-                          </div> */}
-
-                          <i class="fa-solid fa-right-from-bracket"></i>
-                        </div>
-                        <ul className="dropdown-menu">
-                          <li
-                            onClick={() => {
-                              if (allCallCenterIds.length > 0) {
-                                setAllLogOut(true);
-                              } else {
-                                handleLogOut();
-                              }
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Logout
-                            </div>
-                          </li>
-                          <li
-                            onClick={() => {
-                              sessionManager.disconnect();
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Disconnect
-                            </div>
-                          </li>
-                          <li
-                            onClick={() => {
-                              sessionManager.connect();
-                            }}
-                          >
-                            <div
-                              className="dropdown-item"
-                              style={{ cursor: "pointer" }}
-                            >
-                              Reconnect
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <HeaderApp title={"E-Fax"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
               </div>
 
               <div className="col-xxl-5 col-xl-6 allCallHistory pb-0">
@@ -691,7 +585,7 @@ function EFax({ did }) {
 
               {/* THIS UI WILL BE SHOWN WHEN USER CLICKS A EFAX MESSAGE */}
               {showUserHistory && (
-                <div  className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
+                <div className="col-xxl-7 col-xl-6 callDetails eFaxCompose"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >

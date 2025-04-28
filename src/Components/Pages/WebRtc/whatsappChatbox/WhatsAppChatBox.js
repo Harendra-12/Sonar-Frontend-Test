@@ -3,12 +3,14 @@ import Header from "../../../CommonComponents/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { get, set } from "react-hook-form";
 import {
+  featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
 } from "../../../GlobalFunction/globalFunction";
 import { toast } from "react-toastify";
 import { api_url } from "../../../../urls";
 import { ActionType } from "../../../Redux/reduxActionType";
+import HeaderApp from "../HeaderApp";
 
 const WhatsAppChatBox = ({ initial }) => {
   const dispatch = useDispatch();
@@ -412,29 +414,7 @@ const WhatsAppChatBox = ({ initial }) => {
 
 
         <div className={!initial ? "col-12 px-0" : "col-12 px-0 d-none"}>
-          <div className="newHeader">
-            <div className="col-auto" style={{ padding: "0 10px" }}>
-              <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
-                WhatsApp
-              </h3>
-            </div>
-            <div className="d-flex justify-content-end align-items-center">
-              <div className="col-9">
-                <input
-                  type="search"
-                  name="Search"
-                  placeholder="Search users, groups or chat"
-                  className="formItem fw-normal"
-                  style={{ backgroundColor: "var(--searchBg)" }}
-                />
-              </div>
-              <div className="col-auto ms-2">
-                <button className="clearButton2 xl" effect="ripple">
-                  <i className="fa-regular fa-bell" />
-                </button>
-              </div>
-            </div>
-          </div>
+          <HeaderApp title={"WhatsApp"} loading={loading} setLoading={setLoading} refreshApi={() => featureUnderdevelopment()} />
         </div>
 
         {
