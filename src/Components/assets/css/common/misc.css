@@ -700,6 +700,11 @@ input[type=number] {
     color: var(--immortalBlack);
 }
 
+.contactTagsAddEdit.addTagEdit input {
+    text-align: center;
+    padding-block: 3px;
+}
+
 .contactTagsAddEdit span {
     max-width: 100px;
     overflow: hidden;
@@ -2143,9 +2148,66 @@ input[type=number] {
 
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
-    background: rgba(119, 139, 159, 0.102);
+.dropdown-item:focus, .dropdown-item:hover,
+.dropdown-item:active  {
+    background: rgba(119, 139, 159, 0.102) !important;
+}
+.dropdown-item:focus-visible{
+    border: none !important;
+    outline: none !important;
 }
 .contactTagsAddEdit.addTagEdit h5 input{
     max-width: 50px !important;
+}
+
+/* ============================ webrtc notification dropdown */
+
+.fs-17 {
+    font-size: 1.0625rem;
+}
+.notification_dropdown p{
+    color: var(--immortalBlack);
+}
+.notification_dropdown span{
+    color: var(--gray);
+}
+
+.bg-pink-transparent {
+    background-color: var(--pink-rgb-bg) !important;
+    color: var(--pink-rgb-text) !important;
+}
+.bg-secondary-transparent {
+    background-color: var(--secondary-rgb-bg) !important;
+    color: var(--secondary-rgb-text) !important;
+}
+.bg-primary-transparent {
+    background-color: var(--primary01) !important;
+    color: var(--primary-color01) !important;
+}
+.badge_icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeBtn{
+    transition: all 0.4s ease-in-out;
+}
+.closeBtn:hover{
+   color: hsl(345, 100%, 50%);
+}
+.text_gray{
+    color: var(--gray);
+}
+.notification_dropdown .dropdown-item{
+    border-bottom: 1px solid var(--me-border1);
+}
+.notification_dropdown .dropdown-menu .header{
+    border-bottom: 1px solid var(--me-border1);
+}
+.dropdown-toggle::after {
+    display:none;
 }

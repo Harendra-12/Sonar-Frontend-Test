@@ -258,7 +258,7 @@ function DidListing({ page }) {
                                   </div>
                                 </div>
                                 <div className="col-10 ps-0 px-0">
-                                  <h4 className="mb-2 text-center">Warning!</h4>
+                                  <h4 className="mb-2 text-center text-orange">Warning!</h4>
                                   <p className='text-center'>All number is assign with other module please add <Link to="/did-add">new number</Link>!</p>
                                   <div className="mt-3 logoutPopup d-flex justify-content-center">
                                     <button type="button" class="btn btn_info" onClick={() => setAddNew(false)}>

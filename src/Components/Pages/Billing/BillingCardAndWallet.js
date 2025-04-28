@@ -216,7 +216,7 @@ const BillingCardAndWallet = () => {
                                                                             <td>{formatTimeWithAMPM(item?.transaction_date?.split(" ")[1])}</td>
                                                                             <td>{item?.description}</td>
                                                                             <td className='text-center'>
-                                                                                <button className='tableButton' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
+                                                                                <button className='tableButton mx-auto' onClick={() => downloadImage(item.invoice_url, `${item.description}invoice`)}>
                                                                                     <i class="fa-regular fa-download"></i>
                                                                                 </button>
                                                                             </td>
