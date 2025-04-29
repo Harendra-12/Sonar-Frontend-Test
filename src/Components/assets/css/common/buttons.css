@@ -21,7 +21,9 @@
   justify-content: center;
   transition: 0.2s ease-in-out;
   padding: 0;
+  flex-shrink: 0;
 }
+
 
 .clearButton2.white {
   background-color: transparent;
@@ -84,7 +86,7 @@
 
 .panelButton {
   width: 100px;
-  height: 35px;
+  height: 30px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -972,4 +974,11 @@
   justify-content: center;
   align-items: center;
   font-size: 1rem;
+}
+
+
+.clearButton2.tagListIcon{
+  width: 30px;
+  height: 30px;
+  font-size: 13px !important;
 }

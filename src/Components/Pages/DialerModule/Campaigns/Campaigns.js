@@ -141,7 +141,7 @@ function Campaigns() {
                                         </div>
                                       </td>
                                       <td><b>{item.title}</b></td>
-                                      <td>{item?.dialer?.type}</td>
+                                      <td style={{ textTransform: 'capitalize' }}>{item?.dialer?.type}</td>
                                       <td>{item.business_numbers ? JSON.parse(item.business_numbers).length : 0}</td>
                                       <td className="">
                                         <Tippy content={
@@ -152,7 +152,7 @@ function Campaigns() {
                                               >
                                                 LEADS IN TOTAL
                                               </p>
-                                              <span className="test-demos ms-2">1000</span>
+                                              <span className="test-demos ms-2">{item?.total_leads || 0}</span>
                                             </div>
                                             <ul>
                                               <li>
@@ -168,13 +168,18 @@ function Campaigns() {
                                                 </p>
                                                 <div className="specialProgressWrap">
                                                   <div className="specialProgress">
-                                                    <div className='segment success' style={{ width: '85%' }}></div>
-                                                    <div className='segment fail' style={{ width: '5%' }}></div>
-                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                    <div className='segment success'
+                                                      style={{ width: `${((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                    >
+                                                    </div>
+                                                    <div className='segment pending'
+                                                      style={{ width: `${(100 - (parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                    >
+                                                    </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>0.00%</p>
-                                                    <span>0</span>
+                                                    <p>{((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <span>{item?.complete_records || 0}</span>
                                                   </div>
                                                 </div>
                                               </li>
@@ -191,13 +196,17 @@ function Campaigns() {
                                                 </p>
                                                 <div className="specialProgressWrap">
                                                   <div className="specialProgress">
-                                                    <div className='segment success' style={{ width: '85%' }}></div>
-                                                    <div className='segment fail' style={{ width: '5%' }}></div>
-                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                    <div className='segment success'
+                                                      style={{ width: `${((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                    >
+                                                    </div>
+                                                    <div className='segment pending'
+                                                      style={{ width: `${(100 - (parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}>
+                                                    </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>0.00%</p>
-                                                    <span>0</span>
+                                                    <p>{((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <span>{item?.failed_records || 0}</span>
                                                   </div>
                                                 </div>
                                               </li>
@@ -214,13 +223,18 @@ function Campaigns() {
                                                 </p>
                                                 <div className="specialProgressWrap">
                                                   <div className="specialProgress">
-                                                    <div className='segment success' style={{ width: '85%' }}></div>
-                                                    <div className='segment fail' style={{ width: '5%' }}></div>
-                                                    <div className='segment pending' style={{ width: '10%' }}></div>
+                                                    <div className='segment success'
+                                                      style={{ width: `${((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                    >
+                                                    </div>
+                                                    <div className='segment pending'
+                                                      style={{ width: `${(100 - (parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}
+                                                    >
+                                                    </div>
                                                   </div>
                                                   <div className="specialProgressText">
-                                                    <p>0.00%</p>
-                                                    <span>0</span>
+                                                    <p>{((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                                    <span>{item?.untouched_leads || 0}</span>
                                                   </div>
                                                 </div>
                                               </li>
@@ -232,13 +246,13 @@ function Campaigns() {
                                             style={{ cursor: "pointer" }}
                                           >
                                             <div className="specialProgress">
-                                              <div className='segment success' style={{ width: '85%' }}></div>
-                                              <div className='segment fail' style={{ width: '5%' }}></div>
-                                              <div className='segment pending' style={{ width: '10%' }}></div>
+                                              <div className='segment success' style={{ width: `${((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
+                                              <div className='segment fail' style={{ width: `${((parseFloat(item?.failed_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
+                                              <div className='segment pending' style={{ width: `${((parseFloat(item?.untouched_leads || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%` }}></div>
                                             </div>
                                             <div className="specialProgressText">
-                                              <p>0.00%</p>
-                                              <span>0 of 1000</span>
+                                              <p>{((parseFloat(item?.complete_records || 0) / parseFloat(item?.total_leads || 0)) * 100).toFixed(2)}%</p>
+                                              <span>{item?.complete_records || 0} of {item?.total_leads || 0}</span>
                                             </div>
                                           </div>
                                         </Tippy>
@@ -250,9 +264,9 @@ function Campaigns() {
                                               {item.agents?.slice(0, 4).map((agent, index) => {
                                                 return (
                                                   <Tippy key={index} content={agent.user_id}>
-                                                    {item.profile_picture ? (
+                                                    {agent.profile_picture ? (
                                                       <img
-                                                        src={item.profile_picture}
+                                                        src={agent.profile_picture}
                                                         onError={(e) => e.target.src = require('../../../assets/images/placeholder-image.webp')}
                                                       />
                                                     ) : (

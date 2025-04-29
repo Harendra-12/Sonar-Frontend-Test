@@ -1350,16 +1350,18 @@ function CardAndBilling() {
             <div className="row h-100 justify-content-center align-items-center">
               <div className="row content col-xl-4 col-md-5">
                 <div className="col-2 px-0">
-                  <div className="iconWrapper">
-                    <i className="fa-duotone fa-triangle-exclamation"></i>
+                  <div className="iconWrapper mb-2">
+                    <i className="fa-duotone fa-triangle-exclamation fs-1"></i>
                   </div>
                 </div>
-                <div className="col-10 ps-0">
-                  <h4>{disableCard ? "Warning" : "Confirmation"}!</h4>
-                  {disableCard
+                <div className="col-12 ps-0">
+                  <h4 className="text-center text-orange mb-1">{disableCard ? "Warning" : "Confirmation"}!</h4>
+                 <p className="text-center">
+                 {disableCard
                     ? "Are you sure you want to disable the selected card ?"
                     : "Are you sure you want to activate the selected card ?"}
-                  <div className="mt-2 d-flex justify-content-between">
+                 </p>
+                  <div className="mt-4 d-flex justify-content-center gap-2">
                     <button
                       className="panelButton m-0"
                       onClick={handleConfirmClick}
