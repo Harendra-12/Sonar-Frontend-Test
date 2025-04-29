@@ -418,7 +418,7 @@ function Messages({
     const messageType = checkMessageType(messageContent)
     sendMessage({
       "sharedMessage": messageContent,
-      "from": account.id,
+      "from": account?.id,
       "to": recipient[1],
       "key": "peerchat",
       "action": "peerchat",
@@ -427,7 +427,7 @@ function Messages({
 
     const time = formatDateTime(new Date());
     setIsFreeSwitchMessage(true);
-    const userDetails = allAgents?.find((data) => data?.id == recipient[1])
+    const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[1]]: [
