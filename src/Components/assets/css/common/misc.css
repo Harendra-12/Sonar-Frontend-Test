@@ -2083,38 +2083,44 @@ input[type=number] {
 
 .mail_table table tbody tr:nth-child(even) {
     background: transparent;
-  }
-  .mail_table table tbody tr:hover{
+}
+
+.mail_table table tbody tr:hover {
     background: var(--table-bg-active);
-  }
-  .mail_table table tbody tr.active{
+}
+
+.mail_table table tbody tr.active {
     background: var(--table-bg-active);
-  }
+}
 
 
-  .popup.music .test-user {
+.popup.music .test-user {
     color: var(--black);
-  }
-  .fa-cloud-arrow-up{
+}
+
+.fa-cloud-arrow-up {
     color: #03c2f4;
-  }
-  .bg_light{
+}
+
+.bg_light {
     background: var(--config-bg);
-  }
-  .popupBox{
+}
+
+.popupBox {
     max-width: 680px;
     width: 100%;
     margin-inline: auto;
-  }
-  .css-64zmo3-control{
+}
 
-  }
-  .accordion-button{
+.css-64zmo3-control {}
+
+.accordion-button {
     border-radius: 12px;
-  }
-  .accordion-item{
+}
+
+.accordion-item {
     margin-bottom: 10px;
-  }
+}
 
 
 /* .mail_table table tbody tr:hover {
@@ -2124,7 +2130,7 @@ input[type=number] {
 .mail_table table tbody tr.active {
     background: #f3f6f8;
 } */
-.offline_messages{
+.offline_messages {
     background: var(--table-delete-bg);
     color: var(--table-delete-text);
     padding: 10px;
@@ -2134,6 +2140,7 @@ input[type=number] {
     z-index: 9999;
     font-weight: 500;
 }
+
 .btn-close {
     color: #dddada;
 }
@@ -2143,20 +2150,24 @@ input[type=number] {
     background-color: rgba(255, 255, 255, 0.07) !important;
     border-color: rgba(204, 204, 204, 0.18) !important;
 }
-.css-5pixxi-singleValue{
+
+.css-5pixxi-singleValue {
     color: var(--black) !important;
 
 }
 
-.dropdown-item:focus, .dropdown-item:hover,
-.dropdown-item:active  {
+.dropdown-item:focus,
+.dropdown-item:hover,
+.dropdown-item:active {
     background: rgba(119, 139, 159, 0.102) !important;
 }
-.dropdown-item:focus-visible{
+
+.dropdown-item:focus-visible {
     border: none !important;
     outline: none !important;
 }
-.contactTagsAddEdit.addTagEdit h5 input{
+
+.contactTagsAddEdit.addTagEdit h5 input {
     max-width: 50px !important;
 }
 
@@ -2165,10 +2176,12 @@ input[type=number] {
 .fs-17 {
     font-size: 1.0625rem;
 }
-.notification_dropdown p{
+
+.notification_dropdown p {
     color: var(--immortalBlack);
 }
-.notification_dropdown span{
+
+.notification_dropdown span {
     color: var(--gray);
 }
 
@@ -2176,15 +2189,18 @@ input[type=number] {
     background-color: var(--pink-rgb-bg) !important;
     color: var(--pink-rgb-text) !important;
 }
+
 .bg-secondary-transparent {
     background-color: var(--secondary-rgb-bg) !important;
     color: var(--secondary-rgb-text) !important;
 }
+
 .bg-primary-transparent {
     background-color: var(--primary01) !important;
     color: var(--primary-color01) !important;
 }
-.badge_icon{
+
+.badge_icon {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -2193,21 +2209,89 @@ input[type=number] {
     align-items: center;
 }
 
-.closeBtn{
+.closeBtn {
     transition: all 0.4s ease-in-out;
 }
-.closeBtn:hover{
-   color: hsl(345, 100%, 50%);
+
+.closeBtn:hover {
+    color: hsl(345, 100%, 50%);
 }
-.text_gray{
+
+.text_gray {
     color: var(--gray);
 }
-.notification_dropdown .dropdown-item{
+
+.notification_dropdown .dropdown-item {
     border-bottom: 1px solid var(--me-border1);
 }
-.notification_dropdown .dropdown-menu .header{
+
+.notification_dropdown .dropdown-menu .header {
     border-bottom: 1px solid var(--me-border1);
 }
+
 .dropdown-toggle::after {
-    display:none;
+    display: none;
 }
+
+
+.pulse.pulse-secondary {
+    box-shadow: 0 0 0 rgba(35, 183, 229, 0.4);
+}
+
+.bg-secondary {
+    background-color: #23b7e5 !important;
+}
+
+.pulse {
+    position: absolute;
+    inset-block-start: -4px;
+    inset-inline-end: -1px;
+    cursor: pointer;
+    animation: pulse_secondary 2s infinite;
+    color: #fff !important;
+}
+
+.header-icon-badge {
+    padding: 3px 5px;
+    font-size: .625rem;
+}
+
+.badge {
+
+    font-weight: 600;
+    border-radius: .25rem;
+}
+.fa-bell{
+    animation: bell 2s infinite;
+    color: var(--black);
+}
+
+@keyframes pulse_secondary {
+    0% {
+        box-shadow: 0 0 0 0 rgb(132 226 255 / 97%);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgb(16 189 241 / 3%);
+    }
+    100% {
+        box-shadow: 0 0 0 0 #84e2ff00;
+    }
+}
+
+@keyframes bell {
+    0% {
+      opacity: 1;
+    }
+  
+    25% {
+      transform: rotate(15deg);
+    }
+  
+    50% {
+      transform: rotate(-15deg) ;
+    }
+  
+    75% {
+      transform: rotate(10deg);
+    }
+  }

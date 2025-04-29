@@ -985,3 +985,16 @@
   height: 30px;
   font-size: 13px !important;
 }
+.css-1stt0h2-control{
+  background: var(--white) !important;
+}
+
+.css-2fr8v9-menu{
+  background: var(--white) !important;
+}
+.css-yrf5d8-option:active {
+  background-color: rgba(119, 139, 159, 0.102) !important;
+}
+.css-1fetajk-option {
+  background-color: rgba(119, 139, 159, 0.102) !important;
+}

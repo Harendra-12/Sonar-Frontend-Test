@@ -70,12 +70,13 @@ function HeaderApp({ title, loading, setLoading, refreshApi }) {
                     <div className="col-auto ms-2 ">
                         <div class="dropdown notification_dropdown">
                             <button
-                                className="clearButton2 dropdown-toggle"
-                                effect="ripple"
+                                className="border-0 bg-transparent dropdown-toggle position-relative"
+                                // effect="ripple"
                                 // onClick={() => featureUnderdevelopment()}
                                 data-bs-toggle="dropdown" aria-expanded="false"
                             >
                                 <i className="fa-regular fa-bell" />
+                                <span class="badge bg-secondary rounded-pill header-icon-badge pulse pulse-secondary" id="notification-icon-badge">5</span>
                             </button>
                             <div className="dropdown-menu">
                                 <div class="p-2 header">
