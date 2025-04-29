@@ -314,7 +314,7 @@ function Messages({
         const user_details = allAgents?.find((data) => data?.id == item?.user_id)
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[1]]: [
+          [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
             {
               from: item.user_id,
               body: item?.message_text,
@@ -324,7 +324,7 @@ function Messages({
               profile_picture: user_details?.profile_picture,
               message_type:item.message_type
             },
-            ...(prevState[recipient[1]] || []),
+            ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
           ],
         }));
       });
@@ -430,8 +430,8 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[1]]: [
-        ...(prevState[recipient[1]] || []),
+      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+        ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
         { 
           from: userDetails.id, 
           body: messageInput || selectedUrl, 
@@ -444,12 +444,12 @@ function Messages({
     }));
     // Update contact last message
     const contactIndex = contact.findIndex(
-      (contact) => contact.extension === recipient[0]
+      (contact) => contact.id === recipient[1]
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
-      newContact[contactIndex].last_message_data.created_at = time;
+      newContact[contactIndex].last_message_data.created_at = time; 
       setContact(newContact);
     }
     setActiveTab("all");
@@ -1249,7 +1249,7 @@ function Messages({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
       "sharedMessage": messageContent,
-      "group_id": recipient[1],
+      "group_id": recipient[0],
       "group_name": recipient[0],
       "user_name": account.name,
       "user_extension": account.extension.extension
@@ -1259,10 +1259,10 @@ function Messages({
     const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[1]]: [
-        ...(prevState[recipient[1]] || []),
+      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+        ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
         {
-          from: recipient[1],
+          from: recipient[2] == "singleChat" ? recipient[1] : recipient[0],
           body: messageContent, // Show appropriate text in the message history
           time,
           user_id: userDetails.id,
@@ -1605,7 +1605,7 @@ function Messages({
                                     setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
-                                        [item?.extension]: _,
+                                        [item?.id]: _,
                                         ...newState
                                       } = prevState;
                                       return newState;
@@ -2465,8 +2465,8 @@ function Messages({
                             <div className="messageList" ref={messageListRef}>
                               {recipient[0] ? (
                                 <>
-                                  {allMessage?.[recipient[1]]?.map(
-                                    (item, index, arr) => {
+                                  {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
+                                    (item, index, arr) => {                           
                                       const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                       const todayDate = new Date()
                                         .toISOString()
@@ -3154,7 +3154,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages = {allMessage?.[recipient[0]]}
+                              messages = {allMessage?.[recipient[1]]}
                             />
                           </div>
                         )
