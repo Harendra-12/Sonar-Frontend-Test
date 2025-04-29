@@ -1239,9 +1239,9 @@ function Messages({
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
-
+    
     const time = formatDateTime(new Date());
-    const userDetails = allAgents?.find((data) => data?.extension?.extension == recipient[0])
+    const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
       [recipient[1]]: [
@@ -2488,7 +2488,7 @@ function Messages({
                                             </div>
                                           )}
                                           {/* Message content */}
-                                          {item.from === (recipient[2] === "groupChat" ? account.name : extension) ? (
+                                          {item.from !== recipient[1] ? (
                                             <div className="messageItem sender">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
@@ -2528,7 +2528,7 @@ function Messages({
                                               </div>
                                             </div>
                                           ) : (
-
+                                            
                                             <div className="messageItem receiver">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
