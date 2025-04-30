@@ -225,7 +225,10 @@ function Messages({
       const tagData = await generalGetFunction("/tags/all");
 
       if (apiData?.status && apiData.data.length > 0) {
-        setContact(apiData.data);
+        const filteredData = apiData?.data?.sort((a, b) =>
+          new Date(b?.last_message_data?.created_at) - new Date(a?.last_message_data?.created_at)
+        );
+        setContact(filteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find((data) => data?.id == apiData?.data[0]?.id)?.profile_picture
           setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email, profile_img]);
@@ -280,7 +283,7 @@ function Messages({
   };
 
   // Formate date for time stamp to get time when message arrives
-  function formatRelativeTime(dateString) {
+  function formatRelativeTime(dateString) {    
     const date = new Date(dateString);
     const now = new Date();
 
@@ -322,7 +325,7 @@ function Messages({
               user_id: item.user_id,
               user_name: user_details?.username,
               profile_picture: user_details?.profile_picture,
-              message_type:item.message_type
+              message_type: item.message_type
             },
             ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
           ],
@@ -432,9 +435,9 @@ function Messages({
       ...prevState,
       [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
         ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
-        { 
-          from: userDetails.id, 
-          body: messageInput || selectedUrl, 
+        {
+          from: userDetails.id,
+          body: messageInput || selectedUrl,
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
@@ -449,7 +452,9 @@ function Messages({
     if (contactIndex !== -1) {
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
-      newContact[contactIndex].last_message_data.created_at = time; 
+      newContact[contactIndex].last_message_data.created_at = time;
+      newContact?.splice(contactIndex, 1)
+      newContact.unshift(contact[contactIndex])
       setContact(newContact);
     }
     setActiveTab("all");
@@ -566,8 +571,8 @@ function Messages({
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
-  useEffect(()=>{
-    if(incomingMessage){
+  useEffect(() => {
+    if (incomingMessage) {
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       setIsFreeSwitchMessage(true);
@@ -578,7 +583,7 @@ function Messages({
         (agent) => agent?.id === from
       );
       const time = formatDateTime(new Date());
-      
+
       const contactIndex = contact.findIndex(
         (contact) => contact.id === agentDetails?.id
       );
@@ -627,9 +632,9 @@ function Messages({
         // Update the state to include the image
         setAllMessage((prevState) => ({
           ...prevState,
-          [from]: [...(prevState[from] || []), { 
-            from, 
-            body, 
+          [from]: [...(prevState[from] || []), {
+            from,
+            body,
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
@@ -646,9 +651,9 @@ function Messages({
         // If it's a text message or other type, render as text
         setAllMessage((prevState) => ({
           ...prevState,
-          [from]: [...(prevState[from] || []), { 
-            from, 
-            body, 
+          [from]: [...(prevState[from] || []), {
+            from,
+            body,
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
@@ -672,14 +677,13 @@ function Messages({
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
-          newContact[contactIndex].last_message_data.message_text =
-            messageInput;
+          newContact[contactIndex].last_message_data.message_text = body;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
         }
       }
     }
-  },[incomingMessage])
+  }, [incomingMessage])
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -1236,7 +1240,7 @@ function Messages({
 
   // function to add display logic in messages
 
-  // Logic to send group messages
+  // Logic to send group messages 
   function sendGroupMessage(selectedUrl) {
     let messageContent;
     if (selectedUrl) {
@@ -1244,17 +1248,18 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
-
+    const messageType = checkMessageType(messageContent)
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
       "sharedMessage": messageContent,
-      "group_id": recipient[0],
+      "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
-      "user_extension": account.extension.extension
+      "user_extension": account.extension.extension,
+      "message_type": messageType
     })
-    
+
     const time = formatDateTime(new Date());
     const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
@@ -1283,11 +1288,12 @@ function Messages({
     const time = formatDateTime(new Date());
     setAllMessage((prevState) => ({
       ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), 
-      { 
-        from: groupMessage.user_name, 
-        body: groupMessage.sharedMessage, 
-        time }],
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
+      {
+        from: groupMessage.user_name,
+        body: groupMessage.sharedMessage,
+        time
+      }],
     }));
   }, [groupMessage])
 
@@ -1588,12 +1594,12 @@ function Messages({
                             return (
                               <div
                                 data-bell={
-                                  unreadMessage[item?.extension]
-                                    ? unreadMessage[item?.extension]
+                                  unreadMessage[item?.id]
+                                    ? unreadMessage[item?.id]
                                     : ""
                                 }
                                 className={
-                                  recipient[0] === item?.extension
+                                  recipient[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -1647,6 +1653,7 @@ function Messages({
                                         </span>
                                       </p>
                                       <h5>
+                                        {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
                                       <div className="contactTags">
@@ -2209,7 +2216,7 @@ function Messages({
                                         className="profileHolder"
                                         id={"profileOfflineNav"}
                                       >
-                                        <i className="fa-light fa-users fs-5"></i>
+                                        <i className="fa-light fa-user fs-5"></i>
                                       </div>
                                   }
                                   <h4 className="">
@@ -2466,7 +2473,7 @@ function Messages({
                               {recipient[0] ? (
                                 <>
                                   {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
-                                    (item, index, arr) => {                           
+                                    (item, index, arr) => {
                                       const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                       const todayDate = new Date()
                                         .toISOString()
@@ -2536,14 +2543,14 @@ function Messages({
                                                         className="profileHolder"
                                                         id={"profileOfflineNav"}
                                                       >
-                                                        <i className="fa-light fa-users fs-5"></i>
+                                                        <i className="fa-light fa-user fs-5"></i>
                                                       </div>
                                                   }
                                                 </div>
                                               </div>
                                             </div>
                                           ) : (
-                                            
+
                                             <div className="messageItem receiver">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
@@ -2557,11 +2564,12 @@ function Messages({
                                                         />
                                                       </div>
                                                       :
-                                                      <div
-                                                        className="profileHolder"
-                                                        id={"profileOfflineNav"}
-                                                      >
-                                                        <i className="fa-light fa-users fs-5"></i>
+                                                      <div className="profileHolder">
+                                                        <img
+                                                          src={require('../../assets/images/placeholder-image.webp')}
+                                                          alt="profile"
+                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        />
                                                       </div>
                                                   }
 
@@ -3154,7 +3162,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages = {allMessage?.[recipient[1]]}
+                              messages={allMessage?.[recipient[1]]}
                             />
                           </div>
                         )
