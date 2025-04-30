@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const MessageProfileDetails = ({recipient,messages}) => {
+const MessageProfileDetails = ({recipient,messages,isActiveAgentsOpen}) => {
     // console.log("Messages",messages);
     const [media,setMedia]=useState([])
     const [files,setFiles]=useState([])
@@ -14,8 +14,8 @@ const MessageProfileDetails = ({recipient,messages}) => {
     console.log("File",files)
     
   return (
-    <div className="messageOverlay py-3 h-100">
-      <div className="p-4">
+    <div className="messageOverlay py-3 h-100" style={{ overflow: isActiveAgentsOpen ? 'unset' : 'hidden', transition: 'all 0.4s ease-in-out', }}>
+      <div className="p-4" >
         <div className="col">
           <div className="d-flex justify-content-start align-items-center gap-2 mb-2 flex-column">
             {recipient[5] != null ? (
