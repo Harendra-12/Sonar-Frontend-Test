@@ -33,7 +33,7 @@ const MessageProfileDetails = ({ recipient, messages }) => {
               </div>
             ) : (
               <div className="profileHolder" id={"profileOfflineNav"}>
-                <i className="fa-light fa-users fs-5"></i>
+                <i className="fa-light fa-user fs-5"></i>
               </div>
             )}
             <p className="mb-0 fs-6 fw-semibold">

@@ -225,7 +225,10 @@ function Messages({
       const tagData = await generalGetFunction("/tags/all");
 
       if (apiData?.status && apiData.data.length > 0) {
-        setContact(apiData.data);
+        const filteredData = apiData?.data?.sort((a, b) =>
+          new Date(b?.last_message_data?.created_at) - new Date(a?.last_message_data?.created_at)
+        );
+        setContact(filteredData);
         if (!extensionFromCdrMessage) {
           const profile_img = allAgents?.find((data) => data?.id == apiData?.data[0]?.id)?.profile_picture
           setRecipient([apiData.data[0].extension, apiData.data[0].id, "singleChat", apiData?.data[0]?.name, apiData?.data[0]?.email, profile_img]);
@@ -280,7 +283,7 @@ function Messages({
   };
 
   // Formate date for time stamp to get time when message arrives
-  function formatRelativeTime(dateString) {
+  function formatRelativeTime(dateString) {    
     const date = new Date(dateString);
     const now = new Date();
 
@@ -451,6 +454,8 @@ function Messages({
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
       newContact[contactIndex].last_message_data.created_at = time;
+      newContact?.splice(contactIndex, 1)
+      newContact.unshift(contact[contactIndex])
       setContact(newContact);
     }
     setActiveTab("all");
@@ -675,8 +680,7 @@ function Messages({
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
-          newContact[contactIndex].last_message_data.message_text =
-            messageInput;
+          newContact[contactIndex].last_message_data.message_text = body;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
         }
@@ -1239,7 +1243,7 @@ function Messages({
 
   // function to add display logic in messages
 
-  // Logic to send group messages
+  // Logic to send group messages 
   function sendGroupMessage(selectedUrl) {
     let messageContent;
     if (selectedUrl) {
@@ -1247,15 +1251,16 @@ function Messages({
     } else {
       messageContent = messageInput.trim();
     }
-
+    const messageType = checkMessageType(messageContent)
     sendMessage({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
       "sharedMessage": messageContent,
-      "group_id": recipient[0],
+      "group_id": recipient[1],
       "group_name": recipient[0],
       "user_name": account.name,
-      "user_extension": account.extension.extension
+      "user_extension": account.extension.extension,
+      "message_type": messageType
     })
 
     const time = formatDateTime(new Date());
@@ -1594,12 +1599,12 @@ function Messages({
                             return (
                               <div
                                 data-bell={
-                                  unreadMessage[item?.extension]
-                                    ? unreadMessage[item?.extension]
+                                  unreadMessage[item?.id]
+                                    ? unreadMessage[item?.id]
                                     : ""
                                 }
                                 className={
-                                  recipient[0] === item?.extension
+                                  recipient[1] === item?.id
                                     ? "contactListItem selected"
                                     : "contactListItem"
                                 }
@@ -1653,6 +1658,7 @@ function Messages({
                                         </span>
                                       </p>
                                       <h5>
+                                        {/* here showing last send message below of contact name */}
                                         {item?.last_message_data?.message_text}
                                       </h5>
                                       <div className="contactTags">
@@ -2215,7 +2221,7 @@ function Messages({
                                         className="profileHolder"
                                         id={"profileOfflineNav"}
                                       >
-                                        <i className="fa-light fa-users fs-5"></i>
+                                        <i className="fa-light fa-user fs-5"></i>
                                       </div>
                                   }
                                   <h4 className="">
@@ -2542,7 +2548,7 @@ function Messages({
                                                         className="profileHolder"
                                                         id={"profileOfflineNav"}
                                                       >
-                                                        <i className="fa-light fa-users fs-5"></i>
+                                                        <i className="fa-light fa-user fs-5"></i>
                                                       </div>
                                                   }
                                                 </div>
@@ -2563,11 +2569,12 @@ function Messages({
                                                         />
                                                       </div>
                                                       :
-                                                      <div
-                                                        className="profileHolder"
-                                                        id={"profileOfflineNav"}
-                                                      >
-                                                        <i className="fa-light fa-users fs-5"></i>
+                                                      <div className="profileHolder">
+                                                        <img
+                                                          src={require('../../assets/images/placeholder-image.webp')}
+                                                          alt="profile"
+                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                        />
                                                       </div>
                                                   }
 
