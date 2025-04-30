@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const MessageProfileDetails = ({ recipient, messages }) => {
+const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   // console.log("Messages",messages);
   const [media, setMedia] = useState([])
   const [files, setFiles] = useState([])
@@ -33,7 +33,11 @@ const MessageProfileDetails = ({ recipient, messages }) => {
               </div>
             ) : (
               <div className="profileHolder" id={"profileOfflineNav"}>
-                <i className="fa-light fa-user fs-5"></i>
+                {
+                  selectedChat == "singleChat" ?
+                    <i className="fa-light fa-user fs-5" /> :
+                    <i className="fa-light fa-users fs-5" />
+                }
               </div>
             )}
             <p className="mb-0 fs-6 fw-semibold">
