@@ -2275,11 +2275,11 @@ function Messages({
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
-                <div className="row h-100">
+                <div className="d-flex h-100">
                   {/* <PanelGroup autoSaveId="example" direction="horizontal">
                     <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
                   {/* this is chat section *********** */}
-                  <div className="col-auto h-100">
+                  <div className="col h-100">
                     <div className="messageOverlay h-100">
                       {recipient[0] ? (
                         <div className="contactHeader">
@@ -3286,7 +3286,7 @@ function Messages({
                         <div className="callDashParkedCalls messageDower pe-0"
                           style={{ transform: isActiveAgentsOpen ? 'translate(3%, 0%)' : 'translate(100%, 0%)' }}
                         >
-                          <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '7px', transition: 'all 0.4s ease-in-out', }}>
+                          <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '-5px', transition: 'all 0.4s ease-in-out', }}>
                             <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
                           </button>
                           <div
