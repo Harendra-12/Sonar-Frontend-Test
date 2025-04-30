@@ -86,15 +86,6 @@ function OngoingCall({
   };
   console.log("Outside hold status", isOnHeld);
 
-  function stopAllAudioContextsExcept(activeSessionId) {
-    globalSession.forEach(session => {
-      if (session.id !== activeSessionId && session._customAudioContext) {
-        session._customAudioContext.close();
-        session._customAudioContext = null;
-      }
-    });
-  }
-
   // Logic to toggle hold and unhold
   async function holdCall(type) {
     console.log("Inside hold setp 1");
@@ -149,69 +140,96 @@ function OngoingCall({
       } else if (type === "unhold" && !holdProcessing) {
         setHoldProcessing(true);
 
-        // Step 1: Reset SDP hold option
+        // Step 1: Update hold flag in re-INVITE options
         const sdhOptions = {
-          ...session.sessionDescriptionHandlerOptionsReInvite,
+          ...(session.sessionDescriptionHandlerOptionsReInvite || {}),
           hold: false,
         };
         session.sessionDescriptionHandlerOptionsReInvite = sdhOptions;
 
-        // Step 2: Re-INVITE with manual media recovery
+        // Step 2: Prepare re-INVITE options with media recovery logic
         const options = {
           requestDelegate: {
             onAccept: async () => {
               const pc = session?.sessionDescriptionHandler?.peerConnection;
+              if (!pc) {
+                console.warn("No peer connection found");
+                setHoldProcessing(false);
+                return;
+              }
 
-              if (pc) {
-                // Reactivate outgoing tracks
-                pc.getSenders().forEach(sender => {
-                  if (sender.track) sender.track.enabled = true;
-                });
-
-                // 💥 VERY IMPORTANT: Wait for stable ICE if switching from terminated session
-                if (pc.iceConnectionState !== "connected") {
-                  await new Promise((resolve) => {
-                    const check = () => {
-                      if (pc.iceConnectionState === "connected") {
-                        resolve();
-                      } else {
-                        setTimeout(check, 100);
-                      }
-                    };
-                    check();
-                  });
+              // Step 3: Re-enable outgoing tracks
+              pc.getSenders().forEach((sender) => {
+                if (sender.track) {
+                  if (sender.track.readyState === "live") {
+                    sender.track.enabled = true;
+                  } else {
+                    console.warn("Sender track not live:", sender.track);
+                  }
                 }
+              });
 
-                // 🔁 Kill any old audio context
-                if (session._customAudioContext) {
-                  session._customAudioContext.close();
-                  session._customAudioContext = null;
-                }
+              // Step 4: Re-enable remote audio (Web Audio API method)
+              const audioContext = new (window.AudioContext ||
+                window.webkitAudioContext)();
 
-                // 💡 Create new audio path explicitly
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                session._customAudioContext = audioContext;
-
-                const validReceiver = pc.getReceivers().find(r => r.track && r.track.kind === 'audio');
-                if (validReceiver && validReceiver.track.readyState === 'live') {
-                  const remoteStream = new MediaStream([validReceiver.track]);
-                  const source = audioContext.createMediaStreamSource(remoteStream);
-                  source.connect(audioContext.destination);
-                  validReceiver.track.enabled = true;
-                } else {
-                  console.warn('Remote track not live or not available on unhold');
+              // If already created, clean up the previous context
+              if (session._customAudioContext) {
+                try {
+                  await session._customAudioContext.close();
+                } catch (e) {
+                  console.warn("Failed to close previous AudioContext");
                 }
               }
 
+              session._customAudioContext = audioContext;
+
+              let receiverTrack = null;
+
+              pc.getReceivers().forEach((receiver) => {
+                if (
+                  receiver.track &&
+                  receiver.track.kind === "audio" &&
+                  receiver.track.readyState === "live"
+                ) {
+                  receiver.track.enabled = true;
+                  receiverTrack = receiver.track;
+                }
+              });
+
+              if (receiverTrack) {
+                const stream = new MediaStream([receiverTrack]);
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(audioContext.destination);
+              } else {
+                console.warn(
+                  "No live remote audio track found — attempting ICE restart"
+                );
+
+                // Optional: try ICE restart as fallback
+                try {
+                  const offer = await pc.createOffer({ iceRestart: true });
+                  await pc.setLocalDescription(offer);
+                  // NOTE: You could send this offer to the remote via SIP if needed
+                } catch (err) {
+                  console.error("ICE restart failed:", err);
+                }
+              }
+
+              // Step 5: Update app state
               session.isOnHold = false;
               dispatch({
                 type: "SET_SESSIONS",
-                sessions: globalSession.map(item =>
-                  item.id === session.id ? { ...item, state: "Established" } : item
+                sessions: globalSession.map((item) =>
+                  item.id === session.id
+                    ? { ...item, state: "Established" }
+                    : item
                 ),
               });
+
               setHoldProcessing(false);
             },
+
             onReject: () => {
               session.isOnHold = true;
               setHoldProcessing(false);
@@ -219,10 +237,11 @@ function OngoingCall({
           },
         };
 
+        // Step 6: Send re-INVITE
         try {
           await session.invite(options);
         } catch (err) {
-          console.error(`Unhold failed:`, err);
+          console.error(`Failed to unhold session ${session.id}:`, err);
           setHoldProcessing(false);
         }
 
