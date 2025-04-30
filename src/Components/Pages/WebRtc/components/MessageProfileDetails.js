@@ -15,6 +15,8 @@ const MessageProfileDetails = ({ recipient, messages }) => {
   const [files, setFiles] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
+  const [loading, setLoading] = useState('all');
+
   // Set Media and Files
   useEffect(() => {
     if (viewAllToggle === "files") {
@@ -25,7 +27,14 @@ const MessageProfileDetails = ({ recipient, messages }) => {
       setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio").slice(0, 4))
       setFiles(messages?.filter((item) => item.message_type === "file").slice(0, 4));
     }
-  }, [messages, viewAllToggle])
+  }, [messages, viewAllToggle, loading]);
+
+  // Loader for initial state
+  useEffect(() => {
+    if (media && media.length && files && files.length) {
+      setLoading(false);
+    }
+  }, [media, files]);
 
   // Download any File / Media Function
   const downloadImage = async (imageUrl, fileName) => {
@@ -53,31 +62,48 @@ const MessageProfileDetails = ({ recipient, messages }) => {
 
   // Handle View All Files and Media
   const handleViewAll = async (type, chat) => {
+    setViewAllToggle(type);
+    setLoading(type);
     if (type === "files") {
       try {
-        const response = await generalGetFunction(`message/all-filters?receiver_id=${recipient[1]}&message_type=files`);
+        const response = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&message_type=file`);
         if (response.status) {
-          setAllFiles(response.data);
-          setViewAllToggle("files");
-          toast.success(response.message)
+          setAllFiles(
+            response.data.map((file) => ({
+              ...file,
+              body: file.message_text,
+              time: file.created_at
+            }))
+          );
+          toast.success(response.message);
+          setLoading(false);
         } else {
-          toast.error(response.message)
+          toast.error(response.message);
+          setLoading(false);
         }
       } catch (err) {
         console.error("Error fetching files:", err);
+        setLoading(false);
       }
     } else if (type === "media") {
       try {
-        const response = await generalGetFunction(`message/all-filters?receiver_id=${recipient[1]}&message_type=media`);
+        const response = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&media`);
         if (response.status) {
-          setAllMedia(response.data);
-          setViewAllToggle("media");
-          toast.success(response.message)
+          setAllMedia(
+            response.data.map((file) => ({
+              ...file,
+              body: file.message_text,
+            }))
+          );
+          toast.success(response.message);
+          setLoading(false);
         } else {
-          toast.error(response.message)
+          toast.error(response.message);
+          setLoading(false);
         }
       } catch (err) {
         console.error("Error fetching files:", err);
+        setLoading(false);
       }
     }
   }
@@ -109,9 +135,9 @@ const MessageProfileDetails = ({ recipient, messages }) => {
               )?.name
             }{" "}-
             {" "} */}
-              {recipient[3]}
+              {recipient[3] ? recipient[3] : <div className='skeleton skeleton-text' style={{ width: '150px' }} />}
             </p>
-            <h5 className="fw-medium f-s-14 text_muted">{recipient[4]}</h5>
+            <h5 className="fw-medium f-s-14 text_muted">{recipient[4] ? recipient[4] : <div className='skeleton skeleton-heading-small' style={{ width: '200px' }} />}</h5>
           </div>
         </div>
         <div className="d-flex justify-content-center align-items-center gap-2">
@@ -135,32 +161,47 @@ const MessageProfileDetails = ({ recipient, messages }) => {
             </p>
             {files && files.length > 0 ? (
               <span>
-                <a onClick={() => viewAllToggle ? setViewAllToggle(false) : handleViewAll('files', recipient[2])}><u>{viewAllToggle === "files" ? 'View Less' : 'View All'}</u></a>
+                <a onClick={() => viewAllToggle === "files" ? setViewAllToggle(false) : handleViewAll('files', recipient[2])}><u>{viewAllToggle === "files" ? 'View Less' : 'View All'}</u></a>
               </span>
             ) : ""}
           </div>
           {
             viewAllToggle === "files" || !viewAllToggle ? (
-              files && files?.length > 0 ? (
-                files.map((item, index) => (
-                  <div className="file_list" key={index}>
-                    <div className="">
-                      <span className="shared-file-icon">
-                        <i className="fa-regular fa-files"></i>
-                      </span>
-                    </div>
-                    <div className=" ">
-                      <p className="ellipsisText">{item.body.split('chats/')[1]}</p>
-                      <p className="text_muted">{item.time.split(" ")[0]} - {formatTimeWithAMPM(item.time.split(" ")[1])}</p>
-                    </div>
-                    <div className="download" onClick={() => downloadImage(item.body, item.body.split('chats/')[1])} >
-                      <button>
-                        <i className="fa-regular fa-arrow-down-to-line"></i>
-                      </button>
-                    </div>
+              loading === "files" || loading === "all" ? (
+                <div className="file_list">
+                  <div className="">
+                    <div className='skeleton skeleton-button' style={{ width: '35px' }} />
                   </div>
-                ))
-              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
+                  <div className=" ">
+                    <p className="ellipsisText"><div className='skeleton skeleton-text mb-1' /></p>
+                    <p className="text_muted"><div className='skeleton skeleton-heading-small' style={{ width: '200px' }} /></p>
+                  </div>
+                  <div className="download">
+                    <div className='skeleton skeleton-button' style={{ width: '35px' }} />
+                  </div>
+                </div>
+              ) :
+                files && files?.length > 0 ? (
+                  files.map((item, index) => (
+                    <div className="file_list" key={index}>
+                      <div className="">
+                        <span className="shared-file-icon">
+                          <i className="fa-regular fa-files"></i>
+                        </span>
+                      </div>
+                      <div className=" ">
+                        <p className="ellipsisText">{item.body.split('chats/')[1]}</p>
+                        <p className="text_muted">{item.time.split(" ")[0]} - {formatTimeWithAMPM(item.time.split(" ")[1])}</p>
+                      </div>
+                      <div className="download" onClick={() => downloadImage(item.body, item.body.split('chats/')[1])} >
+                        <button>
+                          <i className="fa-regular fa-arrow-down-to-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
+
             ) : ""}
         </div>
         <div className="chat_doc px-4">
@@ -173,33 +214,47 @@ const MessageProfileDetails = ({ recipient, messages }) => {
             </p>
             {media && media.length > 0 ? (
               <span>
-                <a onClick={() => viewAllToggle ? setViewAllToggle(false) : handleViewAll('media', recipient[2])}><u>{viewAllToggle === "media" ? 'View Less' : 'View All'}</u></a>
+                <a onClick={() => viewAllToggle === "media" ? setViewAllToggle(false) : handleViewAll('media', recipient[2])}><u>{viewAllToggle === "media" ? 'View Less' : 'View All'}</u></a>
               </span>
             ) : ""}
           </div>
 
           {viewAllToggle === "media" || !viewAllToggle ? (
-            media && media?.length > 0 ? (
-              <div className="imageList">
-                {media.map((item, index) => (
-                  <div className="imgBox" key={index}>
-                    <img
-                      src={item.body}
-                      onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
-                      alt=""
-                    />
-                    <div className="extraButtons">
-                      <Link className="tableButton me-2" to={item.body} target="_blank">
-                        <i className="fa-solid fa-eye text-white" />
-                      </Link>
-                      <button className="tableButton head ms-2" onClick={() => downloadImage(item.body, item.body.split('chats/')[1])}>
-                        <i className="fa-solid fa-download" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+            loading === "media" || loading === "all" ? (
+              <div className="file_list">
+                <div className="">
+                  <div className='skeleton skeleton-button' style={{ width: '35px' }} />
+                </div>
+                <div className=" ">
+                  <p className="ellipsisText"><div className='skeleton skeleton-text mb-1' /></p>
+                  <p className="text_muted"><div className='skeleton skeleton-heading-small' style={{ width: '200px' }} /></p>
+                </div>
+                <div className="download">
+                  <div className='skeleton skeleton-button' style={{ width: '35px' }} />
+                </div>
               </div>
-            ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
+            ) :
+              media && media?.length > 0 ? (
+                <div className="imageList">
+                  {media.map((item, index) => (
+                    <div className="imgBox" key={index}>
+                      <img
+                        src={item.body}
+                        onError={(e) => e.target.src = require('../../../assets/images/placeholder-image2.webp')}
+                        alt=""
+                      />
+                      <div className="extraButtons">
+                        <Link className="tableButton me-2" to={item.body} target="_blank">
+                          <i className="fa-solid fa-eye text-white" />
+                        </Link>
+                        <button className="tableButton head ms-2" onClick={() => downloadImage(item.body, item.body.split('chats/')[1])}>
+                          <i className="fa-solid fa-download" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
           ) : ""}
         </div>
       </div>
