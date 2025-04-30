@@ -61,12 +61,18 @@ const MessageProfileDetails = ({ recipient, messages }) => {
   };
 
   // Handle View All Files and Media
-  const handleViewAll = async (type, chat) => {
+  const handleViewAll = async (type) => {
     setViewAllToggle(type);
     setLoading(type);
     if (type === "files") {
       try {
-        const response = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&message_type=file`);
+        let apiUrl = "";
+        if (recipient[2] == "groupChat") {
+          apiUrl = 'group-message/all?group_id='
+        } else {
+          apiUrl = 'message/all?receiver_id='
+        }
+        const response = await generalGetFunction(`${apiUrl}${recipient[1]}&message_type=file`);
         if (response.status) {
           setAllFiles(
             response.data.map((file) => ({
@@ -87,7 +93,13 @@ const MessageProfileDetails = ({ recipient, messages }) => {
       }
     } else if (type === "media") {
       try {
-        const response = await generalGetFunction(`message/all?receiver_id=${recipient[1]}&media`);
+        let apiUrl = "";
+        if (recipient[2] == "groupChat") {
+          apiUrl = 'group-message/all?group_id='
+        } else {
+          apiUrl = 'message/all?receiver_id='
+        }
+        const response = await generalGetFunction(`${apiUrl}${recipient[1]}&media`);
         if (response.status) {
           setAllMedia(
             response.data.map((file) => ({
@@ -107,6 +119,8 @@ const MessageProfileDetails = ({ recipient, messages }) => {
       }
     }
   }
+  console.log(recipient);
+
 
   return (
     <div className="messageOverlay py-3 h-100">
