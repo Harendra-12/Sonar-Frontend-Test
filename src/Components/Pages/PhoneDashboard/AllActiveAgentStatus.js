@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { generalGetFunction } from '../../GlobalFunction/globalFunction';
 
 /**
  * AllActiveAgentStatus
@@ -34,16 +35,28 @@ import { useDispatch, useSelector } from 'react-redux';
  */
 
 function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
-    const allUser = useSelector((state) => state.allUser);
-    const allUserRefresh = useSelector((state) => state.allUserRefresh);
+    // const allUser = useSelector((state) => state.allUser);
+    // const allUserRefresh = useSelector((state) => state.allUserRefresh);
+
+    const account = useSelector((state) => state.account);
     const activeCall = useSelector((state) => state.activeCall);
     const logonUser = useSelector((state) => state.loginUser);
     const registerUser = useSelector((state) => state.registerUser || []);
     const [onlineUser, setOnlineUSer] = useState([]);
+    const [allUser, setAllUser] = useState();
     const dispatch = useDispatch();
+
+    // Search All Users
+    async function getData() {
+        const userApi = await generalGetFunction(`/user/search?account=${account.account_id}`);
+        if (userApi?.status) {
+            setAllUser(userApi.data);
+        }
+    }
+
     useEffect(() => {
-        if (allUserRefresh === 0) {
-            dispatch({ type: "SET_ALLUSERREFRESH", allUserRefresh: allUserRefresh + 1 });
+        if (!allUser || allUser.length === 0) {
+            getData();
         }
         if (logonUser && logonUser.length > 0) {
             setOnlineUSer(
@@ -127,24 +140,23 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {console.log(activeCall)
-                                                    }
-                                                    {allUser?.data?.length > 0 &&
-                                                        allUser?.data?.filter((agent) => agent?.extension_id !== null)
+                                                    {allUser?.length > 0 &&
+                                                        allUser?.filter((agent) => agent?.extension_id !== null)
                                                             .filter((agent) => onlineUser.includes(agent?.extension?.extension))
                                                             .map((agent, index) => {
                                                                 const activeCallsForAgent = activeCall.filter((call) => call?.dest === agent?.extension?.extension || call?.b_presence_id?.split("@")[0] === agent?.extension?.extension || call?.cid_name === agent?.extension?.extension);
+                                                                console.log(activeCallsForAgent);
 
                                                                 const getCallStatus = () => {
                                                                     if (activeCallsForAgent.length === 0) return null;
 
-                                                                    const activeCall = activeCallsForAgent.filter((call) => !(call?.b_callstate !== "ACTIVE" && call?.callstate === "ACTIVE"));
+                                                                    const activeCall = activeCallsForAgent.filter((call) => call?.b_callstate === "ACTIVE" || call?.callstate !== "ACTIVE");
 
                                                                     if (!activeCall) return null;
 
-                                                                    if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.b_callstate === "HELD") {
+                                                                    if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.callstate === "HELD") {
                                                                         return {
-                                                                            status: activeCall[0]?.b_callstate === "ACTIVE" ? "In Call" : 'On Hold',
+                                                                            status: activeCall[0]?.callstate === "HELD" ? "On Hold" : "In Call",
                                                                             direction: activeCall[0]?.direction,
                                                                             duration: activeCall[0]?.duration,
                                                                             from: activeCall[0]?.cid_name ?
