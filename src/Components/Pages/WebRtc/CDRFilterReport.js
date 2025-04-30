@@ -1016,6 +1016,7 @@ function CdrFilterReport({ page }) {
                                 <option value={"Voicemail"}>Voicemail</option>
                                 <option value={"Cancelled"}>Cancelled</option>
                                 <option value={"Failed"}>Failed</option>
+                                <option value={"Transfer"}>Transfer</option>
                               </select>
                             </div>
                             {filteredKeys.includes("Hangup-Cause") && (

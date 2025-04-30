@@ -86,6 +86,15 @@ function OngoingCall({
   };
   console.log("Outside hold status", isOnHeld);
 
+  function stopAllAudioContextsExcept(activeSessionId) {
+    globalSession.forEach(session => {
+      if (session.id !== activeSessionId && session._customAudioContext) {
+        session._customAudioContext.close();
+        session._customAudioContext = null;
+      }
+    });
+  }
+
   // Logic to toggle hold and unhold
   async function holdCall(type) {
     console.log("Inside hold setp 1");
@@ -139,49 +148,82 @@ function OngoingCall({
         // });
       } else if (type === "unhold" && !holdProcessing) {
         setHoldProcessing(true);
-        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
-        sessionDescriptionHandlerOptions.hold = false;
-        session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
 
-        let options = {
+        // Step 1: Reset SDP hold option
+        const sdhOptions = {
+          ...session.sessionDescriptionHandlerOptionsReInvite,
+          hold: false,
+        };
+        session.sessionDescriptionHandlerOptionsReInvite = sdhOptions;
+
+        // Step 2: Re-INVITE with manual media recovery
+        const options = {
           requestDelegate: {
-            onAccept: function () {
-              if (session?.sessionDescriptionHandler?.peerConnection) {
-                let pc = session.sessionDescriptionHandler.peerConnection;
+            onAccept: async () => {
+              const pc = session?.sessionDescriptionHandler?.peerConnection;
 
-                // Restore inbound streams
-                pc.getReceivers().forEach(receiver => {
-                  if (receiver.track) receiver.track.enabled = true;
-                });
-
-                // Restore outbound streams
+              if (pc) {
+                // Reactivate outgoing tracks
                 pc.getSenders().forEach(sender => {
-                  if (sender.track) {
-                    sender.track.enabled = true;
-                  }
+                  if (sender.track) sender.track.enabled = true;
                 });
-              }
-              session.isOnHold = false;
 
+                // 💥 VERY IMPORTANT: Wait for stable ICE if switching from terminated session
+                if (pc.iceConnectionState !== "connected") {
+                  await new Promise((resolve) => {
+                    const check = () => {
+                      if (pc.iceConnectionState === "connected") {
+                        resolve();
+                      } else {
+                        setTimeout(check, 100);
+                      }
+                    };
+                    check();
+                  });
+                }
+
+                // 🔁 Kill any old audio context
+                if (session._customAudioContext) {
+                  session._customAudioContext.close();
+                  session._customAudioContext = null;
+                }
+
+                // 💡 Create new audio path explicitly
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                session._customAudioContext = audioContext;
+
+                const validReceiver = pc.getReceivers().find(r => r.track && r.track.kind === 'audio');
+                if (validReceiver && validReceiver.track.readyState === 'live') {
+                  const remoteStream = new MediaStream([validReceiver.track]);
+                  const source = audioContext.createMediaStreamSource(remoteStream);
+                  source.connect(audioContext.destination);
+                  validReceiver.track.enabled = true;
+                } else {
+                  console.warn('Remote track not live or not available on unhold');
+                }
+              }
+
+              session.isOnHold = false;
               dispatch({
                 type: "SET_SESSIONS",
-                sessions: globalSession.map((item) =>
+                sessions: globalSession.map(item =>
                   item.id === session.id ? { ...item, state: "Established" } : item
                 ),
               });
               setHoldProcessing(false);
             },
-            onReject: function () {
+            onReject: () => {
               session.isOnHold = true;
               setHoldProcessing(false);
-            }
-          }
+            },
+          },
         };
 
         try {
-          session.invite(options);
-        } catch (error) {
-          console.error(`Error unholding session ${session.id}:`, error);
+          await session.invite(options);
+        } catch (err) {
+          console.error(`Unhold failed:`, err);
+          setHoldProcessing(false);
         }
 
         //   console.log("Before unhold",isOnHeld);

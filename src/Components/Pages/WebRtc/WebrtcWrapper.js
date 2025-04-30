@@ -145,6 +145,7 @@ const WebrtcWrapper = () => {
     domain: account?.domain?.domain_name,
     webSocketServer: `wss://${ip}:${port}`,
     refVideoRemote: null,
+    refAudioRemote: null,
     maxSimultaneousSessions: 1,
     onConnect: (ua) => {
       globalUserAgent = ua; // Store the registered UserAgent
