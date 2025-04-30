@@ -294,7 +294,6 @@ function ActiveCallSidePanel({
   // };
 
   async function holdCall(type, id) {
-    console.log(id, "Inside hold setp 1", sessions);
 
     // if (canHold) {
     //   console.log("Inside hold setp 2");
