@@ -322,7 +322,7 @@ function Messages({
               user_id: item.user_id,
               user_name: user_details?.username,
               profile_picture: user_details?.profile_picture,
-              message_type:item.message_type
+              message_type: item.message_type
             },
             ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
           ],
@@ -432,13 +432,14 @@ function Messages({
       ...prevState,
       [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
         ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
-        { 
-          from: userDetails.id, 
-          body: messageInput || selectedUrl, 
+        {
+          from: userDetails.id,
+          body: messageInput || selectedUrl,
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: messageType
         },
       ],
     }));
@@ -449,7 +450,7 @@ function Messages({
     if (contactIndex !== -1) {
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
-      newContact[contactIndex].last_message_data.created_at = time; 
+      newContact[contactIndex].last_message_data.created_at = time;
       setContact(newContact);
     }
     setActiveTab("all");
@@ -566,8 +567,8 @@ function Messages({
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
-  useEffect(()=>{
-    if(incomingMessage){
+  useEffect(() => {
+    if (incomingMessage) {
       const from = incomingMessage?.sender_id;
       const body = incomingMessage?.message_text;
       setIsFreeSwitchMessage(true);
@@ -578,7 +579,7 @@ function Messages({
         (agent) => agent?.id === from
       );
       const time = formatDateTime(new Date());
-      
+
       const contactIndex = contact.findIndex(
         (contact) => contact.id === agentDetails?.id
       );
@@ -627,13 +628,14 @@ function Messages({
         // Update the state to include the image
         setAllMessage((prevState) => ({
           ...prevState,
-          [from]: [...(prevState[from] || []), { 
-            from, 
-            body, 
+          [from]: [...(prevState[from] || []), {
+            from,
+            body,
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -646,13 +648,14 @@ function Messages({
         // If it's a text message or other type, render as text
         setAllMessage((prevState) => ({
           ...prevState,
-          [from]: [...(prevState[from] || []), { 
-            from, 
-            body, 
+          [from]: [...(prevState[from] || []), {
+            from,
+            body,
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -679,7 +682,7 @@ function Messages({
         }
       }
     }
-  },[incomingMessage])
+  }, [incomingMessage])
   // ===========================================================
   // if (userAgent) {
   //   debugger
@@ -1254,7 +1257,7 @@ function Messages({
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
-    
+
     const time = formatDateTime(new Date());
     const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
@@ -1267,7 +1270,8 @@ function Messages({
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: checkMessageType(messageContent)
         },
       ],
     }));
@@ -1283,11 +1287,13 @@ function Messages({
     const time = formatDateTime(new Date());
     setAllMessage((prevState) => ({
       ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), 
-      { 
-        from: groupMessage.user_name, 
-        body: groupMessage.sharedMessage, 
-        time }],
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
+      {
+        from: groupMessage.user_name,
+        body: groupMessage.sharedMessage,
+        time,
+        message_type: groupMessage.message_type,
+      }],
     }));
   }, [groupMessage])
 
@@ -2466,7 +2472,7 @@ function Messages({
                               {recipient[0] ? (
                                 <>
                                   {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
-                                    (item, index, arr) => {                           
+                                    (item, index, arr) => {
                                       const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                       const todayDate = new Date()
                                         .toISOString()
@@ -2543,7 +2549,7 @@ function Messages({
                                               </div>
                                             </div>
                                           ) : (
-                                            
+
                                             <div className="messageItem receiver">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
@@ -3154,7 +3160,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages = {allMessage?.[recipient[1]]}
+                              messages={allMessage?.[recipient[1]]}
                             />
                           </div>
                         )

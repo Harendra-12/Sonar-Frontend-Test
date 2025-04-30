@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 
-const MessageProfileDetails = ({recipient,messages}) => {
-    // console.log("Messages",messages);
-    const [media,setMedia]=useState([])
-    const [files,setFiles]=useState([])
+const MessageProfileDetails = ({ recipient, messages }) => {
+  // console.log("Messages",messages);
+  const [media, setMedia] = useState([])
+  const [files, setFiles] = useState([])
 
-    useEffect(()=>{
-        setMedia(messages?.filter((item)=>item.message_type==="image" || item.message_type==="video" || item.message_type==="audio"))
-        setFiles(messages?.filter((item)=>item.message_type==="file"))
-    },[messages])
-    
-    console.log("Media",media);
-    console.log("File",files)
-    
+  console.log('+++++++++++++++++++', messages);
+
+
+  useEffect(() => {
+    setMedia(messages?.filter((item) => item.message_type === "image" || item.message_type === "video" || item.message_type === "audio"))
+    setFiles(messages?.filter((item) => item.message_type === "file"))
+  }, [messages])
+
+  console.log("Media", media);
+  console.log("File", files)
+
   return (
     <div className="messageOverlay py-3 h-100">
       <div className="p-4">
