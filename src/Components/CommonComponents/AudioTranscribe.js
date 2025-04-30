@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 function AudioTranscribe({ url }) {
-    const [transcript, setTranscript] = useState("")
+    const [transcript, setTranscript] = useState([])
     const [transcribeLoading, setTranscribeLoading] = useState(false)
     async function handleTranscript(url) {
         axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: url })
