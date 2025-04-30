@@ -1326,7 +1326,7 @@ function Messages({
     setSelectedUrl(null);
 
   }
-  
+
   // Recieve group message
   useEffect(() => {
     if (groupMessage) {
@@ -2276,38 +2276,38 @@ function Messages({
                 id="callDetails"
               >
                 <div className="row h-100">
-                  <PanelGroup autoSaveId="example" direction="horizontal">
-                    <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}>
-                      {/* this is chat section *********** */}
-                      <div className="col-auto h-100">
-                        <div className="messageOverlay h-100">
-                          {recipient[0] ? (
-                            <div className="contactHeader">
-                              <div>
-                                <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                                  {
-                                    recipient[5] != null ?
-                                      <div className="profileHolder">
-                                        <img
-                                          src={recipient[5]}
-                                          alt="profile"
-                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                        />
-                                      </div>
-                                      :
-                                      <div
-                                        className="profileHolder"
-                                        id={"profileOfflineNav"}
-                                      >
-                                        {
-                                          selectedChat == "singleChat" ?
-                                            <i className="fa-light fa-user fs-5"></i> :
-                                            <i className="fa-light fa-users fs-5"></i>
-                                        }
-                                      </div>
-                                  }
-                                  <h4 className="">
-                                    {/* {
+                  {/* <PanelGroup autoSaveId="example" direction="horizontal">
+                    <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
+                  {/* this is chat section *********** */}
+                  <div className="col-auto h-100">
+                    <div className="messageOverlay h-100">
+                      {recipient[0] ? (
+                        <div className="contactHeader">
+                          <div>
+                            <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
+                              {
+                                recipient[5] != null ?
+                                  <div className="profileHolder">
+                                    <img
+                                      src={recipient[5]}
+                                      alt="profile"
+                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                    />
+                                  </div>
+                                  :
+                                  <div
+                                    className="profileHolder"
+                                    id={"profileOfflineNav"}
+                                  >
+                                    {
+                                      selectedChat == "singleChat" ?
+                                        <i className="fa-light fa-user fs-5"></i> :
+                                        <i className="fa-light fa-users fs-5"></i>
+                                    }
+                                  </div>
+                              }
+                              <h4 className="">
+                                {/* {
                                 contact?.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
@@ -3304,8 +3304,8 @@ function Messages({
                       </div>
                     )
                   }
-                  </Panel>
-                  </PanelGroup>
+                  {/* </Panel>
+                  </PanelGroup> */}
                 </div>
               </div>
             </div>
