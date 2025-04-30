@@ -4,8 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import EmptyPrompt from "../../../Loader/EmptyPrompt";
 import { toast } from "react-toastify";
 
-const MessageProfileDetails = ({ recipient, messages }) => {
-  const navigate = useNavigate();
+const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   // console.log("Messages",messages);
   const [media, setMedia] = useState([]);
   const [allMedia, setAllMedia] = useState([]);
@@ -137,7 +136,11 @@ const MessageProfileDetails = ({ recipient, messages }) => {
               </div>
             ) : (
               <div className="profileHolder" id={"profileOfflineNav"}>
-                <i className="fa-light fa-user fs-5"></i>
+                {
+                  selectedChat == "singleChat" ?
+                    <i className="fa-light fa-user fs-5" /> :
+                    <i className="fa-light fa-users fs-5" />
+                }
               </div>
             )}
             <p className="mb-0 fs-6 fw-semibold">

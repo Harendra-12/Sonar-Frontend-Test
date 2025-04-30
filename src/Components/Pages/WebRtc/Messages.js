@@ -74,7 +74,7 @@ function Messages({
   const [selectedTag, setSelectedTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [newGroupLoader, setNewGroupLoader] = useState(false);
-  const [contactRefresh, setContactRefresh] = useState(0);
+  const [contactRefresh, setContactRefresh] = useState(1);
   const [isAnyDateHeaderVisible, setIsAnyDateHeaderVisible] = useState(false);
   const dateHeaderRefs = useRef([]); // Store refs for all dateHeader elements
   const visibilityMap = useRef(new Map()); // Track visibility of each ref
@@ -245,9 +245,9 @@ function Messages({
     getData();
   }, [contactRefresh]);
 
-  useEffect(() => {
-    setContactRefresh(contactRefresh + 1)
-  }, [])
+  // useEffect(() => {
+  //   setContactRefresh(contactRefresh + 1)
+  // }, [])
 
   useEffect(() => {
     if (sipProvider && sipProvider.connectStatus === CONNECT_STATUS.CONNECTED) {
@@ -283,7 +283,7 @@ function Messages({
   };
 
   // Formate date for time stamp to get time when message arrives
-  function formatRelativeTime(dateString) {    
+  function formatRelativeTime(dateString) {
     const date = new Date(dateString);
     const now = new Date();
 
@@ -1042,11 +1042,15 @@ function Messages({
 
   // Filter out the user from selcted group
   useEffect(() => {
+    // ===========
     const getGroups = async () => {
       setLoading(true);
       const apiData = await generalGetFunction(`/groups/all`);
       if (apiData?.status) {
-        setGroups(apiData.data);
+        const filteredData = apiData?.data?.sort((a, b) =>
+          new Date(b?.last_message_data?.updated_at) - new Date(a?.last_message_data?.updated_at)
+        );
+        setGroups(apiData?.data);
         const isGroupSelected = apiData.data.find(
           (group) => group.id == recipient[1]
         );
@@ -1281,25 +1285,80 @@ function Messages({
       ],
     }));
 
+    // ============================== need to work here
+    // debugger
+    // // Update contact last message
+    // const contactIndex = groups.findIndex(
+    //   (contact) => contact?.group_name === recipient[0]
+    // );
+    // if (contactIndex !== -1) {
+    //   const newGroups = [...groups];
+    //   newGroups[contactIndex].last_message_data.message_text = messageInput;
+    //   newGroups[contactIndex].last_message_data.created_at = time;
+    //   newGroups?.splice(contactIndex, 1)
+    //   newGroups.unshift(contact[contactIndex])
+    //   setContact(newGroups);
+    // }
+    // setActiveTab("all");
+
+    // const extensionExists = contact.some(
+    //   (contact) => contact.extension === recipient[0]
+    // );
+    // const agentDetails = agents.find(
+    //   (agent) => agent.extension.extension === recipient[0]
+    // );
+
+    // if (!extensionExists) {
+    //   contact.unshift({
+    //     name: agentDetails.username,
+    //     email: agentDetails.email,
+    //     id: agentDetails.id,
+    //     extension_id: agentDetails.extension_id,
+    //     extension: recipient[0],
+    //     last_message_data: {
+    //       message_text: messageInput,
+    //       created_at: time,
+    //     },
+    //   });
+    // }
     // Clear both message input and selected file
     setMessageInput("");
     setSelectedUrl(null);
 
   }
-
+  
   // Recieve group message
   useEffect(() => {
-    const time = formatDateTime(new Date());
-    setAllMessage((prevState) => ({
-      ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
-      {
-        from: groupMessage.user_name,
-        body: groupMessage.sharedMessage,
-        time,
-        message_type: groupMessage.message_type,
-      }],
-    }));
+    if (groupMessage) {
+      const audio = new Audio(
+        require("../../assets/music/message-notification.mp3")
+      );
+      const from = groupMessage?.user_id;
+      const body = groupMessage?.sharedMessage;
+      setIsFreeSwitchMessage(true);
+      const time = formatDateTime(new Date());
+      setAllMessage((prevState) => ({
+        ...prevState,
+        [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []),
+        {
+          from,
+          body,
+          time,
+          user_id: from,
+          ser_name: groupMessage?.user_name,
+          profile_picture: groupMessage?.profile_picture,
+          message_type: groupMessage.message_type,
+        }],
+      }));
+      if (groupMessage?.group_name != undefined) {
+        setUnreadMessage((prevState) => ({
+          ...prevState,
+          [groupMessage?.group_name]: (prevState[groupMessage?.group_name] || 0) + 1,
+        }));
+        audio.play();
+      }
+
+    }
   }, [groupMessage])
 
   // Handle logic to make any user admin or remove any user from admin
@@ -1359,6 +1418,8 @@ function Messages({
   //     console.error("Error sending SMS:", err);
   //   }
   // })
+  console.log('allMessageallMessageallMessage', allMessage)
+  console.log('gorup 777777777', groups)
   return (
     <>
       {addNewTagPopUp &&
@@ -1715,13 +1776,24 @@ function Messages({
                               return (
                                 <div
                                   className={recipient[1] === item.id ? "contactListItem selected" : "contactListItem"}
-                                  data-bell={""}
+                                  data-bell={
+                                    unreadMessage[item.group_name]
+                                      ? unreadMessage[item.group_name]
+                                      : ""
+                                  }
                                   onClick={() => {
                                     setRecipient([item.group_name, item.id, "groupChat", item?.group_name, item?.email, null]);
                                     setSelectedChat("groupChat");
                                     setGroupNameEdit(item.group_name);
                                     // getGroupDataById(item.id);
                                     setSelectedgroupUsers(item.groupusers);
+                                    setUnreadMessage((prevState) => {
+                                      const {
+                                        [item.group_name]: _,
+                                        ...newState
+                                      } = prevState;
+                                      return newState;
+                                    });
                                     item.groupusers.map((user) => {
                                       if (user.user_id === account.id) {
                                         setIsAdmin(user.is_admin)
@@ -2203,35 +2275,39 @@ function Messages({
                 // style={{ height: "100%" }}
                 id="callDetails"
               >
-                <div className="d-flex h-100">
-                  {/* <PanelGroup autoSaveId="example" direction="horizontal"> */}
-                  {/* <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}> */}
-                  {/* this is chat section *********** */}
-                  <div className={` h-100  `} style={{ width: isActiveAgentsOpen ? '70%' : '99%', transition: 'all 0.4s ease-in-out', transform: isActiveAgentsOpen ? 'translate(0%, 0%)' : 'translate(0%, 0%)' }}>
-                    <div className="messageOverlay h-100">
-                      {recipient[0] ? (
-                        <div className="contactHeader">
-                          <div>
-                            <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
-                              {
-                                recipient[5] != null ?
-                                  <div className="profileHolder">
-                                    <img
-                                      src={recipient[5]}
-                                      alt="profile"
-                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                    />
-                                  </div>
-                                  :
-                                  <div
-                                    className="profileHolder"
-                                    id={"profileOfflineNav"}
-                                  >
-                                    <i className="fa-light fa-users fs-5"></i>
-                                  </div>
-                              }
-                              <h4 className="">
-                                {/* {
+                <div className="row h-100">
+                  <PanelGroup autoSaveId="example" direction="horizontal">
+                    <Panel className='leftPanel' defaultSize={70} collapsible={false} minSize={50} ref={leftPanel}>
+                      {/* this is chat section *********** */}
+                      <div className="col-auto h-100">
+                        <div className="messageOverlay h-100">
+                          {recipient[0] ? (
+                            <div className="contactHeader">
+                              <div>
+                                <div className="d-flex justify-content-start align-items-center gap-2 mb-2">
+                                  {
+                                    recipient[5] != null ?
+                                      <div className="profileHolder">
+                                        <img
+                                          src={recipient[5]}
+                                          alt="profile"
+                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                        />
+                                      </div>
+                                      :
+                                      <div
+                                        className="profileHolder"
+                                        id={"profileOfflineNav"}
+                                      >
+                                        {
+                                          selectedChat == "singleChat" ?
+                                            <i className="fa-light fa-user fs-5"></i> :
+                                            <i className="fa-light fa-users fs-5"></i>
+                                        }
+                                      </div>
+                                  }
+                                  <h4 className="">
+                                    {/* {
                                 contact?.find(
                                   (contact) => contact.extension == recipient[0]
                                 )?.name
@@ -3221,14 +3297,15 @@ function Messages({
                             <MessageProfileDetails
                               recipient={recipient}
                               messages={recipient[2] === "groupChat" ? allMessage?.[recipient[3]] : allMessage?.[recipient[1]]}
+                              selectedChat={selectedChat}
                             />
                           </div>
                         </div>
                       </div>
                     )
                   }
-                  {/* </Panel>
-                  </PanelGroup> */}
+                  </Panel>
+                  </PanelGroup>
                 </div>
               </div>
             </div>
