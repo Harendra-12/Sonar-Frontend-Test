@@ -137,7 +137,7 @@ const MessageProfileDetails = ({ recipient, messages }) => {
             {" "} */}
               {recipient[3] ? recipient[3] : <div className='skeleton skeleton-text' style={{ width: '150px' }} />}
             </p>
-            <h5 className="fw-medium f-s-14 text_muted">{recipient[4] ? recipient[4] : <div className='skeleton skeleton-heading-small' style={{ width: '200px' }} />}</h5>
+            {recipient[2] === "singleChat" && <h5 className="fw-medium f-s-14 text_muted">{recipient[4] ? recipient[4] : <div className='skeleton skeleton-heading-small' style={{ width: '200px' }} />}</h5>}
           </div>
         </div>
         <div className="d-flex justify-content-center align-items-center gap-2">
