@@ -119,11 +119,9 @@ const MessageProfileDetails = ({ recipient, messages }) => {
       }
     }
   }
-  console.log(recipient);
-
 
   return (
-    <div className="messageOverlay py-3 h-100">
+    <div className="messageOverlay py-3 h-100" style={{ overflow: "hidden" }}>
       <div className="p-4">
         <div className="col">
           <div className="d-flex justify-content-start align-items-center gap-2 mb-2 flex-column">

@@ -109,7 +109,7 @@ function Messages({
   // const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioUrl, setAudioURL] = useState("")
   const [sendSMSPopup, setSendSMSPopup] = useState(false);
-  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
+  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(true);
   const accountDetails = useSelector((state) => state.accountDetails);
 
   // Function to handle logout
