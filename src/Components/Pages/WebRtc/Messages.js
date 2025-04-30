@@ -109,7 +109,7 @@ function Messages({
   // const [currentPlaying, setCurrentPlaying] = useState("");
   const [audioUrl, setAudioURL] = useState("")
   const [sendSMSPopup, setSendSMSPopup] = useState(false);
-
+  const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(false);
   const accountDetails = useSelector((state) => state.accountDetails);
 
   // Function to handle logout
@@ -1422,57 +1422,63 @@ function Messages({
   console.log('gorup 777777777', groups)
   return (
     <>
-      {addNewTagPopUp && <div className="addNewContactPopup">
-        <div className="row">
-          <div className="col-12 heading">
-            <i className="fa-light fa-tag"></i>
-            <h5>Please enter a Tag name</h5>
-            <div className="border-bottom col-12" />
-          </div>
-          <div className="col-xl-12">
-            <div className="formLabel">
-              <label for="">Full Name</label>
-            </div>
-            <div className="col-12">
-              <input type="text"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Please enter tag name"
-                className="formItem"
-              />
-            </div>
-          </div>
+      {addNewTagPopUp &&
+        <div className="backdropContact">
 
-          <div className="col-xl-12 mt-4">
-            <div className="d-flex justify-content-between">
-              <button
-                disabled={loading}
-                className="panelButton gray ms-0"
-                onClick={() => setAddNewTagPopUp(false)}
-              >
-                <span className="text">Cancel</span>
-                <span className="icon">
-                  <i className="fa-solid fa-caret-left"></i>
-                </span>
-              </button>
-              <button
-                disabled={loading}
-                className="panelButton me-0"
-                onClick={() => {
-                  handleNewTag();
-                  setAddNewTagPopUp(false)
-                }}
 
-              >
-                <span className="text">Save</span>
-                <span className="icon">
-                  <i className="fa-solid fa-floppy-disk"></i>
-                </span>
-              </button>
+          <div className="addNewContactPopup">
+            <div className="row">
+              <div className="col-12 heading">
+                <i className="fa-light fa-tag"></i>
+                <h5>Please enter a Tag name</h5>
+                <div className="border-bottom col-12" />
+              </div>
+              <div className="col-xl-12">
+                <div className="formLabel">
+                  <label for="">Full Name</label>
+                </div>
+                <div className="col-12">
+                  <input type="text"
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
+                    placeholder="Please enter tag name"
+                    className="formItem"
+                  />
+                </div>
+              </div>
+
+              <div className="col-xl-12 mt-4">
+                <div className="d-flex justify-content-between">
+                  <button
+                    disabled={loading}
+                    className="panelButton gray ms-0"
+                    onClick={() => setAddNewTagPopUp(false)}
+                  >
+                    <span className="text">Cancel</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-caret-left"></i>
+                    </span>
+                  </button>
+                  <button
+                    disabled={loading}
+                    className="panelButton me-0"
+                    onClick={() => {
+                      handleNewTag();
+                      setAddNewTagPopUp(false)
+                    }}
+
+                  >
+                    <span className="text">Save</span>
+                    <span className="icon">
+                      <i className="fa-solid fa-floppy-disk"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>}
+      }
 
       {allLogOut && (
         <LogOutPopUp setAllLogOut={setAllLogOut} handleLogOut={handleLogOut} />
@@ -2309,44 +2315,81 @@ function Messages({
                               {" "} */}
 
 
-                                    {recipient[3]}
-                                  </h4>
-                                </div>
-                                {/* <h4>{recipient[0]}</h4> */}
-                                <div className="contactTags">
-                                  {contact
-                                    .find(
-                                      (contact) => contact.extension == recipient[0]
-                                    )
-                                    ?.tags?.map((item, key) => {
-                                      return (
-                                        <span
-                                          data-id={key}
-                                          onClick={() =>
-                                            handleUnassignTask(item?.id)
-                                          }
-                                          className="removableTag"
-                                        >
-                                          {item.tag?.[0]?.name}
-                                        </span>
-                                      );
-                                    })}
-                                  {/* <span data-id="1">Work</span> */}
-                                  {selectedChat === "groupChat" ? "" :
-                                    <div className="dropdown ms-1">
-                                      <span
-                                        className="add"
-                                        type="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                        data-bs-auto-close="outside"
-                                        ref={tagDropdownRef}
-                                      >
-                                        <i className="fa-solid fa-circle-plus me-1"></i>{" "}
-                                        Add tag
-                                      </span>
-                                      <ul className="dropdown-menu" ref={tagDropdownRef}>
-                                        {allTags.map((item, key) => {
+                                {recipient[3]}
+                              </h4>
+                            </div>
+                            {/* <h4>{recipient[0]}</h4> */}
+                            <div className="contactTags">
+                              {contact
+                                .find(
+                                  (contact) => contact.extension == recipient[0]
+                                )
+                                ?.tags?.map((item, key) => {
+                                  return (
+                                    <span
+                                      data-id={key}
+                                      onClick={() =>
+                                        handleUnassignTask(item?.id)
+                                      }
+                                      className="removableTag"
+                                    >
+                                      {item.tag?.[0]?.name}
+                                    </span>
+                                  );
+                                })}
+                              {/* <span data-id="1">Work</span> */}
+                              {selectedChat === "groupChat" ? "" :
+                                <div className="dropdown ms-1">
+                                  <span
+                                    className="add"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    data-bs-auto-close="outside"
+                                    ref={tagDropdownRef}
+                                  >
+                                    <i className="fa-solid fa-circle-plus me-1"></i>{" "}
+                                    Add tag
+                                  </span>
+                                  <ul className="dropdown-menu p-3" ref={tagDropdownRef}>
+                                    {/* <div className="tagBox">
+                                      <img src={require("../../assets/images/tag.webp")} alt="tag" />
+                                    </div>
+                                    <p className="text-center">Add New Tag</p> */}
+                                    <div className="searchBox position-relative">
+                                      {/* <label>Search:</label> */}
+                                      <input
+                                        type="search"
+                                        name="Search"
+                                        className="formItem"
+                                        placeholder="Search a Tag Name"
+                                      // value={userInput}
+                                      // onChange={(e) => setuserInput(e.target.value)}
+                                      />
+                                    </div>
+                                    <div className="contactTags my-2">
+                                      {contact
+                                        .find(
+                                          (contact) => contact.extension == recipient[0]
+                                        )
+                                        ?.tags?.map((item, key) => {
+                                          return (
+                                            <span
+                                              data-id={key}
+                                            // onClick={() =>
+                                            //   handleUnassignTask(item?.id)
+                                            // }
+                                            // className="removableTag"
+                                            >
+                                              {item.tag?.[0]?.name}
+                                            </span>
+                                          );
+                                        })}
+                                      <button className="more info">
+                                        <i class="fa-regular fa-plus me-1"></i> Create New Tag
+                                      </button>
+                                    </div>
+                                    {/* {allTags.map((item, key) => {
                                           return (
                                             <div className="contactTagsAddEdit" style={{ width: '350px' }}>
                                               <div className="row align-items-center item">
@@ -2432,20 +2475,20 @@ function Messages({
                                             //   {item.name}
                                             // </li>
                                           );
-                                        })}
-                                        <li className="p-2 pb-1">
-                                          <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton static">
-                                            <div className="text">Add New Tag</div>
-                                          </button>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  }
+                                        })} */}
+                                    {/* <li className="mt-4">
+                                      <button onClick={() => { setAddNewTagPopUp(true); tagDropdownRef.current.classList.toggle("show") }} className="panelButton text-white static">
+                                        Create New Tag
+                                      </button>
+                                    </li> */}
+                                  </ul>
                                 </div>
-                                {/* <span className="status online">Online</span> */}
-                              </div>
-                              <div className="d-flex my-auto">
-                                {/* <div className="d-flex align-items-center me-2">
+                              }
+                            </div>
+                            {/* <span className="status online">Online</span> */}
+                          </div>
+                          <div className="d-flex my-auto">
+                            {/* <div className="d-flex align-items-center me-2">
                           <label className="gray14 me-2">Assigned to:</label>
                           <select className="ovalSelect">
                             <option>
@@ -2457,431 +2500,430 @@ function Messages({
                             </option>
                           </select>
                         </div> */}
-                                {selectedChat === "groupChat" ? "" :
-                                  <button
-                                    onClick={() => onSubmit("audio", recipient[0])}
-                                    className="clearButton2"
-                                    effect="ripple"
+                            {selectedChat === "groupChat" ? "" :
+                              <button
+                                onClick={() => onSubmit("audio", recipient[0])}
+                                className="clearButton2"
+                                effect="ripple"
+                              >
+                                <i className="fa-regular fa-phone" />
+                              </button>
+                            }
+                            {isVideoOn ? (
+                              <button
+                                onClick={() => onSubmit("video", recipient[0])}
+                                className="clearButton2"
+                                effect="ripple"
+                              >
+                                <i className="fa-regular fa-video" />
+                              </button>
+                            ) : (
+                              ""
+                            )}
+                            <div className="dropdown">
+                              <button
+                                className="clearButton2"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i className="fa-solid fa-ellipsis-vertical"></i>
+                              </button>
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <div
+                                    className="dropdown-item"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
                                   >
-                                    <i className="fa-regular fa-phone" />
-                                  </button>
-                                }
-                                {isVideoOn ? (
-                                  <button
-                                    onClick={() => onSubmit("video", recipient[0])}
-                                    className="clearButton2"
-                                    effect="ripple"
+                                    Mark as unread
+                                  </div>
+                                </li>
+                                <li>
+                                  <div
+                                    className="dropdown-item"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
                                   >
-                                    <i className="fa-regular fa-video" />
-                                  </button>
-                                ) : (
-                                  ""
+                                    Archive this chat
+                                  </div>
+                                </li>
+                                {selectedChat === "groupChat" && (
+                                  <li>
+                                    <div
+                                      className="dropdown-item"
+                                      href="#"
+                                      onClick={() => setManageGroupChat(true)}
+                                    >
+                                      Manage Group Chat
+                                    </div>
+                                  </li>
                                 )}
-                                <div className="dropdown">
-                                  <button
-                                    className="clearButton2"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
+
+                                {selectedChat === "groupChat" && (
+                                  <li>
+                                    <div
+                                      className="dropdown-item"
+                                      href="#"
+                                      onClick={() => {
+                                        setGroupLeaveId(selectedgroupUsers.filter((item) => item.user_id === account.id)[0].id);
+                                        setGroupLeavePopUp(true);
+                                      }}
+                                    >
+                                      Leave this group
+                                    </div>
+                                  </li>
+                                )}
+
+                                <li>
+                                  <div
+                                    className="dropdown-item text-danger"
+                                    href="#"
+                                    onClick={() => featureUnderdevelopment()}
                                   >
-                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                  </button>
-                                  <ul className="dropdown-menu">
-                                    <li>
-                                      <div
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        Mark as unread
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div
-                                        className="dropdown-item"
-                                        href="#"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        Archive this chat
-                                      </div>
-                                    </li>
-                                    {selectedChat === "groupChat" && (
-                                      <li>
-                                        <div
-                                          className="dropdown-item"
-                                          href="#"
-                                          onClick={() => setManageGroupChat(true)}
-                                        >
-                                          Manage Group Chat
-                                        </div>
-                                      </li>
-                                    )}
-
-                                    {selectedChat === "groupChat" && (
-                                      <li>
-                                        <div
-                                          className="dropdown-item"
-                                          href="#"
-                                          onClick={() => {
-                                            setGroupLeaveId(selectedgroupUsers.filter((item) => item.user_id === account.id)[0].id);
-                                            setGroupLeavePopUp(true);
-                                          }}
-                                        >
-                                          Leave this group
-                                        </div>
-                                      </li>
-                                    )}
-
-                                    <li>
-                                      <div
-                                        className="dropdown-item text-danger"
-                                        href="#"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        Close this chat
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
+                                    Close this chat
+                                  </div>
+                                </li>
+                              </ul>
                             </div>
-                          ) : (
-                            ""
-                          )}
-                          <div className="messageContent position-relative">
-                            {/* this is chat section (showing section of all input and output messages) */}
-                            <div className="messageList" ref={messageListRef}>
-                              {recipient[0] ? (
-                                <>
-                                  {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
-                                    (item, index, arr) => {
-                                      const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
-                                      const todayDate = new Date()
-                                        .toISOString()
-                                        ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                                      const isNewDate =
-                                        index === 0 ||
-                                        messageDate !==
-                                        arr[index - 1].time?.split(" ")[0];
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="messageContent position-relative">
+                        {/* this is chat section (showing section of all input and output messages) */}
+                        <div className="messageList" ref={messageListRef}>
+                          {recipient[0] ? (
+                            <>
+                              {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
+                                (item, index, arr) => {
+                                  const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
+                                  const todayDate = new Date()
+                                    .toISOString()
+                                    ?.split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                                  const isNewDate =
+                                    index === 0 ||
+                                    messageDate !==
+                                    arr[index - 1].time?.split(" ")[0];
 
-                                      return (
+                                  return (
 
-                                        <React.Fragment key={index}>
-                                          {isNewDate && (
-                                            <div
-                                              className="dateHeader"
-                                              ref={(el) =>
-                                                (dateHeaderRefs.current[index] = el)
+                                    <React.Fragment key={index}>
+                                      {isNewDate && (
+                                        <div
+                                          className="dateHeader"
+                                          ref={(el) =>
+                                            (dateHeaderRefs.current[index] = el)
+                                          }
+                                        >
+                                          <p>
+                                            {messageDate === todayDate
+                                              ? "Today"
+                                              : messageDate}
+                                          </p>
+                                        </div>
+                                      )}
+                                      {!isAnyDateHeaderVisible && isNewDate && (
+                                        <div className="dateHeader sticky">
+                                          <p>
+                                            {messageDate === todayDate
+                                              ? "Today"
+                                              : messageDate}
+                                          </p>
+                                        </div>
+                                      )}
+                                      {/* Message content */}
+                                      {item.from !== recipient[1] ? (
+                                        <div className="messageItem sender">
+                                          <div className="second">
+                                            <div className="d-flex gap-3 ">
+                                              <div className=" ms-3 ">
+                                                <h6>
+                                                  <span>
+                                                    {item.time
+                                                      ?.split(" ")[1]
+                                                      ?.split(":")
+                                                      .slice(0, 2)
+                                                      .join(":")}
+                                                  </span> &nbsp;
+                                                  {item.user_name}
+                                                </h6>
+                                                <div className="">
+                                                  <DisplayFile key={index} item={item.body} index={index} />
+                                                </div>
+                                              </div>
+                                              {
+                                                item?.profile_picture ?
+                                                  <div className="profileHolder">
+                                                    <img
+                                                      src={item?.profile_picture}
+                                                      alt="profile"
+                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                    />
+                                                  </div>
+                                                  :
+                                                  <div
+                                                    className="profileHolder"
+                                                    id={"profileOfflineNav"}
+                                                  >
+                                                    <i className="fa-light fa-users fs-5"></i>
+                                                  </div>
                                               }
-                                            >
-                                              <p>
-                                                {messageDate === todayDate
-                                                  ? "Today"
-                                                  : messageDate}
-                                              </p>
                                             </div>
-                                          )}
-                                          {!isAnyDateHeaderVisible && isNewDate && (
-                                            <div className="dateHeader sticky">
-                                              <p>
-                                                {messageDate === todayDate
-                                                  ? "Today"
-                                                  : messageDate}
-                                              </p>
-                                            </div>
-                                          )}
-                                          {/* Message content */}
-                                          {item.from !== recipient[1] ? (
-                                            <div className="messageItem sender">
-                                              <div className="second">
-                                                <div className="d-flex gap-3 ">
-                                                  <div className=" ms-3 ">
-                                                    <h6>
-                                                      <span>
-                                                        {item.time
-                                                          ?.split(" ")[1]
-                                                          ?.split(":")
-                                                          .slice(0, 2)
-                                                          .join(":")}
-                                                      </span> &nbsp;
-                                                      {item.user_name}
-                                                    </h6>
-                                                    <div className="">
-                                                      <DisplayFile key={index} item={item.body} index={index} />
-                                                    </div>
+                                          </div>
+                                        </div>
+                                      ) : (
+
+                                        <div className="messageItem receiver">
+                                          <div className="second">
+                                            <div className="d-flex gap-3 ">
+                                              {
+                                                item?.profile_picture ?
+                                                  <div className="profileHolder">
+                                                    <img
+                                                      src={item?.profile_picture}
+                                                      alt="profile"
+                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                    />
                                                   </div>
-                                                  {
-                                                    item?.profile_picture ?
-                                                      <div className="profileHolder">
-                                                        <img
-                                                          src={item?.profile_picture}
-                                                          alt="profile"
-                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                        />
-                                                      </div>
-                                                      :
-                                                      <div
-                                                        className="profileHolder"
-                                                        id={"profileOfflineNav"}
-                                                      >
-                                                        <i className="fa-light fa-user fs-5"></i>
-                                                      </div>
-                                                  }
-                                                </div>
-                                              </div>
-                                            </div>
-                                          ) : (
-
-                                            <div className="messageItem receiver">
-                                              <div className="second">
-                                                <div className="d-flex gap-3 ">
-                                                  {
-                                                    item?.profile_picture ?
-                                                      <div className="profileHolder">
-                                                        <img
-                                                          src={item?.profile_picture}
-                                                          alt="profile"
-                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                        />
-                                                      </div>
-                                                      :
-                                                      <div className="profileHolder">
-                                                        <img
-                                                          src={require('../../assets/images/placeholder-image.webp')}
-                                                          alt="profile"
-                                                          onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                        />
-                                                      </div>
-                                                  }
-
-                                                  <div className=" ms-3 ">
-                                                    <h6>
-                                                      {item.user_name}
-                                                      <span>
-                                                        {item.time
-                                                          ?.split(" ")[1]
-                                                          ?.split(":")
-                                                          .slice(0, 2)
-                                                          .join(":")}
-                                                      </span>
-                                                    </h6>
-                                                    <div className="">
-                                                      <DisplayFile item={item.body} />
-
-                                                    </div>
+                                                  :
+                                                  <div
+                                                    className="profileHolder"
+                                                    id={"profileOfflineNav"}
+                                                  >
+                                                    <i className="fa-light fa-users fs-5"></i>
                                                   </div>
+                                              }
+
+                                              <div className=" ms-3 ">
+                                                <h6>
+                                                  {item.user_name}
+                                                  <span>
+                                                    {item.time
+                                                      ?.split(" ")[1]
+                                                      ?.split(":")
+                                                      .slice(0, 2)
+                                                      .join(":")}
+                                                  </span>
+                                                </h6>
+                                                <div className="">
+                                                  <DisplayFile item={item.body} />
 
                                                 </div>
                                               </div>
 
-                                              {/* <div className="second">
+                                            </div>
+                                          </div>
+
+                                          {/* <div className="second">
                                            
                                            
                                           </div> */}
-                                            </div>
-                                          )}
-                                        </React.Fragment>
-                                      );
-                                    }
-                                  )}
-
-                                </>
-                              ) : (
-                                <div className="startAJob">
-                                  <div className="text-center mt-3">
-                                    <img
-                                      src={require("../../assets/images/empty-box.png")}
-                                      alt="Empty"
-                                    ></img>
-                                    <div>
-                                      <h5>
-                                        Please select a <b>Agent</b> to start{" "}
-                                        <span>a conversation</span>.
-                                      </h5>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                            {recipient[0] ? (
-
-                              <div className="messageInput textarea_inputTab">
-                                {emojiOpen &&
-                                  <div style={{ position: "absolute", bottom: 180, width: 'auto', height: 'auto' }}>
-                                    <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen} />
-                                    <button className='clearButton2' style={{ position: 'absolute', bottom: 15, right: 10, zIndex: 9 }} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>
-                                  </div>
+                                        </div>
+                                      )}
+                                    </React.Fragment>
+                                  );
                                 }
-                                <div className="col-12">
-                                  <nav>
-                                    <div
-                                      className="nav nav-tabs"
-                                      id="nav-tab"
-                                      role="tablist"
-                                    >
-                                      <button
-                                        className="tabLink active"
-                                        id="nav-im-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#nav-im"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-im"
-                                        aria-selected="true"
-                                      >
-                                        IM
-                                      </button>
-                                      <button
-                                        className="tabLink"
-                                        id="nav-sms-tab"
-                                        // data-bs-toggle="tab"
-                                        // data-bs-target="#nav-whatsapp"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-whatsapp"
-                                        aria-selected="false"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        SMS
-                                      </button>
-                                      <button
-                                        className="tabLink"
-                                        id="nav-whatsapp-tab"
-                                        // data-bs-toggle="tab"
-                                        // data-bs-target="#nav-whatsapp"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-whatsapp"
-                                        aria-selected="false"
-                                        // onClick={() => featureUnderdevelopment()}
-                                        onClick={() => setactivePage("whatsapp-chartbox")}
-                                      >
-                                        WhatsApp
-                                      </button>
-                                      <button
-                                        className="tabLink"
-                                        id="nav-messenger-tab"
-                                        // data-bs-toggle="tab"
-                                        // data-bs-target="#nav-messenger"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="nav-messenger"
-                                        aria-selected="false"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        Messenger
-                                      </button>
-                                    </div>
-                                  </nav>
+                              )}
+
+                            </>
+                          ) : (
+                            <div className="startAJob">
+                              <div className="text-center mt-3">
+                                <img
+                                  src={require("../../assets/images/empty-box.png")}
+                                  alt="Empty"
+                                ></img>
+                                <div>
+                                  <h5>
+                                    Please select a <b>Agent</b> to start{" "}
+                                    <span>a conversation</span>.
+                                  </h5>
                                 </div>
-                                <div className="d-flex w-100">
-                                  <div className="tab-content textSms me-2" id="nav-tabContent">
-                                    <div
-                                      className="tab-pane fade show active"
-                                      id="nav-im"
-                                      role="tabpanel"
-                                      aria-labelledby="nav-im-tab"
-                                    >
-                                      {/* {selectedFile && (
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        {recipient[0] ? (
+
+                          <div className="messageInput textarea_inputTab">
+                            {emojiOpen &&
+                              <div style={{ position: "absolute", bottom: 180, width: 'auto', height: 'auto' }}>
+                                <EmojiPicker onEmojiClick={handleEmojiClick} open={emojiOpen} />
+                                <button className='clearButton2' style={{ position: 'absolute', bottom: 15, right: 10, zIndex: 9 }} onClick={() => setEmojiOpen(!emojiOpen)}><i className='fa-solid fa-xmark'></i></button>
+                              </div>
+                            }
+                            <div className="col-12">
+                              <nav>
+                                <div
+                                  className="nav nav-tabs"
+                                  id="nav-tab"
+                                  role="tablist"
+                                >
+                                  <button
+                                    className="tabLink active"
+                                    id="nav-im-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#nav-im"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-im"
+                                    aria-selected="true"
+                                  >
+                                    IM
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-sms-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    SMS
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-whatsapp-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-whatsapp"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-whatsapp"
+                                    aria-selected="false"
+                                    // onClick={() => featureUnderdevelopment()}
+                                    onClick={() => setactivePage("whatsapp-chartbox")}
+                                  >
+                                    WhatsApp
+                                  </button>
+                                  <button
+                                    className="tabLink"
+                                    id="nav-messenger-tab"
+                                    // data-bs-toggle="tab"
+                                    // data-bs-target="#nav-messenger"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="nav-messenger"
+                                    aria-selected="false"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    Messenger
+                                  </button>
+                                </div>
+                              </nav>
+                            </div>
+                            <div className="d-flex w-100">
+                              <div className="tab-content textSms me-2" id="nav-tabContent">
+                                <div
+                                  className="tab-pane fade show active"
+                                  id="nav-im"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-im-tab"
+                                >
+                                  {/* {selectedFile && (
                                   <div className="file-badge absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full z-10 max-w-[80%] truncate">
                                     📎 {selectedFile.name}
                                   </div>
                                 )} */}
-                                      <div className="w-100">
-                                        <textarea
-                                          type="text"
-                                          rows={1}
-                                          name=""
-                                          className="formItem "
-                                          placeholder="Please enter your message"
-                                          value={messageInput}
-                                          onChange={(e) =>
-                                            setMessageInput(e.target.value)
-                                          }
-                                          onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                              if (recipient[2] === "groupChat") {
-                                                sendGroupMessage();
-                                              } else {
-                                                sendSingleMessage();
-                                              }
-                                            }
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div
-                                      className="tab-pane fade"
-                                      id="nav-whatsapp"
-                                      role="tabpanel"
-                                      aria-labelledby="nav-whatsapp-tab"
-                                    >
-                                      ...
-                                    </div>
-                                    <div
-                                      className="tab-pane fade"
-                                      id="nav-messenger"
-                                      role="tabpanel"
-                                      aria-labelledby="nav-messenger-tab"
-                                    >
-                                      ...
-                                    </div>
-                                  </div>
-
-                                  <div className=" d-flex justify-content-between align-items-start gap-2">
-                                    <div className="d-flex gap-1">
-                                      <button
-                                        className="clearButton2 eraser"
-                                        onClick={() => featureUnderdevelopment()}
-                                      >
-                                        <i className="fa-light fa-eraser" />
-                                      </button>
-                                      <button
-                                        className="clearButton2 gallery"
-                                        onClick={() => { setFileUpload(true); setFileType("image") }}
-                                      >
-                                        <i className="fa-regular fa-image"></i>
-                                      </button>
-                                      <button
-                                        className="clearButton2 link"
-                                        onClick={() => { setFileUpload(true); setFileType("all") }}
-                                      >
-                                        <i className="fa-solid fa-paperclip"></i>
-                                      </button>
-                                      <button
-                                        className="clearButton2 emoji"
-                                        onClick={() => setEmojiOpen(!emojiOpen)}
-                                      >
-                                        <i className="fa-regular fa-face-smile"></i>
-                                      </button>
-                                    </div>
-                                    <div>
-                                      <button
-                                        effect="ripple"
-                                        className="clearColorButton dark"
-                                        onClick={() => {
+                                  <div className="w-100">
+                                    <textarea
+                                      type="text"
+                                      rows={1}
+                                      name=""
+                                      className="formItem "
+                                      placeholder="Please enter your message"
+                                      value={messageInput}
+                                      onChange={(e) =>
+                                        setMessageInput(e.target.value)
+                                      }
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
                                           if (recipient[2] === "groupChat") {
-                                            sendGroupMessage()
+                                            sendGroupMessage();
                                           } else {
-                                            sendSingleMessage()
+                                            sendSingleMessage();
                                           }
-                                        }}
-                                      >
-                                        {/* Send Now{" "} */}
-                                        <i className="fa-solid fa-paper-plane-top" />
-                                      </button>
-                                    </div>
+                                        }
+                                      }}
+                                    />
                                   </div>
                                 </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-whatsapp"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-whatsapp-tab"
+                                >
+                                  ...
+                                </div>
+                                <div
+                                  className="tab-pane fade"
+                                  id="nav-messenger"
+                                  role="tabpanel"
+                                  aria-labelledby="nav-messenger-tab"
+                                >
+                                  ...
+                                </div>
                               </div>
-                            ) : (
-                              ""
-                            )}
+
+                              <div className=" d-flex justify-content-between align-items-start gap-2">
+                                <div className="d-flex gap-1">
+                                  <button
+                                    className="clearButton2 eraser"
+                                    onClick={() => featureUnderdevelopment()}
+                                  >
+                                    <i className="fa-light fa-eraser" />
+                                  </button>
+                                  <button
+                                    className="clearButton2 gallery"
+                                    onClick={() => { setFileUpload(true); setFileType("image") }}
+                                  >
+                                    <i className="fa-regular fa-image"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 link"
+                                    onClick={() => { setFileUpload(true); setFileType("all") }}
+                                  >
+                                    <i className="fa-solid fa-paperclip"></i>
+                                  </button>
+                                  <button
+                                    className="clearButton2 emoji"
+                                    onClick={() => setEmojiOpen(!emojiOpen)}
+                                  >
+                                    <i className="fa-regular fa-face-smile"></i>
+                                  </button>
+                                </div>
+                                <div>
+                                  <button
+                                    effect="ripple"
+                                    className="clearColorButton dark"
+                                    onClick={() => {
+                                      if (recipient[2] === "groupChat") {
+                                        sendGroupMessage()
+                                      } else {
+                                        sendSingleMessage()
+                                      }
+                                    }}
+                                  >
+                                    {/* Send Now{" "} */}
+                                    <i className="fa-solid fa-paper-plane-top" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                    </Panel>
-                    <PanelResizeHandle className="resizeHandle">
+                    </div>
+                  </div>
+                  {/* </Panel> */}
+                  {/* <PanelResizeHandle className="resizeHandle">
                       <Tippy content={
                         <button className='tableButton delete' onClick={resetResizeContent}>
                           <i className="fa-regular fa-arrows-rotate"></i>
@@ -2891,101 +2933,102 @@ function Messages({
                           <i class="fa-regular fa-arrows-left-right"></i>
                         </button>
                       </Tippy>
-                    </PanelResizeHandle>
-                    <Panel className='rightPanel' defaultSize={30} collapsible={true} minSize={25} ref={rightPanel}>
-                      {manageGroupChat ?
-                        (<div
-                          className="col-12"
-                          style={{ borderLeft: "1px solid var(--border-color)" }}
-                        >
-                          <div className="messageOverlay">
-                            <div className="contactHeader" style={{ height: "71px" }}>
-                              <div className="col">
-                                <h4 className="my-0">
-                                  <input
-                                    value={groupNameEdit}
-                                    disabled={!saveEditToggleGroupNameChange}
-                                    onChange={(e) =>
-                                      setGroupNameEdit(e.target.value)
-                                    }
-                                    className="border-0 bg-transparent w-100"
-                                    style={{ fontSize: "18px", fontWeight: 500 }}
-                                  />
-                                </h4>
-                              </div>
-                              <div className="d-flex my-auto">
-                                {!saveEditToggleGroupNameChange ? (
-                                  <button
-                                    className="clearButton2 "
-                                    onClick={() =>
-                                      setSaveEditToggleGroupNameChange(true)
-                                    }
-                                  >
-                                    <i className="fa-regular fa-pen"></i>
-                                  </button>
-                                ) : (
-                                  <button
-                                    className="clearButton2 "
-                                    onClick={() =>
-                                      // setSaveEditToggleGroupNameChange(false)
-                                      handleEditGroupName()
-                                    }
-                                  >
-                                    <i className="fa-regular fa-check"></i>
-                                  </button>
-                                )}
-                              </div>
+                    </PanelResizeHandle> */}
+                  {/* <Panel className='rightPanel' defaultSize={30} collapsible={true} minSize={25} ref={rightPanel}> */}
+                  {manageGroupChat ?
+                    (
+                      <div
+                        className="col-12"
+                        style={{ borderLeft: "1px solid var(--border-color)" }}
+                      >
+                        <div className="messageOverlay">
+                          <div className="contactHeader" style={{ height: "71px" }}>
+                            <div className="col">
+                              <h4 className="my-0">
+                                <input
+                                  value={groupNameEdit}
+                                  disabled={!saveEditToggleGroupNameChange}
+                                  onChange={(e) =>
+                                    setGroupNameEdit(e.target.value)
+                                  }
+                                  className="border-0 bg-transparent w-100"
+                                  style={{ fontSize: "18px", fontWeight: 500 }}
+                                />
+                              </h4>
                             </div>
-
-                            <div
-                              data-bell=""
-                              className="contactListItem bg-transparent"
-                              style={{ minHeight: "auto" }}
-                            >
-                              <div className="row justify-content-between">
-                                <div
-                                  className="col-xl-12 d-flex"
-                                  onClick={() => {
-                                    setAddMember(true);
-                                    // setGroupChatPopUp(true);
-                                  }}
+                            <div className="d-flex my-auto">
+                              {!saveEditToggleGroupNameChange ? (
+                                <button
+                                  className="clearButton2 "
+                                  onClick={() =>
+                                    setSaveEditToggleGroupNameChange(true)
+                                  }
                                 >
-                                  <div className="profileHolder">
-                                    <i className="fa-light fa-plus fs-5" />
-                                  </div>
-                                  <div className="my-auto ms-2 ms-xl-3">
-                                    <h4 style={{ color: "var(--ui-accent)" }}>
-                                      Add Member
-                                    </h4>
-                                  </div>
+                                  <i className="fa-regular fa-pen"></i>
+                                </button>
+                              ) : (
+                                <button
+                                  className="clearButton2 "
+                                  onClick={() =>
+                                    // setSaveEditToggleGroupNameChange(false)
+                                    handleEditGroupName()
+                                  }
+                                >
+                                  <i className="fa-regular fa-check"></i>
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          <div
+                            data-bell=""
+                            className="contactListItem bg-transparent"
+                            style={{ minHeight: "auto" }}
+                          >
+                            <div className="row justify-content-between">
+                              <div
+                                className="col-xl-12 d-flex"
+                                onClick={() => {
+                                  setAddMember(true);
+                                  // setGroupChatPopUp(true);
+                                }}
+                              >
+                                <div className="profileHolder">
+                                  <i className="fa-light fa-plus fs-5" />
+                                </div>
+                                <div className="my-auto ms-2 ms-xl-3">
+                                  <h4 style={{ color: "var(--ui-accent)" }}>
+                                    Add Member
+                                  </h4>
                                 </div>
                               </div>
                             </div>
-                            {addMember ? (
-                              <div
-                                className="addNewContactPopup px-0"
-                                style={{
-                                  position: "static",
-                                  transform: "none",
-                                  width: "100%",
-                                  boxShadow: "none",
-                                  background: "transparent",
-                                }}
-                              >
-                                <div className="row">
-                                  <div className="col-12 heading mb-0">
-                                    <i className="fa-light fa-users" />
-                                    <h5>Add Members</h5>
-                                    {/* <p>
+                          </div>
+                          {addMember ? (
+                            <div
+                              className="addNewContactPopup px-0"
+                              style={{
+                                position: "static",
+                                transform: "none",
+                                width: "100%",
+                                boxShadow: "none",
+                                background: "transparent",
+                              }}
+                            >
+                              <div className="row">
+                                <div className="col-12 heading mb-0">
+                                  <i className="fa-light fa-users" />
+                                  <h5>Add Members</h5>
+                                  {/* <p>
                                 Add people to a group chat effortlessly,
                                 keeping your connections organized and
                                 efficient
                               </p> */}
-                                    <div className="border-bottom col-12" />
-                                  </div>
-                                  <div className="col-xl-12 mt-2">
-                                    {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
-                                    {/* <div className="formRow px-0">
+                                  <div className="border-bottom col-12" />
+                                </div>
+                                <div className="col-xl-12 mt-2">
+                                  {/* <div className="col-12 d-flex justify-content-between align-items-center"> */}
+                                  {/* <div className="formRow px-0">
                                 <div className="formLabel">
                                   <label htmlFor="">
                                     Group Name{" "}
@@ -3005,251 +3048,263 @@ function Messages({
                                   )}
                                 </div>
                               </div> */}
-                                    {/* </div> */}
-                                  </div>
+                                  {/* </div> */}
+                                </div>
 
-                                  <div className="col-xl-12 mt-2">
-                                    <div className="col-12 d-flex justify-content-between align-items-center">
-                                      <input
-                                        type="text"
-                                        className="formItem"
-                                        placeholder="Search"
-                                        name="name"
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                      />
-                                      {/* <button
+                                <div className="col-xl-12 mt-2">
+                                  <div className="col-12 d-flex justify-content-between align-items-center">
+                                    <input
+                                      type="text"
+                                      className="formItem"
+                                      placeholder="Search"
+                                      name="name"
+                                      value={searchQuery}
+                                      onChange={handleSearchChange}
+                                    />
+                                    {/* <button
                                     className="tableButton ms-2"
                                     onClick={() => navigate("/users-add")}
                                   >
                                     <i className="fa-solid fa-user-plus"></i>
                                   </button> */}
-                                    </div>
                                   </div>
+                                </div>
+                                <div className="col-xl-12 mt-2">
                                   <div className="col-xl-12 mt-2">
-                                    <div className="col-xl-12 mt-2">
-                                      <div
-                                        className="tableContainer mt-0"
-                                        style={{
-                                          maxHeight: "calc(100vh - 400px)",
-                                        }}
-                                      >
-                                        <table>
-                                          <thead>
-                                            <tr>
-                                              <th>S.No</th>
-                                              <th>Name</th>
-                                              <th>Extension</th>
-                                              <th>
-                                                <input
-                                                  type="checkbox"
-                                                  onChange={handleSelectAll} // Call handler on change
-                                                // checked={selectAll ? true : false} // Keep checkbox state in sync
-                                                />
-                                              </th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            {allAgents
-                                              .sort((a, b) => {
-                                                const aMatches =
-                                                  a.name
-                                                    .toLowerCase()
-                                                    .includes(searchQuery.toLowerCase()) ||
-                                                  (a?.extension?.extension || "")
-                                                    .toLowerCase()
-                                                    .includes(searchQuery.toLowerCase());
-                                                const bMatches =
-                                                  b.name
-                                                    .toLowerCase()
-                                                    .includes(searchQuery.toLowerCase()) ||
-                                                  (b?.extension?.extension || "")
-                                                    .toLowerCase()
-                                                    .includes(searchQuery.toLowerCase());
-                                                // Items that match come first
-                                                return bMatches - aMatches;
-                                              })
-                                              .filter(
-                                                (user) =>
-                                                  !agent.some(
-                                                    (agent) => user.id == agent.name
-                                                  ) &&
-                                                  !selectedgroupUsers.some(
-                                                    (users) => users.user_id == user.id
-                                                  )
-                                              ) // Exclude agents already in `agent`
-                                              .map((item, index) => (
-                                                <tr key={""}>
-                                                  <td>{index + 1}.</td>
-                                                  <td>{item.name}</td>
-                                                  <td>{item?.extension?.extension}</td>
-                                                  <td>
-                                                    <input
-                                                      type="checkbox"
-                                                      onChange={() =>
-                                                        handleCheckboxChange(item)
-                                                      } // Call handler on change
-                                                      checked={groupSelecedAgents.some(
-                                                        (agent) => agent.name == item.name
-                                                      )} // Keep checkbox state in sync
-                                                    />
-                                                  </td>
-                                                </tr>
-                                              ))}
-                                          </tbody>
-                                        </table>
-                                      </div>
+                                    <div
+                                      className="tableContainer mt-0"
+                                      style={{
+                                        maxHeight: "calc(100vh - 400px)",
+                                      }}
+                                    >
+                                      <table>
+                                        <thead>
+                                          <tr>
+                                            <th>S.No</th>
+                                            <th>Name</th>
+                                            <th>Extension</th>
+                                            <th>
+                                              <input
+                                                type="checkbox"
+                                                onChange={handleSelectAll} // Call handler on change
+                                              // checked={selectAll ? true : false} // Keep checkbox state in sync
+                                              />
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {allAgents
+                                            .sort((a, b) => {
+                                              const aMatches =
+                                                a.name
+                                                  .toLowerCase()
+                                                  .includes(searchQuery.toLowerCase()) ||
+                                                (a?.extension?.extension || "")
+                                                  .toLowerCase()
+                                                  .includes(searchQuery.toLowerCase());
+                                              const bMatches =
+                                                b.name
+                                                  .toLowerCase()
+                                                  .includes(searchQuery.toLowerCase()) ||
+                                                (b?.extension?.extension || "")
+                                                  .toLowerCase()
+                                                  .includes(searchQuery.toLowerCase());
+                                              // Items that match come first
+                                              return bMatches - aMatches;
+                                            })
+                                            .filter(
+                                              (user) =>
+                                                !agent.some(
+                                                  (agent) => user.id == agent.name
+                                                ) &&
+                                                !selectedgroupUsers.some(
+                                                  (users) => users.user_id == user.id
+                                                )
+                                            ) // Exclude agents already in `agent`
+                                            .map((item, index) => (
+                                              <tr key={""}>
+                                                <td>{index + 1}.</td>
+                                                <td>{item.name}</td>
+                                                <td>{item?.extension?.extension}</td>
+                                                <td>
+                                                  <input
+                                                    type="checkbox"
+                                                    onChange={() =>
+                                                      handleCheckboxChange(item)
+                                                    } // Call handler on change
+                                                    checked={groupSelecedAgents.some(
+                                                      (agent) => agent.name == item.name
+                                                    )} // Keep checkbox state in sync
+                                                  />
+                                                </td>
+                                              </tr>
+                                            ))}
+                                        </tbody>
+                                      </table>
                                     </div>
                                   </div>
+                                </div>
 
-                                  <div className="col-xl-12 mt-2">
-                                    <div className="d-flex justify-content-between">
-                                      <button
-                                        className="panelButton gray ms-0"
-                                        onClick={() => {
-                                          setAddMember(false);
-                                          setGroupChatPopUp(false);
-                                        }}
-                                      >
-                                        <span className="text">Close</span>
-                                        <span className="icon">
-                                          <i className="fa-solid fa-caret-left" />
-                                        </span>
-                                      </button>
-                                      <button
-                                        className="panelButton me-0"
-                                        // onClick={() => handleCreateGroup()}
-                                        onClick={() => handleAddNewMemberToGroup()}
-                                      >
-                                        <span className="text">Add</span>
-                                        <span className="icon">
-                                          <i className="fa-solid fa-check" />
-                                        </span>
-                                      </button>
-                                    </div>
+                                <div className="col-xl-12 mt-2">
+                                  <div className="d-flex justify-content-between">
+                                    <button
+                                      className="panelButton gray ms-0"
+                                      onClick={() => {
+                                        setAddMember(false);
+                                        setGroupChatPopUp(false);
+                                      }}
+                                    >
+                                      <span className="text">Close</span>
+                                      <span className="icon">
+                                        <i className="fa-solid fa-caret-left" />
+                                      </span>
+                                    </button>
+                                    <button
+                                      className="panelButton me-0"
+                                      // onClick={() => handleCreateGroup()}
+                                      onClick={() => handleAddNewMemberToGroup()}
+                                    >
+                                      <span className="text">Add</span>
+                                      <span className="icon">
+                                        <i className="fa-solid fa-check" />
+                                      </span>
+                                    </button>
                                   </div>
                                 </div>
                               </div>
-                            ) :
-                              (
-                                <div style={{ height: 'calc(100vh - 275px)', overflow: 'hidden scroll' }}>
-                                  {
-                                    allAgents
-                                      .filter((item) => {
-                                        return selectedgroupUsers.some(
-                                          (agent) => agent.user_id === item.id
-                                        );
-                                      }).map((item) => {
-                                        const matchingAgent = selectedgroupUsers.find(
-                                          (agent) => agent.user_id === item.id
-                                        );
-                                        return {
-                                          ...item, // Include all existing properties of the agent
-                                          agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
-                                          is_admin: matchingAgent?.is_admin,
-                                          userId: matchingAgent?.user_id,
-                                          group_id: matchingAgent?.group_id,
-                                        };
-                                      }).map((item, index) => {
-                                        return (
-                                          <div
-                                            data-bell=""
-                                            className="contactListItem bg-transparent"
-                                            style={{ minHeight: "auto" }}
-                                          >
-                                            <div className="row justify-content-between">
-                                              <div className="col-xl-12 d-flex">
-                                                <div className="profileHolder">
-                                                  {item?.profile_picture ?
-                                                    <img
-                                                      src={item?.profile_picture}
-                                                      alt="profile"
-                                                      onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
-                                                    /> :
-                                                    <i className="fa-light fa-user" />}
-                                                </div>
-                                                <div className="my-auto ms-2 ms-xl-3">
-                                                  <h4>{item.name}</h4>
-                                                </div>
-                                                {(item.email !== account.email) && isAdmin ? <div className="col text-end my-auto">
-                                                  <div className="dropdown">
-                                                    <button
-                                                      className="clearButton2"
-                                                      type="button"
-                                                      data-bs-toggle="dropdown"
-                                                      aria-expanded="true"
-                                                    >
-                                                      <i className="fa-solid fa-ellipsis-vertical" />
-                                                    </button>
-                                                    <ul
-                                                      className="dropdown-menu light"
-                                                    >
-                                                      {
-                                                        item.is_admin ?
-                                                          <li>
-                                                            <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
-                                                              Dismiss Group Admin
-                                                            </div>
-                                                          </li>
-                                                          :
-                                                          <li>
-                                                            <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
-                                                              Make Group Admin
-                                                            </div>
-                                                          </li>}
-                                                      <li>
-                                                        <div className="dropdown-item text-danger"
-                                                          onClick={() =>
-                                                            handleremoveUserFromGroup(
-                                                              item.agentId
-                                                            )
-                                                          }>
-                                                          Kick User
-                                                        </div>
-                                                      </li>
-                                                    </ul>
-                                                  </div>
-                                                </div> : ""}
-
+                            </div>
+                          ) :
+                            (
+                              <div style={{ height: 'calc(100vh - 275px)', overflow: 'hidden scroll' }}>
+                                {
+                                  allAgents
+                                    .filter((item) => {
+                                      return selectedgroupUsers.some(
+                                        (agent) => agent.user_id === item.id
+                                      );
+                                    }).map((item) => {
+                                      const matchingAgent = selectedgroupUsers.find(
+                                        (agent) => agent.user_id === item.id
+                                      );
+                                      return {
+                                        ...item, // Include all existing properties of the agent
+                                        agentId: matchingAgent?.id, // Include the user_id from selectedgroupUsers
+                                        is_admin: matchingAgent?.is_admin,
+                                        userId: matchingAgent?.user_id,
+                                        group_id: matchingAgent?.group_id,
+                                      };
+                                    }).map((item, index) => {
+                                      return (
+                                        <div
+                                          data-bell=""
+                                          className="contactListItem bg-transparent"
+                                          style={{ minHeight: "auto" }}
+                                        >
+                                          <div className="row justify-content-between">
+                                            <div className="col-xl-12 d-flex">
+                                              <div className="profileHolder">
+                                                {item?.profile_picture ?
+                                                  <img
+                                                    src={item?.profile_picture}
+                                                    alt="profile"
+                                                    onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')}
+                                                  /> :
+                                                  <i className="fa-light fa-user" />}
                                               </div>
+                                              <div className="my-auto ms-2 ms-xl-3">
+                                                <h4>{item.name}</h4>
+                                              </div>
+                                              {(item.email !== account.email) && isAdmin ? <div className="col text-end my-auto">
+                                                <div className="dropdown">
+                                                  <button
+                                                    className="clearButton2"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="true"
+                                                  >
+                                                    <i className="fa-solid fa-ellipsis-vertical" />
+                                                  </button>
+                                                  <ul
+                                                    className="dropdown-menu light"
+                                                  >
+                                                    {
+                                                      item.is_admin ?
+                                                        <li>
+                                                          <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
+                                                            Dismiss Group Admin
+                                                          </div>
+                                                        </li>
+                                                        :
+                                                        <li>
+                                                          <div className="dropdown-item" onClick={() => manageAdmin(item.agentId, item.group_id, item.userId, !item.is_admin)}>
+                                                            Make Group Admin
+                                                          </div>
+                                                        </li>}
+                                                    <li>
+                                                      <div className="dropdown-item text-danger"
+                                                        onClick={() =>
+                                                          handleremoveUserFromGroup(
+                                                            item.agentId
+                                                          )
+                                                        }>
+                                                        Kick User
+                                                      </div>
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              </div> : ""}
+
                                             </div>
                                           </div>
-                                        );
-                                      })
-                                  }
-                                </div>
-                              )
-                            }
-                            {!addMember && <div className="mb-auto px-2">
-                              <button
-                                className="panelButton gray ms-0"
-                                onClick={() => {
-                                  setManageGroupChat(false);
-                                }}
-                              >
-                                <span className="text">Close</span>
-                                <span className="icon">
-                                  <i className="fa-solid fa-caret-left" />
-                                </span>
-                              </button>
-                            </div>}
-                          </div>
+                                        </div>
+                                      );
+                                    })
+                                }
+                              </div>
+                            )
+                          }
+                          {!addMember && <div className="mb-auto px-2">
+                            <button
+                              className="panelButton gray ms-0"
+                              onClick={() => {
+                                setManageGroupChat(false);
+                              }}
+                            >
+                              <span className="text">Close</span>
+                              <span className="icon">
+                                <i className="fa-solid fa-caret-left" />
+                              </span>
+                            </button>
+                          </div>}
                         </div>
-                        ) : (
+                      </div>
+                    ) : (
+                      <div
+                        className=" h-100" style={{ width: isActiveAgentsOpen ? '30%' : '0%', transition: 'all 0.4s ease-in-out' }}
+                      // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      >
+                        <div className="callDashParkedCalls messageDower pe-0"
+                          style={{ transform: isActiveAgentsOpen ? 'translate(3%, 0%)' : 'translate(100%, 0%)' }}
+                        >
+                          <button onClick={() => setIsActiveAgentsOpen(!isActiveAgentsOpen)} className="callDashParkedCallsBtn" style={{ left: isActiveAgentsOpen ? '-15px' : '7px', transition: 'all 0.4s ease-in-out', }}>
+                            <i className={`fa-solid fa-chevron-${isActiveAgentsOpen ? "right" : "left"}`} />
+                          </button>
                           <div
-                            className="col-12 h-100"
-                            style={{ borderLeft: "1px solid var(--border-color)" }}
+                            className=" h-100"
+                          // style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
                           >
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages={allMessage?.[recipient[1]]}
+                              messages={recipient[2] === "groupChat" ? allMessage?.[recipient[3]] : allMessage?.[recipient[1]]}
                               selectedChat={selectedChat}
                             />
                           </div>
-                        )
-                      }
-                    </Panel>
+                        </div>
+                      </div>
+                    )
+                  }
+                  </Panel>
                   </PanelGroup>
                 </div>
               </div>

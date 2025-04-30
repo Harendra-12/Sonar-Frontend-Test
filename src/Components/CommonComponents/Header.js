@@ -24,6 +24,10 @@ function Header(props) {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const incomingMessage = useSelector((state) => state.incomingMessage);
+
+  console.log("incomingMessage", incomingMessage);
+
 
   async function handleSubmit() {
     if (oldPassword === "") {
@@ -119,7 +123,7 @@ function Header(props) {
                   >
                     <i className="fa-regular fa-phone-office" />{" "}
                     <span className="d-none d-xl-inline-block">
-                      Go to App
+                     App
                     </span>
                   </a>
                 </Tippy>
