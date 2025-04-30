@@ -99,7 +99,7 @@ function CdrFilterReport({ page }) {
   // const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
   const [showComment, setShowComment] = useState(false)
-  const [advanceSearchPopup, setAdvanceSearchPopup] = useState(true);
+  const [advanceSearchPopup, setAdvanceSearchPopup] = useState(false);
 
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
