@@ -55,9 +55,6 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
     };
   }, [connectStatus, registerStatus]);
 
-  console.log("Connect",connectStatus);
-  console.log("Register",registerStatus);
-  
   
 
   useEffect(() => {

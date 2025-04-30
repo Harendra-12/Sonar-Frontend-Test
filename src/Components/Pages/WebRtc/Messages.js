@@ -441,7 +441,8 @@ function Messages({
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: messageType
         },
       ],
     }));
@@ -638,7 +639,8 @@ function Messages({
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -657,7 +659,8 @@ function Messages({
             time,
             user_id: agentDetails?.id,
             user_name: agentDetails?.name,
-            profile_picture: agentDetails?.profile_picture
+            profile_picture: agentDetails?.profile_picture,
+            message_type: contentType
           }],
         }));
 
@@ -1272,7 +1275,8 @@ function Messages({
           time,
           user_id: userDetails.id,
           user_name: userDetails?.username,
-          profile_picture: userDetails?.profile_picture
+          profile_picture: userDetails?.profile_picture,
+          message_type: checkMessageType(messageContent)
         },
       ],
     }));
@@ -1292,7 +1296,8 @@ function Messages({
       {
         from: groupMessage.user_name,
         body: groupMessage.sharedMessage,
-        time
+        time,
+        message_type: groupMessage.message_type,
       }],
     }));
   }, [groupMessage])
