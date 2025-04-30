@@ -4,7 +4,7 @@ import React from "react";
 const CustomHandle = (props) => {
   return (
     <Handle
-      className="bg-white border-2 border-black rounded-full"
+      className="bg-light border border-2 border-black rounded-circle"
       style={{ height: "10px", width: "10px" }}
       //   style={{
       //       //     width: 20,

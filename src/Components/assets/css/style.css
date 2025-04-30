@@ -1,65 +1,64 @@
 /* Font Imports */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* CSS Modules */
-@import url('./components/headerTitle.css');
-@import url('./common/iconStuff.css');
-@import url('./common/ripple.css');
-@import url('./common/scrollbar.css');
-@import url('./components/sideNav.css');
-@import url('./components/sideNavApp.css');
-@import url('./common/mainContent.css');
-@import url('./components/menuWrapper.css');
-@import url('./common/buttons.css');
-@import url('./common/tableStuff.css');
-@import url('./common/toggleSwitch.css');
-@import url('./common/fontSizes.css');
-@import url('./components/extensionImport.css');
-@import url('./components/subPage.css');
-@import url('./components/messagesContent.css');
-@import url('./components/callContent.css');
-@import url('./common/audio-player.css');
-@import url('./components/dashboard.css');
-@import url('./components/loginPage.css');
-@import url('./common/misc.css');
-@import url('./components/setupGuide.css');
-@import url('./components/storeExtension.css');
-@import url('./components/orderConfirmation.css');
-@import url('./components/profilesPage.css');
-@import url('./components/dialPad.css');
-@import url('./components/loader.css');
-@import url('./components/caller.css');
-@import url('./components/master.css');
-@import url('./components/billingOverview.css');
-@import url('./components/temporaryDashboard.css');
-@import url('./components/documentPending.css');
-@import url('./components/activeCallsSidePanel.css');
-@import url('./common/browserPhoneForm.css');
-@import url('./components/contactView.css');
-@import url('./components/messageContent.css');
-@import url('./components/conference/conferenceCaller.css');
-@import url('./components/conference/conferenceSettings.css');
-@import url('./components/conference/participantSlider.css');
-@import url('./components/clickToCall.css');
-@import url('./components/dialer/dialerDashboard.css');
-@import url('./components/dialer/campaign.css');
-@import url('./components/conferenceLoader.css');
-@import url('./components/addon.css');
-@import url('./components/store-extension.css');
-@import url('./components/twakto-new.css');
-@import url('./components/digitalClock.css');
-@import url('./components/globalPermissions.css');
+@import url("./components/headerTitle.css");
+@import url("./common/iconStuff.css");
+@import url("./common/ripple.css");
+@import url("./common/scrollbar.css");
+@import url("./components/sideNav.css");
+@import url("./components/sideNavApp.css");
+@import url("./common/mainContent.css");
+@import url("./components/menuWrapper.css");
+@import url("./common/buttons.css");
+@import url("./common/tableStuff.css");
+@import url("./common/toggleSwitch.css");
+@import url("./common/fontSizes.css");
+@import url("./components/extensionImport.css");
+@import url("./components/subPage.css");
+@import url("./components/messagesContent.css");
+@import url("./components/callContent.css");
+@import url("./common/audio-player.css");
+@import url("./components/dashboard.css");
+@import url("./components/loginPage.css");
+@import url("./common/misc.css");
+@import url("./components/setupGuide.css");
+@import url("./components/storeExtension.css");
+@import url("./components/orderConfirmation.css");
+@import url("./components/profilesPage.css");
+@import url("./components/dialPad.css");
+@import url("./components/loader.css");
+@import url("./components/caller.css");
+@import url("./components/master.css");
+@import url("./components/billingOverview.css");
+@import url("./components/temporaryDashboard.css");
+@import url("./components/documentPending.css");
+@import url("./components/activeCallsSidePanel.css");
+@import url("./common/browserPhoneForm.css");
+@import url("./components/contactView.css");
+@import url("./components/messageContent.css");
+@import url("./components/conference/conferenceCaller.css");
+@import url("./components/conference/conferenceSettings.css");
+@import url("./components/conference/participantSlider.css");
+@import url("./components/clickToCall.css");
+@import url("./components/dialer/dialerDashboard.css");
+@import url("./components/dialer/campaign.css");
+@import url("./components/conferenceLoader.css");
+@import url("./components/addon.css");
+@import url("./components/store-extension.css");
+@import url("./components/twakto-new.css");
+@import url("./components/digitalClock.css");
+@import url("./components/globalPermissions.css");
+@import url("./components/livechat.css");
+@import url("./components/reactflow/base.css");
 /* Responsive CSS */
-@import url('./common/responsive.css');
-@import url('./components/livechat.css');
+@import url("./common/responsive.css");
 
 /* Themes */
 /* @import url('./common/darkTheme.css'); */
-
 
 :root {
   --bg-color: #f3f3f3;
@@ -89,10 +88,10 @@
   --color3-trans: #ffc46e30; */
   /* --ui-accent-green: #62A8AC; */
   --ui-accent-green: #00a498;
-  --ui-accent-green-trans: #62A8AC30;
-  --color3: #FF8C42;
+  --ui-accent-green-trans: #62a8ac30;
+  --color3: #ff8c42;
 
-  --color3-trans: #FF8C4230;
+  --color3-trans: #ff8c4230;
   /* Highlight, Notification & Alert Color */
   --color-text: #fff;
   /* Contrast Text Color */
@@ -189,8 +188,6 @@
   --table-border-color: #d3d9eb;
   --table-border-color: #d3d9eb;
   --table-bg-active: #f3f6f8;
-  
-
 
   /* ================= message box color  */
 
@@ -221,24 +218,23 @@
   --table-empty-bg2: rgba(139, 255, 128, 0.161);
   --table-empty-border2: #03900b;
 
---table-edit-text: #287f71;
---table-edit-bg: #d4e5e3;
+  --table-edit-text: #287f71;
+  --table-edit-bg: #d4e5e3;
 
---table-delete-bg: #fbd6db;
---table-delete-text: #ec344c;
---config-bg: #fff;
---badge-purple-text: #9300ff;
---badge-purple-bg: #ddb8ea54;
---link: #00b0ff;
---icon-btn-hover: #e7e7e7;
+  --table-delete-bg: #fbd6db;
+  --table-delete-text: #ec344c;
+  --config-bg: #fff;
+  --badge-purple-text: #9300ff;
+  --badge-purple-bg: #ddb8ea54;
+  --link: #00b0ff;
+  --icon-btn-hover: #e7e7e7;
 
---primary01: #845adf1a;
---primary-color01: #845adf;
---pink-rgb-bg: #e791bc1a;
---pink-rgb-text: #e791bc;
---secondary-rgb-bg: rgba(35, 183, 229, 0.102);
---secondary-rgb-text: rgb(35, 183, 229);
-
+  --primary01: #845adf1a;
+  --primary-color01: #845adf;
+  --pink-rgb-bg: #e791bc1a;
+  --pink-rgb-text: #e791bc;
+  --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
+  --secondary-rgb-text: rgb(35, 183, 229);
 }
 
 :root.dark {
@@ -334,7 +330,7 @@
   --table-odd-color: rgba(85, 104, 130, 0.18);
   --table-border-color: #525458;
   --table-bg-active: #292f3a;
-  
+
   /* ================= message box color  */
 
   --me-body-bg: #12131d;
@@ -353,7 +349,7 @@
 
   --backdrop-bg: rgba(24, 24, 46, 0.831);
   --active-input-color: rgb(62 67 71);
-  
+
   /* ================= table icon */
 
   --table-empty-text: rgba(19, 238, 255, 0.851);
@@ -363,7 +359,7 @@
   --table-empty-text2: rgba(12, 255, 26, 0.769);
   --table-empty-bg2: rgba(139, 255, 128, 0);
   --table-empty-border2: rgba(0, 255, 15, 0.69);
-  
+
   --table-edit-text: rgb(12, 202, 171);
   --table-edit-bg: rgba(34, 255, 229, 0.102);
 
@@ -375,8 +371,6 @@
   --badge-purple-bg: #c82aff3d;
   --link: #51c9ff;
   --icon-btn-hover: rgba(105, 105, 105, 0.278);
- 
-
 }
 
 :root.green {
@@ -385,8 +379,11 @@
   /* Dark Mode */
   /* --nav-color: #141718; */
   /* --nav-color: #292a3a; */
-  --nav-color: linear-gradient(180deg, rgba(225, 229, 237, 1) 0%, rgba(214, 214, 214, 1) 100%);
-  ;
+  --nav-color: linear-gradient(
+    180deg,
+    rgba(225, 229, 237, 1) 0%,
+    rgba(214, 214, 214, 1) 100%
+  );
   --button-dark: #2d3864;
   --div-color: #161c31;
   --caller-color: #0a0d16;
@@ -405,7 +402,6 @@
   --color-text: #fff;
   /* Contrast Text Color  */
   --border-color: #ddd;
-
 
   /* Light Mode  */
   --color4: #abababa6;
@@ -468,8 +464,8 @@ ul {
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
 }
 
 .sliders::-webkit-slider-thumb {
@@ -478,7 +474,7 @@ ul {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #04AA6D;
+  background: #04aa6d;
   cursor: pointer;
 }
 
@@ -486,12 +482,9 @@ ul {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #04AA6D;
+  background: #04aa6d;
   cursor: pointer;
 }
-
-
-
 
 .change-btn-colorss {
   display: flex;
@@ -506,7 +499,6 @@ ul {
 
   width: 30px;
   height: 30px;
-
 }
 
 .change-btn-colorss:hover {
@@ -523,10 +515,8 @@ ul {
   height: 30px;
 }
 
-
 .radius-1 {
   border-top-right-radius: 3px;
-
 }
 
 .radius-2 {
@@ -546,11 +536,9 @@ ul {
   align-items: center;
   padding: 10px 20px;
   border-radius: 10px;
-
 }
 
 .count-number {
-
   font-size: 1.1875rem;
   font-weight: bold;
   /* margin: 0 15px; */
@@ -572,13 +560,11 @@ ul {
   padding-right: 11px;
   border-top: 1px solid #0d6efd;
   border-bottom: 1px solid #0d6efd;
-
 }
 
 .formItem:autofill {
   background-color: transparent !important;
   color: var(--form-input-text) !important;
-
 }
 
 .formItem.active {
@@ -588,7 +574,9 @@ ul {
 .tippy-box {
   background-color: var(--ele-color) !important;
   color: var(--immortalBlack) !important;
-  box-shadow: 0 0 20px 4px rgba(154, 161, 177, .15), 0 4px 80px -8px rgba(36, 40, 47, .25), 0 4px 4px -2px rgba(91, 94, 105, .15) !important;
+  box-shadow: 0 0 20px 4px rgba(154, 161, 177, 0.15),
+    0 4px 80px -8px rgba(36, 40, 47, 0.25),
+    0 4px 4px -2px rgba(91, 94, 105, 0.15) !important;
 }
 
 .tippy-arrow {
