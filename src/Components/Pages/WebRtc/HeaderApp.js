@@ -5,6 +5,21 @@ import { useSIPProvider } from 'modify-react-sipjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ * HeaderApp component renders the header section of the web application.
+ * It displays the current page title and provides functionalities such as
+ * refreshing the API, handling user logout, and managing session connections.
+ * It also includes UI elements for notifications and toggling dark mode.
+ *
+ * @param {string} title - The title of the current page being displayed.
+ * @param {boolean} loading - The loading state to indicate if an API call is in progress.
+ * @param {function} setLoading - A function to set the loading state.
+ * @param {function} refreshApi - A function to refresh the API data.
+ *
+ * @returns {JSX.Element} The rendered header component.
+ */
+
+
 function HeaderApp({ title, loading, setLoading, refreshApi }) {
     const allCallCenterIds = useSelector((state) => state.allCallCenterIds);
     const [allLogOut, setAllLogOut] = useState(false);
@@ -35,7 +50,7 @@ function HeaderApp({ title, loading, setLoading, refreshApi }) {
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                     <h3 style={{ fontFamily: "Outfit", marginBottom: "0" }}>
                         {title}{" "}
-                        {title !== "Call Dashboard" || title !== "Call Center" || title !== "WhatsApp" &&
+                        {/* {title !== "Call Dashboard" || title !== "Call Center" || title !== "WhatsApp" && */}
                             <button
                                 className="clearButton2"
                                 onClick={() => {
@@ -53,7 +68,7 @@ function HeaderApp({ title, loading, setLoading, refreshApi }) {
                                     style={{ color: "var(--webUtilGray)" }}
                                 ></i>
                             </button>
-                        }
+                        {/* } */}
                     </h3>
                 </div>
                 <div className="d-flex justify-content-end align-items-center">

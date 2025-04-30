@@ -35,13 +35,30 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
   const adminLogout = useSelector((state) => state.adminLogout);
 
 
+  // Trying to connect with freeswitch at every 3 seconds when disconnect or unregister from feeswitch for any of reason
   useEffect(() => {
-    if (connectStatus === "CONNECTED") {
-      if (registerStatus === "UNREGISTERED") {
-        sessionManager.connect()
-      }
+    let intervalId = null;
+    const shouldRetry = 
+      registerStatus === "UNREGISTERED" || connectStatus === "DISCONNECTED";
+    if (shouldRetry) {
+      intervalId = setInterval(() => {
+        console.log("Attempting to connect to FreeSWITCH...");
+        sessionManager.connect();
+      }, 3000); // retry every 3 seconds
     }
-  }, [connectStatus, registerStatus])
+  
+    // Clear interval when conditions are no longer met
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [connectStatus, registerStatus]);
+
+  console.log("Connect",connectStatus);
+  console.log("Register",registerStatus);
+  
+  
 
   useEffect(() => {
     if (adminLogout) {
@@ -107,7 +124,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                     <div
                       className="profileHolder"
                       id={
-                        connectStatus === "CONNECTED"
+                        registerStatus === "REGISTERED"
                           ? "profileOnlineNav"
                           : "profileOfflineNav"
                       }
@@ -116,7 +133,7 @@ function SideNavbarApp({ activePage, setactivePage, isMicOn, reconnecting }) {
                         <img src={account?.profile_picture} onError={(e) => e.target.src = require('../../assets/images/placeholder-image.webp')} /> : (
                           <i className="fa-light fa-user"></i>
                         )}
-                      {connectStatus === "CONNECTED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
+                      {registerStatus === "REGISTERED" ? "" : <><div className="offlineCircle"></div><div className="offlineCircle"></div></>}
                     </div>
                     <div className="userTitle">
                       {account && <Tippy content={account.username}><h5>{account?.username}</h5></Tippy>}

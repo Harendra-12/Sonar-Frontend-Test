@@ -314,16 +314,17 @@ function Messages({
         const user_details = allAgents?.find((data) => data?.id == item?.user_id)
         setAllMessage((prevState) => ({
           ...prevState,
-          [recipient[0]]: [
+          [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
             {
-              from: recipient[2] === "singleChat" ? (item.user_id === recipient[1] ? recipient[0] : extension) : item.user_name,
+              from: item.user_id,
               body: item?.message_text,
               time: item.created_at,
               user_id: item.user_id,
               user_name: user_details?.username,
-              profile_picture: user_details?.profile_picture
+              profile_picture: user_details?.profile_picture,
+              message_type:item.message_type
             },
-            ...(prevState[recipient[0]] || []),
+            ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
           ],
         }));
       });
@@ -417,7 +418,7 @@ function Messages({
     const messageType = checkMessageType(messageContent)
     sendMessage({
       "sharedMessage": messageContent,
-      "from": account.id,
+      "from": account?.id,
       "to": recipient[1],
       "key": "peerchat",
       "action": "peerchat",
@@ -426,21 +427,29 @@ function Messages({
 
     const time = formatDateTime(new Date());
     setIsFreeSwitchMessage(true);
+    const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[0]]: [
-        ...(prevState[recipient[0]] || []),
-        { from: extension, body: messageInput || selectedUrl, time },
+      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+        ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
+        { 
+          from: userDetails.id, 
+          body: messageInput || selectedUrl, 
+          time,
+          user_id: userDetails.id,
+          user_name: userDetails?.username,
+          profile_picture: userDetails?.profile_picture
+        },
       ],
     }));
     // Update contact last message
     const contactIndex = contact.findIndex(
-      (contact) => contact.extension === recipient[0]
+      (contact) => contact.id === recipient[1]
     );
     if (contactIndex !== -1) {
       const newContact = [...contact];
       newContact[contactIndex].last_message_data.message_text = messageInput;
-      newContact[contactIndex].last_message_data.created_at = time;
+      newContact[contactIndex].last_message_data.created_at = time; 
       setContact(newContact);
     }
     setActiveTab("all");
@@ -557,212 +566,242 @@ function Messages({
   // Logic to recieve messages from differnt users
   const userAgent = sipProvider?.sessionManager?.userAgent;
 
-  // useEffect(()=>{
-  //   if(incomingMessage){
-  //     const from = incomingMessage?.from
-  //     const body = incomingMessage?.body
-  //     setIsFreeSwitchMessage(true);
-  //     const extensionExists = contact.some(
-  //       (contact) => contact.id === from
-  //     );
-  //     const agentDetails = agents.find(
-  //       (agent) => agent.extension.id === from
-  //     );
-  //     const time = formatDateTime(new Date());
-
-  //     const contactIndex = contact.findIndex(
-  //       (contact) => contact.id === recipient[0]
-  //     );
-  //     if (contactIndex !== -1) {
-  //       const newContact = [...contact];
-  //       newContact[contactIndex].last_message_data.message_text = body;
-  //       newContact[contactIndex].last_message_data.created_at = time;
-  //       setContact(newContact);
-  //     }
-  //     if (!extensionExists) {
-  //       contact.unshift({
-  //         name: agentDetails.username,
-  //         email: agentDetails.email,
-  //         id: agentDetails.id,
-  //         extension_id: agentDetails.extension_id,
-  //         extension: from,
-  //         last_message_data: { message_text: body, created_at: time },
-  //       });
-  //     } else {
-  //       // Move the extension object to the beginning of the array
-  //       const index = contact.findIndex(
-  //         (contact) => contact.extension === from
-  //       );
-  //       const extensionObject = contact.splice(index, 1)[0];
-  //       contact.unshift(extensionObject);
-  //       const newContact = [...contact];
-  //       newContact[index].last_message_data.message_text = body;
-  //       newContact[index].last_message_data.created_at = time;
-  //       setContact(newContact);
-  //     }
-  //     // Check Content-Type for the incoming message
-  //     const contentType =
-  //       message?.incomingMessageRequest?.message?.getHeader("Content-Type");
-
-  //     // Get the current time when the message is received
-  //     // Or use .toISOString() for UTC format
-
-  //     // Check if the content is an image
-
-  //     const audio = new Audio(
-  //       require("../../assets/music/message-notification.mp3")
-  //     );
-  //     if (contentType && contentType.startsWith("image/")) {
-  //       // If it's an image, create a URL for the Base64 image to render it in <img>
-  //       // const imageUrl = `${body}`;
-
-  //       // Update the state to include the image
-  //       setAllMessage((prevState) => ({
-  //         ...prevState,
-  //         [from]: [...(prevState[from] || []), { from, body, time }],
-  //       }));
-
-  //       // Add number of unread messaeg based on extension
-  //       setUnreadMessage((prevState) => ({
-  //         ...prevState,
-  //         [from]: (prevState[from] || 0) + 1,
-  //       }));
-  //     } else {
-  //       // If it's a text message or other type, render as text
-  //       setAllMessage((prevState) => ({
-  //         ...prevState,
-  //         [from]: [...(prevState[from] || []), { from, body, time }],
-  //       }));
-
-  //       // Play music when message is received
-
-  //       if (recipient[0] !== from) {
-  //         setUnreadMessage((prevState) => ({
-  //           ...prevState,
-  //           [from]: (prevState[from] || 0) + 1,
-  //         }));
-  //         audio.play();
-  //       }
-
-  //       // Update contact last message
-  //       const contactIndex = contact.findIndex(
-  //         (contact) => contact.extension === recipient[0]
-  //       );
-  //       if (contactIndex !== -1) {
-  //         const newContact = [...contact];
-  //         newContact[contactIndex].last_message_data.message_text =
-  //           messageInput;
-  //         newContact[contactIndex].last_message_data.created_at = time;
-  //         setContact(newContact);
-  //       }
-  //     }
-  //   }
-  // },[incomingMessage])
-  if (userAgent) {
-    // Setup message delegate to handle incoming messages
-    userAgent.delegate = {
-      onMessage: (message) => {
-        const from =
-          message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
-        const body = message?.incomingMessageRequest?.message?.body;
-        setIsFreeSwitchMessage(true);
-        const extensionExists = contact.some(
-          (contact) => contact.extension === from
+  useEffect(()=>{
+    if(incomingMessage){
+      const from = incomingMessage?.sender_id;
+      const body = incomingMessage?.message_text;
+      setIsFreeSwitchMessage(true);
+      const extensionExists = contact.some(
+        (contact) => contact?.id === from
+      );
+      const agentDetails = agents.find(
+        (agent) => agent?.id === from
+      );
+      const time = formatDateTime(new Date());
+      
+      const contactIndex = contact.findIndex(
+        (contact) => contact.id === agentDetails?.id
+      );
+      if (contactIndex !== -1) {
+        const newContact = [...contact];
+        newContact[contactIndex].last_message_data.message_text = body;
+        newContact[contactIndex].last_message_data.created_at = time;
+        setContact(newContact);
+      }
+      if (!extensionExists) {
+        contact.unshift({
+          name: agentDetails.username,
+          email: agentDetails.email,
+          id: agentDetails.id,
+          extension_id: agentDetails.extension_id,
+          extension: from,
+          last_message_data: { message_text: body, created_at: time },
+        });
+      } else {
+        // Move the extension object to the beginning of the array
+        const index = contact.findIndex(
+          (contact) => contact?.id === from
         );
-        const agentDetails = agents.find(
-          (agent) => agent.extension.extension === from
-        );
-        const time = formatDateTime(new Date());
+        const extensionObject = contact.splice(index, 1)[0];
+        contact.unshift(extensionObject);
+        const newContact = [...contact];
+        newContact[index].last_message_data.message_text = body;
+        newContact[index].last_message_data.created_at = time;
+        setContact(newContact);
+      }
+      // Check Content-Type for the incoming message
+      const contentType = incomingMessage?.message_type;
 
+      // Get the current time when the message is received
+      // Or use .toISOString() for UTC format
+
+      // Check if the content is an image
+
+      const audio = new Audio(
+        require("../../assets/music/message-notification.mp3")
+      );
+      if (contentType == "image") {
+        // If it's an image, create a URL for the Base64 image to render it in <img>
+        // const imageUrl = `${body}`;
+
+        // Update the state to include the image
+        setAllMessage((prevState) => ({
+          ...prevState,
+          [from]: [...(prevState[from] || []), { 
+            from, 
+            body, 
+            time,
+            user_id: agentDetails?.id,
+            user_name: agentDetails?.name,
+            profile_picture: agentDetails?.profile_picture
+          }],
+        }));
+
+        // Add number of unread messaeg based on extension
+        setUnreadMessage((prevState) => ({
+          ...prevState,
+          [from]: (prevState[from] || 0) + 1,
+        }));
+      } else {
+        // If it's a text message or other type, render as text
+        setAllMessage((prevState) => ({
+          ...prevState,
+          [from]: [...(prevState[from] || []), { 
+            from, 
+            body, 
+            time,
+            user_id: agentDetails?.id,
+            user_name: agentDetails?.name,
+            profile_picture: agentDetails?.profile_picture
+          }],
+        }));
+
+        // Play music when message is received
+
+        if (recipient[0] !== from) {
+          setUnreadMessage((prevState) => ({
+            ...prevState,
+            [from]: (prevState[from] || 0) + 1,
+          }));
+          audio.play();
+        }
+
+        // Update contact last message
         const contactIndex = contact.findIndex(
           (contact) => contact.extension === recipient[0]
         );
         if (contactIndex !== -1) {
           const newContact = [...contact];
-          newContact[contactIndex].last_message_data.message_text = body;
+          newContact[contactIndex].last_message_data.message_text =
+            messageInput;
           newContact[contactIndex].last_message_data.created_at = time;
           setContact(newContact);
         }
-        if (!extensionExists) {
-          contact.unshift({
-            name: agentDetails.username,
-            email: agentDetails.email,
-            id: agentDetails.id,
-            extension_id: agentDetails.extension_id,
-            extension: from,
-            last_message_data: { message_text: body, created_at: time },
-          });
-        } else {
-          // Move the extension object to the beginning of the array
-          const index = contact.findIndex(
-            (contact) => contact.extension === from
-          );
-          const extensionObject = contact.splice(index, 1)[0];
-          contact.unshift(extensionObject);
-          const newContact = [...contact];
-          newContact[index].last_message_data.message_text = body;
-          newContact[index].last_message_data.created_at = time;
-          setContact(newContact);
-        }
-        // Check Content-Type for the incoming message
-        const contentType =
-          message?.incomingMessageRequest?.message?.getHeader("Content-Type");
+      }
+    }
+  },[incomingMessage])
+  // ===========================================================
+  // if (userAgent) {
+  //   debugger
+  //   // Setup message delegate to handle incoming messages
+  //   userAgent.delegate = {
+  //     onMessage: (message) => {
+  //       const from =
+  //         message?.incomingMessageRequest?.message?.from?.uri?.user.toString();
+  //       const body = message?.incomingMessageRequest?.message?.body;
+  //       setIsFreeSwitchMessage(true);
+  //       const extensionExists = contact.some(
+  //         (contact) => contact.extension === from
+  //       );
+  //       const agentDetails = agents.find(
+  //         (agent) => agent.extension.extension === from
+  //       );
+  //       const time = formatDateTime(new Date());
 
-        // Get the current time when the message is received
-        // Or use .toISOString() for UTC format
+  //       const contactIndex = contact.findIndex(
+  //         (contact) => contact.extension === recipient[0]
+  //       );
+  //       if (contactIndex !== -1) {
+  //         const newContact = [...contact];
+  //         newContact[contactIndex].last_message_data.message_text = body;
+  //         newContact[contactIndex].last_message_data.created_at = time;
+  //         setContact(newContact);
+  //       }
+  //       if (!extensionExists) {
+  //         contact.unshift({
+  //           name: agentDetails.username,
+  //           email: agentDetails.email,
+  //           id: agentDetails.id,
+  //           extension_id: agentDetails.extension_id,
+  //           extension: from,
+  //           last_message_data: { message_text: body, created_at: time },
+  //         });
+  //       } else {
+  //         // Move the extension object to the beginning of the array
+  //         const index = contact.findIndex(
+  //           (contact) => contact.extension === from
+  //         );
+  //         const extensionObject = contact.splice(index, 1)[0];
+  //         contact.unshift(extensionObject);
+  //         const newContact = [...contact];
+  //         newContact[index].last_message_data.message_text = body;
+  //         newContact[index].last_message_data.created_at = time;
+  //         setContact(newContact);
+  //       }
+  //       // Check Content-Type for the incoming message
+  //       const contentType =
+  //         message?.incomingMessageRequest?.message?.getHeader("Content-Type");
 
-        // Check if the content is an image
+  //       // Get the current time when the message is received
+  //       // Or use .toISOString() for UTC format
 
-        const audio = new Audio(
-          require("../../assets/music/message-notification.mp3")
-        );
-        if (contentType && contentType.startsWith("image/")) {
-          // If it's an image, create a URL for the Base64 image to render it in <img>
-          // const imageUrl = `${body}`;
+  //       // Check if the content is an image
 
-          // Update the state to include the image
-          setAllMessage((prevState) => ({
-            ...prevState,
-            [from]: [...(prevState[from] || []), { from, body, time }],
-          }));
+  //       const audio = new Audio(
+  //         require("../../assets/music/message-notification.mp3")
+  //       );
+  //       if (contentType && contentType.startsWith("image/")) {
+  //         // If it's an image, create a URL for the Base64 image to render it in <img>
+  //         // const imageUrl = `${body}`;
 
-          // Add number of unread messaeg based on extension
-          setUnreadMessage((prevState) => ({
-            ...prevState,
-            [from]: (prevState[from] || 0) + 1,
-          }));
-        } else {
-          // If it's a text message or other type, render as text
-          setAllMessage((prevState) => ({
-            ...prevState,
-            [from]: [...(prevState[from] || []), { from, body, time }],
-          }));
+  //         // Update the state to include the image
+  //         const userDetails = allAgents?.find((data) => data?.extension?.extension == from)
+  //         setAllMessage((prevState) => ({
+  //           ...prevState,
+  //           [userDetails?.id]: [...(prevState[userDetails?.id] || []), 
+  //           { 
+  //             from: userDetails?.id, 
+  //             body, 
+  //             time,
+  //             user_id: userDetails.id,
+  //             user_name: userDetails?.username,
+  //             profile_picture: userDetails?.profile_picture }],
+  //         }));
 
-          // Play music when message is received
+  //         // Add number of unread messaeg based on extension
+  //         setUnreadMessage((prevState) => ({
+  //           ...prevState,
+  //           [from]: (prevState[from] || 0) + 1,
+  //         }));
+  //       } else {
+  //         // If it's a text message or other type, render as text
+  //         const userDetails = allAgents?.find((data) => data?.extension?.extension == from)
+  //         setAllMessage((prevState) => ({
+  //           ...prevState,
+  //           [userDetails.id]: [...(prevState[userDetails.id] || []), { 
+  //             from: userDetails.id, 
+  //             body, 
+  //             time,
+  //             user_id: userDetails.id,
+  //             user_name: userDetails?.username,
+  //             profile_picture: userDetails?.profile_picture }],
+  //         }));
 
-          if (recipient[0] !== from) {
-            setUnreadMessage((prevState) => ({
-              ...prevState,
-              [from]: (prevState[from] || 0) + 1,
-            }));
-            audio.play();
-          }
+  //         // Play music when message is received
 
-          // Update contact last message
-          const contactIndex = contact.findIndex(
-            (contact) => contact.extension === recipient[0]
-          );
-          if (contactIndex !== -1) {
-            const newContact = [...contact];
-            newContact[contactIndex].last_message_data.message_text =
-              messageInput;
-            newContact[contactIndex].last_message_data.created_at = time;
-            setContact(newContact);
-          }
-        }
-      },
-    };
-  }
+  //         if (recipient[0] !== from) {
+  //           setUnreadMessage((prevState) => ({
+  //             ...prevState,
+  //             [from]: (prevState[from] || 0) + 1,
+  //           }));
+  //           audio.play();
+  //         }
+
+  //         // Update contact last message
+  //         const contactIndex = contact.findIndex(
+  //           (contact) => contact.extension === recipient[0]
+  //         );
+  //         if (contactIndex !== -1) {
+  //           const newContact = [...contact];
+  //           newContact[contactIndex].last_message_data.message_text =
+  //             messageInput;
+  //           newContact[contactIndex].last_message_data.created_at = time;
+  //           setContact(newContact);
+  //         }
+  //       }
+  //     },
+  //   };
+  // }
 
   // Auto scroll
   useEffect(() => {
@@ -1210,22 +1249,25 @@ function Messages({
       "action": "broadcastGroupMessage",
       "user_id": account.id,
       "sharedMessage": messageContent,
-      "group_id": recipient[1],
+      "group_id": recipient[0],
       "group_name": recipient[0],
       "user_name": account.name,
       "user_extension": account.extension.extension
     })
-
+    
     const time = formatDateTime(new Date());
-
+    const userDetails = allAgents?.find((data) => data?.id == account?.id)
     setAllMessage((prevState) => ({
       ...prevState,
-      [recipient[0]]: [
-        ...(prevState[recipient[0]] || []),
+      [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
+        ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
         {
-          from: account.name,
+          from: recipient[2] == "singleChat" ? recipient[1] : recipient[0],
           body: messageContent, // Show appropriate text in the message history
-          time
+          time,
+          user_id: userDetails.id,
+          user_name: userDetails?.username,
+          profile_picture: userDetails?.profile_picture
         },
       ],
     }));
@@ -1241,7 +1283,11 @@ function Messages({
     const time = formatDateTime(new Date());
     setAllMessage((prevState) => ({
       ...prevState,
-      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), { from: groupMessage.user_name, body: groupMessage.sharedMessage, time }],
+      [groupMessage.group_name]: [...(prevState[groupMessage.group_name] || []), 
+      { 
+        from: groupMessage.user_name, 
+        body: groupMessage.sharedMessage, 
+        time }],
     }));
   }, [groupMessage])
 
@@ -1559,7 +1605,7 @@ function Messages({
                                     setSelectedChat("singleChat");
                                     setUnreadMessage((prevState) => {
                                       const {
-                                        [item?.extension]: _,
+                                        [item?.id]: _,
                                         ...newState
                                       } = prevState;
                                       return newState;
@@ -2419,8 +2465,8 @@ function Messages({
                             <div className="messageList" ref={messageListRef}>
                               {recipient[0] ? (
                                 <>
-                                  {allMessage?.[recipient[0]]?.map(
-                                    (item, index, arr) => {
+                                  {allMessage?.[selectedChat === "groupChat" ? recipient[0] : recipient[1]]?.map(
+                                    (item, index, arr) => {                           
                                       const messageDate = item.time?.split(" ")[0]; // Extract date from the time string
                                       const todayDate = new Date()
                                         .toISOString()
@@ -2457,7 +2503,7 @@ function Messages({
                                             </div>
                                           )}
                                           {/* Message content */}
-                                          {item.from === (recipient[2] === "groupChat" ? account.name : extension) ? (
+                                          {item.from !== recipient[1] ? (
                                             <div className="messageItem sender">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
@@ -2497,7 +2543,7 @@ function Messages({
                                               </div>
                                             </div>
                                           ) : (
-
+                                            
                                             <div className="messageItem receiver">
                                               <div className="second">
                                                 <div className="d-flex gap-3 ">
@@ -3108,6 +3154,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
+                              messages = {allMessage?.[recipient[1]]}
                             />
                           </div>
                         )
