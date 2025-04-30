@@ -42,7 +42,7 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
     const [onlineUser, setOnlineUSer] = useState([]);
     const dispatch = useDispatch();
     useEffect(() => {
-        if(allUserRefresh === 0){
+        if (allUserRefresh === 0) {
             dispatch({ type: "SET_ALLUSERREFRESH", allUserRefresh: allUserRefresh + 1 });
         }
         if (logonUser && logonUser.length > 0) {
@@ -127,6 +127,8 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {console.log(activeCall)
+                                                    }
                                                     {allUser?.data?.length > 0 &&
                                                         allUser?.data?.filter((agent) => agent?.extension_id !== null)
                                                             .filter((agent) => onlineUser.includes(agent?.extension?.extension))
@@ -140,9 +142,9 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
 
                                                                     if (!activeCall) return null;
 
-                                                                    if (activeCall[0]?.b_callstate === "ACTIVE") {
+                                                                    if (activeCall[0]?.b_callstate === "ACTIVE" || activeCall[0]?.b_callstate === "HELD") {
                                                                         return {
-                                                                            status: "In Call",
+                                                                            status: activeCall[0]?.b_callstate === "ACTIVE" ? "In Call" : 'On Hold',
                                                                             direction: activeCall[0]?.direction,
                                                                             duration: activeCall[0]?.duration,
                                                                             from: activeCall[0]?.cid_name ?
@@ -160,8 +162,8 @@ function AllActiveAgentStatus({ isActiveAgentsOpen, setIsActiveAgentsOpen }) {
                                                                     <tr>
                                                                         <td>
                                                                             <div className="d-flex align-items-center">
-                                                                                <span className={`extensionStatus ${callStatus?.status === 'In Call' ? 'onCall' : onlineUser.includes(agent?.extension?.extension) ? 'online' : 'offline'}`}></span>
-                                                                                <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : onlineUser.includes(agent?.extension?.extension) ? 'Online' : 'Offline'}</span>
+                                                                                <span className={`extensionStatus ${callStatus?.status === 'In Call' || callStatus?.status === 'On Hold' ? 'onCall' : onlineUser.includes(agent?.extension?.extension) ? 'online' : 'offline'}`}></span>
+                                                                                <span className="ms-1">{callStatus?.status === 'In Call' ? 'On Call' : callStatus?.status === 'On Hold' ? 'On Hold' : onlineUser.includes(agent?.extension?.extension) ? 'Online' : 'Offline'}</span>
                                                                             </div>
                                                                         </td>
                                                                         <td>
