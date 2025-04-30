@@ -119,7 +119,7 @@ function Header(props) {
                   >
                     <i className="fa-regular fa-phone-office" />{" "}
                     <span className="d-none d-xl-inline-block">
-                      Go to App
+                     App
                     </span>
                   </a>
                 </Tippy>

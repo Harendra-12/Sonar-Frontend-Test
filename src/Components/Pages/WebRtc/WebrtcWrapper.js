@@ -257,7 +257,7 @@ const WebrtcWrapper = () => {
           },
           keepalive: true,
         }).catch((err) => console.log("API call failed:", err));
-        localStorage.clear();
+        // localStorage.clear();
       }
     };
 
