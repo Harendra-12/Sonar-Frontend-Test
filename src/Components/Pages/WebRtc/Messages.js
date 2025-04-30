@@ -3160,7 +3160,7 @@ function Messages({
                             {/* this section is for profile details ************ */}
                             <MessageProfileDetails
                               recipient={recipient}
-                              messages={allMessage?.[recipient[1]]}
+                              messages={recipient[2] === "groupChat" ? allMessage?.[recipient[3]] : allMessage?.[recipient[1]]}
                             />
                           </div>
                         )
