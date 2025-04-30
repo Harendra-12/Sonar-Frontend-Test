@@ -9,6 +9,7 @@ import Header from "../../CommonComponents/Header";
 
 import {
   backToTop,
+  featureUnderdevelopment,
   generalGetFunction,
   generalPostFunction,
   generatePreSignedUrl,
@@ -98,6 +99,8 @@ function CdrFilterReport({ page }) {
   // const [transcribeLink, setTranscribeLink] = useState()
   const [showDropDown, setShowDropdown] = useState(false)
   const [showComment, setShowComment] = useState(false)
+  const [advanceSearchPopup, setAdvanceSearchPopup] = useState(true);
+
   const [showKeys, setShowKeys] = useState([
     "Call-Direction",
     "Caller-Orig-Caller-ID-Name",
@@ -761,6 +764,15 @@ function CdrFilterReport({ page }) {
                         </select>
                         <label>entries</label>
                       </div>
+                      <div>
+                        <button className="ms-2 btn btn-success-light btn-wave new_buttonStyle"
+                          style={{ maxWidth: 'initial' }}
+                          onClick={() => setAdvanceSearchPopup(true)}
+                        >
+                          <span>Advanced Search</span>
+                          <i class="fa-solid fa-magnifying-glass" />
+                        </button>
+                      </div>
                     </div>
                     <div className="tableHeader">
                       <div className="d-flex justify-content-xl-end">
@@ -1168,7 +1180,7 @@ function CdrFilterReport({ page }) {
                                       formattedKey = "Destination";
                                     } else if (
                                       key === "Caller-Orig-Caller-ID-Name"
-                                    ){
+                                    ) {
                                       formattedKey = "Caller Name";
                                     } else if (key === "recording_path") {
                                       formattedKey = "Recording";
@@ -1381,11 +1393,11 @@ function CdrFilterReport({ page }) {
                                                     )}
                                                   </td>
                                                 );
-                                              }else if(key==="call_cost" && item[key]){
-                                                return(
+                                              } else if (key === "call_cost" && item[key]) {
+                                                return (
                                                   <td>${item[key]}</td>
                                                 )
-                                              }else {
+                                              } else {
                                                 return (
                                                   <td key={key}>{item[key]}</td>
                                                 );
@@ -1588,6 +1600,46 @@ function CdrFilterReport({ page }) {
         <Comments id={selectedCdr} setId={setSelectedCdr} setShowComment={setShowComment} />
       )}
       {showDuplicatePopUp && <Duplicates duplicatePopUpData={duplicatePopUpData} setShowDuplicatePopUp={setShowDuplicatePopUp} id={selectedCdr} setId={setSelectedCdr} />}
+      {advanceSearchPopup &&
+        <div className="backdropContact">
+          <div className="addNewContactPopup">
+            <button className="clearButton2 xl" onClick={() => setAdvanceSearchPopup(false)} style={{ position: "absolute", top: "10px", right: "10px" }}>
+              <i class="fa-light fa-xmark" />
+            </button>
+            <div className="row">
+              <div class="col-12 heading mb-0">
+                <i class="fa-light fa-magnifying-glass"></i>
+                <h5>Advance Search</h5>
+              </div>
+              <div>
+                <div class="searchBoxWrapper"><input class="searchBar formItem" type="text" value="" onChange={() => featureUnderdevelopment()} /></div>
+              </div>
+              <div className="row mx-auto">
+                <div class="formRow border-0">
+                  <label class="formLabel text-start mb-0 w-100">From</label>
+                  <div class="d-flex w-100">
+                    <input type="date" class="formItem" max="2025-04-30" value="" onChange={() => featureUnderdevelopment()} />
+                    <input type="time" class="formItem ms-2" value="" onChange={() => featureUnderdevelopment()} />
+                  </div>
+                </div>
+                <div class="formRow border-0">
+                  <label class="formLabel text-start mb-0 w-100">To</label>
+                  <div class="d-flex w-100">
+                    <input type="date" class="formItem" max="2025-04-30" value="" onChange={() => featureUnderdevelopment()} />
+                    <input type="time" class="formItem ms-2" value="" onChange={() => featureUnderdevelopment()} />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-12 mt-3">
+                <button class="panelButton mx-auto" onClick={() => featureUnderdevelopment()}>
+                  <span class="text">Search</span>
+                  <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </>
   );
 }

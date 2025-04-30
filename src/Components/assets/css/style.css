@@ -204,7 +204,7 @@
   --me-text-color3: #212529bf;
   --bg-list: #c7e4fc;
   --list-color: #2793f4;
-  --user-list-active: #cce5fc;
+  --user-list-active: #f7f8f9;
   --btn-active-bg: #c7e4fc40;
   --btn-active-text: #2793f4;
 
@@ -238,6 +238,9 @@
 --pink-rgb-text: #e791bc;
 --secondary-rgb-bg: rgba(35, 183, 229, 0.102);
 --secondary-rgb-text: rgb(35, 183, 229);
+--default-border: #dbdbdb;
+
+--shadow01: rgba(169, 169, 169, .15);
 
 }
 
@@ -375,7 +378,9 @@
   --badge-purple-bg: #c82aff3d;
   --link: #51c9ff;
   --icon-btn-hover: rgba(105, 105, 105, 0.278);
- 
+  --default-border: #ffffff45;
+
+  --shadow01: rgba(40, 40, 40, .15);
 
 }
 

@@ -1156,7 +1156,7 @@
     padding: 15px;
     padding: 15px;
     position: absolute;
-    bottom: 13px;
+    bottom: 18px;
     left: 0;
     right: 0;
 }
@@ -1335,7 +1335,8 @@
 
 .imageList {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
 }
 
@@ -1343,13 +1344,35 @@
     width: 100%;
     height: 80px;
     border-radius: 8px;
+    border: 1px solid var(--border-color);
     overflow: hidden;
+    position: relative;
 }
 
 .imageList .imgBox img {
     width: 100%;
     object-fit: cover;
     height: 100%;
+}
+
+.imageList .imgBox .extraButtons {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    background-color: #00000055;
+    transition: all 0.3s ease-in-out;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageList .imgBox:hover .extraButtons {
+    opacity: 1;
 }
 
 .displayFile {
@@ -1369,7 +1392,7 @@
     max-height: 320px;
     width: 100%;
     border-bottom: 1px solid var(--me-border1);
-    padding-bottom: 20px;
+    padding-bottom: 0px;
 }
 
 .chat_doc:last-child {
@@ -1377,7 +1400,35 @@
 }
 
 .chat_doc a {
-    color: #51c9ff;
+    color: #51c9ff !important;
     font-size: 10px;
     text-transform: uppercase;
+    cursor: pointer;
+}
+
+.callDashParkedCalls.messageDower {
+    max-width: 100%;
+    height: 100%;
+    position: relative;
+    right: unset;
+    top: unset;
+    transform: unset;
+    isolation: isolate;
+    /* z-index: 9999; */
+    transition: 0.5s linear;
+}
+
+.callDashParkedCalls.messageDower .callDashParkedCallsBtn {
+    z-index: -1;
+    /* left: -4px; */
+}
+
+.webrtc_newMessageUi .contactTags button.more.info {
+    color: #fff !important;
+    background-color: #03a9f4;
+    border-style: solid;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    padding-inline: 15px;
 }

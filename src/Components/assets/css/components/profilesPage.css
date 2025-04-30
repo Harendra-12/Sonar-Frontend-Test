@@ -394,6 +394,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    height: 30px;
 }
 
 /* .new_buttonStyle p {

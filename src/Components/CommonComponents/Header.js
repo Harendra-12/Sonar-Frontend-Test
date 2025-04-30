@@ -24,6 +24,10 @@ function Header(props) {
   const [confPassword, setConfPassword] = useState("");
   const [errorConfirm, setErrorConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const incomingMessage = useSelector((state) => state.incomingMessage);
+
+  console.log("incomingMessage", incomingMessage);
+
 
   async function handleSubmit() {
     if (oldPassword === "") {
