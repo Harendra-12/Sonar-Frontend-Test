@@ -4,6 +4,7 @@ import WaveSurfer from "wavesurfer.js";
 import Hover from 'wavesurfer.js/dist/plugins/hover.esm.js'
 import AudioTranscribe from "./AudioTranscribe";
 import { featureUnderdevelopment } from "../GlobalFunction/globalFunction";
+import { Rnd } from "react-rnd";
 
 const AudioWaveformCommon = ({ audioUrl }) => {
     console.log("Inside waveform");
@@ -17,6 +18,9 @@ const AudioWaveformCommon = ({ audioUrl }) => {
 
     const [currentTime, setCurrentTime] = useState("0:00");
     const [duration, setDuration] = useState("0:00");
+
+    const [size, setSize] = useState({ width: 'auto', height: 450 });
+    const [position, setPosition] = useState({ x: 500, y: 300 });
 
     const hover = Hover.create({
         lineColor: '#ff0000',
@@ -203,10 +207,36 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                                 </div>
                             </div>
                         </div>
-                        {audioUrl === transcribeLink && <div className="col-12"><AudioTranscribe url={transcribeLink} /></div>}
+                        {audioUrl === transcribeLink &&
+                            (
+                                <Rnd
+                                    size={{ width: size.width, height: size.height }}
+                                    position={{ x: position.x, y: position.y }}
+                                    onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
+                                    onResizeStop={(e, direction, ref, delta, position) => {
+                                        setSize({
+                                            width: ref.style.width,
+                                            height: ref.style.height,
+                                        });
+                                        setPosition(position);
+                                    }}
+                                    minWidth={"300px"}
+                                    minHeight={"450px"}
+                                    // maxWidth={"600px"}
+                                    // maxHeight={"600px"}
+                                    maxWidth={"500px"}
+                                    maxHeight={"450px"}
+                                    dragHandleClassName="drag-handle" // Specify draggable area
+                                >
+                                    <div className="col-12 drag-handle">
+                                        <AudioTranscribe url={transcribeLink} />
+                                    </div>
+                                </Rnd>
+                            )}
                     </>
-                )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 
