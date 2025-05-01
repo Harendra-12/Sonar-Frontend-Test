@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { generalGetFunction, generalPostFunction } from '../../GlobalFunction/globalFunction';
 
-function Comments({ id, setId, setShowComment, webrtc ,showCdrReport=false}) {
+function Comments({ id, setId, setShowComment, webrtc, showCdrReport = false }) {
     const [loading, setLoading] = useState(true);
     const [comment, setComment] = useState("");
     const [commentData, setCommentData] = useState([]);
+    const [refresh, setRefresh] = useState(0);
 
     // Get the previous comments data
     useEffect(() => {
@@ -19,11 +20,11 @@ function Comments({ id, setId, setShowComment, webrtc ,showCdrReport=false}) {
                 setLoading(false);
             } else {
                 setLoading(false);
-                   }
+            }
         }
         getComment(id)
 
-    }, [id])
+    }, [id, refresh])
 
     // Logic to handle comments for the call
     async function handleComments(type) {
@@ -38,7 +39,7 @@ function Comments({ id, setId, setShowComment, webrtc ,showCdrReport=false}) {
             if (apiData.status) {
                 toast.success(apiData.message);
                 setComment("");
-                setId("");
+                setRefresh(refresh + 1)
                 setLoading(false);
             } else {
                 setLoading(false);
@@ -52,7 +53,7 @@ function Comments({ id, setId, setShowComment, webrtc ,showCdrReport=false}) {
     const handlePopupClose = () => {
         setComment("");
         setId("");
-        if(!showCdrReport){
+        if (!showCdrReport) {
             setShowComment(false);
         }
     }

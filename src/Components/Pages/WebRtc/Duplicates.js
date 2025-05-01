@@ -394,7 +394,7 @@ export default function Duplicates({ setShowDuplicatePopUp, duplicatePopUpData }
                                   <td className="px-4 py-3">
                                     <button
                                       className="tableButton"
-                                      onClick={() => handelOpenNotes()}
+                                      onClick={() => {setSelectedId(call.id); handelOpenNotes()}}
                                     >
                                       <i className="fa-solid fa-comment-dots"></i>
                                     </button>
