@@ -216,7 +216,6 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
                     </div>
                   ))
                 ) : <EmptyPrompt generic={true} small={true} nomargin={true} />
-
             ) : ""}
         </div>
         <div className="chat_doc px-4">
