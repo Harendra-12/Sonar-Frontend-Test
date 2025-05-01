@@ -14,7 +14,10 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
   const [files, setFiles] = useState([]);
   const [allFiles, setAllFiles] = useState([]);
 
-  const [loading, setLoading] = useState('all');
+  const [loading, setLoading] = useState({
+    files: true,
+    media: true
+  });
 
   // Set Media and Files
   useEffect(() => {
@@ -30,10 +33,16 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
 
   // Loader for initial state
   useEffect(() => {
-    if (media && media.length && files && files.length) {
-      setLoading(false);
+    if (files && files.length) {
+      setLoading((prev) => ({ ...prev, files: false }));
     }
-  }, [media, files]);
+  }, [files]);
+
+  useEffect(() => {
+    if (media && media.length) {
+      setLoading((prev) => ({ ...prev, media: false }));
+    }
+  }, [media]);
 
   // Download any File / Media Function
   const downloadImage = async (imageUrl, fileName) => {
@@ -182,7 +191,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
           </div>
           {
             viewAllToggle === "files" || !viewAllToggle ? (
-              loading === "files" || loading === "all" ? (
+              loading.files ? (
                 <div className="file_list">
                   <div className="">
                     <div className='skeleton skeleton-button' style={{ width: '35px' }} />
@@ -234,7 +243,7 @@ const MessageProfileDetails = ({ recipient, messages, selectedChat }) => {
           </div>
 
           {viewAllToggle === "media" || !viewAllToggle ? (
-            loading === "media" || loading === "all" ? (
+            loading.media ? (
               <div className="file_list">
                 <div className="">
                   <div className='skeleton skeleton-button' style={{ width: '35px' }} />
