@@ -20,7 +20,7 @@ const AudioWaveformCommon = ({ audioUrl }) => {
     const [duration, setDuration] = useState("0:00");
 
     const [size, setSize] = useState({ width: 'auto', height: 450 });
-    const [position, setPosition] = useState({ x: 500, y: 300 });
+    const [position, setPosition] = useState({ x: 600, y: 300 });
 
     const hover = Hover.create({
         lineColor: '#ff0000',
