@@ -226,6 +226,7 @@ const AudioWaveformCommon = ({ audioUrl }) => {
                                     // maxHeight={"600px"}
                                     maxWidth={"500px"}
                                     maxHeight={"450px"}
+                                    style={{ position: 'fixed' }}
                                     dragHandleClassName="drag-handle" // Specify draggable area
                                 >
                                     <div className="col-12 drag-handle">
