@@ -111,6 +111,9 @@ function Messages({
   const [sendSMSPopup, setSendSMSPopup] = useState(false);
   const [isActiveAgentsOpen, setIsActiveAgentsOpen] = useState(true);
   const accountDetails = useSelector((state) => state.accountDetails);
+  const [filteredTags, setFilteredTags] = useState();
+  const [tagFilterInput, setTagFilterInput] = useState("")
+
 
   // Function to handle logout
   const handleLogOut = async () => {
@@ -832,6 +835,14 @@ function Messages({
   }, []);
 
   useEffect(() => {
+    const tag = allTags?.filter((tag) => contact?.some((contact) =>
+      contact?.tags?.some((contactTage) => contactTage?.tag_id !== tag?.id)
+    ))
+    const filteredTag = tag?.filter((data) => data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase()))
+    setFilteredTags(filteredTag)
+  }, [allTags, contact, tagFilterInput])
+
+  useEffect(() => {
     async function getData() {
       const apiData = await generalGetFunction("/user-all");
       if (apiData?.status) {
@@ -1413,6 +1424,23 @@ function Messages({
   //     console.error("Error sending SMS:", err);
   //   }
   // })
+  const handleCreateNewTag = async () => {
+    setLoading(true);
+    const parsedData = {
+      name: tagFilterInput,
+    };
+    const apiData = await generalPostFunction(`/tags/store`, parsedData);
+    if (apiData.status) {
+      setLoading(false);
+      toast.success("Tag added successfully");
+      setAddNewTag(false);
+      setNewTag("");
+      setAllTags([...allTags, apiData.data]);
+    } else {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       {addNewTagPopUp &&
@@ -1798,11 +1826,11 @@ function Messages({
                                     <div className=" d-flex align-items-center">
                                       <div
                                         className="profileHolder"
-                                        id={item?.groupusers?.some((user) => 
+                                        id={item?.groupusers?.some((user) =>
                                           onlineUser?.some((online) => online?.id === user?.user_id)
-                                        ) 
-                                        ? "profileOnlineNav"
-                                        : "profileOfflineNav"
+                                        )
+                                          ? "profileOnlineNav"
+                                          : "profileOfflineNav"
                                         }
                                       >
                                         <i className="fa-light fa-users fs-5"></i>
@@ -2333,7 +2361,7 @@ function Messages({
                             <div className="contactTags">
                               {contact
                                 .find(
-                                  (contact) => contact.extension == recipient[0]
+                                  (contact) => contact.id == recipient[1]
                                 )
                                 ?.tags?.map((item, key) => {
                                   return (
@@ -2374,31 +2402,29 @@ function Messages({
                                         name="Search"
                                         className="formItem"
                                         placeholder="Search a Tag Name"
-                                      // value={userInput}
-                                      // onChange={(e) => setuserInput(e.target.value)}
+                                        value={tagFilterInput}
+                                        onChange={(e) => setTagFilterInput(e.target.value)}
                                       />
                                     </div>
                                     <div className="contactTags my-2">
-                                      {contact
-                                        .find(
-                                          (contact) => contact.extension == recipient[0]
-                                        )
-                                        ?.tags?.map((item, key) => {
-                                          return (
-                                            <span
-                                              data-id={key}
-                                            // onClick={() =>
-                                            //   handleUnassignTask(item?.id)
-                                            // }
-                                            // className="removableTag"
-                                            >
-                                              {item.tag?.[0]?.name}
-                                            </span>
-                                          );
-                                        })}
-                                      <button className="more info">
-                                        <i class="fa-regular fa-plus me-1"></i> Create New Tag
-                                      </button>
+                                      {filteredTags?.map((item, key) => {
+                                        return (
+                                          <span
+                                            data-id={key}
+                                            onClick={() =>
+                                              handleAssignTask(item?.id, recipient[1])
+                                            }
+                                          // className="removableTag"
+                                          >
+                                            {item?.name}
+                                          </span>
+                                        );
+                                      })}
+                                      {filteredTags?.length == 0 &&
+                                        <button className="more info" onClick={() => handleCreateNewTag()}>
+                                          <i class="fa-regular fa-plus me-1"></i> Create New Tag
+                                        </button>
+                                      }
                                     </div>
                                     {/* {allTags.map((item, key) => {
                                           return (
@@ -2645,7 +2671,7 @@ function Messages({
                                         </div>
                                       )}
                                       {/* Message content */}
-                                      {(selectedChat === "groupChat" ? item.from === recipient[0]: item.from !== recipient[1]) ? (
+                                      {(selectedChat === "groupChat" ? item.from === recipient[0] : item.from !== recipient[1]) ? (
                                         <div className="messageItem sender">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
