@@ -58,7 +58,7 @@ function Meeting() {
 
     async function handleGetRecord(id) {
         setdataLoader(true);
-        axios.get(`https://api.webvio.in/recordings?roomName=${id}`).then((res) => {
+        axios.get(`https://meet.webvio.in/backend/recordings?roomName=${id}`).then((res) => {
             setRecorddata(res.data.recordings);
             setdataLoader(false);
         }).catch((err) => {
