@@ -51,6 +51,20 @@ function NotificationBellApp() {
     };
 
 
+    // const locationState = useLocation();
+
+    // // Function to Redirect to the Specific Message
+    // useEffect(() => {
+    //     if (contact && contact.length > 0) {
+    //         if (locationState.state) {
+    //             const selectedContact = contact.filter((item) => item.id === location.state.sender_id);
+    //             const profile_img = allAgents?.find((data) => data?.id == selectedContact?.id)?.profile_picture
+    //             setRecipient([selectedContact?.extension, selectedContact?.id, "singleChat", selectedContact?.name, selectedContact?.email, profile_img]);
+    //         }
+    //     }
+    // }, [locationState.state, contact, allAgents]);
+
+
     return (
         <div class="dropdown notification_dropdown">
             <button
