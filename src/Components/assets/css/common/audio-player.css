@@ -42,13 +42,16 @@ audio {
   display: flex;
   flex-wrap: wrap;
   padding: 10px;
-  background-color: var(--ele-color);
+  /* background-color: var(--ele-color); */
+  background-color: #000000c4;
 }
 
 .audio-container .transcriptWrap .textContent {
   white-space: break-spaces;
-  max-height: 90px;
-  overflow-y: scroll;
+  /* max-height: 90px; */
+  /* overflow-y: scroll; */
+  color: #fff;
+  font-weight: 400;
 }
 
 .audio-container .transcriptWrap .textContent>* {

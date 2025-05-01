@@ -450,7 +450,7 @@ function PhoneDashboard() {
                     <div className="data-number2">
                       <div className="d-flex flex-wrap justify-content-between align-items-center">
                         <div className="col-10">
-                          <h4>{callCenter.length}</h4>
+                          <h5>{callCenter.length}</h5>
                           <p>
                             {activeCall.length > 0 ? activeCall
                               .filter((item) => item.application_state === "callcenter" && (item.b_callstate === "ACTIVE" || item.b_callstate === "HELD")).length : 0}{" "}

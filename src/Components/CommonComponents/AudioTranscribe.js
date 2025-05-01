@@ -12,7 +12,7 @@ function AudioTranscribe({ url }) {
         const newUrl = url.split(".com/").pop();
         const presignData = await generatePreSignedUrl(newUrl);
         if (presignData?.status && presignData?.url) {
-            axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: presignData?.url }).then((res)=>{
+            axios.post("https://4ofg0goy8h.execute-api.us-east-2.amazonaws.com/dev2/transcribe", { audio_url: presignData?.url }).then((res) => {
                 setTranscribeLoading(false)
                 setTranscript(res?.data?.tagged_transcript);
             }).catch((err) => {
@@ -43,16 +43,16 @@ function AudioTranscribe({ url }) {
     }, [url])
 
     console.log("transcript", transcript);
-    
+
     return (
         <div className="audio-container mb-0">
             <div className="transcriptWrap col-12">
                 <div className="textContent col-12">
                     {
                         transcribeLoading ? <div className='skeleton skeleton-text' /> :
-                            <p>{transcript.map((item,key)=>{
+                            <p>{transcript.map((item, key) => {
                                 return (
-                                    <span key={key} className='textContent'>
+                                    <span key={key} className='textContent d-block'>
                                         {item?.speaker}:-{item?.transcript}
                                     </span>
                                 )
