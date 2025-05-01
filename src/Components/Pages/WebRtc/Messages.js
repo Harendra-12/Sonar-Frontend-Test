@@ -596,10 +596,10 @@ function Messages({
       }
       if (!extensionExists) {
         contact.unshift({
-          name: agentDetails.username,
-          email: agentDetails.email,
-          id: agentDetails.id,
-          extension_id: agentDetails.extension_id,
+          name: agentDetails?.username,
+          email: agentDetails?.email,
+          id: agentDetails?.id,
+          extension_id: agentDetails?.extension_id,
           extension: from,
           last_message_data: { message_text: body, created_at: time },
         });

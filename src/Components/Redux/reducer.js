@@ -86,6 +86,7 @@ var accountBalance = 0;
 var refreshCalls = 0;
 var adminLogout = false; // Flag to track admin logout
 var incomingMessage = null;
+var deletedNotificationId = null; // State to track deleted notification ID
 
 const initialState = {
   account,
@@ -174,6 +175,7 @@ const initialState = {
   refreshCalls,
   adminLogout,
   incomingMessage,
+  deletedNotificationId
 };
 
 const counterReducer = (state = initialState, action) => {
@@ -223,7 +225,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_ACCOUNTBALANCE":
       return { ...state, accountBalance: action.accountBalance };
     case "SET_OPEN_CALLCENTER_POPUP":
-      return {...state, openCallCenterPopUp: action.openCallCenterPopUp};
+      return { ...state, openCallCenterPopUp: action.openCallCenterPopUp };
     case "SET_RINGGROUPREFRESH":
       return { ...state, ringGroupRefresh: action.ringGroupRefresh };
     case "SET_CALLCENTER":
@@ -243,7 +245,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_CALLPROGRESSID":
       return { ...state, callProgressId: action.callProgressId };
     case "SET_CALLPROGRESSDESTINATION":
-      return { ...state,callProgressDestination: action.callProgressDestination};
+      return { ...state, callProgressDestination: action.callProgressDestination };
     case "SET_VIDEOCALL":
       return { ...state, videoCall: action.videoCall };
     case "SET_ADDCONTACTREFRESH":
@@ -253,7 +255,7 @@ const counterReducer = (state = initialState, action) => {
     case "SET_PERMISSIONS":
       return { ...state, permissions: action.permissions };
     case "SET_ROLES_PERMISSIONREFRESH":
-      return {...state,rolesAndPermissionRefresh: action.rolesAndPermissionRefresh};
+      return { ...state, rolesAndPermissionRefresh: action.rolesAndPermissionRefresh };
     case "SET_ROLES_REFRESH":
       return { ...state, rolesRefresh: action.rolesRefresh };
     case "SET_PERMISSION_REFRESH":
@@ -295,11 +297,11 @@ const counterReducer = (state = initialState, action) => {
     case "SET_WHATSAPPCONTACT":
       return { ...state, whatsappContact: action.whatsappContact };
     case "SET_WHATSAPPCONTACTREFRESH":
-      return { ...state,whatsappContactRefresh: action.whatsappContactRefresh};
+      return { ...state, whatsappContactRefresh: action.whatsappContactRefresh };
     case "SET_WHATSAPPMESSAGE":
       return { ...state, whatsappMessage: action.whatsappMessage };
     case "SET_WHATSAPPMESSAGEREFRESH":
-      return {...state,whatsappMessageRefresh: action.whatsappMessageRefresh};
+      return { ...state, whatsappMessageRefresh: action.whatsappMessageRefresh };
     case "SET_AIAGENTS":
       return { ...state, aiAgents: action.aiAgents };
     case "SET_AIAGENTSREFRESH":
@@ -307,55 +309,57 @@ const counterReducer = (state = initialState, action) => {
     case "SET_DEVICE_PROVISIONING":
       return { ...state, deviceProvisioning: action.deviceProvisioning };
     case "SET_ALL_CALL_CENTER_IDS":
-      return {...state, allCallCenterIds: [...state.allCallCenterIds, action.CallerId]};
+      return { ...state, allCallCenterIds: [...state.allCallCenterIds, action.CallerId] };
     case "DELETE_CALLER_ID":
-      return {...state,allCallCenterIds: state.allCallCenterIds.filter((id) => id !== action.CallerId)};
+      return { ...state, allCallCenterIds: state.allCallCenterIds.filter((id) => id !== action.CallerId) };
     case "SET_DEVICE_PROVISIONINGREFRESH":
-      return { ...state,deviceProvisioningRefresh: action.deviceProvisioningRefresh};
+      return { ...state, deviceProvisioningRefresh: action.deviceProvisioningRefresh };
     case "SET_MINIMIZE":
-      return {...state,minimize: action.minimize};
+      return { ...state, minimize: action.minimize };
     case "SET_UPDATEBALANCE":
       return { ...state, updateBalance: action.updateBalance };
     case "SET_SELECTEDCDRFILTER":
-      return {...state,selectedCdrFilter: action.selectedCdrFilter};
+      return { ...state, selectedCdrFilter: action.selectedCdrFilter };
     case "SET_CONFERENCE":
-      return {...state,conference: action.conference};
+      return { ...state, conference: action.conference };
     case "SET_DUMMYSION":
-      return { ...state, dummySession: action.dummySession};
+      return { ...state, dummySession: action.dummySession };
     case "SET_MEMBERID":
-      return {...state,memberId: action.memberId};
+      return { ...state, memberId: action.memberId };
     case "SET_NEWADDDID":
-      return {...state, newAddDid: action.newAddDid};
+      return { ...state, newAddDid: action.newAddDid };
     case "SET_CONFERENCESCREENSHARESTATUS":
-      return {...state, conferenceScreenShareStatus: action.conferenceScreenShareStatus};
+      return { ...state, conferenceScreenShareStatus: action.conferenceScreenShareStatus };
     case "SET_CONFERENCEMESSAGE":
-      return {...state,conferenceMessage: [...state.conferenceMessage,action.conferenceMessage]};
+      return { ...state, conferenceMessage: [...state.conferenceMessage, action.conferenceMessage] };
     case "SET_ROOMID":
-      return {...state, RoomID: action.RoomID};
+      return { ...state, RoomID: action.RoomID };
     case "SET_GROUPMESSAGE":
       return { ...state, groupMessage: action.groupMessage };
     case "SET_PREVIEWDIALER":
-      return { ...state,previewDialer: [...state.previewDialer, action.previewDialer]};
+      return { ...state, previewDialer: [...state.previewDialer, action.previewDialer] };
     case "REMOVE_PREVIEWDIALER":
-      return { ...state,previewDialer: state.previewDialer.filter( (item) => item.phone_number !== action.phone_number) };
+      return { ...state, previewDialer: state.previewDialer.filter((item) => item.phone_number !== action.phone_number) };
     case "SET_AGENT_DEPOSITION":
-      return {...state, agentDeposition: action.agentDeposition};
+      return { ...state, agentDeposition: action.agentDeposition };
     case "SET_DEPOSIT_OPTIONS":
-      return {...state,desposiTionOptions: action.desposiTionOptions};
+      return { ...state, desposiTionOptions: action.desposiTionOptions };
     case "SET_CALL_CENTER_POPUP":
-      return { ...state,callCenterPopUp: action.callCenterPopUp };
+      return { ...state, callCenterPopUp: action.callCenterPopUp };
     case "SET_DUMMYEXTENSION":
-      return {...state, dummyExtension: action.dummyExtension };
+      return { ...state, dummyExtension: action.dummyExtension };
     case "SET_DUMMYPASSWORD":
-      return {...state,dummyPassword: action.dummyPassword};
+      return { ...state, dummyPassword: action.dummyPassword };
     case "SET_ADMIN_LOGOUT":
-      return {...state, adminLogout: action.adminLogout};
-      case "SET_INCOMING_MESSAGE":
-      return {...state, incomingMessage: action.incomingMessage }
+      return { ...state, adminLogout: action.adminLogout };
+    case "SET_INCOMING_MESSAGE":
+      return { ...state, incomingMessage: action.incomingMessage }
     case "RESET_STATE":
-      return { ...initialState,logout: 0 };
+      return { ...initialState, logout: 0 };
     case "SET_LOGOUT":
-      return { ...state,logout: action.logout};
+      return { ...state, logout: action.logout };
+    case "SET_DELETEDNOTIFFID":
+      return { ...state, deletedNotificationId: action.deletedNotificationId }
     default:
       return state;
   }
