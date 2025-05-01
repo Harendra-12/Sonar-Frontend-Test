@@ -1047,10 +1047,16 @@ function Messages({
       setLoading(true);
       const apiData = await generalGetFunction(`/groups/all`);
       if (apiData?.status) {
-        const filteredData = apiData?.data?.sort((a, b) =>
-          new Date(b?.last_message_data?.updated_at) - new Date(a?.last_message_data?.updated_at)
-        );
-        setGroups(apiData?.data);
+        const filteredData = apiData?.data?.sort((a, b) => {
+          const dateA = a?.last_message_data?.created_at ? new Date(a.last_message_data.created_at) : null;
+          const dateB = b?.last_message_data?.created_at ? new Date(b.last_message_data.created_at) : null;
+          if (!a.last_message_data || !dateA) return 1;
+          if (!b.last_message_data || !dateB) return -1;
+
+          return dateB - dateA;
+        });
+
+        setGroups(filteredData);
         const isGroupSelected = apiData.data.find(
           (group) => group.id == recipient[1]
         );
@@ -1285,42 +1291,20 @@ function Messages({
       ],
     }));
 
-    // ============================== need to work here
-    // debugger
-    // // Update contact last message
-    // const contactIndex = groups.findIndex(
-    //   (contact) => contact?.group_name === recipient[0]
-    // );
-    // if (contactIndex !== -1) {
-    //   const newGroups = [...groups];
-    //   newGroups[contactIndex].last_message_data.message_text = messageInput;
-    //   newGroups[contactIndex].last_message_data.created_at = time;
-    //   newGroups?.splice(contactIndex, 1)
-    //   newGroups.unshift(contact[contactIndex])
-    //   setContact(newGroups);
-    // }
-    // setActiveTab("all");
 
-    // const extensionExists = contact.some(
-    //   (contact) => contact.extension === recipient[0]
-    // );
-    // const agentDetails = agents.find(
-    //   (agent) => agent.extension.extension === recipient[0]
-    // );
+    const contactIndex = groups.findIndex(
+      (contact) => contact?.group_name === recipient[0]
+    );
+    if (contactIndex !== -1) {
+      const newGroups = [...groups];
+      newGroups[contactIndex].last_message_data.message_text = messageInput;
+      newGroups[contactIndex].last_message_data.created_at = time;
+      newGroups?.splice(contactIndex, 1)
+      newGroups.unshift(groups[contactIndex])
+      setGroups(newGroups);
+    }
+    setActiveTab("all");
 
-    // if (!extensionExists) {
-    //   contact.unshift({
-    //     name: agentDetails.username,
-    //     email: agentDetails.email,
-    //     id: agentDetails.id,
-    //     extension_id: agentDetails.extension_id,
-    //     extension: recipient[0],
-    //     last_message_data: {
-    //       message_text: messageInput,
-    //       created_at: time,
-    //     },
-    //   });
-    // }
     // Clear both message input and selected file
     setMessageInput("");
     setSelectedUrl(null);
@@ -1351,13 +1335,24 @@ function Messages({
         }],
       }));
       if (groupMessage?.group_name != undefined) {
+        const contactIndex = groups.findIndex(
+          (contact) => contact?.group_name === groupMessage?.group_name
+        );
+        if (contactIndex !== -1) {
+          const newGroups = [...groups];
+          newGroups[contactIndex].last_message_data.message_text = body;
+          newGroups[contactIndex].last_message_data.created_at = time;
+          newGroups?.splice(contactIndex, 1)
+          newGroups.unshift(groups[contactIndex])
+          setGroups(newGroups);
+        }
+        setActiveTab("all");
         setUnreadMessage((prevState) => ({
           ...prevState,
           [groupMessage?.group_name]: (prevState[groupMessage?.group_name] || 0) + 1,
         }));
         audio.play();
       }
-
     }
   }, [groupMessage])
 
@@ -1418,8 +1413,6 @@ function Messages({
   //     console.error("Error sending SMS:", err);
   //   }
   // })
-  console.log('allMessageallMessageallMessage', allMessage)
-  console.log('gorup 777777777', groups)
   return (
     <>
       {addNewTagPopUp &&
@@ -1805,16 +1798,34 @@ function Messages({
                                     <div className=" d-flex align-items-center">
                                       <div
                                         className="profileHolder"
-                                        id={"profileOfflineNav"}
+                                        id={item?.groupusers?.some((user) => 
+                                          onlineUser?.some((online) => online?.id === user?.user_id)
+                                        ) 
+                                        ? "profileOnlineNav"
+                                        : "profileOfflineNav"
+                                        }
                                       >
                                         <i className="fa-light fa-users fs-5"></i>
                                       </div>
-                                      <div className="ms-3">
-                                        <p>{item.group_name}</p>
+                                      <div className="ms-3 flex-grow-1">
+                                        <p>{item.group_name}
+                                          <span className=" text-end mb-0">
+                                            <p className="timeAgo">
+                                              {item?.last_message_data
+                                                ? formatRelativeTime(
+                                                  item?.last_message_data
+                                                    ?.created_at
+                                                )
+                                                : ""}
+                                            </p>
+                                          </span>
+                                        </p>
                                         {/* <h5>Alright</h5>
                                         <div className="contactTags">
                                           <span data-id="3">Priority</span>
                                         </div> */}
+                                        {/* here we are showing recent group message */}
+                                        {item?.last_message_data?.message_text}
                                       </div>
                                     </div>{" "}
                                   </div>
@@ -2634,7 +2645,7 @@ function Messages({
                                         </div>
                                       )}
                                       {/* Message content */}
-                                      {item.from !== recipient[1] ? (
+                                      {(selectedChat === "groupChat" ? item.from === recipient[0]: item.from !== recipient[1]) ? (
                                         <div className="messageItem sender">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
@@ -2667,7 +2678,7 @@ function Messages({
                                                     className="profileHolder"
                                                     id={"profileOfflineNav"}
                                                   >
-                                                    <i className="fa-light fa-users fs-5"></i>
+                                                    <i className="fa-light fa-user fs-5"></i>
                                                   </div>
                                               }
                                             </div>
@@ -2692,7 +2703,7 @@ function Messages({
                                                     className="profileHolder"
                                                     id={"profileOfflineNav"}
                                                   >
-                                                    <i className="fa-light fa-users fs-5"></i>
+                                                    <i className="fa-light fa-user fs-5"></i>
                                                   </div>
                                               }
 
@@ -2726,7 +2737,6 @@ function Messages({
                                   );
                                 }
                               )}
-
                             </>
                           ) : (
                             <div className="startAJob">

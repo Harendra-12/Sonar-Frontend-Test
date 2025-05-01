@@ -972,7 +972,7 @@
 }
 
 .webrtc_newMessageUi #profileOfflineNav::before {
-    background-color: #26bf94;
+    background-color: #ffdc18;
     border: 2px solid #fff;
     z-index: 1;
 }
