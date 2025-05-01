@@ -140,68 +140,83 @@ function OngoingCall({
       } else if (type === "unhold" && !holdProcessing) {
         setHoldProcessing(true);
 
-        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite;
+        // Ensure per-session audio context and stream
+        session.data = session.data || {};
+        if (!session.data.remoteStream) {
+          session.data.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        console.log("Audio context created:", session);
+        
+
+        const audioContext = session.data.audioContext;
+        const remoteStream = new MediaStream();
+        session.data.remoteStream = new MediaStream();;
+
+        // Prepare unhold options
+        let sessionDescriptionHandlerOptions = session.sessionDescriptionHandlerOptionsReInvite || {};
         sessionDescriptionHandlerOptions.hold = false;
         session.sessionDescriptionHandlerOptionsReInvite = sessionDescriptionHandlerOptions;
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const remoteStream = new MediaStream();
-        let options = {
+
+        const options = {
           requestDelegate: {
-            onAccept: function () {
-              if (session?.sessionDescriptionHandler?.peerConnection) {
-                let pc = session.sessionDescriptionHandler.peerConnection;
-                // Get remote audio track from the peer connection
-                session.sessionDescriptionHandler.peerConnection.getReceivers().forEach(receiver => {
-                  if (receiver.track && receiver.track.kind === "audio") {
+            onAccept: () => {
+              const pc = session.sessionDescriptionHandler?.peerConnection;
+
+              if (pc) {
+                // Get remote audio tracks and add to stream
+                pc.getReceivers().forEach(receiver => {
+                  if (receiver.track && receiver.track.kind === 'audio') {
                     remoteStream.addTrack(receiver.track);
                   }
                 });
 
-                // Create audio source from the stream
-                const source = audioContext.createMediaStreamSource(remoteStream);
-
-                // Route to speakers
-                source.connect(audioContext.destination);
-
-                // Required for autoplay policies: resume the context if it's suspended
-                if (audioContext.state === 'suspended') {
-                  audioContext.resume().catch(err => console.error('Resume failed:', err));
+                // Connect stream to speakers
+                try {
+                  const source = audioContext.createMediaStreamSource(remoteStream);
+                  source.connect(audioContext.destination);
+                } catch (err) {
+                  console.error('Audio routing failed:', err);
                 }
-                // Restore inbound streams
+
+                // Resume context if needed
+                if (audioContext.state === 'suspended') {
+                  audioContext.resume().catch(err => console.error('AudioContext resume failed:', err));
+                }
+
+                // Re-enable tracks
                 pc.getReceivers().forEach(receiver => {
                   if (receiver.track) receiver.track.enabled = true;
                 });
 
-                // Restore outbound streams
                 pc.getSenders().forEach(sender => {
-                  if (sender.track) {
-                    sender.track.enabled = true;
-                  }
+                  if (sender.track) sender.track.enabled = true;
                 });
               }
+
               session.isOnHold = false;
+
               dispatch({
                 type: "SET_SESSIONS",
                 sessions: globalSession.map((item) =>
-                  item.id === session.id
-                    ? { ...item, state: "Established" }
-                    : item
+                  item.id === session.id ? { ...item, state: "Established" } : item
                 ),
               });
 
               setHoldProcessing(false);
             },
-            onReject: function () {
+
+            onReject: () => {
               session.isOnHold = true;
               setHoldProcessing(false);
-            }
-          }
+            },
+          },
         };
 
         try {
           session.invite(options);
         } catch (error) {
           console.error(`Error unholding session ${session.id}:`, error);
+          setHoldProcessing(false);
         }
 
 
