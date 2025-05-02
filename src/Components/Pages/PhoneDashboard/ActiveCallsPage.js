@@ -572,14 +572,13 @@ function ActiveCallsPage({ isParentWebRtc }) {
                                                                         {
                                                                             activeCall && updatedData.map((item, key) => {
                                                                                 return (
-                                                                                    <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : "" }}>
-                                                                                        <td>{key + 1}</td>
-                                                                                        <td>{item.did_tag}</td>
-                                                                                        <td>{item.cid_name}</td>
-                                                                                        <td>{item.dest}</td>
-                                                                                        <td>{item.feature_tag}</td>
-                                                                                        <td>{item.realTimeDuration}</td>
-
+                                                                                    <tr style={{ backgroundColor: item.application_state === "ringgroup" ? "#f8d7da" : item.application_state === "callcenter" ? "#d1e7dd" : item?.direction === "inbound" ? "#fff3cd" : "" }}>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.did_tag}</td>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_name}</td>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.dest}</td>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td>
+                                                                                        <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
                                                                                         {/* <td>{item.name.split("/")[1]}</td> */}
                                                                                     </tr>
                                                                                 )
