@@ -243,16 +243,16 @@ function ActiveCalls({ isWebrtc, filter }) {
               ((item, key) => {
                 return (
                   <tr style={{ backgroundColor: !isWebrtc && item?.application_state === "ringgroup" ? "#f8d7da" : !isWebrtc && item?.application_state === "callcenter" ? "#d1e7dd" : !isWebrtc && item?.direction === "inbound" ? "#fff3cd" : "" }}>
-                    <td>{key + 1}</td>
-                    <td>{item.created.split(" ")[1]}</td>
-                    <td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{key + 1}</td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.created.split(" ")[1]}</td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>
                       {item.did_tag}
                     </td>
-                    <td>{item.feature_tag}</td>
-                    <td>{item.cid_num}</td>
-                    <td>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
-                    {filter === "all" && <td style={{ textTransform: "capitalize" }}>{item.direction}</td>}
-                    <td>{item.realTimeDuration}</td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.feature_tag}</td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.cid_num}</td>
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.application_type === "inbound" ? item.b_presence_id?.split("@")[0] : item.dest}</td>
+                    {filter === "all" && <td style={{ textTransform: "capitalize", color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.direction}</td>}
+                    <td style={{ color: item?.application_state === "ringgroup" || item?.application_state === "callcenter" || item?.direction === "inbound" ? '#000' : "" }}>{item.realTimeDuration}</td>
                     {isWebrtc !== false && <td style={{ minWidth: '170px' }}>
                       {/* <select
                         className="formItem"
