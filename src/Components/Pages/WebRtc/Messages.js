@@ -2161,7 +2161,6 @@ function Messages({
                                         <tr>
                                           <th>S.No</th>
                                           <th>Name</th>
-                                          <th>Extension</th>
                                           <th>
                                             <input
                                               type="checkbox"
@@ -2199,7 +2198,6 @@ function Messages({
                                             <tr key={index}>
                                               <td>{index + 1}.</td>
                                               <td>{item.name}</td>
-                                              <td>{item?.extension?.extension}</td>
                                               <td>
                                                 <input
                                                   type="checkbox"
@@ -3127,7 +3125,6 @@ function Messages({
                                           <tr>
                                             <th>S.No</th>
                                             <th>Name</th>
-                                            <th>Extension</th>
                                             <th>
                                               <input
                                                 type="checkbox"
@@ -3170,7 +3167,6 @@ function Messages({
                                               <tr key={""}>
                                                 <td>{index + 1}.</td>
                                                 <td>{item.name}</td>
-                                                <td>{item?.extension?.extension}</td>
                                                 <td>
                                                   <input
                                                     type="checkbox"
