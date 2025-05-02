@@ -16,7 +16,8 @@ function Campaigns() {
   const [deleteId, setDeleteId] = useState('');
   const [refresh, setRefresh] = useState(0);
   const [onlineUsers, setOnlineUsers] = useState([0]);
-  const loginUser = useSelector((state) => state.loginUser);
+  const logonUser = useSelector((state) => state.loginUser);
+  const registerUser = useSelector((state) => state.registerUser);
 
   useEffect(() => {
     setLoading(true);
@@ -69,14 +70,14 @@ function Campaigns() {
 
   // Get list of online users
   useEffect(() => {
-    if (loginUser && loginUser.length > 0) {
+    if (logonUser && logonUser.length > 0) {
       setOnlineUsers(
-        loginUser?.map((item) => {
-          return item.id;
+        registerUser?.map((item) => {
+          return item.extension;
         })
       );
     }
-  }, [loginUser]);
+  }, [logonUser]);
 
   return (
     <>
@@ -305,7 +306,7 @@ function Campaigns() {
                                                         <span className="ms-2">{item?.username}</span>
                                                         <span
                                                           className={
-                                                            onlineUsers.includes(item.user_id)
+                                                            onlineUsers.includes(item.extension)
                                                               ? "extensionStatus online ms-2"
                                                               : "extensionStatus ms-2"
                                                           }
