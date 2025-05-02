@@ -7,6 +7,7 @@ import { generalDeleteFunction, generalGetFunction } from '../../../GlobalFuncti
 import { toast } from 'react-toastify'
 import SkeletonTableLoader from '../../../Loader/SkeletonTableLoader'
 import EmptyPrompt from '../../../Loader/EmptyPrompt'
+import { useSelector } from 'react-redux'
 function Campaigns() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,8 @@ function Campaigns() {
   const [pageNumber, setPageNumber] = useState(1);
   const [deleteId, setDeleteId] = useState('');
   const [refresh, setRefresh] = useState(0);
+  const [onlineUsers, setOnlineUsers] = useState([0]);
+  const loginUser = useSelector((state) => state.loginUser);
 
   useEffect(() => {
     setLoading(true);
@@ -63,6 +66,17 @@ function Campaigns() {
       })
     }
   }
+
+  // Get list of online users
+  useEffect(() => {
+    if (loginUser && loginUser.length > 0) {
+      setOnlineUsers(
+        loginUser?.map((item) => {
+          return item.id;
+        })
+      );
+    }
+  }, [loginUser]);
 
   return (
     <>
@@ -146,9 +160,7 @@ function Campaigns() {
                                         {item.did_business_numers ?
                                           <ul className='p-0 m-0 list-unstyled'>
                                             {item.did_business_numers.map((number, index) => (
-
                                               <li>{number.did}</li>
-
                                             ))}
                                           </ul>
                                           : 0}
@@ -291,6 +303,13 @@ function Campaigns() {
                                                               /> : <i className="fa-light fa-user"></i>}
                                                         </span>
                                                         <span className="ms-2">{item?.username}</span>
+                                                        <span
+                                                          className={
+                                                            onlineUsers.includes(item.user_id)
+                                                              ? "extensionStatus online ms-2"
+                                                              : "extensionStatus ms-2"
+                                                          }
+                                                        ></span>
                                                       </div>
                                                     </li>
                                                   )
