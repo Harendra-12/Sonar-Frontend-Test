@@ -158,13 +158,13 @@ function Campaigns() {
                                       <td><b>{item.title}</b></td>
                                       <td style={{ textTransform: 'capitalize' }}>{item?.dialer?.type}</td>
                                       <td>
-                                        {item.did_business_numers ?
+                                        {item.did_business_numbers ?
                                           <ul className='p-0 m-0 list-unstyled'>
-                                            {item.did_business_numers.map((number, index) => (
+                                            {item.did_business_numbers.map((number, index) => (
                                               <li>{number.did}</li>
                                             ))}
                                           </ul>
-                                          : 0}
+                                          : "N/A"}
                                       </td>
                                       <td className="">
                                         <Tippy content={
