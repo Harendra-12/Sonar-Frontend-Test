@@ -37,7 +37,29 @@
       
 
 }
-
+@media ( max-width: 1199px){
+    .mainContentApp .webrtc_newMessageUi .tabLink {
+        padding: 10px 10px;
+    }
+    .webrtc_newMessageUi{
+        overflow: hidden;
+        position: relative;
+    }
+    .callDashParkedCalls.messageDower.absolutePanel{
+        position: absolute;
+        right: 0;
+        box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
+        top: 0;
+        bottom: 0;
+        z-index: 10001;
+    }
+    .callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
+        left: -15px !important;
+    }
+    .smBlock{
+        display: block !important;
+    }
+}
 
 @media (min-device-width:1100px) and (max-device-width: 1300px) {
     .tangoNavs .nav-tabs .nav-link {
@@ -48,7 +70,7 @@
     .mainContentApp .tabLink {
         padding: 10px 20px;
     }
-
+  
     /* table th {
         text-wrap: nowrap;
     } */
@@ -68,6 +90,24 @@ element.style {
     height: 209px !important;
     width: 209px !important;
    
+}
+.webrtc_newMessageUi{
+    overflow: hidden;
+    position: relative;
+}
+.callDashParkedCalls.messageDower.absolutePanel{
+    position: absolute;
+    right: 0;
+    box-shadow: rgb(0 0 0 / 59%) 4px -11px 10px;
+    top: 0;
+    bottom: 0;
+    z-index: 10001;
+}
+.callDashParkedCalls.messageDower.absolutePanel .callDashParkedCallsBtn{
+    left: -15px !important;
+}
+.smBlock{
+    display: block !important;
 }
 }
 

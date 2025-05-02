@@ -382,7 +382,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                 <HeaderApp title={"Voicemails"} loading={loading} setLoading={setLoading} refreshApi={() => setVoiceMailRefresh(voiceMailRefresh + 1)} />
               </div>
 
-              <div className="col-xl-6 allCallHistory pb-0">
+              <div className="col-xxl-4 col-xl-4 allCallHistory pb-0">
                 <div className="col-auto" style={{ padding: "0 10px" }}>
                   <h5 className="viewingAs">
                     Viewing As:
@@ -492,7 +492,7 @@ function AllVoicemails({ isCustomerAdmin }) {
                 </div>
               </div>
               {clickedVoiceMail && (
-                <div className="col-xl-6 callDetails"
+                <div className="col-xxl-8 col-xl-8 callDetails"
                   style={{ height: "100%" }}
                   id="callDetails"
                 >

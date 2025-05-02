@@ -701,7 +701,7 @@ function Call({
                   </button>
                 </div>
                 <div className="col-12" style={{ padding: "0 10px" }}>
-                  <div className="d-flex">
+                  <div className="row">
                     <div className="col-xl-5 col-12 pe-2 mt-auto">
                       <input
                         type="search"
