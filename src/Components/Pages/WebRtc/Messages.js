@@ -343,7 +343,7 @@ function Messages({
         setChatHistory(newChatHistory);
       }
     }
-    if (recipient.length > 0) {
+    if (recipient.length > 0 && allAgents?.length > 0) {
       if (Object.keys(chatHistory).includes(recipient[0])) {
         if (
           chatHistory[recipient[0]]?.total &&
@@ -362,7 +362,7 @@ function Messages({
 
       }
     }
-  }, [recipient, loadMore]);
+  }, [recipient, loadMore, allAgents]);
 
   const getExtension = (input) => {
     var parts = input?.split('.');
@@ -641,7 +641,7 @@ function Messages({
             body,
             time,
             user_id: agentDetails?.id,
-            user_name: agentDetails?.name,
+            user_name: agentDetails?.username,
             profile_picture: agentDetails?.profile_picture,
             message_type: contentType
           }],
@@ -835,12 +835,19 @@ function Messages({
   }, []);
 
   useEffect(() => {
-    const tag = allTags?.filter((tag) => contact?.some((contact) =>
-      contact?.tags?.some((contactTage) => contactTage?.tag_id !== tag?.id)
-    ))
+    // const tag = allTags?.filter((tag) =>
+    //   contact?.every((contactItem) =>
+    //     !(contactItem?.tags?.some((contactTage) => contactTage?.tag_id === tag?.id))
+    //   )
+    // );
+    const userTag = contact?.find((data) => data?.id === recipient[1])?.tags;
+    const tag = allTags?.filter((tag) =>
+      userTag?.every((contactTag) => contactTag?.tag_id !== tag?.id)
+    );
+
     const filteredTag = tag?.filter((data) => data?.name?.toLowerCase()?.includes(tagFilterInput?.toLowerCase()))
     setFilteredTags(filteredTag)
-  }, [allTags, contact, tagFilterInput])
+  }, [allTags, contact, tagFilterInput, recipient])
 
   useEffect(() => {
     async function getData() {
@@ -1198,8 +1205,9 @@ function Messages({
       toast.success("Group created successfully");
       setAddMember(false);
       setGroupChatPopUp(false);
-      // setGroupSelecedAgents([]);
+      setGroupSelecedAgents([]);
       setNewGroupLoader(false);
+      setGroupName("")
     } else {
       setNewGroupLoader(false);
     }
@@ -1291,7 +1299,7 @@ function Messages({
       [recipient[2] == "singleChat" ? recipient[1] : recipient[0]]: [
         ...(prevState[recipient[2] == "singleChat" ? recipient[1] : recipient[0]] || []),
         {
-          from: recipient[2] == "singleChat" ? recipient[1] : recipient[0],
+          from: recipient[2] == "singleChat" ? recipient[1] : account?.id,
           body: messageContent, // Show appropriate text in the message history
           time,
           user_id: userDetails.id,
@@ -1340,7 +1348,7 @@ function Messages({
           body,
           time,
           user_id: from,
-          ser_name: groupMessage?.user_name,
+          user_name: groupMessage?.user_name,
           profile_picture: groupMessage?.profile_picture,
           message_type: groupMessage.message_type,
         }],
@@ -1438,6 +1446,7 @@ function Messages({
       setAllTags([...allTags, apiData.data]);
     } else {
       setLoading(false);
+      toast.error(apiData?.errors?.name[0])
     }
   }
 
@@ -2671,7 +2680,7 @@ function Messages({
                                         </div>
                                       )}
                                       {/* Message content */}
-                                      {(selectedChat === "groupChat" ? item.from === recipient[0] : item.from !== recipient[1]) ? (
+                                      {(selectedChat === "groupChat" ? item.from === account?.id : item.from !== recipient[1]) ? (
                                         <div className="messageItem sender">
                                           <div className="second">
                                             <div className="d-flex gap-3 ">
